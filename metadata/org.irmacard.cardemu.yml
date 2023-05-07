@@ -6,113 +6,17 @@ Categories:
   - Internet
 License: GPL-3.0-only
 AuthorName: Privacy by Design foundation
-WebSite: https://irma.app
+WebSite: https://yivi.app
 SourceCode: https://github.com/privacybydesign/irmamobile
 IssueTracker: https://github.com/privacybydesign/irmamobile/issues
 
 RepoType: git
-Repo: https://github.com/privacybydesign/irmamobile
+Repo: https://github.com/privacybydesign/irmamobile.git
 
 Builds:
   - versionName: 6.0.12
     versionCode: 126
     commit: v6.0.12
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y -t testing golang-go
-    output: build/app/outputs/flutter-apk/app-beta-release.apk
-    srclibs:
-      - flutter@1.22.1
-    rm:
-      - ios
-      - test
-      - .idea
-      - .reuse
-      - .vscode
-      - irmagobridge/mock_export
-      - irmagobridge/structodart
-    prebuild: $$SDK$$/tools/bin/sdkmanager 'platforms;android-28' 'build-tools;28.0.3'
-        > /dev/null
-    build:
-      - export GOPATH="$PWD/gopath"
-      - export PATH=$PATH:$GOPATH/bin
-      - go get golang.org/x/mobile/cmd/gomobile
-      - gomobile init
-      - gomobile bind -target android -o android/irmagobridge/irmagobridge.aar github.com/privacybydesign/irmamobile/irmagobridge
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --flavor beta
-    ndk: r21e
-
-  - versionName: 6.1.0
-    versionCode: 128
-    disable: missing tag
-    commit: v6.1.0
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y -t testing golang-go
-    output: build/app/outputs/flutter-apk/app-beta-release.apk
-    srclibs:
-      - flutter@1.22.1
-    rm:
-      - ios
-      - test
-      - .idea
-      - .reuse
-      - .vscode
-      - irmagobridge/mock_export
-      - irmagobridge/structodart
-    prebuild: $$SDK$$/tools/bin/sdkmanager 'platforms;android-28' 'build-tools;28.0.3'
-        > /dev/null
-    build:
-      - export GOPATH="$PWD/gopath"
-      - export PATH=$PATH:$GOPATH/bin
-      - go get golang.org/x/mobile/cmd/gomobile
-      - gomobile init
-      - gomobile bind -target android -o android/irmagobridge/irmagobridge.aar github.com/privacybydesign/irmamobile/irmagobridge
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --flavor beta
-    ndk: r21e
-
-  - versionName: 6.1.0
-    versionCode: 129
-    disable: missing tag
-    commit: v6.1.0
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y -t testing golang-go
-    output: build/app/outputs/flutter-apk/app-beta-release.apk
-    srclibs:
-      - flutter@1.22.1
-    rm:
-      - ios
-      - test
-      - .idea
-      - .reuse
-      - .vscode
-      - irmagobridge/mock_export
-      - irmagobridge/structodart
-    prebuild: $$SDK$$/tools/bin/sdkmanager 'platforms;android-28' 'build-tools;28.0.3'
-        > /dev/null
-    build:
-      - export GOPATH="$PWD/gopath"
-      - export PATH=$PATH:$GOPATH/bin
-      - go get golang.org/x/mobile/cmd/gomobile
-      - gomobile init
-      - gomobile bind -target android -o android/irmagobridge/irmagobridge.aar github.com/privacybydesign/irmamobile/irmagobridge
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --flavor beta
-    ndk: r21e
-
-  - versionName: 6.1.0
-    versionCode: 130
-    disable: no such tag
-    commit: v6.1.0
     submodules: true
     sudo:
       - apt-get update
@@ -522,10 +426,46 @@ Builds:
       - $$flutter$$/bin/flutter build apk --flavor beta
     ndk: r21e
 
+  - versionName: 7.3.0
+    versionCode: 4194458
+    disable: https://github.com/privacybydesign/irmamobile/issues/163
+    commit: 18da3e2522b72d81d4001ce10219179111403b09
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y -t bullseye-backports golang-go
+    output: build/app/outputs/flutter-apk/app-beta-release.apk
+    srclibs:
+      - flutter@2.10.5
+    rm:
+      - ios
+      - test
+      - .idea
+      - .reuse
+      - .vscode
+      - irmagobridge/mock_export
+      - irmagobridge/structodart
+    prebuild:
+      - sdkmanager 'platforms;android-32' 'build-tools;32.0.0'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export GOPATH="$PWD/golang"
+      - export PATH="$GOPATH/bin:$PATH"
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - gomobile bind -target android -o android/irmagobridge/irmagobridge.aar github.com/privacybydesign/irmamobile/irmagobridge
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor beta
+    ndk: r21e
+
 MaintainerNotes: uses Sentry.io configured as opt-in
 
-AutoUpdateMode: Version
+AutoUpdateMode: None
 UpdateCheckMode: Tags ^v.*$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 6.4.1
-CurrentVersionCode: 148
+CurrentVersion: 7.3.1
+CurrentVersionCode: 4194459

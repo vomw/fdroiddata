@@ -895,6 +895,25 @@ Builds:
       - sed -i -e 's/<lint>/<lint>\n    <issue id="NullSafeMutableLiveData" severity="warning"
         \/>/g' ../lint.xml
 
+  - versionName: 6.0.0
+    versionCode: 584
+    commit: f2789230b652160e009bcac549a947e2b13008b7
+    subdir: stopcovid
+    submodules: true
+    gradle:
+      - yes
+    rm:
+      - core-android/src/main/res/font/marianne_*.otf
+      - core-android/src/main/res/font/marianne.xml
+    prebuild:
+      - sed -i -e '/fontFamily.*marianne/d' ../core-android/src/main/res/values/styles_text.xml
+        ../core-android/src/main/res/values/styles.xml ../stopcovid/src/main/res/layout/dcc_widget_no_fav_widget.xml
+      - sed -i -e 's/<lint>/<lint>\n    <issue id="NullSafeMutableLiveData" severity="warning"
+        \/>/g' ../lint.xml
+    scanignore:
+      - dgca-app-core-android/dokka/html/decoder/package-list
+      - stopcovid/src/main/assets/infos/key-figures-map.pb.gz
+
 MaintainerNotes: |-
     * Tracking – uses custom Analytics
     * NonFreeNet – uses proprietary backend server
@@ -903,5 +922,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: buildSrc/src/main/kotlin/AndroidConfig.kt|VERSION_CODE:\sInt\s=\s(\d+)|.|VERSION_NAME:\sString\s=\s"([\d.]+)"
-CurrentVersion: 4.5.0
-CurrentVersionCode: 583
+CurrentVersion: 6.0.0
+CurrentVersionCode: 584

@@ -129,9 +129,23 @@ Builds:
     scandelete:
       - build-logic/build
 
-  - versionName: 2.3.8
-    versionCode: 1542
-    commit: 2.3.8
+  - versionName: 2.3.9
+    versionCode: 1585
+    commit: 2.3.9
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - app/ohos
+    prebuild: sed -i -e '/versionName =/s/verName/"$$VERSION$$"/' ../build-logic/src/main/kotlin/Projects.kt
+    scanignore:
+      - app/src/main/assets/anim/*.json.zip
+    scandelete:
+      - build-logic/build
+
+  - versionName: 2.3.9
+    versionCode: 1587
+    commit: 2.3.9
     subdir: app
     gradle:
       - foss
@@ -146,5 +160,5 @@ Builds:
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
 UpdateCheckData: https://github.com/LibChecker/LibChecker/releases/latest/download/version_code.txt|versionCode=(\d+)|.|versionName=([\d.]+)\..+
-CurrentVersion: 2.3.8
-CurrentVersionCode: 1542
+CurrentVersion: 2.3.9
+CurrentVersionCode: 1587
