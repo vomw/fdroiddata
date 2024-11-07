@@ -1,0 +1,44 @@
+AntiFeatures:
+  - NonFreeNet
+  - NSFW
+Categories:
+  - Multimedia
+  - Reading
+License: Apache-2.0
+AuthorEmail: jiangtian616@qq.com
+SourceCode: https://github.com/jiangtian616/JHenTai
+IssueTracker: https://github.com/jiangtian616/JHenTai/issues
+
+AutoName: JHenTai
+Description: A flutter app for E-Hentai/EXHentai
+
+RepoType: git
+Repo: https://github.com/jiangtian616/JHenTai
+
+Builds:
+  - versionName: 8.0.5
+    versionCode: 266
+    commit: 7e451e9e01a8274e8ccaeda1955789c47bb1ed3f
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --target=lib/src/main.dart
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 8.0.5
+CurrentVersionCode: 266
