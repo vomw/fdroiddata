@@ -7,6 +7,7 @@ AuthorWebSite: https://futo.org/
 WebSite: https://immich.app/
 SourceCode: https://github.com/immich-app/immich
 IssueTracker: https://github.com/immich-app/immich/issues
+Translation: https://hosted.weblate.org/projects/immich/
 Changelog: https://github.com/immich-app/immich/releases
 Donate: https://buy.immich.app/
 
@@ -3263,8 +3264,459 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release
     ndk: 25.2.9519653
 
+  - versionName: 1.120.2
+    versionCode: 167
+    commit: 31a1e64b58d01f66d8014c7e91c10cfd20e6aab1
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.121.0
+    versionCode: 168
+    commit: 98c9ae1f7dd19eea6f5eac7352d5515e44a6762c
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.122.0
+    versionCode: 169
+    commit: 37220a342a9a3cde67bedfc7a791a6660fa145e1
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.122.2
+    versionCode: 170
+    commit: 03eb5903fe590532346f87a6cfbc62730911088e
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.122.3
+    versionCode: 171
+    commit: c52f1bae81aae8d0c86b2cf3f9384eb92e39ab36
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.123.0
+    versionCode: 172
+    commit: fd34a914a6b2e6dcfbbe53afcf0112cabccc232b
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.124.2
+    versionCode: 175
+    commit: 8d836ae04f9119d964326bc8e4bc9d3a24b5c084
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.125.2
+    versionCode: 178
+    commit: 9871a04d54288b464d54033ce6ca5d58a1137e6a
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.125.3
+    versionCode: 179
+    commit: 72a55c13b60036adccd9ea108276ca9a4bc37ade
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.125.6
+    versionCode: 182
+    commit: f44669447fc2e84202b4eaeefa642b0c81de10a2
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
+  - versionName: 1.126.1
+    versionCode: 184
+    commit: 8794c84e9dd08b52e968b8838d1591e4f2c9c6d3
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.25.2
+    rm:
+      - design
+      - docker
+      - machine-learning
+      - mobile/ios
+      - server
+      - web
+    prebuild:
+      - cp .isar-cargo.lock .isar/Cargo.lock
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - pushd $$flutter$$
+      - git checkout -f $flutterVersion
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e "s/^\#f//" pubspec.yaml
+      - sed -i -e 's/^\/\/f //' android/app/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/fdroid_build_isar.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.2.9519653
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: mobile/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.119.0
-CurrentVersionCode: 164
+CurrentVersion: 1.126.1
+CurrentVersionCode: 184
