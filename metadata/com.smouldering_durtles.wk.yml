@@ -16,12 +16,17 @@ Repo: https://github.com/jerryhcooke/smouldering_durtles.git
 Binaries: https://github.com/jerryhcooke/smouldering_durtles/releases/download/v%v/smouldering_durtles_%v_arm64.apk
 
 Builds:
-  - versionName: 1.2.4
-    versionCode: 83
+  - versionName: 1.2.3
+    versionCode: 84
     commit: 9dde59eae99b074cb45116657cf7bc2619416da2
     subdir: app
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: c141984af73b46e31eaa64050d813ed4caacf28984bffeb78fe8ff13ba23a5cb
 
