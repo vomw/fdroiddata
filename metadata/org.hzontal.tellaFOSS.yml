@@ -17,6 +17,17 @@ Repo: https://github.com/Horizontal-org/Tella-Android-FOSS.git
 Binaries: https://github.com/Horizontal-org/Tella-Android-FOSS/releases/download/v%v(%c)/mobile-release-FOSS-%c.apk
 
 Builds:
+  - versionName: 2.0.15
+    versionCode: 149
+    commit: d3e629da651380dcc290b019ba590b79da7075c6
+    subdir: mobile
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.2.3
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*' 'assets/cleaninsights.json'
+
   - versionName: 2.11.0
     versionCode: 186
     commit: 4d3be18df376ba452f5f3919fcebca599f3e78fe
