@@ -14,22 +14,14 @@ Builds:
   - versionName: '1.0'
     versionCode: 1
     commit: 7d656818e6676e07daeb2aea0b250ad59efbef02
-    subdir: project/android
-    gradle:
-      - yes
-    prebuild:
-      - curl -L -o capacitor-android.aar https://github.com/xaxoman/capacitor-android/releases/download/v1.0.0/capacitor-android.aar
-      - mkdir -p libs
-      - mv capacitor-android.aar libs/
-      - sed -i 's/implementation project(":capacitor-android")/implementation files("libs\/capacitor-android.aar")/' app/build.gradle
-      - mkdir -p capacitor-cordova-android-plugins
-      - echo 'ext.cdvMinSdkVersion = 22' > capacitor-cordova-android-plugins/cordova.variables.gradle
-      - echo 'ext.cdvCompileSdkVersion = 33' >> capacitor-cordova-android-plugins/cordova.variables.gradle
-      - echo 'ext.cdvVersionCode = 1' >> capacitor-cordova-android-plugins/cordova.variables.gradle
-      - echo 'ext.cdvBuildToolsVersion = "33.0.0"' >> capacitor-cordova-android-plugins/cordova.variables.gradle
-      - echo 'ext.cdvPluginPostBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
-      - echo 'ext.cdvPluginBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
-      - sed -i '/implementation project(":capacitor-cordova-android-plugins")/d' app/build.gradle
+    output: project/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - cd project
+      - npm install
+      - npm run build
+      - npx cap sync android
+      - cd android
+      - ./gradlew assembleRelease
 
 AllowedAPKSigningKeys: d030ea1b2e5afe2219b220d99e9c1cc9068395429d871d6d862466a2ab608d62
 
