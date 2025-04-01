@@ -17,6 +17,17 @@ Builds:
     subdir: project/android
     gradle:
       - yes
+    prebuild: |
+      # Fix missing Capacitor dependencies by removing them from build.gradle
+      sed -i '/implementation project(":capacitor-android")/d' app/build.gradle
+      sed -i '/implementation project(":capacitor-cordova-android-plugins")/d' app/build.gradle
+      # Create minimal settings.gradle that only includes the app module
+      echo 'include ":app"' > settings.gradle
+      # Create empty implementation for Capacitor plugins
+      mkdir -p capacitor-cordova-android-plugins
+      echo 'ext.cdvMinSdkVersion = 22' > capacitor-cordova-android-plugins/cordova.variables.gradle
+      echo 'ext.cdvPluginPostBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      echo 'ext.cdvPluginBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
 
 AllowedAPKSigningKeys: d030ea1b2e5afe2219b220d99e9c1cc9068395429d871d6d862466a2ab608d62
 
