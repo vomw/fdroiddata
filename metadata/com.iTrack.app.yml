@@ -17,9 +17,17 @@ Builds:
     subdir: project/android
     gradle:
       - yes
-    prebuild:
-      - mkdir -p capacitor-cordova-android-plugins
-      - echo 'ext.cdvMinSdkVersion = 22' > capacitor-cordova-android-plugins/cordova.variables.gradle
+    prebuild: |
+      mkdir -p capacitor-cordova-android-plugins
+      cat > capacitor-cordova-android-plugins/cordova.variables.gradle << EOF
+      ext.cdvMinSdkVersion = 22
+      ext.cdvCompileSdkVersion = 33
+      ext.cdvVersionCode = 1
+      ext.cdvBuildToolsVersion = "33.0.0"
+      // Empty methods to avoid build errors
+      ext.cdvPluginPostBuildExtras = { }
+      ext.cdvPluginBuildExtras = { }
+      EOF
 
 AllowedAPKSigningKeys: d030ea1b2e5afe2219b220d99e9c1cc9068395429d871d6d862466a2ab608d62
 
