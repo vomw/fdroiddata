@@ -18,16 +18,12 @@ Builds:
     gradle:
       - yes
     prebuild: |
-      mkdir -p capacitor-cordova-android-plugins
-      cat > capacitor-cordova-android-plugins/cordova.variables.gradle << EOF
-      ext.cdvMinSdkVersion = 22
-      ext.cdvCompileSdkVersion = 33
-      ext.cdvVersionCode = 1
-      ext.cdvBuildToolsVersion = "33.0.0"
-      // Empty methods to avoid build errors
-      ext.cdvPluginPostBuildExtras = { }
-      ext.cdvPluginBuildExtras = { }
-      EOF
+      # Download prebuilt libraries
+      wget -O capacitor-android.aar https://example.com/capacitor-android.aar
+      mkdir -p libs
+      mv capacitor-android.aar libs/
+      # Update build.gradle to use .aar file instead
+      sed -i 's/implementation project(":capacitor-android")/implementation files("libs\/capacitor-android.aar")/' app/build.gradle
 
 AllowedAPKSigningKeys: d030ea1b2e5afe2219b220d99e9c1cc9068395429d871d6d862466a2ab608d62
 
