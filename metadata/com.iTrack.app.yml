@@ -18,12 +18,18 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - apt-get update
-      - apt-get install -y wget
-      - wget -O capacitor-android.aar https://github.com/xaxoman/capacitor-android/releases/download/v1.0.0/capacitor-android.aar || curl -L -o capacitor-android.aar https://github.com/xaxoman/capacitor-android/releases/download/v1.0.0/capacitor-android.aar
+      - curl -L -o capacitor-android.aar https://github.com/xaxoman/capacitor-android/releases/download/v1.0.0/capacitor-android.aar
       - mkdir -p libs
       - mv capacitor-android.aar libs/
       - sed -i 's/implementation project(":capacitor-android")/implementation files("libs\/capacitor-android.aar")/' app/build.gradle
+      - mkdir -p capacitor-cordova-android-plugins
+      - echo 'ext.cdvMinSdkVersion = 22' > capacitor-cordova-android-plugins/cordova.variables.gradle
+      - echo 'ext.cdvCompileSdkVersion = 33' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      - echo 'ext.cdvVersionCode = 1' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      - echo 'ext.cdvBuildToolsVersion = "33.0.0"' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      - echo 'ext.cdvPluginPostBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      - echo 'ext.cdvPluginBuildExtras = { }' >> capacitor-cordova-android-plugins/cordova.variables.gradle
+      - sed -i '/implementation project(":capacitor-cordova-android-plugins")/d' app/build.gradle
 
 AllowedAPKSigningKeys: d030ea1b2e5afe2219b220d99e9c1cc9068395429d871d6d862466a2ab608d62
 
