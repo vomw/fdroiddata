@@ -1,0 +1,80 @@
+Categories:
+  - Internet
+License: GPL-3.0-only
+AuthorName: Geoffrey Bonneville
+WebSite: https://www.pikatorrent.com/
+SourceCode: https://github.com/G-Ray/pikatorrent
+IssueTracker: https://github.com/G-Ray/pikatorrent/issues
+Donate: https://github.com/sponsors/G-Ray
+
+AutoName: PikaTorrent
+
+RepoType: git
+Repo: https://github.com/G-Ray/pikatorrent.git
+# Uncomment once build is reproducible
+# Binaries: https://github.com/G-Ray/pikatorrent/releases/download/v%v/PikaTorrent-v%v-android.apk
+
+Builds:
+  - versionName: 0.15.0
+    versionCode: 7
+    commit: 7570685471c1f584c123eeba553dc38e033beb73
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+      - apt-get update
+      - apt-get install -y yq zip make pkg-config ninja-build
+      - mkdir -p /usr/local/lib/android/
+      - ln -s /opt/android-sdk/ /usr/local/lib/android/sdk
+    output: app/build/app/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/windows
+      - app/vcpkg/scripts/*.exe
+    prebuild:
+      - export repo=/home/runner/work/pikatorrent
+      - mkdir -p $repo
+      - cd ../
+      - mv com.pikatorrent.PikaTorrent $repo/pikatorrent
+      - pushd $repo/pikatorrent/app
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutterVersion=$(yq -r .environment.flutter pubspec.yaml)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo/pikatorrent com.pikatorrent.PikaTorrent
+    build:
+      - export repo=/home/runner/work/pikatorrent
+      - cd ../
+      - mv com.pikatorrent.PikaTorrent $repo/pikatorrent
+      - pushd $repo/pikatorrent/app
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - export VCPKG_FEATURE_FLAGS=-binarycaching
+      - export VCPKG_ROOT=$(pwd)/vcpkg
+      - export VCPKG_MANIFEST_DIR=$(pwd)
+      # Reproduce same environment as PikaTorrent CI
+      - sdkmanager "ndk;27.3.13750724"
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+      - export ANDROID_NDK=/usr/local/lib/android/sdk/ndk/27.3.13750724
+      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
+      - export ANDROID_NDK_ROOT=/usr/local/lib/android/sdk/ndk/27.3.13750724
+      - export SOURCE_DATE_EPOCH=0
+      - vcpkg/bootstrap-vcpkg.sh -disableMetrics
+      - $$flutter$$/bin/flutter build apk --dart-define-from-file=production.env
+      - popd
+      - mv $repo/pikatorrent com.pikatorrent.PikaTorrent
+
+# Uncomment once build is reproducible
+# AllowedAPKSigningKeys: 4397ded12ce565c0a45efcde5a72a73920364ac616e9e07caa2532c91deeb5e0
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.15.0
+CurrentVersionCode: 7
