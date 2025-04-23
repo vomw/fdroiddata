@@ -11,6 +11,7 @@ AuthorEmail: contact@knighthat.me
 WebSite: https://kreate.knighthat.me
 SourceCode: https://github.com/knighthat/Kreate
 IssueTracker: https://github.com/knighthat/Kreate/issues
+Translation: https://translate.kreate.knighthat.me
 Liberapay: knighthat
 Bitcoin: 1GpZUvhdVkCFxqF4vuaiFxtBTxB3L94vnK
 Litecoin: LUGEtAqnPYgncCyRnSYbtagqsBAihmRrJg
@@ -57,7 +58,32 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 1.1.5-fdroid
+    versionCode: 91
+    commit: 781a309653c32ef967cf4a596180b62bdb991d9a
+    subdir: composeApp
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 1.2.1-fdroid
+    versionCode: 93
+    commit: 4d16fa508a75bdcd2a8a31bc1896dd70db852360
+    subdir: composeApp
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: cp ../fastlane/metadata/android/en-US/changelogs/$$VERCODE$$.txt src/androidMain/res/raw/release_notes.txt
+
 AutoUpdateMode: Version +-fdroid v%v
 UpdateCheckMode: Tags ^v.*$
-CurrentVersion: 1.1.3
-CurrentVersionCode: 89
+CurrentVersion: 1.2.1
+CurrentVersionCode: 93

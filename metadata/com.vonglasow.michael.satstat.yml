@@ -1,6 +1,7 @@
 Categories:
   - Navigation
 License: GPL-3.0-or-later
+AuthorName: Michael von Glasow
 WebSite: https://mvglasow.gitlab.io/satstat/
 SourceCode: https://gitlab.com/mvglasow/satstat
 IssueTracker: https://gitlab.com/mvglasow/satstat/issues
@@ -155,6 +156,16 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 3.6.0
+    versionCode: 30600
+    commit: 2a4d2d1a80e309c1c90bf9725876d4fc902efffe
+    init: ./setbuild.sh
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/6.1.1/7.3.3/' gradle/wrapper/gradle-wrapper.properties
+      - sed -i -e 's/4.0.0/7.2.2/' build.gradle
+
 MaintainerNotes: |-
   Build 2.0 switched to gradle because of the dependency on mapsforge, which fails on the build server
   if called in an ant or maven project (or when called multiple times). See
@@ -164,5 +175,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.5'
-CurrentVersionCode: 30500
+CurrentVersion: 3.6.0
+CurrentVersionCode: 30600
