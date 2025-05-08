@@ -2583,6 +2583,287 @@ Builds:
       - popd
     ndk: 26.1.10909125
 
+  - versionName: 4.1.0
+    versionCode: 22000439
+    commit: d04f487166c76996da941ea6ec7e9b5644607022
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.25.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e 's!// api(libs.breez.sdk.android!api(libs.breez.sdk.android!'
+        -e 's!// implementation("${libs.jna!implementation("${libs.jna!' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - rustup install 1.68.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - pushd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh arm64-v8a
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh armeabi-v7a
+      - popd
+    ndk: 26.1.10909125
+
+  - versionName: 4.1.1
+    versionCode: 22000440
+    commit: 38bf6a654a0c21769eb65c0154fb5a41f52093ab
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.25.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e 's!// api(libs.breez.sdk.android!api(libs.breez.sdk.android!'
+        -e 's!// implementation("${libs.jna!implementation("${libs.jna!' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+    build:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - rustup install 1.68.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - pushd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh arm64-v8a
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh armeabi-v7a
+      - popd
+    ndk: 26.1.10909125
+
+  - versionName: 4.1.2
+    versionCode: 22000441
+    commit: 51f7f943fe30756012f58af5cbb8326b7f16cb1a
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]] || exit 1'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p'
+        gdk/docker/android/Dockerfile) --target aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 4.1.3
+    versionCode: 22000442
+    commit: 503ec0a01e363f92223d3e9c4a724d8a0c748920
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]] || exit 1'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p'
+        gdk/docker/android/Dockerfile) --target aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 4.1.4
+    versionCode: 22000443
+    commit: c06d9ceac718ba3202384a07af417a18585d4756
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]] || exit 1'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p'
+        gdk/docker/android/Dockerfile) --target aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 4.1.5
+    versionCode: 22000444
+    commit: 71d8d7144aa5ff5ca118325c0d2a98885e7d69a8
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]] || exit 1'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p'
+        gdk/docker/android/Dockerfile) --target aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 4.1.8
+    versionCode: 22000445
+    commit: 2b12b1480b907279a10a9598de7c8581d536a5c8
+    subdir: green
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]] || exit 1'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p'
+        gdk/docker/android/Dockerfile) --target aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
 MaintainerNotes: |-
   Watch prepare_gdk_clang.sh for changes on new builds.
 
@@ -2592,10 +2873,12 @@ MaintainerNotes: |-
   for each chain runnin on localhost. They are used to speed up SPV verification when possible and they
   can be verified independently by checking each hash against the blockchain.
 
+  libgcc.a in scanignore is a text file
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
   - 22000000 + %c
 UpdateCheckData: green/build.gradle.kts|versionCode\s=\s(\d+)|.|versionName\s=\s"([\d.]+)"
-CurrentVersion: 4.0.38
-CurrentVersionCode: 22000438
+CurrentVersion: 4.1.8
+CurrentVersionCode: 22000445

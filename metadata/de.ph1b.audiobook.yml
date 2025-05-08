@@ -5,17 +5,10 @@ AuthorName: Paul Woitaschek
 AuthorEmail: audiobook@posteo.de
 SourceCode: https://github.com/PaulWoitaschek/Voice
 IssueTracker: https://github.com/PaulWoitaschek/Voice/issues
-Translation: https://www.transifex.com/PaulWoitaschek/voice/
+Translation: https://hosted.weblate.org/engage/voice/
 Changelog: https://github.com/PaulWoitaschek/Voice/releases
 
 AutoName: Voice
-Description: |-
-  Audiobook player with the following basic features:
-
-  * Remembers last position
-  * Easy, intuitive interface
-  * Sleep-timer
-  * Easily jump to a position
 
 RepoType: git
 Repo: https://github.com/PaulWoitaschek/Voice.git
@@ -1206,8 +1199,42 @@ Builds:
     scandelete:
       - plugins/build
 
+  - versionName: 8.3.0
+    versionCode: 3603037
+    commit: 797bd7ab2a5acd65a3677f6b05ac078f3f60617c
+    subdir: app
+    gradle:
+      - github
+      - libre
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e 's/(this as ApplicationAndroidResources).//'
+        -e '/= createSigningConfig/d' build.gradle.kts
+      - sed -i -e '/review/d' -e '/firebase/d' ../review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+    scandelete:
+      - plugins/build
+
+  - versionName: 8.3.2
+    versionCode: 3603039
+    commit: eec26f35084e6b270f57ec73c84eacd02f665a6f
+    subdir: app
+    gradle:
+      - github
+      - libre
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e 's/(this as ApplicationAndroidResources).//'
+        -e '/= createSigningConfig/d' build.gradle.kts
+      - sed -i -e '/review/d' -e '/firebase/d' ../review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+    scandelete:
+      - plugins/build
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]+$
 UpdateCheckData: gradle/libs.versions.toml|versionCode\s*=\s*"([0-9]+)"|.|versionName\s*=\s*"(.+)"
-CurrentVersion: 8.2.3
-CurrentVersionCode: 3603034
+CurrentVersion: 8.3.2
+CurrentVersionCode: 3603039

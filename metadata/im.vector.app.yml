@@ -5,7 +5,7 @@ AntiFeatures:
 Categories:
   - Internet
   - Phone & SMS
-License: Apache-2.0
+License: AGPL-3.0-or-later
 AuthorName: New Vector Ltd.
 AuthorEmail: press@element.io
 WebSite: https://element.io/
@@ -2971,14 +2971,905 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
 
-MaintainerNotes: Do not update unless requested by the Element team! The Element team
-  will ping us whenever they feel a new release is ready. See https://github.com/vector-im/element-android/issues/3728
-  as an example of their release process. When updating the recipe, you can mostly
-  copy-paste but make sure you checked all build.gradle files to see if MapLibre or
-  Jitsi Meet need bumping.
+  - versionName: 1.6.24
+    versionCode: 40106241
+    commit: de6b7c53e581eabb018c8bd318a5aae5245629fe
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24
+    versionCode: 40106242
+    commit: de6b7c53e581eabb018c8bd318a5aae5245629fe
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24
+    versionCode: 40106243
+    commit: de6b7c53e581eabb018c8bd318a5aae5245629fe
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24
+    versionCode: 40106244
+    commit: de6b7c53e581eabb018c8bd318a5aae5245629fe
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26
+    versionCode: 40106261
+    commit: c3fa399b60c6c3e69327c08993f6f5939cc3188a
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26
+    versionCode: 40106262
+    commit: c3fa399b60c6c3e69327c08993f6f5939cc3188a
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26
+    versionCode: 40106263
+    commit: c3fa399b60c6c3e69327c08993f6f5939cc3188a
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26
+    versionCode: 40106264
+    commit: c3fa399b60c6c3e69327c08993f6f5939cc3188a
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.28
+    versionCode: 40106281
+    commit: 069aa9d2db29df9f3b26defaf591883ac6801336
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.28
+    versionCode: 40106282
+    commit: 069aa9d2db29df9f3b26defaf591883ac6801336
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.28
+    versionCode: 40106283
+    commit: 069aa9d2db29df9f3b26defaf591883ac6801336
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.28
+    versionCode: 40106284
+    commit: 069aa9d2db29df9f3b26defaf591883ac6801336
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30
+    versionCode: 40106301
+    commit: 73a0ec7f3cc03b86976ec8012fa9ed72a9639cc8
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30
+    versionCode: 40106302
+    commit: 73a0ec7f3cc03b86976ec8012fa9ed72a9639cc8
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30
+    versionCode: 40106303
+    commit: 73a0ec7f3cc03b86976ec8012fa9ed72a9639cc8
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30
+    versionCode: 40106304
+    commit: 73a0ec7f3cc03b86976ec8012fa9ed72a9639cc8
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.32
+    versionCode: 40106321
+    commit: f0699b070fb39ed8597bcb7661a6e70949e93f0b
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.32
+    versionCode: 40106322
+    commit: f0699b070fb39ed8597bcb7661a6e70949e93f0b
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.32
+    versionCode: 40106323
+    commit: f0699b070fb39ed8597bcb7661a6e70949e93f0b
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.32
+    versionCode: 40106324
+    commit: f0699b070fb39ed8597bcb7661a6e70949e93f0b
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.34
+    versionCode: 40106341
+    commit: 88d59e9db698dcc5944f4e8eef0273dd557abc34
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.34
+    versionCode: 40106342
+    commit: 88d59e9db698dcc5944f4e8eef0273dd557abc34
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.34
+    versionCode: 40106343
+    commit: 88d59e9db698dcc5944f4e8eef0273dd557abc34
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.34
+    versionCode: 40106344
+    commit: 88d59e9db698dcc5944f4e8eef0273dd557abc34
+    timeout: 10800
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' -e 's/Xmx4g/Xmx8g/' ../gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+MaintainerNotes: |-
+  Do not update unless requested by the Element team! The Element team will ping us whenever they feel a new release is ready. See https://github.com/vector-im/element-android/issues/3728 as an example of their release process.
+
+  We can add a new tagged version as "not suggested", add build blocks but don't update CurrentVersion* and bump CurrentVersion* only when we get the okay from the Element team.
+
+  When updating the recipe, you can mostly copy-paste but make sure you checked all build.gradle files to see if Jitsi Meet needs bumping.
+
+  Scanner might detect 'com/google/ads/interactivemedia/v3/api/AdEvent' stubs from react-native-video.
 
 ArchivePolicy: 12
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.6.20
-CurrentVersionCode: 40106204
+CurrentVersion: 1.6.34
+CurrentVersionCode: 40106344

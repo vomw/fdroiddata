@@ -159,9 +159,63 @@ Builds:
       - full
     prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
 
+  - versionName: 2.9.0-fdroid
+    versionCode: 27
+    commit: ad2bac0a2df4c5351f3fc92ebe42d9323143bddc
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.1
+    versionCode: 28
+    commit: 376fbe14baa09dd9db596c1d563aefc576087340
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.2
+    versionCode: 29
+    commit: 0af290cc9793e65f056b35b720053b5084e8e657
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.3
+    versionCode: 30
+    commit: 386f8460a21c6c8e83ed0200b6daa78f1c524d7f
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.4
+    versionCode: 31
+    commit: 479def9298b98973b5cda73a05250b8fa882998e
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.7
+    versionCode: 34
+    commit: a19f4e7f18577a991a7c33d5891c4a466b8c93b9
+    subdir: app
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: a23db5fd8aab1b88051125e127600577e3dcbc80ff73ddfc4a8d245b1765c13f
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.8.1
-CurrentVersionCode: 26
+CurrentVersion: 2.9.7
+CurrentVersionCode: 34

@@ -64,8 +64,50 @@ Builds:
       - node_modules
     build: npm run web:prod-app
 
-AutoUpdateMode: Version
+  - versionName: v33424-release
+    versionCode: 33424
+    commit: 0a243c78653524bba8bcf89b76e88f441cd88f64
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    scandelete:
+      - build-logic/build
+
+  - versionName: v33553-release
+    versionCode: 33553
+    commit: 5f1a429460c067fe8508cf0030e0d39310ca8180
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    scandelete:
+      - build-logic/build
+
+  - versionName: v33599-release
+    versionCode: 33599
+    commit: 4842ed06a2bfad55b91a01b13a10c99e4cc21552
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    scandelete:
+      - build-logic/build
+
+AutoUpdateMode: Version +-release %v
 UpdateCheckMode: Tags
-UpdateCheckData: package.json|"version_code":\s(\d+),|.|"version_name":\s"(.*)"
-CurrentVersion: 3.24.32
-CurrentVersionCode: 32432
+UpdateCheckData: '|v(\d+)||(v\d+)'
+CurrentVersion: v33599
+CurrentVersionCode: 33599

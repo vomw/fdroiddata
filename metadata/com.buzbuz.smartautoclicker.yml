@@ -662,7 +662,206 @@ Builds:
       - build-logic
       - core
 
+  - versionName: 3.1.0
+    versionCode: 57
+    commit: b9e21e28ac578b5cc160955e9ae0c2c8335e04c3
+    subdir: smartautoclicker
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e '/googleFirebaseCrashlyticsGradle/d;/googleServices/d;/androidBillingClient/d;/googleFirebaseBom/d;/googleFirebaseCrashlytics/d;/googleUserMessaging/d;/googleGmsAds/d'
+        ../gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        ../build-logic/convention/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' ../build.gradle.kts
+      - sed -i -e '/val googleCrashlytics/,/^$/d' ../build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/utils/LibsExt.kt
+      - sed -i -e '/playStoreImplementation/d' ../feature/revenue/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.1.1
+    versionCode: 58
+    commit: 1bfa8d48a2133102617e8f2f27cdad80eff9bb96
+    subdir: smartautoclicker
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e '/googleFirebaseCrashlyticsGradle/d;/googleServices/d;/androidBillingClient/d;/googleFirebaseBom/d;/googleFirebaseCrashlytics/d;/googleUserMessaging/d;/googleGmsAds/d'
+        ../gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        ../build-logic/convention/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' ../build.gradle.kts
+      - sed -i -e '/val googleCrashlytics/,/^$/d' ../build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/utils/LibsExt.kt
+      - sed -i -e '/playStoreImplementation/d' ../feature/revenue/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.2.0
+    versionCode: 59
+    commit: 375ccff49cc72a9c47ab33f1550fb7f369b9e031
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/val googleCrashlytics/,/^$/d' build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/utils/LibsExt.kt
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.2.1
+    versionCode: 60
+    commit: 6003e836c5e0c3a6df4923477bd5ad302a29f4c1
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.2.2
+    versionCode: 61
+    commit: 49fc010039b87811eb5912308153b4daba7526ac
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.3.0
+    versionCode: 68
+    commit: 393db81f4bfba0ac87478b09a2c78233fc649f79
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.3.1
+    versionCode: 69
+    commit: e6d413408fa8a1c3efce478c22dc6d83f77fea30
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
+  - versionName: 3.3.2
+    versionCode: 70
+    commit: 06ce0e4b1230a39d848099abfccb41984eb75c8e
+    subdir: smartautoclicker
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fDroid
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+    scandelete:
+      - build-logic
+      - core
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*(|-RC[0-9])$
-CurrentVersion: 3.0.6
-CurrentVersionCode: 53
+CurrentVersion: 3.3.2
+CurrentVersionCode: 70

@@ -35,12 +35,33 @@ variables:
   - export PATH="$fdroidserver:$PATH"
   - export PYTHONPATH="$fdroidserver:$fdroidserver/examples"
   - export PYTHONUNBUFFERED=true
+  # avoid error from the env var in config.yml
+  - export serverwebroot=/tmp
 
 .install_fdroid_server_deb: &install_fdroid_server_deb
   - apt-get --allow-releaseinfo-change update
   - apt-get -qy dist-upgrade
   - echo "locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8" | debconf-set-selections
   - apt-get install -qy --no-install-recommends fdroidserver apksigner mercurial git git-svn brz python3-launchpadlib locales curl
+
+.set_up_test_keystore: &set_up_test_keystore
+  - cp -a $fdroidserver/tests/gnupghome $fdroidserver/tests/keystore.jks $CI_PROJECT_DIR/
+  - grep '^key.*pass' $fdroidserver/tests/config.yml | sed 's,\x3a ,=,' > $CI_PROJECT_DIR/variables
+  - |
+    tee --append $CI_PROJECT_DIR/variables <<EOF
+        gpghome=$CI_PROJECT_DIR/gnupghome
+        keystore=$CI_PROJECT_DIR/keystore.jks
+        serverwebroot=/tmp
+        export gpghome keypass keystorepass keystore serverwebroot
+    EOF
+  - source $CI_PROJECT_DIR/variables
+  # silence warnings
+  - chmod 0600 config.yml config/*.yml config/*/*.yml
+  - chmod 0700 $gpghome
+  # make fake 'ciarang' index signing key
+  - keytool -keyclone -alias 4e7da5b7 -dest ciarang
+        -keypass:env keypass -new:env keypass -storepass:env keystorepass -keystore $keystore
+  - sed -i 's,^\(gpgkey\x3a\).*,\1 F9A6B8DF7566FCAB173AAB3516D6C4D3CE71F7FB,' config.yml
 
 .get_target_source_refs: &get_target_source_refs
   - |
@@ -104,6 +125,7 @@ checkupdates:
   script:
     - |
       set -xe
+    - chown -R $(whoami) .
     - *get_changed_builds
     - |
       if [ -n "$CHANGED" ]; then
@@ -120,6 +142,7 @@ git redirect:
     - apt-get -qy update
     - apt-get -qy dist-upgrade
     - apt-get -qy install --no-install-recommends ca-certificates git python3 python3-yaml
+    - chown -R $(whoami) .
     - *get_changed_apps
     - test -n "$CHANGED" || exit 0
     - tools/rewrite-git-redirects.py $CHANGED
@@ -138,7 +161,7 @@ fdroid lint:
     - export fdroidserver=$PWD/fdroidserver
     - *install_fdroid_server
   script:
-    - cp tools/lint_config.yml config.yml
+    - chown -R $(whoami) .
     - *get_changed_apps
     - export EXITVALUE=0
     - function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }
@@ -195,10 +218,12 @@ fdroid lint config:
           - config/*.yml
           - config/*/*.yml
   script:
-    - fdroid lint config/*.yml config/*/*.yml
-    # TODO once config.yml is added to fdroiddata, add it to the line above
-    - test -e config.yml || exit 0
-    - fdroid lint config.yml
+    - chown -R $(whoami) .
+    - chmod 0600 config.yml config/*.yml config/*/*.yml
+    - export gpghome=foo keystore=foo keystorepass=foo keypass=foo serverwebconfig=foo
+    - fdroid lint config.yml config/*.yml config/*/*.yml
+    # Alternate English locales must include the country code, e.g. en-GB.
+    - python3 -c "import os; exit(os.path.exists('config/en/'))"
 
 
 lint:
@@ -209,21 +234,25 @@ lint:
   script:
     - apt-get -qy update
     - apt-get -qy dist-upgrade
-    - apt-get -qy install --no-install-recommends exiftool git python3 python3-yaml
+    - apt-get -qy install --no-install-recommends exiftool git jq python3 python3-yaml
     - export EXITVALUE=0
     - function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }
 
-    - find metadata/ -name '*.jp*g' -o -name '*.png' | xargs exiftool -all=
-    - echo "these images have EXIF that must be stripped:"
-    - git --no-pager diff --stat
-    - git --no-pager diff --name-only --exit-code || set_error
+    - chown -R $(whoami) .
+    - ./tools/check-exif-in-images.sh || set_error
     - ./tools/check-localized-metadata.py || set_error
     - ./tools/check-keyalias-collision.py || set_error
     - ./tools/check-metadata-summary-whitespace.py || set_error
     - ./tools/check-for-unattached-signatures.py || set_error
     - ./tools/make-summary-translatable.py || set_error
 
+    # GitLab only supports one codequality report per job
+    - jq '[.[]|.[]]' --slurp *.json > codequality.json
+
     - exit $EXITVALUE
+  artifacts:
+    reports:
+      codequality: codequality.json
 
 schema validation:
   stage: test
@@ -233,6 +262,7 @@ schema validation:
   before_script:
     - pip install check-jsonschema
   script:
+    - chown -R $(whoami) .
     - check-jsonschema --check-metaschema schemas/metadata.json || exit 1
     - *get_target_source_refs
     - git diff --exit-code --name-only "${TARGET_REF}...${SOURCE_REF}" schemas/metadata.json
@@ -256,15 +286,16 @@ trigger-issuebot:
     when: always
     expire_in: 1 week
   script:
+    - chown -R $(whoami) .
     - mkdir logs
     - export | grep -F CI_ | grep -vFi -e password -e token > logs/export.txt
     - apk add --no-cache bash curl
     - ./tools/trigger-issuebot
 
-# This job is should be as close as possible to the production
+# This job should be as close as possible to the production
 # buildserver.  It should not include custom setup or methods, except
 # when there is no other way to make this job work.  The docker image
-# is created using the same provisioning as the producion buildserver,
+# is created using the same provisioning as the production buildserver,
 # via the "docker" job in fdroid/fdroidserver.
 #
 # This job is tied to the buildserver.  Changes must be reviewed by
@@ -294,6 +325,7 @@ fdroid build:
     ANDROID_HOME: /opt/android-sdk
     ANDROID_SDK_ROOT: ${ANDROID_HOME}
   script:
+    - chown -R $(whoami) .
     - test -d build || mkdir build
     - *get_changed_builds
     - test -n "$(printf "$CHANGED" | tr -d '[:space:]')"
@@ -336,12 +368,11 @@ fdroid build:
           fdroid"
 
     # use fdroidserver test keystore as placeholder since `fdroid publish` requires it
-    - printf 'repo_keyalias\x3a sova\n' >> config.yml
-    - printf 'keystorepass\x3a r9aquRHYoI8+dYz6jKrLntQ5/NJNASFBacJh7Jv2BlI=\n' >> config.yml
-    - printf 'keypass\x3a r9aquRHYoI8+dYz6jKrLntQ5/NJNASFBacJh7Jv2BlI=\n' >> config.yml
-    - printf 'keydname\x3a "CN=Birdman, OU=Cell, O=Alcatraz, L=Alcatraz, S=California, C=US"\n' >> config.yml
-    - keystore=$fdroidserver/tests/keystore.jks
-    - printf "keystore\x3a $keystore\n" >> config.yml
+    - export keystorepass='r9aquRHYoI8+dYz6jKrLntQ5/NJNASFBacJh7Jv2BlI='
+    - export keypass='r9aquRHYoI8+dYz6jKrLntQ5/NJNASFBacJh7Jv2BlI='
+    - export keystore=$fdroidserver/tests/keystore.jks
+    - keytool -changealias -alias sova -destalias ciarang
+        -keystore $keystore -storepass:env keystorepass -keypass:env keypass
 
     - APPS="$(./tools/find-changed-builds.py)"
     - for build in $APPS; do
@@ -455,6 +486,7 @@ check_git_repos:
     - apt-get update
     - apt-get -qy install --no-install-recommends ca-certificates git python3-colorama python3-yaml
     - tools/check-git-repo-availability.py || export EXITVALUE=1
+    - chown -R $(whoami) .
     - test -d public || mkdir public
     - cp `git status | grep -Eo 'metadata/.*\.yml'` public/ || true
     - exit $EXITVALUE
@@ -471,6 +503,7 @@ checkupdates_filter:
   script:
     - apt-get update
     - apt-get -qy install --no-install-recommends ca-certificates git
+    - chown -R $(whoami) .
     - git fetch https://gitlab.com/fdroid/fdroiddata.git
     - |
       if git diff --merge-base FETCH_HEAD HEAD --name-only | grep -v '^metadata/\S*\.yml$'; then
@@ -527,6 +560,7 @@ strip EXIF:
     - apt-get -qy update
     - apt-get -qy dist-upgrade
     - apt-get -qy install --no-install-recommends exiftool git
+    - chown -R $(whoami) .
 
     # JPEG
     - find . -type f  -iname "*.jpg" -o -iname "*.jpeg"  -exec chmod a-x {} \;
@@ -544,3 +578,117 @@ strip EXIF:
         echo "https://beinset.medium.com/exif-metadata-a-hidden-door-to-cyber-vulnerabilities-52b0dd2ff4de";
         exit 1;
       }
+
+repo/index.html:
+  stage: test
+  needs: []
+  image: debian:bookworm-slim
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - .gitlab-ci.yml
+          - repo/index.*
+    # only check pushes to fdroids own repo
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PROJECT_PATH == "fdroid/fdroiddata"
+      changes:
+        compare_to: 'refs/heads/master'
+        paths:
+          - .gitlab-ci.yml
+          - repo/index.*
+  script:
+    - apt-get -qy update
+    - apt-get -qy install --no-install-recommends linkchecker tidy
+    - export EXITVALUE=0
+    - function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }
+    - linkchecker repo/index.html || set_error
+    - tidy repo/index.html || set_error
+    - exit $EXITVALUE
+
+weblate merge conflict:
+  stage: test
+  needs: []
+  image: debian:bookworm-slim
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - config/*/antiFeatures.yml
+        - config/*/categories.yml
+        - config/antiFeatures.yml
+        - config/categories.yml
+  script:
+    - apt-get update
+    - apt-get -qy upgrade
+    - apt-get -qy install --no-install-recommends ca-certificates git
+    - git config user.name "$CI_PIPELINE_ID/$CI_JOB_ID"
+    - git config user.email $CI_PROJECT_PATH@f-droid.org
+    - git fetch https://hosted.weblate.org/git/f-droid/anti-features/
+    - git checkout -B weblate FETCH_HEAD
+    - export EXITVALUE=0
+    - if ! git rebase $CI_COMMIT_SHA; then
+          export EXITVALUE=1;
+          set -x;
+          while git rebase --skip; do echo; done;
+          set +x;
+      fi
+    - git diff --exit-code
+    - exit $EXITVALUE
+
+
+PUBLISH:
+  image: debian:bullseye-backports
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - .gitlab-ci.yml
+          - config.yml
+          - config/*.yml
+          - config/*/*.yml
+    # only check pushes to fdroids own repo
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PROJECT_PATH == "fdroid/fdroiddata"
+      changes:
+        compare_to: 'refs/heads/master'
+        paths:
+          - .gitlab-ci.yml
+          - config.yml
+          - config/*.yml
+          - config/*/*.yml
+  script:
+    - apt-get update
+    - apt-get -qy upgrade
+    - apt-get -qy install --no-install-recommends -t bullseye-backports
+        androguard
+        apksigner
+        curl
+        default-jdk-headless
+        git
+        gpg
+        gpg-agent
+        python3-asn1crypto
+        python3-defusedxml
+        python3-git
+        python3-ruamel.yaml
+        python3-yaml
+        rsync
+    - export fdroidserver=$CI_PROJECT_DIR/fdroidserver
+    - export PATH=$fdroidserver:$PATH
+    - *install_fdroid_server
+
+    - mkdir -p $CI_PROJECT_DIR/archive
+    - mkdir -p $CI_PROJECT_DIR/unsigned
+    - *set_up_test_keystore
+    - cp $fdroidserver/tests/urzip-release-unsigned.apk
+        $CI_PROJECT_DIR/unsigned/info.guardianproject.urzip_100.apk
+    - cp $fdroidserver/tests/metadata/info.guardianproject.urzip.yml
+        $CI_PROJECT_DIR/metadata/
+
+    # run signpkg.sh
+    - fdroid publish --verbose
+    - fdroid gpgsign --verbose
+    - rsync --progress repo/* $serverwebroot/
+
+    # run signindex.sh
+    - fdroid gpgsign --verbose
+    - fdroid signindex --verbose
+    - rsync --stats repo/* $serverwebroot/

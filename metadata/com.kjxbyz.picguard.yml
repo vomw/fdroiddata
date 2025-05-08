@@ -1,0 +1,682 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Connects to Sentry servers
+  Tracking:
+    en-US: Sentry is enabled by default
+Categories:
+  - Graphics
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: kjxbyz
+AuthorEmail: hello@kjxbyz.com
+AuthorWebSite: https://kjxbyz.com
+WebSite: https://picguard.app
+SourceCode: https://github.com/picguard/picguard
+IssueTracker: https://github.com/picguard/picguard/issues
+Translation: https://crowdin.com/project/picguard
+Changelog: https://github.com/picguard/picguard/blob/HEAD/CHANGELOG.md
+Donate: https://buymeacoffee.com/wangying
+
+AutoName: PicGuard
+
+RepoType: git
+Repo: https://github.com/picguard/picguard.git
+Binaries: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard-%v.%c.apk
+
+Builds:
+  - versionName: 1.0.7
+    versionCode: 429
+    commit: cab034d98f76d47eca2f670cd4ebe4eb73a4ba17
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.8
+    versionCode: 432
+    commit: 599736d71263746a5a3da73314ce6f79177a7419
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.9
+    versionCode: 433
+    commit: def374d6268adf3dd1c73020dc3ab5174c03b153
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.10
+    versionCode: 434
+    commit: 523ad559849f7bbcac86eecd3d9fa269d22398fc
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.11
+    versionCode: 435
+    commit: 30c512221b1a1660e857120b452a5685739bd4a1
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.12
+    versionCode: 436
+    commit: d48e21b2c672c6e92110dd9dc264a74c80b6a294
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.13
+    versionCode: 437
+    commit: eef7c93a587968db36fcf09b464a1158206eb252
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.14
+    versionCode: 438
+    commit: 3373ece06322a304c053ab697adcbd4f001641eb
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.0.15
+    versionCode: 439
+    commit: b9e526346fc3313265378e83c2f31353ea2ab412
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/picguard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/picguard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/picguard
+      - pushd $repo/picguard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/picguard com.kjxbyz.picguard
+
+  - versionName: 1.1.0
+    versionCode: 440
+    commit: 4efd92cd2028dfe63957073c76f18c66e9a660e2
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    binary: https://github.com/picguard/picguard/releases/download/v%v+%c/PicGuard_%v+%c-free.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/PicGuard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/PicGuard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+
+  - versionName: 2.0.0
+    versionCode: 441
+    commit: afe432a78f276e142705d7f8dc0c34d5f1b4f34f
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/PicGuard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/PicGuard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+
+  - versionName: 2.0.1
+    versionCode: 442
+    commit: 9479519c8c10754a832aab15d8b1bcece965fe0e
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export repo=/home/runner/work/PicGuard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/PicGuard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+
+  - versionName: 2.5.1
+    versionCode: 444
+    commit: c9d8e991ed1f04d57e45aa7e433556e6fe72aee9
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.27.1
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - sed -i -e "s/'stable'/'1.86.0'/" plugins/super_native_extensions/cargokit/build_tool/lib/src/builder.dart
+      - export repo=/home/runner/work/PicGuard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+      - export CARGO_HOME=/home/runner/.cargo
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.86.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android i686-linux-android
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/PicGuard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CARGO_HOME=/home/runner/.cargo
+      - source $CARGO_HOME/env
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+
+  - versionName: 2.5.2
+    versionCode: 445
+    commit: c551188d7924c6ae1db3f038a33a9f4157f32eb3
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-freeproduction-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.27.1
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - rust_version=$(sed -n -E "s/.*rust-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - sed -i -e "s/'stable'/'$rust_version'/" plugins/super_native_extensions/cargokit/build_tool/lib/src/builder.dart
+      - export repo=/home/runner/work/PicGuard
+      - mkdir -p $repo
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - version=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+      - export CARGO_HOME=/home/runner/.cargo
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rust_version --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android i686-linux-android
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/PicGuard
+      - cd ..
+      - mv com.kjxbyz.picguard $repo/PicGuard
+      - pushd $repo/PicGuard
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CARGO_HOME=/home/runner/.cargo
+      - source $CARGO_HOME/env
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons --target lib/main_free.dart
+        --dart-define SENTRY_DSN="https://ce37ccf14474a85b378d5c8b1ae80a67@o4507226640285696.ingest.us.sentry.io/4507226645397509"
+        --flavor freeProduction
+      - popd
+      - mv $repo/PicGuard com.kjxbyz.picguard
+
+AllowedAPKSigningKeys: cf8a3665f1baea4a93f656e1154622fd950be384f5d568047d82bd686bd9079c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags .*[0-9]$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.5.2
+CurrentVersionCode: 445
