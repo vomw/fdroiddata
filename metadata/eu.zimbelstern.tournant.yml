@@ -1,4 +1,5 @@
 Categories:
+  - Recipe Manager
   - Science & Education
   - Sports & Health
 License: Apache-2.0
@@ -175,9 +176,89 @@ Builds:
       - full
     prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
 
+  - versionName: 2.9.2
+    versionCode: 29
+    commit: 0af290cc9793e65f056b35b720053b5084e8e657
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.3
+    versionCode: 30
+    commit: 386f8460a21c6c8e83ed0200b6daa78f1c524d7f
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.4
+    versionCode: 31
+    commit: 479def9298b98973b5cda73a05250b8fa882998e
+    subdir: app
+    gradle:
+      - full
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+
+  - versionName: 2.9.7
+    versionCode: 34
+    commit: a19f4e7f18577a991a7c33d5891c4a466b8c93b9
+    subdir: app
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.10.1
+    versionCode: 36
+    commit: 33db4097f4c67464ccdde9af1521004be034999b
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.10.2
+    versionCode: 37
+    commit: 97f4ff63a87ff48995146c2c728879a3d1111715
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: a23db5fd8aab1b88051125e127600577e3dcbc80ff73ddfc4a8d245b1765c13f
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.9.1
-CurrentVersionCode: 28
+CurrentVersion: 2.10.2
+CurrentVersionCode: 37

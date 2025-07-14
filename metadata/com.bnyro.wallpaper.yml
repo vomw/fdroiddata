@@ -3,6 +3,7 @@ AntiFeatures:
     en-US: App uses multiple wallpaper APIs which are unfree unfortunately.
 Categories:
   - System
+  - Wallpaper
 License: GPL-3.0-only
 AuthorName: You Apps
 WebSite: https://you-apps.github.io/
@@ -87,9 +88,48 @@ Builds:
     gradle:
       - yes
 
+  - versionName: '10.0'
+    versionCode: 29
+    commit: 91e52b72eb229ebe6ca0a1a1e506e80f84cb1e7e
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: '11.0'
+    versionCode: 30
+    commit: d06e8598e429af05c82a565cf2047b9247c0baf7
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: '12.0'
+    versionCode: 31
+    commit: 1a9447472e25b3bc19d67c964b9caf6eaa588617
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: b3bc73b117df5dfe38130c6c2b946852ae7088557fe8e433f0d9983a6b55cc95
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '9.1'
-CurrentVersionCode: 28
+CurrentVersion: '12.0'
+CurrentVersionCode: 31

@@ -8,6 +8,7 @@ AntiFeatures:
 Categories:
   - Connectivity
   - Internet
+  - VPN & Proxy
 License: GPL-3.0-only
 AuthorEmail: support@protonvpn.com
 WebSite: https://protonvpn.com/
@@ -2675,8 +2676,314 @@ Builds:
     gradleprops:
       - buildUniversalApk
 
+  - versionName: 5.8.58.2
+    versionCode: 605085802
+    commit: e3d7e8d5ed57dc8627f310d525a89f52393175a4
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tmp
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r23b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.8.58.4
+    versionCode: 605085804
+    commit: 1d11f91aca454cc1f7d36703057dbb77199c67aa
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tmp
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r23b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.9.45.0
+    versionCode: 605094500
+    commit: 8e0eabd5c25fbb2977647e8e18fdebc5279cfc7d
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tmp
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r23b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.9.59.0
+    versionCode: 605095900
+    commit: 2eb1c4c960a129a60767454801584eff59ca866f
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tmp
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r23b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.10.32.0
+    versionCode: 605103200
+    commit: e1f78b926056049f9ce8508acd1e9856e8e75cd2
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: 28.0.12916984
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.10.63.1
+    versionCode: 605106301
+    commit: 17e40c56d52ba29961bbe032edd8828d0acea2fa
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: 28.0.12916984
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.11.29.1
+    versionCode: 605112901
+    commit: 74f1a062db4b60a833ab27ab082f35f1c60b4afc
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.11.39.1
+    versionCode: 605113901
+    commit: c1543ff1c299df376dac762d12e6049de95fdea8
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.11.73.1
+    versionCode: 605117301
+    commit: d1070328f290db88e0665f154e12c01a85090365
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: metadata/version_fdroid.txt|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 5.8.24.2
-CurrentVersionCode: 605082402
+CurrentVersion: 5.11.73.1
+CurrentVersionCode: 605117301

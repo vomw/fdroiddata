@@ -1,6 +1,7 @@
 Categories:
   - Internet
   - Security
+  - VPN & Proxy
 License: MIT
 AuthorName: SaeedDev94
 SourceCode: https://github.com/SaeedDev94/Xray
@@ -5083,6 +5084,2346 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 9.0.1
+    versionCode: 611
+    commit: b453c5f4dc4bce1f3ec8b574a3018dce2886c290
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.1
+    versionCode: 612
+    commit: b453c5f4dc4bce1f3ec8b574a3018dce2886c290
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.1
+    versionCode: 613
+    commit: b453c5f4dc4bce1f3ec8b574a3018dce2886c290
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.1
+    versionCode: 614
+    commit: b453c5f4dc4bce1f3ec8b574a3018dce2886c290
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.3
+    versionCode: 631
+    commit: 24bc7ca4de9932483198cc3f82f6cdce52444f5c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.3
+    versionCode: 632
+    commit: 24bc7ca4de9932483198cc3f82f6cdce52444f5c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.3
+    versionCode: 633
+    commit: 24bc7ca4de9932483198cc3f82f6cdce52444f5c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.0.3
+    versionCode: 634
+    commit: 24bc7ca4de9932483198cc3f82f6cdce52444f5c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.1.0
+    versionCode: 641
+    commit: a0ef4fc29f049debb7eb08d4153f61f63562ae93
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.1.0
+    versionCode: 642
+    commit: a0ef4fc29f049debb7eb08d4153f61f63562ae93
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.1.0
+    versionCode: 643
+    commit: a0ef4fc29f049debb7eb08d4153f61f63562ae93
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 9.1.0
+    versionCode: 644
+    commit: a0ef4fc29f049debb7eb08d4153f61f63562ae93
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.1.0
+    versionCode: 661
+    commit: 09facd36ec6f915d80e956609db987b1fa2a225e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.1.0
+    versionCode: 662
+    commit: 09facd36ec6f915d80e956609db987b1fa2a225e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.1.0
+    versionCode: 663
+    commit: 09facd36ec6f915d80e956609db987b1fa2a225e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.1.0
+    versionCode: 664
+    commit: 09facd36ec6f915d80e956609db987b1fa2a225e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.23.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20241213221354-a87c1cf6cf46
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.2.0
+    versionCode: 671
+    commit: eda0b7e8292a1a3a3f29cf86c021c2cda703796e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.0
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250218173827-cd096645fcd3
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.2.0
+    versionCode: 672
+    commit: eda0b7e8292a1a3a3f29cf86c021c2cda703796e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.0
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250218173827-cd096645fcd3
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.2.0
+    versionCode: 673
+    commit: eda0b7e8292a1a3a3f29cf86c021c2cda703796e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.0
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250218173827-cd096645fcd3
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.2.0
+    versionCode: 674
+    commit: eda0b7e8292a1a3a3f29cf86c021c2cda703796e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.0
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250218173827-cd096645fcd3
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.3.0
+    versionCode: 681
+    commit: 1f095bd1f8c75737d110ede270aae00aa1c8d595
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.3.0
+    versionCode: 682
+    commit: 1f095bd1f8c75737d110ede270aae00aa1c8d595
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.3.0
+    versionCode: 683
+    commit: 1f095bd1f8c75737d110ede270aae00aa1c8d595
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.3.0
+    versionCode: 684
+    commit: 1f095bd1f8c75737d110ede270aae00aa1c8d595
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.4.0
+    versionCode: 691
+    commit: b68550f8ef5ba0414c235273a2aa442f2ba019d2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.4.0
+    versionCode: 692
+    commit: b68550f8ef5ba0414c235273a2aa442f2ba019d2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.4.0
+    versionCode: 693
+    commit: b68550f8ef5ba0414c235273a2aa442f2ba019d2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.4.0
+    versionCode: 694
+    commit: b68550f8ef5ba0414c235273a2aa442f2ba019d2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250305212854-3a7bc9f8a4de
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.5.0
+    versionCode: 701
+    commit: 61515968639b0e69588cd725d565df42de1a5397
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.5.0
+    versionCode: 702
+    commit: 61515968639b0e69588cd725d565df42de1a5397
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.5.0
+    versionCode: 703
+    commit: 61515968639b0e69588cd725d565df42de1a5397
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.5.0
+    versionCode: 704
+    commit: 61515968639b0e69588cd725d565df42de1a5397
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.6.0
+    versionCode: 711
+    commit: 630dc3903505dd370187092f003aea6bf727f47d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.6.0
+    versionCode: 712
+    commit: 630dc3903505dd370187092f003aea6bf727f47d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.6.0
+    versionCode: 713
+    commit: 630dc3903505dd370187092f003aea6bf727f47d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.6.0
+    versionCode: 714
+    commit: 630dc3903505dd370187092f003aea6bf727f47d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.7.1
+    versionCode: 731
+    commit: 93ec0c7f3c645191b7ffe0bffc4634f91feecdc6
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.7.1
+    versionCode: 732
+    commit: 93ec0c7f3c645191b7ffe0bffc4634f91feecdc6
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.7.1
+    versionCode: 733
+    commit: 93ec0c7f3c645191b7ffe0bffc4634f91feecdc6
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.7.1
+    versionCode: 734
+    commit: 93ec0c7f3c645191b7ffe0bffc4634f91feecdc6
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.2
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.0
+    versionCode: 741
+    commit: a49e1a6d4496f9e47f4c80640ae12cab9bc6e4de
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.0
+    versionCode: 742
+    commit: a49e1a6d4496f9e47f4c80640ae12cab9bc6e4de
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.0
+    versionCode: 743
+    commit: a49e1a6d4496f9e47f4c80640ae12cab9bc6e4de
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.0
+    versionCode: 744
+    commit: a49e1a6d4496f9e47f4c80640ae12cab9bc6e4de
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.2
+    versionCode: 761
+    commit: 9457e08f2bf153cc21c1bcbd76358b31c14cfd1c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.2
+    versionCode: 762
+    commit: 9457e08f2bf153cc21c1bcbd76358b31c14cfd1c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.2
+    versionCode: 763
+    commit: 9457e08f2bf153cc21c1bcbd76358b31c14cfd1c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.2
+    versionCode: 764
+    commit: 9457e08f2bf153cc21c1bcbd76358b31c14cfd1c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.4
+    versionCode: 781
+    commit: ef1c79505fcfa538463f8e9990192a41e75c614e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.4
+    versionCode: 782
+    commit: ef1c79505fcfa538463f8e9990192a41e75c614e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.4
+    versionCode: 783
+    commit: ef1c79505fcfa538463f8e9990192a41e75c614e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.8.4
+    versionCode: 784
+    commit: ef1c79505fcfa538463f8e9990192a41e75c614e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.3
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250506005352-78cd7a343bde
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.0
+    versionCode: 791
+    commit: a4e307aff0945116293fa37394ab3a5265292638
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.0
+    versionCode: 792
+    commit: a4e307aff0945116293fa37394ab3a5265292638
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.0
+    versionCode: 793
+    commit: a4e307aff0945116293fa37394ab3a5265292638
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.0
+    versionCode: 794
+    commit: a4e307aff0945116293fa37394ab3a5265292638
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.1
+    versionCode: 801
+    commit: f3c09133530a321029352316bc888c3379750fd7
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=1
+      - abiTarget=armeabi-v7a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.1
+    versionCode: 802
+    commit: f3c09133530a321029352316bc888c3379750fd7
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/arm64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=2
+      - abiTarget=arm64-v8a
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.1
+    versionCode: 803
+    commit: f3c09133530a321029352316bc888c3379750fd7
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/386
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=3
+      - abiTarget=x86
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 10.9.1
+    versionCode: 804
+    commit: f3c09133530a321029352316bc888c3379750fd7
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../XrayCore
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - go mod download
+      - gomobile init
+      - gomobile bind -o "../app/libs/XrayCore.aar" -androidapi 26 -target android/amd64
+        -ldflags="-buildid=" -trimpath
+      - popd
+    ndk: 27.1.12297006
+    gradleprops:
+      - abiId=4
+      - abiTarget=x86_64
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 1658411ab97758c6ce0001befcdeb29c2219ee19d80501f8061bb008d79d0360
 
 AutoUpdateMode: Version
@@ -5092,6 +7433,6 @@ VercodeOperation:
   - '%c + 2'
   - '%c + 3'
   - '%c + 4'
-UpdateCheckData: app/versionCode.txt|(\d+)|app/build.gradle|versionName = "([\d.]+)"
-CurrentVersion: 9.0.0
-CurrentVersionCode: 604
+UpdateCheckData: app/versionCode.txt|(\d+)|app/build.gradle.kts|versionName = "([\d.]+)"
+CurrentVersion: 10.9.1
+CurrentVersionCode: 804

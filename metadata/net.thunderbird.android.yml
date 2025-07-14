@@ -1,5 +1,6 @@
 Categories:
   - Connectivity
+  - Email
   - Internet
   - Writing
 License: Apache-2.0
@@ -65,6 +66,54 @@ Builds:
     scandelete:
       - build-plugin
 
+  - versionName: '9.0'
+    versionCode: 9
+    commit: 53354f04f64bb72b6fac9d8367b14ca8b1cec178
+    gradle:
+      - foss
+    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    rm:
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e '/maven.mozilla.org\/maven2/d' -e '/glean/d' -e '/app-k9mail/d'
+        -e '/googleplay/d' settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' app-thunderbird/build.gradle.kts
+      - gradle clean
+    scandelete:
+      - build-plugin
+
+  - versionName: '10.0'
+    versionCode: 10
+    commit: ac76f6eed67610c5993b741afb543132390f3cb5
+    gradle:
+      - foss
+    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    rm:
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e '/maven.mozilla.org\/maven2/d' -e '/glean/d' -e '/app-k9mail/d'
+        -e '/googleplay/d' settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' app-thunderbird/build.gradle.kts
+      - gradle clean
+    scandelete:
+      - build-plugin
+
+  - versionName: '10.1'
+    versionCode: 11
+    commit: 8a4fefcc1b8511f415708d507bf86c5cae58ad2a
+    gradle:
+      - foss
+    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    rm:
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e '/maven.mozilla.org\/maven2/d' -e '/glean/d' -e '/app-k9mail/d'
+        -e '/googleplay/d' settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' app-thunderbird/build.gradle.kts
+      - gradle clean
+    scandelete:
+      - build-plugin
+
 AllowedAPKSigningKeys: b6524779b3dbbc5ac17a5ac271ddb29dcfbf723578c238e03c3c217811356dd1
 
 MaintainerNotes: |-
@@ -86,5 +135,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '8.2'
-CurrentVersionCode: 8
+CurrentVersion: '10.1'
+CurrentVersionCode: 11

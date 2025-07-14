@@ -237,10 +237,326 @@ Builds:
         export localhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1);
         [[ $localhash == $upstreamhash ]] && break ; popd; rm -fr local; done
 
+  - versionName: 2.5.17
+    versionCode: 30517
+    commit: 2.5.17
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=6
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    output: build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    build:
+      - mkdir upstream
+      - pushd upstream
+      - curl -L -o upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk
+      - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
+      - popd
+      - for i in {1..10}; do gradle clean assembleFdroidRelease; mkdir local; pushd
+        local; unzip -q ../build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk;
+        export localhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1);
+        [[ $localhash == $upstreamhash ]] && break ; popd; rm -fr local; done
+
+  - versionName: 2.5.19
+    versionCode: 30519
+    commit: e0cedc5e010a22e4def649575afc004a677e1a4d
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+
+  - versionName: 2.5.20
+    versionCode: 30520
+    commit: 53c240198cad7e6d41e7036317b757e5cd5f8854
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.5.21
+    versionCode: 30521
+    commit: ba1416e95a91979e421ef2b2face5382a412136f
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.5.22
+    versionCode: 30522
+    commit: d3cfc461483b46d0d96787ac7e2af89a1f89702c
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.5.24
+    versionCode: 30524
+    commit: 0f9f00843f29a29c3282440aefbe0dc9da66dc3f
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.5.25
+    versionCode: 30525
+    commit: 6bb282f9013b18ad82e3068c836fe566283cddfa
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.6.3
+    versionCode: 30603
+    commit: 832679838354ac8b620365b72b0f77456a84d3dd
+    subdir: app
+    submodules: true
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/(useCrashlytics)/,+3d' -e '/firebase/d' -e '/gms/d' ../build.gradle
+      build.gradle
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleFdroidRelease; done
+
+  - versionName: 2.6.22
+    versionCode: 30622
+    commit: 15ba57bb3acd47b98baa52df89169801efceebef
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/USE_CRASHLYTICS)/,+4d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
+  - versionName: 2.6.24
+    versionCode: 30624
+    commit: ee03213a3a323f27bfec01aacf2c38a2a0c80204
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/USE_CRASHLYTICS)/,+4d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
+  - versionName: 2.6.25
+    versionCode: 30625
+    commit: d507161bde00271b0f7ffc6cf14a6e5556a8befd
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/USE_CRASHLYTICS)/,+4d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
+  - versionName: 2.6.28
+    versionCode: 30628
+    commit: ec74bbfe19277142390050b081f1e3d672392793
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/foojay-resolver/d' -e '/toolchainManagement/,/^}/d' ../settings.gradle.kts
+      - sed -i -e '/firebase.crashlytics/d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
+  - versionName: 2.6.29
+    versionCode: 30629
+    commit: c3483db7f3dd2e794db6e91881188d3a5307c7a7
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/foojay-resolver/d' -e '/toolchainManagement/,/^}/d' ../settings.gradle.kts
+      - sed -i -e '/firebase.crashlytics/d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
+  - versionName: 2.6.30
+    versionCode: 30630
+    commit: 1368cf4a14fa9110ebb26bc1fc0151a918b46e68
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/foojay-resolver/d' -e '/UnstableApiUsage/,/^}/d' ../settings.gradle.kts
+      - sed -i -e '/firebase.crashlytics/d' build.gradle.kts ../build.gradle.kts
+    postbuild:
+      - curl -Lo upstream.apk https://github.com/meshtastic/Meshtastic-Android/releases/download/$$VERSION$$/fdroidRelease-$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
+        0-3 gradle clean assembleFdroidRelease; done
+
 AllowedAPKSigningKeys: a93b456568c175db0800a09f06777f892d812432adb8a3df73bc3e7f06c80c6d
 
-AutoUpdateMode: Version %v
-UpdateCheckMode: HTTP
-UpdateCheckData: https://github.com/meshtastic/Meshtastic-Android/releases/latest/download/version_info.txt|versionCode=(\d+)|.|versionName=(.+)
-CurrentVersion: 2.5.16
-CurrentVersionCode: 30516
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: buildSrc/src/main/kotlin/Configs.kt|VERSION_CODE\s=\s(\d+)|.|VERSION_NAME\s=\s"(.*)"
+CurrentVersion: 2.6.30
+CurrentVersionCode: 30630

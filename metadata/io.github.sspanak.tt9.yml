@@ -1,4 +1,5 @@
 Categories:
+  - Keyboard & IME
   - System
 License: Apache-2.0
 AuthorName: Dimo Karaivanov
@@ -122,10 +123,67 @@ Builds:
     gradle:
       - lite
 
+  - versionName: '44.0'
+    versionCode: 859
+    commit: f9e020ee8ea6b3ea64a528a0fe59c3c254d7a8fa
+    subdir: app
+    gradle:
+      - lite
+
+  - versionName: '45.0'
+    versionCode: 923
+    commit: 2229ddbc9d4faf1b2760e347d8b624b079395524
+    subdir: app
+    gradle:
+      - lite
+
+  - versionName: '46.0'
+    versionCode: 953
+    commit: ef32d5adaa8acddb3478911bb89026087c5b2876
+    subdir: app
+    gradle:
+      - lite
+
+  - versionName: '47.0'
+    versionCode: 977
+    commit: 04abac1bb52c7ba6449b58ee6bad61b486fadded
+    subdir: app
+    gradle:
+      - lite
+
+  - versionName: '48.0'
+    versionCode: 988
+    commit: af55eff8109b9720a3123a1348fd15a20bffd9aa
+    subdir: app
+    gradle:
+      - lite
+
+  - versionName: '49.0'
+    versionCode: 1027
+    commit: 75ebfc1f3bd5fb7301e9bde18801dc05d6191881
+    subdir: app
+    gradle:
+      - lite
+    prebuild:
+      - sed -i -e 's/Xmx6192m/Xmx9g/' ../gradle.properties
+      - gradle buildDictionaryDownloads || gradle buildDictionaryDownloads
+      - sed -i -e '/tasks.register("buildDictionaryDownloads")/,/^}/s/^\s.*//' build.gradle
+
+  - versionName: '50.0'
+    versionCode: 1146
+    commit: 2339aec1b6fb126b5c9a8b755c8532696a5efddf
+    subdir: app
+    gradle:
+      - lite
+    prebuild:
+      - sed -i -e 's/Xmx6192m/Xmx9g/' ../gradle.properties
+      - gradle buildDictionaryDownloads || gradle buildDictionaryDownloads
+      - sed -i -e '/tasks.register("buildDictionaryDownloads")/,/^}/s/^\s.*//' build.gradle
+
 AllowedAPKSigningKeys: 57f09ab8dcfedbb63fa309362fedbbb0d8026cada8b2dc78ff00057f98c6020b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[a-z0-9.]*$
 UpdateCheckData: app/src/main/AndroidManifest.xml|versionCode="(\d+)"|.|versionName="(.+)"
-CurrentVersion: '43.0'
-CurrentVersionCode: 845
+CurrentVersion: '50.0'
+CurrentVersionCode: 1146
