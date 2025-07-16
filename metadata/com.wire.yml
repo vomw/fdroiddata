@@ -2,7 +2,9 @@ AntiFeatures:
   - NonFreeAssets
 Categories:
   - Internet
+  - Messaging
   - Phone & SMS
+  - Voice & Video Chat
 License: GPL-3.0-or-later
 SourceCode: https://github.com/wireapp/wire-android
 IssueTracker: https://github.com/wireapp/wire/issues
@@ -144,8 +146,43 @@ Builds:
     gradleprops:
       - isFDroidRelease=true
 
+  - versionName: 4.12.2
+    versionCode: 100089904
+    commit: v4.12.2
+    subdir: app
+    submodules: true
+    gradle:
+      - fdroid
+    prebuild:
+      - cd ..
+      - sed -i -e '/googleGms/d' build.gradle.kts
+      - 'printf "VersionCode: $$VERCODE$$\nVersionName: $$VERSION$$\n" > app/version.txt'
+    scandelete:
+      - build-logic/plugins/build
+    ndk: r25b
+    gradleprops:
+      - isFDroidRelease=true
+
+  - versionName: 4.13.0
+    versionCode: 100095358
+    commit: v4.13.0
+    subdir: app
+    submodules: true
+    gradle:
+      - fdroid
+    prebuild:
+      - cd ..
+      - sed -i -e '/googleGms/d' build.gradle.kts
+      - 'printf "VersionCode: $$VERCODE$$\nVersionName: $$VERSION$$\n" > app/version.txt'
+      - sed -i -e '/foojay/d' kalium/settings.gradle.kts
+    scandelete:
+      - build-logic/plugins/build
+    ndk: r25b
+    gradleprops:
+      - isFDroidRelease=true
+
 AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: https://github.com/wireapp/wire-android/releases/latest/download/version.txt|VersionCode:\s(\d+)|.|VersionName:\s(.*)
-CurrentVersion: 4.12.1
-CurrentVersionCode: 100087596
+CurrentVersion: 4.13.0
+CurrentVersionCode: 100095358

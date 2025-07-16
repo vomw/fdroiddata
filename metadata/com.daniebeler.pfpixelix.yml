@@ -1,21 +1,22 @@
 Categories:
   - Connectivity
+  - Social Network
 License: GPL-3.0-only
 AuthorName: Daniel Hiebeler
 AuthorEmail: hiebeler.daniel@gmail.com
 AuthorWebSite: https://daniebeler.com
-SourceCode: https://github.com/daniebeler/pixelix
-IssueTracker: https://github.com/daniebeler/pixelix/issues
+SourceCode: https://github.com/ghostbyte-dev/pixelix
+IssueTracker: https://github.com/ghostbyte-dev/pixelix/issues
 Translation: https://crowdin.com/project/pixelix
-Changelog: https://github.com/daniebeler/pixelix/releases
+Changelog: https://github.com/ghostbyte-dev/pixelix/releases
 Donate: https://buymeacoffee.com/daniebeler
 Liberapay: pixelix
 
 AutoName: Pixelix
 
 RepoType: git
-Repo: https://github.com/daniebeler/pixelix.git
-Binaries: https://github.com/daniebeler/pixelix/releases/download/v%v/pixelix_v%v.apk
+Repo: https://github.com/ghostbyte-dev/pixelix.git
+Binaries: https://github.com/ghostbyte-dev/pixelix/releases/download/v%v/pixelix_v%v.apk
 
 Builds:
   - versionName: 3.1.0
@@ -101,9 +102,37 @@ Builds:
       - yes
     prebuild: sed -i -e '/jetbrains/d' ../settings.gradle.kts
 
+  - versionName: 4.1.0
+    versionCode: 31
+    commit: 29a3f1a9b14a0b3536d9807bdcb1a82421c3bc6c
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/jetbrains/d' ../settings.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 4.1.1
+    versionCode: 32
+    commit: 64b87f98c0a63acbd66f1f2a43f6403a75e3d1a2
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/jetbrains/d' ../settings.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 6a23d7a34702add1c069faf381b60f2049e238537ce76c6dcc89b7c636f59228
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 4.0.3
-CurrentVersionCode: 30
+CurrentVersion: 4.1.1
+CurrentVersionCode: 32

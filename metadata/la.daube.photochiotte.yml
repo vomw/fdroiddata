@@ -1,5 +1,7 @@
 Categories:
+  - Gallery
   - Multimedia
+  - Wallpaper
 License: GPL-3.0-only
 AuthorEmail: fnepcbxayn@tutanota.com
 SourceCode: https://codeberg.org/LaDaube/PhotoChiotte
@@ -1127,7 +1129,70 @@ Builds:
         .
     ndk: r28
 
+  - versionName: '1.63'
+    versionCode: 64
+    commit: 07addf5b44e6eb0a0713c5de6fb6e93f841295c7
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild: rm -vf ../*.bin
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28b
+
+  - versionName: '1.64'
+    versionCode: 65
+    commit: 0c07f7670b63409b5e4d51c257389f968ef7dd3a
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild: rm -vf ../*.bin
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28b
+
+  - versionName: '1.65'
+    versionCode: 66
+    commit: de69e6b543fd7f3683d0734f53790d02849a2663
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild: rm -vf ../*.bin
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28b
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.62'
-CurrentVersionCode: 63
+CurrentVersion: '1.65'
+CurrentVersionCode: 66

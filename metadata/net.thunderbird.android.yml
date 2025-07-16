@@ -1,5 +1,6 @@
 Categories:
   - Connectivity
+  - Email
   - Internet
   - Writing
 License: Apache-2.0
@@ -81,6 +82,54 @@ Builds:
     scandelete:
       - build-plugin
 
+  - versionName: '10.0'
+    versionCode: 10
+    commit: ac76f6eed67610c5993b741afb543132390f3cb5
+    gradle:
+      - foss
+    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    rm:
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e '/maven.mozilla.org\/maven2/d' -e '/glean/d' -e '/app-k9mail/d'
+        -e '/googleplay/d' settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' app-thunderbird/build.gradle.kts
+      - gradle clean
+    scandelete:
+      - build-plugin
+
+  - versionName: '10.1'
+    versionCode: 11
+    commit: 8a4fefcc1b8511f415708d507bf86c5cae58ad2a
+    gradle:
+      - foss
+    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    rm:
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e '/maven.mozilla.org\/maven2/d' -e '/glean/d' -e '/app-k9mail/d'
+        -e '/googleplay/d' settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' app-thunderbird/build.gradle.kts
+      - gradle clean
+    scandelete:
+      - build-plugin
+
+  - versionName: '11.0'
+    versionCode: 12
+    commit: 37ce0becae8dceaae7aa9ce0fa8d2dbbed1b86ed
+    subdir: app-thunderbird
+    gradle:
+      - foss
+    rm:
+      - app-k9mail
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
 AllowedAPKSigningKeys: b6524779b3dbbc5ac17a5ac271ddb29dcfbf723578c238e03c3c217811356dd1
 
 MaintainerNotes: |-
@@ -102,5 +151,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '9.0'
-CurrentVersionCode: 9
+CurrentVersion: '11.0'
+CurrentVersionCode: 12

@@ -1,4 +1,5 @@
 Categories:
+  - Recipe Manager
   - Science & Education
   - Sports & Health
 License: Apache-2.0
@@ -199,9 +200,65 @@ Builds:
       - full
     prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
 
+  - versionName: 2.9.7
+    versionCode: 34
+    commit: a19f4e7f18577a991a7c33d5891c4a466b8c93b9
+    subdir: app
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.10.1
+    versionCode: 36
+    commit: 33db4097f4c67464ccdde9af1521004be034999b
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.10.2
+    versionCode: 37
+    commit: 97f4ff63a87ff48995146c2c728879a3d1111715
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - full
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/relativePath/s|app/||' build.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: a23db5fd8aab1b88051125e127600577e3dcbc80ff73ddfc4a8d245b1765c13f
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.9.4
-CurrentVersionCode: 31
+CurrentVersion: 2.10.2
+CurrentVersionCode: 37

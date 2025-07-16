@@ -8,7 +8,7 @@ AuthorName: SchweGELBin
 AuthorEmail: schwegelbin@gmail.com
 SourceCode: https://github.com/SchweGELBin/OpenBible2
 IssueTracker: https://github.com/SchweGELBin/OpenBible2/issues
-Changelog: https://github.com/SchweGELBin/OpenBible2/blob/HEAD/CHANGELOG.md
+Changelog: https://github.com/SchweGELBin/OpenBible2/blob/HEAD/docs/CHANGELOG.md
 
 AutoName: OpenBible
 
@@ -102,9 +102,29 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 1.8.0
+    versionCode: 29
+    commit: 9152fc0321ab041118f026d4f465919894851723
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.8.1
+    versionCode: 30
+    commit: 2dcecbc148d217ffb80dd0cac07e2ba02e9c1b3f
+    subdir: app
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: cbf40802880b94df64c0467d8fbba69572bf4b5fd75e28e9c0c77992f4237931
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.7.0
-CurrentVersionCode: 28
+CurrentVersion: 1.8.1
+CurrentVersionCode: 30
