@@ -17,14 +17,15 @@ Builds:
     commit: e7d0c23e9dd33ba08ea61b17b7a8ec8ae063c3ae
     subdir: project/android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y -t trixie npm
     gradle:
       - yes
     prebuild:
       - cd ../..
       - npm install --build-from-source
-      - npm run build 
+      - npm run build
       - npx cap sync android
     scandelete:
       - node_modules
