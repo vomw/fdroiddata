@@ -1,0 +1,52 @@
+Categories:
+  - Messaging
+  - Voice & Video Chat
+License: AGPL-3.0-only
+AuthorName: Ilias Koukovinis
+AuthorEmail: ilias.koukovinis@gmail.com
+SourceCode: https://github.com/Koukobin/Ermis
+IssueTracker: https://github.com/Koukobin/Ermis/issues
+
+AutoName: Ermis
+
+RepoType: git
+Repo: https://github.com/Koukobin/Ermis.git
+
+Builds:
+  - versionName: 0.101.4
+    versionCode: 6
+    commit: 561f1a710dc45326c8c3bf42e2bd882b36e2406f
+    subdir: ErmisClient/Mobile/ermis_client
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ErmisClient/Desktop/
+      - ErmisServer
+      - ErmisClient/Mobile/ermis_client/ios
+      - ErmisClient/Mobile/ermis_client/linux
+      - ErmisClient/Mobile/ermis_client/macos
+      - ErmisClient/Mobile/ermis_client/web
+      - ErmisClient/Mobile/ermis_client/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\s'(.*)'/\1/p" ../../../.github/workflows/build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - find $$flutter$$ -type f -not -path "*/.git/*" -print0 | xargs -0 sed -i $'s/\r$//'
+      - find . -type f -regex ".*\.\(ttf\|zip\|so\|bin\)$" -delete
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - ErmisClient/Mobile/ermis_client/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/dart run flutter_launcher_icons
+      - $$flutter$$/bin/dart run intl_utils:generate
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^client-mobile-v
+UpdateCheckData: ErmisClient/Mobile/ermis_client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.101.4
+CurrentVersionCode: 6
