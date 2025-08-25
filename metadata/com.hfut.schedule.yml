@@ -902,9 +902,9 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'assets/stu.json'
 
-  - versionName: 4.17.3
-    versionCode: 2042
-    commit: 296a569d0907c2f00fd763d5a095ec41c5f85e83
+  - versionName: 4.17.4
+    versionCode: 2062
+    commit: 79910306b47b82a3f8b57d06aeac5e9e0677b083
     subdir: app
     gradle:
       - yes
@@ -919,9 +919,9 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'assets/stu.json'
 
-  - versionName: 4.17.3
-    versionCode: 2044
-    commit: 296a569d0907c2f00fd763d5a095ec41c5f85e83
+  - versionName: 4.17.4
+    versionCode: 2064
+    commit: 79910306b47b82a3f8b57d06aeac5e9e0677b083
     subdir: app
     gradle:
       - yes
@@ -936,9 +936,9 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'assets/stu.json'
 
-  - versionName: 4.17.3.1
-    versionCode: 2052
-    commit: c889145cdfdacc3079f04566fd66a5fc8ac448a0
+  - versionName: 4.17.5.1
+    versionCode: 2082
+    commit: 18da2f067c771aceeda7a23540eafd2e4ae506ab
     subdir: app
     gradle:
       - yes
@@ -953,9 +953,43 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'assets/stu.json'
 
-  - versionName: 4.17.3.1
-    versionCode: 2054
-    commit: c889145cdfdacc3079f04566fd66a5fc8ac448a0
+  - versionName: 4.17.5.1
+    versionCode: 2084
+    commit: 18da2f067c771aceeda7a23540eafd2e4ae506ab
+    subdir: app
+    gradle:
+      - yes
+    binary: https://github.com/Chiu-xaH/HFUT-Schedule/releases/download/v%v/%v-x86_64.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e "s/include 'arm64-v8a'.*/include 'x86_64'/" -e '/universalApk/s/true/false/'
+        build.gradle
+      - sed -i -e '/aliyun/d' ../build.gradle
+      - sed -i -e '/nexus/,+1d' ../settings.gradle
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'assets/stu.json'
+
+  - versionName: 4.17.5.3
+    versionCode: 2102
+    commit: 13828a02bc53f4043394c056d89c499121580533
+    subdir: app
+    gradle:
+      - yes
+    binary: https://github.com/Chiu-xaH/HFUT-Schedule/releases/download/v%v/%v-arm64-v8a.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e "s/include 'arm64-v8a'.*/include 'arm64-v8a'/" -e '/universalApk/s/true/false/'
+        build.gradle
+      - sed -i -e '/aliyun/d' ../build.gradle
+      - sed -i -e '/nexus/,+1d' ../settings.gradle
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'assets/stu.json'
+
+  - versionName: 4.17.5.3
+    versionCode: 2104
+    commit: 13828a02bc53f4043394c056d89c499121580533
     subdir: app
     gradle:
       - yes
@@ -977,5 +1011,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 4
-CurrentVersion: 4.17.3.1
-CurrentVersionCode: 2054
+CurrentVersion: 4.17.5.3
+CurrentVersionCode: 2104
