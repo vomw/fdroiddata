@@ -1,0 +1,70 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+AuthorName: sandstranger
+AuthorEmail: sandstranger@gmail.com
+WebSite: https://github.com/Erick194
+SourceCode: https://github.com/sandstranger/doom-wolf-rpg-android-port
+IssueTracker: https://github.com/sandstranger/doom-wolf-rpg-android-port/issues
+Changelog: https://github.com/sandstranger/doom-wolf-rpg-android-port/releases
+
+AutoName: Doom & Wolfenstein RPG
+
+RepoType: git
+Repo: https://github.com/sandstranger/doom-wolf-rpg-android-port.git
+
+Builds:
+  - versionName: 1.0.3.1
+    versionCode: 5
+    commit: c7a05d36c56efeb3bbe783e058d71668316d0f78
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    prebuild: sdkmanager 'cmake;4.0.2'
+    scandelete:
+      - gl4es
+      - sdl2
+    ndk: r28b
+
+  - versionName: 1.0.4.4
+    versionCode: 10
+    commit: 5beef880d34c8fda1d523e615795839230e8e97f
+    timeout: 60000
+    subdir: app
+    submodules: true
+    gradle:
+      - fdroid
+    prebuild: sdkmanager 'cmake;4.0.2'
+    scanignore:
+      - app/src/main/assets/game_files/opus-ct2-en-ru
+    scandelete:
+      - gl4es
+      - sdl2
+      - CTranslate2
+    ndk: r28c
+
+  - versionName: 1.0.4.5
+    versionCode: 11
+    commit: b6fb4f87b98845a9afa032971dc708e63dc1c7b8
+    timeout: 60000
+    subdir: app
+    submodules: true
+    gradle:
+      - fdroid
+    prebuild:
+      - sdkmanager 'cmake;4.0.2'
+      - sed -i -e 's/8.12.2/8.11.1/' ../gradle/libs.versions.toml
+    scanignore:
+      - app/src/main/assets/game_files/opus-ct2-en-ru
+    scandelete:
+      - gl4es
+      - sdl2
+      - CTranslate2
+      - sentencepiece/src/main/jni
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.4.5
+CurrentVersionCode: 11

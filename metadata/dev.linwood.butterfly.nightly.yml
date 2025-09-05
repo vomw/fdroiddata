@@ -1,4 +1,6 @@
 Categories:
+  - Draw
+  - Note
   - Writing
 License: AGPL-3.0-only
 AuthorName: Linwood
@@ -2869,8 +2871,417 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor nightly
 
+  - versionName: 2.3.0-beta.4
+    versionCode: 132
+    commit: e227c09912dcdb796b82f075cbb98bbe86328752
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.0-rc.0
+    versionCode: 133
+    commit: 2edabe70bda43f6c4bb41314865fafb130ce86d9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.0-rc.1
+    versionCode: 134
+    commit: 405d0346cf5278118afae7154a181ef96e546f34
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.0
+    versionCode: 135
+    commit: 877cb94abae6788821fede980e0a70d586817750
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm $$flutter$$/engine/src/.gn
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.1-rc.0
+    versionCode: 136
+    commit: e011e7d0e3f13575cee8fb58edad463096722a90
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.1-rc.1
+    versionCode: 137
+    commit: e3cb1f1e1bd40e66879c3b802eedd9aa642438f5
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.1
+    versionCode: 138
+    commit: f08b1debcd9900c0b6cf81a1d9e2b3502aaae440
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.4.0-beta.0
+    versionCode: 139
+    commit: 6f346838612202f91a32bcee2d6444e5fd1505a1
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.2
+    versionCode: 140
+    commit: cebc1d93ee051367c8d91fc942ae1e75e140f16c
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.4.0-beta.1
+    versionCode: 141
+    commit: 044693520f077154b4dcfae05de94b9895825e4d
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.3
+    versionCode: 142
+    commit: 1b6d7207fdd880132df4a3b6f5959dfdff9db053
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.4.0-beta.2
+    versionCode: 143
+    commit: c93b8cd7011c696428585f1f22ee78c7e095bbb9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.3.4
+    versionCode: 144
+    commit: 260cb90b86ab88bc31d2095e96bc71c5c389b68b
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.4.0-beta.3
+    versionCode: 145
+    commit: 1d1426e4b35065b7d87bb256780d1af4ab5707ce
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/8.12.0/8.11.1/' android/settings.gradle.kts
+      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{{file_selector,path_provider,shared_preferences,url_launcher}_android,camera_android_camerax,flutter_plugin_android_lifecycle}-*/android/build.gradle
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
+  - versionName: 2.4.0-rc.0
+    versionCode: 146
+    commit: 4850d976e944cb23bcbdffc9eb2e31cb66640a78
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-nightly-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sed -i -e '/signingConfig =/,+4d' android/app/build.gradle.kts
+      - flutterVersion=$(sed -n -E "s/^  flutter:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/8.12.2/8.11.1/' android/settings.gradle.kts
+      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{{file_selector,path_provider,shared_preferences,url_launcher}_android,camera_android_camerax,flutter_plugin_android_lifecycle}-*/android/build.gradle
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor nightly
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v.+$
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.3.0-beta.3
-CurrentVersionCode: 131
+CurrentVersion: 2.4.0-rc.0
+CurrentVersionCode: 146
