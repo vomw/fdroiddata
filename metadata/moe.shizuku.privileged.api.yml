@@ -18,11 +18,19 @@ Builds:
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
     gradle:
       - yes
     prebuild: sed -i -e '/signing.gradle/d' build.gradle
     scanignore:
       - shell/src/main/java/rikka/shizuku/shell/ShizukuShellLoader.java
+    build:
+      - export repo=/home/runner/work/Shizuku
+      - mkdir -p $repo
+      - cd ..
+      - mv moe.shizuku.privileged.api $repo/Shizuku
+      - pushd $repo/Shizuku
 
 AllowedAPKSigningKeys: 268b5590e868fb08bae7e0ac413564cd1ff88f5ccff74af9dbd0dc918e30db30
 
