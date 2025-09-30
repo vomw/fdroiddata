@@ -13,6 +13,11 @@ Builds:
     commit: 2650830c5b099ae0dd34fedf614d4f592ca05d65
     subdir: manager
     submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
     gradle:
       - yes
     prebuild: sed -i -e '/signing.gradle/d' build.gradle
