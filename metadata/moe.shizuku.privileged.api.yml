@@ -20,17 +20,17 @@ Builds:
       - update-alternatives --auto java
       - mkdir -p /home/runner
       - chown vagrant /home/runner
-    gradle:
-      - yes
+    output: /home/runner/work/Shizuku/Shizuku/manager/build/outputs/apk/release/*.apk
     prebuild: sed -i -e '/signing.gradle/d' build.gradle
     scanignore:
       - shell/src/main/java/rikka/shizuku/shell/ShizukuShellLoader.java
     build:
       - export repo=/home/runner/work/Shizuku
       - mkdir -p $repo
-      - cd ..
+      - cd ../..
       - mv moe.shizuku.privileged.api $repo/Shizuku
-      - pushd $repo/Shizuku
+      - pushd $repo/Shizuku/manager
+      - gradle assembleRelease
 
 AllowedAPKSigningKeys: 268b5590e868fb08bae7e0ac413564cd1ff88f5ccff74af9dbd0dc918e30db30
 
