@@ -1,0 +1,39 @@
+Categories:
+  - Launcher
+  - System
+License: MIT
+AuthorName: Nethical
+AuthorEmail: aguptaq88@gmail.com
+WebSite: https://questphone.app
+SourceCode: https://github.com/QuestPhone/questphone
+IssueTracker: https://github.com/QuestPhone/questphone/issues
+
+AutoName: QuestPhone
+
+RepoType: git
+Repo: https://github.com/QuestPhone/questphone.git
+Binaries: https://github.com/QuestPhone/questphone/releases/download/%v/universal.apk
+
+Builds:
+  - versionName: 2.6.8-fdroid
+    versionCode: 27
+    commit: 65467085929032f52bc480d0e10beda26b4c7ded
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make git
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/isEnable/d' build.gradle.kts
+      - sed -i 's|commandLine("bash", "build.sh")|commandLine("./build.sh")|g' ../ai/build.gradle.kts
+    scanignore:
+      - app/src/main/res/raw
+
+AllowedAPKSigningKeys: c35601755756ecd887cf3f154d45a5b87c8dd19b6a044d411a7739e2b88c2de9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.6.8-fdroid
+CurrentVersionCode: 27
