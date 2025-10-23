@@ -27,9 +27,9 @@ RepoType: git
 Repo: https://github.com/Adithya-Jayan/MyRepertoirApp.git
 
 Builds:
-  - versionName: 3.1.5
-    versionCode: 301
-    commit: v3.1.5+3
+  - versionName: 3.1.6
+    versionCode: 401
+    commit: v3.1.6+4
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -44,7 +44,6 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -52,11 +51,11 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm
+        --target-platform=android-arm --build-number=$$VERCODE$$
 
-  - versionName: 3.1.5
-    versionCode: 302
-    commit: v3.1.5+3
+  - versionName: 3.1.6
+    versionCode: 402
+    commit: v3.1.6+4
     output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -71,7 +70,6 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -79,11 +77,11 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm64
+        --target-platform=android-arm64 --build-number=$$VERCODE$$
 
-  - versionName: 3.1.5
-    versionCode: 303
-    commit: v3.1.5+3
+  - versionName: 3.1.6
+    versionCode: 403
+    commit: v3.1.6+4
     output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -98,7 +96,6 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -106,7 +103,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-x64
+        --target-platform=android-x64 --build-number=$$VERCODE$$
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.\d+\.\d+\+\d+$
@@ -115,5 +112,5 @@ VercodeOperation:
   - 100 * %c + 2
   - 100 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 3.1.5
-CurrentVersionCode: 303
+CurrentVersion: 3.1.6
+CurrentVersionCode: 403
