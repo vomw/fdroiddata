@@ -1,0 +1,66 @@
+Categories:
+  - Multimedia
+  - Gallery
+  - Music
+License: Apache-2.0
+WebSite: https://adithyajayan.in/MyRepertoirApp/
+SourceCode: https://github.com/Adithya-Jayan/MyRepertoirApp
+IssueTracker: https://github.com/Adithya-Jayan/MyRepertoirApp/issues
+
+AuthorName: Adithya Jayan
+AuthorEmail: contact_me@adithyajayan.in
+AuthorWebSite: https://adithyajayan.in/
+
+Name: Repertoire
+AutoName: Repertoire
+
+Summary: A simple app to help musicians keep track of their repertoire, built with Flutter. It allows users to add, categorize, and manage their music lists and practice sessions along with any associated media.
+Description: |
+  Repertoire is a cross-platform application designed for musicians, dancers, magicians, or performers to help manage their repertoire (musical pieces, dance routines, or even magic tricks).
+  The app helps you keep your sheet music, notes, audio recordings, videos, links, and practice logs neatly organized for every piece in your collection.
+
+  - Create a library of your pieces/songs, with all related information attached.
+  - Save related media like recordings, links and notes in one consolidated location.
+  - Log your practice sessions. Keep in touch with stuff you learnt over time.
+  - Tag your pieces and organize your gallery into groups. Quick and easy search and filter functionality to find what you want.
+  - Various quality of life features, like thumbnails for your pieces, speed control for audio (If you want to practice slow), etc.
+  - Personalization options to make it to your liking, and automated and manual backup options so you don't lose any data.
+
+RepoType: git
+Repo: https://github.com/Adithya-Jayan/MyRepertoirApp.git
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v\d+\.\d+\.\d+\+\d+
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.1.4
+CurrentVersionCode: 1
+
+Builds:
+  - versionName: 3.1.4
+    versionCode: 1
+    commit: v3.1.4+1
+    submodules: false
+    output: build/app/outputs/flutter-apk/app-fdroid-release.apk
+    srclibs:
+      - flutter@3.35.1
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\s*'(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]' 
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi --target-platform="android-arm64"
