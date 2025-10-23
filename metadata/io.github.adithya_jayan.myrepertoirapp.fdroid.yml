@@ -44,6 +44,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -51,7 +52,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm --build-number=$$VERCODE$$
+        --target-platform=android-arm
 
   - versionName: 3.1.5
     versionCode: 302
@@ -70,6 +71,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -77,7 +79,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm64 --build-number=$$VERCODE$$
+        --target-platform=android-arm64
 
   - versionName: 3.1.5
     versionCode: 303
@@ -96,6 +98,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i "s/version: \(.*\)+.*/version: \1+$$VERCODE$$/" pubspec.yaml
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
@@ -103,7 +106,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-x64 --build-number=$$VERCODE$$
+        --target-platform=android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.\d+\.\d+\+\d+$
