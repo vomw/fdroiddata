@@ -16,9 +16,9 @@ RepoType: git
 Repo: https://github.com/Adithya-Jayan/MyRepertoirApp.git
 
 Builds:
-  - versionName: 3.1.15
-    versionCode: 1201
-    commit: v3.1.15+12
+  - versionName: 3.2.0
+    versionCode: 1013
+    commit: v3.2.0+13
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -40,11 +40,11 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm --build-number=$$VERCODE$$
+        --target-platform=android-arm --build-number=$(( $$VERCODE$$ - 1000 ))
 
-  - versionName: 3.1.15
-    versionCode: 1202
-    commit: v3.1.15+12
+  - versionName: 3.2.0
+    versionCode: 2013
+    commit: v3.2.0+13
     output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -66,11 +66,11 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-arm64 --build-number=$$VERCODE$$
+        --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ - 2000 ))
 
-  - versionName: 3.1.15
-    versionCode: 1203
-    commit: v3.1.15+12
+  - versionName: 3.2.0
+    versionCode: 4013
+    commit: v3.2.0+13
     output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
     srclibs:
       - flutter@3.35.1
@@ -92,14 +92,14 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
-        --target-platform=android-x64 --build-number=$$VERCODE$$
+        --target-platform=android-x64 --build-number=$(( $$VERCODE$$ - 4000 ))
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.\d+\.\d+\+\d+$
 VercodeOperation:
-  - 100 * %c + 1
-  - 100 * %c + 2
-  - 100 * %c + 3
+  - 1000 + %c
+  - 2000 + %c
+  - 4000 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 3.1.15
-CurrentVersionCode: 1203
+CurrentVersion: 3.2.0
+CurrentVersionCode: 13
