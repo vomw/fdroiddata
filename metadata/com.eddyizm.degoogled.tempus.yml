@@ -19,13 +19,11 @@ Builds:
     versionCode: 1
     commit: 0c3b43c5dc3d2b491911b5dc273cadaf06ad2940
     subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
-      - update-alternatives --auto java
     gradle:
       - degoogled
-
+    rm:
+      - libs/lib-decoder-ffmpeg-release.aar
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 4.0.6
