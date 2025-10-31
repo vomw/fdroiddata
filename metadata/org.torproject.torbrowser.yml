@@ -43,9 +43,9 @@ RepoType: git
 Repo: https://gitlab.torproject.org/tpo/applications/tor-browser-build.git
 
 Builds:
-  - versionName: 115.2.1-release (13.0.14)
-    versionCode: 2016015417
-    commit: tbb-13.0.14-build1
+  - versionName: 15.0 (140.4.0esr)
+    versionCode: 2016122888
+    commit: tbb-15.0-build2
     timeout: 21600
     submodules: true
     sudo:
@@ -59,9 +59,9 @@ Builds:
         python3 automake libtool zip unzip autoconf2.13 gettext-base autotools-dev
         automake autoconf libtool autopoint libssl-dev pkg-config zlib1g-dev libparallel-forkmanager-perl
         libfile-slurp-perl bzip2 xz-utils apksigner yasm wget bison gyp tcl python3-venv
-        7zip jq openjdk-11-jdk
+        7zip jq bsdiff openjdk-11-jdk libcapture-tiny-perl
     output: torbrowser/release/unsigned/*/tor-browser-qa-android-*.apk
-    binary: https://dist.torproject.org/torbrowser/13.0.14/tor-browser-android-armv7-13.0.14.apk
+    binary: https://dist.torproject.org/torbrowser/15.0/tor-browser-android-armv7-15.0.apk
     srclibs:
       - MozAppServices@v115.0
       - cbindgen@v0.26.0
@@ -86,7 +86,7 @@ Builds:
       - zstd@v1.5.5
     prebuild:
       - 'echo "tmp_dir: /tmp" > rbm.local.conf'
-      - sed -i 's/^apksigner\ sign.*/mv \$aligned_apk \$qa_apk/' projects/browser/build.android
+      - sed -i 's/^\s*apksigner\ sign.*/cp \$aligned_apk \$final_apk/' projects/browser/build.android
       - git clone $$MozAppServices$$ git_clones/application-services
       - git clone $$cbindgen$$ git_clones/cbindgen
       - git clone $$CMake$$ git_clones/cmake
@@ -112,9 +112,9 @@ Builds:
       ANDROID_NDK_HOME -u NDK USER=rbm RBM_NO_DEBUG=1 ./rbm/rbm build release --target
       no_containers --target release --target browser-android-armv7 --target torbrowser
 
-  - versionName: 115.2.1-release (13.0.14)
-    versionCode: 2016015419
-    commit: tbb-13.0.14-build1
+  - versionName: 15.0 (140.4.0esr)
+    versionCode: 2016122890
+    commit: tbb-15.0-build2
     timeout: 21600
     submodules: true
     sudo:
@@ -128,9 +128,9 @@ Builds:
         python3 automake libtool zip unzip autoconf2.13 gettext-base autotools-dev
         automake autoconf libtool autopoint libssl-dev pkg-config zlib1g-dev libparallel-forkmanager-perl
         libfile-slurp-perl bzip2 xz-utils apksigner yasm wget bison gyp tcl python3-venv
-        7zip jq openjdk-11-jdk
+        7zip jq bsdiff openjdk-11-jdk libcapture-tiny-perl
     output: torbrowser/release/unsigned/*/tor-browser-qa-android-*.apk
-    binary: https://dist.torproject.org/torbrowser/13.0.14/tor-browser-android-aarch64-13.0.14.apk
+    binary: https://dist.torproject.org/torbrowser/15.0/tor-browser-android-aarch64-15.0.apk
     srclibs:
       - MozAppServices@v115.0
       - cbindgen@v0.26.0
@@ -155,7 +155,7 @@ Builds:
       - zstd@v1.5.5
     prebuild:
       - 'echo "tmp_dir: /tmp" > rbm.local.conf'
-      - sed -i 's/^apksigner\ sign.*/mv \$aligned_apk \$qa_apk/' projects/browser/build.android
+      - sed -i 's/^\s*apksigner\ sign.*/cp \$aligned_apk \$final_apk/' projects/browser/build.android
       - git clone $$MozAppServices$$ git_clones/application-services
       - git clone $$cbindgen$$ git_clones/cbindgen
       - git clone $$CMake$$ git_clones/cmake
@@ -181,9 +181,9 @@ Builds:
       ANDROID_NDK_HOME -u NDK USER=rbm RBM_NO_DEBUG=1 ./rbm/rbm build release --target
       no_containers --target release --target browser-android-aarch64 --target torbrowser
 
-  - versionName: 115.2.1-release (13.0.14)
-    versionCode: 2016015421
-    commit: tbb-13.0.14-build1
+  - versionName: 15.0 (140.4.0esr)
+    versionCode: 2016122892
+    commit: tbb-15.0-build2
     timeout: 21600
     submodules: true
     sudo:
@@ -197,9 +197,9 @@ Builds:
         python3 automake libtool zip unzip autoconf2.13 gettext-base autotools-dev
         automake autoconf libtool autopoint libssl-dev pkg-config zlib1g-dev libparallel-forkmanager-perl
         libfile-slurp-perl bzip2 xz-utils apksigner yasm wget bison gyp tcl python3-venv
-        7zip jq openjdk-11-jdk
+        7zip jq bsdiff openjdk-11-jdk libcapture-tiny-perl
     output: torbrowser/release/unsigned/*/tor-browser-qa-android-*.apk
-    binary: https://dist.torproject.org/torbrowser/13.0.14/tor-browser-android-x86-13.0.14.apk
+    binary: https://dist.torproject.org/torbrowser/15.0/tor-browser-android-x86-15.0.apk
     srclibs:
       - MozAppServices@v115.0
       - cbindgen@v0.26.0
@@ -224,7 +224,7 @@ Builds:
       - zstd@v1.5.5
     prebuild:
       - 'echo "tmp_dir: /tmp" > rbm.local.conf'
-      - sed -i 's/^apksigner\ sign.*/mv \$aligned_apk \$qa_apk/' projects/browser/build.android
+      - sed -i 's/^\s*apksigner\ sign.*/cp \$aligned_apk \$final_apk/' projects/browser/build.android
       - git clone $$MozAppServices$$ git_clones/application-services
       - git clone $$cbindgen$$ git_clones/cbindgen
       - git clone $$CMake$$ git_clones/cmake
@@ -250,9 +250,9 @@ Builds:
       ANDROID_NDK_HOME -u NDK USER=rbm RBM_NO_DEBUG=1 ./rbm/rbm build release --target
       no_containers --target release --target browser-android-x86 --target torbrowser
 
-  - versionName: 115.2.1-release (13.0.14)
-    versionCode: 2016015423
-    commit: tbb-13.0.14-build1
+  - versionName: 15.0 (140.4.0esr)
+    versionCode: 2016122894
+    commit: tbb-15.0-build2
     timeout: 21600
     submodules: true
     sudo:
@@ -266,9 +266,9 @@ Builds:
         python3 automake libtool zip unzip autoconf2.13 gettext-base autotools-dev
         automake autoconf libtool autopoint libssl-dev pkg-config zlib1g-dev libparallel-forkmanager-perl
         libfile-slurp-perl bzip2 xz-utils apksigner yasm wget bison gyp tcl python3-venv
-        7zip jq openjdk-11-jdk
+        7zip jq bsdiff openjdk-11-jdk libcapture-tiny-perl
     output: torbrowser/release/unsigned/*/tor-browser-qa-android-*.apk
-    binary: https://dist.torproject.org/torbrowser/13.0.14/tor-browser-android-x86_64-13.0.14.apk
+    binary: https://dist.torproject.org/torbrowser/15.0/tor-browser-android-x86_64-15.0.apk
     srclibs:
       - MozAppServices@v115.0
       - cbindgen@v0.26.0
@@ -293,7 +293,7 @@ Builds:
       - zstd@v1.5.5
     prebuild:
       - 'echo "tmp_dir: /tmp" > rbm.local.conf'
-      - sed -i 's/^apksigner\ sign.*/mv \$aligned_apk \$qa_apk/' projects/browser/build.android
+      - sed -i 's/^\s*apksigner\ sign.*/cp \$aligned_apk \$final_apk/' projects/browser/build.android
       - git clone $$MozAppServices$$ git_clones/application-services
       - git clone $$cbindgen$$ git_clones/cbindgen
       - git clone $$CMake$$ git_clones/cmake
@@ -328,5 +328,5 @@ MaintainerNotes: |
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 115.2.1-release (13.0.14)
-CurrentVersionCode: 2016015423
+CurrentVersion: 15.0 (140.4.0esr)
+CurrentVersionCode: 2016122894
