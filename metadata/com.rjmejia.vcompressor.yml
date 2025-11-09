@@ -1,0 +1,40 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: Roy Mejia
+AuthorEmail: roymejia2217@gmail.com
+SourceCode: https://github.com/roymejia2217/VCompress
+IssueTracker: https://github.com/roymejia2217/VCompress/issues
+Changelog: https://github.com/roymejia2217/VCompress/releases
+
+AutoName: VCompress
+
+RepoType: git
+Repo: https://github.com/roymejia2217/VCompress.git
+
+Builds:
+  - versionName: 2.0.4
+    versionCode: 5
+    commit: d9f1ed483d408ae32203945c99731405bcf48bb0
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - git submodule update --init --recursive
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release
+    ndk: r27
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.4
+CurrentVersionCode: 5
