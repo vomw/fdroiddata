@@ -1,6 +1,8 @@
 Categories:
   - Money
+  - Wallet
 License: GPL-3.0-only
+AuthorName: Bitcoin Wallet developers
 WebSite: https://wallet.schildbach.de
 SourceCode: https://github.com/bitcoin-wallet/bitcoin-wallet
 IssueTracker: https://github.com/bitcoin-wallet/bitcoin-wallet/issues
@@ -9,31 +11,6 @@ Changelog: https://raw.githubusercontent.com/bitcoin-wallet/bitcoin-wallet/HEAD/
 Bitcoin: bc1qedxd9jssgw2fferdmjyyh6fm8jax75q7drfnd4
 
 AutoName: Bitcoin Wallet
-Description: |-
-  Have your Bitcoins always with you, in your pocket! You pay by quickly scanning
-  a QR code. As a merchant, you receive payments reliably and instantly. Bitcoin
-  Wallet is the first mobile Bitcoin app, and arguably also the most secure!
-
-  * No registration, web service or cloud needed! This wallet is de-centralized and peer to peer.
-  * Display of Bitcoin amount in BTC, mBTC and µBTC.
-  * Conversion to and from national currencies.
-  * Sending and receiving of Bitcoin via NFC, QR codes or Bitcoin URLs.
-  * Address book for regularly used Bitcoin addresses.
-  * When you're offline, you can still pay via Bluetooth.
-  * System notification for received coins.
-  * Sweeping of paper wallets (e.g. those used for cold storage).
-  * App widget for Bitcoin balance.
-
-  See the
-  <a href="https://raw.githubusercontent.com/bitcoin-wallet/bitcoin-wallet/master/wallet/README.md">README</a> for more details. Use this at your own risk and be wary that if you
-  don't make a backup of the private keys you will no longer be able to access the
-  Bitcoins contained in the wallet, should the data of the app be lost.
-
-  There's a separate version of this application that uses a test version of the
-  Bitcoin network: https://f-droid.org/packages/de.schildbach.wallet_test.
-
-  All translations are managed via the
-  <a href="https://www.transifex.com/bitcoin-wallet/bitcoin-wallet/">Transifex project</a>.
 
 RepoType: git
 Repo: https://github.com/bitcoin-wallet/bitcoin-wallet.git
@@ -2048,6 +2025,78 @@ Builds:
     gradle:
       - prod
 
+  - versionName: '10.24'
+    versionCode: 102400
+    commit: v10.24
+    subdir: wallet
+    sudo:
+      - ln -fs /usr/share/zoneinfo/CET /etc/localtime
+      - dpkg-reconfigure -f noninteractive tzdata
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y gradle disorderfs
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+    init:
+      - rm /home/vagrant/fdroidserver/gradlew-fdroid
+      - ln -s /usr/bin/gradle /home/vagrant/fdroidserver/gradlew-fdroid
+      - cd ../..
+      - mv de.schildbach.wallet de.schildbach.wallet_underlying
+      - mkdir de.schildbach.wallet
+      - disorderfs --sort-dirents=yes --reverse-dirents=no de.schildbach.wallet_underlying
+        de.schildbach.wallet
+      - cd de.schildbach.wallet/wallet
+    gradle:
+      - prod
+
+  - versionName: '10.25'
+    versionCode: 102500
+    commit: v10.25
+    subdir: wallet
+    sudo:
+      - ln -fs /usr/share/zoneinfo/CET /etc/localtime
+      - dpkg-reconfigure -f noninteractive tzdata
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y gradle disorderfs
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+    init:
+      - rm /home/vagrant/fdroidserver/gradlew-fdroid
+      - ln -s /usr/bin/gradle /home/vagrant/fdroidserver/gradlew-fdroid
+      - cd ../..
+      - mv de.schildbach.wallet de.schildbach.wallet_underlying
+      - mkdir de.schildbach.wallet
+      - disorderfs --sort-dirents=yes --reverse-dirents=no de.schildbach.wallet_underlying
+        de.schildbach.wallet
+      - cd de.schildbach.wallet/wallet
+    gradle:
+      - prod
+
+  - versionName: '10.26'
+    versionCode: 102600
+    commit: v10.26
+    subdir: wallet
+    sudo:
+      - ln -fs /usr/share/zoneinfo/CET /etc/localtime
+      - dpkg-reconfigure -f noninteractive tzdata
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y gradle disorderfs
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+    init:
+      - rm /home/vagrant/fdroidserver/gradlew-fdroid
+      - ln -s /usr/bin/gradle /home/vagrant/fdroidserver/gradlew-fdroid
+      - cd ../..
+      - mv de.schildbach.wallet de.schildbach.wallet_underlying
+      - mkdir de.schildbach.wallet
+      - disorderfs --sort-dirents=yes --reverse-dirents=no de.schildbach.wallet_underlying
+        de.schildbach.wallet
+      - cd de.schildbach.wallet/wallet
+    gradle:
+      - prod
+
 AllowedAPKSigningKeys:
   - bcb4b93636bb10c7ddaf61aa9604ff795dfdb05fad4d9412b335682f0b612e32
   - 58dcd8a0edf2a590683ba022d22a8dca5659aabf4728741a5c07af738d53db38
@@ -2059,5 +2108,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '10.21'
-CurrentVersionCode: 102100
+CurrentVersion: '10.26'
+CurrentVersionCode: 102600

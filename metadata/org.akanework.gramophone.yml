@@ -1,18 +1,19 @@
 Categories:
+  - Local Media Player
   - Multimedia
 License: GPL-3.0-or-later
-AuthorName: AkaneTan, nift4
+AuthorName: nift4
 AuthorEmail: nift4dev@gmail.com
-SourceCode: https://github.com/AkaneTan/Gramophone
-IssueTracker: https://github.com/AkaneTan/Gramophone/issues
+SourceCode: https://github.com/FoedusProgramme/Gramophone
+IssueTracker: https://github.com/FoedusProgramme/Gramophone/issues
 Translation: https://hosted.weblate.org/engage/gramophone/
-Changelog: https://github.com/AkaneTan/Gramophone/releases
+Changelog: https://github.com/FoedusProgramme/Gramophone/releases
 
 AutoName: Gramophone
 
 RepoType: git
-Repo: https://github.com/AkaneTan/Gramophone.git
-Binaries: https://github.com/AkaneTan/Gramophone/releases/download/%v/Gramophone-%v-release.apk
+Repo: https://github.com/FoedusProgramme/Gramophone.git
+Binaries: https://github.com/FoedusProgramme/Gramophone/releases/download/%v/Gramophone-%v-release.apk
 
 Builds:
   - versionName: 1.0.4.1
@@ -121,9 +122,44 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
       'res/M7.json'
 
+  - versionName: 1.0.16.1
+    versionCode: 19
+    commit: 3fa245f24b684c1f56d9115a6d93da975c78fb8e
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: echo 'releaseType=Release' > ../package.properties
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'res/M7.json'
+
+  - versionName: 1.0.17
+    versionCode: 20
+    commit: ea0e38cd64cd901495d17701d9405555baa30643
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - echo 'releaseType=Release' > ../package.properties
+      - sed -i -e '/afterEvaluate {/,$d' ../media3/publish.gradle
+    scandelete:
+      - media3
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'res/M7.json'
+
 AllowedAPKSigningKeys: f451197ad7b80bd1bc981ba38a2c49d471856fb38bcc333676d6e8f8f3ce5d6e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.15
-CurrentVersionCode: 17
+CurrentVersion: 1.0.17
+CurrentVersionCode: 20

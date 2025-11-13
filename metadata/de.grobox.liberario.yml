@@ -3,6 +3,7 @@ AntiFeatures:
     en-US: Uses the data of various local public transport agencies
 Categories:
   - Navigation
+  - Public Transport
 License: GPL-3.0-or-later
 AuthorName: Torsten Grote
 WebSite: https://transportr.app/?utm_source=fdroid
@@ -52,30 +53,6 @@ Builds:
     rm:
       - app/libs/gradle-witness.jar
     prebuild:
-      - pushd $$gradlewitnessakwizgran$$
-      - gradle build
-      - popd
-      - mv $$gradlewitnessakwizgran$$/build/libs/gradlewitnessakwizgran.jar libs/gradle-witness.jar
-    scanignore:
-      - app/libs/gradle-witness.jar
-    ndk: 21.4.7075529
-    gradleprops:
-      - buildServer
-
-  - versionName: 2.2.2
-    versionCode: 126
-    disable: a critical bug, ref https://github.com/grote/Transportr/issues/972
-    commit: 1f2a187b067f3c52a13f21a9dfd72e8cbc629564
-    subdir: app
-    gradle:
-      - yes
-    srclibs:
-      - gradlewitnessakwizgran@0bd93192051f6327e4dea5b296bf32644dd0dae1
-    rm:
-      - app/libs/gradle-witness.jar
-    prebuild:
-      - cp ../gradle/wrapper/gradle-wrapper.properties $$gradlewitnessakwizgran$$/gradle/wrapper/gradle-wrapper.properties
-      - sed -i -e 's/compile/implementation/g' $$gradlewitnessakwizgran$$/build.gradle
       - pushd $$gradlewitnessakwizgran$$
       - gradle build
       - popd

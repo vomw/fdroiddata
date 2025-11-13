@@ -1,5 +1,7 @@
 Categories:
+  - DNS & Hosts
   - Internet
+  - VPN & Proxy
 License: GPL-3.0-or-later
 AuthorName: Project S
 AuthorEmail: contact@sagernet.org
@@ -602,10 +604,785 @@ Builds:
       - make lib_android
       - mv libbox.aar clients/android/app/libs
 
+  - versionName: 1.11.0
+    versionCode: 467
+    commit: d09d2fb665f1a4aa0cefb1ce0298539867ba487b
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.22.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.1
+    versionCode: 471
+    commit: 92d245ad040cbda2f84b21c2a847a470e532c179
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.22.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.3
+    versionCode: 478
+    commit: ff31c469a061656f17aafb29b35d3fc297a66439
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.23.5
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.4
+    versionCode: 485
+    commit: eb07c7a79eeca943370eafea601e87da76c0e57e
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.23.5
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.5
+    versionCode: 488
+    commit: 8e2baf40f11973c7eb7d34fa741f282a5cb275f3
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.23.5
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.6
+    versionCode: 497
+    commit: a530e424e9efcf03cd29eca95b7a4d4acf258903
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.23.5
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.7
+    versionCode: 503
+    commit: 10874d2dc4eba1dcff67cd53cf0619ec25bd582a
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.23.5
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.8
+    versionCode: 506
+    commit: 49498f643926c6f109f918f148c533298b4c8352
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.9
+    versionCode: 509
+    commit: 348cc39975bc0d384c6b9d38c4ec0590d8ccf8bb
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.10
+    versionCode: 514
+    commit: aff12ff67192a7d5a79f902400c983f4bed70e67
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.11
+    versionCode: 520
+    commit: c5ecca3938d7e5dc6bd201433bcbd1e350b57701
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.13
+    versionCode: 528
+    commit: 255068fd40e92ca857115322b596801173525a91
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.14
+    versionCode: 535
+    commit: 9b8ab3e61e5b3a199fce5575bc6a04373f222d22
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.11.15
+    versionCode: 542
+    commit: bc35aca01704497c179da1a03e45ad8e32f1a51b
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.12.0
+    versionCode: 549
+    commit: 2dcb86941f5db01bbe296acae555a3b1f38c0441
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.24.2
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - cd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+
+  - versionName: 1.12.3
+    versionCode: 556
+    commit: b40f642fa4ae25633426f136aa2e5d25f985c991
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.4
+    versionCode: 560
+    commit: 980e96250bf693bb8400183d6a05665da8ad9d03
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.7
+    versionCode: 567
+    commit: ae852e0be4b9f837d26f0e2702e30ca8f518851e
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.8
+    versionCode: 569
+    commit: 573c6179ab4fc1b9ecb8f049299bb1dfe8babc97
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.9
+    versionCode: 575
+    commit: 328a6de7976182700aaa4f7e2c134bd568b47d88
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.10
+    versionCode: 580
+    commit: 444f45481023f6e8851dbcb294f744629efd0448
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.11
+    versionCode: 584
+    commit: 4626aa2cb07db5a453f689cf348ba9d327e07820
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-15 gradle assembleOtherRelease
+
+  - versionName: 1.12.12
+    versionCode: 587
+    commit: 54ed58499d7063136ed52dabf87d179d252425d0
+    subdir: clients/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - other
+    srclibs:
+      - go@go1.25.0
+    prebuild:
+      - export NDK_VERSION=$(sed -n -E 's/ *ndkVersion "([0-9.]+)"/\1/p' build.gradle)
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest"
+      - $$SDK$$/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+      - sed -i -e 's/enable true/enable false/' build.gradle
+      - mkdir libs
+      - export GO_VERSION=$(sed -n -E "s/GO_VERSION=(go[0-9.]+)/\1/p" ../version.properties)
+      - cd $$go$$
+      - git checkout -f $GO_VERSION
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../..
+      - make lib_install
+      - make lib_android
+      - mv libbox.aar clients/android/app/libs
+      - popd
+      - taskset --cpu-list 0-3 gradle assembleOtherRelease
+
 AllowedAPKSigningKeys: 32250a4b5f3a6733df57a3b9ec16c38d2c7fc5f2f693a9636f8f7b3be3549641
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: clients/android/version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
-CurrentVersion: 1.10.7
-CurrentVersionCode: 462
+CurrentVersion: 1.12.12
+CurrentVersionCode: 587
