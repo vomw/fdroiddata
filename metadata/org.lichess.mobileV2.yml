@@ -1,0 +1,44 @@
+AntiFeatures:
+  NonFreeAssets:
+    en-US: Some graphics used are not libre.
+  TetheredNet:
+    en-US: Relies on lichess.org.
+Categories:
+  - Games
+License: GPL-3.0-or-later
+AuthorName: lichess.org
+AuthorEmail: contact@lichess.org
+WebSite: https://lichess.org
+SourceCode: https://github.com/lichess-org/mobile
+IssueTracker: https://github.com/lichess-org/mobile/issues
+Translation: https://crowdin.com/project/lichess
+Changelog: https://github.com/lichess-org/mobile/releases
+Donate: https://lichess.org/patron
+
+AutoName: Lichess
+
+RepoType: git
+Repo: https://github.com/lichess-org/mobile
+
+Builds:
+  - versionName: 0.18.0
+    versionCode: 1800
+    commit: 7eee3bde07a761af2ecec4d5a6b83d46d3a32824
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.7
+    rm:
+      - ios
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build
+    build: $$flutter$$/bin/flutter build apk -v --dart-define=cronetHttpNoPlay=true
+      --dart-define=LICHESS_HOST=lichess.org --dart-define=LICHESS_WS_HOST=socket.lichess.org
+      --dart-define=LICHESS_WS_SECRET=wG1OLhUR3CSXdDybqrtIW227QGrtiM3d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags .*fdroid
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.18.0
+CurrentVersionCode: 1800
