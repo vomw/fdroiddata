@@ -1,0 +1,38 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Rely on manga sources
+Categories:
+  - Multimedia
+  - Reading
+License: GPL-3.0-or-later
+AuthorName: Clq
+SourceCode: https://github.com/Kotatsu-Redo/Kotatsu-Redo
+IssueTracker: https://github.com/Kotatsu-Redo/Kotatsu-Redo/issues
+Changelog: https://github.com/Kotatsu-Redo/Kotatsu-Redo/releases
+
+AutoName: Kotatsu-Redo
+
+RepoType: git
+Repo: https://github.com/Kotatsu-Redo/Kotatsu-Redo.git
+
+Builds:
+  - versionName: 9.6.4
+    versionCode: 2007
+    commit: 49646789d868323fe2531d766e8463d7498f9131
+    subdir: app
+    gradle:
+      - yes
+    binary: 
+      https://github.com/Kotatsu-Redo/Kotatsu-Redo/releases/download/9.6.6/app-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/com.google.gms/d' build.gradle
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'assets/isrgrootx1.pem'
+
+AllowedAPKSigningKeys: ffd9c991066407693cf46e469feadb888d33fbb2fba77ea379b0ca12a35c661a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[\d.]+$
+CurrentVersion: 9.6.4
+CurrentVersionCode: 2007
