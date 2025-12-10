@@ -1368,15 +1368,16 @@ Builds:
       - remoteconfig/firebase
       - plugins/build
 
-  - versionName: 8.7.0
-    versionCode: 3603050
-    commit: 82186d49ec8ded7f14a71fc1b47f98bd45d0ec97
+  - versionName: 25.9.17
+    versionCode: 5309017
+    commit: 4a8e26583490438a0c0b54b67ed4bef13ba14a20
     subdir: app
     gradle:
       - github
     prebuild:
       - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e '/firebase/d' -e '/playPublish/d'
-        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' build.gradle.kts
+        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' -e 's/versionName = .*/versionName
+        = "$$VERSION$$"/' -e 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts
       - sed -i -e '/review/d' ../features/review/play/build.gradle.kts
       - sed -i -e '/crashlytics/d' ../core/logging/crashlytics/build.gradle.kts
       - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
@@ -1389,11 +1390,99 @@ Builds:
     scandelete:
       - core/remoteconfig/firebase
 
+  - versionName: 25.9.18
+    versionCode: 5309018
+    commit: ce95297cbfa2289deae7342ecc698c430091ce14
+    subdir: app
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e '/firebase/d' -e '/playPublish/d'
+        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' -e 's/versionName = .*/versionName
+        = "$$VERSION$$"/' -e 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts
+      - sed -i -e '/review/d' ../features/review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../core/logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+      - sed -i -e '/includeProprietaryLibraries/s/true/false/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../{.,plugins}/settings.gradle.kts
+      - sed -i -e 's/8.13.0/8.11.1/' ../settings.gradle.kts
+    scanignore:
+      - plugins/build
+    scandelete:
+      - core/remoteconfig/firebase
+
+  - versionName: 25.9.19
+    versionCode: 5309019
+    commit: 875c126c2fccbfc4b174e272d86756c9341df52c
+    subdir: app
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e '/firebase/d' -e '/playPublish/d'
+        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' -e 's/versionName = .*/versionName
+        = "$$VERSION$$"/' -e 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts
+      - sed -i -e '/review/d' ../features/review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../core/logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+      - sed -i -e '/includeProprietaryLibraries/s/true/false/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../{.,plugins}/settings.gradle.kts
+      - sed -i -e 's/8.13.0/8.11.1/' ../settings.gradle.kts
+    scanignore:
+      - plugins/build
+    scandelete:
+      - core/remoteconfig/firebase
+
+  - versionName: 25.10.4
+    versionCode: 5310004
+    commit: 0d8086c4df1bda4d58d2f6ec8ffd7c3054a06666
+    subdir: app
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e '/firebase/d' -e '/playPublish/d'
+        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' -e 's/versionName = .*/versionName
+        = "$$VERSION$$"/' -e 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts
+      - sed -i -e '/review/d' ../features/review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../core/logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+      - sed -i -e '/includeProprietaryLibraries/s/true/false/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../{.,plugins}/settings.gradle.kts
+      - sed -i -e 's/8.13.0/8.11.1/' ../settings.gradle.kts
+    scanignore:
+      - plugins/build
+    scandelete:
+      - core/remoteconfig/firebase
+
+  - versionName: 25.10.5
+    versionCode: 5310005
+    commit: 1fa11cc8de2fe3d2cd514e5b797ec4ff4cb80801
+    subdir: app
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/crashlytics/d' -e '/googleServices/d' -e '/firebase/d' -e '/playPublish/d'
+        -e '/play {/,/^}/d' -e '/= createSigningConfig/d' -e 's/versionName = .*/versionName
+        = "$$VERSION$$"/' -e 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts
+      - sed -i -e '/review/d' ../features/review/play/build.gradle.kts
+      - sed -i -e '/crashlytics/d' ../core/logging/crashlytics/build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-XX:MaxHeapSize=2048m" >> ../gradle.properties
+      - echo -e "\norg.gradle.unsafe.configuration-cache=false" >> ../gradle.properties
+      - sed -i -e '/includeProprietaryLibraries/s/true/false/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../{.,plugins}/settings.gradle.kts
+    scanignore:
+      - plugins/build
+    scandelete:
+      - core/analytics/firebase
+      - core/remoteconfig/firebase
+
 MaintainerNotes: Scanignore the plugin built in the useless but can't disabled gradle
   clean so we don't need to fight against fdroidserver.
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^[0-9.]+$
-UpdateCheckData: gradle/libs.versions.toml|versionCode\s*=\s*"([0-9]+)"|.|versionName\s*=\s*"(.+)"
-CurrentVersion: 8.7.0
-CurrentVersionCode: 3603050
+UpdateCheckMode: Tags ^[\d.]+-\d+$
+UpdateCheckData: '|-(\d+)||(.*)-'
+CurrentVersion: 25.10.5
+CurrentVersionCode: 5310005

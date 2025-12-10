@@ -3,6 +3,7 @@
 import glob
 import os
 import re
+import requests
 import subprocess
 import sys
 
@@ -54,6 +55,8 @@ for f in files:
         'core.sshCommand=/bin/false',
         '-c',
         'url.https://.insteadOf=ssh://',
+        '-c',
+        'http.lowSpeedTime=5',
     ]
     for domain in ('bitbucket.org', 'github.com', 'gitlab.com'):
         git_config.append('-c')
@@ -88,11 +91,37 @@ for f in files:
         print('%s%s%s' % (Fore.RED, p.stderr.decode(), Style.RESET_ALL))
         errors[f] = p.stderr
 
+        # only rewrite files with a clear 404 Not Found, e.g. not 302, 500, etc.
+        if url.startswith('https://'):
+            try:
+                weburl = url[:-4] if url.endswith('.git') else url
+                r = requests.head(weburl, timeout=10)
+            except requests.exceptions.RequestException as e:
+                print('%s%s%s' % (Fore.RED, str(e), Style.RESET_ALL))
+                continue
+            if r.status_code != 404:
+                print('%s%d: %s%s' % (Fore.RED, r.status_code, r.reason, Style.RESET_ALL))
+                continue
+
         if not f.startswith('metadata/'):
             continue
         # this rewriting only works with metadata files, not srclibs
+
+        url = data.get('SourceCode')
+        if url and not url.startswith('https://archive.softwareheritage.org/'):
+            url = url[:-4] if url.endswith('.git') else url
+            r = requests.get(f'https://archive.softwareheritage.org/api/1/origin/{url}/get/')
+            get = r.json()
+            if get.get('url') == url:
+                newurl = f'https://archive.softwareheritage.org/browse/origin/{url}/directory/'
+            else:
+                newurl = url
+
         with open(f, 'w') as fp:
-            fp.write(re.sub(r'(Repo|RepoType):.*\n{1,2}', r'', raw))
+            processed = re.sub(r'(Repo|RepoType):.*\n{1,2}', r'', raw)
+            processed = re.sub(r'\nSourceCode:.*', f'\nSourceCode: {newurl}', processed)
+            processed = re.sub(r'\n(AutoUpdateMode|UpdateCheckMode):.*', r'\n\1: None', processed)
+            fp.write(processed)
             builds = data.get('Builds')
             if builds:
                 versionName = str(builds[-1]['versionName'])

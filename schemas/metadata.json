@@ -15,6 +15,7 @@
       "items": {
         "type": "string",
         "enum": [
+          "AI Chat",
           "App Store & Updater",
           "Bookmark",
           "Browser",
@@ -40,6 +41,7 @@
           "Keyboard & IME",
           "Launcher",
           "Local Media Player",
+          "Location Tracker & Sharer",
           "Messaging",
           "Money",
           "Multimedia",
@@ -55,6 +57,7 @@
           "Public Transport",
           "Reading",
           "Recipe Manager",
+          "Religion",
           "Science & Education",
           "Security",
           "Shopping List",
@@ -307,12 +310,12 @@
     "Bitcoin": {
       "description": "A Bitcoin address for donating to the project.",
       "type": "string",
-      "pattern": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$"
+      "pattern": "^([13][a-km-zA-HJ-NP-Z1-9]{25,34}|bc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Litecoin": {
       "description": "A Litecoin address for donating to the project.",
       "type": "string",
-      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[a-km-z0-9]{39})$"
+      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Name": {
       "description": "The title of the application, with optional descriptive phrase.",
@@ -371,7 +374,7 @@
     },
     "Binaries": {
       "description": "The location of binaries used in verification process.",
-      "$ref": "#/definitions/url"
+      "$ref": "#/definitions/https"
     },
     "Builds": {
       "description": "Any number of sub-entries can be present, each specifying a version to automatically build from source.",
@@ -558,7 +561,7 @@
           },
           "binary": {
             "description": "The location of binaries used in verification process.",
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/https"
           },
           "novcheck": {
             "description": "Don't check that the version name and code in the resulting APK are correct by looking at the build output - assume the metadata is correct.",
@@ -689,6 +692,22 @@
           ]
         }
       ]
+    },
+    {
+      "if": {
+        "properties": {
+          "RepoType": {
+            "const": "git"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "Repo": {
+            "$ref": "#/definitions/https"
+          }
+        }
+      }
     },
     {
       "if": {
@@ -874,6 +893,10 @@
     "url": {
       "type": "string",
       "pattern": "^https?://.*$"
+    },
+    "https": {
+      "type": "string",
+      "pattern": "^https://.*$"
     }
   }
 }
