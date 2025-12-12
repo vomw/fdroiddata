@@ -14,27 +14,22 @@ Builds:
   - versionName: '1.0'
     versionCode: 1
     commit: v1.0.0
-    subdir: podrida-android/android
+    subdir: podrida-android/android/app
     sudo:
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-      - apt-get install -y nodejs
-      - curl -L -o /tmp/jdk.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_x64_linux_hotspot_21.0.9_10.tar.gz
-      - mkdir -p /opt/jdk-21
-      - tar -xzf /tmp/jdk.tar.gz -C /opt/jdk-21 --strip-components=1
-      - update-alternatives --install /usr/bin/java java /opt/jdk-21/bin/java 1
-      - update-alternatives --set java /opt/jdk-21/bin/java
-      - update-alternatives --install /usr/bin/javac javac /opt/jdk-21/bin/javac 1
-      - update-alternatives --set javac /opt/jdk-21/bin/javac
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
+      - update-alternatives --auto java
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd .. && npm install
+      - cd ..
+      - npm install
       - npx cap sync
     scanignore:
       - podrida-android/node_modules
 
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: '1.0'
 CurrentVersionCode: 1
