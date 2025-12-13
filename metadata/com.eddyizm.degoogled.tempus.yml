@@ -17,14 +17,11 @@ Repo: https://github.com/eddyizm/tempus
 Builds:
   - versionName: 4.5.0
     versionCode: 10
-    commit: HEAD
+    commit: 9167be2cf2fc07ffe8e21c47ee049ceddb41dd3f # Example commit from the log
     subdir: app
     gradle:
       - degoogled
-    prebuild: |
-      sed -i -e 's|implementation files.*lib-decoder-ffmpeg-release.aar.*|implementation "androidx.media3:media3-exoplayer-ffmpeg:1.8.0"|' build.gradle
-      sed -i -e "s|include 'armeabi-v7a', 'arm64-v8a'|include 'arm64-v8a'|" build.gradle
-      sed -i -e '/foojay/d' ../settings.gradle
+    prebuild: "sed -i -e 's|implementation files.*lib-decoder-ffmpeg-release.aar.*|implementation \\\"androidx.media3:media3-decoder-ffmpeg:1.8.0\\\"|' build.gradle && sed -i -e 's|include \\'armeabi-v7a\\', \\'arm64-v8a\\'|include \\'arm64-v8a\\'|' build.gradle && sed -i -e '/foojay/d' ../settings.gradle"
     rm:
       - libs/lib-decoder-ffmpeg-release.aar
 
