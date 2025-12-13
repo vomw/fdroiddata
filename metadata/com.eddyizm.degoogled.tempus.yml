@@ -14,6 +14,15 @@ AutoName: Tempus
 RepoType: git
 Repo: https://github.com/eddyizm/tempus
 
+
+Srclibs:
+  media3-ffmpeg-decoder:
+    Settings:
+      ForceBranch: main
+    Git: https://github.com/androidx/media.git
+    Commit: b7bbc6e2bc3e45ff3ed99884c114c50f03bba5c9
+    Subdir: libraries/decoder_ffmpeg
+
 Builds:
   - versionName: 4.5.0
     versionCode: 10
@@ -21,7 +30,7 @@ Builds:
     subdir: app
     gradle:
       - degoogled
-    prebuild: "sed -i -e \"s|implementation files.*lib-decoder-ffmpeg-release.aar.*|implementation \\\"androidx.media3:media3-decoder-ffmpeg:1.8.0\\\"|\" build.gradle && sed -i -e \"s|include 'armeabi-v7a', 'arm64-v8a'|include 'arm64-v8a'|\" build.gradle && sed -i -e '/foojay/d' ../settings.gradle"
+    prebuild: ln -s ../../srclibs/media3-ffmpeg-decoder libs/media3-ffmpeg-decoder
     rm:
       - libs/lib-decoder-ffmpeg-release.aar
 
