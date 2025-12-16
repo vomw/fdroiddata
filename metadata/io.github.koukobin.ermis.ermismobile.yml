@@ -14,7 +14,7 @@ Repo: https://github.com/Koukobin/Ermis.git
 
 Builds:
   - versionName: 1.3.0
-    versionCode: 18
+    versionCode: 2018
     commit: ff0190067891611a27b802ba31d9f5f5ad1f59a7
     subdir: ErmisClient/Mobile/ermis_client
     sudo:
@@ -22,7 +22,10 @@ Builds:
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
-    output: build/app/outputs/flutter-apk/app-release.apk
+      - mkdir -p /home/ilias/Downloads/Ermis-master/ErmisClient/Mobile
+      - chown vagrant /home/ilias
+    output: build/app/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    binary: https://github.com/Koukobin/Ermis/releases/download/client-mobile-v%v/android-app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -37,18 +40,32 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\s'(.*)'/\1/p" ../../../.github/workflows/build.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/ilias/Downloads/Ermis-master/ErmisClient/Mobile/ermis_client
+      - cd ..
+      - mv ermis_client $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - find $$flutter$$ -type f -not -path "*/.git/*" -print0 | xargs -0 sed -i $'s/\r$//'
       - find . -type f -regex ".*\.\(ttf\|zip\|so\|bin\)$" -delete
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo ermis_client
     scandelete:
       - ErmisClient/Mobile/ermis_client/.pub-cache
     build:
+      - export repo=/home/ilias/Downloads/Ermis-master/ErmisClient/Mobile/ermis_client
+      - cd ..
+      - mv ermis_client $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/dart run flutter_launcher_icons
       - $$flutter$$/bin/dart run intl_utils:generate
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo ermis_client
+
+AllowedAPKSigningKeys: 5173295a5861cf4d381416f83ee0f4a72fc03dfa4c7c9ca62ecd026c15950ecd
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^client-mobile-v
