@@ -21,6 +21,7 @@ Builds:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - apt-get install -y make
       - update-alternatives --auto java
     gradle:
       - yes
@@ -32,19 +33,12 @@ Builds:
     build:
       - mkdir -p ../composeApp/src/androidMain/jniLibs/arm64-v8a
       - cd ../Stockfish/src
-      - curl -L -o nn-2962dca31855.nnue https://tests.stockfishchess.org/api/nn/nn-2962dca31855.nnue
-      - curl -L -o nn-37f18f62d772.nnue https://tests.stockfishchess.org/api/nn/nn-37f18f62d772.nnue
-      - export CXX=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++
-      - export CXXFLAGS="-std=c++17 -fno-exceptions -fno-rtti -DUSE_PTHREADS -DNDEBUG
-        -O3 -DIS_64BIT -DUSE_POPCNT -DUSE_NEON=8 -fPIC"
-      - $CXX $CXXFLAGS -c benchmark.cpp bitboard.cpp engine.cpp evaluate.cpp main.cpp
-        memory.cpp misc.cpp movegen.cpp movepick.cpp position.cpp score.cpp search.cpp
-        thread.cpp timeman.cpp tt.cpp tune.cpp uci.cpp ucioption.cpp
-      - $CXX $CXXFLAGS -c nnue/nnue_misc.cpp nnue/nnue_accumulator.cpp nnue/network.cpp
-        nnue/features/half_ka_v2_hm.cpp nnue/features/full_threats.cpp syzygy/tbprobe.cpp
-      - $CXX -shared -o libstockfish.so *.o -Wl,--gc-sections,-z,max-page-size=16384
-        -static-libstdc++
-      - mv libstockfish.so ../../composeApp/src/androidMain/jniLibs/arm64-v8a/
+      - export NDK_PATH=$$NDK$$
+      - make net
+      - make -j4 ARCH=armv8 COMP=ndk EXTRACXXFLAGS="-fPIC" EXTRALDFLAGS="-shared -Wl,--gc-sections,-z,max-page-size=16384
+        -static-libstdc++" EXE=libstockfish.so
+      - cp libstockfish.so ../../composeApp/src/androidMain/jniLibs/arm64-v8a/
+      - make clean
     ndk: 27.0.12077973
 
 AutoUpdateMode: Version
