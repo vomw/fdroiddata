@@ -16,22 +16,11 @@ Builds:
     commit: b990c29e745e9d7272958ffb27c865fb73c2d573
     subdir: android/usque-vpn
     sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y make wget
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
+      - apt-get install -y make wget golang
     gradle:
       - yes
-    prebuild:
-      - GO_VERSION=1.24.0
-      - export GO_TAR=go$GO_VERSION.linux-amd64.tar.gz
-      - export GO_URL=https://golang.org/dl/$GO_TAR
-      - export GOROOT=/home/runner/work/go
-      - mkdir -p $GOROOT
-      - pushd $GOROOT
-      - wget $GO_URL
-      - tar -C $GOROOT --strip-components=1 -xzf $GO_TAR
-      - rm $GO_TAR
     build:
       - pushd ../
       - make init
