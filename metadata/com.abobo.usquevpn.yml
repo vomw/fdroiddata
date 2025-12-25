@@ -23,9 +23,11 @@ Builds:
       - yes
     build:
       - pushd ../
-      - make init
+      - go install golang.org/x/mobile/cmd/gomobile@latest
       - export PATH=$PATH:~/go/bin
-      - make android
+      - gomobile init -v
+      - gomobile bind -v -target=android/arm64,android/arm -androidapi 24 -ldflags="-s
+        -w" -o usque.aar github.com/Diniboy1123/usque/android
       - popd
       - mkdir -p app/libs
       - cp ../usque.aar app/libs/
