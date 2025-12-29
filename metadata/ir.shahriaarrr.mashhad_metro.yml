@@ -15,7 +15,7 @@ Repo: https://github.com/shahriaarrr/mashhad-metro.git
 Builds:
   - versionName: 0.5.0
     versionCode: 2
-    commit: 24859e80773d6086dd5bc666d7a22747cf8043d6
+    commit: dd0d0c890b123c1387a2cbcf9ebb0cca7ab94285
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -27,8 +27,8 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ \"(.*)\"/\1/p" .github/workflows/release.yaml)
-      - '[[ $flutterVersion ]] || exit 1'
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' .github/workflows/release.yaml)
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
