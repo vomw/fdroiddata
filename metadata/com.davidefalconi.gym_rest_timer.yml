@@ -1,0 +1,48 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-only
+SourceCode: https://github.com/davidefalconi69/gym_rest_timer
+IssueTracker: https://github.com/davidefalconi69/gym_rest_timer/issues
+
+AutoName: Gym Rest Timer
+Description: |-
+  This application helps you track your rest intervals between sets.
+  It is privacy-focused with no ads, no tracking, and no cloud connectivity.
+
+  Features:
+  * Single configurable timer with a clean, large display
+  * Live notification with countdown
+  * Choose from Light, Dark, AMOLED (True Black), or Monochrome themes
+  * Adjust sound, vibration, and default durations to match your workout style
+
+RepoType: git
+Repo: https://github.com/davidefalconi69/gym_rest_timer.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 88f68ec0efa01eb491ab9c7b9e823b667e685edd
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.38.5
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - rm -f android/key.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
