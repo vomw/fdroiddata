@@ -1,0 +1,35 @@
+Categories:
+  - Connectivity
+License: MIT
+AuthorName: Octokit Contributors
+SourceCode: https://github.com/abc15018045126/github-web-octokit
+IssueTracker: https://github.com/abc15018045126/github-web-octokit/issues
+
+RepoType: git
+Repo: https://github.com/abc15018045126/github-web-octokit.git
+
+Builds:
+  - versionName: 0.0.8
+    versionCode: 8
+    commit: 6f398765ec70d2b38c3b704188cccce873ee7c08
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/org.gradle.java.home/d' ../gradle.properties
+      - cd ../..
+      - npm install --build-from-source
+      - npm run build
+      - npx cap sync android
+    scandelete:
+      - node_modules
+    ndk: r29
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.0.8
+CurrentVersionCode: 8
