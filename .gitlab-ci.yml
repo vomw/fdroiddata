@@ -413,10 +413,13 @@ fdroid build:
         -keystore $keystore -storepass:env keystorepass -keypass:env keypass
 
     - APPS="$(./tools/find-changed-builds.py)"
+    - if [[ -z "$APPS" ]]; then exit 0; fi
     - |
       for build in $APPS; do
           set -x;
           apt-get install sudo;
+          apt-get install -y openjdk-17-jdk-headless;
+          update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java;
           cp -R $CI_PROJECT_DIR/build $home_vagrant/build;
           appid=${build%:*};
           [ -d metadata/$appid ] && cp -R metadata/$appid $home_vagrant/metadata;
@@ -434,13 +437,11 @@ fdroid build:
           location=$(($(grep -n "^    versionCode:\ $vercode$" metadata/$appid.yml | cut -f1 -d:) - 1));
           for file in "${appid}_${vercode}.apk" "binaries/${appid}_${vercode}.binary.apk"; do
             if [[ -e "$CI_PROJECT_DIR/tmp/$file" ]]; then
-              echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$vercode'}},"description":"Built APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$file'","check_name":"built_apk","fingerprint":"'$file'","severity":"info"}]' > "$CODEQUALITY_DIR/${file#*/}.json";
+              echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Built APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$file'","check_name":"built_apk","fingerprint":"'$file'","severity":"info"}]' > "$CODEQUALITY_DIR/${file#*/}.json";
             fi
           done;
           rm -rf $home_vagrant/build || true;
           rm -rf $ANDROID_HOME/ndk || true;
-          apt-get install -y openjdk-17-jdk-headless;
-          update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java;
           ./tools/build-contains-signatures.py $build || continue;
           $fdroid publish --verbose --error-on-failed $build;
       done
@@ -501,7 +502,7 @@ check apk:
           "description": "'$3'",
           "check_name": "'$4'",
           "fingerprint": "'$5'",
-          "severity": "'$6'"},";'
+          "severity": "'$6'"},'
       }
     - echo '[' > codequality.json
     - |
