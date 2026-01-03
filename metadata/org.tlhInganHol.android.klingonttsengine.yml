@@ -1,0 +1,42 @@
+Categories:
+  - Translation & Dictionary
+  - Writing
+License: Apache-2.0
+SourceCode: https://github.com/De7vID/klingon-assistant-tts-android
+IssueTracker: https://github.com/De7vID/klingon-assistant-tts-android/issues
+Changelog: https://github.com/De7vID/klingon-assistant-tts-android/blob/HEAD/CHANGELOG
+
+AutoName: Klingon Text-To-Speech (TTS) Engine
+Description: "This is a Text-To-Speech (TTS) engine for the Klingon language\
+  \ ({tlhIngan Hol}) which can be used with {boQwI'} and other supported apps.\
+  \ It can be used with any web browser which supports the text selection action.\
+  \ (Chrome supports this, Firefox does not.) Look for it under your device's\
+  \ Text-To-Speech settings.\
+  \ \
+  \ This is a project of the Klingon Language Institute. Klingon, Star Trek, and\
+  \ related marks are trademarks of CBS Studios, Inc., and are used with permission\
+  \ through an arrangement with the KLI.\
+  \ \
+  \ *** Note: This is NOT A STAND-ALONE APP itself and THERE IS NO APP ICON. ***"
+
+RepoType: git
+Repo: https://github.com/De7vID/klingon-assistant-tts-android.git
+
+Builds:
+  - versionName: 2020.08.23
+    versionCode: 31
+    commit: 12a67762d86c5ebc623200d2b5da50f7b856df7a
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+    prebuild: sed -i -e '/keystoreProperties/d' build.gradle
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2020.08.23
+CurrentVersionCode: 31
