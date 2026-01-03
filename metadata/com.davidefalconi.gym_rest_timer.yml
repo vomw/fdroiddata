@@ -1,20 +1,3 @@
-Categories:
-  - Sports & Health
-License: GPL-3.0-only
-SourceCode: https://github.com/davidefalconi69/gym_rest_timer
-IssueTracker: https://github.com/davidefalconi69/gym_rest_timer/issues
-
-AutoName: Gym Rest Timer
-Description: |-
-  This application helps you track your rest intervals between sets.
-  It is privacy-focused with no ads, no tracking, and no cloud connectivity.
-
-  Features:
-  * Single configurable timer with a clean, large display
-  * Live notification with countdown
-  * Choose from Light, Dark, AMOLED (True Black), or Monochrome themes
-  * Adjust sound, vibration, and default durations to match your workout style
-
 RepoType: git
 Repo: https://github.com/davidefalconi69/gym_rest_timer.git
 
@@ -22,6 +5,7 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: 88f68ec0efa01eb491ab9c7b9e823b667e685edd
+    submodules: false
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.38.5
@@ -32,17 +16,31 @@ Builds:
       - web
       - windows
     prebuild:
-      - rm -f android/key.properties
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/packages/flutter_tools/gradle/flutter.gradle
+      - .flutter/bin/cache
     scandelete:
+      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    binaries: https://github.com/davidefalconi69/gym_rest_timer/releases/download/v1.0.0/app-release.apk
+    allowedAPKSigningKeys:
+      - b57bb9793c91b652ffc2e67ba6f953bf63b28d2d562fc9551bdb136c173da5ec
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0.0
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0.0'
 CurrentVersionCode: 1
