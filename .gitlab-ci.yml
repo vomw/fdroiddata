@@ -451,7 +451,12 @@ fdroid build:
     - ./tools/audit-gradle.py $CHANGED;
 
     - apt-get install jq
-    - jq '[.[]|.[]]' --slurp $CODEQUALITY_DIR/*.json > codequality.json
+    - |
+      if compgen -G "$CODEQUALITY_DIR/*.json" > /dev/null; then
+        jq '[.[]|.[]]' --slurp $CODEQUALITY_DIR/*.json > codequality.json
+      else
+        echo '[]' > codequality.json
+      fi
 
 
 check source code:
