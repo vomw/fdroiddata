@@ -3,6 +3,7 @@
 import json
 import re
 import sys
+import os
 from pathlib import Path
 
 import markdown_it
@@ -10,6 +11,7 @@ import ruamel.yaml
 from fdroidserver import common, metadata, update
 
 BCP47_LOCALE_TAG_PATTERN = re.compile(r"[a-z]{2,3}(-([A-Z][a-zA-Z]+|\d+|[a-z]+))*")
+INCLUDE_INFO = os.getenv("CODEQUALITY_INCLUDE_INFO", "0") == "1"
 
 
 def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
@@ -103,13 +105,14 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
                 elif child.is_dir():
                     items.append(f"{child.name} ({len(list(child.iterdir()))})")
 
-        reports.append(
-            {
-                "description": f"Fastlane/Triple-T in {locale}: {', '.join(items)}",
-                "fingerprint": f"fastlane {locale} found",
-                "severity": "info",
-            }
-        )
+        if INCLUDE_INFO:
+            reports.append(
+                {
+                    "description": f"Fastlane/Triple-T in {locale}: {', '.join(items)}",
+                    "fingerprint": f"fastlane {locale} found",
+                    "severity": "info",
+                }
+            )
 
         if v.get("description") and normalize_html(v["description"]) != normalize_html(
             md.render(v["description"])

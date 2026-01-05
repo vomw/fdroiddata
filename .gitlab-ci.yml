@@ -435,11 +435,13 @@ fdroid build:
           popd;
           vercode=${build#*:};
           location=$(($(grep -n "^    versionCode:\ $vercode$" metadata/$appid.yml | cut -f1 -d:) - 1));
-          for file in "${appid}_${vercode}.apk" "binaries/${appid}_${vercode}.binary.apk"; do
-            if [[ -e "$CI_PROJECT_DIR/tmp/$file" ]]; then
-              echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Built APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$file'","check_name":"built_apk","fingerprint":"'$file'","severity":"info"}]' > "$CODEQUALITY_DIR/${file#*/}.json";
-            fi
-          done;
+          if [[ "${CODEQUALITY_INCLUDE_INFO:-0}" == "1" ]]; then
+            for file in "${appid}_${vercode}.apk" "binaries/${appid}_${vercode}.binary.apk"; do
+              if [[ -e "$CI_PROJECT_DIR/tmp/$file" ]]; then
+                echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Built APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$file'","check_name":"built_apk","fingerprint":"'$file'","severity":"info"}]' > "$CODEQUALITY_DIR/${file#*/}.json";
+              fi
+            done;
+          fi
           rm -rf $home_vagrant/build || true;
           rm -rf $ANDROID_HOME/ndk || true;
           ./tools/build-contains-signatures.py $build || continue;
@@ -533,9 +535,11 @@ check apk:
 
         # manifest
         androguard axml $file -o AndroidManifest.xml
-        for permission in $(sed -n 's|.*<uses-permission android:name="\([^"]\+\)".*|\1|p' AndroidManifest.xml); do
-            generate_report $appid $location "Permission $permission" "permission" "$file $permission" "info" >> codequality.json;
-        done
+        if [[ "${CODEQUALITY_INCLUDE_INFO:-0}" == "1" ]]; then
+          for permission in $(sed -n 's|.*<uses-permission android:name="\([^"]\+\)".*|\1|p' AndroidManifest.xml); do
+              generate_report $appid $location "Permission $permission" "permission" "$file $permission" "info" >> codequality.json;
+          done
+        fi
         grep 'android:usesCleartextTraffic="true"' AndroidManifest.xml && \
           generate_report $appid $location "Cleartext Traffic Permitted" "application_attribution" "$file cleartextTrafficPermitted" "major" >> codequality.json;
         grep 'android:debuggable="true"' AndroidManifest.xml && \
@@ -552,7 +556,9 @@ check apk:
           else
             severity="info"
           fi
-          generate_report $appid $location "Signing Key: $dn" "signing_key" "$file Signing Key" $severity >> codequality.json;
+          if [[ "$severity" != "info" || "${CODEQUALITY_INCLUDE_INFO:-0}" == "1" ]]; then
+            generate_report $appid $location "Signing Key: $dn" "signing_key" "$file Signing Key" $severity >> codequality.json;
+          fi
         fi
       done
     - sed -i -e '$s/,$/]/' codequality.json
