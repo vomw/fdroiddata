@@ -15,50 +15,41 @@ Description: A fuel tracking app for monitoring fuel spends and efficiency
 AuthorName: Max Demon
 AuthorEmail: maxdemon@outlook.com
 
-RepoType: git
-Repo: https://github.com/itsmaxyd/fillup
+Builds:
+  - versionName: '1.0.8'
+    versionCode: 9
+    commit: v1.0.9
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.0
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-
-CurrentVersion: 1.0.7
-CurrentVersionCode: 8
-
-Builds:
-  - versionName: 1.0.6
-    versionCode: 7
-    commit: v1.0.6
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.35.0
-    prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    scandelete:
-      - .pub-cache/
-
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
-
-  - versionName: 1.0.7
-    versionCode: 8
-    commit: v1.0.7
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.35.0
-    prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    scandelete:
-      - .pub-cache/
-      - .flutter*/
-      - .dart_tool/
-      - android/.gradle
-
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+CurrentVersion: '1.0.8'
+CurrentVersionCode: 9
