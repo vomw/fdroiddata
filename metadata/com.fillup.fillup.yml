@@ -1,3 +1,19 @@
+Categories:
+  - Money
+License: GPL-3.0-or-later
+AuthorName: Max Demon
+AuthorEmail: maxdemon@outlook.com
+WebSite: https://itsmaxyd.github.io/fillup/
+SourceCode: https://github.com/itsmaxyd/fillup
+IssueTracker: https://github.com/itsmaxyd/fillup/issues
+Donate: https://buymeacoffee.com/maxdemon
+
+RepoType: git
+Repo: https://github.com/itsmaxyd/fillup.git
+
+AutoName: FillUp
+
+
 Builds:
   - versionName: '1.0.8'
     versionCode: 9
@@ -5,28 +21,25 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.35.0
-
-    # ADD THIS: Install Java 17 explicitly
-    sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
-
     prebuild:
-      # ADD THIS: Remove hardcoded local java path to prevent build failure
-      - sed -i '/org.gradle.java.home/d' android/gradle.properties
-
-      # ADD THIS: Set the correct Java Home for the build server
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
-      # Existing steps
+      - sed -i -e '/java.home/d' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter config --no-analytics
       - flutter pub get
-
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter build apk --release --split-per-abi --target-platform="android-arm64"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0.8'
+CurrentVersionCode: 9
