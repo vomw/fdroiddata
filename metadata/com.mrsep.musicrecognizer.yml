@@ -330,7 +330,49 @@ Builds:
     scandelete:
       - build-logic
 
+  - versionName: 1.12.1
+    versionCode: 34
+    commit: 82e6ca078e07c96bb522fd77d7765b5c496bfc8f
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/androidGradlePlugin/s/8.12.0/8.11.1/' ../gradle/libs.versions.toml
+    scandelete:
+      - build-logic
+
+  - versionName: 1.13.0
+    versionCode: 35
+    commit: b5b0a36aa8796bd9fe9c1212dd749f1404f79095
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    scandelete:
+      - build-logic
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
+  - versionName: 1.13.1
+    versionCode: 36
+    commit: 14a76cb1871e0bf0f5b989f730d266ea71589afe
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    scandelete:
+      - build-logic
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 1.11.0
-CurrentVersionCode: 32
+CurrentVersion: 1.13.1
+CurrentVersionCode: 36
