@@ -20,7 +20,7 @@ Builds:
     commit: a38826fa245fe6e4c0be2e9a39169b170027b93b
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.38.5
+      - flutter@stable
     rm:
       - ios
       - macos
@@ -33,6 +33,11 @@ Builds:
       - android/app/src/main/jniLibs
       - third_party/flutter_webrtc/third_party/libwebrtc/lib
     prebuild:
+      - export flutter_version=$(cat .flutter-version)
+      - pushd $$flutter$$
+      - git fetch --tags
+      - git checkout $flutter_version
+      - popd
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' pubspec.yaml
       - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
