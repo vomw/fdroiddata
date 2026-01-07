@@ -34,10 +34,8 @@ Builds:
       - third_party/flutter_webrtc/third_party/libwebrtc/lib
     prebuild:
       - export flutter_version=$(cat .flutter-version)
-      - pushd $$flutter$$
-      - git fetch --tags
-      - git checkout $flutter_version
-      - popd
+      - git -C $$flutter$$ fetch --tags
+      - git -C $$flutter$$ checkout $flutter_version
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' pubspec.yaml
       - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
