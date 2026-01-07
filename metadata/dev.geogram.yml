@@ -15,9 +15,9 @@ RepoType: git
 Repo: https://github.com/geograms/geogram.git
 
 Builds:
-  - versionName: 1.6.100
-    versionCode: 3
-    commit: v1.6.100
+  - versionName: 1.6.101
+    versionCode: 4
+    commit: v1.6.101
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.38.5
@@ -52,16 +52,8 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
-      - cd build/app/outputs/flutter-apk && python3 -c "import zipfile,shutil;
-        z=zipfile.ZipFile('app-release.apk','r');
-        items=[(i,z.read(i.filename)) for i in z.infolist() if not i.filename.startswith('com/google/android/play/core/')];
-        z.close();
-        z=zipfile.ZipFile('clean.apk','w',zipfile.ZIP_DEFLATED);
-        [z.writestr(i,d) for i,d in items];
-        z.close();
-        shutil.move('clean.apk','app-release.apk')"
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.6.100
-CurrentVersionCode: 3
+CurrentVersion: 1.6.101
+CurrentVersionCode: 4
