@@ -24,8 +24,13 @@ Builds:
 
     prebuild: |
       cd ..
-      chmod +x scripts/compile_daemon.sh
-      sed -i "s|^SDK_PATH=.*|SDK_PATH=\$ANDROID_HOME|g" scripts/compile_daemon.sh
-      sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"31.0.0\"|g" scripts/compile_daemon.sh
-      sed -i "s|^PLATFORM_VER=.*|PLATFORM_VER=\"33\"|g" scripts/compile_daemon.sh
+      DAEMON_FILE="app/src/main/java/com/arslan/shizuwall/daemon/SystemDaemon.java"
+      SCRIPT_FILE="scripts/compile_daemon.sh"
+      sed -i '/import android.util.Log;/d' $DAEMON_FILE
+      sed -i '/package com.arslan.shizuwall.daemon;/a class Log { static void d(String t,String m){System.out.println(t+":"+m);} static void w(String t,String m){System.out.println(t+":"+m);} static void e(String t,String m,Throwable tr){System.out.println(t+":"+m);} }' $DAEMON_FILE
+      sed -i '/-classpath/d' $SCRIPT_FILE
+      chmod +x $SCRIPT_FILE
+      sed -i "s|^SDK_PATH=.*|SDK_PATH=\$ANDROID_HOME|g" $SCRIPT_FILE
+      sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"31.0.0\"|g" $SCRIPT_FILE
+      sed -i "s|^PLATFORM_VER=.*|PLATFORM_VER=\"ignore\"|g" $SCRIPT_FILE
       ./scripts/compile_daemon.sh
