@@ -24,16 +24,8 @@ Builds:
 
     prebuild: |
       cd ..
-      # make script executable
       chmod +x scripts/compile_daemon.sh
-
-      # change SDK_PATH to use ANDROID_HOME environment variable
       sed -i "s|^SDK_PATH=.*|SDK_PATH=\$ANDROID_HOME|g" scripts/compile_daemon.sh
-      # find latest build tools version and write to script
-      LATEST_BT=$(ls -1 $ANDROID_HOME/build-tools/ | sort -V | tail -n 1)
-      sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"$LATEST_BT\"|g" scripts/compile_daemon.sh
-      # find latest platform version and write to script
-      LATEST_PLAT=$(ls -1 $ANDROID_HOME/platforms/ | sort -V | tail -n 1 | sed 's/android-//')
-      sed -i "s|^PLATFORM_VER=.*|PLATFORM_VER=\"$LATEST_PLAT\"|g" scripts/compile_daemon.sh
-      # Call the script from the root directory (because the script contains 'app/src' paths)
+      sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"31.0.0\"|g" scripts/compile_daemon.sh
+      sed -i "s|^PLATFORM_VER=.*|PLATFORM_VER=\"33\"|g" scripts/compile_daemon.sh
       ./scripts/compile_daemon.sh
