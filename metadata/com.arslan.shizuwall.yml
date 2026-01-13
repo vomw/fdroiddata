@@ -29,6 +29,7 @@ Builds:
       sed -i '/import android.util.Log;/d' $DAEMON_FILE
       sed -i '/public class SystemDaemon {/a \    private static class Log { static void d(String t,String m){System.out.println(t+":"+m);} static void w(String t,String m){System.out.println(t+":"+m);} static void e(String t,String m,Throwable tr){System.out.println(t+":"+m); tr.printStackTrace();} }' $DAEMON_FILE
       sed -i '/-classpath/d' $SCRIPT_FILE
+      sed -i '/--lib/d' $SCRIPT_FILE   # <--- BU SATIR YENİ EKLENDİ (Hatayı çözen kısım)
       chmod +x $SCRIPT_FILE
       sed -i "s|^SDK_PATH=.*|SDK_PATH=\$ANDROID_HOME|g" $SCRIPT_FILE
       sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"31.0.0\"|g" $SCRIPT_FILE
