@@ -56,7 +56,48 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
+  - versionName: 1.9.0
+    versionCode: 5
+    commit: 59545e2fb5cc9ba51c50c612ac9db7d94c4cc32f
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - windows
+      - linux
+      - web
+      - geogram-cli
+      - bin
+      - android/tinyemu
+      - android/app/src/main/jniLibs
+      - third_party/flutter_webrtc/third_party/libwebrtc/lib
+    prebuild:
+      - export flutter_version=$(cat .flutter-version)
+      - git -C $$flutter$$ fetch --tags
+      - git -C $$flutter$$ checkout $flutter_version
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' pubspec.yaml
+      - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
+        -e '/FMTCObjectBoxBackend/,/);/d' -e '/_tileStore = fmtc\./d' -e '/_tileStore!\.manage/d'
+        lib/services/map_tile_service.dart
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - cd $PUB_CACHE/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.6.101
-CurrentVersionCode: 4
+CurrentVersion: 1.9.0
+CurrentVersionCode: 5
