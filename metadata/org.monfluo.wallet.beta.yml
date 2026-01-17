@@ -1,0 +1,120 @@
+Categories:
+  - Wallet
+License: GPL-3.0-only
+AuthorName: acx
+AuthorEmail: acx@cock.lu
+SourceCode: https://codeberg.org/Monfluo/monfluo-android
+IssueTracker: https://codeberg.org/Monfluo/monfluo-android/issues
+Translation: https://hosted.weblate.org/projects/monfluo
+Donate: https://codeberg.org/Monfluo/monfluo-android#donations
+
+AutoName: Monfluo
+
+RepoType: git
+Repo: https://codeberg.org/Monfluo/monfluo-android.git
+
+Builds:
+  - versionName: 0.9.6
+    versionCode: 906001
+    commit: 0936066eaa76187addb43a0f9bd4522dd65f23e8
+    subdir: app
+    submodules: true
+    sudo:
+      - apt update
+      - apt install -y automake cmake make libc-dev g++ file pkg-config python-is-python3
+        libtool yacc wget bzip2
+    gradle:
+      - yes
+    scandelete:
+      - external-libs/monero/external/rapidjson/package.json
+      - external-libs/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - external-libs/monero/tests/data
+    build:
+      - cd ..
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export MONFLUO_DEPENDENCIES_DIRECTORY=$(pwd)/external-libs/monfluo-build-dependencies
+      - . ./external-libs/bin/envs.sh
+      - ./external-libs/bin/download-native-libs-dependencies.sh
+      - export MONFLUO_BUILD_DIRECTORY=$(pwd)/external-libs/monfluo-build-arm32
+      - export MONFLUO_OUTPUT_DIRECTORY=$(pwd)/external-libs/build/armeabi-v7a
+      - export NPROC=$(nproc)
+      - ./external-libs/bin/build-native-libs-arm32.sh
+      - mkdir -p external-libs/build/include
+      - cp external-libs/monero/src/wallet/api/wallet2_api.h external-libs/build/include/wallet2_api.h
+    ndk: 29.0.14206865
+    gradleprops:
+      - monfluo-arm32
+
+  - versionName: 0.9.6
+    versionCode: 906002
+    commit: 0936066eaa76187addb43a0f9bd4522dd65f23e8
+    subdir: app
+    submodules: true
+    sudo:
+      - apt update
+      - apt install -y automake cmake make libc-dev g++ file pkg-config python-is-python3
+        libtool yacc wget bzip2
+    gradle:
+      - yes
+    scandelete:
+      - external-libs/monero/external/rapidjson/package.json
+      - external-libs/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - external-libs/monero/tests/data
+    build:
+      - cd ..
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export MONFLUO_DEPENDENCIES_DIRECTORY=$(pwd)/external-libs/monfluo-build-dependencies
+      - . ./external-libs/bin/envs.sh
+      - ./external-libs/bin/download-native-libs-dependencies.sh
+      - export MONFLUO_BUILD_DIRECTORY=$(pwd)/external-libs/monfluo-build-arm64
+      - export MONFLUO_OUTPUT_DIRECTORY=$(pwd)/external-libs/build/arm64-v8a
+      - export NPROC=$(nproc)
+      - ./external-libs/bin/build-native-libs-arm64.sh
+      - mkdir -p external-libs/build/include
+      - cp external-libs/monero/src/wallet/api/wallet2_api.h external-libs/build/include/wallet2_api.h
+    ndk: 29.0.14206865
+    gradleprops:
+      - monfluo-arm64
+
+  - versionName: 0.9.6
+    versionCode: 906004
+    commit: 0936066eaa76187addb43a0f9bd4522dd65f23e8
+    subdir: app
+    submodules: true
+    sudo:
+      - apt update
+      - apt install -y automake cmake make libc-dev g++ file pkg-config python-is-python3
+        libtool yacc wget bzip2
+    gradle:
+      - yes
+    scandelete:
+      - external-libs/monero/external/rapidjson/package.json
+      - external-libs/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - external-libs/monero/tests/data
+    build:
+      - cd ..
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export MONFLUO_DEPENDENCIES_DIRECTORY=$(pwd)/external-libs/monfluo-build-dependencies
+      - . ./external-libs/bin/envs.sh
+      - ./external-libs/bin/download-native-libs-dependencies.sh
+      - export MONFLUO_BUILD_DIRECTORY=$(pwd)/external-libs/monfluo-build-x86_64
+      - export MONFLUO_OUTPUT_DIRECTORY=$(pwd)/external-libs/build/x86_64
+      - export NPROC=$(nproc)
+      - ./external-libs/bin/build-native-libs-x86_64.sh
+      - mkdir -p external-libs/build/include
+      - cp external-libs/monero/src/wallet/api/wallet2_api.h external-libs/build/include/wallet2_api.h
+    ndk: 29.0.14206865
+    gradleprops:
+      - monfluo-x86_64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 4'
+CurrentVersion: 0.9.6
+CurrentVersionCode: 906004
