@@ -1,0 +1,104 @@
+Categories:
+  - Multimedia
+  - System
+License: GPL-3.0-only
+AuthorName: Samy Younsi (KaijinLab/NSLabs)
+WebSite: https://neroteam.com
+SourceCode: https://github.com/iodn/android-ir-blaster
+IssueTracker: https://github.com/iodn/android-ir-blaster/issues
+Changelog: https://github.com/iodn/android-ir-blaster/releases
+Liberapay: KaijinLab
+Bitcoin: bc1qtf79uecssueu4u4u86zct46vcs0vcd2cnmvw6f
+
+AutoName: IR Blaster Remote
+
+RepoType: git
+Repo: https://github.com/iodn/android-ir-blaster.git
+
+Builds:
+  - versionName: 2.0.5
+    versionCode: 17
+    commit: f0c98a5a133d579b662d8f00dc9a6a4b2ed53c69
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+    build:
+      - export PATH=$$flutter$$/bin:$PATH
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter pub get
+      - mkdir -p assets/db
+      - python3 tools/build_ir_db.py
+      - flutter build apk --release --target-platform=android-arm64
+
+  - versionName: 2.0.8
+    versionCode: 20
+    commit: 29c2c01eabfaa04e7185bb7564fbbcb822576bcb
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+    build:
+      - export PATH=$$flutter$$/bin:$PATH
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter pub get
+      - mkdir -p assets/db
+      - python3 tools/build_ir_db.py
+      - flutter build apk --release --target-platform=android-arm64
+
+  - versionName: 2.0.9
+    versionCode: 21
+    commit: 7241ae9faadd09402690656016e59f956dd9fd3b
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+    build:
+      - export PATH=$$flutter$$/bin:$PATH
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter pub get
+      - mkdir -p assets/db
+      - python3 tools/build_ir_db.py
+      - flutter build apk --release --target-platform=android-arm64
+
+MaintainerNotes: |
+  The IR database is generated during the build by tools/build_ir_db.py.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.9
+CurrentVersionCode: 21
