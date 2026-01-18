@@ -11,8 +11,6 @@ AutoName: PikaTorrent
 
 RepoType: git
 Repo: https://github.com/G-Ray/pikatorrent.git
-# Uncomment once build is reproducible
-# Binaries: https://github.com/G-Ray/pikatorrent/releases/download/v%v/PikaTorrent-v%v-android.apk
 
 Builds:
   - versionName: 0.15.0
@@ -57,7 +55,6 @@ Builds:
       - export VCPKG_FEATURE_FLAGS=-binarycaching
       - export VCPKG_ROOT=$(pwd)/vcpkg
       - export VCPKG_MANIFEST_DIR=$(pwd)
-      # Reproduce same environment as PikaTorrent CI
       - sdkmanager "ndk;27.3.13750724"
       - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
@@ -69,9 +66,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --dart-define-from-file=production.env
       - popd
       - mv $repo/pikatorrent com.pikatorrent.PikaTorrent
-
-# Uncomment once build is reproducible
-# AllowedAPKSigningKeys: 4397ded12ce565c0a45efcde5a72a73920364ac616e9e07caa2532c91deeb5e0
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
