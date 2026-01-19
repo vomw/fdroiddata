@@ -22,8 +22,6 @@ Builds:
       - chown vagrant /home/runner
       - apt-get update
       - apt-get install -y yq zip make pkg-config ninja-build
-      - mkdir -p /usr/local/lib/android/
-      - ln -s /opt/android-sdk/ /usr/local/lib/android/sdk
     output: app/build/app/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - flutter@stable
@@ -55,13 +53,6 @@ Builds:
       - export VCPKG_FEATURE_FLAGS=-binarycaching
       - export VCPKG_ROOT=$(pwd)/vcpkg
       - export VCPKG_MANIFEST_DIR=$(pwd)
-      - sdkmanager "ndk;27.3.13750724"
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_NDK=/usr/local/lib/android/sdk/ndk/27.3.13750724
-      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
-      - export ANDROID_NDK_ROOT=/usr/local/lib/android/sdk/ndk/27.3.13750724
-      - export SOURCE_DATE_EPOCH=0
       - vcpkg/bootstrap-vcpkg.sh -disableMetrics
       - $$flutter$$/bin/flutter build apk --dart-define-from-file=production.env
       - popd
