@@ -25,8 +25,12 @@ Builds:
         ; done
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'META-INF/services/*' 'assets/schemas/com.exner.tools.gymbott.database.GymDatabase/*.json'
 
-AllowedAPKSigningKeys: 07a89b9b74e8d980673671912166ace204c2f73523cd631b933cb4f77ac4a2cf
+AllowedAPKSigningKeys: 3f15745561afae58a2f73ff97a517303eba059b7c608aac576fab7465df27843
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
