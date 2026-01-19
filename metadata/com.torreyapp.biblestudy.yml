@@ -1,0 +1,69 @@
+Categories:
+  - Reading
+  - Education
+License: MIT
+AuthorName: gitrdm
+AuthorEmail: tba@ping.33mail.com
+AuthorWebSite: https://github.com/gitrdm/torrey_bible_app
+SourceCode: https://github.com/gitrdm/torrey_bible_app
+IssueTracker: https://github.com/gitrdm/torrey_bible_app/issues
+Changelog: https://github.com/gitrdm/torrey_bible_app/blob/master/CHANGELOG.md
+
+AutoName: Torrey Bible Study
+Name: Torrey Bible Study
+
+Summary: Bible study with R.A. Torrey's topical classification
+
+Description: |-
+    Torrey Bible Study combines R.A. Torrey's comprehensive New Topical Textbook with 
+    the World English Bible translation to create a powerful Bible study experience.
+
+    Features:
+    * 622 biblical topics organized by R.A. Torrey's systematic classification  
+    * Complete World English Bible with 66 books and over 31,000 verses
+    * Cross-references connecting topics to relevant Bible passages
+    * Intuitive navigation: Topics → Subtopics → Verses → Full Bible chapters
+    * Search functionality across all topics and Bible content
+    * Offline functionality - no internet connection required
+    * Material Design 3 interface optimized for Android
+
+    Educational Purpose:
+    This app serves as a Bible study tool, helping users explore biblical 
+    themes through topical organization while providing direct access to scripture text. 
+    The topical approach, pioneered by R.A. Torrey in 1897, remains one of the most 
+    effective methods for thematic Bible study.
+
+    Content Sources:
+    * World English Bible (Public Domain) - A modern English translation
+    * The New Topical Text Book by R.A. Torrey (Public Domain) - Originally published in 1897
+
+    The app is completely free, open-source, and contains no advertisements or tracking.
+
+RepoType: git
+Repo: https://github.com/gitrdm/torrey_bible_app.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives --set java-1.21.0-openjdk-amd64
+    gradle:
+      - yes
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.27.1
+    prebuild: 
+      - echo 'android.useAndroidX=true' >> ../gradle.properties
+      - echo 'android.enableJetifier=false' >> ../gradle.properties
+    build:
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter packages get
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
