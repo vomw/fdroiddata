@@ -1,0 +1,45 @@
+Categories:
+  - Time
+License: GPL-3.0-or-later
+SourceCode: https://gitlab.com/celebrate_1955/dateprism/dateprism
+IssueTracker: https://gitlab.com/celebrate_1955/dateprism/dateprism/-/issues
+Donate: https://www.paypal.com/ncp/payment/Y2237MMZFL2EY
+
+Summary: Masonic and Gregorian calendar converter
+Description: |-
+  DatePrism converts dates between the Gregorian calendar and the main Masonic calendars (French Rite, Scottish Rite, etc.).
+  It allows for calculating anniversaries in days or months to celebrate symbolic events.
+
+RepoType: git
+Repo: https://gitlab.com/celebrate_1955/dateprism/dateprism.git
+
+Builds:
+  - versionName: 3.3.2
+    versionCode: 330200
+    commit: v3.3.2
+    subdir: build/dateprism/android/gradle
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
+        libffi-dev libssl-dev
+    gradle:
+      - yes
+    srclibs:
+      - cpython@v3.13.11
+    build:
+      - pushd $$cpython$$
+      - ./configure --prefix=$HOME/.local
+      - make -j`nproc`
+      - make altinstall
+      - popd
+      - ln -s $HOME/.local/bin/python3.13 $HOME/.local/bin/python3
+      - ln -s $HOME/.local/bin/pip3.13 $HOME/.local/bin/pip3
+      - export PATH="$HOME/.local/bin:$PATH"
+      - python3 --version
+      - pip3 install --user briefcase toga-android
+      - briefcase create android
+      - briefcase build android
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 3.3.2
