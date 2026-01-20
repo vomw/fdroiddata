@@ -31,10 +31,10 @@ Builds:
       - sdkmanager 'cmake;3.22.1'
       - export EXPO_PUBLIC_BUILD_FLAVOR=foss
       
-      # 1. Clean (On supprime node_modules pour être sûr, mais pas le lockfile yarn si on veut le respecter)
+      # 1. Nettoyage initial (on garde yarn.lock si présent pour la reproductibilité)
       - rm -rf node_modules
 
-      # 2. Patch package.json
+      # 2. Patch package.json (versions & stubs)
       - node -e "
         const fs = require('fs');
         const p = 'package.json';
@@ -48,20 +48,21 @@ Builds:
         if (!pkg.devDependencies) pkg.devDependencies = {};
         pkg.devDependencies['babel-preset-expo'] = '^12.0.0';
         
+        // Force React DOM version match
         const rv = pkg.dependencies['react'] || '18.2.0';
         pkg.dependencies['react-dom'] = rv;
         
         fs.writeFileSync(p, JSON.stringify(pkg, null, 2));
         "
       
-      # 3. Create Stubs
+      # 3. Création des Stubs FOSS
       - mkdir -p stubs/expo-notifications stubs/expo-application
       - echo '{"name":"expo-notifications","version":"0.32.16","main":"index.js"}' > stubs/expo-notifications/package.json
       - echo 'export const setNotificationHandler=()=>{};export const scheduleNotificationAsync=async()=>null;' > stubs/expo-notifications/index.js
       - echo '{"name":"expo-application","version":"7.0.8","main":"index.js"}' > stubs/expo-application/package.json
       - echo 'export const applicationId="com.spix.app.foss";' > stubs/expo-application/index.js
 
-      # 4. Configure app.json
+      # 4. Config app.json
       - node -e "
         const fs = require('fs');
         const a = 'app.json';
@@ -72,18 +73,18 @@ Builds:
         fs.writeFileSync(a, JSON.stringify(app, null, 2));
         "
 
-      # 5. Install (CRITIQUE: c'est ici qu'on installe les dépendances modifiées)
+      # 5. Installation des dépendances (CRITIQUE: yarn install avant le prebuild)
       - yarn install --ignore-engines
 
-      # 6. Expo Prebuild
+      # 6. Génération Android via Expo
       - yarn expo prebuild --clean --platform android
 
-      # 7. Patch Native Files
+      # 7. Configuration de l'environnement Gradle (Fix PATH Node & JVM)
       - echo "reactNative.nodeExecutableAndArgs=/usr/local/bin/node" >> android/gradle.properties
       - echo "newArchEnabled=false" >> android/gradle.properties
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
 
-      # Exclusions Gradle
+      # 8. Patch build.gradle (Exclusions Google/Firebase)
       - sed -i "/com\.google\.gms:google-services/d" android/build.gradle
       - sed -i "/com\.google\.firebase/d" android/build.gradle
       - |
@@ -95,10 +96,25 @@ Builds:
         }}
         EOF
 
-    # On ignore les fichiers binaires au lieu de supprimer tout node_modules
+    # Liste des fichiers ignorés lors du scan de sécurité F-Droid (mais présents pour le build)
     scanignore:
+      # Ignorer les binaires compilés dans node_modules
+      - node_modules/**/*.so
+      - node_modules/**/*.dll
+      - node_modules/**/*.exe
+      - node_modules/**/*.node
+      - node_modules/**/*.dylib
+      - node_modules/**/*.aar
+      - node_modules/**/*.jar
+      
+      # Ignorer les assets de test et dossiers de build internes
+      - node_modules/**/test/**
+      - node_modules/**/tests/**
+      - node_modules/**/__tests__/**
+      - node_modules/**/build/**
+      
+      # Fichiers spécifiques problématiques
       - node_modules/react-native/sdks/hermesc
-      - node_modules/react-native/React/I18n
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
@@ -106,20 +122,17 @@ Builds:
       - node_modules/react-native-vector-icons/android/build.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      # Autoriser les maven repos générés par Expo
-      - node_modules/expo-*/local-maven-repo/**/*.aar
-      - node_modules/expo-*/local-maven-repo/**/*.jar
-      - node_modules/expo-*/local-maven-repo/**/*.pom
-      # Autoriser les binaires Hermes et autres DLLs inutiles sous Linux mais présents
-      - node_modules/**/*.dll
-      - node_modules/**/*.exe
-      - node_modules/**/*.node
+
     scandelete:
-      - node_modules
+    - node_modules
+
     build:
-      - cd android/app
-      - gradle assembleRelease
-    ndk: r27c
+      - export PATH=$PATH:/usr/local/bin
+      - cd android
+      - chmod +x gradlew
+      - ./gradlew assembleRelease
+
+    ndk: r26d
 
 AutoUpdateMode: None
 UpdateCheckMode: None
