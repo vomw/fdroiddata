@@ -17,7 +17,7 @@ Repo: https://github.com/LuckyTheCookie/FitTrack.git
 Builds:
   - versionName: 7.7.0
     versionCode: 70700
-    commit: dbd1c441ba6b2fd0d22d1adea9a23920cf1e0a43
+    commit: cc08809cd7cc11a5a15bd526c0542dbd69d63f26
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - curl -Lo node.tar.gz https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.gz
@@ -28,47 +28,9 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release.apk
 
     prebuild:
-      - sdkmanager 'cmake;3.22.1'
-      - export EXPO_PUBLIC_BUILD_FLAVOR=foss
-      - rm -rf node_modules
-      - echo "const fs = require('fs');" > patch_config.js
-      - echo "const p = 'package.json';" >> patch_config.js
-      - echo "const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));" >> patch_config.js
-      - echo "if (pkg.dependencies['react-native-vision-camera']) pkg.dependencies['react-native-vision-camera'] = 'github:LuckyTheCookie/react-native-vision-camera-foss';" >> patch_config.js
-      - echo "pkg.dependencies['expo-notifications'] = 'file:./stubs/expo-notifications';" >> patch_config.js
-      - echo "pkg.dependencies['expo-application'] = 'file:./stubs/expo-application';" >> patch_config.js
-      - echo "if (!pkg.devDependencies) pkg.devDependencies = {};" >> patch_config.js
-      - echo "pkg.devDependencies['babel-preset-expo'] = '^12.0.0';" >> patch_config.js
-      - echo "const rv = pkg.dependencies['react'] || '18.2.0';" >> patch_config.js
-      - echo "pkg.dependencies['react-dom'] = rv;" >> patch_config.js
-      - echo "if (!pkg.expo) pkg.expo = {};" >> patch_config.js
-      - echo "pkg.expo.autolinking = { android: { buildFromSource: ['.*'] } };" >> patch_config.js
-      - echo "fs.writeFileSync(p, JSON.stringify(pkg, null, 2));" >> patch_config.js
-      - echo "const a = 'app.json';" >> patch_config.js
-      - echo "const app = JSON.parse(fs.readFileSync(a, 'utf8'));" >> patch_config.js
-      - echo "app.expo.android.package = 'com.spix.app.foss';" >> patch_config.js
-      - echo "delete app.expo.android.googleServicesFile;" >> patch_config.js
-      - echo "if(app.expo.plugins) app.expo.plugins = app.expo.plugins.filter(pl => !JSON.stringify(pl).includes('expo-notifications'));" >> patch_config.js
-      - echo "fs.writeFileSync(a, JSON.stringify(app, null, 2));" >> patch_config.js
-      - node patch_config.js
-      - mkdir -p stubs/expo-notifications stubs/expo-application
-      - echo '{"name":"expo-notifications","version":"0.32.16","main":"index.js"}' > stubs/expo-notifications/package.json
-      - echo 'export const setNotificationHandler=()=>{};export const scheduleNotificationAsync=async()=>null;' > stubs/expo-notifications/index.js
-      - echo '{"name":"expo-application","version":"7.0.8","main":"index.js"}' > stubs/expo-application/package.json
-      - echo 'export const applicationId="com.spix.app.foss";' > stubs/expo-application/index.js
-      - yarn install --ignore-engines
-      - yarn expo prebuild --clean --platform android
-      - echo "reactNative.nodeExecutableAndArgs=/usr/local/bin/node" >> android/gradle.properties
-      - echo "newArchEnabled=false" >> android/gradle.properties
-      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
-      - sed -i "/com\.google\.gms:google-services/d" android/build.gradle
-      - sed -i "/com\.google\.firebase/d" android/build.gradle
-      - echo "allprojects { configurations.all {" >> android/build.gradle
-      - echo "  exclude group: 'com.google.firebase'" >> android/build.gradle
-      - echo "  exclude group: 'com.google.android.gms'" >> android/build.gradle
-      - echo "  exclude module: 'transport-runtime'" >> android/build.gradle
-      - echo "}}" >> android/build.gradle
-
+      - chmod +x scripts/fdroid-prebuild.sh
+      - ./scripts/fdroid-prebuild.sh
+    
     scanignore:
       - node_modules/react-native/sdks/hermesc
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -80,9 +42,8 @@ Builds:
 
     build:
       - export PATH=$PATH:/usr/local/bin
-      - cd android
-      - chmod +x gradlew
-      - ./gradlew assembleRelease
+      - cd android/app
+      - gradle assembleRelease
 
     ndk: r26d
 
