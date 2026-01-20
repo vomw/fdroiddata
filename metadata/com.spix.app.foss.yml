@@ -19,11 +19,11 @@ Builds:
     versionCode: 70502
     commit: 31f3b49dfb4c8f2303177b89d22793309c889d76
     sudo:
-      - apt-get update
-      - apt-get install -y nodejs npm
-      - npm install -g n
-      - n 20
-      - npm install -g bun
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.gz
+      - echo "4eba5fbe1fb10753bc06e42f001a91c5cec16798b7764a3e9257adc59af47fe1 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild: scripts/fdroid-prebuild.sh
     scandelete:
