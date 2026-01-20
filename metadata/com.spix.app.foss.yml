@@ -31,39 +31,25 @@ Builds:
       - sdkmanager 'cmake;3.22.1'
       - export EXPO_PUBLIC_BUILD_FLAVOR=foss
       - rm -rf node_modules
-      - |
-        cat > patch_config.js << 'EOF'
-        const fs = require('fs');
-        // --- PATCH PACKAGE.JSON ---
-        const p = 'package.json';
-        const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
-        // Remplacement Camera FOSS
-        if (pkg.dependencies['react-native-vision-camera']) {
-            pkg.dependencies['react-native-vision-camera'] = 'github:LuckyTheCookie/react-native-vision-camera-foss';
-        }
-        // Stubs
-        pkg.dependencies['expo-notifications'] = 'file:./stubs/expo-notifications';
-        pkg.dependencies['expo-application'] = 'file:./stubs/expo-application';
-        if (!pkg.devDependencies) pkg.devDependencies = {};
-        pkg.devDependencies['babel-preset-expo'] = '^12.0.0';
-        const rv = pkg.dependencies['react'] || '18.2.0';
-        pkg.dependencies['react-dom'] = rv;
-        if (!pkg.expo) pkg.expo = {};
-        pkg.expo.autolinking = {
-          android: {
-            buildFromSource: ['.*'] 
-          }
-        };
-        fs.writeFileSync(p, JSON.stringify(pkg, null, 2));
-        const a = 'app.json';
-        const app = JSON.parse(fs.readFileSync(a, 'utf8'));
-        app.expo.android.package = 'com.spix.app.foss';
-        delete app.expo.android.googleServicesFile;
-        if(app.expo.plugins) {
-            app.expo.plugins = app.expo.plugins.filter(pl => !JSON.stringify(pl).includes('expo-notifications'));
-        }
-        fs.writeFileSync(a, JSON.stringify(app, null, 2));
-        EOF
+      - echo "const fs = require('fs');" > patch_config.js
+      - echo "const p = 'package.json';" >> patch_config.js
+      - echo "const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));" >> patch_config.js
+      - echo "if (pkg.dependencies['react-native-vision-camera']) pkg.dependencies['react-native-vision-camera'] = 'github:LuckyTheCookie/react-native-vision-camera-foss';" >> patch_config.js
+      - echo "pkg.dependencies['expo-notifications'] = 'file:./stubs/expo-notifications';" >> patch_config.js
+      - echo "pkg.dependencies['expo-application'] = 'file:./stubs/expo-application';" >> patch_config.js
+      - echo "if (!pkg.devDependencies) pkg.devDependencies = {};" >> patch_config.js
+      - echo "pkg.devDependencies['babel-preset-expo'] = '^12.0.0';" >> patch_config.js
+      - echo "const rv = pkg.dependencies['react'] || '18.2.0';" >> patch_config.js
+      - echo "pkg.dependencies['react-dom'] = rv;" >> patch_config.js
+      - echo "if (!pkg.expo) pkg.expo = {};" >> patch_config.js
+      - echo "pkg.expo.autolinking = { android: { buildFromSource: ['.*'] } };" >> patch_config.js
+      - echo "fs.writeFileSync(p, JSON.stringify(pkg, null, 2));" >> patch_config.js
+      - echo "const a = 'app.json';" >> patch_config.js
+      - echo "const app = JSON.parse(fs.readFileSync(a, 'utf8'));" >> patch_config.js
+      - echo "app.expo.android.package = 'com.spix.app.foss';" >> patch_config.js
+      - echo "delete app.expo.android.googleServicesFile;" >> patch_config.js
+      - echo "if(app.expo.plugins) app.expo.plugins = app.expo.plugins.filter(pl => !JSON.stringify(pl).includes('expo-notifications'));" >> patch_config.js
+      - echo "fs.writeFileSync(a, JSON.stringify(app, null, 2));" >> patch_config.js
       - node patch_config.js
       - mkdir -p stubs/expo-notifications stubs/expo-application
       - echo '{"name":"expo-notifications","version":"0.32.16","main":"index.js"}' > stubs/expo-notifications/package.json
@@ -77,14 +63,11 @@ Builds:
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
       - sed -i "/com\.google\.gms:google-services/d" android/build.gradle
       - sed -i "/com\.google\.firebase/d" android/build.gradle
-      - |
-        cat >> android/build.gradle <<EOF
-        allprojects { configurations.all { 
-          exclude group: 'com.google.firebase'
-          exclude group: 'com.google.android.gms'
-          exclude module: 'transport-runtime'
-        }}
-        EOF
+      - echo "allprojects { configurations.all {" >> android/build.gradle
+      - echo "  exclude group: 'com.google.firebase'" >> android/build.gradle
+      - echo "  exclude group: 'com.google.android.gms'" >> android/build.gradle
+      - echo "  exclude module: 'transport-runtime'" >> android/build.gradle
+      - echo "}}" >> android/build.gradle
 
     scanignore:
       - node_modules/react-native/sdks/hermesc
@@ -97,8 +80,9 @@ Builds:
 
     build:
       - export PATH=$PATH:/usr/local/bin
-      - cd android/app
-      - gradle assembleRelease
+      - cd android
+      - chmod +x gradlew
+      - ./gradlew assembleRelease
 
     ndk: r26d
 
