@@ -1,3 +1,19 @@
+Categories:
+  - Sports & Health
+License: AGPL-3.0-or-later
+AuthorName: LuckyTheCookie - Lucas THIEBAUT
+AuthorWebSite: https://github.com/LuckyTheCookie
+WebSite: https://lthb.fr
+SourceCode: https://github.com/LuckyTheCookie/FitTrack
+IssueTracker: https://github.com/LuckyTheCookie/FitTrack/issues
+Changelog: https://github.com/LuckyTheCookie/FitTrack/releases
+
+Name: Spix
+AutoName: Spix
+
+RepoType: git
+Repo: https://github.com/LuckyTheCookie/FitTrack.git
+
 Builds:
   - versionName: 7.7.0
     versionCode: 70700
@@ -9,33 +25,29 @@ Builds:
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm install -g yarn
 
+    output: android/app/build/outputs/apk/release/app-release.apk
+
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      
-      # 1. Clean & Config
       - export EXPO_PUBLIC_BUILD_FLAVOR=foss
-      # On supprime package-lock pour être sûr d'utiliser yarn.lock ou régénérer
-      - rm -rf node_modules package-lock.json
+      
+      # 1. Clean (On supprime node_modules pour être sûr, mais pas le lockfile yarn si on veut le respecter)
+      - rm -rf node_modules
 
-      # 2. Patch package.json (AVANT l'installation)
+      # 2. Patch package.json
       - node -e "
         const fs = require('fs');
         const p = 'package.json';
         const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
         
-        // Fix Vision Camera FOSS
         if (pkg.dependencies['react-native-vision-camera']) pkg.dependencies['react-native-vision-camera'] = 'github:LuckyTheCookie/react-native-vision-camera-foss';
         
-        // Stubs
         pkg.dependencies['expo-notifications'] = 'file:./stubs/expo-notifications';
         pkg.dependencies['expo-application'] = 'file:./stubs/expo-application';
         
-        // Fix Deps Missing (Babel, etc.)
         if (!pkg.devDependencies) pkg.devDependencies = {};
         pkg.devDependencies['babel-preset-expo'] = '^12.0.0';
-        pkg.devDependencies['@babel/core'] = '^7.20.0'; 
         
-        // Align React/React-DOM
         const rv = pkg.dependencies['react'] || '18.2.0';
         pkg.dependencies['react-dom'] = rv;
         
@@ -49,7 +61,7 @@ Builds:
       - echo '{"name":"expo-application","version":"7.0.8","main":"index.js"}' > stubs/expo-application/package.json
       - echo 'export const applicationId="com.spix.app.foss";' > stubs/expo-application/index.js
 
-      # 4. Patch app.json
+      # 4. Configure app.json
       - node -e "
         const fs = require('fs');
         const a = 'app.json';
@@ -60,19 +72,18 @@ Builds:
         fs.writeFileSync(a, JSON.stringify(app, null, 2));
         "
 
-      # 5. Install Dependencies (Yarn)
-      # On installe MAINTENANT pour prendre en compte les modifications du package.json
-      - yarn install
+      # 5. Install (CRITIQUE: c'est ici qu'on installe les dépendances modifiées)
+      - yarn install --ignore-engines
 
       # 6. Expo Prebuild
-      - npx expo prebuild --clean --platform android
+      - yarn expo prebuild --clean --platform android
 
       # 7. Patch Native Files
       - echo "reactNative.nodeExecutableAndArgs=/usr/local/bin/node" >> android/gradle.properties
       - echo "newArchEnabled=false" >> android/gradle.properties
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
 
-      # Patch build.gradle (Exclusions FOSS)
+      # Exclusions Gradle
       - sed -i "/com\.google\.gms:google-services/d" android/build.gradle
       - sed -i "/com\.google\.firebase/d" android/build.gradle
       - |
