@@ -16,17 +16,16 @@ Builds:
     subdir: build/dateprism/android/gradle
     sudo:
       - apt-get update
-      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev libffi-dev libssl-dev
+      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
+        libffi-dev libssl-dev
     gradle:
       - yes
     srclibs:
       - cpython@v3.13.11
-      # Dépendances critiques pour build offline (URLs officielles GitHub)
-      - briefcase@v0.3.22 https://github.com/beeware/briefcase.git
-      - toga@v0.4.7 https://github.com/beeware/toga.git
-      - template@v0.3.22 https://github.com/beeware/briefcase-android-gradle-template.git
+      - briefcase@v0.3.22
+      - toga@v0.4.7
+      - template@v0.3.22
     build:
-      # Préparation Python
       - pushd $$cpython$$
       - ./configure --prefix=$HOME/.local
       - make -j`nproc`
@@ -36,22 +35,16 @@ Builds:
       - ln -s $HOME/.local/bin/pip3.13 $HOME/.local/bin/pip3
       - export PATH="$HOME/.local/bin:$PATH"
       - python3 --version
-      
-      # Installation OFFLINE des outils BeeWare
       - pushd $$briefcase$$
       - pip3 install --user .
       - popd
       - pushd $$toga$$
       - pip3 install --user ./core ./android
       - popd
-      
-      # Génération du projet Android avec template local
       - briefcase create android --template $$template$$ --no-input
       - briefcase build android
 
-# Contournement : Désactivation du check automatique pour l'instant
 AutoUpdateMode: None
 UpdateCheckMode: None
-
 CurrentVersion: 3.3.2
 CurrentVersionCode: 3030200
