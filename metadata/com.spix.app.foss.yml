@@ -17,7 +17,7 @@ Repo: https://github.com/LuckyTheCookie/FitTrack.git
 Builds:
   - versionName: 7.7.0
     versionCode: 70700
-    commit: 776a72808c23c752b47eb0d6358214f3f93ee761
+    commit: f4e4b55bdfbc1ab23c75c6f7bea69c9da13ef771
     sudo:
       - sysctl fs.inotify.max_user_watches=524288
       - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.21.1/node-v22.21.1-linux-x64.tar.gz
@@ -26,9 +26,7 @@ Builds:
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm -g install bun
     output: android/app/build/outputs/apk/release/app-release.apk
-    prebuild:
-      - chmod +x scripts/fdroid-prebuild.sh
-      - ./scripts/fdroid-prebuild.sh
+    prebuild: /scripts/fdroid-prebuild.sh
     scanignore:
       - node_modules
     build:
