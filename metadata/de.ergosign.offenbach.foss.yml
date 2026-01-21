@@ -8,14 +8,25 @@ Description: |
     Entdecken Sie Offenbach mit der offiziellen Stadt-App - Ihr Tor zu allem, was die Stadt zu bieten hat!
 RepoType: git
 Repo: https://gitlab.opencode.de/offenbach/offenbach-app.git
+
+Srclibs:
+  flutter: flutter/flutter@3.35.5
+
 Builds:
   - versionName: '1.1.4'
     versionCode: 35
     commit: v1.1.4
-    subdir: offenbach_app
+    subdir: offenbach_app/android
+    prebuild:
+      - pushd ..
+      - $$flutter$$ pub get
+      - popd
     gradle:
       - fossAssembleRelease
 AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
 CurrentVersion: '1.1.4'
 CurrentVersionCode: 35
+
+AllowedSDKs:
+  - flutter
