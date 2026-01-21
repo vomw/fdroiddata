@@ -9,17 +9,19 @@ Description: |
 RepoType: git
 Repo: https://gitlab.opencode.de/offenbach/offenbach-app.git
 
-srclibs:
-  flutter: flutter/flutter@3.35.5
+AutoName: Offenbach App
 
 Builds:
   - versionName: '1.1.4'
     versionCode: 35
     commit: v1.1.4
     subdir: offenbach_app/android
+    srclibs:
+      - flutter@3.35.5
     prebuild:
       - pushd ..
-      - $$flutter$$ pub get
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
       - popd
     gradle:
       - fossAssembleRelease
@@ -28,6 +30,3 @@ AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
 CurrentVersion: '1.1.4'
 CurrentVersionCode: 35
-
-allowedSDKs:
-  - flutter
