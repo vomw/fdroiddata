@@ -27,7 +27,14 @@ Builds:
     prebuild: 
       - echo 'android.useAndroidX=true' >> ../gradle.properties
       - echo 'android.enableJetifier=false' >> ../gradle.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
     build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$PATH
       - flutter packages get
       - flutter build apk --release
