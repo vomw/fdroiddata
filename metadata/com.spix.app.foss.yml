@@ -17,15 +17,13 @@ Repo: https://github.com/LuckyTheCookie/FitTrack.git
 Builds:
   - versionName: 7.7.0
     versionCode: 70700
-    commit: 70c8c35f72e9e9f925791508505c2e0696a1afd1
+    commit: 776a72808c23c752b47eb0d6358214f3f93ee761
     sudo:
-      - sysctl fs.inotify.max_user_watches=524288 || true
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.gz
-      - echo "4eba5fbe1fb10753bc06e42f001a91c5cec16798b7764a3e9257adc59af47fe1 node.tar.gz" | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-      - npm install -g yarn
+      - apt-get update
+      - apt-get install -y nodejs npm
       - npm install -g n
       - n 20
+      - npm install -g bun
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - chmod +x scripts/fdroid-prebuild.sh
