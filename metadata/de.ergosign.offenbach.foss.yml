@@ -15,16 +15,15 @@ Builds:
   - versionName: '1.1.4'
     versionCode: 35
     commit: v1.1.4
-    subdir: offenbach_app/android
+    subdir: offenbach_app
     srclibs:
       - flutter@3.35.5
     prebuild:
-      - pushd ..
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - popd
-    gradle:
-      - fossAssembleRelease
+    build:
+      - $$flutter$$/bin/flutter build apk -t lib/main_foss.dart --flavor "foss" --dart-define-from-file "env/foss.json" --release
+    output: build/app/outputs/flutter-apk/app-foss-release.apk
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
