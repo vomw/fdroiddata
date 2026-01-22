@@ -41,9 +41,10 @@ Builds:
       - pushd $$toga$$
       - pip3 install --user ./core ./android
       - popd
-      - sed -i 
-        's|\[tool.briefcase.app.dateprism.android\]|[tool.briefcase.app.dateprism.android]\ntemplate
-        = "$$template$$"|' ../../../pyproject.toml
+      - pushd $$template$$
+      - mkdir -p $HOME/.cookiecutters
+      - cp -a . $HOME/.cookiecutters/briefcase-android-gradle-template
+      - popd
       - briefcase create android --no-input
       - briefcase build android
 
