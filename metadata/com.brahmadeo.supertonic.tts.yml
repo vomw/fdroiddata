@@ -22,5 +22,9 @@ Builds:
       - yes
     ndk: r26b
     prebuild:
-      - rustup update
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+      - export PATH="$HOME/.cargo/bin:$PATH"
       - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - gradle assembleRelease
