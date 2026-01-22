@@ -16,6 +16,7 @@ Builds:
   - versionName: 0.15.0
     versionCode: 7
     commit: 7570685471c1f584c123eeba553dc38e033beb73
+    subdir: app
     submodules: true
     sudo:
       - apt-get update
@@ -30,13 +31,11 @@ Builds:
       - app/windows
       - app/vcpkg/scripts/*.exe
     prebuild:
-      - cd ./app
       - flutterVersion=$(yq -r .environment.flutter pubspec.yaml)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     build:
-      - cd ./app
       - export VCPKG_FEATURE_FLAGS=-binarycaching
       - export VCPKG_ROOT=$(pwd)/vcpkg
       - export VCPKG_MANIFEST_DIR=$(pwd)
