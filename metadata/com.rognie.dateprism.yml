@@ -47,13 +47,11 @@ Builds:
       - popd
       - cd ../../../..
       - yes | briefcase create android || true
-      - briefcase build android -r
-      - cp 
-        build/dateprism/android/gradle/app/build/outputs/apk/release/app-release-unsigned.apk
-        \ build/dateprism/android/gradle/app-release-unsigned.apk
       - cd build/dateprism/android/gradle
-      - ls -R
-      - aapt dump badging app-release-unsigned.apk | head -n 5
+      - chmod +x gradlew
+      - ./gradlew assembleRelease
+      - find app/build/outputs/apk/release -name "*.apk" -exec cp {} app-release-unsigned.apk \;
+      - ls -la app-release-unsigned.apk
 
 AutoUpdateMode: None
 UpdateCheckMode: None
