@@ -41,7 +41,8 @@ Builds:
       - pushd $$toga$$
       - pip3 install --user ./core ./android
       - popd
-      - briefcase create android --no-input --template $$template$$
+      - sed -i 's|\[tool.briefcase.app.dateprism.android\]|[tool.briefcase.app.dateprism.android]\ntemplate = "$$template$$"|' pyproject.toml
+      - briefcase create android --no-input
       - briefcase build android
 
 AutoUpdateMode: None
