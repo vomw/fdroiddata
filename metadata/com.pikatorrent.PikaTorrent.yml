@@ -18,8 +18,6 @@ Builds:
     commit: 7570685471c1f584c123eeba553dc38e033beb73
     submodules: true
     sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
       - apt-get update
       - apt-get install -y yq zip make pkg-config ninja-build
     output: app/build/app/outputs/apk/release/app-release-unsigned.apk
@@ -32,31 +30,18 @@ Builds:
       - app/windows
       - app/vcpkg/scripts/*.exe
     prebuild:
-      - export repo=/home/runner/work/pikatorrent
-      - mkdir -p $repo
-      - cd ../
-      - mv com.pikatorrent.PikaTorrent $repo/pikatorrent
-      - pushd $repo/pikatorrent/app
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - cd ./app
       - flutterVersion=$(yq -r .environment.flutter pubspec.yaml)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - popd
-      - mv $repo/pikatorrent com.pikatorrent.PikaTorrent
     build:
-      - export repo=/home/runner/work/pikatorrent
-      - cd ../
-      - mv com.pikatorrent.PikaTorrent $repo/pikatorrent
-      - pushd $repo/pikatorrent/app
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - cd ./app
       - export VCPKG_FEATURE_FLAGS=-binarycaching
       - export VCPKG_ROOT=$(pwd)/vcpkg
       - export VCPKG_MANIFEST_DIR=$(pwd)
       - vcpkg/bootstrap-vcpkg.sh -disableMetrics
       - $$flutter$$/bin/flutter build apk --dart-define-from-file=production.env
-      - popd
-      - mv $repo/pikatorrent com.pikatorrent.PikaTorrent
     ndk: 27.3.13750724
 
 AutoUpdateMode: Version
