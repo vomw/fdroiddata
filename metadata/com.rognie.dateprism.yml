@@ -27,14 +27,11 @@ Builds:
       - template@v0.3.22
     build:
       - pushd $$cpython$$
-      - ./configure --prefix=$HOME/.local
-      - make -j`nproc`
-      - make altinstall
+      - ./configure --prefix=$HOME/.local && make -j`nproc` && make altinstall
       - popd
       - ln -s $HOME/.local/bin/python3.13 $HOME/.local/bin/python3
       - ln -s $HOME/.local/bin/pip3.13 $HOME/.local/bin/pip3
       - export PATH="$HOME/.local/bin:$PATH"
-      - python3 --version
       - pushd $$briefcase$$
       - pip3 install --user .
       - popd
@@ -47,12 +44,9 @@ Builds:
       - popd
       - cd ../../../..
       - yes | briefcase create android || true
+      - briefcase build android
+      - cp build/dateprism/android/gradle/app/build/outputs/apk/debug/app-debug.apk build/dateprism/android/gradle/
       - cd build/dateprism/android/gradle
-      - chmod +x gradlew
-      - ./gradlew assembleRelease
-      - find app/build/outputs/apk/release -name "*.apk" -exec cp {} app-release-unsigned.apk
-        \;
-      - ls -la app-release-unsigned.apk
 
 AutoUpdateMode: None
 UpdateCheckMode: None
