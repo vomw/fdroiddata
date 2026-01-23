@@ -11,26 +11,31 @@ Repo: https://github.com/DevGitPit/supertonic-android
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.1'
-CurrentVersionCode: 2
+CurrentVersion: '1.2'
+CurrentVersionCode: 3
 
 Builds:
-  - versionName: '1.1'
-    versionCode: 2
-    commit: v1.1
+  - versionName: '1.2'
+    versionCode: 3
+    commit: v1.2
     gradle:
       - yes
     ndk: r26b
     sudo:
       - apt-get update
       - apt-get install -y build-essential pkg-config libssl-dev
-    scanignore:
-            - rust/vendor/wit-bindgen-0.51.0/wasi-cli@0.2.0.wasm
-            - rust/vendor/regex-automata-0.4.13/tests/fuzz/testdata/
     prebuild:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-      - export PATH="$HOME/.cargo/bin:$PATH"
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+      - sh rustup-init.sh -y --default-toolchain stable
+      - source $HOME/.cargo/env
       - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-    build:
-      - export PATH="$HOME/.cargo/bin:$PATH"
-      - gradle assembleRelease
+      - mkdir -p rust/.cargo
+      - echo '[target.aarch64-linux-android]' > rust/.cargo/config.toml
+      - echo 'linker = "aarch64-linux-android34-clang"' >> rust/.cargo/config.toml
+      - echo '[source.crates-io]' >> rust/.cargo/config.toml
+      - echo 'replace-with = "vendored-sources"' >> rust/.cargo/config.toml
+      - echo '[source.vendored-sources]' >> rust/.cargo/config.toml
+      - echo 'directory = "vendor"' >> rust/.cargo/config.toml
+    scanignore:
+      - rust/vendor/wit-bindgen-0.51.0/wasi-cli@0.2.0.wasm
+      - rust/vendor/regex-automata-0.4.13/tests/fuzz/testdata/
