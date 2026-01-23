@@ -16,22 +16,24 @@ Repo: https://github.com/ZiClaud/Iremi-Breathing-App.git
 Builds:
   - versionName: 1.1.10
     versionCode: 1
-    commit: bb3d3ba2a8a0cab8a2fc02a0841d3f379ae33eba
-    output: build/app/outputs/flutter-apk/app-release.apk
+    commit: cc0548ef331dcec91a0ff862134f13192a8bcb94
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
       - flutterVersion=3.38.7
-      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/27.0.12077973
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
     build:
+      - export ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/27.0.12077973
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    ndk: r27
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
