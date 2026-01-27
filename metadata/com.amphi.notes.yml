@@ -14,12 +14,16 @@ RepoType: git
 Repo: https://github.com/amphi2024/notes.git
 
 Builds:
-  - versionName: 2.0.0
-    versionCode: 4
-    commit: 4300ee31d810f1e213ab21d3643ba83b1dcc00b1
+  - versionName: 2.1.0
+    versionCode: 5
+    commit: 3e6a9dec3ff2a71e7d151ac99504e671d8a43d78
+    sudo:
+      - mkdir -p /tmp/build
+      - chown vagrant /tmp/build
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/amphi2024/notes/releases/download/v%v/Notes-%v-Android.apk
     srclibs:
-      - flutter@3.35.3
+      - flutter@stable
     rm:
       - ios
       - macos
@@ -30,22 +34,35 @@ Builds:
       - snap
       - scripts
     prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.notes /tmp/build/amphi-notes
+      - pushd /tmp/build/amphi-notes/
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
       - flutter config --no-analytics
-      - flutter doctor --verbose
-      - flutter clean
       - flutter pub get
       - flutter precache
+      - popd
+      - mv /tmp/build/amphi-notes com.amphi.notes
     scandelete:
       - .pub-cache
     build:
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.notes /tmp/build/amphi-notes
+      - pushd /tmp/build/amphi-notes/
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
-      - flutter build apk --verbose
+      - flutter build apk
+      - popd
+      - mv /tmp/build/amphi-notes com.amphi.notes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[\d.]+
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.0
-CurrentVersionCode: 4
+CurrentVersion: 2.1.0
+CurrentVersionCode: 5
