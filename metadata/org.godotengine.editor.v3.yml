@@ -200,102 +200,6 @@ Builds:
       - gradle generateGodotEditor
     ndk: r23c
 
-  - versionName: 3.6.0.beta.0
-    versionCode: 306002000
-    disable: beta
-    commit: 7722461dc5a679379a1d13aec8747b7669ce81be
-    timeout: 15000
-    sudo:
-      - apt-get update
-      - apt-get install -y scons
-    output: bin/android_editor.apk
-    prebuild:
-      - cd platform/android/java
-      - sed -i 's/url repoUrl//' app/build.gradle
-      - sed -i 's/editorBuildNumber\ =\ 0/editorBuildNumber\ =\ 0/' editor/build.gradle
-      - sed -i 's/versionCode\ generateVersionCode()/versionCode $$VERCODE$$/' editor/build.gradle
-    build:
-      - export ANDROID_SDK_ROOT="$$SDK$$"
-      - scons platform=android tools=yes target=release_debug android_arch=x86
-      - cd platform/android/java
-      - gradle generateGodotEditor
-    ndk: r23c
-    antifeatures:
-      KnownVuln:
-        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
-
-  - versionName: 3.6.0.beta.0
-    versionCode: 306002001
-    disable: beta
-    commit: 7722461dc5a679379a1d13aec8747b7669ce81be
-    timeout: 15000
-    sudo:
-      - apt-get update
-      - apt-get install -y scons
-    output: bin/android_editor.apk
-    prebuild:
-      - cd platform/android/java
-      - sed -i 's/url repoUrl//' app/build.gradle
-      - sed -i 's/editorBuildNumber\ =\ 0/editorBuildNumber\ =\ 0/' editor/build.gradle
-      - sed -i 's/versionCode\ generateVersionCode()/versionCode $$VERCODE$$/' editor/build.gradle
-    build:
-      - export ANDROID_SDK_ROOT="$$SDK$$"
-      - scons platform=android tools=yes target=release_debug android_arch=x86_64
-      - cd platform/android/java
-      - gradle generateGodotEditor
-    ndk: r23c
-    antifeatures:
-      KnownVuln:
-        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
-
-  - versionName: 3.6.0.beta.0
-    versionCode: 306002002
-    disable: beta
-    commit: 7722461dc5a679379a1d13aec8747b7669ce81be
-    timeout: 15000
-    sudo:
-      - apt-get update
-      - apt-get install -y scons
-    output: bin/android_editor.apk
-    prebuild:
-      - cd platform/android/java
-      - sed -i 's/url repoUrl//' app/build.gradle
-      - sed -i 's/editorBuildNumber\ =\ 0/editorBuildNumber\ =\ 0/' editor/build.gradle
-      - sed -i 's/versionCode\ generateVersionCode()/versionCode $$VERCODE$$/' editor/build.gradle
-    build:
-      - export ANDROID_SDK_ROOT="$$SDK$$"
-      - scons platform=android tools=yes target=release_debug android_arch=armv7
-      - cd platform/android/java
-      - gradle generateGodotEditor
-    ndk: r23c
-    antifeatures:
-      KnownVuln:
-        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
-
-  - versionName: 3.6.0.beta.0
-    versionCode: 306002003
-    disable: beta
-    commit: 7722461dc5a679379a1d13aec8747b7669ce81be
-    timeout: 15000
-    sudo:
-      - apt-get update
-      - apt-get install -y scons
-    output: bin/android_editor.apk
-    prebuild:
-      - cd platform/android/java
-      - sed -i 's/url repoUrl//' app/build.gradle
-      - sed -i 's/editorBuildNumber\ =\ 0/editorBuildNumber\ =\ 0/' editor/build.gradle
-      - sed -i 's/versionCode\ generateVersionCode()/versionCode $$VERCODE$$/' editor/build.gradle
-    build:
-      - export ANDROID_SDK_ROOT="$$SDK$$"
-      - scons platform=android tools=yes target=release_debug android_arch=arm64v8
-      - cd platform/android/java
-      - gradle generateGodotEditor
-    ndk: r23c
-    antifeatures:
-      KnownVuln:
-        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
-
   - versionName: 3.6.0.stable
     versionCode: 306005000
     commit: de2f0f147c5b7eff2d0f6dbc35042a4173fd59be
@@ -303,7 +207,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -326,7 +231,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -349,7 +255,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -372,7 +279,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -395,7 +303,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -418,7 +327,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -441,7 +351,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/
@@ -464,7 +375,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y pkg-config scons
-    output: platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
+    output: 
+      platform/android/java/editor/build/outputs/apk/release/android_editor-release-unsigned.apk
     prebuild:
       - mkdir -p /opt/android-sdk/cmdline-tools/latest/bin
       - ln -sf $(which sdkmanager) /opt/android-sdk/cmdline-tools/latest/bin/

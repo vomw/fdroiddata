@@ -15,13 +15,17 @@
       "items": {
         "type": "string",
         "enum": [
+          "AI Chat",
+          "App Manager",
           "App Store & Updater",
           "Bookmark",
           "Browser",
           "Calculator",
           "Calendar & Agenda",
+          "Clock",
           "Cloud Storage & File Sync",
           "Connectivity",
+          "Contact",
           "Development",
           "DNS & Hosts",
           "Draw",
@@ -29,19 +33,26 @@
           "Email",
           "File Encryption & Vault",
           "File Transfer",
+          "Firewall",
           "Finance Manager",
+          "Forum",
           "Gallery",
           "Games",
           "Graphics",
+          "Habit Tracker",
           "Icon Pack",
           "Internet",
+          "Inventory",
           "Keyboard & IME",
           "Launcher",
           "Local Media Player",
+          "Location Tracker & Sharer",
           "Messaging",
           "Money",
           "Multimedia",
+          "Music Practice Tool",
           "Navigation",
+          "Network Analyzer",
           "News",
           "Note",
           "Online Media Player",
@@ -49,9 +60,10 @@
           "Password & 2FA",
           "Phone & SMS",
           "Podcast",
-          "Public Transport Map & Timetable",
+          "Public Transport",
           "Reading",
           "Recipe Manager",
+          "Religion",
           "Science & Education",
           "Security",
           "Shopping List",
@@ -304,12 +316,12 @@
     "Bitcoin": {
       "description": "A Bitcoin address for donating to the project.",
       "type": "string",
-      "pattern": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$"
+      "pattern": "^([13][a-km-zA-HJ-NP-Z1-9]{25,34}|bc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Litecoin": {
       "description": "A Litecoin address for donating to the project.",
       "type": "string",
-      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[a-km-z0-9]{39})$"
+      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Name": {
       "description": "The title of the application, with optional descriptive phrase.",
@@ -353,14 +365,7 @@
     "RepoType": {
       "description": "The type of repository - for automatic building from source.",
       "type": "string",
-      "enum": [
-        "git",
-        "svn",
-        "git-svn",
-        "hg",
-        "bzr",
-        "srclib"
-      ]
+      "enum": ["git", "svn", "git-svn", "hg", "bzr", "srclib"]
     },
     "Repo": {
       "description": "The repository location. Usually a git: or svn: URL, for example.",
@@ -368,7 +373,8 @@
     },
     "Binaries": {
       "description": "The location of binaries used in verification process.",
-      "$ref": "#/definitions/url"
+      "type": "string",
+      "pattern": "^https://.*%(v|c).*$"
     },
     "Builds": {
       "description": "Any number of sub-entries can be present, each specifying a version to automatically build from source.",
@@ -487,10 +493,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "yes",
-                  "no"
-                ]
+                "enum": ["yes", "no"]
               },
               {
                 "type": "array",
@@ -530,10 +533,7 @@
               },
               {
                 "type": "string",
-                "enum": [
-                  "yes",
-                  "yes@"
-                ]
+                "enum": ["yes", "yes@"]
               }
             ]
           },
@@ -555,7 +555,7 @@
           },
           "binary": {
             "description": "The location of binaries used in verification process.",
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/https"
           },
           "novcheck": {
             "description": "Don't check that the version name and code in the resulting APK are correct by looking at the build output - assume the metadata is correct.",
@@ -566,10 +566,7 @@
             "$ref": "#/definitions/anti_features"
           }
         },
-        "required": [
-          "versionName",
-          "versionCode"
-        ],
+        "required": ["versionName", "versionCode"],
         "additionalProperties": false
       },
       "uniqueItems": true,
@@ -592,10 +589,7 @@
       "type": "string",
       "anyOf": [
         {
-          "enum": [
-            "None",
-            "Version"
-          ]
+          "enum": ["None", "Version"]
         },
         {
           "pattern": "^Version( \\+.+)? [^+].+"
@@ -607,11 +601,7 @@
       "type": "string",
       "anyOf": [
         {
-          "enum": [
-            "None",
-            "Static",
-            "HTTP"
-          ]
+          "enum": ["None", "Static", "HTTP"]
         },
         {
           "pattern": "^RepoManifest(/.+)?$"
@@ -642,9 +632,7 @@
         },
         {
           "type": "string",
-          "enum": [
-            "Ignore"
-          ]
+          "enum": ["Ignore"]
         }
       ]
     },
@@ -665,27 +653,33 @@
       "type": "string"
     }
   },
-  "required": [
-    "Categories",
-    "License",
-    "Builds"
-  ],
+  "required": ["Categories", "License", "Builds"],
   "allOf": [
     {
       "anyOf": [
         {
-          "required": [
-            "Repo",
-            "RepoType",
-            "SourceCode"
-          ]
+          "required": ["Repo", "RepoType", "SourceCode"]
         },
         {
-          "required": [
-            "NoSourceSince"
-          ]
+          "required": ["NoSourceSince"]
         }
       ]
+    },
+    {
+      "if": {
+        "properties": {
+          "RepoType": {
+            "const": "git"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "Repo": {
+            "$ref": "#/definitions/https"
+          }
+        }
+      }
     },
     {
       "if": {
@@ -696,14 +690,10 @@
                 "const": 0
               }
             },
-            "required": [
-              "ArchivePolicy"
-            ]
+            "required": ["ArchivePolicy"]
           },
           {
-            "required": [
-              "NoSourceSince"
-            ]
+            "required": ["NoSourceSince"]
           }
         ]
       },
@@ -719,30 +709,22 @@
       "if": {
         "anyOf": [
           {
-            "required": [
-              "Binaries"
-            ]
+            "required": ["Binaries"]
           },
           {
             "properties": {
               "Builds": {
                 "contains": {
-                  "required": [
-                    "binary"
-                  ]
+                  "required": ["binary"]
                 }
               }
             },
-            "required": [
-              "Builds"
-            ]
+            "required": ["Builds"]
           }
         ]
       },
       "then": {
-        "required": [
-          "AllowedAPKSigningKeys"
-        ]
+        "required": ["AllowedAPKSigningKeys"]
       }
     },
     {
@@ -777,9 +759,7 @@
             "pattern": "^(None|Version .+)$"
           }
         },
-        "required": [
-          "UpdateCheckData"
-        ]
+        "required": ["UpdateCheckData"]
       }
     },
     {
@@ -788,10 +768,7 @@
           "UpdateCheckMode": {
             "anyOf": [
               {
-                "enum": [
-                  "None",
-                  "Static"
-                ]
+                "enum": ["None", "Static"]
               },
               {
                 "pattern": "^RepoManifest(/.+)?$"
@@ -871,6 +848,10 @@
     "url": {
       "type": "string",
       "pattern": "^https?://.*$"
+    },
+    "https": {
+      "type": "string",
+      "pattern": "^https://.*$"
     }
   }
 }

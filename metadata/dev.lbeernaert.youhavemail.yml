@@ -14,7 +14,8 @@ AutoName: You Have Mail
 
 RepoType: git
 Repo: https://github.com/LeanderBB/you-have-mail.git
-Binaries: https://github.com/LeanderBB/you-have-mail/releases/download/v%v/you-have-mail-v%v.apk
+Binaries: 
+  https://github.com/LeanderBB/you-have-mail/releases/download/v%v/you-have-mail-v%v.apk
 
 Builds:
   - versionName: 0.7.2
@@ -351,26 +352,6 @@ Builds:
       - gradle assembleRelease
     ndk: 25.2.9519653
 
-  - versionName: 0.17.0
-    versionCode: 37
-    disable: https://github.com/LeanderBB/you-have-mail/issues/18#issuecomment-2426547862
-    commit: 50d60d7939b973c723276c5973dd4f86865c0bb1
-    subdir: you-have-mail-android
-    sudo:
-      - apt-get update
-      - apt-get install -y automake clang gcc-multilib libclang-dev libtool make pkg-config
-        python-is-python3
-      - apt-get install -t bookworm-backports golang-go
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
-    srclibs:
-      - rustup@1.27.1
-    build:
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.80.0 --target x86_64-linux-android
-        aarch64-linux-android armv7-linux-androideabi
-      - source $HOME/.cargo/env
-      - gradle assembleRelease
-    ndk: 25.2.9519653
-
   - versionName: 0.18.2
     versionCode: 39
     commit: 8312444c8b9f1559d553265028ee8a68a79e0c12
@@ -465,9 +446,26 @@ Builds:
       - gradle assembleRelease
     ndk: r25c
 
+  - versionName: 0.21.1
+    versionCode: 44
+    commit: 4bd2a0465c4a6a2d288a71cc38caf2c7e0318d82
+    subdir: you-have-mail-android
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang gcc-multilib libclang-dev libtool make pkg-config
+        python-is-python3
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rustup@1.28.1
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88.0
+      - source $HOME/.cargo/env
+      - gradle assembleRelease
+    ndk: r28c
+
 AllowedAPKSigningKeys: 1bb4b343aa705f49b73b3ef489c987dd2e2f684cc1b6eb49f625bcbf6c8f01ee
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.21.0
-CurrentVersionCode: 43
+CurrentVersion: 0.21.1
+CurrentVersionCode: 44

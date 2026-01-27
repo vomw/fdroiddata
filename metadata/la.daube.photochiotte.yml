@@ -1,5 +1,7 @@
 Categories:
+  - Draw
   - Gallery
+  - Graphics
   - Multimedia
   - Wallpaper
 License: GPL-3.0-only
@@ -1192,7 +1194,139 @@ Builds:
         .
     ndk: r28b
 
+  - versionName: '1.66'
+    versionCode: 67
+    commit: c43ac7761df4b0e23993cc73ee35cbc73ab379af
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild:
+      - rm -vf ../*.bin
+      - echo "F-Droid uses AGP 8.11.1"
+      - sed -i -e 's/.com.android.tools.build:gradle:.*/"com.android.tools.build:gradle:8.11.1"/'
+        ../build.gradle
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28c
+
+  - versionName: '1.67'
+    versionCode: 68
+    commit: a36da6ec0fc09b80f07b4cc320e08a7d14e2b87c
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild:
+      - rm -vf ../*.bin
+      - echo "F-Droid uses AGP 8.11.1"
+      - sed -i -e 's/.com.android.tools.build:gradle:.*/"com.android.tools.build:gradle:8.11.1"/'
+        ../build.gradle
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28c
+
+  - versionName: '1.68'
+    versionCode: 69
+    commit: 4cb13ba0147cc1794d7f1013d1a87e0dbf80195d
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild:
+      - rm -vf ../*.bin
+      - echo "F-Droid uses AGP 8.11.1"
+      - sed -i -e 's/.com.android.tools.build:gradle:.*/"com.android.tools.build:gradle:8.11.1"/'
+        ../build.gradle
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+      - cd app/src/main/cpp
+      - cmake -DANDROID_NATIVE_API_LEVEL=24 -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
+        -DANDROID_STL=c++_shared -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON -DANDROID_TOOLCHAIN=clang
+        .
+    ndk: r28c
+
+  - versionName: '1.69'
+    versionCode: 70
+    commit: 41a3683b962ae550cc6506f7b95c4c4b0fa1a168
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild:
+      - rm -vf ../*.bin
+      - echo "F-Droid uses AGP 8.11.1"
+      - sed -i -e 's/.com.android.tools.build:gradle:.*/"com.android.tools.build:gradle:8.11.1"/'
+        ../build.gradle
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+    ndk: r29
+
+  - versionName: '1.70'
+    versionCode: 71
+    commit: 515f6a68e0ab03af6a3cace0ce9f042df63e48c0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild: rm -vf ../*.bin
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+    ndk: r29
+
+  - versionName: '1.71'
+    versionCode: 72
+    commit: 2d9d71b7334c6d26d083df3ffe2e3cc5aa4c6445
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build -t bookworm-backports
+      - apt-get install -y autoconf automake libtool make nasm pkg-config autopoint
+        cmake python3-markupsafe python3-jsonschema python3-jinja2 gperf
+    gradle:
+      - flavorA
+    prebuild: rm -vf ../*.bin
+    build:
+      - cd ..
+      - bash dlbuild.sh all
+    ndk: r29
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.65'
-CurrentVersionCode: 66
+CurrentVersion: '1.71'
+CurrentVersionCode: 72

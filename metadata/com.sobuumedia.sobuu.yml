@@ -12,6 +12,7 @@ AuthorEmail: info@getsobuu.com
 WebSite: https://getsobuu.com
 SourceCode: https://gitlab.com/sobuu/sobuu
 IssueTracker: https://gitlab.com/sobuu/sobuu/-/issues
+Translation: https://hosted.weblate.org/projects/sobuu/
 Changelog: https://gitlab.com/sobuu/sobuu/-/releases
 
 AutoName: Sobuu
@@ -21,40 +22,18 @@ Repo: https://gitlab.com/sobuu/sobuu.git
 Binaries: https://gitlab.com/sobuu/sobuu/-/releases/%v/downloads/Sobuu-%v.apk
 
 Builds:
-  - versionName: 1.1.0
-    versionCode: 3
-    commit: 348c2f167b572d9bc61dd89e3fd3de8efc98c171
+  - versionName: 1.3.3
+    versionCode: 9
+    disable: fails to repro
+    commit: 7c5b16032351b5c35de3947706a4b414a8fcd54a
     subdir: sobuu_androidApp
+    sudo:
+      - echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
     gradle:
-      - yes
-    rm:
-      - sobuu_iosApp
-
-  - versionName: 1.1.1
-    versionCode: 4
-    commit: 13f89de54ab97104760070e1a643381172197782
-    subdir: sobuu_androidApp
-    gradle:
-      - yes
-    rm:
-      - sobuu_iosApp
-
-  - versionName: 1.2.0
-    versionCode: 5
-    commit: ce3f8ada09d7c2eaed6864607aa85ce222e8d70f
-    subdir: sobuu_androidApp
-    gradle:
-      - yes
-    rm:
-      - sobuu_iosApp
-
-  - versionName: 1.3.0
-    versionCode: 6
-    disable: reproducible build failed
-    commit: 5be28465085305f07ea6a56a116cd9c4a2309cee
-    subdir: sobuu_androidApp
-    gradle:
-      - yes
+      - fdroid
     rm:
       - sobuu_iosApp
 
@@ -62,5 +41,5 @@ AllowedAPKSigningKeys: b56c63b6bd0bf31114447748b781ad1bde4b10dbf9c0fc6e61b3dc715
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.3.0
-CurrentVersionCode: 6
+CurrentVersion: 1.3.3
+CurrentVersionCode: 9
