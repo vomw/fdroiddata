@@ -11,7 +11,8 @@ AutoName: Dragon Launcher
 
 RepoType: git
 Repo: https://github.com/Elnix90/Dragon-Launcher.git
-Binaries: https://github.com/Elnix90/Dragon-Launcher/releases/download/v%v/DragonLauncher-v%v.apk
+Binaries: 
+  https://github.com/Elnix90/Dragon-Launcher/releases/download/v%v/DragonLauncher-v%v.apk
 
 Builds:
   - versionName: 2.1.1
@@ -21,10 +22,27 @@ Builds:
     gradle:
       - fdroid
 
+  - versionName: 2.2.0
+    versionCode: 28
+    commit: 52a9e5a5a295a2b952b4dea7427975f0e14aa47a
+    subdir: app
+    gradle:
+      - fdroid
+
+  - versionName: 2.2.2
+    versionCode: 30
+    commit: 2c5cfd0032b98c3c8f6459ce8b14baa4d4766903
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e 
+      's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/'
+      {../core/*,.}/build.gradle.kts
+
 AllowedAPKSigningKeys: 63068d94e01eeae50efcb2a0c43dfa8ac503a421cdeaf353d45b69ab933c0a06
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckIgnore: beta-.*
-CurrentVersion: 2.1.1
-CurrentVersionCode: 27
+CurrentVersion: 2.2.2
+CurrentVersionCode: 30

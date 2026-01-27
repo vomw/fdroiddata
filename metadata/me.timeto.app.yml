@@ -14,7 +14,8 @@ AutoName: timeto.me
 
 RepoType: git
 Repo: https://github.com/Medvedev91/timeto.me.git
-Binaries: https://github.com/Medvedev91/timeto.me/releases/download/v%v.%c/fdroid-release.apk
+Binaries: 
+  https://github.com/Medvedev91/timeto.me/releases/download/v%v.%c/fdroid-release.apk
 
 Builds:
   - versionName: 2023.12.18
@@ -27,7 +28,8 @@ Builds:
       - update-alternatives --auto java
     gradle:
       - yes
-    binary: https://github.com/Medvedev91/timeto.me/releases/download/%v.%c/android_app-release.apk
+    binary: 
+      https://github.com/Medvedev91/timeto.me/releases/download/%v.%c/android_app-release.apk
     rm:
       - ios_app
 
@@ -285,9 +287,41 @@ Builds:
     rm:
       - ios_app
 
+  - versionName: 2026.01.14
+    versionCode: 598
+    commit: 6be025773764a6b32db95c86a3a3acf5512b3808
+    subdir: android_app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    rm:
+      - ios_app
+
+  - versionName: 2026.01.21
+    versionCode: 599
+    commit: 33ebaf06077170f81922dee61fd9ebe870de6006
+    subdir: android_app
+    gradle:
+      - fdroid
+    rm:
+      - ios_app
+
+  - versionName: 2026.01.27
+    versionCode: 600
+    commit: 4f81e70523f4f89d5eceb9b45233545f2628abe8
+    subdir: android_app
+    gradle:
+      - fdroid
+    rm:
+      - ios_app
+
 AllowedAPKSigningKeys: 6934159449967ff5446a766d0d8b6ee9c0f68de70e1bb85c6140599e4e477793
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2026.01.09
-CurrentVersionCode: 597
+CurrentVersion: 2026.01.27
+CurrentVersionCode: 600
