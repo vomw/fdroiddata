@@ -1,0 +1,48 @@
+Categories:
+  - System
+  - Writing
+License: Apache-2.0
+SourceCode: https://github.com/hatsch/translander
+IssueTracker: https://github.com/hatsch/translander/issues
+
+AutoName: TranSlander
+
+RepoType: git
+Repo: https://github.com/hatsch/translander.git
+Binaries: https://github.com/hatsch/TranSlander/releases/download/v%v/translander-v%v.apk
+
+Builds:
+  - versionName: 1.2.4
+    versionCode: 10
+    commit: db74ab2884ed30eb237e6cd0ac0d2a1680c0e42f
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake wget make g++ libc-dev
+    gradle:
+      - yes
+    srclibs:
+      - sherpa_onnx@v1.12.23
+    build:
+      - export SHERPA_ONNX_ENABLE_TTS=OFF
+      - export SHERPA_ONNX_ENABLE_SPEAKER_DIARIZATION=OFF
+      - export SOURCE_DATE_EPOCH=0
+      - pushd $$sherpa_onnx$$
+      - ./build-android-arm64-v8a.sh
+      - mkdir -p android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs/arm64-v8a
+      - cp build-android-arm64-v8a/install/lib/lib*.so android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs/arm64-v8a/
+      - cd android/SherpaOnnxAar
+      - gradle :sherpa_onnx:assembleRelease
+      - popd
+      - mkdir -p libs
+      - cp 
+        $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
+        libs/sherpa-onnx-1.12.23.aar
+    ndk: r27
+
+AllowedAPKSigningKeys: 847f11ae431cac81816397d67ad1f01a7256c8c1011b0493fde5287ab6ec4b83
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.2.4
+CurrentVersionCode: 10
