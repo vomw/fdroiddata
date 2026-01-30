@@ -1,0 +1,46 @@
+Categories:
+  - Internet
+  - Money
+  - Navigation
+License: GPL-3.0-only
+AuthorName: Fabian Keunecke
+AuthorWebSite: https://fabiankeunecke.de
+WebSite: https://tankste.app
+SourceCode: https://github.com/tankste/tankste-app-fdroid
+IssueTracker: https://github.com/tankste/app/issues
+Changelog: https://github.com/tankste/tankste-app-fdroid/CHANGELOG.md
+Donate: https://github.com/sponsors/tankste
+Liberapay: tankste
+
+AutoName: tankste!
+
+RepoType: git
+Repo: https://github.com/tankste/tankste-app-fdroid
+
+Builds:
+  - versionName: 2.2.1
+    versionCode: 41
+    commit: 3ecad4a7dcfe2bc813405fd92ed52ad4b6b7e624
+    subdir: app/android
+    gradle:
+      - yes
+    output: ../build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.38.5
+    rm:
+      - app/ios
+      - app/android/station
+      - app/android/car
+      - app/android/navigation
+    prebuild:
+      - echo "flutter.sdk=$$flutter$$" >> ./local.properties
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter precache --android
+    build: $$flutter$$/bin/flutter build apk
+    ndk: 28.1.13356709
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.2.1
+CurrentVersionCode: 41
