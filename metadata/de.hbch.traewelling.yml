@@ -21,7 +21,8 @@ AutoName: Träwelldroid
 
 RepoType: git
 Repo: https://github.com/Traewelldroid/traewelldroid
-Binaries: https://github.com/Traewelldroid/traewelldroid/releases/download/v%v/app-foss-release.apk
+Binaries: 
+  https://github.com/Traewelldroid/traewelldroid/releases/download/v%v/app-foss-release.apk
 
 Builds:
   - versionName: 2.7.0
@@ -498,10 +499,34 @@ Builds:
     gradle:
       - foss
 
+  - versionName: 2.21.6
+    versionCode: 207
+    commit: 12296a58563f84034a6717de3a8e9de4598f865b
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+
+  - versionName: 2.21.7
+    versionCode: 208
+    commit: 92991257e62813ae5d9eb915e375ccfdea2cd2d5
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+
 AllowedAPKSigningKeys: 989fb4f387a7ea95f56405841bbae8af0c14ddff0462a1c919d9119944b20efc
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/build.gradle.kts|code = (\d+)|.|name = "(.+)"
-CurrentVersion: 2.21.5
-CurrentVersionCode: 206
+CurrentVersion: 2.21.7
+CurrentVersionCode: 208
