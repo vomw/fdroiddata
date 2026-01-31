@@ -13,25 +13,13 @@ Repo: https://github.com/AhmetCanArslan/ShizuWall.git
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: "4.1.1"
+CurrentVersionCode: 24
 
 Builds:
-  - versionName: "4.0"
-    versionCode: 22
-    commit: v4.0
+  - versionName: "4.1.1"
+    versionCode: 24
+    commit: a82ea03176ffdecf8f57f6b1e1a5591e1000a0e6
     subdir: app
     gradle:
-      - assembleRelease
-
-    prebuild: |
-      cd ..
-      DAEMON_FILE="app/src/main/java/com/arslan/shizuwall/daemon/SystemDaemon.java"
-      SCRIPT_FILE="scripts/compile_daemon.sh"
-      sed -i '/import android.util.Log;/d' $DAEMON_FILE
-      sed -i '/public class SystemDaemon {/a \    private static class Log { static void d(String t,String m){System.out.println(t+":"+m);} static void w(String t,String m){System.out.println(t+":"+m);} static void e(String t,String m,Throwable tr){System.out.println(t+":"+m); tr.printStackTrace();} }' $DAEMON_FILE
-      sed -i '/-classpath/d' $SCRIPT_FILE
-      sed -i '/--lib/d' $SCRIPT_FILE   # <--- BU SATIR YENİ EKLENDİ (Hatayı çözen kısım)
-      chmod +x $SCRIPT_FILE
-      sed -i "s|^SDK_PATH=.*|SDK_PATH=\$ANDROID_HOME|g" $SCRIPT_FILE
-      sed -i "s|^BUILD_TOOLS_VER=.*|BUILD_TOOLS_VER=\"31.0.0\"|g" $SCRIPT_FILE
-      sed -i "s|^PLATFORM_VER=.*|PLATFORM_VER=\"ignore\"|g" $SCRIPT_FILE
-      ./scripts/compile_daemon.sh
+      - assembleFdroidRelease
