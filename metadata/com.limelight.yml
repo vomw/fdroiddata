@@ -11,7 +11,7 @@ Changelog: https://github.com/moonlight-stream/moonlight-android/releases
 AutoName: Moonlight
 
 RepoType: git
-Repo: https://github.com/moonlight-stream/moonlight-android
+Repo: https://github.com/moonlight-stream/moonlight-android.git
 
 Builds:
   - versionName: '7.4'
@@ -2709,74 +2709,6 @@ Builds:
       - popd
     ndk: r20b
 
-  - versionName: 9.8.5
-    versionCode: 256
-    disable: fails to build
-    commit: v9.8.5
-    subdir: app
-    submodules: true
-    gradle:
-      - nonRoot
-    srclibs:
-      - OpenSSL@OpenSSL_1_1_1k
-      - opus@v1.3
-    rm:
-      - app/src/main/jni/moonlight-core/openssl/include
-      - app/src/main/jni/moonlight-core/libopus/include
-    prebuild:
-      - sed -i -e '/applicationIdSuffix/d' build.gradle
-      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
-    scandelete:
-      - app/src/main/jni/moonlight-core/openssl
-      - app/src/main/jni/moonlight-core/libopus
-    build:
-      - lib="$PWD/src/main/jni/moonlight-core"
-      - PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-      - pushd $$opus$$
-      - ./autogen.sh
-      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
-        --with-pic --disable-extra-programs --disable-doc
-      - make clean opus -j`nproc`
-      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
-      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
-        --with-pic --disable-extra-programs --disable-doc
-      - make clean opus -j`nproc`
-      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
-      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
-        --disable-extra-programs --disable-doc
-      - make clean opus -j`nproc`
-      - cp .libs/libopus.a ${lib}/libopus/x86/
-      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
-        --disable-extra-programs --disable-doc
-      - make clean opus -j`nproc`
-      - cp .libs/libopus.a ${lib}/libopus/x86_64/
-      - cp -R include/ ${lib}/libopus/
-      - popd
-      - pushd $$OpenSSL$$
-      - CC=armv7a-linux-androideabi16-clang ./Configure android-arm no-shared no-ssl3
-        no-engine no-dso no-asm no-hw no-comp no-stdio -fPIC -DOPENSSL_PIC -D__ANDROID_API__=16
-        -ffast-math -O3 -funroll-loops
-      - make clean build_libs -j`nproc`
-      - cp lib*.a ${lib}/openssl/armeabi-v7a/
-      - CC=aarch64-linux-android21-clang ./Configure android-arm64 no-shared no-ssl3
-        no-engine no-dso no-asm no-hw no-comp no-stdio -fPIC -DOPENSSL_PIC -D__ANDROID_API__=21
-        -ffast-math -O3 -funroll-loops
-      - make clean build_libs -j`nproc`
-      - cp lib*.a ${lib}/openssl/arm64-v8a/
-      - CC=i686-linux-android16-clang ./Configure android-x86 no-shared no-ssl3 no-engine
-        no-dso no-asm no-hw no-comp no-stdio -fPIC -DOPENSSL_PIC -D__ANDROID_API__=16
-        -ffast-math -O3 -funroll-loops
-      - make clean build_libs -j`nproc`
-      - cp lib*.a ${lib}/openssl/x86/
-      - CC=x86_64-linux-android21-clang ./Configure android-x86_64 no-shared no-ssl3
-        no-engine no-dso no-asm no-hw no-comp no-stdio -fPIC -DOPENSSL_PIC -D__ANDROID_API__=21
-        -ffast-math -O3 -funroll-loops
-      - make clean build_libs -j`nproc`
-      - cp lib*.a ${lib}/openssl/x86_64/
-      - cp -R include/ ${lib}/openssl/
-      - popd
-    ndk: r21e
-
   - versionName: 9.8.6
     versionCode: 257
     commit: v9.8.6
@@ -3413,7 +3345,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3480,7 +3412,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3547,7 +3479,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3614,7 +3546,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3681,7 +3613,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3748,7 +3680,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3815,7 +3747,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3882,7 +3814,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -3949,7 +3881,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -4016,7 +3948,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -4083,7 +4015,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -4150,7 +4082,7 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -4211,7 +4143,543 @@ Builds:
       - popd
     ndk: r21e
 
-AutoUpdateMode: Version v%v
+  - versionName: '10.9'
+    versionCode: 296
+    commit: aede16c85c98003ba4310bf9110daf222f8c9121
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: '10.10'
+    versionCode: 298
+    commit: 00415aac79a47246c1311e7efb8c2db10e1aa480
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: '10.11'
+    versionCode: 301
+    commit: aa41bf8d974940bcbec258d5f6db99deadb3dc0f
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: '11.0'
+    versionCode: 306
+    commit: 0b581011c5bd46cdcdc1969e96c56405afb8da3f
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: '12.0'
+    versionCode: 311
+    commit: 79532f6f146c12e6a4b12a94e9e4899baf6e49e8
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: 12.0.1
+    versionCode: 312
+    commit: abc4123c52dc2c25b228dca2948a9cba59019abe
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: 12.0.2
+    versionCode: 313
+    commit: f1be5365bba8dc220aab092f51380ae409a0ff0b
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+  - versionName: '12.1'
+    versionCode: 314
+    commit: 1b1b100e63e8ffcf1496e324ff7b57ee9f2db2a9
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool make
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - nonRoot
+    srclibs:
+      - OpenSSL@OpenSSL_1_1_1k
+      - opus@v1.3
+    rm:
+      - app/src/main/jni/moonlight-core/openssl/include
+      - app/src/main/jni/moonlight-core/libopus/include
+    prebuild:
+      - sed -i -e '/applicationIdSuffix/d' build.gradle
+      - sed -i -e 's/ndkVersion\s".*"/ndkVersion "21.4.7075529"/' build.gradle
+    scandelete:
+      - app/src/main/jni/moonlight-core/openssl
+      - app/src/main/jni/moonlight-core/libopus
+    build:
+      - lib="$PWD/src/main/jni/moonlight-core"
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - pushd $$opus$$
+      - ./autogen.sh
+      - CC=armv7a-linux-androideabi16-clang ./configure --host=arm-linux-androideabi
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/armeabi-v7a/
+      - CC=aarch64-linux-android21-clang ./configure --host=aarch64-linux-android
+        --with-pic --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/arm64-v8a/
+      - CC=i686-linux-android16-clang ./configure --host=i686-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86/
+      - CC=x86_64-linux-android21-clang ./configure --host=x86_64-linux-android --with-pic
+        --disable-extra-programs --disable-doc
+      - make clean opus -j`nproc`
+      - cp .libs/libopus.a ${lib}/libopus/x86_64/
+      - cp -R include/ ${lib}/libopus/
+      - popd
+      - pushd $$OpenSSL$$
+      - ./Configure android-arm no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/armeabi-v7a/
+      - ./Configure android-arm64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/arm64-v8a/
+      - ./Configure android-x86 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=16
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86/
+      - ./Configure android-x86_64 no-shared no-ssl3 no-stdio no-engine no-hw -D__ANDROID_API__=21
+      - make clean
+      - make build_libs -j`nproc`
+      - cp lib*.a ${lib}/openssl/x86_64/
+      - cp -R include/ ${lib}/openssl/
+      - popd
+    ndk: r21e
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 10.8.4
-CurrentVersionCode: 293
+CurrentVersion: '12.1'
+CurrentVersionCode: 314

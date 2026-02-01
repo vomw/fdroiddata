@@ -1,5 +1,6 @@
 Categories:
   - Internet
+  - Messaging
 License: GPL-3.0-only
 AuthorName: Janne Mareike Koschinski
 SourceCode: https://git.kuschku.de/justJanne/QuasselDroid-ng
@@ -11,7 +12,7 @@ Name: Quasseldroid
 AutoName: Quasseldroid
 
 RepoType: git
-Repo: https://git.kuschku.de/justjanne/QuasselDroid-ng/
+Repo: https://git.kuschku.de/justjanne/QuasselDroid-ng.git
 
 Builds:
   - versionName: v1.0.11
@@ -472,7 +473,7 @@ Builds:
     commit: 1.6.2
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -481,8 +482,19 @@ Builds:
     scandelete:
       - gradle/convention/build
 
+  - versionName: 1.7.0
+    versionCode: 1381
+    commit: 1.7.0
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfigs/d' ../gradle/convention/src/main/kotlin/AndroidApplicationConvention.kt
+    scandelete:
+      - gradle/convention/build
+
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
-UpdateCheckData: https://s3.kuschku.de/releases/quasseldroid-ng/version.json|{\s*"name":\s*"[^"]*",\s*"code":\s*([0-9]*)\s*}|.|{\s*"name":\s*"([^"]*)",\s*"code":\s*[0-9]*\s*}
-CurrentVersion: 1.6.2
-CurrentVersionCode: 1322
+UpdateCheckData: 
+  https://s3.kuschku.de/releases/quasseldroid-ng/version.json|{\s*"name":\s*"[^"]*",\s*"code":\s*([0-9]+)\s*}|.|{\s*"name":\s*"([^"]*)",\s*"code":\s*[0-9]*\s*}
+CurrentVersion: 1.7.0
+CurrentVersionCode: 1381

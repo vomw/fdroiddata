@@ -1,5 +1,6 @@
 Categories:
   - Internet
+  - Messaging
   - Phone & SMS
 License: Apache-2.0
 AuthorName: Cole Feuer
@@ -21,7 +22,7 @@ Builds:
     commit: rel-3.5.0-fdroid
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -32,13 +33,21 @@ Builds:
     commit: ceef53138631a542b2b56283c30431a37ba97125
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - foss
 
-AutoUpdateMode: Version +-fdroid %v
+  - versionName: 3.5.2-fdroid
+    versionCode: 139
+    commit: ddc7cc31a792e652ebe7c35974fa0e82bc5e33c9
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/google-services/d' -e '/com.google.firebase/d' ../build.gradle
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags .*-fdroid$
-CurrentVersion: 3.5.1
-CurrentVersionCode: 138
+CurrentVersion: 3.5.2-fdroid
+CurrentVersionCode: 139

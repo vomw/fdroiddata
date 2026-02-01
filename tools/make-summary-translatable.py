@@ -8,15 +8,17 @@ import yaml
 
 os.chdir(os.path.dirname(__file__) + '/../')
 
+exitvalue = 0
+
 for f in glob.glob('metadata/*.yml'):
     with open(f) as fp:
         raw = fp.read()
         data = yaml.safe_load(raw)
-    archive_policy = data.get('ArchivePolicy')
+    archive_policy = data.get('ArchivePolicy', 3)
     if (
         'Disabled' not in data
         and 'Summary' in data
-        and (archive_policy is None or not archive_policy.startswith('0 '))
+        and archive_policy > 0
     ):
         en_US_dir = f[:-4] + '/en-US/'
         os.makedirs(en_US_dir, exist_ok=True)
@@ -24,6 +26,9 @@ for f in glob.glob('metadata/*.yml'):
             fp.write(data['Summary'].strip().rstrip() + '\n')
         with open(f, 'w') as out:
             out.write(re.sub(r'Summary:[^\n]+\n', r'', raw))
+        exitvalue += 1
+
+        # if you want to pull in translations from another source:
         packageName = f[9:-4]
         scraped_glob = os.path.join(
             '/path/to/scraper/metadata/', packageName, '[a-z]*', 'short_description.txt'
@@ -36,3 +41,5 @@ for f in glob.glob('metadata/*.yml'):
             os.makedirs(os.path.dirname(outfile), exist_ok=True)
             with open(outfile, 'w') as fp:
                 fp.write(text.strip().rstrip() + '\n')
+
+exit(exitvalue)

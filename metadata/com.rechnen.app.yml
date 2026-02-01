@@ -52,24 +52,12 @@ Builds:
     gradle:
       - yes
 
-  - versionName: '1.8'
-    versionCode: 9
-    disable: https://codeberg.org/jonas-l/rechnen-android/issues/15
-    commit: 75f5fd2532ad1f83a780c56f053695ffab299e0f
-    subdir: app
-    sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
-    gradle:
-      - yes
-
   - versionName: '1.9'
     versionCode: 10
     commit: ebdab8559ca5be5e1cddb16907ca54b3864b7699
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -80,7 +68,7 @@ Builds:
     commit: d6d516a19d724ffde5df072ad235212647f63be8
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -91,13 +79,38 @@ Builds:
     commit: 28a161bbb90c113473ebba37a7af81ff2b0116c2
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
-AutoUpdateMode: Version release-%v
+  - versionName: '3.0'
+    versionCode: 21
+    commit: a176c7c239dee7eb56d161133eed03fa36130134
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: '3.1'
+    versionCode: 22
+    commit: 883cd79652517d629b7f00b06e3bacba6023ba1f
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.13.0/8.11.1/' ../build.gradle
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.1'
-CurrentVersionCode: 20
+CurrentVersion: '3.1'
+CurrentVersionCode: 22

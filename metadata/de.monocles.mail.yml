@@ -1,4 +1,5 @@
 Categories:
+  - Email
   - Internet
 License: Apache-2.0
 AuthorName: Arne-Brün Vogelsang
@@ -38,7 +39,7 @@ Builds:
     commit: 70eedaf17da6089dc8df29da463c04ff1131ea17
     subdir: monoclesmail
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -51,7 +52,7 @@ Builds:
     commit: 283bfe44d9825d8b901ad2ec91fd6f1c7df15cb6
     subdir: monoclesmail
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -64,7 +65,7 @@ Builds:
     commit: ba39521027939bfce987e87a7b7669c5b3c3b278
     subdir: monoclesmail
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -77,13 +78,60 @@ Builds:
     commit: 461e16a5789ff1f936a1c15ebcc4b26b50386773
     subdir: app/k9mail
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
-AutoUpdateMode: Version v%v
+  - versionName: '1.1'
+    versionCode: 7
+    commit: ad82875e675d20e167acfa0eddee907e8cbca260
+    subdir: app/k9mail
+    gradle:
+      - yes
+
+  - versionName: '1.2'
+    versionCode: 9
+    commit: 577d7a5d2abc33c7be6f77d200eaec8477766a7b
+    subdir: app/k9mail
+    gradle:
+      - yes
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - build-plugin
+
+  - versionName: 1.2.1
+    versionCode: 10
+    commit: fb8968f617c2b050618b028b7b046dcb5829606b
+    subdir: app/k9mail
+    gradle:
+      - yes
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - build-plugin
+
+  - versionName: 1.2.2
+    versionCode: 11
+    commit: 2b25be4c7fe4ea1d3a532d4e9424284801ef3f0b
+    subdir: app/k9mail
+    gradle:
+      - yes
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - build-plugin
+
+  - versionName: 1.2.3
+    versionCode: 12
+    commit: 1b3693e59be0164a8e22b6daf942137b2d6d0a2c
+    subdir: app/k9mail
+    gradle:
+      - yes
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - build-plugin
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.\d+(\.\d+)?
-CurrentVersion: '2.0'
-CurrentVersionCode: 6
+CurrentVersion: 1.2.3
+CurrentVersionCode: 12

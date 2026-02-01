@@ -1,4 +1,5 @@
 Categories:
+  - Note
   - Writing
 License: Apache-2.0
 AuthorName: maltaisn
@@ -6,13 +7,31 @@ AuthorEmail: apps@maltaisn.com
 WebSite: https://github.com/maltaisn/
 SourceCode: https://github.com/maltaisn/another-notes-app/
 IssueTracker: https://github.com/maltaisn/another-notes-app/issues/
-Translation: https://github.com/maltaisn/another-notes-app/blob/HEAD/TRANSLATING.md
+Translation: https://crowdin.com/project/another-notes-app
 Changelog: https://github.com/maltaisn/another-notes-app/blob/HEAD/CHANGELOG.md
 
 AutoName: Another Notes
+Description: |-
+  <b>App is not actively developed and dev will fix critical bugs.</b>
+
+  Another notes app, like there have been tens of thousands before.
+
+  This app doesn't strive to innovate, it strives to provide a simple way to
+  take notes. Material design is used to create a visually attractive interface.
+
+  Features:
+  * Text and list notes.
+  * Archive and recycle bin.
+  * Labeled notes.
+  * Reminders, including recurring reminders.
+  * Search text across all notes.
+  * Basic import and export.
+  * Light and dark theme support.
+  * Customizable interface.
+  * Open source app.
 
 RepoType: git
-Repo: https://github.com/maltaisn/another-notes-app/
+Repo: https://github.com/maltaisn/another-notes-app.git
 
 Builds:
   - versionName: 1.2.0
@@ -48,7 +67,7 @@ Builds:
     commit: 1a343ef826d212de2d29bd52fe33f6007cb55360
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/release/app-release-unsigned.apk
@@ -59,7 +78,7 @@ Builds:
     commit: 8b8e723fc8143ca2c18aa9d5d32acf36f5585861
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/release/app-release-unsigned.apk
@@ -70,7 +89,7 @@ Builds:
     commit: 890332d2860558000371467f0f443b6ffee00741
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/release/app-release-unsigned.apk
@@ -81,13 +100,81 @@ Builds:
     commit: d10bde8bddff68adf7d1745caf65682d87d24016
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/release/app-release-unsigned.apk
     build: gradle assembleRelease -x lintVitalAnalyzeRelease
 
+  - versionName: 1.5.0
+    versionCode: 10500
+    commit: 40a67eadf575811fe13d66a18b2332db836f68c9
+    subdir: app
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build: gradle assembleRelease -x lintVitalAnalyzeRelease
+
+  - versionName: 1.5.1
+    versionCode: 10501
+    commit: deb964e2bb9ca3a877d352a6ffb8563c2dfcf5a4
+    subdir: app
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build: gradle assembleRelease -x lintVitalAnalyzeRelease
+
+  - versionName: 1.5.2
+    versionCode: 10502
+    commit: 90dd4d5eab0f69bd4a8787bd39a78bb5b82c28de
+    subdir: app
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build: gradle assembleRelease -x lintVitalAnalyzeRelease
+
+  - versionName: 1.5.3
+    versionCode: 10503
+    commit: 5bb976fe68b6b68ad49844dacaf91c5e9a33f034
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build: gradle assembleRelease -x lintVitalAnalyzeRelease
+
+  - versionName: 1.5.4
+    versionCode: 10504
+    commit: 49c40e18ef507efaaf17d7ed4fd4a75315bcf372
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build: gradle assembleRelease -x lintVitalAnalyzeRelease
+
+  - versionName: 1.6.0
+    versionCode: 10600
+    commit: 29f33517456b401ce0524821efa981677eedeaea
+    subdir: app
+    gradle:
+      - yes
+    prebuild: echo -e '\norg.gradle.jvmargs=-Xmx4g' >> ../gradle.properties
+
+  - versionName: 1.6.1
+    versionCode: 10601
+    commit: a971d34a568bcc78a4d54460e49042bc4bbdf349
+    subdir: app
+    gradle:
+      - yes
+    prebuild: echo -e '\norg.gradle.jvmargs=-Xmx4g' >> ../gradle.properties
+
+  - versionName: 1.6.2
+    versionCode: 10602
+    commit: 2c2463edea7fa14da254650770883876b66cb5a1
+    subdir: app
+    gradle:
+      - yes
+    prebuild: echo -e '\norg.gradle.jvmargs=-Xmx4g' >> ../gradle.properties
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags v.*[0-9]$
-CurrentVersion: 1.4.5
-CurrentVersionCode: 10405
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckName: com.maltaisn.notes
+CurrentVersion: 1.6.2
+CurrentVersionCode: 10602

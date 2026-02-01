@@ -1,4 +1,5 @@
 Categories:
+  - Password & 2FA
   - Security
 License: GPL-3.0-only
 AuthorName: Passman
@@ -7,11 +8,10 @@ SourceCode: https://github.com/nextcloud/passman-android
 IssueTracker: https://github.com/nextcloud/passman-android/issues
 Translation: https://www.transifex.com/nextcloud/nextcloud/passman-android/
 Changelog: https://github.com/nextcloud/passman-android/releases
-Donate: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6YS8F97PETVU2
-Bitcoin: 1H2c5tkGX54n48yEtM4Wm4UrAGTW85jQpe
+Donate: https://passman.cc/#donate
 
 RepoType: git
-Repo: https://github.com/nextcloud/passman-android
+Repo: https://github.com/nextcloud/passman-android.git
 
 Builds:
   - versionName: 1.2.0
@@ -102,7 +102,99 @@ Builds:
       - android.useAndroidX=true
       - android.enableJetifier=true
 
-AutoUpdateMode: Version v%v
+  - versionName: 1.4.0
+    versionCode: 16
+    commit: cfeed899f5a6f57d4ed929f63026600cfe76677e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc cmake make
+    gradle:
+      - yes
+    rm:
+      - app/src/main/cpplibs/openssl/boringssl/fuzz
+      - app/src/main/cpplibs/openssl/fuzz
+    prebuild: sed -i -e '/enable true/d' build.gradle
+    build:
+      - cd ..
+      - ./build-openssl.sh
+    ndk: r21e
+    gradleprops:
+      - android.useAndroidX=true
+      - android.enableJetifier=true
+
+  - versionName: 1.4.1
+    versionCode: 17
+    commit: 2a37efa1cc52791cdbdd6d09ad6199aaf336de90
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc cmake make
+    gradle:
+      - yes
+    rm:
+      - app/src/main/cpplibs/openssl/boringssl/fuzz
+      - app/src/main/cpplibs/openssl/fuzz
+    prebuild: sed -i -e '/enable true/d' build.gradle
+    build:
+      - cd ..
+      - ./build-openssl.sh
+    ndk: r21e
+    gradleprops:
+      - android.useAndroidX=true
+      - android.enableJetifier=true
+
+  - versionName: 1.5.0
+    versionCode: 18
+    commit: 2ecebc8a55bda88494c1e9ab270543e51e9f0552
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc cmake make
+    gradle:
+      - yes
+    rm:
+      - app/src/main/cpplibs/openssl/boringssl/fuzz
+      - app/src/main/cpplibs/openssl/fuzz
+    prebuild: sed -i -e '/enable true/d' build.gradle
+    build:
+      - cd ..
+      - ./build-openssl.sh
+    ndk: 21.4.7075529
+    gradleprops:
+      - android.useAndroidX=true
+      - android.enableJetifier=true
+      - android.nonTransitiveRClass=false
+      - android.nonFinalResIds=false
+
+  - versionName: 1.6.0
+    versionCode: 20
+    commit: 16b1c83a8eb7e903736eb4c19fac007ad2f3378e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc cmake make
+    gradle:
+      - yes
+    rm:
+      - app/src/main/cpplibs/openssl/fuzz/corpora
+      - app/src/main/cpplibs/openssl/cloudflare-quiche/fuzz
+      - app/src/main/cpplibs/openssl/cloudflare-quiche/quiche/deps/boringssl/src/fuzz
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - mv ../gradle.properties.example ../gradle.properties
+    scandelete:
+      - app/src/main/cpplibs/openssl
+    build:
+      - cd ..
+      - ./build-openssl.sh
+    ndk: r28b
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.3.1
-CurrentVersionCode: 15
+CurrentVersion: 1.6.0
+CurrentVersionCode: 20

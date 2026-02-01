@@ -52,7 +52,7 @@ Please read the [General Recommendations](#general-recommendations) before you s
 1. Add a new file by clicking on the plus sign and choosing _"New file"_.
 1. Set the file name in the following schema: `<application_id>.yml`. So an example would be _"com.app.example.yml"_.
 1. Write down the metadata. The [Build Metadata Reference](https://f-droid.org/en/docs/Build_Metadata_Reference)
-   as well as the [templates from the wiki](https://gitlab.com/fdroid/wiki/-/wikis/Metadata/YAML-Metadata)
+   as well as the [templates](./templates/README.md)
    will help you.
 1. Choose a smart commit message and commit your changes.
 1. Continue with the [Common steps for both methods](#common-steps-for-both-methods)
@@ -62,10 +62,10 @@ Please read the [General Recommendations](#general-recommendations) before you s
 1. Clone your fork.
 1. Create and checkout a new branch.
    Naming it like the app name or, much better, the app id makes it easier to keep track of your contributions.
-1. Create a new file in the the `metadata` directory named after the following schema: `<application_id>.yml`.
+1. Create a new file in the `metadata` directory named after the following schema: `<application_id>.yml`.
    So an example would be _"com.app.example.yml"_.
 1. Write down the metadata in that file. The [Build Metadata Reference](https://f-droid.org/en/docs/Build_Metadata_Reference)
-   as well as the [templates from the wiki](https://gitlab.com/fdroid/wiki/-/wikis/Metadata/YAML-Metadata)
+   as well as the [templates](./templates/README.md)
    will help you.
 1. Commit and push to your upstream fork.
 1. Continue with the [Common steps for both methods](#common-steps-for-both-methods)
@@ -126,19 +126,19 @@ fdroid import --url https://github.com/foo/bar --subdir app
 
 Alternatively, start the metadata file from scratch, see [the templates](https://gitlab.com/fdroid/fdroiddata/tree/master/templates):
 ```shell
-cp templates/app-full metadata/app.id.yml
+cp templates/general.yml metadata/app.id.yml
 ```
 
 Or by download:
 ```shell
-wget -O metadata/app.id.yml https://gitlab.com/fdroid/fdroiddata/raw/master/templates/app-full
+wget -O metadata/app.id.yml https://gitlab.com/fdroid/fdroiddata/raw/master/templates/general.yml
 ```
 
 Now that the file is created, you need to fill up all the app information and
 add a working build recipe.
 
 You can use the [metadata section](https://f-droid.org/docs/Build_Metadata_Reference)
-in the documentation for reference, or the full template at `templates/app-full` for
+in the documentation for reference, or the full template at `templates/general.yml` for
 some suggestions.
 
 Once you're done, see if `fdroid readmeta` runs without any errors. If it
@@ -190,13 +190,10 @@ for the answer.
 - You may like to add [localization and screenshots], so users can have a glance
     at the app in pictures and in their preferred language.
 - You can advertise the download of your app in this app store using the
-    [official graphic][get-it-on-fdroid].
+    official badge. See the instructions at https://f-droid.org/docs/Badges/.
   
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75">
 
-    ```
-    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75">
-    ```
 - You can add a badge of your apps F-Droid version from [shields.io].
   
     ![](https://img.shields.io/badge/f--droid-v1.0-blue.svg?logo=F-Droid)

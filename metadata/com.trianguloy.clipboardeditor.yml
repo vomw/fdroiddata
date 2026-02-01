@@ -20,7 +20,7 @@ Builds:
     commit: v1.3
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -31,7 +31,7 @@ Builds:
     commit: 6537f721d93a8f7b250c0bc191b36b82c7d2bdc8
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -42,13 +42,21 @@ Builds:
     commit: b3094c9715af9cc2fcd4c2906957cbbdd95dced7
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags
-CurrentVersion: '1.5'
-CurrentVersionCode: 6
+  - versionName: '1.6'
+    versionCode: 9
+    commit: 96637a7f479b6afe604a2b971f80c8b9528642e5
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.13.0/8.11.1/' ../build.gradle
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: '1.6'
+CurrentVersionCode: 9

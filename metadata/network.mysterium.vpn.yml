@@ -1,5 +1,6 @@
 Categories:
   - Internet
+  - VPN & Proxy
 License: GPL-3.0-only
 AuthorEmail: help@mysterium.network
 AuthorWebSite: https://www.mysterium.network
@@ -7,38 +8,44 @@ WebSite: https://www.mysteriumvpn.com
 SourceCode: https://github.com/mysteriumnetwork/mysterium-vpn-mobile
 IssueTracker: https://github.com/mysteriumnetwork/mysterium-vpn-mobile/issues
 
-AutoName: MysteriumVPN
+AutoName: Mysterium Dark
 
 RepoType: git
 Repo: https://github.com/mysteriumnetwork/mysterium-vpn-mobile.git
 
 Builds:
-  - versionName: 2.0.33
-    versionCode: 107157
-    commit: 55d4770206e37ba4c8d1466591c6432b59379332
+  - versionName: 2.1.14
+    versionCode: 107180
+    commit: f66b0acea5348983a14f694f3a7a0fd1db033cc3
     subdir: android/app
     gradle:
       - crypto
-    prebuild: sed -i -e '/splits {/,+7d' build.gradle
+    prebuild: sed -i -e '/splits {/,+7d' -e '/intercom/d' -e '/dependencies {/a implementation
+      "com.google.code.gson:gson:2.8.6"\nimplementation "com.squareup.retrofit2:retrofit:2.9.0"\nimplementation
+      "com.squareup.retrofit2:converter-gson:2.9.0"' build.gradle
 
-  - versionName: 2.0.34
-    versionCode: 107158
-    commit: 7d55528efe8367568aabf2efa96630efdf8782d2
+  - versionName: 2.1.15
+    versionCode: 107182
+    commit: 4e3daa86037db4f35796a8a4cfb6ce120b4c47a8
     subdir: android/app
     gradle:
       - crypto
-    prebuild: sed -i -e '/splits {/,+7d' build.gradle
+    prebuild: sed -i -e '/splits {/,+7d' -e '/intercom/d' -e '/dependencies {/a implementation
+      "com.google.code.gson:gson:2.8.6"\nimplementation "com.squareup.retrofit2:retrofit:2.9.0"\nimplementation
+      "com.squareup.retrofit2:converter-gson:2.9.0"' build.gradle
 
-  - versionName: 2.0.34
-    versionCode: 107159
-    commit: 48fb611db4dbfe8fc7d8ac8aec36209a2606958f
+  - versionName: 2.1.15
+    versionCode: 107183
+    commit: 510f8db1d66e5a2bbd94ce78ff0f08920f3d36b2
     subdir: android/app
     gradle:
       - crypto
-    prebuild: sed -i -e '/splits {/,+7d' build.gradle
+    prebuild: sed -i -e '/splits {/,+7d' -e '/intercom/d' -e '/dependencies {/a implementation
+      "com.google.code.gson:gson:2.8.6"\nimplementation "com.squareup.retrofit2:retrofit:2.9.0"\nimplementation
+      "com.squareup.retrofit2:converter-gson:2.9.0"' build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: android/build.gradle|versionCode = (.*)|.|versionName = '(.*)'
-CurrentVersion: 2.0.34
-CurrentVersionCode: 107159
+UpdateCheckData: android/build.gradle|versionCode = (\d+)|.|versionName = '(.*)'
+CurrentVersion: 2.1.15
+CurrentVersionCode: 107183

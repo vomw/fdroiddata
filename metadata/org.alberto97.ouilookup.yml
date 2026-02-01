@@ -1,5 +1,6 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: App connects to standards-oui.ieee.org.
 Categories:
   - Connectivity
   - Security
@@ -21,7 +22,7 @@ Builds:
     commit: v1.0.1
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -32,7 +33,7 @@ Builds:
     commit: a880bdb4a814f0959c3d078ece9ef70faf05bbad
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -43,7 +44,7 @@ Builds:
     commit: 77df50b7746ae5b8f6a7090c7dc8fa3307414b7f
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -54,7 +55,7 @@ Builds:
     commit: 73bd2cdc09a800502ee2f3c0b487571d4ac58949
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -65,7 +66,7 @@ Builds:
     commit: v1.3.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -76,7 +77,7 @@ Builds:
     commit: cf25646c2b42b554fcd8baf9982954df9de53627
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -87,7 +88,7 @@ Builds:
     commit: 9c08726a2ef33dc714796f3ac5f78d795ce56e2d
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -98,7 +99,7 @@ Builds:
     commit: 0e874491dba3e8ea5bb523d6638e0d8dc5d69c91
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -109,7 +110,7 @@ Builds:
     commit: 3c98b6f78654dcc1ed10c751d0cdfdeeb2aab619
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -120,13 +121,81 @@ Builds:
     commit: 06e6baa4caf1b4b8e8543bb7272eb0fb8c0f099e
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - foss
 
-AutoUpdateMode: Version v%v
+  - versionName: 1.5.2
+    versionCode: 16
+    commit: 8e195e2687fb8195c00974d6c8cc84f651fa3039
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.5.3
+    versionCode: 17
+    commit: 1da1d63e8188e94dadd248466058bdb68857caac
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.6.0
+    versionCode: 18
+    commit: 3ab6a721390501bb277bc81168a6b0614e99cd24
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+
+  - versionName: 1.6.1
+    versionCode: 19
+    commit: 70031ce71b1e72e7f89416f84c3de8eced61ec67
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+
+  - versionName: 1.6.2
+    versionCode: 20
+    commit: c10dda87251d560bc1d32c7cdf677a3136993453
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/jvm/s/11/17/g' -e '/JavaVersion/s/11/17/g' build.gradle.kts
+
+  - versionName: 1.6.3
+    versionCode: 21
+    commit: 0faeb40710d3872aa769becf650e1380a1212264
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/jvm/s/11/17/g' -e '/JavaVersion/s/11/17/g' build.gradle.kts
+
+  - versionName: 1.6.4
+    versionCode: 22
+    commit: e58deda62f28f7a2e02af731d32e8535f7a2e963
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/jvm/s/11/17/g' -e '/JavaVersion/s/11/17/g' build.gradle.kts
+
+  - versionName: 1.6.5
+    versionCode: 23
+    commit: b2fc58bbdfabceff923bcf9ddaa87f32b0440c87
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/JavaVersion/s/21/17/g' build.gradle.kts
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.5.1
-CurrentVersionCode: 14
+CurrentVersion: 1.6.5
+CurrentVersionCode: 23

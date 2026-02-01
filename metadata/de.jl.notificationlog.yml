@@ -134,7 +134,7 @@ Builds:
     commit: c14499c1a49bc5e3b6a063a7351317cbc0e64234
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -145,13 +145,25 @@ Builds:
     commit: 552f17ef77bb87861982349167673181745ed8c8
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
-AutoUpdateMode: Version release-%v
+  - versionName: '1.21'
+    versionCode: 22
+    commit: ca360a6fb4fa46318512f5bfc38558ed8e7212c9
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.20'
-CurrentVersionCode: 21
+CurrentVersion: '1.21'
+CurrentVersionCode: 22

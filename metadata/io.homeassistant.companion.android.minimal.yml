@@ -9,13 +9,13 @@ Changelog: https://github.com/home-assistant/android/releases
 
 AutoName: Home Assistant
 Description: |-
-    Home Assistant is an open-source home automation platform that focuses on privacy and local control.
+  Home Assistant is an open-source home automation platform that focuses on privacy and local control.
 
-    Home Assistant for Android requires that you have access to a Home Assistant instance.
+  Home Assistant for Android requires that you have access to a Home Assistant instance.
 
-    For documentation around the application please see https://companion.home-assistant.io/
+  For documentation around the application please see https://companion.home-assistant.io/
 
-    Note: This is the minimal flavor that does not have location tracking or notifications.
+  Note: This is the minimal flavor that does not have location tracking or notifications.
 
 RepoType: git
 Repo: https://github.com/home-assistant/android.git
@@ -148,7 +148,7 @@ Builds:
     commit: 2022.2.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -166,7 +166,7 @@ Builds:
     commit: 2022.2.1
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -184,7 +184,7 @@ Builds:
     commit: 2022.3.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -202,7 +202,7 @@ Builds:
     commit: 2022.6.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk
       - update-alternatives --auto java
     gradle:
@@ -220,7 +220,7 @@ Builds:
     commit: 2022.8.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -241,7 +241,7 @@ Builds:
     commit: 2022.9.1
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -257,13 +257,726 @@ Builds:
       - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
       - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
 
-MaintainerNotes: |-
-    6 versions, due to the rapid release there may be a trailing error
-    (which bothers only some users) and it takes time to fix.
+  - versionName: 2022.10.0-minimal
+    versionCode: 2738
+    commit: 2022.10.0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
 
-ArchivePolicy: 6 versions
+  - versionName: 2022.10.1-minimal
+    versionCode: 2764
+    commit: 2022.10.1
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2022.10.2-minimal
+    versionCode: 2770
+    commit: 2022.10.2
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2022.11.0-minimal
+    versionCode: 2948
+    commit: 2022.11.0
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2022.12.0-minimal
+    versionCode: 3026
+    commit: 2022.12.0
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2023.1.1-minimal
+    versionCode: 3124
+    commit: 2023.1.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2023.3.0-minimal
+    versionCode: 3260
+    commit: 2023.3.0
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear"//' ../settings.gradle.kts
+
+  - versionName: 2023.6.0-minimal
+    versionCode: 10170
+    commit: 2023.6.0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/System.getenv("VERSION")/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2023.7.5-minimal
+    versionCode: 10506
+    commit: 2023.7.5
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2023.8.2-minimal
+    versionCode: 10992
+    commit: 2023.8.2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2023.9.2-minimal
+    versionCode: 11226
+    commit: 2023.9.2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2023.10.2-minimal
+    versionCode: 11484
+    commit: 2023.10.2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2023.12.4-minimal
+    versionCode: 11898
+    commit: 2023.12.4
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.1.2-minimal
+    versionCode: 11976
+    commit: 2024.1.2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.1.5-minimal
+    versionCode: 12102
+    commit: 2024.1.5
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.3.5-minimal
+    versionCode: 12540
+    commit: 2024.3.5
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.4.1-minimal
+    versionCode: 12576
+    commit: 2024.4.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.6.1-minimal
+    versionCode: 12936
+    commit: 2024.6.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.7.3-minimal
+    versionCode: 13278
+    commit: 2024.7.3
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/<GoogleServicesPluginConfig>/,/}/d'
+        build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/com.google.gms/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.9.4-minimal
+    versionCode: 13806
+    commit: 2024.9.4
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/google.services/d' -e
+        '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.10.3-minimal
+    versionCode: 14058
+    commit: 2024.10.3
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/google.services/d' -e
+        '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2024.12.1-minimal
+    versionCode: 14604
+    commit: 2024.12.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/google.services/d' -e
+        '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2025.1.2-minimal
+    versionCode: 14946
+    commit: 2025.1.2
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/-minimal/d' -e 's/project.version.toString()/"$$VERSION$$"/' -e
+        's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/' -e '/firebaseAppDistribution
+        {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d' -e '/google.services/d' -e
+        '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+
+  - versionName: 2025.4.3-minimal
+    versionCode: 15918
+    commit: 2025.4.3
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.5.1-minimal
+    versionCode: 16056
+    commit: 2025.5.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.5.3-minimal
+    versionCode: 16170
+    commit: 2025.5.3
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.6.6-minimal
+    versionCode: 16662
+    commit: 2025.6.6
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.7.1-minimal
+    versionCode: 16758
+    commit: 2025.7.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.8.7-minimal
+    versionCode: 17352
+    commit: 2025.8.7
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/<GoogleServicesPluginConfig>/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.9.2-minimal
+    versionCode: 17742
+    commit: 2025.9.2
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/googleServices {/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+      - sed -i -e '/androidGradlePlugin/s/8.12.2/8.11.1/' ../gradle/libs.versions.toml
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.11.1-minimal
+    versionCode: 18678
+    commit: 2025.11.1
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - export VERSION_NO_FLAVOR="$(echo '$$VERSION$$' | sed 's/-minimal$//')"
+      - export 
+        RELEASE_URL="https://github.com/home-assistant/android/releases/download/${VERSION_NO_FLAVOR}/"
+      - curl -L -f "${RELEASE_URL}strings.zip" -o ../strings.zip
+      - unzip -n ../strings.zip -d ..
+      - rm -rf ../strings.zip
+      - curl -L -f "${RELEASE_URL}locales_config.xml" -o ../app/src/main/res/xml/locales_config.xml
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistribution {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/googleServices {/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+      - sed -i -e '/implementation(libs.kotlinx.coroutines.play.services)/d' -e '/implementation(libs.play.services.wearable)/d'
+        ../testing-unit/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.11.3-minimal
+    versionCode: 18924
+    commit: 2025.11.3
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - export VERSION_NO_FLAVOR="$(echo '$$VERSION$$' | sed 's/-minimal$//')"
+      - export 
+        RELEASE_URL="https://github.com/home-assistant/android/releases/download/${VERSION_NO_FLAVOR}/"
+      - curl -L -f "${RELEASE_URL}strings.zip" -o ../strings.zip
+      - unzip -n ../strings.zip -d ..
+      - rm -rf ../strings.zip
+      - curl -L -f "${RELEASE_URL}locales_config.xml" -o ../app/src/main/res/xml/locales_config.xml
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistributionDefault {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/googleServices {/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+      - sed -i -e '/implementation(libs.kotlinx.coroutines.play.services)/d' -e '/implementation(libs.play.services.wearable)/d'
+        ../testing-unit/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2025.11.4-minimal
+    versionCode: 19134
+    commit: 2025.11.4
+    subdir: app
+    gradle:
+      - minimal
+    rm:
+      - automotive
+      - wear
+    prebuild:
+      - export VERSION_NO_FLAVOR="$(echo '$$VERSION$$' | sed 's/-minimal$//')"
+      - export 
+        RELEASE_URL="https://github.com/home-assistant/android/releases/download/${VERSION_NO_FLAVOR}/"
+      - curl -L -f "${RELEASE_URL}strings.zip" -o ../strings.zip
+      - unzip -n ../strings.zip -d ..
+      - rm -rf ../strings.zip
+      - curl -L -f "${RELEASE_URL}locales_config.xml" -o ../app/src/main/res/xml/locales_config.xml
+      - cp ../.github/mock-google-services.json google-services.json
+      - sed -i -e '/firebaseAppDistributionDefault {/,/}/d' -e '/firebase/d' -e '/com.google.gms/d'
+        -e '/google.services/d' -e '/googleServices {/,/}/d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/google.services/d' ../build.gradle.kts
+      - sed -i -e 's/, ":wear", ":automotive"//' ../settings.gradle.kts
+      - sed -i -e '/-minimal/d' 
+        ../build-logic/convention/src/main/kotlin/AndroidFullMinimalFlavorConventionPlugin.kt
+      - sed -i -e 's/project.version.toString()/"$$VERSION$$"/' -e 's/System.getenv("VERSION_CODE")/"$$VERCODE$$"/'
+        -e '/signingConfigs {/,+9d' -e '/signingConfigs/d' ../build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt
+      - sed -i -e 's/val versionName = .*/val versionName = "$$VERSION$$"/' -e 's/val
+        versionCode = .*/val versionCode = $$VERCODE$$/' ../common/build.gradle.kts
+      - sed -i -e '/implementation(libs.kotlinx.coroutines.play.services)/d' -e '/implementation(libs.play.services.wearable)/d'
+        ../testing-unit/build.gradle.kts
+    scandelete:
+      - build-logic
+
+MaintainerNotes: |-
+  6 versions, due to the rapid release there may be a trailing error
+  (which bothers only some users) and it takes time to fix.
+
 AutoUpdateMode: Version +-minimal %v
 UpdateCheckMode: HTTP
-UpdateCheckData: https://github.com/home-assistant/android/releases/latest/download/version_code.txt|(\d+)|https://github.com/home-assistant/android/releases/latest|tree/([\d.]+)"
-CurrentVersion: 2022.9.1
-CurrentVersionCode: 2700
+UpdateCheckData: 
+  https://github.com/home-assistant/android/releases/latest/download/version_code.txt|(\d+)|https://github.com/home-assistant/android/releases/latest|tree/([\d.]+)"
+CurrentVersion: 2025.11.4
+CurrentVersionCode: 19134

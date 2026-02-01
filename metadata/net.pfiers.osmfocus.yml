@@ -8,7 +8,7 @@ Donate: https://pfiers.net/donate
 AutoName: OSMfocus Reborn
 
 RepoType: git
-Repo: https://github.com/ubipo/osmfocus
+Repo: https://github.com/ubipo/osmfocus.git
 
 Builds:
   - versionName: 1.0.0
@@ -21,14 +21,6 @@ Builds:
   - versionName: 1.0.1-fdroid
     versionCode: 101
     commit: v1.0.1
-    subdir: app
-    gradle:
-      - fdroid
-
-  - versionName: 1.0.3-fdroid
-    versionCode: 103
-    disable: https://github.com/ubipo/osmfocus/issues/8
-    commit: v1.0.3
     subdir: app
     gradle:
       - fdroid
@@ -52,7 +44,7 @@ Builds:
     commit: ad8fd75c6c2c6ad26d443b2a6ae9d852a545fd73
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -63,7 +55,7 @@ Builds:
     commit: f5e6d2d20d68d2d347f2ec990ae24b377d8cdc6d
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -74,7 +66,7 @@ Builds:
     commit: f4f7916a0a98a04593ee4e8a91666339642bbe34
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -85,7 +77,7 @@ Builds:
     commit: ec8d653e9276f946979f1053fa9955c12b32a901
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -96,7 +88,7 @@ Builds:
     commit: 58ed030459056fbab3bd7d6b21807e765e6db615
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -107,7 +99,7 @@ Builds:
     commit: c0dcc8bf26cee0fcc6f58636c19dd55aeeae6989
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -118,13 +110,33 @@ Builds:
     commit: 6189e79a76da8119e2e0acc064da9dee77141d9b
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - fdroid
 
-AutoUpdateMode: Version v%v
+  - versionName: 1.5.1-fdroid
+    versionCode: 151
+    commit: 3963320bfc946d4263e57defbdd603ba45c8aa98
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/kotlinx/d' -e '/r8-releases/d' ../build.gradle.kts
+
+  - versionName: 1.6.0-fdroid
+    versionCode: 160
+    commit: 70be0b0ad59139c6cb72d6d1b4849c06b4e7d2f3
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/kotlinx/d' -e '/r8-releases/d' ../build.gradle.kts
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.5.0-fdroid
-CurrentVersionCode: 150
+CurrentVersion: 1.6.0-fdroid
+CurrentVersionCode: 160

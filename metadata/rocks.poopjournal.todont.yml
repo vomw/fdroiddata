@@ -1,5 +1,7 @@
 Categories:
+  - Habit Tracker
   - Sports & Health
+  - Task
 License: Apache-2.0
 AuthorName: Crazy Marvin & Contributors
 AuthorEmail: marvin@poopjournal.rocks
@@ -8,12 +10,16 @@ WebSite: https://www.crazymarvin.com/todont
 SourceCode: https://github.com/Crazy-Marvin/ToDont
 IssueTracker: https://github.com/Crazy-Marvin/ToDont/issues
 Translation: https://hosted.weblate.org/engage/todont/
+Changelog: https://github.com/Crazy-Marvin/ToDont/releases
 Donate: https://poopjournal.rocks/blog/donate/
+Liberapay: PoopJournal
+Bitcoin: bc1q90duwnd6ks9tuyj9d6qyrqzvryus4msf4u3ht8
+Litecoin: ltc1q7euacwhn6ef99vcfa57mute92q572aqsc4c2j5
 
-AutoName: To Don’t
+AutoName: To Don't
 
 RepoType: git
-Repo: https://github.com/Crazy-Marvin/ToDont
+Repo: https://github.com/Crazy-Marvin/ToDont.git
 
 Builds:
   - versionName: '1.0'
@@ -49,13 +55,71 @@ Builds:
     commit: 4d4c0f5674693ef5178cde2091afd5d6392e6cca
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
-AutoUpdateMode: Version v%v
+  - versionName: '1.6'
+    versionCode: 6
+    commit: 13773b2dabfe059dce96a647cb457e729b21b702
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+  - versionName: '1.8'
+    versionCode: 8
+    commit: 5be742a0ac96eef5def100b7553448ab470d534c
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+  - versionName: '1.9'
+    versionCode: 9
+    commit: 5be6b4715a4fafa3d35040ba8e866e9d3173b184
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+  - versionName: '2.0'
+    versionCode: 10
+    commit: d2271cae238315553f422fd7045134bee1926f27
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+  - versionName: 4.0.0
+    versionCode: 400
+    commit: ae94528c3024ee053df33435d26cdfe5a1b11841
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+  - versionName: 4.2.0
+    versionCode: 420
+    commit: d62fc2780d6d306f5c3420a2a2588766acdd9832
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - sentry-wizard
+    prebuild: sed -i -e "/android {/alintOptions { disable 'ExtraTranslation' }" build.gradle
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.5'
-CurrentVersionCode: 5
+CurrentVersion: 4.2.0
+CurrentVersionCode: 420

@@ -20,7 +20,7 @@ Builds:
     commit: naive-plugin-91.0.4472.77-1
     subdir: plugin/naive
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
       - apt-get remove -y libc6-i386 --autoremove
     gradle:
@@ -37,7 +37,7 @@ Builds:
     commit: naive-plugin-91.0.4472.77-1
     subdir: plugin/naive
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
       - apt-get remove -y libc6-i386 --autoremove
     gradle:
@@ -54,7 +54,7 @@ Builds:
     commit: naive-plugin-91.0.4472.77-1
     subdir: plugin/naive
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
       - apt-get remove -y libc6-i386 --autoremove
     gradle:
@@ -71,7 +71,7 @@ Builds:
     commit: naive-plugin-91.0.4472.77-1
     subdir: plugin/naive
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
       - apt-get remove -y libc6-i386 --autoremove
     gradle:
@@ -89,7 +89,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -110,7 +110,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -131,7 +131,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -152,7 +152,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -173,7 +173,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -194,51 +194,7 @@ Builds:
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
-      - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
-      - apt-get remove -y libc6-i386 --autoremove
-    gradle:
-      - fdroid
-    prebuild:
-      - pushd ../..
-      - ./run fdroid prebuild_plugin_naive
-    scandelete:
-      - external
-      - plugin
-    ndk: r23b
-
-  - versionName: 102.0.5005.61-1
-    versionCode: 80
-    disable: missing lib
-    commit: 3ea6119b30938086becb5f4f93f434531aef9b55
-    subdir: plugin/naive
-    submodules: true
-    sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
-      - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
-      - apt-get remove -y libc6-i386 --autoremove
-    gradle:
-      - fdroid
-    prebuild:
-      - pushd ../..
-      - ./run fdroid prebuild_plugin_naive
-    scandelete:
-      - external
-      - plugin
-    ndk: r23b
-
-  - versionName: 103.0.5060.53-1
-    versionCode: 85
-    disable: missing lib
-    commit: 8b6f50ce8516b1dd96788c6eec402783a49b6ba8
-    subdir: plugin/naive
-    submodules: true
-    sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
@@ -255,29 +211,217 @@ Builds:
 
   - versionName: 105.0.5195.52-1
     versionCode: 95
-    disable: missing lib
     commit: f0b4416434fb0de228af2f1ae203140d6c3e66ec
     subdir: plugin/naive
     submodules: true
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
       - apt-get install -y tcl gettext libcurl4-openssl-dev ninja-build pkg-config
       - apt-get remove -y libc6-i386 --autoremove
     gradle:
       - fdroid
+    srclibs:
+      - cpython@v3.10.7
     prebuild:
       - pushd ../..
       - ./run fdroid prebuild_plugin_naive
+      - echo -e '\nexport PATH="$$cpython$$/bin:$PATH"' >> ./bin/plugin/naive/build.sh
     scandelete:
       - external
       - plugin
+    build:
+      - pushd $$cpython$$
+      - ./configure --prefix=$$cpython$$
+      - make -j`nproc`
+      - make install
+      - popd
     ndk: r23b
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags ^naive-plugin-.*
-VercodeOperation: '%c * 5'
+  - versionName: 106.0.5249.91-1
+    versionCode: 100
+    commit: 4926ad2b472a12f21be6b97ed071ab210d1d4eb1
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 107.0.5304.87-1
+    versionCode: 105
+    commit: 3593fc10b6889367774f37b32c2e5f89fedb5226
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 108.0.5359.94-1
+    versionCode: 110
+    commit: d4b397de0afbbd137cd727f3e2b18836dd487b51
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 109.0.5414.74-1
+    versionCode: 115
+    commit: 7bf05cfd8128d89e708b3df108505c53b7cd97a2
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 109.0.5414.74-2
+    versionCode: 120
+    commit: 682d889dd7fdb95f67915c098d836e516b39ce2e
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 110.0.5481.100-1
+    versionCode: 125
+    commit: 3eae8cff4779d4a8de1ce237780fafd9565cdda7
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 111.0.5563.64-1
+    versionCode: 130
+    commit: f8e8a82e95432e21f39a6c569339b31608175cdd
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - external
+      - plugin
+    ndk: r25
+
+  - versionName: 113.0.5672.62-2
+    versionCode: 135
+    commit: a82ccbad5564bee038b513eac033f17e48fee706
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - plugin
+    ndk: r25
+
+  - versionName: 114.0.5735.91-3
+    versionCode: 140
+    commit: 445168db556698f68e4464e5e862a0c7b4bd89e1
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - plugin
+    ndk: r25
+
+  - versionName: 115.0.5790.166-1
+    versionCode: 145
+    commit: 3d8821888d6dc93d6402873e510689ed884aae6f
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - plugin
+    ndk: r25
+
+  - versionName: 116.0.5845.92-2
+    versionCode: 155
+    commit: 186b284619eeadbed55538973715654402a19d2b
+    subdir: plugin/naive
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make tcl gettext libcurl4-openssl-dev ninja-build pkg-config
+        bzip2 gcc-multilib
+    gradle:
+      - fdroid
+    prebuild: cp -R ../../gradle ./
+    scandelete:
+      - plugin
+    ndk: r25
+
+ArchivePolicy: 0
+AutoUpdateMode: None
+UpdateCheckMode: None
+VercodeOperation:
+  - '%c * 5'
 UpdateCheckData: sager.properties|NAIVE_VERSION=(\d+)|.|NAIVE_VERSION_NAME=(.*)
-CurrentVersion: 105.0.5195.52-1
-CurrentVersionCode: 95
+CurrentVersion: 116.0.5845.92-2
+CurrentVersionCode: 155

@@ -1,6 +1,8 @@
 AntiFeatures:
-  - NonFreeNet
-  - Tracking
+  TetheredNet:
+    en-US: Tethered to a service for retrieving icons.
+  Tracking:
+    en-US: Reporting all URLs to a tethered server for FavIcon retrieval.
 Categories:
   - Connectivity
   - Development
@@ -27,7 +29,7 @@ Builds:
     commit: 2.0.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -38,7 +40,7 @@ Builds:
     commit: 2.2.3
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -49,7 +51,7 @@ Builds:
     commit: 958d2d4a0786334b1abe8a26beeb9b05d183ca69
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -60,7 +62,7 @@ Builds:
     commit: 2.4.0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -71,7 +73,7 @@ Builds:
     commit: f619d1b60ec6194acf57799670e9ace80fdc0519
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -82,7 +84,7 @@ Builds:
     commit: 6888adaa1bfb0b8f516741d61643bb6d8c684219
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -93,7 +95,7 @@ Builds:
     commit: 416e4c9761d7d43f0ded57a1389f672a96ff1f81
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -104,13 +106,21 @@ Builds:
     commit: 1635922aac270f23412763f15db033c2e125a2f0
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
 
+  - versionName: 2.9.0
+    versionCode: 14
+    commit: 928390ee30af4c6d4dda6aa4ef0353da9bc04340
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/maven.java.net/d' ../build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.8.0
-CurrentVersionCode: 13
+CurrentVersion: 2.9.0
+CurrentVersionCode: 14

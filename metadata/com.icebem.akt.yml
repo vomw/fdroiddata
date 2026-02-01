@@ -21,7 +21,7 @@ Builds:
     commit: 497d54381d1ed76a4def85a7c8966c483579d66e
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -33,7 +33,7 @@ Builds:
     commit: b473baf162bea0dad945887913e97c0ac64dd0e8
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -45,14 +45,43 @@ Builds:
     commit: 94871a4597195aa10c0e5c8f0409d9ec9057ae29
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
       - yes
     prebuild: sed -i -e '4s/true/false/' src/main/res/xml/root_preferences.xml
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 2.10.5
-CurrentVersionCode: 64
+  - versionName: 2.11.0
+    versionCode: 65
+    commit: b1c0d7a52de7ca2ed5f81acc17751c2651941a46
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '4s/true/false/' src/main/res/xml/root_preferences.xml
+
+  - versionName: 3.0.2
+    versionCode: 68
+    commit: 9b14287c6fecf88f8ff5e9b69642dc62f0e17084
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '4s/true/false/' src/main/res/xml/root_preferences.xml
+
+  - versionName: 3.0.3
+    versionCode: 69
+    commit: b83b09568d37d537be99dd0f6ea8d9373f07a322
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+    prebuild: sed -i -e '4s/true/false/' src/main/res/xml/root_preferences.xml
+
+ArchivePolicy: 0
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 3.0.3
+CurrentVersionCode: 69

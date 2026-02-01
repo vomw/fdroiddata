@@ -1,5 +1,6 @@
 Categories:
   - Sports & Health
+  - Workout
 License: AGPL-3.0-or-later
 AuthorName: Enjoying FOSS
 AuthorEmail: contact.mirek@protonmail.com
@@ -8,7 +9,7 @@ SourceCode: https://gitlab.com/enjoyingfoss/feeel
 IssueTracker: https://gitlab.com/enjoyingfoss/feeel/issues
 Translation: https://hosted.weblate.org/projects/feeel/
 Changelog: https://gitlab.com/enjoyingfoss/feeel/tags
-LiberapayID: '30709'
+Liberapay: Feeel
 
 AutoName: Feeel
 
@@ -77,7 +78,7 @@ Builds:
     srclibs:
       - flutter@1.25.0-8.1.pre
     prebuild: echo 'android.applicationVariants.all { variant -> variant.outputs.all
-        { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
+      { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --no-sound-null-safety
@@ -89,7 +90,7 @@ Builds:
     srclibs:
       - flutter@1.25.0-8.1.pre
     prebuild: echo 'android.applicationVariants.all { variant -> variant.outputs.all
-        { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
+      { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --no-sound-null-safety
@@ -101,22 +102,10 @@ Builds:
     srclibs:
       - flutter@2.0.3
     prebuild: echo 'android.applicationVariants.all { variant -> variant.outputs.all
-        { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
+      { output -> outputFileName = "app-${output.baseName}.apk" } }' >> android/app/build.gradle
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --no-sound-null-safety
-
-  - versionName: 2.1.0
-    versionCode: 14
-    disable: no such tag
-    commit: 2.1.0
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@2.2.0
-    prebuild: sed -i -e '/splits/,/^}/d' android/app/build.gradle
-    build:
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter build apk
 
   - versionName: 2.1.5
     versionCode: 4014
@@ -151,8 +140,36 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk
 
+  - versionName: 2.4.0
+    versionCode: 4240
+    commit: 9571f3ed3cfed5762c2b1b34121e7d69c94ec60c
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.3.7
+    rm:
+      - ios
+      - linux
+      - macos
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter build apk
+
+  - versionName: 2.4.1
+    versionCode: 4241
+    commit: 2e6b2c37bba4a533c5a9b6d0aad99df935ac1420
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.3.7
+    rm:
+      - ios
+      - linux
+      - macos
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.3.0
-CurrentVersionCode: 4016
+CurrentVersion: 2.4.1
+CurrentVersionCode: 4241

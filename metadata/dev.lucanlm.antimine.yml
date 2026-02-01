@@ -10,7 +10,7 @@ Donate: https://www.paypal.com/donate/?hosted_button_id=49XX9XDNUV4SW
 Bitcoin: 1CG9cyRHkVMW3onjDmXVNzDawnX1ydSWiM
 
 RepoType: git
-Repo: https://github.com/lucasnlm/antimine-android
+Repo: https://github.com/lucasnlm/antimine-android.git
 
 Builds:
   - versionName: 6.3.2
@@ -427,34 +427,6 @@ Builds:
       - sed -i -e "s/':proprietary', //; s/':wear', //" ../settings.gradle
       - sed -i -e "/':proprietary'/d" build.gradle
 
-  - versionName: 10.0.0
-    versionCode: 1000001
-    disable: contains binaries https://github.com/lucasnlm/antimine-android/issues/261
-    commit: 10.0.0
-    subdir: app
-    gradle:
-      - foss
-    rm:
-      - proprietary
-      - wear
-    prebuild:
-      - sed -i -e "s/':proprietary', //; s/':wear', //" ../settings.gradle
-      - sed -i -e "/':proprietary'/d" build.gradle
-
-  - versionName: 10.0.2
-    versionCode: 1000021
-    disable: contains binaries https://github.com/lucasnlm/antimine-android/issues/261
-    commit: 10.0.2
-    subdir: app
-    gradle:
-      - foss
-    rm:
-      - proprietary
-      - wear
-    prebuild:
-      - sed -i -e "s/':proprietary', //; s/':wear', //" ../settings.gradle
-      - sed -i -e "/':proprietary'/d" build.gradle
-
   - versionName: 10.0.3
     versionCode: 1000031
     commit: 10.0.3
@@ -587,39 +559,9 @@ Builds:
       - sed -i -e "/':proprietary'/d" build.gradle
     ndk: r21
 
-  - versionName: 12.4.1
-    versionCode: 1204011
-    disable: https://github.com/lucasnlm/antimine-android/issues/298
-    commit: 1228791fd3a28cac09f04893af0a4176d89bc698
-    subdir: app
-    gradle:
-      - foss
-    rm:
-      - proprietary
-      - wear
-    prebuild:
-      - sed -i -e "s/':proprietary', //; s/':wear', //" ../settings.gradle
-      - sed -i -e "/':proprietary'/d" build.gradle
-    ndk: r21
-
   - versionName: 12.4.2
     versionCode: 1204021
     commit: 3a1b71351fb4ffe44465d85cbb4fe7334435b6c9
-    subdir: app
-    gradle:
-      - foss
-    rm:
-      - proprietary
-      - wear
-    prebuild:
-      - sed -i -e "s/':proprietary', //; s/':wear', //" ../settings.gradle
-      - sed -i -e "/':proprietary'/d" build.gradle
-    ndk: r21
-
-  - versionName: 13.0.0
-    versionCode: 1300001
-    disable: https://github.com/lucasnlm/antimine-android/issues/298
-    commit: 7240a45aa2590ad71e75d3b8912ca3243172b062
     subdir: app
     gradle:
       - foss
@@ -816,7 +758,7 @@ Builds:
     commit: ee744690263e2f64f1472ac762fb0ab3e4d29191
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -835,7 +777,7 @@ Builds:
     commit: 4717c5489a2c7739d245a50656ddeadb742b7fd8
     subdir: app
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y openjdk-11-jdk-headless
       - update-alternatives --auto java
     gradle:
@@ -849,7 +791,319 @@ Builds:
       - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
     ndk: r21
 
-AutoUpdateMode: Version %v
+  - versionName: 16.1.1
+    versionCode: 1601011
+    commit: fb7af4e5500c74ae0017eefc65cd1e02f51cc8bb
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.10.2.4988404'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle
+    ndk: r21
+
+  - versionName: 17.0.0
+    versionCode: 1700001
+    commit: 871e5445b9f88dc9be97c89124ed49035184c3ec
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.0.1
+    versionCode: 1700011
+    commit: d05ec296176fa459e018d8e6dad79009e5a6ff19
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.1.5
+    versionCode: 1701051
+    commit: 577d2937c880bd78914363d8dc8d6ca0157847da
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.1.7 F
+    versionCode: 1701071
+    commit: 3ce87a83dc552c69940ede405da0a0ec5a40b6c1
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.2.0 F
+    versionCode: 1702001
+    commit: 3922c9f8d1f61b5804e0cd962c221f3d1d5f81fd
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.2.1 F
+    versionCode: 1702011
+    commit: 74dcedf058b9fb22de22e790a1385264957898e7
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.2.2 F
+    versionCode: 1702021
+    commit: 169be1a6a055c1d556a243c1270daaaf09b910ea
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.2.3 F
+    versionCode: 1702031
+    commit: dfaa473c805fa6293ba2c6d8141f13abfc7509e4
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.4.0 F
+    versionCode: 1704001
+    commit: 0eb90ff719b12c9c3b4c82a04a5fea99caa3ca36
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.5.0 F
+    versionCode: 1705001
+    commit: 21ecce8ceb59237e5659b48140716df3706c2e20
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.5.1 F
+    versionCode: 1705011
+    commit: fb0b8f850958457979936ccdd28b8c20d9b8e7e6
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.5.8 F
+    versionCode: 1705081
+    commit: 638ddf9bf224dbfcbb619f0bcbc938906c896bba
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.5.9 F
+    versionCode: 1705091
+    commit: f500c6305a04d81d4b50d956c6f287a32352d8e6
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.5.10 F
+    versionCode: 1705101
+    commit: 5354543aebc9534b18fe3c451ecad25475e7a835
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - proprietary
+      - app/gradle
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" ../settings.gradle build.gradle
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' {.,..}/build.gradle
+    ndk: r25b
+
+  - versionName: 17.6.0 F
+    versionCode: 1706001
+    commit: 6b5a45756a69b33741acfc4c6bc10e6446fcff06
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - app/gradle
+      - proprietary
+      - wear
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" -e '/:wear/d' -e '/google.services/d' ../settings.gradle.kts
+        build.gradle.kts ../build.gradle.kts
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' -e '/play-core-ktx/d'
+        -e '/wear/d' ../gradle/libs.versions.toml
+    ndk: r25b
+
+  - versionName: 17.6.3 F
+    versionCode: 1706031
+    commit: 48f4dac77d0e4dfd6cbd64ca982b473453dc10ba
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - foss
+    rm:
+      - app/gradle
+      - proprietary
+      - wear
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" -e '/:wear/d' -e '/google.services/d' ../settings.gradle.kts
+        build.gradle.kts ../build.gradle.kts
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' -e '/play-core-ktx/d'
+        -e '/wear/d' ../gradle/libs.versions.toml
+    ndk: r25b
+
+  - versionName: 17.7.0 F
+    versionCode: 1707001
+    disable: https://github.com/lucasnlm/antimine-android/issues/470#issuecomment-2214239593
+    commit: fc2be239e5b275cbaf43bfe99d7967a873cc63b4
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - app/gradle
+      - proprietary
+      - wear
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - sed -i -e "/:proprietary/d" -e '/:wear/d' -e '/google.services/d' ../settings.gradle.kts
+        build.gradle.kts ../build.gradle.kts
+      - sed -i -e '/bugsnag/d' -e '/gms/d' -e '/firebase/d' -e '/play-core-ktx/d'
+        -e '/wear/d' ../gradle/libs.versions.toml
+    ndk: r25b
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 15.9.2
-CurrentVersionCode: 1509021
+CurrentVersion: 17.7.0 F
+CurrentVersionCode: 1707001
