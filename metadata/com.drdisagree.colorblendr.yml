@@ -16,7 +16,8 @@ RequiresRoot: true
 
 RepoType: git
 Repo: https://github.com/Mahmud0808/ColorBlendr.git
-Binaries: https://github.com/Mahmud0808/ColorBlendr/releases/download/%v/ColorBlendr.%v.apk
+Binaries: 
+  https://github.com/Mahmud0808/ColorBlendr/releases/download/%v/ColorBlendr.%v.apk
 
 Builds:
   - versionName: v1.0b8
@@ -178,7 +179,8 @@ Builds:
     srclibs:
       - reproducible-apk-tools@v0.2.8
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Mahmud0808/ColorBlendr/releases/download/$$VERSION$$/ColorBlendr.$$VERSION$$.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Mahmud0808/ColorBlendr/releases/download/$$VERSION$$/ColorBlendr.$$VERSION$$.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -195,9 +197,23 @@ Builds:
     gradle:
       - yes
 
+  - versionName: v2.1
+    versionCode: 39
+    commit: 3f138d697b0e1056083c60f35d73e77229726966
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: v2.1.1
+    versionCode: 40
+    commit: 93b2dd4813cba7cad16e800064b5789865bf2660
+    subdir: app
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: 4af4ffa12ce90815a1775c4604ea16c19f5bed2a6e09ae7c3c92815982af052e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: v2.0.3
-CurrentVersionCode: 38
+CurrentVersion: v2.1.1
+CurrentVersionCode: 40
