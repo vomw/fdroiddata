@@ -16,17 +16,14 @@ Repo: https://github.com/jenspfahl/hylex
 Builds:
   - versionName: 1.0.0
     versionCode: 100000
-    commit: 9b2de2788590c06e0bdfda6aa9633ee2bdb59d1a
-    sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-      - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
+    commit: 6836075443c32884a05a1661f1aa1d1618499a33
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.35.7
+      - flutter@stable
     prebuild:
-      - sed -i -e 's/Xmx1536M/Xmx4G/' android/gradle.properties
+      - flutterVersion=$(sed -n -E "s/\ \ flutter:\ ([0-9\.]*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
