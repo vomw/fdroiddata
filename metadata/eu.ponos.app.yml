@@ -1,0 +1,62 @@
+# Fichier de métadonnées F-Droid
+# À soumettre via merge request sur https://gitlab.com/fdroid/fdroiddata
+# Fichier à créer : metadata/eu.ponos.app.yml
+
+Categories:
+  - Internet
+  - Money
+
+License: GPL-3.0-only
+
+AuthorName: Ponos
+AuthorEmail: contact@ponos-job.eu
+AuthorWebSite: https://ponos-job.eu
+
+WebSite: https://ponos-job.eu
+SourceCode: https://gitlab.com/ponos-081ad9/ponos
+IssueTracker: https://gitlab.com/ponos-081ad9/ponos/-/issues
+Changelog: https://ponos-job.eu/changelog
+
+AutoName: Ponos
+
+Summary: Minimalist professional social network
+
+Description: |
+  Ponos is a minimalist, ethical and open source professional social network.
+
+  Features:
+  * Create your professional profile
+  * Publish short posts (140 characters) with hashtags and mentions
+  * Connect with other professionals
+  * Private messaging
+  * Job offers via connectors (France Travail, FOREM, BOAMP)
+  * Cross-posting to Mastodon and Bluesky
+  * Available in 11 languages
+  * No trackers, no ads, privacy-friendly
+
+  This app is a WebView viewer for ponos-job.eu.
+
+RepoType: git
+Repo: https://gitlab.com/ponos-081ad9/ponos.git
+
+Builds:
+  - versionName: 0.3.0
+    versionCode: 1
+    commit: v0.3.0
+    timeout: 20000
+    subdir: mobiles
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - mobiles/ios
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.3.0
+CurrentVersionCode: 1
