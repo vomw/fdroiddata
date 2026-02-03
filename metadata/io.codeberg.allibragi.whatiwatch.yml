@@ -1,0 +1,35 @@
+Categories:
+  - Multimedia
+License: AGPL-3.0-or-later
+AuthorName: Allibrgi
+SourceCode: https://codeberg.org/allibragi/whatiwatch
+IssueTracker: https://codeberg.org/allibragi/whatiwatch/issues
+
+AutoName: what I watch
+
+RepoType: git
+Repo: https://codeberg.org/allibragi/whatiwatch.git
+
+Builds:
+  - versionName: '0.1.1'
+    versionCode: 1
+    commit: v0.1.1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - linux
+    scanignore:
+      - .pub-cache
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.1
+CurrentVersionCode: 1
