@@ -12,6 +12,7 @@ AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
 CurrentVersion: 1.1.0+1
 CurrentVersionCode: 11
+
 Builds:
   - versionName: 1.1.0+1
     versionCode: 11
@@ -19,13 +20,19 @@ Builds:
     subdir: .
     sudo:
       - apt-get update || apt-get update
-      - apt-get install -y git wget unzip gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3    
+      - apt-get install -y git wget unzip gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3
     output: android/app/build/outputs/apk/release/app-release.apk
     srclibs:
       - flutter@3.24.3
     prebuild:
+      # Elimina cualquier cache previo
+      - rm -rf $(pwd)/.pub-cache
+      # Define un cache local limpio
       - export PUB_CACHE=$(pwd)/.pub-cache
+      # Configuración inicial de Flutter
       - $$flutter$$/bin/flutter config --no-analytics
+      # Descarga dependencias desde pubspec.yaml
       - $$flutter$$/bin/flutter pub get
     build:
+      # Compila el APK en modo release
       - $$flutter$$/bin/flutter build apk --release
