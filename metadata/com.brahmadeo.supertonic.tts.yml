@@ -13,17 +13,17 @@ Builds:
   - versionName: '1.2'
     versionCode: 3
     commit: v1.2
-    gradle:
-      - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     sudo:
       - apt-get update
       - apt-get install -y build-essential pkg-config libssl-dev
+    gradle:
+        -  yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
       - sh rustup-init.sh -y --default-toolchain stable
       - source $HOME/.cargo/env
-      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android 
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
         x86_64-linux-android
       - mkdir -p rust/.cargo
       - echo '[target.aarch64-linux-android]' > rust/.cargo/config.toml
