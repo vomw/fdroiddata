@@ -13,7 +13,7 @@ Repo: https://codeberg.org/allibragi/whatiwatch.git
 Builds:
   - versionName: '0.1.1'
     versionCode: 1
-    commit: v0.1.1
+    commit: 78aeb7e1f48271296186098a9c7959262135ac5b
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -22,6 +22,9 @@ Builds:
     scanignore:
       - .pub-cache
     prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
