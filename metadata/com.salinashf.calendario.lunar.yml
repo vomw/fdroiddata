@@ -6,15 +6,13 @@ AuthorEmail: salinashf@gmail.com
 SourceCode: https://gitlab.com/salinashf/calendario-lunar
 IssueTracker: https://gitlab.com/salinashf/calendario-lunar/-/issues
 
+AutoName: Calendario Lunar
+Description: Aplicacion sencilla para visualizar las fases lunares y seguir el ciclo
+  lunar de forma totalmente privada y offline.
+
 RepoType: git
 Repo: https://gitlab.com/salinashf/calendario-lunar.git
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.1.1
-CurrentVersionCode: 1
-AutoName: Calendario Lunar
-Description: Aplicacion sencilla para visualizar las fases lunares y seguir el ciclo lunar de forma totalmente privada y offline.
 Builds:
   - versionName: 1.1.1
     versionCode: 1
@@ -24,16 +22,15 @@ Builds:
     srclibs:
       - flutter@3.24.3
     prebuild:
-      # Elimina cualquier cache previo
       - rm -rf $(pwd)/.pub-cache
-      # Define un cache local limpio
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # Configuracion inicial de Flutter
       - $$flutter$$/bin/flutter config --no-analytics
-      # Descarga dependencias desde pubspec.yaml
       - $$flutter$$/bin/flutter pub get
       - rm -f $(pwd)/.pub-cache/hosted/pub.dev/archive-3.6.1/web/res/readme.zip
       - rm -f $(pwd)/.pub-cache/hosted/pub.dev/analyzer-6.7.0/example/ddd03.exe
-    build:
-      # Compila el APK en modo release
-      - $$flutter$$/bin/flutter build apk --release
+    build: $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.1.1
+CurrentVersionCode: 1
