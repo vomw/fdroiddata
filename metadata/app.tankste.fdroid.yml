@@ -35,10 +35,25 @@ Builds:
       - app/android/car
       - app/android/navigation
     prebuild:
+      - export repo=/home/runner/work/tankste/tankste
+      - cd ../../..
+      - mv app.tankste.fdroid $repo
+      - pushd $repo/app/android
       - echo "flutter.sdk=$$flutter$$" >> ./local.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter precache --android
-    build: $$flutter$$/bin/flutter build apk
+      - popd
+      - mv $repo app.tankste.fdroid
+      - cd app.tankste.fdroid/app/android
+    build:
+      - export repo=/home/runner/work/tankste/tankste
+      - cd ../../..
+      - mv app.tankste.fdroid $repo
+      - pushd $repo/app/android
+      - $$flutter$$/bin/flutter build apk
+      - popd
+      - mv $repo app.tankste.fdroid
+      - cd app.tankste.fdroid/app/android
     ndk: 28.1.13356709
 
 AllowedAPKSigningKeys: e8f7bb49e1040ae2fda28e935de8ba729e82463e905e44a19b1e18e26d63af9c
