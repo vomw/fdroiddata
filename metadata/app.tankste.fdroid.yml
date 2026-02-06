@@ -25,10 +25,8 @@ Builds:
     sudo:
       - mkdir -p /home/runner/work/tankste
       - chown -R vagrant /home/runner
-    gradle:
-      - yes
     output: ../build/app/outputs/flutter-apk/app-release.apk
-    binary: 
+    binary:
       https://github.com/tankste/tankste-app-fdroid/releases/download/2.2.1/tankste-fdroid-2.2.1.apk
     srclibs:
       - flutter@3.38.5
@@ -41,22 +39,28 @@ Builds:
       - export repo=/home/runner/work/tankste/tankste
       - cd ../../..
       - mv app.tankste.fdroid $repo
-      - pushd $repo/app/android
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd app/android
       - echo "flutter.sdk=$$flutter$$" >> ./local.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter precache --android
       - popd
       - mv $repo app.tankste.fdroid
       - cd app.tankste.fdroid/app/android
+    scandelete:
+      - .pub-cache
     build:
       - export repo=/home/runner/work/tankste/tankste
       - cd ../../..
       - mv app.tankste.fdroid $repo
-      - pushd $repo/app/android
-      - $$flutter$$/bin/flutter build apk
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd app/android
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons
       - popd
       - mv $repo app.tankste.fdroid
-      - cd app.tankste.fdroid/app/android
+      - cd app.tankste.fdroid
     ndk: 28.1.13356709
 
 AllowedAPKSigningKeys: e8f7bb49e1040ae2fda28e935de8ba729e82463e905e44a19b1e18e26d63af9c
