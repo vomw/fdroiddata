@@ -1,0 +1,41 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: CollotsSpot
+SourceCode: https://github.com/CollotsSpot/Ensemble
+IssueTracker: https://github.com/CollotsSpot/Ensemble/issues
+
+AutoName: Ensemble
+
+RepoType: git
+Repo: https://github.com/CollotsSpot/Ensemble.git
+
+Builds:
+  - versionName: 3.0.2
+    versionCode: 54
+    commit: 00f065fbe90351968df70d8a75c22e68a1053a92
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-apk.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i '/aliyun/d' android/build.gradle
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .pub-cache
+    scandelete:
+      - android/init.gradle
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.0.2
+CurrentVersionCode: 54
