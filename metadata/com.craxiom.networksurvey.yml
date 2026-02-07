@@ -1,18 +1,21 @@
 Categories:
   - Connectivity
+  - Network Analyzer
 License: Apache-2.0
 AuthorName: Christian Rowlands
 AuthorEmail: craxiomdev@gmail.com
 WebSite: https://www.networksurvey.app/
 SourceCode: https://github.com/christianrowlands/android-network-survey
 IssueTracker: https://github.com/christianrowlands/android-network-survey/issues
-Changelog: https://github.com/christianrowlands/android-network-survey/blob/develop/CHANGELOG.md
+Changelog: 
+  https://github.com/christianrowlands/android-network-survey/blob/develop/CHANGELOG.md
 
 AutoName: Network Survey
 
 RepoType: git
 Repo: https://github.com/christianrowlands/android-network-survey.git
-Binaries: https://github.com/christianrowlands/android-network-survey/releases/download/v%v/networksurvey-%v-cdr-release.apk
+Binaries: 
+  https://github.com/christianrowlands/android-network-survey/releases/download/v%v/networksurvey-%v-cdr-release.apk
 
 Builds:
   - versionName: 1.30.2
@@ -183,10 +186,23 @@ Builds:
       - nsApiKey=AIzaSyCLejWwbFEkWoUIoTwOtN20_0VlM8xw6i0
       - ocidApiKey=pk.bf23b10f0b49b9b4d570cfb87489227e
 
+  - versionName: '1.47'
+    versionCode: 104
+    commit: 81e71460ea1ae1c226f3b4876ca7f26bef7a8e93
+    subdir: networksurvey
+    gradle:
+      - cdr
+    prebuild: sed -i -e "/gms/d" -e "/firebase/d" ../build.gradle
+    scandelete:
+      - networksurvey/libs
+    gradleprops:
+      - nsApiKey=AIzaSyCLejWwbFEkWoUIoTwOtN20_0VlM8xw6i0
+      - ocidApiKey=pk.bf23b10f0b49b9b4d570cfb87489227e
+
 AllowedAPKSigningKeys: abf5ad2911fe31916f4e255c1733a3f6bc2cab2f2816c9587de11a415871af07
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v
 UpdateCheckData: networksurvey/build.gradle|versionCode (\d+)|.|appVersion = "(.+)"
-CurrentVersion: '1.46'
-CurrentVersionCode: 103
+CurrentVersion: '1.47'
+CurrentVersionCode: 104
