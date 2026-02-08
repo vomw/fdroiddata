@@ -1520,14 +1520,18 @@ Builds:
       - popd
       - taskset --cpu-list 0-3 gradle assembleOtherRelease
 
-  - versionName: 1.12.18
-    versionCode: 611
-    commit: 58025a01f8091e114f79f2df6267d54682d3e572
+  - versionName: 1.12.19
+    versionCode: 613
+    commit: 69bebbda82f0e6f04d128e320de4585b723bee52
     subdir: clients/android/app
     submodules: true
     sudo:
       - apt-get update
       - apt-get install -y gcc libc-dev make golang-go
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - other
     srclibs:
@@ -1548,16 +1552,14 @@ Builds:
       - popd
       - export GOPATH=$$go$$
       - export PATH="$GOPATH/bin:$PATH"
-      - pushd ../../..
+      - cd ../../..
       - make lib_install
       - make lib_android
       - mv libbox.aar clients/android/app/libs
-      - popd
-      - taskset --cpu-list 0-3 gradle assembleOtherRelease
 
-  - versionName: 1.12.19
-    versionCode: 613
-    commit: 69bebbda82f0e6f04d128e320de4585b723bee52
+  - versionName: 1.12.20
+    versionCode: 616
+    commit: 0f3774e50116afef049c6d7ce33a50574071529e
     subdir: clients/android/app
     submodules: true
     sudo:
@@ -1597,5 +1599,5 @@ AllowedAPKSigningKeys: 32250a4b5f3a6733df57a3b9ec16c38d2c7fc5f2f693a9636f8f7b3be
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: clients/android/version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
-CurrentVersion: 1.12.19
-CurrentVersionCode: 613
+CurrentVersion: 1.12.20
+CurrentVersionCode: 616
