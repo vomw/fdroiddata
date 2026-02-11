@@ -1,0 +1,169 @@
+Categories:
+  - Internet
+  - Social Network
+License: AGPL-3.0-only
+AuthorName: Thomas
+WebSite: https://holos.social
+SourceCode: https://codeberg.org/tom79/Holos-App
+IssueTracker: https://codeberg.org/tom79/Holos-App/issues
+Changelog: https://codeberg.org/tom79/Holos-App/tags
+Donate: https://www.paypal.com/paypalme/Mastalab
+Liberapay: tom79
+Bitcoin: 3JDoJV7qf8fcmrUeYbT7hrH91PUQpg8HhS
+
+RepoType: git
+Repo: https://codeberg.org/tom79/Holos-App.git
+
+Builds:
+  - versionName: 1.0.0-rc-1
+    versionCode: 18
+    commit: 47badc3941f2091505dddcfb271f8b29bf20f298
+    timeout: 36000
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm build-essential cmake golang-go gcc-multilib
+        g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev
+        libncurses-dev libffi-dev liblzma-dev
+      - cd /tmp && wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+      - cd /tmp && tar xzf Python-3.11.9.tgz
+      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
+      - cd /tmp/Python-3.11.9 && make -j$(nproc) && make install
+      - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.11
+        1
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - esbuild@v0.24.0
+      - NodejsMobile@v18.20.4
+      - firebase-stub@4ae5aec1bf1fc3f2dfbc8e545b00b83d8a15dab8
+    prebuild:
+      - export APP_VARIANT=production
+      - sed -i 's/social.holos.app.dev/social.holos.app/g' app.json
+      - rm -f patches/react-native-blurhash+2.1.2.patch
+      - npm install --legacy-peer-deps
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - npx expo prebuild --platform android --clean
+      - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - rm -rf android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
+        android/app/build.gradle
+      - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> android/gradle.properties
+      - rm -fr ios
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - npm install --legacy-peer-deps
+      - pushd $$esbuild$$
+      - make esbuild
+      - popd
+      - mkdir -p node_modules/@esbuild/linux-x64/bin
+      - mkdir -p node_modules/esbuild/bin
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/
+      - cp $$esbuild$$/esbuild node_modules/esbuild/bin/esbuild
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
+      - pushd $$NodejsMobile$$
+      - ./tools/android_build.sh $$NDK$$ 24 arm64
+      - ./tools/android_build.sh $$NDK$$ 24 arm
+      - popd
+      - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
+      - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
+      - sed -i "/abiFilters/d" node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
+        node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i '/ndkVersion/a \    androidResources {\n        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }'
+        node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i 's/\.build()$/\.build().toMutableMap()/' node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+      - cd android
+      - gradle assembleRelease
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.0-rc-2
+    versionCode: 19
+    commit: 72fd097f2210799300c328674875f5d77e6d2a36
+    timeout: 36000
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm build-essential cmake golang-go gcc-multilib
+        g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev
+        libncurses-dev libffi-dev liblzma-dev
+      - cd /tmp && wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+      - cd /tmp && tar xzf Python-3.11.9.tgz
+      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
+      - cd /tmp/Python-3.11.9 && make -j$(nproc) && make install
+      - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.11
+        1
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - esbuild@v0.24.0
+      - NodejsMobile@v18.20.4
+      - firebase-stub@4ae5aec1bf1fc3f2dfbc8e545b00b83d8a15dab8
+    prebuild:
+      - export APP_VARIANT=production
+      - sed -i 's/social.holos.app.dev/social.holos.app/g' app.json
+      - rm -f patches/react-native-blurhash+2.1.2.patch
+      - npm install --legacy-peer-deps
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - npx expo prebuild --platform android --clean
+      - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - rm -rf android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
+        android/app/build.gradle
+      - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> android/gradle.properties
+      - rm -fr ios
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - npm install --legacy-peer-deps
+      - pushd $$esbuild$$
+      - make esbuild
+      - popd
+      - mkdir -p node_modules/@esbuild/linux-x64/bin
+      - mkdir -p node_modules/esbuild/bin
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/
+      - cp $$esbuild$$/esbuild node_modules/esbuild/bin/esbuild
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
+      - pushd $$NodejsMobile$$
+      - ./tools/android_build.sh $$NDK$$ 24 arm64
+      - ./tools/android_build.sh $$NDK$$ 24 arm
+      - popd
+      - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
+      - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
+      - sed -i "/abiFilters/d" node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
+        node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i '/ndkVersion/a \    androidResources {\n        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }'
+        node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i 's/\.build()$/\.build().toMutableMap()/' node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+      - cd android
+      - gradle assembleRelease
+    ndk: 27.0.12077973
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^\d+\.\d+\.\d+(-rc-\d+)?$
+UpdateCheckIgnore: .*beta.*
+UpdateCheckData: app.json|"versionCode":\s(\d+)|.|"version":\s"([^"]+)"
+CurrentVersion: 1.0.0-rc-2
+CurrentVersionCode: 19
