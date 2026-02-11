@@ -712,9 +712,9 @@ Builds:
       - build-logic/convention/build
       - core/proto/src/main/proto/packages/ts/package.json
 
-  - versionName: 2.7.11 (29319823) fdroid
-    versionCode: 29319823
-    commit: 9266caae9be2104305b5c7aa6237f8994838fd7e
+  - versionName: 2.7.13 (29320143) fdroid
+    versionCode: 29320143
+    commit: 40244f8337afb916d4b65e2dfe63c764cc0f06aa
     subdir: app
     submodules: true
     sudo:
@@ -726,13 +726,18 @@ Builds:
     gradle:
       - fdroid
     binary: 
-      https://github.com/meshtastic/Meshtastic-Android/releases/download/v2.7.11/app-fdroid-release.apk
+      https://github.com/meshtastic/Meshtastic-Android/releases/download/v2.7.13/app-fdroid-release.apk
     prebuild:
-      - sed -i -e '/foojay-resolver/d' -e '97,106d' ../settings.gradle.kts
+      - sed -i -e '/foojay-resolver/d' -e '/UnstableApiUsage/d' -e '/toolchainManagement
+        {/,$d' ../settings.gradle.kts
       - sed -i -e '/firebase/d' {..,../build-logic/convention}/build.gradle.kts
       - sed -i -e '/firebase-crashlytics/d' ../build-logic/convention/src/main/kotlin/AnalyticsConventionPlugin.kt
+      - sed -i -e '/jvmToolchain/s/17/21/' 
+        ../build-logic/convention/src/main/kotlin/org/meshtastic/buildlogic/KotlinAndroid.kt
+      - sed -i -e 's/17/21/' ../gradle/gradle-daemon-jvm.properties
+      - sed -i -e '/maven.pkg.github.com/d' ../gradle/publishing.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
     scandelete:
-      - build-logic/convention/build
       - core/proto/src/main/proto/packages/ts/package.json
 
 AllowedAPKSigningKeys: a93b456568c175db0800a09f06777f892d812432adb8a3df73bc3e7f06c80c6d
@@ -741,5 +746,5 @@ AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: https://github.com/meshtastic/Meshtastic-Android/releases/latest|>v[\d.]+
   \((\d+)\)<|.|>v([\d.]+ \(\d+\))<
-CurrentVersion: 2.7.11 (29319823)
-CurrentVersionCode: 29319823
+CurrentVersion: 2.7.13 (29320143)
+CurrentVersionCode: 29320143
