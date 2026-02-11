@@ -1,0 +1,64 @@
+Categories:
+  - File Encryption & Vault
+  - Security
+License: AGPL-3.0-only
+AuthorName: Ente
+
+WebSite: https://ente.io/
+SourceCode: https://github.com/ente-io/ente
+IssueTracker: https://github.com/ente-io/ente/issues
+
+AutoName: Ente Locker
+Summary: End-to-end encrypted document storage
+Description: |-
+  Ente Locker is a simple app to securely store your important documents.
+
+  If you've been looking for a privacy-friendly way to store sensitive documents like IDs, passports, certificates, and other files, you've come to the right place. With Ente Locker, they are stored end-to-end encrypted (e2ee). This means that only you can view them.
+
+  Ente Locker also makes it simple to share your collections with your loved ones. You can organize documents into collections and share them securely.
+
+  FEATURES
+  - End-to-end encrypted storage for all your documents
+  - Organize documents into collections
+  - Share collections securely with others
+  - Cross-platform sync across Android, iOS, web and desktop
+  - Original quality storage, no compression
+
+  PRICING
+  Ente offers paid plans; see ente.io for details.
+
+RepoType: git
+Repo: https://github.com/ente-io/ente.git
+
+Builds:
+  - versionName: 0.1.6
+    versionCode: 83
+    commit: locker-v0.1.6
+    subdir: mobile/apps/locker
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-fdroid-release.apk
+    srclibs:
+      - flutter@3.32.8
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - (cd ../../packages/strings && $$flutter$$/bin/flutter pub get)
+      - (cd ../../packages/strings && $$flutter$$/bin/flutter gen-l10n)
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^locker-v[0-9.]+$
+UpdateCheckData: mobile/apps/locker/pubspec.yaml|version:\\s.+\\+(\\d+)|.|version:\\s(.+)\\+
+CurrentVersion: 0.1.6
+CurrentVersionCode: 83
