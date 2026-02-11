@@ -33,15 +33,18 @@ Builds:
       - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - (cd ../../packages/strings && $$flutter$$/bin/flutter pub get)
-      - (cd ../../packages/strings && $$flutter$$/bin/flutter gen-l10n)
-      - $$flutter$$/bin/flutter pub get
+      - flutter/bin/flutter config --no-analytics
+      - (cd ../../packages/strings && flutter/bin/flutter pub get)
+      - (cd ../../packages/strings && flutter/bin/flutter gen-l10n)
+      - flutter/bin/flutter pub get
+    scanignore:
+      - flutter/bin/cache
     scandelete:
+      - flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor fdroid
+      - flutter/bin/flutter build apk --release --flavor fdroid
     antifeatures:
       NonFreeNet:
         en-US: App uses non-libre sync server.
