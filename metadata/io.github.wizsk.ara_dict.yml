@@ -1,0 +1,104 @@
+Categories:
+  - Reading
+  - Science & Education
+License: GPL-3.0-only
+AuthorName: Sakibul Hasan
+AuthorEmail: sakibul706@gmail.com
+SourceCode: https://github.com/wizsk/arabic_lexicons
+IssueTracker: https://github.com/wizsk/arabic_lexicons/issues
+
+AutoName: Arabic Lexicons
+Summary: Offline Arabic lexicon and reader app
+Description: |
+  Arabic Lexicons provides access to 6 classical Arabic lexicons,
+  2 Arabic-English lexicons, and 1 Arabic-English dictionary -
+  all working completely offline.
+
+  Features:
+  • 9 comprehensive resources including Hans Wehr, Lane Lexicon,
+    Lisan Al-Arab, and more
+  • Multi-word search capability
+  • Reader mode - paste Arabic text and tap any word for instant meanings
+  • No internet permission required - fully offline
+  • Lightweight and fast
+
+  Perfect for Arabic learners, students, and anyone working with
+  classical or modern Arabic texts.
+
+  For more details, visit: https://github.com/wizsk/arabic_lexicons/
+
+RepoType: git
+Repo: https://github.com/wizsk/arabic_lexicons.git
+
+Builds:
+  - versionName: 2.0.0
+    versionCode: 2
+    commit: v2.0.0
+    output: build/app/outputs/flutter-apk/app-*-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild: unzip -o assets/data/db.sqlite.zip -d assets/data/
+    scanignore:
+      - assets/data/db.sqlite.zip
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+
+  - versionName: 2.0.0
+    versionCode: 2
+    commit: v2.0.0
+    output: build/app/outputs/flutter-apk/app-*-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild: unzip -o assets/data/db.sqlite.zip -d assets/data/
+    scanignore:
+      - assets/data/db.sqlite.zip
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+  - versionName: 2.0.0
+    versionCode: 2
+    commit: v2.0.0
+    output: build/app/outputs/flutter-apk/app-*-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild: unzip -o assets/data/db.sqlite.zip -d assets/data/
+    scanignore:
+      - assets/data/db.sqlite.zip
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.0
+CurrentVersionCode: 2
