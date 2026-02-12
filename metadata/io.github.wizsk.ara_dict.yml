@@ -39,7 +39,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
   - versionName: 2.0.0
-    versionCode: 2001
+    versionCode: 2002
     commit: v2.0.0
     output: build/app/outputs/flutter-apk/app-*-release.apk
     srclibs:
@@ -50,17 +50,21 @@ Builds:
       - macos
       - web
       - windows
-    prebuild: unzip -o assets/data/db.sqlite.zip -d assets/data/
-    scanignore:
-      - assets/data/db.sqlite.zip
-    build:
+    prebuild:
+      - unzip -o assets/data/db.sqlite.zip -d assets/data/
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
+    scanignore:
+      - assets/data/db.sqlite.zip
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
 
   - versionName: 2.0.0
-    versionCode: 2001
+    versionCode: 2003
     commit: v2.0.0
     output: build/app/outputs/flutter-apk/app-*-release.apk
     srclibs:
@@ -71,13 +75,17 @@ Builds:
       - macos
       - web
       - windows
-    prebuild: unzip -o assets/data/db.sqlite.zip -d assets/data/
-    scanignore:
-      - assets/data/db.sqlite.zip
-    build:
+    prebuild:
+      - unzip -o assets/data/db.sqlite.zip -d assets/data/
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
+    scanignore:
+      - assets/data/db.sqlite.zip
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
 AutoUpdateMode: Version
