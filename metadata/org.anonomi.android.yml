@@ -1,0 +1,49 @@
+Categories:
+  - Connectivity
+  - Internet
+  - Messaging
+  - Security
+License: GPL-3.0-or-later
+WebSite: https://anonomi.org
+SourceCode: https://github.com/anonomi-org/anonomi-android
+IssueTracker: https://github.com/anonomi-org/anonomi-android/issues
+
+AutoName: Anonomi Messenger
+Description: |-
+  Anonomi Messenger is a privacy-first communication tool designed for
+  situations where networks are monitored, infrastructure is hostile, and
+  trust assumptions fail.
+
+  Unlike traditional messaging apps, Anonomi Messenger doesn't rely on a
+  central server - messages are synchronized directly between the users'
+  devices.
+
+  If the Internet's down, Anonomi can sync via Bluetooth or Wi-Fi, keeping
+  the information flowing in a crisis. If the Internet's up, Anonomi can
+  sync via the Tor network, protecting users and their relationships from
+  surveillance.
+
+  Features include secure messaging, Tor support with bridge configuration,
+  offline operation via Wi-Fi and Bluetooth, private payments via Monero,
+  and offline maps with location sharing.
+
+RepoType: git
+Repo: https://github.com/anonomi-org/anonomi-android.git
+
+Builds:
+  - versionName: 1.1.1
+    versionCode: 10101
+    commit: ed0293a852589152e0a5df04f2b7f5ec964848ea
+    subdir: anonomi-android
+    gradle:
+      - official
+    rm:
+      - bramble-java
+      - briar-headless
+      - libs/gradle-witness.jar
+    prebuild: sed -i -e '/witness/d' ../*/build.gradle 
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v
+CurrentVersion: 1.1.1
+CurrentVersionCode: 10101
