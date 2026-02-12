@@ -21,9 +21,9 @@ Builds:
     timeout: 36000
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm build-essential cmake golang-go gcc-multilib
-        g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev
-        libncurses-dev libffi-dev liblzma-dev
+      - apt-get install -y python3-requests nodejs npm build-essential cmake golang-go
+        gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
+        libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
       - cd /tmp && wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
       - cd /tmp && tar xzf Python-3.11.9.tgz
       - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
@@ -46,8 +46,7 @@ Builds:
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - npx expo prebuild --platform android --clean
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
-      - rm -rf 
-        android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - rm -rf android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
         android/app/build.gradle
       - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> android/gradle.properties
@@ -84,8 +83,7 @@ Builds:
         node_modules/nodejs-mobile-react-native/android/build.gradle
       - sed -i '/ndkVersion/a \    androidResources {\n        ignoreAssetsPattern
         "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }' node_modules/nodejs-mobile-react-native/android/build.gradle
-      - sed -i 's/\.build()$/\.build().toMutableMap()/' 
-        node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+      - sed -i 's/\.build()$/\.build().toMutableMap()/' node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
       - cd android
       - gradle assembleRelease
     ndk: 27.0.12077973
