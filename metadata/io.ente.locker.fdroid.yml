@@ -23,7 +23,7 @@ Builds:
     submodules: true
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
-      - flutter@3.32.8
+      - flutter@stable
     rm:
       - mobile/apps/locker/ios
       - mobile/apps/locker/linux
@@ -32,17 +32,20 @@ Builds:
       - mobile/apps/locker/windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
-      - flutter config --no-analytics
-      - (cd ../../packages/strings && flutter pub get)
-      - (cd ../../packages/strings && flutter gen-l10n)
-      - flutter pub get
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:[[:space:]]*"([0-9.]+)".*/\1/p' ../../../.github/workflows/locker-release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - pushd ../../packages/strings
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter gen-l10n
+      - popd
+      - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
-      - flutter build apk --release --flavor fdroid
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid
     antifeatures:
       NonFreeNet:
         en-US: App uses non-libre sync server.
