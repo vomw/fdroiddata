@@ -25,7 +25,6 @@ Builds:
     submodules: true
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
-      - flutter@3.32.8
       - flutter@stable
     rm:
       - architecture
@@ -46,7 +45,7 @@ Builds:
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - wf=../../../.github/workflows/locker-release.yml
-      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION: "(.*)"/\1/p' $wf)
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:\ "(.*)"/\1/p' $wf)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
@@ -55,11 +54,14 @@ Builds:
       - $$flutter$$/bin/flutter gen-l10n
       - popd
       - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/play-services-cronet/d' $PUB_CACHE/hosted/pub.dev/cronet_http-*/android/build.gradle
     scandelete:
-      - .pub-cache
+      - mobile/apps/locker/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor fdroid
+      - export PATH=$$flutter$$/bin:$PATH
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid -t lib/main.dart --dart-define=cronetHttpNoPlay=true
+    ndk: 25.1.8937393
     antifeatures:
       NonFreeNet:
         en-US: App uses non-libre sync server.
