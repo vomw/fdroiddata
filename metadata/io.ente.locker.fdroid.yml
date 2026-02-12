@@ -19,8 +19,8 @@ Repo: https://github.com/ente-io/ente.git
 
 Builds:
   - versionName: 0.1.6
-    versionCode: 83
-    commit: locker-v0.1.6
+    versionCode: 86
+    commit: locker-v0.1.6.1
     subdir: mobile/apps/locker
     submodules: true
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
@@ -35,7 +35,8 @@ Builds:
       - mobile/apps/locker/windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:[[:space:]]*"([0-9.]+)".*/\1/p' ../../../.github/workflows/locker-release.yml)
+      - wf=../../../.github/workflows/locker-release.yml
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION: "(.*)"/\1/p' $wf)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
@@ -57,4 +58,4 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^locker-v[0-9.]+$
 UpdateCheckData: mobile/apps/locker/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.1.6
-CurrentVersionCode: 83
+CurrentVersionCode: 86
