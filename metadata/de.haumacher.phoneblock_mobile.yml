@@ -24,10 +24,13 @@ Builds:
     commit: pb-mobile-1.1.1
     output: phoneblock_mobile/build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.38.5
+      - flutter@any
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i '/auto-translate-gradle-plugin/d' phoneblock_mobile/android/build.gradle
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i '/auto-translate-arb/d' phoneblock_mobile/android/build.gradle
+      - sed -i '/auto-translate-arb/d' phoneblock_mobile/android/settings.gradle
       - $$flutter$$/bin/flutter config --no-analytics
       - cd phoneblock_mobile && $$flutter$$/bin/flutter pub get
     scanignore:
