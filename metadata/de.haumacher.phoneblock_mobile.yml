@@ -22,25 +22,26 @@ Builds:
   - versionName: 1.1.1
     versionCode: 7
     commit: pb-mobile-1.1.1
-    output: phoneblock_mobile/build/app/outputs/flutter-apk/app-release.apk
+    subdir: phoneblock_mobile
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@any
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/release.yml)
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - sed -i '/auto-translate-arb/d' phoneblock_mobile/android/build.gradle
-      - sed -i '/auto-translate-arb/d' phoneblock_mobile/android/settings.gradle
+      - sed -i '/auto-translate-arb/d' android/build.gradle
+      - sed -i '/auto-translate-arb/d' android/settings.gradle
       - $$flutter$$/bin/flutter config --no-analytics
-      - cd phoneblock_mobile && $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get
     scanignore:
       - phoneblock_shared/pubspec.yaml
       - phoneblock/fbclient/package.json
     scandelete:
-      - .pub-cache
+      - phoneblock_mobile/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - cd phoneblock_mobile && $$flutter$$/bin/flutter build apk
+      - $$flutter$$/bin/flutter build apk
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags .*pb-mobile-.*
