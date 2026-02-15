@@ -26,7 +26,8 @@ Builds:
         libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
       - cd /tmp && wget -q https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
       - cd /tmp && tar xzf Python-3.11.9.tgz
-      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local > /dev/null
+      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
+        > /dev/null
       - cd /tmp/Python-3.11.9 && make -j$(nproc) > /dev/null && make install > /dev/null
       - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.11
         1
@@ -90,7 +91,8 @@ Builds:
       - sed -i 's/\.build()$/\.build().toMutableMap()/' 
         node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
       - cd android
-      - gradle assembleRelease
+      - echo 'org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m' >> gradle.properties
+      - gradle assembleRelease --no-daemon
     ndk: 27.0.12077973
 
 AutoUpdateMode: Version
