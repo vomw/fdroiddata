@@ -38,8 +38,6 @@ Builds:
       - NodejsMobile@v18.20.4
       - firebase-stub@4ae5aec1bf1fc3f2dfbc8e545b00b83d8a15dab8
     prebuild:
-      - export APP_VARIANT=production
-      - sed -i 's/social.holos.app.dev/social.holos.app/g' app.json
       - rm -f patches/react-native-blurhash+2.1.2.patch
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
@@ -47,7 +45,7 @@ Builds:
         package.json
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
-      - npx expo prebuild --platform android --clean
+      - EAS_BUILD_PROFILE=production npx expo prebuild --platform android --clean
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - rm -rf 
         android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
