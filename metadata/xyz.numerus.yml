@@ -32,12 +32,21 @@ RepoType: git
 Repo: https://github.com/konverner/numerus-app.git
 
 Builds:
-  - versionName: "2.0.0"
+  - versionName: "2.0"
     versionCode: 2
     commit: v2.0.0
     subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    init: |-
+      sed -i -e '/org.gradle.java.home/d' ../gradle.properties
+      mkdir -p ../.gradle/buildOutputCleanup
     gradle:
-      - release
+      - "yes"
+    rm:
+      - screenshots
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
