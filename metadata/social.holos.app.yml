@@ -20,17 +20,17 @@ Builds:
     commit: 72fd097f2210799300c328674875f5d77e6d2a36
     timeout: 36000
     sudo:
-      - apt-get update
-      - apt-get install -y python3-requests nodejs npm build-essential cmake golang-go
+      - apt-get update > /dev/null
+      - apt-get install -y -qq python3-requests nodejs npm build-essential cmake golang-go
         gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
         libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
-      - cd /tmp && wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+      - cd /tmp && wget -q https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
       - cd /tmp && tar xzf Python-3.11.9.tgz
-      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
-      - cd /tmp/Python-3.11.9 && make -j$(nproc) && make install
+      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local > /dev/null
+      - cd /tmp/Python-3.11.9 && make -j$(nproc) > /dev/null && make install > /dev/null
       - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.11
         1
-      - pip3 install requests
+      - pip3 install -q requests
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - esbuild@v0.24.0
@@ -40,7 +40,8 @@ Builds:
       - export APP_VARIANT=production
       - sed -i 's/social.holos.app.dev/social.holos.app/g' app.json
       - rm -f patches/react-native-blurhash+2.1.2.patch
-      - npm install --legacy-peer-deps
+      - npm cache clean --force > /dev/null
+      - npm install --legacy-peer-deps --loglevel=error
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
@@ -64,9 +65,10 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - npm install --legacy-peer-deps
+      - npm cache clean --force > /dev/null
+      - npm install --legacy-peer-deps --loglevel=error
       - pushd $$esbuild$$
-      - make esbuild
+      - make esbuild > /dev/null
       - popd
       - mkdir -p node_modules/@esbuild/linux-x64/bin
       - mkdir -p node_modules/esbuild/bin
@@ -75,8 +77,8 @@ Builds:
       - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
       - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
       - pushd $$NodejsMobile$$
-      - ./tools/android_build.sh $$NDK$$ 24 arm64
-      - ./tools/android_build.sh $$NDK$$ 24 arm
+      - ./tools/android_build.sh $$NDK$$ 24 arm64 > /dev/null 2>&1
+      - ./tools/android_build.sh $$NDK$$ 24 arm > /dev/null 2>&1
       - popd
       - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
       - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
