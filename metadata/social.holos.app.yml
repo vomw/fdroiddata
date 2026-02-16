@@ -24,16 +24,9 @@ Builds:
       - apt-get install -y -qq python3-requests nodejs npm build-essential cmake golang-go
         gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
         libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
-      - cd /tmp && wget -q https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
-      - cd /tmp && tar xzf Python-3.11.9.tgz
-      - cd /tmp/Python-3.11.9 && ./configure --enable-optimizations --prefix=/usr/local
-        > /dev/null
-      - cd /tmp/Python-3.11.9 && make -j$(nproc) > /dev/null && make install > /dev/null
-      - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.11
-        1
-      - pip3 install -q requests
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
+      - cpython@v3.11.9
       - esbuild@v0.24.0
       - NodejsMobile@v18.20.4
       - firebase-stub@4ae5aec1bf1fc3f2dfbc8e545b00b83d8a15dab8
@@ -64,6 +57,9 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - cd $$cpython$$ && ./configure --enable-optimizations --prefix=/usr/local > /dev/null
+      - cd $$cpython$$ && make -j$(nproc) > /dev/null && make install > /dev/null
+      - /usr/local/bin/pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
       - pushd $$esbuild$$
@@ -92,6 +88,9 @@ Builds:
       - echo 'org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m' >> gradle.properties
       - gradle assembleRelease --no-daemon
     ndk: 27.0.12077973
+
+MaintainerNotes: Binary scanner detects `com/google/firebase` classes from firebase-stub
+  srclib.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+(-rc-\d+)?$
