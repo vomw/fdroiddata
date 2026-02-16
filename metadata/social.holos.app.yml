@@ -57,9 +57,10 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - cd $$cpython$$ && ./configure --enable-optimizations --prefix=$HOME/python >
-        /dev/null
-      - cd $$cpython$$ && make -j$(nproc) > /dev/null && make install > /dev/null
+      - pushd $$cpython$$ && ./configure --enable-optimizations --prefix=$HOME/python
+        > /dev/null && popd
+      - pushd $$cpython$$ && make -j$(nproc) > /dev/null && make install >
+        /dev/null && popd
       - $HOME/python/bin/pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
