@@ -59,8 +59,8 @@ Builds:
     build:
       - pushd $$cpython$$ && ./configure --enable-optimizations --prefix=$HOME/python
         > /dev/null && popd
-      - pushd $$cpython$$ && make -j$(nproc) > /dev/null && make install >
-        /dev/null && popd
+      - pushd $$cpython$$ && make -j$(nproc) > /dev/null && make install > /dev/null
+        && popd
       - $HOME/python/bin/pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
@@ -74,8 +74,8 @@ Builds:
       - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
       - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
       - pushd $$NodejsMobile$$
-      - ./tools/android_build.sh $$NDK$$ 24 arm64 > /dev/null 2>&1
-      - ./tools/android_build.sh $$NDK$$ 24 arm > /dev/null 2>&1
+      - ./tools/android_build.sh $$NDK$$ 24 arm64
+      - ./tools/android_build.sh $$NDK$$ 24 arm
       - popd
       - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
       - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
