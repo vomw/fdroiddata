@@ -6,7 +6,7 @@ WebSite: https://github.com/sunstep/dawarich-android
 SourceCode: https://github.com/sunstep/dawarich-android
 IssueTracker: https://github.com/sunstep/dawarich-android/issues
 
-AutoName: Dawarich
+AutoName: Dawarich (Community)
 
 RepoType: git
 Repo: https://github.com/sunstep/dawarich-android.git
@@ -17,18 +17,29 @@ Builds:
     commit: v0.17.0
     output: build/app/outputs/flutter-apk/app-foss-release.apk
     srclibs:
-      - flutter@3.38.8
+      - flutter@stable
     rm:
       - ios
     prebuild:
       - cp pubspec-foss.yaml pubspec.yaml
       - cp pubspec-foss.lock pubspec.lock
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
-    build: $$flutter$$/bin/flutter build apk --release --flavor foss
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor foss
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.17.0
 CurrentVersionCode: 4
