@@ -340,9 +340,58 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 2.9.0
+    versionCode: 209003
+    commit: 6983e0fedeccb793b1b162589321219da8275469
+    subdir: app
+    gradle:
+      - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/java {/,/^}/d' build.gradle
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.11.0
+    versionCode: 211005
+    commit: b5849a3c43db7bd6a1b470ae5ba0845a0682502c
+    subdir: app
+    gradle:
+      - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/java {/,/^}/d' build.gradle
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 2.12.0
+    versionCode: 212004
+    commit: 3a40997c8aeba45264b7effb93ab1463eb6ed536
+    subdir: app
+    gradle:
+      - foss
+    binary: https://github.com/Delta-Icons/android/releases/download/v%v/delta-foss-v%v.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/java {/,/^}/d' build.gradle
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: e072d5b76d4133d85b762633a750871848f41ced3d6d7282339108e9bed15e2e
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^.*[0-9]\.[0-9]\.[0-9]$
-CurrentVersion: 2.8.0
-CurrentVersionCode: 208004
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 2.12.0
+CurrentVersionCode: 212004

@@ -178,7 +178,8 @@ Builds:
       - apt-get install -y ninja-build
       - pip3 install wheel
       - pip3 install conan
-      - curl -Lo cmake.tar.gz https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.tar.gz
+      - curl -Lo cmake.tar.gz 
+        https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.tar.gz
       - echo "73565c72355c6652e9db149249af36bcab44d9d478c5546fd926e69ad6b43640 cmake.tar.gz"
         | sha256sum -c -
       - tar xzf cmake.tar.gz --strip-components=1 -C /usr/local/
@@ -221,7 +222,8 @@ Builds:
       - apt-get install -y ninja-build
       - pip3 install wheel
       - pip3 install conan==1.45.0
-      - curl -Lo cmake.tar.gz https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.tar.gz
+      - curl -Lo cmake.tar.gz 
+        https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.tar.gz
       - echo "73565c72355c6652e9db149249af36bcab44d9d478c5546fd926e69ad6b43640 cmake.tar.gz"
         | sha256sum -c -
       - tar xzf cmake.tar.gz --strip-components=1 -C /usr/local/
@@ -448,8 +450,134 @@ Builds:
         ui/*/*.java ui/*.java; done
     ndk: r28b
 
+  - versionName: '4.1'
+    versionCode: 197
+    commit: 766389d61333e51ae12fb90ce2ea9278c1e1f672
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make ninja-build pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install conan
+    gradle:
+      - pro
+    srclibs:
+      - conan-odr-index@8ec140a221791147797063e2112376de58bd01ac
+    prebuild:
+      - date=$(git show --format=%ad --no-patch --no-notes)
+      - pushd $$conan-odr-index$$
+      - git fetch origin
+      - git checkout $(git rev-list -1 --before="$date" origin/main)
+      - popd
+      - conan remote remove "*"
+      - conan remote add odr $$conan-odr-index$$
+      - conan remote add conancenter https://center2.conan.io
+      - conan profile detect
+      - sed -i -e '/gms/d' -e '/firebase/d' -e 's/build=missing/build=*/' {.,..}/build.gradle
+      - sed -i -e '/com.google.android.play/d' -e '/ump/d' -e '/pro"/d' build.gradle
+      - sed -i -e '/^        <meta-data/,+5d' -e '/property/,+4d' src/main/AndroidManifest.xml
+      - cd src/main/java/at/tomtasche/reader
+      - sed -i -e '/gms/d' -e '/play.core/d' -e '/firebase/d' -e '/void initializeProprietaryLibraries/,/^    }/d'
+        -e '/initializeProprietaryLibraries/d' -e 's/billingManager.hasPurchased()/true/'
+        ui/activity/*.java background/FileLoader.java background/LoaderService.java
+      - sed -i -e '/private Uri doFirebaseConvert/,/^    }/d' -e 's/viewerUri = doFirebaseConvert(options)/return/'
+        -e '/gms/d' -e '/firebase/Id' -e '/Storage/d' -e '/auth /d' -e '/storage /d'
+        background/OnlineLoader.java
+      - sed -i -e '/getBooleanConfig("show_in_app_rating/,/});/d' -e '/void offerUpload/,/^    }/d'
+        -e '/offerUpload/d' -e '/void requestInAppRating/,/^    }/d' -e '/requestInAppRating/d'
+        ui/activity/DocumentFragment.java
+      - sed -i -e 's/configManager.getBooleanConfig(".*")/null/' background/CoreLoader.java
+      - for class in AdManager AnalyticsManager BillingManager ConfigManager CrashManager
+        HelpManager; do echo "package at.tomtasche.reader.nonfree; public class ${class}
+        {}" > nonfree/${class}.java; sed -i -e "/${class}\./Id" background/*.java
+        ui/*/*.java ui/*.java; done
+    ndk: r28b
+
+  - versionName: '4.2'
+    versionCode: 198
+    commit: a5f7b4cd56c959ca9c24da361eb209cf7f4f575b
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make ninja-build pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install conan
+    gradle:
+      - pro
+    srclibs:
+      - conan-odr-index@8ec140a221791147797063e2112376de58bd01ac
+    prebuild:
+      - date=$(git show --format=%ad --no-patch --no-notes)
+      - pushd $$conan-odr-index$$
+      - git fetch origin
+      - git checkout $(git rev-list -1 --before="$date" origin/main)
+      - popd
+      - conan remote remove "*"
+      - conan remote add odr $$conan-odr-index$$
+      - conan remote add conancenter https://center2.conan.io
+      - conan profile detect
+      - sed -i -e '/gms/d' -e '/firebase/d' -e 's/build=missing/build=*/' {.,..}/build.gradle
+      - sed -i -e '/com.google.android.play/d' -e '/ump/d' -e '/pro"/d' build.gradle
+      - sed -i -e '/^        <meta-data/,+5d' -e '/property/,+4d' src/main/AndroidManifest.xml
+      - cd src/main/java/at/tomtasche/reader
+      - sed -i -e '/gms/d' -e '/play.core/d' -e '/firebase/d' -e '/void initializeProprietaryLibraries/,/^    }/d'
+        -e '/initializeProprietaryLibraries/d' -e 's/billingManager.hasPurchased()/true/'
+        ui/activity/*.java background/FileLoader.java background/LoaderService.java
+      - sed -i -e '/private Uri doFirebaseConvert/,/^    }/d' -e 's/viewerUri = doFirebaseConvert(options)/return/'
+        -e '/gms/d' -e '/firebase/Id' -e '/Storage/d' -e '/auth /d' -e '/storage /d'
+        background/OnlineLoader.java
+      - sed -i -e '/getBooleanConfig("show_in_app_rating/,/});/d' -e '/void offerUpload/,/^    }/d'
+        -e '/offerUpload/d' -e '/void requestInAppRating/,/^    }/d' -e '/requestInAppRating/d'
+        ui/activity/DocumentFragment.java
+      - sed -i -e 's/configManager.getBooleanConfig(".*")/null/' background/CoreLoader.java
+      - for class in AdManager AnalyticsManager BillingManager ConfigManager CrashManager
+        HelpManager; do echo "package at.tomtasche.reader.nonfree; public class ${class}
+        {}" > nonfree/${class}.java; sed -i -e "/${class}\./Id" background/*.java
+        ui/*/*.java ui/*.java; done
+    ndk: r28b
+
+  - versionName: '4.3'
+    versionCode: 199
+    commit: 1450cedfa69f0aecacba792c47a626d750d2409a
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make ninja-build pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install conan
+    gradle:
+      - pro
+    srclibs:
+      - conan-odr-index@8ec140a221791147797063e2112376de58bd01ac
+    prebuild:
+      - date=$(git show --format=%ad --no-patch --no-notes)
+      - pushd $$conan-odr-index$$
+      - git fetch origin
+      - git checkout $(git rev-list -1 --before="$date" origin/main)
+      - popd
+      - conan remote remove "*"
+      - conan remote add odr $$conan-odr-index$$
+      - conan remote add conancenter https://center2.conan.io
+      - conan profile detect
+      - sed -i -e '/gms/d' -e '/firebase/d' -e 's/build=missing/build=*/' {.,..}/build.gradle
+      - sed -i -e '/com.google.android.play/d' -e '/ump/d' -e '/pro"/d' build.gradle
+      - sed -i -e '/^        <meta-data/,+5d' -e '/property/,+4d' src/main/AndroidManifest.xml
+      - cd src/main/java/at/tomtasche/reader
+      - sed -i -e '/gms/d' -e '/play.core/d' -e '/firebase/d' -e '/void initializeProprietaryLibraries/,/^    }/d'
+        -e '/initializeProprietaryLibraries/d' -e 's/billingManager.hasPurchased()/true/'
+        ui/activity/*.java background/FileLoader.java background/LoaderService.java
+      - sed -i -e '/private Uri doFirebaseConvert/,/^    }/d' -e 's/viewerUri = doFirebaseConvert(options)/return/'
+        -e '/gms/d' -e '/firebase/Id' -e '/Storage/d' -e '/auth /d' -e '/storage /d'
+        background/OnlineLoader.java
+      - sed -i -e '/getBooleanConfig("show_in_app_rating/,/});/d' -e '/void offerUpload/,/^    }/d'
+        -e '/offerUpload/d' -e '/void requestInAppRating/,/^    }/d' -e '/requestInAppRating/d'
+        ui/activity/DocumentFragment.java
+      - sed -i -e 's/configManager.getBooleanConfig(".*")/null/' background/CoreLoader.java
+      - for class in AdManager AnalyticsManager BillingManager ConfigManager CrashManager
+        HelpManager; do echo "package at.tomtasche.reader.nonfree; public class ${class}
+        {}" > nonfree/${class}.java; sed -i -e "/${class}\./Id" background/*.java
+        ui/*/*.java ui/*.java; done
+    ndk: r28b
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/src/main/AndroidManifest.xml|versionCode="(\d+)|.|versionName="([\d.]+)
-CurrentVersion: '4.0'
-CurrentVersionCode: 196
+CurrentVersion: '4.3'
+CurrentVersionCode: 199

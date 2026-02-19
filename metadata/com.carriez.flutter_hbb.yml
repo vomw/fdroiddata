@@ -485,7 +485,8 @@ Builds:
       - flutter/windows
     prebuild:
       - sed -i -e 's/cargo-expand/cargo-expand@1.0.95/' flutter/build_fdroid.sh
-      - sed -i -e 's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
+      - sed -i -e 
+        's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
         .github/workflows/flutter-build.yml
       - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a prebuild
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a build
@@ -511,7 +512,8 @@ Builds:
       - flutter/windows
     prebuild:
       - sed -i -e 's/cargo-expand/cargo-expand@1.0.95/' flutter/build_fdroid.sh
-      - sed -i -e 's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
+      - sed -i -e 
+        's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
         .github/workflows/flutter-build.yml
       - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a build
@@ -537,7 +539,8 @@ Builds:
       - flutter/windows
     prebuild:
       - sed -i -e 's/cargo-expand/cargo-expand@1.0.95/' flutter/build_fdroid.sh
-      - sed -i -e 's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
+      - sed -i -e 
+        's/b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c/6f29f12e82a8293156836ad81cc9bf5af41fe836/'
         .github/workflows/flutter-build.yml
       - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
@@ -929,6 +932,148 @@ Builds:
     prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
 
+  - versionName: 1.4.4
+    versionCode: 104040001
+    commit: 1.4.4
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a build
+
+  - versionName: 1.4.4
+    versionCode: 104040002
+    commit: 1.4.4
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a build
+
+  - versionName: 1.4.4
+    versionCode: 104040003
+    commit: 1.4.4
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev automake libtool
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
+
+  - versionName: 1.4.5
+    versionCode: 104050001
+    commit: 998b75856da4199ac009ce4135b4fba1b48099e6
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a build
+
+  - versionName: 1.4.5
+    versionCode: 104050002
+    commit: 998b75856da4199ac009ce4135b4fba1b48099e6
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild:
+      - sed -i -e 's/\sNDK_VERSION=/NDK_VERSION="27.2.12479018"; echo /' flutter/build_fdroid.sh
+      - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a build
+
+  - versionName: 1.4.5
+    versionCode: 104050003
+    commit: 998b75856da4199ac009ce4135b4fba1b48099e6
+    timeout: 14400
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install cmake/bookworm-backports cmake-data/bookworm-backports
+      - apt-get -y install clang libclang-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+        libgtk-3-dev make nasm ninja-build patchelf pkg-config wget xz-utils yasm
+        yq zip libssl-dev automake libtool
+    output: flutter/build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - flutter/ios
+      - flutter/linux
+      - flutter/macos
+      - flutter/test
+      - flutter/windows
+    prebuild:
+      - sed -i -e 's/\sNDK_VERSION=/NDK_VERSION="27.2.12479018"; echo /' flutter/build_fdroid.sh
+      - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
+    scanignore:
+      - flutter/android/app/build.gradle
+    build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
+
 MaintainerNotes: |-
   Licaon_Kter: Tracking AF applied because Rustdesk connects to rustdesk.com on start and sends a
   lot of data per https://rustdesk.com/privacy.html point 3 letter d
@@ -963,6 +1108,7 @@ VercodeOperation:
   - 100 * %c + 1
   - 100 * %c + 2
   - 100 * %c + 3
-UpdateCheckData: https://github.com/rustdesk/rustdesk/releases/download/fdroid-version/rustdesk-version.txt|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 1.4.3
-CurrentVersionCode: 104030003
+UpdateCheckData: 
+  https://github.com/rustdesk/rustdesk/releases/download/fdroid-version/rustdesk-version.txt|versionCode=(\d+)|.|versionName=(.*)
+CurrentVersion: 1.4.5
+CurrentVersionCode: 104050003
