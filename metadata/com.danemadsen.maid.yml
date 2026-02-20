@@ -1,6 +1,6 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Remote models rely on Mistral, Google Gemini and OpenAI.
+    en-US: Optional use of OpenAI, DeepSeek, Anthropic, Mistral or Novita APIs.
 Categories:
   - AI Chat
   - Reading
@@ -760,6 +760,76 @@ Builds:
       - popd
       - mv $repo/maid com.danemadsen.maid
 
+  - versionName: 3.0.0
+    versionCode: 27761
+    commit: 5ee32394aa56525bba089f74b6dd0068b8bff15d
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm libopenblas-dev libclblast-dev
+      - npm install -g yarn@1.22.22
+    gradle:
+      - yes
+    binary: 
+      https://github.com/Mobile-Artificial-Intelligence/maid/releases/download/v%v/maid-android-arm64-v8a-no-hexagon.apk
+    prebuild:
+      - sed -i -e "s/include .*/include 'arm64-v8a'/" -e '/signingConfigs/d' build.gradle
+      - cd ../..
+      - yarn install --frozen-lockfile
+    scanignore:
+      - android/build.gradle
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-edge-to-edge/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/react-native-reanimated/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/expo/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - assets/fonts/SpaceMono-Regular.ttf
+    scandelete:
+      - node_modules/
+    gradleprops:
+      - rnllamaBuildFromSource=true
+
+  - versionName: 3.0.0
+    versionCode: 27762
+    commit: 5ee32394aa56525bba089f74b6dd0068b8bff15d
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm libopenblas-dev libclblast-dev
+      - npm install -g yarn@1.22.22
+    gradle:
+      - yes
+    binary: 
+      https://github.com/Mobile-Artificial-Intelligence/maid/releases/download/v%v/maid-android-x86_64-no-hexagon.apk
+    prebuild:
+      - sed -i -e "s/include .*/include 'x86_64'/" -e '/signingConfigs/d' build.gradle
+      - cd ../..
+      - yarn install --frozen-lockfile
+    scanignore:
+      - android/build.gradle
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-edge-to-edge/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/react-native-reanimated/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/expo/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - assets/fonts/SpaceMono-Regular.ttf
+    scandelete:
+      - node_modules/
+    gradleprops:
+      - rnllamaBuildFromSource=true
+
 AllowedAPKSigningKeys: 835ed22ed895c4c272d698aa6e4e48db0b4e36dccf7010d5de15034ac9e1b96f
 
 AutoUpdateMode: Version
@@ -767,6 +837,6 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - '%c * 10 + 1'
   - '%c * 10 + 2'
-UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.4
-CurrentVersionCode: 22532
+UpdateCheckData: package.json|"build":\s*(\d+)|.|"version":\s*"([^"]+)"
+CurrentVersion: 3.0.0
+CurrentVersionCode: 27762
