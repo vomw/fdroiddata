@@ -1,0 +1,41 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+WebSite: https://github.com/davidchilin/werewolves_game
+SourceCode: https://github.com/davidchilin/werewolves_game
+IssueTracker: https://github.com/davidchilin/werewolves_game/issues
+Translation: https://github.com/davidchilin/werewolves_game/tree/master/static
+RepoType: git
+Repo: https://github.com/davidchilin/werewolves_game.git
+
+AuthorName: davidchilin
+AutoName: werewolves_game
+Summary: Multiplayer server for classic Mafia game Werewolves.
+Description: |-
+    werewolves_game is a feature-rich, self-hosted real-time multiplayer social deduction game. This app runs a local web server right on your Android device, allowing you and your friends to play the classic party game Werewolves (also known as Mafia) using your own phone browsers—no internet connection required, just a shared Wi-Fi network!
+    
+    Best of all, the app acts as the automated game engine, meaning no human Narrator is needed. Everyone gets to play!
+
+# Tells F-Droid to automatically check your GitHub for new 'v*' tags in the future
+UpdateCheckMode: Tags
+CurrentVersion: 5.2.4
+CurrentVersionCode: 1
+
+Builds:
+  - versionName: 5.2.4
+    versionCode: 1
+    commit: v5.2.4
+    subdir: android
+    gradle:
+      - yes
+    # THE CHAQUOPY MAGIC FIX:
+    prebuild: |-
+      cd app
+      mkdir -p python_wheels
+      # 1. Download all pure Python dependencies into the folder
+      pip3 download -d python_wheels flask flask-socketio jinja2 python-dotenv
+      # 2. Delete the Linux version of markupsafe that pip accidentally downloaded
+      rm -f python_wheels/MarkupSafe*.whl
+      rm -f python_wheels/markupsafe*.whl
+      # 3. Manually download the custom Android-compiled markupsafe wheel directly from Chaquopy
+      wget https://chaquo.com/pypi-13.1/markupsafe/markupsafe-3.0.3-0-cp310-cp310-android_24_arm64_v8a.whl -P python_wheels/
