@@ -32,10 +32,7 @@ Builds:
     prebuild: |-
       cd app
       mkdir -p python_wheels
-      # 1. Download all pure Python dependencies into the folder
-      pip3 download -d python_wheels flask flask-socketio jinja2 python-dotenv
-      # 2. Delete the Linux version of markupsafe that pip accidentally downloaded
-      rm -f python_wheels/MarkupSafe*.whl
-      rm -f python_wheels/markupsafe*.whl
-      # 3. Manually download the custom Android-compiled markupsafe wheel directly from Chaquopy
-      wget https://chaquo.com/pypi-13.1/markupsafe/markupsafe-3.0.3-0-cp310-cp310-android_24_arm64_v8a.whl -P python_wheels/
+      # 1. Download pure Python wheels for Flask and SocketIO
+      pip3 download -d python_wheels flask flask-socketio python-dotenv
+      # 2. Force pip to download the raw SOURCE CODE for markupsafe, not the wheel
+      pip3 download -d python_wheels --no-binary markupsafe markupsafe
