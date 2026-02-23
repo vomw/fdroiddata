@@ -14,9 +14,14 @@ Builds:
     versionCode: 1
     commit: 87d1ce24b872c038e932c8e88324f3abd7c80e07
     subdir: chess_game
-    gradle:
-      - yes
-    flutter: yes
+    srclibs:
+      - flutter@3.24.5
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - $$flutter$$/bin/flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
 
 AutoName: Chess Game
 Description: |
