@@ -1,0 +1,42 @@
+Categories:
+  - System
+License: MIT
+AuthorName: trapplab
+SourceCode: https://github.com/trapplab/update-checker
+IssueTracker: https://github.com/trapplab/update-checker/issues
+Donate: https://buymeacoffee.com/trapplab
+
+AutoName: End of Updates Checker
+
+RepoType: git
+Repo: https://github.com/trapplab/update-checker
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 100
+    commit: f156c33a49d91022cd87d37087c2f4e3d145635b
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-fdroid-release.apk
+    rm:
+      - linux
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./scripts/prepare_flavor.sh fdroid
+      - flutter/bin/flutter build apk --flavor fdroid --target-platform=android-arm64
+        --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.0
+CurrentVersionCode: 100
