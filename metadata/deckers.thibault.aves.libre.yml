@@ -5127,12 +5127,14 @@ Builds:
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - apt-get install -y wget apt-key
       - wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
       - echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
       - apt-get update
       - apt-get install -y temurin-17-jdk
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-*-libre-release.apk
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -5158,12 +5160,14 @@ Builds:
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - apt-get install -y wget apt-key
       - wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
       - echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
       - apt-get update
       - apt-get install -y temurin-17-jdk
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-*-libre-release.apk
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -5189,12 +5193,14 @@ Builds:
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - apt-get install -y wget apt-key
       - wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
       - echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
       - apt-get update
       - apt-get install -y temurin-17-jdk
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-*-libre-release.apk
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
