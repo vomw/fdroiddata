@@ -15,15 +15,18 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
+    subdir: .
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.27.4
     rm:
       - ios
+      - test
+    prebuild: sed -i -e '/signingConfigs/,/}/d' -e '/signingConfig/d' android/app/build.gradle.kts
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
 
 AutoUpdateMode: None
 UpdateCheckMode: None
