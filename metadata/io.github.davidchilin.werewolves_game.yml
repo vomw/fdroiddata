@@ -5,7 +5,6 @@ AuthorName: davidchilin
 WebSite: https://github.com/davidchilin/werewolves_game
 SourceCode: https://github.com/davidchilin/werewolves_game
 IssueTracker: https://github.com/davidchilin/werewolves_game/issues
-Translation: https://github.com/davidchilin/werewolves_game/tree/master/static
 
 AutoName: werewolves_game
 Summary: Multiplayer server for classic Mafia game Werewolves
@@ -17,15 +16,10 @@ Description: |-
 RepoType: git
 Repo: https://github.com/davidchilin/werewolves_game.git
 
-AutoUpdateMode: None
-UpdateCheckMode: Tags
-CurrentVersion: 5.2.5
-CurrentVersionCode: 1
-
 Builds:
-  - versionName: 5.2.5
+  - versionName: 5.2.5.1
     versionCode: 1
-    commit: v5.2.5
+    commit: v5.2.5.1
     subdir: android
     sudo:
       - apt-get update || true
@@ -35,12 +29,16 @@ Builds:
     prebuild: |-
       cd app
       mkdir -p python_wheels
-      # 1. Download pure Python wheels for Flask and SocketIO
       pip3 download -d python_wheels flask flask-socketio python-dotenv
-      # 2. Download markupsafe source archive
-      pip3 download -d python_wheels --no-binary markupsafe markupsafe
-      # 3. Unpack the markupsafe source code into a local folder
-      mkdir -p python_wheels/markupsafe_src
-      tar -xzf python_wheels/markupsafe-*.tar.gz -C python_wheels/markupsafe_src --strip-components=1
-      # 4. DELETE the archive completely! (F-Droid scanner will be happy)
-      rm python_wheels/*.tar.gz
+      pip3 download --no-binary markupsafe markupsafe
+      mkdir markupsafe_src
+      tar -xzf markupsafe-*.tar.gz -C markupsafe_src --strip-components=1
+      # Delete the C-extension so it builds as Pure Python!
+      rm -f markupsafe_src/src/markupsafe/_speedups.c
+      pip3 wheel ./markupsafe_src --no-deps -w python_wheels
+      rm -rf markupsafe_src markupsafe-*.tar.gz
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 5.2.5.1
+CurrentVersionCode: 1
