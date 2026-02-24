@@ -1,0 +1,46 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+AuthorName: davidchilin
+WebSite: https://github.com/davidchilin/werewolves_game
+SourceCode: https://github.com/davidchilin/werewolves_game
+IssueTracker: https://github.com/davidchilin/werewolves_game/issues
+Translation: https://github.com/davidchilin/werewolves_game/tree/master/static
+
+AutoName: werewolves_game
+Summary: Multiplayer server for classic Mafia game Werewolves
+Description: |-
+  werewolves_game is a feature-rich, self-hosted real-time multiplayer social deduction game. This app runs a local web server right on your Android device, allowing you and your friends to play the classic party game Werewolves (also known as Mafia) using your own phone browsers—no internet connection required, just a shared Wi-Fi network!
+
+  Best of all, the app acts as the automated game engine, meaning no human Narrator is needed. Everyone gets to play!
+
+RepoType: git
+Repo: https://github.com/davidchilin/werewolves_game.git
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 5.2.5
+CurrentVersionCode: 1
+
+Builds:
+  - versionName: 5.2.5
+    versionCode: 1
+    commit: v5.2.5
+    subdir: android
+    sudo:
+      - apt-get update || true
+      - apt-get install -y python3-pip
+    gradle:
+      - yes
+    prebuild: |-
+      cd app
+      mkdir -p python_wheels
+      # 1. Download pure Python wheels for Flask and SocketIO
+      pip3 download -d python_wheels flask flask-socketio python-dotenv
+      # 2. Download markupsafe source archive
+      pip3 download -d python_wheels --no-binary markupsafe markupsafe
+      # 3. Unpack the markupsafe source code into a local folder
+      mkdir -p python_wheels/markupsafe_src
+      tar -xzf python_wheels/markupsafe-*.tar.gz -C python_wheels/markupsafe_src --strip-components=1
+      # 4. DELETE the archive completely! (F-Droid scanner will be happy)
+      rm python_wheels/*.tar.gz
