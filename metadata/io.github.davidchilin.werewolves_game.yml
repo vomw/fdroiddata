@@ -7,39 +7,27 @@ SourceCode: https://github.com/davidchilin/werewolves_game
 IssueTracker: https://github.com/davidchilin/werewolves_game/issues
 
 AutoName: werewolves_game
-Summary: Multiplayer server for classic Mafia game Werewolves
-Description: |-
-  werewolves_game is a feature-rich, self-hosted real-time multiplayer social deduction game. This app runs a local web server right on your Android device, allowing you and your friends to play the classic party game Werewolves (also known as Mafia) using your own phone browsers—no internet connection required, just a shared Wi-Fi network!
-
-  Best of all, the app acts as the automated game engine, meaning no human Narrator is needed. Everyone gets to play!
 
 RepoType: git
 Repo: https://github.com/davidchilin/werewolves_game.git
 
 Builds:
-  - versionName: 5.2.5.1
+  - versionName: 5.2.5.2
     versionCode: 1
-    commit: v5.2.5.1
+    commit: v5.2.5.2
     subdir: android
     sudo:
       - apt-get update || true
-      - apt-get install -y python3-pip
+      - apt-get install -y build-essential libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev libffi-dev wget
+      - wget https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz
+      - tar -xf Python-3.10.14.tgz
+      - bash -c "cd Python-3.10.14 && ./configure && make -j4 && make altinstall"
+      - rm -rf Python-3.10.14 Python-3.10.14.tgz
     gradle:
       - yes
-    prebuild: |-
-      cd app
-      mkdir -p python_wheels
-      pip3 download -d python_wheels flask flask-socketio python-dotenv
-      pip3 download --no-binary markupsafe markupsafe
-      mkdir markupsafe_src
-      tar -xzf markupsafe-*.tar.gz -C markupsafe_src --strip-components=1
-      # Delete the C-extension so it builds as Pure Python!
-      rm -f markupsafe_src/src/markupsafe/_speedups.c
-      pip3 wheel ./markupsafe_src --no-deps -w python_wheels
-      rm -rf markupsafe_src markupsafe-*.tar.gz
+    prebuild: bash fdroid_prebuild.sh
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 5.2.5.1
+CurrentVersion: 5.2.5.2
 CurrentVersionCode: 1
-
