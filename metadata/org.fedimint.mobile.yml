@@ -1,0 +1,54 @@
+Categories:
+  - Money
+License: MIT
+AuthorName: The Fedimint Developers
+WebSite: https://fedimint.org
+SourceCode: https://github.com/m1sterc001guy/fedimintd-mobile
+IssueTracker: https://github.com/m1sterc001guy/fedimintd-mobile/issues
+Changelog: https://github.com/m1sterc001guy/fedimintd-mobile/releases
+
+AutoName: Fedimint
+
+RepoType: git
+Repo: https://github.com/m1sterc001guy/fedimintd-mobile.git
+
+Builds:
+  - versionName: 0.1.5
+    versionCode: 10590
+    commit: v0.1.5
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get -y install clang libclang-dev cmake ninja-build pkg-config make wget
+        curl git unzip
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - linux
+    prebuild: scripts/build-fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
+    build: scripts/build-fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a build
+
+MaintainerNotes: |-
+  Fedimint Mobile is a Flutter + Rust application using flutter_rust_bridge.
+  The Rust code is compiled to a native library using cargo-ndk, then bundled
+  into the Flutter APK.
+
+  Build requirements:
+  - Rust stable toolchain with aarch64-linux-android target
+  - cargo-ndk for Android cross-compilation
+  - Flutter SDK (version specified in .flutter-version)
+  - Android NDK (version specified in android/app/build.gradle.kts)
+
+  The build script (scripts/build-fdroid.sh) handles installation of Rust and
+  Flutter during the prebuild phase, then compiles everything offline during
+  the build phase.
+
+  Version code formula (from scripts/release.sh):
+    BASE_CODE = MAJOR * 1000000 + MINOR * 10000 + PATCH * 100
+    Final releases: BASE_CODE + 90
+    RC releases: BASE_CODE + RC_NUM (ignored by UpdateCheckIgnore)
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[0-9.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.5
+CurrentVersionCode: 10590
