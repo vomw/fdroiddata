@@ -1,6 +1,8 @@
 Categories:
   - Games
 License: MIT
+AuthorName: Bidex
+AuthorEmail: your@email.com
 WebSite: https://github.com/bidex001/math-game
 SourceCode: https://github.com/bidex001/math-game
 IssueTracker: https://github.com/bidex001/math-game/issues
@@ -15,14 +17,16 @@ Repo: https://github.com/bidex001/math-game.git
 Builds:
   - versionName: 1.0.3
     versionCode: 4
-    commit: HEAD
+    commit: <replace-with-latest-commit-hash>
     subdir: android
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    init: npm ci --prefix ..
+    prebuild:
+      - npm install
+      - npx expo export
     gradle:
-      - yes
+      - assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
