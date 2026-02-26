@@ -1,6 +1,3 @@
-# Template metadata for submitting Squawkkers to F-Droid (fdroiddata).
-# Copy/update this content in fdroiddata/metadata/com.x2premium.squawkkers.yml.
-
 Categories:
   - Internet
 License: MIT
@@ -11,7 +8,6 @@ SourceCode: https://github.com/X2premium/squawkkers-public
 IssueTracker: https://github.com/X2premium/squawkkers-public/issues
 Changelog: https://github.com/X2premium/squawkkers-public/releases
 AutoName: Squawkkers
-Summary: Open-source anonymous X/Twitter client
 Description: |-
   Squawkkers is an open-source client for reading X/Twitter content
   without requiring a first-party app account session.
@@ -34,12 +30,18 @@ Builds:
   - versionName: 3.8.9
     versionCode: 52
     commit: 3.8.9
-    subdir: android
-    gradle:
-      - yes
-    output: app/build/outputs/apk/release/app-release.apk
+    srclibs:
+      - flutter@3.35.7
+    output: build/app/outputs/flutter-apk/app-*-release.apk
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run intl_utils:generate
+    build:
+      - $$flutter$$/bin/flutter build apk --dart-define=app.flavor=fdroid --release --no-tree-shake-icons
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags ^3\.\d+\.\d+$
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 3.8.9
 CurrentVersionCode: 52
