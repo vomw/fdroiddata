@@ -1,6 +1,6 @@
 AntiFeatures:
   NonFreeDep:
-      en-US: Depends on Shizuku for functionality
+    en-US: Depends on Shizuku for functionality
   NonFreeNet:
     en-US: Optional VirusTotal and Hybrid Analysis API integration for app scanning.
 Categories:
@@ -23,10 +23,6 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y make gcc libc-dev pkg-config libunwind-dev clang llvm rustup
-      - ln -sf "/home/vagrant/.cargo/bin/cargo" /usr/local/bin/cargo
-      - ln -sf "/home/vagrant/.cargo/bin/rustc" /usr/local/bin/rustc
-      - ln -sf "/home/vagrant/.cargo/bin/rustup" /usr/local/bin/rustup
-      - ln -sf "/home/vagrant/.cargo/bin/cargo-ndk" /usr/local/bin/cargo-ndk
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
@@ -38,7 +34,8 @@ Builds:
       - sed -i '/APPLICATION_VERSION_NAME/s/def appVersionName.*/def appVersionName
         = "$$VERSION$$"/' app/build.gradle
       - rustup default 1.90.0
-      - rustup target aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
       - cargo install cargo-ndk --locked
     scanignore:
       - mobile/Cargo.toml
