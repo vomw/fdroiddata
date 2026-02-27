@@ -11,13 +11,6 @@ IssueTracker: https://github.com/ariadne-coil/Cyber-Phone/issues
 Changelog: https://github.com/ariadne-coil/Cyber-Phone/releases
 
 AutoName: Cyber Phone
-Description: |
-  Cyber Phone is a privacy-focused replacement for stock phone and SMS apps.
-
-  It combines dialer, SMS/MMS, optional mesh messaging/calling, and optional
-  Bitcoin wallet features in one app without analytics SDKs.
-
-  Network-backed behavior is feature-gated and user-controlled.
 
 RepoType: git
 Repo: https://github.com/ariadne-coil/Cyber-Phone.git
@@ -26,13 +19,11 @@ Builds:
   - versionName: 0.5.2
     versionCode: 32
     commit: 21f9d43ee668efaebc35d0f0db3c4afede3a1569
+    subdir: app
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
-    scanignore:
-      - settings.gradle.kts
-      - package.json
-      - app/src/main/assets/fedimint/fedimint_client_wasm_bg.wasm
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
