@@ -1,4 +1,6 @@
 AntiFeatures:
+  NonFreeDep:
+      en-US: Depends on Shizuku for functionality
   NonFreeNet:
     en-US: Optional VirusTotal and Hybrid Analysis API integration for app scanning.
 Categories:
@@ -9,17 +11,6 @@ SourceCode: https://github.com/nikescar/uad-shizuku
 IssueTracker: https://github.com/nikescar/uad-shizuku/issues
 
 AutoName: UAD-Shizuku
-Description: |-
-  Debloat, scan virus, and install FOSS apps on Android.
-
-  UAD-Shizuku uses debloat app info from UAD-NG (Universal Android Debloater Next Generation).
-
-  Features:
-  * Debloat: Remove bloatware using UAD-NG lists and Shizuku (adb-wireless)
-  * Scan: Scan apps with VirusTotal and Hybrid Analysis
-  * Install: Browse and install open source apps using OFFA and FMHY lists
-
-  Requires Shizuku to be installed and running for debloat functionality.
 
 RepoType: git
 Repo: https://github.com/nikescar/uad-shizuku.git
@@ -31,12 +22,14 @@ Builds:
     subdir: mobile
     sudo:
       - apt-get update
-      - apt-get install -y make gcc libc-dev pkg-config libunwind-dev clang llvm
+      - apt-get install -y make gcc libc-dev pkg-config libunwind-dev clang llvm rustup
+      - ln -sf "/home/vagrant/.cargo/bin/cargo" /usr/local/bin/cargo
+      - ln -sf "/home/vagrant/.cargo/bin/rustc" /usr/local/bin/rustc
+      - ln -sf "/home/vagrant/.cargo/bin/rustup" /usr/local/bin/rustup
+      - ln -sf "/home/vagrant/.cargo/bin/cargo-ndk" /usr/local/bin/cargo-ndk
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
-    srclibs:
-      - rustup@1.27.1
     prebuild:
       - sed -i '/maven.rikka.app/d' settings.gradle
       - sed -i -e '/if (System.getenv("ANDROID_SPLIT_BUILD")/,/^    }/d' app/build.gradle
@@ -44,24 +37,18 @@ Builds:
         = "$$VERCODE$$"/' app/build.gradle
       - sed -i '/APPLICATION_VERSION_NAME/s/def appVersionName.*/def appVersionName
         = "$$VERSION$$"/' app/build.gradle
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.90.0 --target aarch64-linux-android
-        armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - rustup default 1.90.0
+      - rustup target aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - cargo install cargo-ndk --locked
     scanignore:
       - mobile/Cargo.toml
       - Cargo.toml
     build:
-      - source "$HOME/.cargo/env"
-      - cargo install cargo-ndk --locked
       - cargo ndk -t armeabi-v7a -o app/src/main/jniLibs/ build --release --lib
       - cargo ndk -t arm64-v8a -o app/src/main/jniLibs/ build --release --lib
       - cargo ndk -t x86 -o app/src/main/jniLibs/ build --release --lib
       - cargo ndk -t x86_64 -o app/src/main/jniLibs/ build --release --lib
     ndk: 28.2.13676358
-    postbuild:
-      - echo "=== PWD ===" && pwd
-      - echo "=== APKs found ===" && find . -name "*.apk" -type f
-      - echo "=== app/build/outputs ===" && ls -alR app/build/outputs || echo "directory
-        not found"
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
