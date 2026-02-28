@@ -23,18 +23,28 @@ RepoType: git
 Repo: https://github.com/ariadne-coil/Cyber-Phone.git
 
 Builds:
-  - versionName: 0.5.2
-    versionCode: 32
-    commit: 5a466171714b50b64d58d7b1195709dd67056b86
+  - versionName: 0.6.0
+    versionCode: 33
+    commit: 14da7fc7b80314a44c66ca276561926f09dc6358
     subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup binaryen nodejs clang
+    init:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default stable
+      - rustup target add wasm32-unknown-unknown
+      - cargo install --locked wasm-bindgen-cli --version 0.2.100
     gradle:
       - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
-    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts && rm -f src/main/assets/fedimint/fedimint_client_wasm_bg.wasm
-      ../releases/CyberPhone-v0.5.apk ../releases/CyberPhone-v0.5.apk.sha256
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - rm -f ../releases/CyberPhone-v*.apk ../releases/CyberPhone-v*.apk.sha256
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
-CurrentVersion: 0.5.2
-CurrentVersionCode: 32
+CurrentVersion: 0.6.0
+CurrentVersionCode: 33
