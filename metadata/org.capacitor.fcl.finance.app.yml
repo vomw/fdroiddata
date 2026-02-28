@@ -17,7 +17,7 @@ Builds:
   - versionName: 1.0.1
     versionCode: 1
     commit: v1.0.1
-    subdir: src-capacitor/
+    subdir: src-capacitor/android/app
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
@@ -30,6 +30,7 @@ Builds:
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm install yarn -g
     init:
+      - cd ../..
       - yarn install
       - cd ..
       - yarn cap:sync:android
@@ -37,7 +38,7 @@ Builds:
       - yes
     output: build/outputs/apk/release/app-release.apk
     scandelete:
-      - src-capacitor/node_modules
+      - node_modules
     build: yarn build:android
     ndk: r21e
 
