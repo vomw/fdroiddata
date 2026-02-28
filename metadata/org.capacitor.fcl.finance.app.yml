@@ -37,8 +37,12 @@ Builds:
       - yarn build
       - yarn cap:sync:android
       - rm -f src-capacitor/android/fcl-finance.keystore src-capacitor/android/keystore.properties
-      - keytool -genkeypair -v -keystore src-capacitor/android/fcl-finance.keystore -alias fcl -keyalg RSA -keysize 2048 -validity 10000 -storepass changeit -keypass changeit -dname "CN=FCL Finance App, OU=FCL, O=FCL, L=City, ST=State, C=PH"
-      - printf "storeFile=../fcl-finance.keystore\nstorePassword=changeit\nkeyAlias=fcl\nkeyPassword=changeit\n" > src-capacitor/android/keystore.properties
+      - keytool -genkeypair -v -keystore src-capacitor/android/fcl-finance.keystore
+        -alias fcl -keyalg RSA -keysize 2048 -validity 10000 -storepass changeit -keypass
+        changeit -dname "CN=FCL Finance App, OU=FCL, O=FCL, L=City, ST=State, C=PH"
+      - printf
+        "storeFile=../fcl-finance.keystore\nstorePassword=changeit\nkeyAlias=fcl\nkeyPassword=changeit\n"
+        > src-capacitor/android/keystore.properties
     gradle:
       - yes
     output: build/outputs/apk/release/app-release.apk
