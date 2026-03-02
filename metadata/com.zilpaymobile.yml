@@ -1,0 +1,49 @@
+Categories:
+  - Money
+License: GPL-3.0-only
+AuthorName: Bearby
+AuthorWebSite: https://zilpay.io
+SourceCode: https://github.com/zilpay/zilpay-mobile
+IssueTracker: https://github.com/zilpay/zilpay-mobile/issues
+
+AutoName: Bearby
+
+RepoType: git
+Repo: https://github.com/zilpay/zilpay-mobile.git
+
+Builds:
+  - versionName: 3.8.28
+    versionCode: 917
+    commit: 3.8.28
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential pkg-config libssl-dev clang cmake ninja-build
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.28.2
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*Flutter version:\ (.*)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.92.0 --target aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - source ~/.cargo/env
+      - cargo install cargo-ndk@4.1.2
+      - flutter pub get
+      - cd rust && cargo fetch --locked
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - source ~/.cargo/env
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.8.28
+CurrentVersionCode: 917
