@@ -1,28 +1,29 @@
-# F-Droid Submit-Metadaten – nur stabile Versionen (keine Pre-Releases)
-# Wird von submit-to-gitlab.sh nach metadata/com.d0dg3r.gitsyncmarks.yml kopiert.
-
 Categories:
   - Internet
 License: MIT
 AuthorName: Joe Mild
-SourceCode: https://github.com/d0dg3r/GitSyncMarks-Mobile
-IssueTracker: https://github.com/d0dg3r/GitSyncMarks-Mobile/issues
+SourceCode: https://github.com/d0dg3r/GitSyncMarks-App
+IssueTracker: https://github.com/d0dg3r/GitSyncMarks-App/issues
 
 AutoName: GitSyncMarks
 
 RepoType: git
-Repo: https://github.com/d0dg3r/GitSyncMarks-Mobile
+Repo: https://github.com/d0dg3r/GitSyncMarks-App
 
 Builds:
-  - versionName: 0.3.0
-    versionCode: 7
-    commit: 976bd753483822f603b5b7d73adb483e762878fe
+  - versionName: 0.2.0
+    versionCode: 6
+    commit: 6e5d731f095888956aaf594a89f6d3e478d3a050
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.1
+      - flutter@stable
     rm:
       - ios
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -33,15 +34,65 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
-  - versionName: 0.2.0
-    versionCode: 6
-    commit: 9ed8ecea448a47b9cc49c98d5333d3782a48d5a6
+  - versionName: 0.3.0
+    versionCode: 7
+    commit: 976bd753483822f603b5b7d73adb483e762878fe
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.1
+      - flutter@stable
     rm:
       - ios
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter gen-l10n
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+  - versionName: 0.3.2
+    versionCode: 9
+    commit: 715e5e2a6fdd11f633ef58d7c1aeefe1e0b6f5c9
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter gen-l10n
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+  - versionName: 0.3.3
+    versionCode: 10
+    commit: 38abc56fe02705cc4c263d299953b0af2981d54e
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -53,7 +104,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.3.0
-CurrentVersionCode: 7
+CurrentVersion: 0.3.3
+CurrentVersionCode: 10
