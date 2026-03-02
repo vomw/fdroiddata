@@ -1,0 +1,38 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-only
+Author Name: Wojtek Wincewicz
+AuthorEmail: therapytrack@pm.me
+SourceCode: https://github.com/wswin5k/therapy-track
+AutoName: Therapy Track
+
+RepoType: git
+Repo: https://github.com/wswin5k/therapy-track.git
+
+
+Builds:
+  - versionName: '1.0.0'
+    versionCode: 1
+    commit: '1.0.0'
+    subdir: android/app/
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz
+      - echo "dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    init:
+      - cd ../..
+      - npm cache clean
+      - npm install --build-from-source
+    gradle:
+      - yes
+    scanignore:
+      - android/build.gradle
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0.0'
+CurrentVersionCode: 1
