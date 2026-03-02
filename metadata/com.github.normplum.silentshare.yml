@@ -4,6 +4,7 @@ License: GPL-3.0-or-later
 AuthorName: Norm Plum
 SourceCode: https://github.com/NormPlum/SilentShare
 IssueTracker: https://github.com/NormPlum/SilentShare/issues
+
 RepoType: git
 Repo: https://github.com/NormPlum/SilentShare.git
 
@@ -11,19 +12,18 @@ Builds:
   - versionName: 1.0.2
     versionCode: 10002
     commit: 6fa7890c276adb9f21e2517fa8bb03bb7625db40
-    output: silentshare.apk
-    srclibs:
-      - Godot@4.6.1-stable
     sudo:
       - apt-get update
       - apt-get install -y scons pkgconf g++
+    output: silentshare.apk
+    srclibs:
+      - Godot@4.6.1-stable
     build:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_HOME=$$SDK$$
       - pushd $$Godot$$
       - scons platform=linuxbsd optimize=speed
-      - scons target=template_release profile=.build/scons_profile.py
-        build_profile=.build/profile.gdbuild
+      - scons target=template_release profile=.build/scons_profile.py build_profile=.build/profile.gdbuild
       - popd
       - mv $$Godot$$/bin/android_release.apk android-release.apk
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release "Android
