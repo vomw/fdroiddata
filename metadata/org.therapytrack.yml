@@ -16,11 +16,9 @@ Builds:
     commit: 1.0.0
     subdir: android/app/
     sudo:
-      - sysctl fs.inotify.max_user_watches=524288 || true
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz
-      - echo "dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355 node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
     init:
       - cd ../..
       - npm install --build-from-source
