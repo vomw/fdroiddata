@@ -11,13 +11,14 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     gradle:
       - yes
     prebuild:
+      - cd ../..
       - npm ci
       - sed -i 's/version("0.5.0")/version("1.0.0")/' node_modules/@react-native/gradle-plugin/settings.gradle.kts
     scandelete:
