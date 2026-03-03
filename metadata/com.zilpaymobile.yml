@@ -29,8 +29,10 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH="$$flutter$$/bin:$PATH"
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.92.0 --target aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.92.0
       - source ~/.cargo/env
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
       - cargo install cargo-ndk@4.1.2
       - flutter pub get
       - cd rust && cargo fetch --locked
