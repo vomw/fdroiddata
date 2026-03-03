@@ -31,6 +31,8 @@ Builds:
       - ios
       - linux
     prebuild:
+      - flutterVersion=$(grep 'flutter:' flutter-version.yaml | sed 's/^\s*flutter:\s//')
+      - git -C $$flutter$$ switch --detach $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/dart run build_runner build
