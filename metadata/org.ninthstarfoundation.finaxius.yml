@@ -1,0 +1,42 @@
+Categories:
+  - Education
+  - Money
+License: AGPL-3.0-only
+AuthorName: Justin Chase Ford
+AuthorEmail: finaxius@justinchaseford.com
+AuthorWebSite: https://justinchaseford.com
+SourceCode: https://codeberg.org/masterford/finaxius
+IssueTracker: https://codeberg.org/masterford/finaxius/issues
+Changelog: https://codeberg.org/masterford/finaxius/releases
+
+AutoName: Finaxius
+
+RepoType: git
+Repo: https://codeberg.org/masterford/finaxius.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10
+    commit: v1.0.0+10
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends sdkmanager
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - web
+      - windows
+      - linux
+      - macos
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 10
