@@ -20,17 +20,10 @@ Builds:
     versionCode: 85
     commit: 59a01e206de2fbea7ae42bce2d3a9be37f3997c1
     subdir: androidApp
-    sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
-      - apt update
-      - apt install -y build-essential openjdk-21-jdk-headless
-    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    gradle:
+      - yes
     binary: 
       https://github.com/mlm-games/miniter/releases/download/%v/miniter-%v-arm64-v8a.apk
-    build:
-      - gradle :androidApp:assembleRelease --no-daemon
-      - cp build/outputs/apk/release/miniter-*-arm64-v8a*.apk build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     ndk: r28c
     gradleprops:
       - enableApkSplits=true
