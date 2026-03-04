@@ -39,9 +39,49 @@ Builds:
       - commet/web
       - commet/windows
     prebuild:
-      - flutterVersion=$(grep -m1 "flutter-version:" ../.github/workflows/release.yml
-        | sed -E "s/.*'([^']+)'.*/\1/")
-      - '[[ $flutterVersion ]]'
+      - flutterVersion="3.35.4"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - PATH=$$flutter$$/bin:$PATH dart run scripts/codegen.dart
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+    scandelete:
+      - commet/.pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.87.0 --target aarch64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export GIT_HASH=$(git rev-parse HEAD)
+      - export TAG=$(git describe --tags --exact-match HEAD)
+      - export TIME_MILLISECONDS=$(git --no-pager log -1 --format=%at)000
+      - $$flutter$$/bin/flutter build apk --release --dart-define BUILD_MODE=release
+        --dart-define PLATFORM=android --dart-define BUILD_DETAIL=fdroid --dart-define
+        GIT_HASH=$GIT_HASH --dart-define VERSION_TAG=$TAG --dart-define BUILD_DATE=$TIME_MILLISECONDS
+
+  - versionName: 0.4.1
+    versionCode: 824
+    commit: c2ee370d18c822673b24b6579842a01b971b1584
+    subdir: commet
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build libmpv-dev mpv ffmpeg libmimalloc-dev cmake
+        clang
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.4
+      - rustup@1.27.1
+    rm:
+      - commet/ios
+      - commet/linux
+      - commet/macos
+      - commet/test_driver
+      - commet/unit_test
+      - commet/integration_test
+      - commet/web
+      - commet/windows
+    prebuild:
+      - flutterVersion="3.35.4"
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -63,5 +103,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+(\+hotfix\.\d+)?$
 UpdateCheckData: commet/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.4.0
-CurrentVersionCode: 749
+CurrentVersion: 0.4.1
+CurrentVersionCode: 824
