@@ -17,7 +17,11 @@ Builds:
     subdir: android
     sudo:
       - apt-get install -y nodejs npm
-    prebuild: npm install --prefix $$MODULE$$
+    init:
+      - cd ../.. 
+      - npm ci
+      - npx expo prebuild --platform android --non-interactive
+      - cd android/app
     build:
       - ./gradlew assembleRelease
 
