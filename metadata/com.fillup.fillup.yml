@@ -23,7 +23,7 @@ Builds:
     prebuild:
       - version=$(grep -A 5 environment pubspec.yaml | grep flutter | sed "s/[^0-9.]//g")
       - '[[ $version ]]'
-      - git -C $$flutter$$ checkout $version
+      - git -C $$flutter$$ checkout -f $version
       - sed -i -e '/java.home/d' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH="$$flutter$$/bin:$PATH"
