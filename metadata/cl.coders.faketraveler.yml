@@ -88,7 +88,40 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 2.2.1
+    versionCode: 221
+    commit: d33e3cb6a99da7f8dc39d9a1d332198b5054eba0
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 2.2.2
+    versionCode: 222
+    commit: 3c4726424e18c5b7a62520f73455369c08f69079
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.12.2/8.11.1/' ../build.gradle
+
+  - versionName: 2.3.0
+    versionCode: 230
+    commit: 7707277b3b65fd069dfd01f159fc060070ce9259
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.12.2/8.11.1/' ../build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags .*[0-9]$
-CurrentVersion: 2.2.0
-CurrentVersionCode: 220
+CurrentVersion: 2.3.0
+CurrentVersionCode: 230

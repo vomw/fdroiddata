@@ -6,7 +6,8 @@ WebSite: https://ics-openvpn.blinkt.de/
 SourceCode: https://github.com/schwabe/ics-openvpn
 IssueTracker: https://github.com/schwabe/ics-openvpn/issues
 Translation: https://crowdin.com/project/ics-openvpn
-Donate: https://www.paypal.com/cgi-bin/webscr?hosted_button_id=R2M6ZP9AF25LS&cmd=_s-xclick
+Donate: 
+  https://www.paypal.com/cgi-bin/webscr?hosted_button_id=R2M6ZP9AF25LS&cmd=_s-xclick
 Bitcoin: 1EVWVqpVQFhoFE6gKaqSkfvSNdmLAjcQ9z
 
 AutoName: OpenVPN for Android
@@ -1051,7 +1052,73 @@ Builds:
       - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
     ndk: r28
 
+  - versionName: 0.7.62
+    versionCode: 217
+    commit: 9aee9b529a67cbc03dc10f9484d915b3440a2e81
+    subdir: main
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y swig
+    gradle:
+      - ui
+      - ovpn23
+    rm:
+      - main/src/main/cpp/lz4/tests
+      - main/src/main/cpp/mbedtls/programs/fuzz
+      - main/src/main/cpp/mbedtls/tests
+      - main/src/main/cpp/openvpn3/test/unittests
+    prebuild:
+      - sed -i -e '/signingConfigs.getByName/d' -e 's/isEnable\ =\ true/isEnable\
+        =\ false/' build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
+    ndk: 29.0.14206865
+
+  - versionName: 0.7.63
+    versionCode: 218
+    commit: 14c315f5a1d526fcd0b36323e724d4e199c6d137
+    subdir: main
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y swig
+    gradle:
+      - ui
+      - ovpn23
+    rm:
+      - main/src/main/cpp/lz4/tests
+      - main/src/main/cpp/mbedtls/programs/fuzz
+      - main/src/main/cpp/mbedtls/tests
+      - main/src/main/cpp/openvpn3/test/unittests
+    prebuild:
+      - sed -i -e '/signingConfigs.getByName/d' -e 's/isEnable\ =\ true/isEnable\
+        =\ false/' build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
+    ndk: 29.0.14206865
+
+  - versionName: 0.7.64
+    versionCode: 219
+    commit: 73ce3c99dde39207990d66c21be8201228cd1f09
+    subdir: main
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y swig
+    gradle:
+      - ui
+      - ovpn23
+    rm:
+      - main/src/main/cpp/lz4/tests
+      - main/src/main/cpp/mbedtls/programs/fuzz
+      - main/src/main/cpp/mbedtls/tests
+      - main/src/main/cpp/openvpn3/test/unittests
+    prebuild:
+      - sed -i -e '/signingConfigs.getByName/d' -e 's/isEnable\ =\ true/isEnable\
+        =\ false/' build.gradle.kts
+      - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
+    ndk: 29.0.14206865
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.7.61
-CurrentVersionCode: 216
+CurrentVersion: 0.7.64
+CurrentVersionCode: 219

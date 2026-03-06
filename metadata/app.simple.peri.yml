@@ -371,7 +371,8 @@ Builds:
     subdir: app
     gradle:
       - prod
-    binary: https://github.com/Hamza417/Peristyle/releases/download/v%v01/app-prod-release.apk
+    binary: 
+      https://github.com/Hamza417/Peristyle/releases/download/v%v01/app-prod-release.apk
     srclibs:
       - reproducible-apk-tools@v0.2.8
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
@@ -624,7 +625,8 @@ Builds:
       - prod
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -646,7 +648,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -668,7 +671,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -690,7 +694,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -712,7 +717,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -734,7 +740,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -756,7 +763,8 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -778,7 +786,353 @@ Builds:
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
     prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
     postbuild:
-      - curl -Lo upstream.apk https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.0.0
+    versionCode: 900
+    commit: b6aa551ad96b33789fa66f0c53cd6ff3d3a54b28
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.1.0
+    versionCode: 910
+    commit: 728cb6e50ee87bc49b8aa950ed7daafb38756b71
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.2.2
+    versionCode: 922
+    commit: da9efc9d0dc105a48d0dd0d39e4fab611598af57
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.2.4
+    versionCode: 924
+    commit: f7f5042efe1a171c1d75f80b02b8387a7b9d2e92
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.2.5
+    versionCode: 925
+    commit: 7d184ae5797a30b7c72b5d42044e73969d3cec15
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.2.6
+    versionCode: 926
+    commit: c09677f99b6b8b6162a2f6f39c8da37e2f924f31
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.3.0
+    versionCode: 930
+    commit: f6b0c781e960b77a516831caa3633a89eac0c1aa
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.3.1
+    versionCode: 931
+    commit: c77611f2f07b3aa746cd0e23d5ea1263aff36c20
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.3.2
+    versionCode: 932
+    commit: 89640904de690328d052c0b543ef14beed73d1ef
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.3.3
+    versionCode: 933
+    commit: 35ecd59257092e1a4f719534a44e10fd3b461634
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.4.0
+    versionCode: 940
+    commit: 134e2e853f612040b605e1c589073c7b0c71366b
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.4.1
+    versionCode: 941
+    commit: 6cad06cdefd895c153d8e53df425c75acf2218e7
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.5.0
+    versionCode: 950
+    commit: 7795c7f4513aedc3fa18ff3acaa763db17d8677d
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.5.1
+    versionCode: 951
+    commit: 5d5097bf84b9ef12f65512b0375bb48575bc1544
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleProdRelease; done
+
+  - versionName: v9.5.2
+    versionCode: 952
+    commit: 2af267083f536903e67dc30ba9f588d351d49475
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - prod
+    binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
+    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
@@ -790,5 +1144,5 @@ AllowedAPKSigningKeys: 4a3f711142250805c7bb5c0a5a3287631bdb948816e6f4afc9524d0eb
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: v8.8.0
-CurrentVersionCode: 880
+CurrentVersion: v9.5.2
+CurrentVersionCode: 952

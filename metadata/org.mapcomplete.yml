@@ -13,12 +13,14 @@ Categories:
   - Navigation
 License: GPL-3.0-or-later
 SourceCode: https://source.mapcomplete.org/MapComplete/MapComplete
+IssueTracker: https://source.mapcomplete.org/MapComplete/MapComplete/issues
 
 AutoName: MapComplete
 
 RepoType: git
 Repo: https://source.mapcomplete.org/MapComplete/android-wrapper.git
-Binaries: https://source.mapcomplete.org/MapComplete/android-wrapper/releases/download/v%v/app-release.apk
+Binaries: 
+  https://source.mapcomplete.org/MapComplete/android-wrapper/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 0.54.2
@@ -35,9 +37,37 @@ Builds:
     scandelete:
       - '@capacitor'
 
+  - versionName: 0.54.2-experimental-2
+    versionCode: 10
+    commit: fd43af40d19775fb17eebb3b9d2a0ef1a0899b82
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    scandelete:
+      - '@capacitor'
+
+  - versionName: 0.54.4
+    versionCode: 2011
+    commit: 08ad033c7a87b9404f241adf5dc5894c95bba1ac
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    scandelete:
+      - '@capacitor'
+
 AllowedAPKSigningKeys: 16761629fef761c1e8522e6389e9a2b276871679e4d4921735b63a17906d356c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.54.2
-CurrentVersionCode: 6
+CurrentVersion: 0.54.4
+CurrentVersionCode: 2011
