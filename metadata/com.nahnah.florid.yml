@@ -1,0 +1,36 @@
+Categories:
+  - App Store & Updater
+  - System
+License: GPL-3.0-only
+AuthorName: Nandanrmenon
+AuthorEmail: nandanrmenon@gmail.com
+AuthorWebSite: https://www.nandanmenon.dev/
+SourceCode: https://github.com/Nandanrmenon/florid
+IssueTracker: https://github.com/Nandanrmenon/florid/issues
+Translation: https://crowdin.com/project/florid
+Changelog: https://github.com/Nandanrmenon/florid/releases
+
+AutoName: Florid
+Description: A modern F-Droid client for Android built with Flutter.
+
+RepoType: git
+Repo: https://github.com/Nandanrmenon/florid
+
+Builds:
+  - versionName: 1.1.2
+    versionCode: 12
+    commit: a78ffb1b4c6e975d451ba5869440652169545961
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.4
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.2
+CurrentVersionCode: 12
