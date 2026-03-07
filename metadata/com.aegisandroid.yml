@@ -1,3 +1,4 @@
+
 Categories:
   - Security
 License: MIT
@@ -6,14 +7,9 @@ SourceCode: https://github.com/hafgit99/AegisVaultAndroid_V.4.0.0
 IssueTracker: https://github.com/hafgit99/AegisVaultAndroid_V.4.0.0/issues
 
 AutoName: Aegis Vault
-Description: |-
-  Aegis Vault is an offline, privacy-first password and authenticator (TOTP)
-  manager designed with top-tier security. It relies on AES-256-GCM encryption to
-  safely store all your credentials locally on your device without transmitting anything
-  over the internet.
 
 RepoType: git
-Repo: https://github.com/hafgit99/AegisVaultAndroid_V.4.0.0.git
+Repo: https://github.com/hafgit99/AegisVaultAndroid_V.4.0.0
 
 Builds:
   - versionName: 0.1.1
@@ -21,19 +17,47 @@ Builds:
     commit: v0.1.1
     subdir: android
     sudo:
-      - apt-get update || true
-      - apt-get install -y nodejs npm
+      - apt-get remove -y npm || true
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash - || true
+      - apt-get install -y nodejs
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
-    build:
-      - cd ..
-      - npm install -g npm@latest
+    output: app/build/outputs/apk/release/app-release.apk
+    prebuild:
       - npm ci
-      - cd android
+      - rm -rf ../node_modules/@op-engineering/op-sqlite/android/src/main/libsqlitevec/
+        || true
+      - rm -rf ../node_modules/@op-engineering/op-sqlite/android/src/main/jniLibs/
+        || true
+      - rm -rf ../node_modules/@op-engineering/op-sqlite/android/src/main/libcrsqlite/
+        || true
+      - rm -rf ../node_modules/@op-engineering/op-sqlite/ios/ || true
+      - rm -rf ../node_modules/hermes-compiler/hermesc/ || true
+      - rm -rf ../node_modules/fb-dotslash/ || true
+      - rm -rf ../node_modules/react-native/React/I18n/strings/ || true
+      - find ../node_modules -name gradle-wrapper.jar -delete 2>/dev/null || true
+      - find ../node_modules/@react-native -name "*.class" -delete 2>/dev/null ||
+        true
+      - find ../node_modules/@react-native -name "*.jar" -delete 2>/dev/null || true
+      - find ../node_modules/@react-native -path "*/build/*" -name "*.bin" -delete
+        2>/dev/null || true
+    scanignore:
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-biometrics/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/@react-native/gradle-plugin/
+      - node_modules/react-native-quick-crypto/deps/blake3/Cargo.toml
+      - node_modules/react-native-quick-crypto/deps/blake3/c/blake3_c_rust_bindings/Cargo.toml
+      - node_modules/react-native-quick-crypto/deps/blake3/reference_impl/Cargo.toml
+      - node_modules/react-native-quick-crypto/deps/blake3/test_vectors/Cargo.toml
+      - node_modules/react-native-quick-crypto/deps/blake3/tools/instruction_set_support/Cargo.toml
+      - node_modules/react-native-quick-crypto/deps/blake3/tools/compiler_version/Cargo.toml
+    scandelete:
+      - hermes-win.tar.gz
     ndk: r27c
 
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 0.1.1
 CurrentVersionCode: 11
