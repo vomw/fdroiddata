@@ -28,7 +28,7 @@ Builds:
     prebuild:
       - sed -i 's|maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }|mavenCentral()|g'
           ../settings.gradle.kts
-      - sed -i '/^dependencyResolutionManagement/i\includeBuild("$$NewPipeExtractor$$") { dependencySubstitution { substitute(module("com.github.TeamNewPipe:NewPipeExtractor")) using project(":extractor") } }' ../settings.gradle.kts
+      - sed -i '/^dependencyResolutionManagement/i\includeBuild("$$NewPipeExtractor$$") { dependencySubstitution { substitute(module("com.github.TeamNewPipe:NewPipeExtractor")).using(project(":extractor")) } }' ../settings.gradle.kts
 
 MaintainerNotes: |-
   The app requires NonFreeNet due to interaction with third-party, non-free network services (YouTube, KuGou, LrcLib). The tracking AntiFeature is due to the usage of ACRA for automated crash reporting.
