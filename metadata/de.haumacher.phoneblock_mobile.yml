@@ -29,18 +29,17 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/release.yml)
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - sed -i '/auto-translate-arb/d' android/build.gradle
-      - sed -i '/auto-translate-arb/d' android/settings.gradle
+      - sed -i '/auto-translate-arb/d' android/{settings,build}.gradle
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
       - phoneblock_shared/pubspec.yaml
-      - phoneblock/fbclient/package.json
     scandelete:
       - phoneblock_mobile/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
+    ndk: r28c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags .*pb-mobile-.*
