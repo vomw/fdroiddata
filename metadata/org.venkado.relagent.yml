@@ -1,0 +1,93 @@
+Categories:
+  - AI Chat
+License: BSD-2-Clause
+AuthorName: Venkado
+AuthorEmail: hello@venkado.org
+AuthorWebSite: https://sigmoid.social/@guesser
+WebSite: https://venkado.org/
+SourceCode: https://gitlab.com/RmMsr/relagent
+
+AutoName: Relagent
+
+RepoType: git
+Repo: https://gitlab.com/RmMsr/relagent.git
+
+Builds:
+  - versionName: 0.1.15
+    versionCode: 1004
+    commit: add4a0a0e0358002464d615431892b32a18a8178
+    subdir: apps
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - cp assets/config.template.json assets/config.json
+    scanignore:
+      - dart_packages
+    scandelete:
+      - apps/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 0.1.15
+    versionCode: 2004
+    commit: add4a0a0e0358002464d615431892b32a18a8178
+    subdir: apps
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - cp assets/config.template.json assets/config.json
+    scanignore:
+      - dart_packages
+    scandelete:
+      - apps/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 0.1.15
+    versionCode: 4004
+    commit: add4a0a0e0358002464d615431892b32a18a8178
+    subdir: apps
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - cp assets/config.template.json assets/config.json
+    scanignore:
+      - dart_packages
+    scandelete:
+      - apps/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 1000 + %c
+  - 2000 + %c
+  - 4000 + %c
+UpdateCheckData: apps/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.15
+CurrentVersionCode: 4004
