@@ -18,10 +18,17 @@ Builds:
     versionCode: 1
     commit: v1.0.0
     output: build/app/outputs/flutter-apk/app-release.apk
+
     srclibs:
-      - flutter@stable
+      - flutter@3.24.3
+
+    prebuild:
+      - export FLUTTER_ROOT=$$flutter$$
+      - $FLUTTER_ROOT/bin/flutter config --no-analytics
+      - $FLUTTER_ROOT/bin/flutter pub get
+
     build:
-      - $$flutter$$/bin/flutter build apk --release
+      - $FLUTTER_ROOT/bin/flutter build apk --release
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
