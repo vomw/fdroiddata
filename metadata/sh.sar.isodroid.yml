@@ -22,18 +22,19 @@ Builds:
     srclibs:
       - isodrive@2e9f28bd90dd57f4f72d2d21cb080e390336233a
     build:
-      - cd $$isodrive$$ && TOOLCHAIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
-        && SRCS="src/util.cpp src/configfsisomanager.cpp src/androidusbisomanager.cpp
-        src/main.cpp" && CFLAGS="-Isrc/include -static-libstdc++ -Os -s" && $TOOLCHAIN/aarch64-linux-android26-clang++
-        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/arm64-v8a/isodrive && $TOOLCHAIN/armv7a-linux-androideabi26-clang++
-        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/armeabi-v7a/isodrive && $TOOLCHAIN/x86_64-linux-android26-clang++
-        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/x86_64/isodrive && $TOOLCHAIN/i686-linux-android26-clang++
-        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/x86/isodrive
+      - export TOOLCHAIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
+      - export SRCS="$$isodrive$$/src/util.cpp $$isodrive$$/src/configfsisomanager.cpp
+        $$isodrive$$/src/androidusbisomanager.cpp $$isodrive$$/src/main.cpp"
+      - export CFLAGS="-I$$isodrive$$/src/include -static-libstdc++ -Os -s"
+      - $TOOLCHAIN/aarch64-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/arm64-v8a/isodrive
+      - $TOOLCHAIN/armv7a-linux-androideabi26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/armeabi-v7a/isodrive
+      - $TOOLCHAIN/x86_64-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/x86_64/isodrive
+      - $TOOLCHAIN/i686-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/x86/isodrive
     scanignore:
-      - app/src/main/assets/bin/arm64-v8a/isodrive
-      - app/src/main/assets/bin/armeabi-v7a/isodrive
-      - app/src/main/assets/bin/x86_64/isodrive
-      - app/src/main/assets/bin/x86/isodrive
+      - src/main/assets/bin/arm64-v8a/isodrive
+      - src/main/assets/bin/armeabi-v7a/isodrive
+      - src/main/assets/bin/x86_64/isodrive
+      - src/main/assets/bin/x86/isodrive
     ndk: r26d
 
 AutoUpdateMode: Version
