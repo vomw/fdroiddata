@@ -36,17 +36,17 @@ Builds:
       - app/android/car
       - app/android/navigation
     prebuild:
+      - flutterVersion=$(sed -n '/^environment:/,/^[^[:space:]]/s/^[[:space:]]*flutter:[[:space:]]*//p' pubspec.yaml)
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/tankste/tankste
       - cd ../..
       - mv app.tankste.fdroid $repo
       - pushd $repo
-      - flutterVersion=$(sed -n '/^environment:/,/^[^[:space:]]/s/^[[:space:]]*flutter:[[:space:]]*//p' app/pubspec.yaml)
-      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - cd app
-      - echo "flutter.sdk=../.flutter" >> ./local.properties
-      - ../.flutter/bin/flutter config --no-analytics
-      - ../.flutter/bin/flutter precache --android
+      - echo "flutter.sdk=$$flutter$$" >> ./local.properties
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter precache --android
       - popd
       - mv $repo app.tankste.fdroid
       - cd app.tankste.fdroid/app
@@ -59,7 +59,7 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - cd app
-      - ../flutter/bin/flutter build apk --no-tree-shake-icons
+      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons
       - popd
       - mv $repo app.tankste.fdroid
       - cd app.tankste.fdroid/app
