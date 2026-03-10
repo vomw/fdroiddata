@@ -27,9 +27,10 @@ Builds:
     sudo:
       - mkdir -p /home/runner/work/tankste
       - chown -R vagrant /home/runner
+    submodules: true
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.38.5
+      - flutter@stable
     rm:
       - app/ios
       - app/android/station
@@ -40,11 +41,13 @@ Builds:
       - cd ../..
       - mv app.tankste.fdroid $repo
       - pushd $repo
+      - flutterVersion=$(sed -n '/^environment:/,/^[^[:space:]]/s/^[[:space:]]*flutter:[[:space:]]*//p' app/pubspec.yaml)
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - cd app
-      - echo "flutter.sdk=$$flutter$$" >> ./local.properties
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter precache --android
+      - echo "flutter.sdk=../.flutter" >> ./local.properties
+      - ../.flutter/bin/flutter config --no-analytics
+      - ../.flutter/bin/flutter precache --android
       - popd
       - mv $repo app.tankste.fdroid
       - cd app.tankste.fdroid/app
@@ -57,7 +60,7 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - cd app
-      - $$flutter$$/bin/flutter build apk --no-tree-shake-icons
+      - ../flutter/bin/flutter build apk --no-tree-shake-icons
       - popd
       - mv $repo app.tankste.fdroid
       - cd app.tankste.fdroid/app
