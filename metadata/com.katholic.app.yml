@@ -36,18 +36,18 @@ Builds:
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml 2>/dev/null || echo "3.10.1")
       - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
+      - git -C ../srclib/flutter checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter config --no-analytics
-      - .flutter/bin/flutter pub get
+      - ../srclib/flutter/bin/flutter config --no-analytics
+      - ../srclib/flutter/bin/flutter pub get
     scanignore:
-      - .flutter/bin/cache
+      - ../srclib/flutter/bin/cache
     scandelete:
-      - .flutter
+      - ../srclib/flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --release
+      - ../srclib/flutter/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
