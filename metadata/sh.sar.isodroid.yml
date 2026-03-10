@@ -8,29 +8,6 @@ IssueTracker: https://git.shihaam.dev/shihaam/ISODroid/issues
 Changelog: https://git.shihaam.dev/shihaam/ISODroid/src/branch/main/CHANGELOG.md
 
 AutoName: ISO Droid
-Description: |-
-  ISO Droid lets you mount ISO and IMG files as USB mass storage or CD-ROM
-  devices on rooted Android devices. Connect your phone to any PC and it will
-  appear as a bootable USB drive or CD-ROM.
-
-  Features:
-
-  * Mount ISO/IMG files as USB mass storage or CD-ROM
-  * Create blank IMG files for writable USB drives
-  * Read-only or read-write mount options
-  * Persistent notification with quick unmount button
-  * OS-specific icons for popular distributions (Linux, BSD, etc.)
-  * Download links to popular operating systems
-  * Rename and delete files
-  * Material 3 dynamic theming with dark mode support
-
-  Requirements:
-
-  * Rooted Android device (Magisk, KernelSU, APatch, etc.)
-  * USB gadget support (configfs or sysfs)
-  * Android 8.0+ (API 26)
-
-  The app includes a bundled isodrive binary. No additional setup required.
 
 RepoType: git
 Repo: https://git.shihaam.dev/shihaam/ISODroid.git
@@ -42,15 +19,16 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild:
-      - git clone --depth 1 https://github.com/nitanmarcel/isodrive ../isodrive
-      - cd ../isodrive && TOOLCHAIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
+    srclibs:
+      - isodrive@2e9f28bd90dd57f4f72d2d21cb080e390336233a
+    build:
+      - cd $$isodrive$$ && TOOLCHAIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
         && SRCS="src/util.cpp src/configfsisomanager.cpp src/androidusbisomanager.cpp
         src/main.cpp" && CFLAGS="-Isrc/include -static-libstdc++ -Os -s" && $TOOLCHAIN/aarch64-linux-android26-clang++
-        $CFLAGS $SRCS -o ../app/src/main/assets/bin/arm64-v8a/isodrive && $TOOLCHAIN/armv7a-linux-androideabi26-clang++
-        $CFLAGS $SRCS -o ../app/src/main/assets/bin/armeabi-v7a/isodrive && $TOOLCHAIN/x86_64-linux-android26-clang++
-        $CFLAGS $SRCS -o ../app/src/main/assets/bin/x86_64/isodrive && $TOOLCHAIN/i686-linux-android26-clang++
-        $CFLAGS $SRCS -o ../app/src/main/assets/bin/x86/isodrive
+        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/arm64-v8a/isodrive && $TOOLCHAIN/armv7a-linux-androideabi26-clang++
+        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/armeabi-v7a/isodrive && $TOOLCHAIN/x86_64-linux-android26-clang++
+        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/x86_64/isodrive && $TOOLCHAIN/i686-linux-android26-clang++
+        $CFLAGS $SRCS -o $$sh.sar.isodroid$$/app/src/main/assets/bin/x86/isodrive
     scanignore:
       - app/src/main/assets/bin/arm64-v8a/isodrive
       - app/src/main/assets/bin/armeabi-v7a/isodrive
