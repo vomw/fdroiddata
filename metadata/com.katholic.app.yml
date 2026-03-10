@@ -24,9 +24,9 @@ Builds:
   - versionName: '1.0.0'
     versionCode: 1
     commit: 1.0.0
-    srclibs:
-      - flutter@stable
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.10.1
     rm:
       - ios
       - linux
@@ -34,23 +34,17 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml 2>/dev/null || echo "3.10.1")
-      - '[[ $flutterVersion ]]'
-      - git -C ../srclib/flutter checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ../srclib/flutter/bin/flutter config --no-analytics
-      - ../srclib/flutter/bin/flutter pub get
-    scanignore:
-      - ../srclib/flutter/bin/cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
     scandelete:
-      - ../srclib/flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ../srclib/flutter/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-VersionCodePattern: buildNumber
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: '1.0.0'
 CurrentVersionCode: 1
