@@ -1,0 +1,70 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on HuggingFace, Modelscope and Modelers to download Large Language
+      Model.
+    zh-CN: 依赖 HuggingFace、Modelscope 和 Modelers 网站来下载大语言模型。
+Categories:
+  - AI Chat
+License: Apache-2.0
+AuthorName: Alibaba
+WebSite: https://www.mnn.zone/
+SourceCode: https://github.com/alibaba/MNN
+IssueTracker: https://github.com/alibaba/MNN/issues
+Changelog: https://github.com/alibaba/MNN/tree/master/apps/Android/MnnLlmChat#releases
+
+AutoName: MNN Chat
+
+RepoType: git
+Repo: https://github.com/alibaba/MNN.git
+
+Builds:
+  - versionName: 0.8.1.2
+    versionCode: 812
+    commit: 302ab1a78101f4190ca6d64d958b2b13b21631a5
+    subdir: apps/Android/MnnLlmChat/app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make
+    gradle:
+      - standard
+    prebuild:
+      - sed -i -e '/com.google.firebase/d' build.gradle ../build.gradle
+      - sed -i -e '/FirebaseAnalytics/d' src/main/java/com/alibaba/mnnllm/android/utils/AnalyticsTracker.kt
+      - sed -i -e '/Crashlytics/d' src/main/java/com/alibaba/mnnllm/android/MnnLlmApplication.kt
+      - echo 'package com.alibaba.mnnllm.android.utils object CrashReportContext {fun
+        setCurrentActivity(activityName:String?) {} fun setAppInForeground(inForeground:Boolean)
+        {} fun setCurrentModel(modelId:String?, sessionId:String?) {} fun setBenchmarkState(state:String?)
+        {} fun 
+        setBenchmarkContext(modelId:String?,backend:String?,nPrompt:Int,nGenerate:Int,nRepeat:Int,kvCache:String?)
+        {}}' > src/main/java/com/alibaba/mnnllm/android/utils/CrashReportContext.kt
+      - echo 'package com.alibaba.mnnllm.android.debug import androidx.appcompat.app.AppCompatActivity
+        class DebugActivity:AppCompatActivity() {}' > src/main/java/com/alibaba/mnnllm/android/debug/DebugActivity.kt
+    scandelete:
+      - 3rd_party/flatbuffers
+      - tools/cv/imgs/cat__
+    build:
+      - pushd ../../../../project/android
+      - mkdir build_64
+      - cd build_64
+      - bash ../build_64.sh "-DMNN_LOW_MEMORY=true -DMNN_CPU_WEIGHT_DEQUANT_GEMM=true
+        -DMNN_BUILD_LLM=true -DMNN_SUPPORT_TRANSFORMER_FUSE=true -DMNN_ARM82=true
+        -DMNN_USE_LOGCAT=true -DMNN_OPENCL=true -DLLM_SUPPORT_VISION=true -DMNN_BUILD_OPENCV=true
+        -DMNN_IMGCODECS=true -DLLM_SUPPORT_AUDIO=true -DMNN_BUILD_AUDIO=true -DMNN_BUILD_DIFFUSION=ON
+        -DMNN_SEP_BUILD=OFF -DCMAKE_SHARED_LINKER_FLAGS='-Wl,-z,max-page-size=16384'
+        -DCMAKE_INSTALL_PREFIX=."
+      - make install
+      - popd
+      - pushd ../../../frameworks/sherpa-mnn
+      - export MNN_LIB_DIR=../../../project/android/build_64/
+      - sed -i -e 's/BUILD_SHARED_LIBS=ON/BUILD_SHARED_LIBS=OFF/' build-android-arm64-v8a.sh
+      - bash build-android-arm64-v8a.sh
+      - mkdir -p ../../Android/MnnLlmChat/app/src/main/jniLibs/arm64-v8a
+      - cp build-android-arm64-v8a-static/lib/libsherpa-mnn-jni.so ../../Android/MnnLlmChat/app/src/main/jniLibs/arm64-v8a
+      - popd
+    ndk: 27.2.12479018
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: apps/Android/MnnLlmChat/app/build.gradle|versionCode\s(\d+)||Android-([\d.]+)
+CurrentVersion: 0.8.1.2
+CurrentVersionCode: 812
