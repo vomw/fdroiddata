@@ -1,12 +1,15 @@
 AntiFeatures:
-  - NonFreeNet
-  - Tracking
+  NonFreeNet:
+    en-US: The app requires NonFreeNet due to interaction with third-party,
+      non-free network services (YouTube, KuGou, LrcLib).
+  Tracking:
+    en-US: The tracking AntiFeature is due to the usage of ACRA for automated
+      crash reporting.
 Categories:
-  - Multimedia
+  - Online Media Player
 License: GPL-3.0-or-later
 AuthorName: Suvojeet Sengupta
 AuthorEmail: suvojitsengupta21@gmail.com
-WebSite: https://github.com/suvojeet-sengupta/SuvMusic
 SourceCode: https://github.com/suvojeet-sengupta/SuvMusic
 IssueTracker: https://github.com/suvojeet-sengupta/SuvMusic/issues
 
@@ -16,47 +19,9 @@ RepoType: git
 Repo: https://github.com/suvojeet-sengupta/SuvMusic.git
 
 Builds:
-  - versionName: 2.0.0.0
-    versionCode: 14
-    commit: v2.0.0.0
-    subdir: app
-    gradle:
-      - yes
-    srclibs:
-      - NewPipeExtractor@v0.26.0
-    prebuild:
-      - sed -i 's|maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
-        }|mavenCentral()|g' ../settings.gradle.kts
-      - sed -i '/^dependencyResolutionManagement/i\includeBuild("$$NewPipeExtractor$$")
-        { dependencySubstitution { 
-        substitute(module("com.github.TeamNewPipe:NewPipeExtractor")).using(project(":extractor"))
-        } }' ../settings.gradle.kts
-      - find $$NewPipeExtractor$$ -name '*.gradle' -o -name '*.gradle.kts' | xargs
-        sed -i 
-        's/languageVersion.set(JavaLanguageVersion.of(11))/languageVersion.set(JavaLanguageVersion.of(21))/g;s/JavaLanguageVersion.of(11)/JavaLanguageVersion.of(21)/g'
-
-  - versionName: 2.0.1.0
-    versionCode: 15
-    commit: v2.0.1.0
-    subdir: app
-    gradle:
-      - yes
-    srclibs:
-      - NewPipeExtractor@v0.26.0
-    prebuild:
-      - sed -i 's|maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
-        }|mavenCentral()|g' ../settings.gradle.kts
-      - sed -i '/^dependencyResolutionManagement/i\includeBuild("$$NewPipeExtractor$$")
-        { dependencySubstitution { 
-        substitute(module("com.github.TeamNewPipe:NewPipeExtractor")).using(project(":extractor"))
-        } }' ../settings.gradle.kts
-      - find $$NewPipeExtractor$$ -name '*.gradle' -o -name '*.gradle.kts' | xargs
-        sed -i 
-        's/languageVersion.set(JavaLanguageVersion.of(11))/languageVersion.set(JavaLanguageVersion.of(21))/g;s/JavaLanguageVersion.of(11)/JavaLanguageVersion.of(21)/g'
-
   - versionName: 2.0.2.0
     versionCode: 17
-    commit: v2.0.2.0
+    commit: ff7c277920cc7e1bc61fbbbc489db4f4fdb88438
     subdir: app
     gradle:
       - yes
@@ -72,10 +37,6 @@ Builds:
       - find $$NewPipeExtractor$$ -name '*.gradle' -o -name '*.gradle.kts' | xargs
         sed -i 
         's/languageVersion.set(JavaLanguageVersion.of(11))/languageVersion.set(JavaLanguageVersion.of(21))/g;s/JavaLanguageVersion.of(11)/JavaLanguageVersion.of(21)/g'
-
-MaintainerNotes: The app requires NonFreeNet due to interaction with third-party,
-  non-free network services (YouTube, KuGou, LrcLib). The tracking AntiFeature is
-  due to the usage of ACRA for automated crash reporting.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
