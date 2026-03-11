@@ -18,11 +18,13 @@ Builds:
     subdir: mobile/android/app
     sudo:
       - sysctl fs.inotify.max_user_watches=524288
-      - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.20.0/node-v22.20.0-linux-x64.tar.gz
-      - echo "eeaccb0378b79406f2208e8b37a62479c70595e20be6b659125eb77dd1ab2a29 node.tar.gz"
-        | sha256sum -c -
+      - curl -Lo node.tar.gz 
+        https://nodejs.org/download/release/v22.20.0/node-v22.20.0-linux-x64.tar.gz
+      - echo "eeaccb0378b79406f2208e8b37a62479c70595e20be6b659125eb77dd1ab2a29 
+        node.tar.gz" | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - echo "deb https://deb.debian.org/debian trixie main" > 
+        /etc/apt/sources.list.d/trixie.list
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
@@ -33,17 +35,20 @@ Builds:
       - Fdroid
     prebuild:
       - cd ../..
-      - sed -i -e '1a
+      - sed -i -e '1a 
         "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications","expo-location"]}}},'
         package.json
       - echo "EXPO_PUBLIC_DISTRIBUTION=fdroid" >> ../../.env
-      - sed -i
+      - sed -i 
         's/foojay-resolver-convention").version("0.5.0")/foojay-resolver-convention").version("1.0.0")/'
         node_modules/@react-native/gradle-plugin/settings.gradle.kts
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/import com.android.installreferrer/d' -e '/AsyncFunction.*getInstallReferrerAsync/,/^    }/d'
+      - sed -i -e '/installreferrer/d' 
+        node_modules/expo-application/android/build.gradle
+      - sed -i -e '/import com.android.installreferrer/d' -e 
+        '/AsyncFunction.*getInstallReferrerAsync/,/^    }/d' 
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
-      - sed -i -e '/signingConfig /d' -e 's/enable true/enable false/' android/app/build.gradle
+      - sed -i -e '/signingConfig /d' -e 's/enable true/enable false/' 
+        android/app/build.gradle
     scanignore:
       - mobile/node_modules/react-native-safe-area-context/android/build.gradle
       - mobile/node_modules/react-native-screens/android/build.gradle
