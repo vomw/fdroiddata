@@ -1,0 +1,54 @@
+AntiFeatures:
+  NonFreeDep:
+    en-US: Depends on Shizuku for functionality
+  NonFreeNet:
+    en-US: Optional VirusTotal and Hybrid Analysis API integration for app scanning.
+Categories:
+  - Security
+  - System
+License: GPL-3.0-or-later
+SourceCode: https://github.com/nikescar/uad-shizuku
+IssueTracker: https://github.com/nikescar/uad-shizuku/issues
+
+AutoName: UAD-Shizuku
+
+RepoType: git
+Repo: https://github.com/nikescar/uad-shizuku.git
+
+Builds:
+  - versionName: 0.0.11
+    versionCode: 11
+    commit: f352599e668b550c51e38422e60254b325368fb1
+    subdir: mobile
+    sudo:
+      - apt-get update
+      - apt-get install -y make gcc libc-dev pkg-config libunwind-dev clang llvm rustup
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - sed -i '/maven.rikka.app/d' settings.gradle
+      - sed -i -e '/if (System.getenv("ANDROID_SPLIT_BUILD")/,/^    }/d' app/build.gradle
+      - sed -i '/APPLICATION_VERSION_CODE/s/def appVersionCode.*/def appVersionCode
+        = "$$VERCODE$$"/' app/build.gradle
+      - sed -i '/APPLICATION_VERSION_NAME/s/def appVersionName.*/def appVersionName
+        = "$$VERSION$$"/' app/build.gradle
+      - rustup default 1.90.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
+      - cargo install cargo-ndk --locked
+    scanignore:
+      - mobile/Cargo.toml
+      - Cargo.toml
+    build:
+      - cargo ndk -t armeabi-v7a -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t arm64-v8a -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t x86 -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t x86_64 -o app/src/main/jniLibs/ build --release --lib
+    ndk: 28.2.13676358
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: Cargo.toml|versioncode\s*=\s*"(\d+)"|.|version\s*=\s*"([\d.]+)"
+CurrentVersion: 0.0.11
+CurrentVersionCode: 11
