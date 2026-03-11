@@ -4,28 +4,16 @@ License: MIT
 SourceCode: https://github.com/mtendekuyokwa19/katholic
 IssueTracker: https://github.com/mtendekuyokwa19/katholic/issues
 
-AutoName: Katholic
-Description: |-
-  A Flutter application providing Catholic daily readings and the Way of the Cross,
-  designed to help users engage with their faith through accessible digital tools.
-
-  Features:
-  - Daily Catholic Readings: Access liturgical readings for each day
-  - Way of the Cross: Interactive stations with prayers and reflections
-  - Liturgical Calendar: View liturgical days and special feast days
-  - Offline Support: Local database storage for readings
-  - Multi-language: Supports English and Chichewa (Malawi)
-
 RepoType: git
 Repo: https://github.com/mtendekuyokwa19/katholic
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 1.0.0
+    commit:4e7a8bd8 
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.0
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -33,10 +21,14 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scandelete:
+      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
