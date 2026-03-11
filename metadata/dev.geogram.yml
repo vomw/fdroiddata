@@ -35,7 +35,7 @@ Builds:
     prebuild:
       - export flutter_version=$(cat .flutter-version)
       - git -C $$flutter$$ fetch --tags
-      - git -C $$flutter$$ checkout $flutter_version
+      - git -C $$flutter$$ checkout -f $flutter_version
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' pubspec.yaml
       - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
@@ -78,7 +78,7 @@ Builds:
     prebuild:
       - export flutter_version=$(cat .flutter-version)
       - git -C $$flutter$$ fetch --tags
-      - git -C $$flutter$$ checkout $flutter_version
+      - git -C $$flutter$$ checkout -f $flutter_version
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' pubspec.yaml
       - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
@@ -123,9 +123,10 @@ Builds:
     prebuild:
       - export flutter_version=$(cat .flutter-version)
       - git -C $$flutter$$ fetch --tags
-      - git -C $$flutter$$ checkout $flutter_version
+      - git -C $$flutter$$ checkout -f $flutter_version
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' -e '/media_kit/d' pubspec.yaml
+      - sed -i -e '/tinyemu/d' -e '/flutter_map_tile_caching/d' -e '/media_kit/d'
+        pubspec.yaml
       - sed -i -e "/import 'package:flutter_map_tile_caching/d" -e 's/fmtc\.FMTCStore?/Object?/g'
         -e '/FMTCObjectBoxBackend/,/);/d' -e '/_tileStore = fmtc\./d' -e '/_tileStore!\.manage/d'
         lib/services/map_tile_service.dart
