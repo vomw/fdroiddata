@@ -50,8 +50,9 @@ Builds:
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - sed -i -e '/signingConfig /d' -e 's/enable true/enable false/' 
         android/app/build.gradle
-      - echo "android.lintOptions.checkReleaseBuilds=false" >> 
-        android/gradle.properties
+      - printf 
+        "android.lintOptions.checkReleaseBuilds=false\norg.gradle.jvmargs=-Xmx4g\n"
+        >> android/gradle.properties
     scanignore:
       - mobile/node_modules/react-native-safe-area-context/android/build.gradle
       - mobile/node_modules/react-native-screens/android/build.gradle
