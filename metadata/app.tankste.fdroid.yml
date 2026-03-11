@@ -36,8 +36,8 @@ Builds:
       - app/android/car
       - app/android/navigation
     prebuild:
-      - flutterVersion=$(sed -n '/^environment:/,/^[^[:space:]]/s/^[[:space:]]*flutter:[[:space:]]*//p'
-        pubspec.yaml)
+      - flutterVersion=$(sed -n -E '/flutter:\ (.+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/tankste/tankste
       - cd ../..
