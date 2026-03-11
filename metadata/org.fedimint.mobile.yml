@@ -36,26 +36,13 @@ Builds:
       - rustup default 1.89.0
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk --version 4.1.2 --locked
-      - cd rust/fedimintd_mobile && cargo fetch
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export ANDROID_NDK_HOME="$$NDK$$"
       - ./scripts/build-rust-fdroid.sh
       - $$flutter$$/bin/flutter build apk --release
     ndk: 27.3.13750724
-
-MaintainerNotes: |-
-  Fedimint Mobile is a Flutter + Rust application using flutter_rust_bridge.
-  The Rust code is compiled to a native library using cargo-ndk, then bundled
-  into the Flutter APK.
-
-  Build requirements:
-  - Rust 1.89.0 via rustup (from Debian) with aarch64-linux-android target
-  - cargo-ndk 4.1.2 for Android cross-compilation
-  - Flutter SDK (version from .flutter-version, checked out in srclib)
-  - Android NDK 27.3.13750724
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[0-9.]+$
