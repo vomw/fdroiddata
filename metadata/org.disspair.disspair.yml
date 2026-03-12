@@ -21,17 +21,17 @@ Builds:
     commit: v1.0
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev
+      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev patch git
     build: |-
       python3 -m venv venv
       . venv/bin/activate
       pip install buildozer Cython==0.29.36 wheel setuptools
-      echo "android.accept_sdk_license = True" >> buildozer.spec
-      echo "android.api = 34" >> buildozer.spec
-      echo "android.build_tools_version = 34.0.0" >> buildozer.spec
-      echo "android.archs = arm64-v8a" >> buildozer.spec
+      # Use sed to safely replace existing settings in buildozer.spec
+      sed -i 's/^#\? \?android.accept_sdk_license.*/android.accept_sdk_license = True/' buildozer.spec
+      sed -i 's/^#\? \?android.api.*/android.api = 34/' buildozer.spec
+      sed -i 's/^#\? \?android.archs.*/android.archs = arm64-v8a/' buildozer.spec
+      sed -i 's/^#\? \?log_level.*/log_level = 2/' buildozer.spec
       yes | buildozer android release
-      ls -R bin/
     output: bin/*.apk
 
 AutoUpdateMode: None
