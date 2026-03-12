@@ -6,11 +6,12 @@ SourceCode: https://github.com/threadpoolx/DissPair
 IssueTracker: https://github.com/threadpoolx/DissPair/issues
 RepoType: git
 Repo: https://github.com/threadpoolx/DissPair
+
 Name: DissPair
 Summary: Bluetooth Security Toolkit
 Description: |-
-  DissPair is a Python-based security auditing tool designed to test Bluetooth
-  Classic and BLE Vulnerability Assessment.
+  DissPair is a Python-based security auditing tool designed to test Bluetooth Classic and BLE Vulnerability Assessment.
+
 CurrentVersion: '1.0'
 CurrentVersionCode: 1
 
@@ -18,39 +19,22 @@ Builds:
   - versionName: '1.0'
     versionCode: 1
     commit: v1.0
+    ndk: r25b
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3-venv zip unzip openjdk-21-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev wget
-      # Pre-download Apache ANT where buildozer expects it
-      - mkdir -p /home/vagrant/.buildozer/android/platform
-      - wget -q https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.tar.gz -O /tmp/apache-ant-1.9.4-bin.tar.gz
-      - tar -xzf /tmp/apache-ant-1.9.4-bin.tar.gz -C /home/vagrant/.buildozer/android/platform/
-      - chown -R vagrant /home/vagrant/.buildozer
-      # Set up Android SDK cmdline-tools
-      - mkdir -p /home/vagrant/.buildozer/android/platform/android-sdk/licenses
-      - printf '\n24333f8a63b6825ea9c5514f83c2829b004d1fee' > /home/vagrant/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-      - printf '\nd975f751698a77b662f1254ddbeed3901e976f5a' > /home/vagrant/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
-      - wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
-      - unzip -q /tmp/cmdtools.zip -d /tmp/cmdtools
-      - mkdir -p /home/vagrant/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-      - mv /tmp/cmdtools/cmdline-tools/* /home/vagrant/.buildozer/android/platform/android-sdk/cmdline-tools/latest/
-      - mkdir -p /home/vagrant/.buildozer/android/platform/android-sdk/tools/bin
-      - ln -sf /home/vagrant/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager /home/vagrant/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-      - yes | /home/vagrant/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/home/vagrant/.buildozer/android/platform/android-sdk --licenses || true
-      - /home/vagrant/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/home/vagrant/.buildozer/android/platform/android-sdk "platform-tools" "build-tools;34.0.0"
-      - chown -R vagrant /home/vagrant/.buildozer
+      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev
+      - chmod -R a+rwX /opt/android-sdk
     build: |-
       python3 -m venv venv
       . venv/bin/activate
-      pip install buildozer "Cython<3" wheel setuptools
-
-      sed -i 's/^package\.domain *=.*/package.domain = org.disspair/' buildozer.spec
-      sed -i 's/^package\.name *=.*/package.name = disspair/' buildozer.spec
-      sed -i 's/^android\.api *=.*/android.api = 34/' buildozer.spec
-      sed -i 's/^p4a\.branch *=.*/p4a.branch = stable/' buildozer.spec
-      sed -i 's/^log_level *=.*/log_level = 2/' buildozer.spec
-
-      buildozer android release
+      pip install buildozer Cython wheel setuptools virtualenv
+      sed -i 's/^#* *android.api *=.*/android.api = 34/' buildozer.spec
+      sed -i 's/^#* *p4a.branch *=.*/p4a.branch = develop/' buildozer.spec
+      sed -i '/^\[app\]/a android.sdk_path = /opt/android-sdk' buildozer.spec
+      sed -i '/^\[app\]/a android.ndk_path = /opt/android-sdk/ndk/25.1.8937393' buildozer.spec
+      sed -i '/^\[app\]/a android.accept_sdk_license = True' buildozer.spec
+      sed -i '/^\[app\]/a android.skip_update = True' buildozer.spec
+      buildozer android release > build_log.txt 2>&1 || { tail -n 500 build_log.txt; exit 1; }
     output: bin/disspair-1.0-arm64-v8a_armeabi-v7a-release.apk
 
 AutoUpdateMode: None
