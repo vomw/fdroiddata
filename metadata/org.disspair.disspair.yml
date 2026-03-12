@@ -6,12 +6,11 @@ SourceCode: https://github.com/threadpoolx/DissPair
 IssueTracker: https://github.com/threadpoolx/DissPair/issues
 RepoType: git
 Repo: https://github.com/threadpoolx/DissPair
-
 Name: DissPair
 Summary: Bluetooth Security Toolkit
 Description: |-
-  DissPair is a Python-based security auditing tool designed to test Bluetooth Classic and BLE Vulnerability Assessment.
-
+  DissPair is a Python-based security auditing tool designed to test Bluetooth
+  Classic and BLE Vulnerability Assessment.
 CurrentVersion: '1.0'
 CurrentVersionCode: 1
 
@@ -19,22 +18,40 @@ Builds:
   - versionName: '1.0'
     versionCode: 1
     commit: v1.0
-    ndk: r25b
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev
+      - apt-get install -y python3-pip python3-venv zip unzip openjdk-21-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev wget
     build: |-
       python3 -m venv venv
       . venv/bin/activate
-      pip install buildozer Cython==0.29.36 wheel setuptools virtualenv
-      sed -i 's|^#* *log_level *=.*|log_level = 2|' buildozer.spec
-      sed -i 's|^#* *android.sdk_path *=.*|android.sdk_path = /opt/android-sdk|' buildozer.spec
-      sed -i "s|^#* *android.ndk_path *=.*|android.ndk_path = $ANDROID_NDK|" buildozer.spec
-      sed -i 's|^#* *android.api *=.*|android.api = 34|' buildozer.spec
-      sed -i 's|^#* *android.build_tools_version *=.*|android.build_tools_version = 34.0.0|' buildozer.spec
-      sed -i 's|^#* *android.accept_sdk_license *=.*|android.accept_sdk_license = True|' buildozer.spec
-      sed -i 's|^#* *android.skip_update *=.*|android.skip_update = True|' buildozer.spec
-      buildozer android release > build_log.txt 2>&1 || { tail -n 250 build_log.txt; exit 1; }
+      pip install buildozer "Cython<3" wheel setuptools
+
+      # Set up SDK with correct structure
+      BSDK=~/.buildozer/android/platform/android-sdk
+      mkdir -p $BSDK/licenses
+      printf '\n24333f8a63b6825ea9c5514f83c2829b004d1fee' > $BSDK/licenses/android-sdk-license
+      printf '\nd975f751698a77b662f1254ddbeed3901e976f5a' > $BSDK/licenses/android-sdk-preview-license
+
+      wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
+      unzip -q /tmp/cmdtools.zip -d /tmp/cmdtools
+      mkdir -p $BSDK/cmdline-tools/latest
+      mv /tmp/cmdtools/cmdline-tools/* $BSDK/cmdline-tools/latest/
+      mkdir -p $BSDK/tools/bin
+      ln -sf $BSDK/cmdline-tools/latest/bin/sdkmanager $BSDK/tools/bin/sdkmanager
+      yes | $BSDK/cmdline-tools/latest/bin/sdkmanager --sdk_root=$BSDK --licenses || true
+      $BSDK/cmdline-tools/latest/bin/sdkmanager --sdk_root=$BSDK "platform-tools" "build-tools;34.0.0"
+
+      # Patch buildozer.spec
+      sed -i 's/^package\.domain *=.*/package.domain = org.disspair/' buildozer.spec
+      sed -i 's/^package\.name *=.*/package.name = disspair/' buildozer.spec
+      sed -i 's/^android\.api *=.*/android.api = 34/' buildozer.spec
+      sed -i 's/^android\.build_tools_version *=.*/android.build_tools_version = 34.0.0/' buildozer.spec
+      sed -i 's/^android\.accept_sdk_license *=.*/android.accept_sdk_license = True/' buildozer.spec
+      # Pin p4a to stable instead of master
+      sed -i 's/^p4a\.branch *=.*/p4a.branch = stable/' buildozer.spec
+      sed -i 's/^log_level *=.*/log_level = 2/' buildozer.spec
+
+      buildozer android release
     output: bin/disspair-1.0-arm64-v8a_armeabi-v7a-release.apk
 
 AutoUpdateMode: None
