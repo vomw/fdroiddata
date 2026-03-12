@@ -6,11 +6,12 @@ SourceCode: https://github.com/threadpoolx/DissPair
 IssueTracker: https://github.com/threadpoolx/DissPair/issues
 RepoType: git
 Repo: https://github.com/threadpoolx/DissPair
+
 Name: DissPair
 Summary: Bluetooth Security Toolkit
 Description: |-
-  DissPair is a Python-based security auditing tool designed to test Bluetooth
-  Classic and BLE Vulnerability Assessment.
+  DissPair is a Python-based security auditing tool designed to test Bluetooth Classic and BLE Vulnerability Assessment.
+
 CurrentVersion: '1.0'
 CurrentVersionCode: 1
 
@@ -21,31 +22,21 @@ Builds:
     ndk: r25b
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3-venv zip unzip openjdk-21-jdk automake libtool pkg-config zlib1g-dev libncurses5-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev make build-essential git wget
-      - wget -q http://ftp.debian.org/debian/pool/main/a/autoconf/autoconf_2.71-3_all.deb -O /tmp/autoconf271.deb
-      - dpkg -i /tmp/autoconf271.deb
+      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool libtool-bin pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev make build-essential automake
       - mkdir -p /opt/android-sdk/tools/bin
-      - printf '#!/bin/bash\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
+      - printf '#!/bin/bash\necho "Installed packages:"\necho "  Path                 | Version | Description"\necho "  -------              | ------- | -------"\necho "  build-tools;34.0.0   | 34.0.0  | Android SDK Build-Tools 34"\necho "  platforms;android-34 | 3       | Android SDK Platform 34"\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
       - chmod +x /opt/android-sdk/tools/bin/sdkmanager
       - chmod -R a+rwX /opt/android-sdk
-      - mkdir -p /home/vagrant/.buildozer/android/platform
-      - wget -q https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.tar.gz -O /tmp/ant.tar.gz
-      - tar -xzf /tmp/ant.tar.gz -C /home/vagrant/.buildozer/android/platform/
-      - chown -R vagrant /home/vagrant/.buildozer
     build: |-
+      yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
       python3 -m venv venv
       . venv/bin/activate
-      pip install buildozer "Cython<3" wheel setuptools
-
-      sed -i 's/^package\.domain *=.*/package.domain = org.disspair/' buildozer.spec
-      sed -i 's/^package\.name *=.*/package.name = disspair/' buildozer.spec
-      sed -i 's/^android\.api *=.*/android.api = 34/' buildozer.spec
-      sed -i 's/^p4a\.branch *=.*/p4a.branch = develop/' buildozer.spec
-      sed -i 's/^log_level *=.*/log_level = 2/' buildozer.spec
-      grep -q '^android\.build_tools_version' buildozer.spec || echo 'android.build_tools_version = 34.0.0' >> buildozer.spec
-      grep -q '^android\.skip_update' buildozer.spec || echo 'android.skip_update = True' >> buildozer.spec
-
-      buildozer android release
+      pip install buildozer Cython wheel setuptools virtualenv
+      sed -i '/^\[app\]/a android.sdk_path = /opt/android-sdk' buildozer.spec
+      sed -i '/^\[app\]/a android.ndk_path = /opt/android-sdk/ndk/25.1.8937393' buildozer.spec
+      sed -i '/^\[app\]/a android.accept_sdk_license = True' buildozer.spec
+      sed -i '/^\[app\]/a android.skip_update = True' buildozer.spec
+      buildozer android release > build_log.txt 2>&1 || { tail -n 1000 build_log.txt; exit 1; }
     output: bin/disspair-1.0-arm64-v8a_armeabi-v7a-release.apk
 
 AutoUpdateMode: None
