@@ -147,6 +147,8 @@ Builds:
       - export tag=$(sed -n -E 's|.*download/(v[0-9.]+)/.*|\1|p' $file | head -n 1)
       - '[[ $tag == "v1.1.7" ]] || exit 1'
       - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
+      - printf 'org.gradle.jvmargs=-Xmx2048m\norg.gradle.workers.max=2\norg.gradle.parallel=false\n'
+        >> android/gradle.properties
       - cd $$media-kit-libmpv-android-video-build$$/buildscripts
       - mkdir -p deps
       - pushd deps
