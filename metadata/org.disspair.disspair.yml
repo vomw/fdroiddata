@@ -19,12 +19,13 @@ Builds:
     commit: APK
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool libtool-bin pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev make build-essential automake
+      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool libtool-bin pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev make build-essential automake dos2unix
       - mkdir -p /opt/android-sdk/tools/bin
       - printf '#!/bin/bash\necho "Installed packages:"\necho "  Path                 | Version | Description"\necho "  -------              | ------- | -------"\necho "  build-tools;34.0.0   | 34.0.0  | Android SDK Build-Tools 34"\necho "  platforms;android-34 | 3       | Android SDK Platform 34"\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
       - chmod +x /opt/android-sdk/tools/bin/sdkmanager
       - chmod -R a+rwX /opt/android-sdk
     build: |-
+      dos2unix buildozer.spec
       yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
       python3 -m venv venv
       . venv/bin/activate
