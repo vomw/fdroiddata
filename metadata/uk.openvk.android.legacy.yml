@@ -960,7 +960,22 @@ Builds:
     prebuild: sed -i -e "/android {/alintOptions { disable 'MissingTranslation' }"
       build.gradle
 
+  - versionName: 1.2.244-f
+    versionCode: 244
+    commit: 11c39690ba75138545e35881df73baf827434267
+    subdir: app
+    sudo:
+      - echo "deb http://deb.debian.org/debian sid main" > /etc/apt/sources.list.d/sid.list
+      - apt-get update
+      - apt-get install -y -t sid openjdk-8-jdk-headless
+      - update-java-alternatives --set java-1.8.0-openjdk-amd64
+      - chmod -R 777 /opt/android-sdk
+    gradle:
+      - fdroidConfig
+    prebuild: sed -i -e "/android {/alintOptions { disable 'MissingTranslation' }"
+      build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.2.241-f
-CurrentVersionCode: 241
+CurrentVersion: 1.2.244-f
+CurrentVersionCode: 244
