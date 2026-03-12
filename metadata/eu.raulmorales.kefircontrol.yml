@@ -18,7 +18,7 @@ Builds:
     commit: 9d416d890a8df60edfd35b85b497255415e210e9
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@ff37bef603469fb030f2b72995ab929ccfc227f0
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -26,6 +26,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p" .metadata)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
