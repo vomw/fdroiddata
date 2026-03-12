@@ -147,7 +147,7 @@ Builds:
       - export tag=$(sed -n -E 's|.*download/(v[0-9.]+)/.*|\1|p' $file | head -n 1)
       - '[[ $tag == "v1.1.7" ]] || exit 1'
       - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
-      - printf 'org.gradle.jvmargs=-Xmx2048m\norg.gradle.workers.max=2\norg.gradle.parallel=false\n'
+      - printf 'org.gradle.jvmargs=-Xmx1024m -XX:+UseSerialGC\norg.gradle.daemon=false\norg.gradle.workers.max=1\norg.gradle.parallel=false\n'
         >> android/gradle.properties
       - cd $$media-kit-libmpv-android-video-build$$/buildscripts
       - mkdir -p deps
@@ -187,7 +187,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --target-platform="android-arm64"
         --build-number=6
-    ndk: 25.2.9519653
+    ndk: 27.3.13750724
 
 AutoUpdateMode: None
 UpdateCheckMode: None
