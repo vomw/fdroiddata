@@ -25,10 +25,15 @@ Builds:
       - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev
       - chmod -R a+rwX /opt/android-sdk
     build: |-
+      yes | sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      mkdir -p /opt/android-sdk/tools/bin
+      printf '#!/bin/bash\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
+      chmod +x /opt/android-sdk/tools/bin/sdkmanager
       python3 -m venv venv
       . venv/bin/activate
       pip install buildozer Cython wheel setuptools virtualenv
       sed -i 's/^#* *android.api *=.*/android.api = 34/' buildozer.spec
+      sed -i 's/^#* *android.build_tools_version *=.*/android.build_tools_version = 34.0.0/' buildozer.spec
       sed -i 's/^#* *p4a.branch *=.*/p4a.branch = develop/' buildozer.spec
       sed -i '/^\[app\]/a android.sdk_path = /opt/android-sdk' buildozer.spec
       sed -i '/^\[app\]/a android.ndk_path = /opt/android-sdk/ndk/25.1.8937393' buildozer.spec
