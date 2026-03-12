@@ -7,8 +7,8 @@ IssueTracker: https://github.com/threadpoolx/DissPair/issues
 
 Name: DissPair
 Summary: Bluetooth Security Toolkit
-Description: |-
-  DissPair is a Python-based security auditing tool designed to test Bluetooth Classic and BLE Vulnerability Assessment.
+Description: DissPair is a Python-based security auditing tool designed to test Bluetooth
+  Classic and BLE Vulnerability Assessment.
 
 RepoType: git
 Repo: https://github.com/threadpoolx/DissPair
@@ -19,23 +19,25 @@ Builds:
     commit: APK
     sudo:
       - apt-get update
-      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf libtool libtool-bin pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev libsqlite3-dev libbz2-dev make build-essential automake dos2unix
+      - apt-get install -y python3-pip python3.13-venv zip unzip default-jdk autoconf
+        libtool libtool-bin pkg-config zlib1g-dev libncurses-dev cmake libffi-dev
+        libssl-dev libsqlite3-dev libbz2-dev make build-essential automake dos2unix
       - mkdir -p /opt/android-sdk/tools/bin
-      - printf '#!/bin/bash\necho "Installed packages:"\necho "  Path                 | Version | Description"\necho "  -------              | ------- | -------"\necho "  build-tools;34.0.0   | 34.0.0  | Android SDK Build-Tools 34"\necho "  platforms;android-34 | 3       | Android SDK Platform 34"\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
+      - printf '#!/bin/bash\necho "Installed packages:"\necho "  Path                 |
+        Version | Description"\necho "  -------              | ------- | -------"\necho
+        "  build-tools;34.0.0   | 34.0.0  | Android SDK Build-Tools 34"\necho "  platforms;android-34
+        | 3       | Android SDK Platform 34"\nexit 0\n' > /opt/android-sdk/tools/bin/sdkmanager
       - chmod +x /opt/android-sdk/tools/bin/sdkmanager
       - chmod -R a+rwX /opt/android-sdk
-    build: |-
-      dos2unix buildozer.spec
-      yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
-      python3 -m venv venv
-      . venv/bin/activate
-      pip install buildozer Cython wheel setuptools virtualenv
-      sed -i '/^\[app\]/a android.sdk_path = /opt/android-sdk' buildozer.spec
-      sed -i '/^\[app\]/a android.ndk_path = /opt/android-sdk/ndk/25.1.8937393' buildozer.spec
-      sed -i '/^\[app\]/a android.accept_sdk_license = True' buildozer.spec
-      sed -i '/^\[app\]/a android.skip_update = True' buildozer.spec
-      buildozer android release > build_log.txt 2>&1 || { tail -n 1000 build_log.txt; exit 1; }
     output: bin/disspair-1.0-arm64-v8a_armeabi-v7a-release.apk
+    build: "dos2unix buildozer.spec\nyes | sdkmanager \"platforms;android-34\" \"\
+      build-tools;34.0.0\" || true\npython3 -m venv venv\n. venv/bin/activate\npip\
+      \ install buildozer Cython wheel setuptools virtualenv\nsed -i '/^\\[app\\]/a\
+      \ android.sdk_path = /opt/android-sdk' buildozer.spec\nsed -i '/^\\[app\\]/a android.ndk_path\
+      \ = /opt/android-sdk/ndk/25.1.8937393' buildozer.spec\nsed -i '/^\\[app\\]/a android.accept_sdk_license\
+      \ = True' buildozer.spec\nsed -i '/^\\[app\\]/a android.skip_update = True' buildozer.spec\n\
+      buildozer android release > build_log.txt 2>&1 || { tail -n 1000 build_log.txt;\
+      \ exit 1; }"
     ndk: r25b
 
 AutoUpdateMode: None
