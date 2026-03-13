@@ -13,74 +13,112 @@ RepoType: git
 Repo: https://gitlab.com/RmMsr/relagent.git
 
 Builds:
-  - versionName: 0.1.17
-    versionCode: 71
-    commit: 6ee07675b5db9ff8e45bb5f6b9047e3de0b0eea7
-    subdir: apps
-    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+  - versionName: 0.1.18
+    versionCode: 81
+    commit: 5a0991e048606161b874171426a4e65b53f65945
+    output: apps/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://gitlab.com/RmMsr/relagent/-/releases/%v/downloads/relagent-%v-android-arm.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm -rf /tmp/build/org.venkado.relagent
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
+      - cp assets/config.template.json assets/config.json
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - cp assets/config.template.json assets/config.json
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
     scanignore:
-      - dart_packages
-    scandelete:
       - apps/.pub-cache
+      - dart_packages
     build:
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
 
-  - versionName: 0.1.17
-    versionCode: 72
-    commit: 6ee07675b5db9ff8e45bb5f6b9047e3de0b0eea7
-    subdir: apps
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+  - versionName: 0.1.18
+    versionCode: 82
+    commit: 5a0991e048606161b874171426a4e65b53f65945
+    output: apps/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://gitlab.com/RmMsr/relagent/-/releases/%v/downloads/relagent-%v-android-arm64.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm -rf /tmp/build/org.venkado.relagent
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
+      - cp assets/config.template.json assets/config.json
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - cp assets/config.template.json assets/config.json
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
     scanignore:
-      - dart_packages
-    scandelete:
       - apps/.pub-cache
+      - dart_packages
     build:
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
 
-  - versionName: 0.1.17
-    versionCode: 74
-    commit: 6ee07675b5db9ff8e45bb5f6b9047e3de0b0eea7
-    subdir: apps
-    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+  - versionName: 0.1.18
+    versionCode: 84
+    commit: 5a0991e048606161b874171426a4e65b53f65945
+    output: apps/build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://gitlab.com/RmMsr/relagent/-/releases/%v/downloads/relagent-%v-android-x64.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' ../.fvmrc)
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - rm -rf /tmp/build/org.venkado.relagent
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
+      - cp assets/config.template.json assets/config.json
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - cp assets/config.template.json assets/config.json
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
     scanignore:
-      - dart_packages
-    scandelete:
       - apps/.pub-cache
+      - dart_packages
     build:
+      - cd ..
+      - mv org.venkado.relagent /tmp/build/
+      - pushd /tmp/build/org.venkado.relagent/apps
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv /tmp/build/org.venkado.relagent ./
+
+AllowedAPKSigningKeys: 1b2dda7f510fa0996a18cc31c728526362cbf932b424f6eff72bc7bbbce33031
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -89,5 +127,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 4
 UpdateCheckData: apps/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.1.17
-CurrentVersionCode: 74
+CurrentVersion: 0.1.18
+CurrentVersionCode: 84
