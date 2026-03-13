@@ -22,13 +22,13 @@ Builds:
     prebuild:
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - yes | sdkmanager --licenses
+      - sdkmanager "ndk;25.2.9519653"
+      - export TOOLCHAIN=$ANDROID_HOME/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64
       - pushd src/main/rust
-      - export CLANG_PATH=$(find /opt/android-sdk -name "aarch64-linux-android*-clang" -print -quit)
-      - echo "FOUND CLANG AT: $CLANG_PATH"
-      - export TOOLCHAIN_BIN=$(dirname "$CLANG_PATH")
-      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$CLANG_PATH
-      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$(echo $CLANG_PATH | sed 's/aarch64-linux-android/armv7a-linux-androideabi/')
-      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$(echo $CLANG_PATH | sed 's/aarch64-linux-android/x86_64-linux-android/')
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android23-clang
+      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi23-clang
+      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android23-clang
       - cargo build --target aarch64-linux-android --release
       - cargo build --target armv7-linux-androideabi --release
       - cargo build --target x86_64-linux-android --release
@@ -37,6 +37,7 @@ Builds:
       - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so src/main/jniLibs/arm64-v8a/
       - cp src/main/rust/target/armv7-linux-androideabi/release/libargon_security.so src/main/jniLibs/armeabi-v7a/
       - cp src/main/rust/target/x86_64-linux-android/release/libargon_security.so src/main/jniLibs/x86_64/
+
 
 
 AllowedAPKSigningKeys: 453970b5f306db01f8df63823b66229351f371b6eaa2f534c4814f884e34d29a
