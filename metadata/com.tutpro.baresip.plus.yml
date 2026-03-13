@@ -3791,10 +3791,98 @@ Builds:
       - make all
     ndk: 29.0.14206865
 
+  - versionName: 65.2.0
+    versionCode: 243
+    commit: 194fb8e38b97c2c3b39e97ceefcf4f25690fd430
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y automake cmake libre-dev libtool make pkg-config wget lbzip2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvmToolchain/s/17/21/' -e 's/VERSION_17/VERSION_21/g' build.gradle.kts
+      - sed -i -e 's|/opt/Android/ndk/.*|$$NDK$$|' -e "s|/usr/src/baresip-studio|$(realpath
+        ..)|" ../libbaresip-android.video/Makefile
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../libbaresip-android.video
+      - make download-sources
+      - make all
+    ndk: 29.0.14206865
+
+  - versionName: 65.2.1
+    versionCode: 244
+    commit: ea297988aeed42c1613c9128fc214350f6ca647c
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y automake cmake libre-dev libtool make pkg-config wget lbzip2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvmToolchain/s/17/21/' -e 's/VERSION_17/VERSION_21/g' build.gradle.kts
+      - sed -i -e 's|/opt/Android/ndk/.*|$$NDK$$|' -e "s|/usr/src/baresip-studio|$(realpath
+        ..)|" ../libbaresip-android.video/Makefile
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../libbaresip-android.video
+      - make download-sources
+      - make all
+    ndk: 29.0.14206865
+
+  - versionName: 66.0.1
+    versionCode: 246
+    commit: 721d95db8d65a5f2b95de8564c747a58e0a783a0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y automake cmake libre-dev libtool make pkg-config wget lbzip2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvmToolchain/s/17/21/' -e 's/VERSION_17/VERSION_21/g' build.gradle.kts
+      - sed -i -e 's|/opt/Android/ndk/.*|$$NDK$$|' -e "s|/usr/src/baresip-studio|$(realpath
+        ..)|" ../libbaresip-android.video/Makefile
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../libbaresip-android.video
+      - make download-sources
+      - make all
+    ndk: 29.0.14206865
+
+  - versionName: 66.0.2
+    versionCode: 247
+    commit: efbc81a7e4fbd4eaecaaae89c2d5700f4cecc72b
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y automake cmake libre-dev libtool make pkg-config wget lbzip2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvmToolchain/s/17/21/' -e 's/VERSION_17/VERSION_21/g' build.gradle.kts
+      - sed -i -e 's|/opt/Android/ndk/.*|$$NDK$$|' -e "s|/usr/src/baresip-studio|$(realpath
+        ..)|" ../libbaresip-android.video/Makefile
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../libbaresip-android.video
+      - make download-sources
+      - make all
+    ndk: 29.0.14206865
+
 MaintainerNotes: make download-sources checks out master branches of several libraries;
   this can cause build failures.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v.*[0-9]$
-CurrentVersion: 65.1.1
-CurrentVersionCode: 242
+CurrentVersion: 66.0.2
+CurrentVersionCode: 247
