@@ -23,10 +23,10 @@ Builds:
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - pushd src/main/rust
-      - REAL_NDK=$(find /opt/android-sdk -name "aarch64-linux-android29-clang" -print -quit | sed 's|/bin/aarch64-linux-android29-clang||')
-      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$REAL_NDK/bin/aarch64-linux-android29-clang
-      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$REAL_NDK/bin/armv7a-linux-androideabi29-clang
-      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$REAL_NDK/bin/x86_64-linux-android29-clang
+      - export TOOLCHAIN_BIN=$(find /opt/android-sdk -name "aarch64-linux-android29-clang" -exec dirname {} \;)
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN_BIN/aarch64-linux-android29-clang
+      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN_BIN/armv7a-linux-androideabi29-clang
+      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN_BIN/x86_64-linux-android29-clang
       - cargo build --target aarch64-linux-android --release
       - cargo build --target armv7-linux-androideabi --release
       - cargo build --target x86_64-linux-android --release
@@ -35,6 +35,7 @@ Builds:
       - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so src/main/jniLibs/arm64-v8a/
       - cp src/main/rust/target/armv7-linux-androideabi/release/libargon_security.so src/main/jniLibs/armeabi-v7a/
       - cp src/main/rust/target/x86_64-linux-android/release/libargon_security.so src/main/jniLibs/x86_64/
+
 
 
 
