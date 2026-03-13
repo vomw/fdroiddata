@@ -1,0 +1,71 @@
+Disabled: Awaiting merge to main and pinned commit for 0.0.8
+Categories:
+  - News
+  - Reading
+License: MIT
+WebSite: https://deframer.github.io
+SourceCode: https://github.com/deframer/news-deframer
+IssueTracker: https://github.com/deframer/news-deframer/issues
+Changelog: https://github.com/deframer/news-deframer/releases
+
+AutoName: News Deframer
+Summary: Neutralize clickbait and analyze framing in news articles.
+Description: |-
+  An ad blocker removes ads. News Deframer removes clickbait.
+
+  News Deframer analyzes journalistic neutrality and framing in news articles.
+  It rewrites sensational or emotionally manipulative wording into more neutral
+  language, helping reduce the mental impact of clickbait headlines and loaded
+  phrasing.
+
+  The app highlights key signals in news coverage, including:
+
+  * Framing: ideological or political bias
+  * Clickbait: emotional triggers and headline manipulation
+  * Persuasion: promotional or agenda-driven language
+  * Hyper-stimulus: aggressive, attention-maximizing wording
+  * Speculation: rumors or weakly supported claims
+
+  News Deframer also provides a summary score to help you judge whether an
+  article is worth reading or whether another source may be more reliable or
+  balanced.
+
+  Privacy first:
+  News Deframer can run fully on your own local hardware, without depending on
+  a cloud service. A Mac Mini M1 or a PC with an RTX 3060 (8 GB) is sufficient
+  for local execution.
+
+  This is not a fake news detector. It is a transparent language analysis tool
+  designed to make framing and manipulation easier to see.
+
+RepoType: git
+Repo: https://github.com/deframer/news-deframer.git
+
+Builds:
+  - versionName: 0.0.8
+    versionCode: 1
+    commit: main
+    subdir: frontend/mobile/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm install --build-from-source
+    scanignore:
+      - frontend/mobile/android/build.gradle
+      - frontend/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - frontend/mobile/node_modules/@react-native-picker/picker/android/build.gradle
+      - frontend/mobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - frontend/mobile/node_modules/react-native-svg/android/build.gradle
+      - frontend/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+    scandelete:
+      - frontend/mobile/node_modules
+    ndk: r27b
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.0.8
+CurrentVersionCode: 1
