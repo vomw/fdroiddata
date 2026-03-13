@@ -23,13 +23,15 @@ Builds:
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - pushd src/main/rust
-      - export TOOLCHAIN_BIN=$(find /opt/android-sdk -name "aarch64-linux-android29-clang" -exec dirname {} \;)
-      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN_BIN/aarch64-linux-android29-clang
-      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN_BIN/armv7a-linux-androideabi29-clang
-      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN_BIN/x86_64-linux-android29-clang
-      - cargo build --target aarch64-linux-android --release
-      - cargo build --target armv7-linux-androideabi --release
-      - cargo build --target x86_64-linux-android --release
+      - export NDK_ROOT=$ANDROID_HOME/ndk-bundle
+      - if [ ! -d "$NDK_ROOT" ]; then export NDK_ROOT=$ANDROID_HOME/ndk; fi
+      - export TOOLCHAIN=$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android30-clang
+      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi30-clang
+      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android30-clang
+      - cargo build --target aarch64-linux-android --release || export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android29-clang && cargo build --target aarch64-linux-android --release
+      - cargo build --target armv7-linux-androideabi --release || export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi29-clang && cargo build --target armv7-linux-androideabi --release
+      - cargo build --target x86_64-linux-android --release || export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android29-clang && cargo build --target x86_64-linux-android --release
       - popd
       - mkdir -p src/main/jniLibs/arm64-v8a src/main/jniLibs/armeabi-v7a src/main/jniLibs/x86_64
       - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so src/main/jniLibs/arm64-v8a/
