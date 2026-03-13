@@ -23,10 +23,10 @@ Builds:
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - pushd src/main/rust
-      - export TOOLCHAIN=$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64
-      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android29-clang
-      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi29-clang
-      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android29-clang
+      - REAL_NDK=$(find /opt/android-sdk -name "aarch64-linux-android29-clang" -print -quit | sed 's|/bin/aarch64-linux-android29-clang||')
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$REAL_NDK/bin/aarch64-linux-android29-clang
+      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$REAL_NDK/bin/armv7a-linux-androideabi29-clang
+      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$REAL_NDK/bin/x86_64-linux-android29-clang
       - cargo build --target aarch64-linux-android --release
       - cargo build --target armv7-linux-androideabi --release
       - cargo build --target x86_64-linux-android --release
