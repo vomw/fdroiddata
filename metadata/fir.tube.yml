@@ -22,21 +22,13 @@ Builds:
     prebuild:
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - yes | sdkmanager --licenses
-      - sdkmanager "ndk;25.2.9519653"
-      - export TOOLCHAIN=$ANDROID_HOME/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64
-      - pushd src/main/rust
-      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android24-clang
-      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi24-clang
-      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android24-clang
-      - cargo build --target aarch64-linux-android --release
-      - cargo build --target armv7-linux-androideabi --release
-      - cargo build --target x86_64-linux-android --release
-      - popd
+      - yes | sdkmanager --licenses && sdkmanager "ndk;25.2.9519653"
+      - export TOOLCHAIN=$ANDROID_HOME/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64 && pushd src/main/rust && export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/aarch64-linux-android24-clang && export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=$TOOLCHAIN/bin/armv7a-linux-androideabi24-clang && export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=$TOOLCHAIN/bin/x86_64-linux-android24-clang && cargo build --target aarch64-linux-android --release && cargo build --target armv7-linux-androideabi --release && cargo build --target x86_64-linux-android --release && popd
       - mkdir -p src/main/jniLibs/arm64-v8a src/main/jniLibs/armeabi-v7a src/main/jniLibs/x86_64
       - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so src/main/jniLibs/arm64-v8a/
       - cp src/main/rust/target/armv7-linux-androideabi/release/libargon_security.so src/main/jniLibs/armeabi-v7a/
       - cp src/main/rust/target/x86_64-linux-android/release/libargon_security.so src/main/jniLibs/x86_64/
+
 
 
 AllowedAPKSigningKeys: 453970b5f306db01f8df63823b66229351f371b6eaa2f534c4814f884e34d29a
