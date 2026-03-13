@@ -4,17 +4,15 @@ Categories:
 License: Unlicense
 SourceCode: https://github.com/sirdeepsleep/FirTube/
 IssueTracker: https://github.com/sirdeepsleep/FirTube/issues
-
 AutoName: FirTube
-
 RepoType: git
 Repo: https://github.com/sirdeepsleep/FirTube/
 Binaries: https://github.com/sirdeepsleep/FirTube/releases/download/v%v/app-release.apk
 
 Builds:
-  - versionName: '2.0'
-    versionCode: 2
-    commit: v2.0
+  - versionName: '3.0'
+    versionCode: 3
+    commit: v3.0
     subdir: app
     ndk: r25c
     scanignore:
@@ -29,6 +27,7 @@ Builds:
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk
       - pushd src/main/rust
+      - export RUSTFLAGS="-C strip=symbols -C codegen-units=1 --remap-path-prefix=$(pwd)=/build"
       - cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 build --release
       - popd
       - mkdir -p src/main/jniLibs/arm64-v8a src/main/jniLibs/armeabi-v7a src/main/jniLibs/x86_64
@@ -38,11 +37,9 @@ Builds:
       - rm -rf src/main/rust/target
     gradle:
       - yes
-      
 
 AllowedAPKSigningKeys: 453970b5f306db01f8df63823b66229351f371b6eaa2f534c4814f884e34d29a
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.0'
-CurrentVersionCode: 2
+CurrentVersion: '3.0'
+CurrentVersionCode: 3
