@@ -17,19 +17,17 @@ Builds:
     commit: v3.0
     subdir: app
     sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
       - apt-get update
       - apt-get install -y rustup gcc libc-dev
     gradle:
       - yes
     build:
-      - export CARGO_HOME=/home/runner/.cargo
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk
       - pushd src/main/rust
-      - export RUSTFLAGS="-C strip=symbols -C codegen-units=1 --remap-path-prefix=$(pwd)=/build"
+      - export RUSTFLAGS="-C strip=symbols -C codegen-units=1 --remap-path-prefix=$(pwd)=/build
+        --remap-path-prefix=$HOME=/home/runner"
       - cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 build --release
       - popd
       - mkdir -p src/main/jniLibs/arm64-v8a src/main/jniLibs/armeabi-v7a src/main/jniLibs/x86_64
