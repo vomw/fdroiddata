@@ -19,6 +19,8 @@ Builds:
       - chown vagrant /home/runner
       - apt-get update
       - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - rustup default 1.94.0
@@ -29,15 +31,17 @@ Builds:
       - cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 build --release
       - popd
       - mkdir -p src/main/jniLibs/arm64-v8a src/main/jniLibs/armeabi-v7a src/main/jniLibs/x86_64
-      - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so src/main/jniLibs/arm64-v8a/
-      - cp src/main/rust/target/armv7-linux-androideabi/release/libargon_security.so src/main/jniLibs/armeabi-v7a/
-      - cp src/main/rust/target/x86_64-linux-android/release/libargon_security.so src/main/jniLibs/x86_64/
+      - cp src/main/rust/target/aarch64-linux-android/release/libargon_security.so 
+        src/main/jniLibs/arm64-v8a/
+      - cp src/main/rust/target/armv7-linux-androideabi/release/libargon_security.so 
+        src/main/jniLibs/armeabi-v7a/
+      - cp src/main/rust/target/x86_64-linux-android/release/libargon_security.so 
+        src/main/jniLibs/x86_64/
       - rm -rf src/main/rust/target
-    gradle:
-      - yes
     ndk: r27d
 
 AllowedAPKSigningKeys: 453970b5f306db01f8df63823b66229351f371b6eaa2f534c4814f884e34d29a
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: '3.0'
