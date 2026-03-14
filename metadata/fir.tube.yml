@@ -14,15 +14,15 @@ Builds:
     versionCode: 3
     commit: v3.0
     subdir: app
-    ndk: r27d
-    scanignore:
-      - app/src/main/jniLibs/arm64-v8a/libargon_security.so
-      - app/src/main/jniLibs/armeabi-v7a/libargon_security.so
-      - app/src/main/jniLibs/x86_64/libargon_security.so
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    ndk: r26b
     sudo:
       - apt-get update
       - apt-get install -y rustup gcc libc-dev
-    prebuild:
+    build:
+      - export CARGO_HOME=/home/runner/.cargo
       - rustup default 1.94.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk
