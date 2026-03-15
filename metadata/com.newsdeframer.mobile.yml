@@ -20,12 +20,25 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
+      - npm install -g yarn
     gradle:
       - yes
     prebuild:
       - cd ../..
       - npm install --build-from-source
-      - sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - PKG_DIR=node_modules/@react-native-async-storage/async-storage
+      - ASYNC_VER=$(node -p "require('./$PKG_DIR/package.json').version")
+      - git clone https://github.com/react-native-async-storage/async-storage async-storage-src
+      - cd async-storage-src
+      - git checkout "@react-native-async-storage/async-storage@${ASYNC_VER}"
+      - yarn install
+      - yarn build:android
+      - cd ..
+      - DEST=$PKG_DIR/android/local_repo/org/asyncstorage/shared_storage/storage-android/1.0.0
+      - cp async-storage-src/shared-storage/build/outputs/aar/shared-storage.aar $DEST/storage-android-1.0.0.aar
+      - rm -rf async-storage-src
+      - ls -la $DEST/storage-android-1.0.0.aar
+      - sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' $PKG_DIR/android/build.gradle
       - perl -0pi -e 's/android \{\n/android {\n    dependenciesInfo {\n        includeInApk
         = false\n        includeInBundle = false\n    }\n/' android/app/build.gradle
     scanignore:
@@ -39,7 +52,9 @@ Builds:
       - frontend/mobile/node_modules
     ndk: r27b
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: 
+  frontend/mobile/android/app/build.gradle|mob.*Code.*"(\d+)"|.|mob.*Name.*"([0-9.]+)"
 CurrentVersion: 0.0.8
 CurrentVersionCode: 1
