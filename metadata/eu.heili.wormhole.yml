@@ -18,6 +18,7 @@ Builds:
   - versionName: 1.1.7
     versionCode: 5453
     commit: e5847a19f88ee3467e80ded94d718589ad547073
+    subdir: android
     sudo:
       - mkdir -p /home/runner/work/wormhole
       - chown -R vagrant /home/runner
@@ -32,6 +33,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
+      - cd ..
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -47,7 +49,7 @@ Builds:
         .github/workflows/build.yml)
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
       - export repo=/home/runner/work/wormhole/wormhole
-      - cd ..
+      - cd ../..
       - mv eu.heili.wormhole $repo
       - pushd $repo
       - rustup default $RUST_VERSION
