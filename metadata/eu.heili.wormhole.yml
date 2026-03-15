@@ -42,13 +42,14 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - export CARGO_HOME=/home/runner/.cargo
+      - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
+        .github/workflows/build.yml)
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
       - export repo=/home/runner/work/wormhole/wormhole
       - cd ..
       - mv eu.heili.wormhole $repo
       - pushd $repo
-      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
-      - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
-        .github/workflows/build.yml)
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
