@@ -19,6 +19,8 @@ Builds:
     versionCode: 5453
     commit: e5847a19f88ee3467e80ded94d718589ad547073
     sudo:
+      - mkdir -p /home/runner/work/wormhole
+      - chown -R vagrant /home/runner
       - echo "deb http://deb.debian.org/debian sid main" > /etc/apt/sources.list.d/sid.list
       - apt-get update
       - apt-get install -y rustup clang
@@ -40,6 +42,10 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/wormhole/wormhole
+      - cd ..
+      - mv eu.heili.wormhole $repo
+      - pushd $repo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         .github/workflows/build.yml)
@@ -51,8 +57,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter gen-l10n
-      - CARGO_ENCODED_RUSTFLAGS='--remap-path-prefix=/home/vagrant=/home/runner' $$flutter$$/bin/flutter
-        build apk --split-per-abi --target-platform="android-arm64"
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo eu.heili.wormhole
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 57f6f8e77292e1615de23d43497f007e25685ab154696d31bd103296ed653518
