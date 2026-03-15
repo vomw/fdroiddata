@@ -1,0 +1,58 @@
+Categories:
+  - File Transfer
+  - Internet
+License: GPL-3.0-only
+AuthorName: Lukas Heiligenbrunner
+AuthorEmail: lukas.heiligenbrunner@gmail.com
+AuthorWebSite: https://tea.heili.eu
+SourceCode: https://github.com/wormhole-app/wormhole
+IssueTracker: https://github.com/wormhole-app/wormhole/issues
+Changelog: https://github.com/wormhole-app/wormhole/releases
+
+AutoName: Wormhole
+
+RepoType: git
+Repo: https://github.com/wormhole-app/wormhole
+
+Builds:
+  - versionName: 1.1.7
+    versionCode: 5451
+    commit: 159e34412c136c81d9d52a831c9b348728c6452d
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup clang
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/wormhole-app/wormhole/releases/download/%v/wormhole-android-openSource-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - sed -i -e '/url = nixMavenRepo/d' android/build.gradle
+    scandelete:
+      - .pub-cache
+    build:
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - which sdkmanager
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+    ndk: 26.1.10909125
+
+AllowedAPKSigningKeys: 57f6f8e77292e1615de23d43497f007e25685ab154696d31bd103296ed653518
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.7
+CurrentVersionCode: 5451
