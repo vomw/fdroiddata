@@ -33,7 +33,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-      - sed -i -e '/url = nixMavenRepo/d' android/build.gradle
     scandelete:
       - .pub-cache
     build:
@@ -41,7 +40,6 @@ Builds:
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - which sdkmanager
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
     ndk: 26.1.10909125
 
