@@ -58,6 +58,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter gen-l10n
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo eu.heili.wormhole
