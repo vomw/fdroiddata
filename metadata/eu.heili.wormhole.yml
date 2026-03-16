@@ -44,12 +44,13 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - cd ..
       - export CARGO_HOME=/home/runner/.cargo
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         .github/workflows/build.yml)
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
       - export repo=/home/runner/work/wormhole/wormhole
-      - cd ../..
+      - cd ..
       - mv eu.heili.wormhole $repo
       - pushd $repo
       - rustup default $RUST_VERSION
