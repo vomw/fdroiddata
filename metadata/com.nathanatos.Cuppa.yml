@@ -539,7 +539,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
     scandelete:
       - .pub-cache
     build:
@@ -562,7 +563,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{share_plus,package_info_plus,wakelock_plus,{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{share_plus,package_info_plus,wakelock_plus,{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
         android/settings.gradle
     scandelete:
       - .pub-cache
@@ -586,8 +588,53 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{share_plus,package_info_plus,wakelock_plus,{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{share_plus,package_info_plus,wakelock_plus,{path_provider,quick_actions,shared_preferences,sqflite,url_launcher}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
         android/settings.gradle
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --target lib/main_fdroid.dart
+
+  - versionName: 2.10.2
+    versionCode: 62
+    commit: 98c756ef9128d5baf46aac2cdac37a2691d2f578
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - flutter@3.38.5
+    rm:
+      - ios
+    prebuild:
+      - sed -i '/keystoreProperties.load(new FileInputStream(keystorePropertiesFile))/d'
+        android/app/build.gradle
+      - sed -i -e '/  patrol/d' -e '/in_app_review/d' pubspec.yaml
+      - sed -i -e '/  patrol/,/version/d' -e '/in_app_review/,/version/d' pubspec.lock
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --target lib/main_fdroid.dart
+
+  - versionName: 2.11.0
+    versionCode: 64
+    commit: 267a6d0ddee44852e4dd957ec845ea6b6683fa84
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - flutter@3.41.4
+    rm:
+      - ios
+    prebuild:
+      - sed -i '/keystoreProperties.load(new FileInputStream(keystorePropertiesFile))/d'
+        android/app/build.gradle
+      - sed -i -e '/  patrol/d' -e '/in_app_review/d' pubspec.yaml
+      - sed -i -e '/  patrol/,/version/d' -e '/in_app_review/,/version/d' pubspec.lock
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
     build:
@@ -597,5 +644,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.10.0
-CurrentVersionCode: 61
+CurrentVersion: 2.11.0
+CurrentVersionCode: 64
