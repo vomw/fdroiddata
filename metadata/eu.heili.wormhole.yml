@@ -17,7 +17,7 @@ Repo: https://github.com/UjuiUjuMandan/wormhole
 Builds:
   - versionName: 1.1.7
     versionCode: 5453
-    commit: e5847a19f88ee3467e80ded94d718589ad547073
+    commit: 08cda4bd4f59b38ee32d1dfb8044bf47e6eb2a9f
     subdir: android
     sudo:
       - mkdir -p /home/runner/work/wormhole
@@ -46,8 +46,6 @@ Builds:
     build:
       - cd ..
       - export CARGO_HOME=/home/runner/.cargo
-      - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
-        .github/workflows/build.yml)
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust/rust-toolchain.toml)
       - export repo=/home/runner/work/wormhole/wormhole
       - cd ..
@@ -55,7 +53,6 @@ Builds:
       - pushd $repo
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android
-      - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
       - sed -i -e "s/'stable'/'$RUST_VERSION'/" rust_builder/cargokit/build_tool/lib/src/builder.dart
       - bash scripts/prepare-fdroid-build.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
