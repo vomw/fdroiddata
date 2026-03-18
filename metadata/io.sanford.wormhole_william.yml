@@ -19,26 +19,18 @@ Builds:
   - versionName: 2.1.0
     versionCode: 21
     commit: 3c27948e36f14ec7470b8b401940a7cc563285a7
-    subdir: android
     sudo:
       - apt-get update
       - apt-get install -y -t nix-setup-systemd nix
       - chown -R vagrant /nix
-    gradle:
-      - yes
+    output: wormhole-william-unsigned-aligned.apk
     prebuild:
       - mkdir -p ~/.config/nix
       - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+      - sed -i '/--ks/,+3d' Makefile
     build:
-      - pushd ..
-      - nix develop
-      - go install golang.org/x/mobile/cmd/gomobile
-      - export PATH=$PATH:~/go/bin
-      - gomobile init
-      - mkdir android/app/libs
-      - gomobile bind -v -target=android -androidapi 24 -ldflags='-extldflags=-Wl,-z,max-page-size=16384
-        -buildid=' -o android/app/libs/wormhole.aar ./wormhole
-      - popd
+      - nix develop -c make init
+      - nix develop -c make release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
