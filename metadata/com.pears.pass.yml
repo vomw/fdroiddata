@@ -142,7 +142,7 @@ Builds:
         '/googleid/d' plugins/expo-autofill-plugin/build/android/withAndroidAutofillService.js
       - ./node_modules/.bin/expo prebuild --platform android --clean --no-install
       - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' -e '/play-services-fido/d' android/app/build.gradle
+        '/googleid/d' -e '/play-services-fido/d' -e '/firebase-messaging/d' android/app/build.gradle
       - rm -f android/app/debug.keystore
     scanignore:
       - node_modules/
@@ -167,10 +167,14 @@ Builds:
         > android/local.properties; fi
       - cd android
       - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' -e '/play-services-fido/d' app/build.gradle
+        '/googleid/d' -e '/play-services-fido/d' -e '/firebase-messaging/d' app/build.gradle
       - if ! grep -q '^android.enableDependencyInfoInApks=false$' gradle.properties;
         then printf "\nandroid.enableDependencyInfoInApks=false\n" >> gradle.properties;
         fi
+      - if ! grep -q 'fdroid-disable-dependencies-info' app/build.gradle; then printf
+        "\n// fdroid-disable-dependencies-info\nafterEvaluate {\n  android {\n    dependenciesInfo
+        {\n      includeInApk = false\n      includeInBundle = false\n    }\n  }\n}\n"
+        >> app/build.gradle; fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME=/opt/jdk17;
         fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find
