@@ -19,6 +19,7 @@ Builds:
   - versionName: 2.1.0
     versionCode: 21
     commit: 3c27948e36f14ec7470b8b401940a7cc563285a7
+    subdir: android
     sudo:
       - apt-get update
       - apt-get install golang
@@ -28,12 +29,15 @@ Builds:
       - go install golang.org/x/mobile/cmd/gomobile
       - export PATH=$PATH:~/go/bin
       - gomobile init
+      - pushd ../
       - mkdir android/app/libs
       - gomobile bind -v -target=android -androidapi 24 -ldflags='-extldflags=-Wl,-z,max-page-size=16384
         -buildid=' -o android/app/libs/wormhole.aar
+      - popd
     ndk: 26.1.10909125
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: android/app/build.gradle.kts|versionCode\s=\s(\d+)||v([\d.]+)
 CurrentVersion: 2.1.0
 CurrentVersionCode: 21
