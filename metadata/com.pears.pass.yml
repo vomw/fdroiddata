@@ -27,18 +27,19 @@ Builds:
       - echo "e05a4d65232ae2b27b3d77da2e368522fb46b923335b8e0d5f77624c32484044 node.tar.gz"
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - npm install --install-links --legacy-peer-deps --no-audit --no-fund
-      - "rm -rf node_modules/expo-camera\nmkdir -p node_modules/expo-camera\ncat > node_modules/expo-camera/package.json\
-        \ <<'EOF'\n{\n  \"name\": \"expo-camera\",\n  \"version\": \"16.1.11-fdroid\"\
-        ,\n  \"main\": \"index.js\"\n}\nEOF\ncat > node_modules/expo-camera/index.js\
-        \ <<'EOF'\nconst PermissionStatus = {\n  GRANTED: 'granted',\n  DENIED: 'denied'\n\
-        }\n\nconst Camera = {\n  async getCameraPermissionsAsync() {\n    return { status:\
-        \ PermissionStatus.DENIED }\n  },\n  async requestCameraPermissionsAsync() {\n\
-        \    return { status: PermissionStatus.DENIED, canAskAgain: false }\n  },\n \
-        \ async scanFromURLAsync() {\n    return []\n  }\n}\n\nfunction CameraView() {\n\
-        \  return null\n}\n\nmodule.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n\
-        }\nEOF"
+      - "rm -rf node_modules/expo-camera\nmkdir -p node_modules/expo-camera\ncat >\
+        \ node_modules/expo-camera/package.json <<'EOF'\n{\n  \"name\": \"expo-camera\"\
+        ,\n  \"version\": \"16.1.11-fdroid\",\n  \"main\": \"index.js\"\n}\nEOF\n\
+        cat > node_modules/expo-camera/index.js <<'EOF'\nconst PermissionStatus =\
+        \ {\n  GRANTED: 'granted',\n  DENIED: 'denied'\n}\n\nconst Camera = {\n  async\
+        \ getCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED\
+        \ }\n  },\n  async requestCameraPermissionsAsync() {\n    return { status:\
+        \ PermissionStatus.DENIED, canAskAgain: false }\n  },\n  async scanFromURLAsync()\
+        \ {\n    return []\n  }\n}\n\nfunction CameraView() {\n  return null\n}\n\n\
+        module.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n}\nEOF"
       - "mkdir -p node_modules/@tetherto/swarmconf/spec/hyperconf node_modules/@tetherto/swarmconf/spec/hyperschema\n\
         cat > node_modules/@tetherto/swarmconf/index.js <<'EOF'\nconst Hyperconf =\
         \ require('hyperconf')\nconst spec = require('./spec/hyperconf')\n\nmodule.exports\
@@ -130,35 +131,43 @@ Builds:
         \        {\n          \"name\": \"blindPeers\",\n          \"array\": true,\n\
         \          \"type\": \"fixed32\",\n          \"version\": 2\n        }\n \
         \     ]\n    }\n  ]\n}\nEOF"
+      - sed -i -e '/credentials-play-services-auth/d' plugins/expo-autofill-plugin/src/android/withAndroidAutofillService.ts
       - npm run build
+      - sed -i -e '/credentials-play-services-auth/d' plugins/expo-autofill-plugin/build/android/withAndroidAutofillService.js
       - ./node_modules/.bin/expo prebuild --platform android --clean --no-install
+      - sed -i -e '/credentials-play-services-auth/d' android/app/build.gradle
       - rm -f android/app/debug.keystore
-    output: android/app/build/outputs/apk/release/app-release.apk
     scanignore:
       - node_modules/
     build:
-      - if [ ! -d android ]; then ./node_modules/.bin/expo prebuild --platform android --clean --no-install; fi
+      - if [ ! -d android ]; then ./node_modules/.bin/expo prebuild --platform android
+        --clean --no-install; fi
       - mkdir -p node_modules/@tetherto/swarmconf
-      - 'printf "module.exports = class SwarmConfig {\n  constructor() {\n    this.current = { version: 0, blindRelays: [], blindPeers: [] }\n  }\n  async ready() {\n    return this\n  }\n}\n" > node_modules/@tetherto/swarmconf/index.js'
-      - 'printf "{\n  \"name\": \"@tetherto/swarmconf\",\n  \"version\": \"1.0.0\",\n  \"main\": \"index.js\"\n}\n" > node_modules/@tetherto/swarmconf/package.json'
+      - 'printf "module.exports = class SwarmConfig {\n  constructor() {\n    this.current
+        = { version: 0, blindRelays: [], blindPeers: [] }\n  }\n  async ready() {\n    return
+        this\n  }\n}\n" > node_modules/@tetherto/swarmconf/index.js'
+      - 'printf "{\n  \"name\": \"@tetherto/swarmconf\",\n  \"version\": \"1.0.0\",\n  \"main\":
+        \"index.js\"\n}\n" > node_modules/@tetherto/swarmconf/package.json'
       - perl -0pi -e "s/require\\('\\@tetherto\\/swarmconf'\\)/require\\(\\['\\@tetherto','swarmconf'\\]\\.join\\('\\/'\\)\\)/g"
         node_modules/pearpass-lib-vault-core/src/worklet/utils/swarm.js
       - npm run bundle-bare
       - test -f bundles/app-android.bundle.js
       - npm run lingui:compile
       - test -f src/locales/en/messages.js
-      - if [ -d node_modules/bare-link/prebuilds ]; then find node_modules/bare-link/prebuilds -type f -name patchelf -exec chmod +x {} +; fi
+      - if [ -d node_modules/bare-link/prebuilds ]; then find node_modules/bare-link/prebuilds
+        -type f -name patchelf -exec chmod +x {} +; fi
       - if [ -n "${ANDROID_HOME:-}" ]; then printf "sdk.dir=%s\n" "$ANDROID_HOME"
         > android/local.properties; fi
       - cd android
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME=/opt/jdk17; fi
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find /usr/lib/jvm -maxdepth 1 -type d -name 'java-17*' | head -n 1)"; fi
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then echo "Java 17 not found in /usr/lib/jvm" >&2; exit 1; fi
+      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME=/opt/jdk17;
+        fi
+      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find
+        /usr/lib/jvm -maxdepth 1 -type d -name 'java-17*' | head -n 1)"; fi
+      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then echo
+        "Java 17 not found in /usr/lib/jvm" >&2; exit 1; fi
       - JAVA_HOME="$JAVA_HOME" GRADLE_USER_HOME=/tmp/pearpass-gradle-home ./gradlew
-        :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false
-        -Dorg.gradle.java.installations.auto-download=false
-        -Dorg.gradle.java.installations.auto-detect=false
-        -Dorg.gradle.java.installations.paths="$JAVA_HOME"
+        :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false -Dorg.gradle.java.installations.auto-download=false
+        -Dorg.gradle.java.installations.auto-detect=false -Dorg.gradle.java.installations.paths="$JAVA_HOME"
 
 AllowedAPKSigningKeys: 3f6bbdc5b347dad9e279e2e7531ab890d4823da7f01d9e87a70f3d57400ec70f
 
