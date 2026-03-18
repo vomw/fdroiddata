@@ -135,14 +135,14 @@ Builds:
         \        {\n          \"name\": \"blindPeers\",\n          \"array\": true,\n\
         \          \"type\": \"fixed32\",\n          \"version\": 2\n        }\n \
         \     ]\n    }\n  ]\n}\nEOF"
-      - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' plugins/expo-autofill-plugin/src/android/withAndroidAutofillService.ts
+      - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid/"
+        plugins/expo-autofill-plugin/src/android/withAndroidAutofillService.ts
       - npm run build
-      - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' plugins/expo-autofill-plugin/build/android/withAndroidAutofillService.js
+      - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid/"
+        plugins/expo-autofill-plugin/build/android/withAndroidAutofillService.js
       - ./node_modules/.bin/expo prebuild --platform android --clean --no-install
-      - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' -e '/play-services-fido/d' -e '/firebase-messaging/d' android/app/build.gradle
+      - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
+        android/app/build.gradle
       - rm -f android/app/debug.keystore
     scanignore:
       - node_modules/
@@ -166,10 +166,13 @@ Builds:
       - if [ -n "${ANDROID_HOME:-}" ]; then printf "sdk.dir=%s\n" "$ANDROID_HOME"
         > android/local.properties; fi
       - cd android
-      - sed -i -e '/credentials-play-services-auth/d' -e '/play-services-auth/d' -e
-        '/googleid/d' -e '/play-services-fido/d' -e '/firebase-messaging/d' app/build.gradle
+      - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
+        app/build.gradle
       - if ! grep -q '^android.enableDependencyInfoInApks=false$' gradle.properties;
         then printf "\nandroid.enableDependencyInfoInApks=false\n" >> gradle.properties;
+        fi
+      - if ! grep -q '^android.enableDependencyInfoInApk=false$' gradle.properties;
+        then printf "android.enableDependencyInfoInApk=false\n" >> gradle.properties;
         fi
       - if ! grep -q '^android.enableDependencyInfoInBundle=false$' gradle.properties;
         then printf "android.enableDependencyInfoInBundle=false\n" >> gradle.properties;
@@ -181,7 +184,7 @@ Builds:
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then echo
         "Java 17 not found in /usr/lib/jvm" >&2; exit 1; fi
       - JAVA_HOME="$JAVA_HOME" GRADLE_USER_HOME=/tmp/pearpass-gradle-home ./gradlew
-        :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false -Dorg.gradle.java.installations.auto-download=false
+        :app:clean :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false -Dorg.gradle.java.installations.auto-download=false
         -Dorg.gradle.java.installations.auto-detect=false -Dorg.gradle.java.installations.paths="$JAVA_HOME"
         -Pandroid.enableDependencyInfoInApk=false -Pandroid.enableDependencyInfoInBundle=false
 
