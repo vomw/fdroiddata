@@ -171,10 +171,9 @@ Builds:
       - if ! grep -q '^android.enableDependencyInfoInApks=false$' gradle.properties;
         then printf "\nandroid.enableDependencyInfoInApks=false\n" >> gradle.properties;
         fi
-      - if ! grep -q 'fdroid-disable-dependencies-info' app/build.gradle; then printf
-        "\n// fdroid-disable-dependencies-info\nafterEvaluate {\n  android {\n    dependenciesInfo
-        {\n      includeInApk = false\n      includeInBundle = false\n    }\n  }\n}\n"
-        >> app/build.gradle; fi
+      - if ! grep -q '^android.enableDependencyInfoInBundle=false$' gradle.properties;
+        then printf "android.enableDependencyInfoInBundle=false\n" >> gradle.properties;
+        fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME=/opt/jdk17;
         fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find
@@ -184,6 +183,7 @@ Builds:
       - JAVA_HOME="$JAVA_HOME" GRADLE_USER_HOME=/tmp/pearpass-gradle-home ./gradlew
         :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false -Dorg.gradle.java.installations.auto-download=false
         -Dorg.gradle.java.installations.auto-detect=false -Dorg.gradle.java.installations.paths="$JAVA_HOME"
+        -Pandroid.enableDependencyInfoInApk=false -Pandroid.enableDependencyInfoInBundle=false
 
 AllowedAPKSigningKeys: 3f6bbdc5b347dad9e279e2e7531ab890d4823da7f01d9e87a70f3d57400ec70f
 
