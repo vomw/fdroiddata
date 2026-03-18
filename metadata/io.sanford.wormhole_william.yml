@@ -27,7 +27,8 @@ Builds:
     prebuild:
       - mkdir -p ~/.config/nix
       - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-      - sed -i '/--ks/,+3d' Makefile
+      - sed -i -e '/--ks/,+3d' Makefile
+      - sed -i -e 's/\.\/gradlew/gradle/' Makefile
     build:
       - nix develop -c make init
       - nix develop -c make release
