@@ -32,16 +32,18 @@ Builds:
       - npm install --install-links --legacy-peer-deps --no-audit --no-fund
       - mkdir -p node_modules/@tetherto/swarmconf node_modules/@tetherto/swarmconf/spec/hyperconf
         node_modules/@tetherto/swarmconf/spec/hyperschema
-      - "rm -rf node_modules/expo-camera\nmkdir -p node_modules/expo-camera\ncat >\
-        \ node_modules/expo-camera/package.json <<'EOF'\n{\n  \"name\": \"expo-camera\"\
-        ,\n  \"version\": \"16.1.11-fdroid\",\n  \"main\": \"index.js\"\n}\nEOF\n\
-        cat > node_modules/expo-camera/index.js <<'EOF'\nconst PermissionStatus =\
-        \ {\n  GRANTED: 'granted',\n  DENIED: 'denied'\n}\n\nconst Camera = {\n  async\
-        \ getCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED\
-        \ }\n  },\n  async requestCameraPermissionsAsync() {\n    return { status:\
-        \ PermissionStatus.DENIED, canAskAgain: false }\n  },\n  async scanFromURLAsync()\
-        \ {\n    return []\n  }\n}\n\nfunction CameraView() {\n  return null\n}\n\n\
-        module.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n}\nEOF"
+      - rm -rf node_modules/expo-camera
+      - mkdir -p node_modules/expo-camera
+      - 'printf "{\n  \"name\": \"expo-camera\",\n  \"version\": \"16.1.11-fdroid\",\n  \"main\":
+        \"index.js\",\n  \"expo\": {\n    \"plugin\": \"./app.plugin.js\"\n  }\n}\n"
+        > node_modules/expo-camera/package.json'
+      - printf "module.exports = (config) => config\n" > node_modules/expo-camera/app.plugin.js
+      - 'printf "const PermissionStatus = {\n  GRANTED: \"granted\",\n  DENIED: \"denied\"\n}\n\nconst
+        Camera = {\n  async getCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED
+        }\n  },\n  async requestCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED,
+        canAskAgain: false }\n  },\n  async scanFromURLAsync() {\n    return []\n  }\n}\n\nfunction
+        CameraView() {\n  return null\n}\n\nmodule.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n}\n"
+        > node_modules/expo-camera/index.js'
       - "mkdir -p node_modules/@tetherto/swarmconf/spec/hyperconf node_modules/@tetherto/swarmconf/spec/hyperschema\n\
         cat > node_modules/@tetherto/swarmconf/index.js <<'EOF'\nconst Hyperconf =\
         \ require('hyperconf')\nconst spec = require('./spec/hyperconf')\n\nmodule.exports\
