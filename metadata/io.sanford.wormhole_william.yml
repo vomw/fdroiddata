@@ -22,19 +22,23 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install golang
+      - apt-get install -y -t trixie nix-setup-systemd nix
+      - chown -R vagrant /nix
     gradle:
       - yes
+    prebuild:
+      - mkdir -p ~/.config/nix
+      - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
     build:
+      - pushd ..
+      - nix develop
       - go install golang.org/x/mobile/cmd/gomobile
       - export PATH=$PATH:~/go/bin
       - gomobile init
-      - pushd ../
       - mkdir android/app/libs
       - gomobile bind -v -target=android -androidapi 24 -ldflags='-extldflags=-Wl,-z,max-page-size=16384
         -buildid=' -o android/app/libs/wormhole.aar ./wormhole
       - popd
-    ndk: 26.1.10909125
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
