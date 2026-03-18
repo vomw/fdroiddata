@@ -15,10 +15,10 @@ Repo: https://gitlab.com/kj7qlv/mahjongscore.git
 Builds:
   - versionName: 1.0.1
     versionCode: 5
-    commit: 44a60e98071aa5647c5ebaf5fd7502f96cfff1b2
+    commit: 4be34cffb420f17a624f5a845ea1c8d92c325024
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.2
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -26,6 +26,10 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/^[[:space:]]+flutter:[[:space:]]*([0-9.]+)/\1/p"
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
