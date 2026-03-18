@@ -168,6 +168,11 @@ Builds:
       - cd android
       - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
         app/build.gradle
+      - 'printf "\nconfigurations.all {\n  exclude group: \"com.google.firebase\",
+        module: \"firebase-messaging\"\n  exclude group: \"com.google.android.gms\",
+        module: \"play-services-fido\"\n  exclude group: \"com.google.android.gms\",
+        module: \"play-services-auth\"\n  exclude group: \"androidx.credentials\",
+        module: \"credentials-play-services-auth\"\n}\n" >> app/build.gradle'
       - if ! grep -q '^android.enableDependencyInfoInApks=false$' gradle.properties;
         then printf "\nandroid.enableDependencyInfoInApks=false\n" >> gradle.properties;
         fi
