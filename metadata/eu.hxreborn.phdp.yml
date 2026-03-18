@@ -9,8 +9,7 @@ AutoName: Punch-hole Download Progress
 
 RepoType: git
 Repo: https://github.com/hxreborn/punch-hole-download-progress.git
-Binaries: 
-  https://github.com/hxreborn/punch-hole-download-progress/releases/download/v%v/phdp-v%v-release.apk
+Binaries: https://github.com/hxreborn/punch-hole-download-progress/releases/download/v%v/phdp-v%v-release.apk
 
 Builds:
   - versionName: 1.9.0
@@ -51,10 +50,18 @@ Builds:
       - gradle :interface:publishInterfacePublicationToMavenLocal :service:publishServicePublicationToMavenLocal
       - popd
 
+  - versionName: 2.0.0
+    versionCode: 20227
+    commit: b3091a71df672a351cc9e99e73a30c7582bc8c33
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfigs {/,/^    }/d' -e '/signingConfig = /d' build.gradle.kts
+
 AllowedAPKSigningKeys: 32b98dc709a7ee15fae073493a1aeca5d428316cc0d8b8f878eed64ba37f3297
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|version\.code=(\d+)|gradle.properties|version\.name=(.+)
-CurrentVersion: 1.10.0
-CurrentVersionCode: 10219
+CurrentVersion: 2.0.0
+CurrentVersionCode: 20227
