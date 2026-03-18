@@ -29,6 +29,16 @@ Builds:
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     prebuild:
       - npm install --install-links --legacy-peer-deps --no-audit --no-fund
+      - "rm -rf node_modules/expo-camera\nmkdir -p node_modules/expo-camera\ncat > node_modules/expo-camera/package.json\
+        \ <<'EOF'\n{\n  \"name\": \"expo-camera\",\n  \"version\": \"16.1.11-fdroid\"\
+        ,\n  \"main\": \"index.js\"\n}\nEOF\ncat > node_modules/expo-camera/index.js\
+        \ <<'EOF'\nconst PermissionStatus = {\n  GRANTED: 'granted',\n  DENIED: 'denied'\n\
+        }\n\nconst Camera = {\n  async getCameraPermissionsAsync() {\n    return { status:\
+        \ PermissionStatus.DENIED }\n  },\n  async requestCameraPermissionsAsync() {\n\
+        \    return { status: PermissionStatus.DENIED, canAskAgain: false }\n  },\n \
+        \ async scanFromURLAsync() {\n    return []\n  }\n}\n\nfunction CameraView() {\n\
+        \  return null\n}\n\nmodule.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n\
+        }\nEOF"
       - "mkdir -p node_modules/@tetherto/swarmconf/spec/hyperconf node_modules/@tetherto/swarmconf/spec/hyperschema\n\
         cat > node_modules/@tetherto/swarmconf/index.js <<'EOF'\nconst Hyperconf =\
         \ require('hyperconf')\nconst spec = require('./spec/hyperconf')\n\nmodule.exports\
