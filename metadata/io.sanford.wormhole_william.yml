@@ -25,6 +25,8 @@ Builds:
       - apt-get update
       - apt-get install -y nix-setup-systemd nix
       - chown -R vagrant /nix
+      - mkdir -p /home/psanford/.cache/gopath
+      - chown -R vagrant /home/psanford
     output: wormhole-william-unsigned-aligned.apk
     prebuild:
       - mkdir -p ~/.config/nix
@@ -32,8 +34,9 @@ Builds:
       - sed -i -e '/--ks/,+3d' Makefile
       - sed -i -e 's/\.\/gradlew/gradle/' Makefile
     build:
-      - nix develop -c make init
-      - nix develop -c make release
+      - export GOPATH=/home/psanford/.cache/gopath
+      - nix develop --keep GOPATH -c make init
+      - nix develop --keep GOPATH -c make release
 
 AllowedAPKSigningKeys: 4fbddd75065073634bd53d266fc43e7c616e40f4a448bbda2faf60d765eb3a0e
 
