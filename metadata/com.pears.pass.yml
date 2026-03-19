@@ -168,9 +168,10 @@ Builds:
       - cd android
       - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
         app/build.gradle
-      - find . \(-name '*.gradle' -o -name '*.gradle.kts'\) -type f -exec perl -i
-        -ne "print unless /firebase-messaging|com\.google\.firebase\.messaging/" {}
-        +
+      - find . -name '*.gradle' -type f -exec perl -i -ne "print unless /firebase-messaging|com\.google\.firebase\.messaging/"
+        {} +
+      - find . -name '*.gradle.kts' -type f -exec perl -i -ne "print unless /firebase-messaging|com\.google\.firebase\.messaging/"
+        {} +
       - 'if ! grep -q "fdroid-global-excludes" app/build.gradle; then printf "\n//
         fdroid-global-excludes\nconfigurations.all {\n  exclude group: \"com.google.firebase\"\n  exclude
         group: \"com.google.firebase\", module: \"firebase-messaging\"\n  exclude
