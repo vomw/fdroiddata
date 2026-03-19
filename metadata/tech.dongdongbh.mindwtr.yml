@@ -1,0 +1,67 @@
+Categories:
+  - Task
+  - Time
+License: AGPL-3.0-only
+AuthorName: Dongda Li
+AuthorEmail: dongdongbhbh@gmail.com
+AuthorWebSite: https://dongdongbh.tech
+SourceCode: https://github.com/dongdongbh/Mindwtr
+IssueTracker: https://github.com/dongdongbh/Mindwtr/issues
+Changelog: https://github.com/dongdongbh/Mindwtr/releases
+Donate: https://github.com/sponsors/dongdongbh
+
+AutoName: Mindwtr
+
+RepoType: git
+Repo: https://github.com/dongdongbh/Mindwtr.git
+
+Builds:
+  - versionName: 0.7.5
+    versionCode: 49
+    commit: v0.7.5
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - apt-get update
+      - apt-get install -y ca-certificates curl
+      - curl -Lo node.tar.gz 
+        https://nodejs.org/dist/v24.13.1/node-v24.13.1-linux-x64.tar.gz
+      - echo "7ad28fb172a9ab0593f86c1a39e5c268d0d8fc3d6cb0167f455b5655a7a6e2fd 
+        node.tar.gz" | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    output: apps/mobile/build/mindwtr-$$VERSION$$-arm64-v8a-foss.apk
+    prebuild:
+      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund 
+        --prefix packages/core
+      - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash apps/mobile/scripts/fdroid_prep.sh
+      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund 
+        --prefix apps/mobile
+    scanignore:
+      - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - apps/mobile/node_modules/react-native-alarm-notification/android/build.gradle
+      - apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - apps/mobile/node_modules/react-native-screens/android/build.gradle
+      - apps/mobile/node_modules/react-native-svg/android/build.gradle
+    scandelete:
+      - apps/mobile/node_modules
+      - packages/core/node_modules
+    build:
+      - export NODE_OPTIONS=--max-old-space-size=6144
+      - UNSIGNED_APK=1 FOSS_BUILD=1 SKIP_FDROID_PREP=1 ARCHS=arm64-v8a bash 
+        apps/mobile/scripts/android_build.sh
+    ndk: r27b
+
+MaintainerNotes: |-
+  Upstream ships F-Droid-compatible localized metadata in metadata/<locale>/.
+
+  Build notes:
+  - Upstream v0.7.5 adds env-gated Expo Android source builds via FDROID_EXPO_BUILD_FROM_SOURCE=1, so the stricter F-Droid path does not affect the default IzzyOnDroid flow.
+  - FOSS_BUILD=1 strips Google/Firebase/ML Kit deps and pins react_native_dev_server_ip=localhost for reproducibility.
+  - The arm64-v8a split APK is used to stay within repository size limits.
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 0.7.5
+CurrentVersionCode: 49
