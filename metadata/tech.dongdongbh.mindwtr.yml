@@ -23,18 +23,17 @@ Builds:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
       - apt-get install -y ca-certificates curl
-      - curl -Lo node.tar.gz 
-        https://nodejs.org/dist/v24.13.1/node-v24.13.1-linux-x64.tar.gz
-      - echo "7ad28fb172a9ab0593f86c1a39e5c268d0d8fc3d6cb0167f455b5655a7a6e2fd 
-        node.tar.gz" | sha256sum -c -
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.13.1/node-v24.13.1-linux-x64.tar.gz
+      - echo "7ad28fb172a9ab0593f86c1a39e5c268d0d8fc3d6cb0167f455b5655a7a6e2fd node.tar.gz"
+        | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     output: apps/mobile/build/mindwtr-$$VERSION$$-arm64-v8a-foss.apk
     prebuild:
-      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund 
-        --prefix packages/core
+      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund --prefix
+        packages/core
       - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash apps/mobile/scripts/fdroid_prep.sh
-      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund 
-        --prefix apps/mobile
+      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund --prefix
+        apps/mobile
       - "python3 - <<'PY'\nfrom pathlib import Path\n\nreplacements = {\n    Path(\"\
         apps/mobile/node_modules/@react-native/gradle-plugin/settings-plugin/build.gradle.kts\"\
         ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
@@ -51,25 +50,33 @@ Builds:
         ),\n    ],\n}\n\nfor path, pairs in replacements.items():\n    text = path.read_text()\n\
         \    original = text\n    for old, new in pairs:\n        text = text.replace(old,
         new)\n    if text == original:\n        raise SystemExit(f\"expected patch
-        target not found: {path}\")\n    path.write_text(text)\n\nsafe_area_context_path
-        = Path(\"apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle\"\
-        )\nsafe_area_context_text = safe_area_context_path.read_text()\n\nif \"jvmTarget
-        = JavaVersion.VERSION_17.toString()\" not in safe_area_context_text:\n   \
-        \ marker = \"android {\\n\"\n    if marker not in safe_area_context_text:\n\
-        \        raise SystemExit(f\"expected android block not found: {safe_area_context_path}\"\
-        )\n    safe_area_context_text = safe_area_context_text.replace(\n        marker,\n\
-        \        marker\n        + \"    compileOptions {\\n\"\n        + \"     \
-        \   sourceCompatibility JavaVersion.VERSION_17\\n\"\n        + \"        targetCompatibility
-        JavaVersion.VERSION_17\\n\"\n        + \"    }\\n\"\n        + \"    kotlinOptions
-        {\\n\"\n        + \"        jvmTarget = JavaVersion.VERSION_17.toString()\\\
-        n\"\n        + \"    }\\n\",\n        1,\n    )\n\nsafe_area_context_path.write_text(safe_area_context_text)\n\
-        PY"
+        target not found: {path}\")\n    path.write_text(text)\n\ndef ensure_java17_kotlin17(path_str):\n\
+        \    path = Path(path_str)\n    text = path.read_text()\n\n    text = text.replace(\n\
+        \        \"sourceCompatibility JavaVersion.VERSION_1_8\",\n        \"sourceCompatibility
+        JavaVersion.VERSION_17\",\n    )\n    text = text.replace(\n        \"targetCompatibility
+        JavaVersion.VERSION_1_8\",\n        \"targetCompatibility JavaVersion.VERSION_17\"\
+        ,\n    )\n\n    compile_block = (\n        \"compileOptions {\\n\"\n     \
+        \   \"        sourceCompatibility JavaVersion.VERSION_17\\n\"\n        \"\
+        \        targetCompatibility JavaVersion.VERSION_17\\n\"\n        \"    }\\\
+        n\"\n    )\n    kotlin_block = (\n        \"    kotlinOptions {\\n\"\n   \
+        \     \"        jvmTarget = JavaVersion.VERSION_17.toString()\\n\"\n     \
+        \   \"    }\\n\"\n    )\n\n    if \"jvmTarget = JavaVersion.VERSION_17.toString()\"\
+        \ not in text:\n        if compile_block in text:\n            text = text.replace(compile_block,
+        compile_block + kotlin_block, 1)\n        else:\n            marker = \"android
+        {\\n\"\n            if marker not in text:\n                raise SystemExit(f\"\
+        expected android block not found: {path}\")\n            text = text.replace(marker,
+        marker + \"    \" + compile_block + kotlin_block, 1)\n\n    path.write_text(text)\n\
+        \nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle\"\
+        )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-screens/android/build.gradle\"\
+        )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-gesture-handler/android/build.gradle\"\
+        )\nPY"
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - apps/mobile/node_modules/react-native-alarm-notification/android/build.gradle
+      - apps/mobile/node_modules/react-native-gesture-handler/android/build.gradle
       - apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle
       - apps/mobile/node_modules/react-native-screens/android/build.gradle
       - apps/mobile/node_modules/react-native-svg/android/build.gradle
@@ -78,13 +85,10 @@ Builds:
       - packages/core/node_modules
     build:
       - export NODE_OPTIONS=--max-old-space-size=6144
-      - export JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(command -v 
-        java)")")")
+      - export JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")
       - export ORG_GRADLE_JAVA_INSTALLATIONS_PATHS=$JAVA_HOME
-      - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$JAVA_HOME 
-        ${GRADLE_OPTS:-}"
-      - UNSIGNED_APK=1 FOSS_BUILD=1 SKIP_FDROID_PREP=1 ARCHS=arm64-v8a bash 
-        apps/mobile/scripts/android_build.sh
+      - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$JAVA_HOME ${GRADLE_OPTS:-}"
+      - UNSIGNED_APK=1 FOSS_BUILD=1 SKIP_FDROID_PREP=1 ARCHS=arm64-v8a bash apps/mobile/scripts/android_build.sh
     ndk: r27b
 
 MaintainerNotes: |-
