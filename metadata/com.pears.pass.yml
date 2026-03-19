@@ -169,23 +169,16 @@ Builds:
       - if [ -n "${ANDROID_HOME:-}" ]; then printf "sdk.dir=%s\n" "$ANDROID_HOME"
         > android/local.properties; fi
       - cd android
-      - perl -i -ne "print unless 
-        /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
+      - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase/"
         app/build.gradle
-      - find . -name '*.gradle' -type f -exec perl -i -ne "print unless /firebase-messaging|com\.google\.firebase\.messaging/"
+      - find . -name '*.gradle' -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/"
         {} +
-      - find . -name '*.gradle.kts' -type f -exec perl -i -ne "print unless /firebase-messaging|com\.google\.firebase\.messaging/"
+      - find . -name '*.gradle.kts' -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/"
         {} +
-      - 'if ! grep -q "fdroid-root-excludes" build.gradle; then printf "\n// fdroid-root-excludes\nsubprojects
-        { configurations.all { exclude group: \"com.google.firebase\" } }\n" >> build.gradle;
-        fi'
-      - 'if ! grep -q "fdroid-global-excludes" app/build.gradle; then printf "\n//
-        fdroid-global-excludes\nconfigurations.all {\n  exclude group: \"com.google.firebase\"\n  exclude
-        group: \"com.google.firebase\", module: \"firebase-messaging\"\n  exclude
-        group: \"com.google.android.gms\", module: \"play-services-fido\"\n  exclude
-        group: \"com.google.android.gms\", module: \"play-services-auth\"\n  exclude
-        group: \"androidx.credentials\", module: \"credentials-play-services-auth\"\n}\n"
-        >> app/build.gradle; fi'
+      - 'if ! grep -q "fdroid-root-excludes" build.gradle; then printf "\n// fdroid-root-excludes\nsubprojects { configurations.all { exclude group: "com.google.firebase" } }\n" >> build.gradle; fi'
+      - 'if ! grep -q "fdroid-global-excludes" app/build.gradle; then printf "\n// fdroid-global-excludes\nconfigurations.all { exclude group: "com.google.firebase" }\nconfigurations.all { exclude group: "com.google.firebase", module: "firebase-messaging" }\nconfigurations.all { exclude group: "com.google.android.gms", module: "play-services-fido" }\nconfigurations.all { exclude group: "com.google.android.gms", module: "play-services-auth" }\nconfigurations.all { exclude group: "androidx.credentials", module: "credentials-play-services-auth" }\n" >> app/build.gradle; fi'
+      - find ../node_modules -name "*.gradle" -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/" {} + 2>/dev/null || true
+      - find ../node_modules -name "*.gradle.kts" -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/" {} + 2>/dev/null || true
       - if ! grep -q "dependenciesInfo {" app/build.gradle; then perl -0777 -i -pe
         "s/android\s*\{\n/android {\n    dependenciesInfo {\n        includeInApk
         = false\n        includeInBundle = false\n    }\n/s" app/build.gradle; fi
