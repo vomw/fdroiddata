@@ -22,7 +22,7 @@ Builds:
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
-      - apt-get install -y ca-certificates curl openjdk-17-jdk-headless
+      - apt-get install -y ca-certificates curl
       - curl -Lo node.tar.gz 
         https://nodejs.org/dist/v24.13.1/node-v24.13.1-linux-x64.tar.gz
       - echo "7ad28fb172a9ab0593f86c1a39e5c268d0d8fc3d6cb0167f455b5655a7a6e2fd 
@@ -35,6 +35,23 @@ Builds:
       - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash apps/mobile/scripts/fdroid_prep.sh
       - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund 
         --prefix apps/mobile
+      - "python3 - <<'PY'\nfrom pathlib import Path\n\nreplacements = {\n    Path(\"\
+        apps/mobile/node_modules/@react-native/gradle-plugin/settings-plugin/build.gradle.kts\"\
+        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/shared/build.gradle.kts\"\
+        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/shared-testutil/build.gradle.kts\"\
+        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts\"\
+        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt\"\
+        ): [\n        (\"project.kotlinExtension.jvmToolchain(17)\", \"project.kotlinExtension.jvmToolchain(JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n    Path(\"apps/mobile/node_modules/react-native/ReactAndroid/build.gradle.kts\"\
+        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
+        ),\n    ],\n}\n\nfor path, pairs in replacements.items():\n    text = path.read_text()\n\
+        \    original = text\n    for old, new in pairs:\n        text = text.replace(old,
+        new)\n    if text == original:\n        raise SystemExit(f\"expected patch
+        target not found: {path}\")\n    path.write_text(text)\nPY"
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -49,8 +66,8 @@ Builds:
       - packages/core/node_modules
     build:
       - export NODE_OPTIONS=--max-old-space-size=6144
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - test -d "$JAVA_HOME" || export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+      - export JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(command -v 
+        java)")")")
       - export ORG_GRADLE_JAVA_INSTALLATIONS_PATHS=$JAVA_HOME
       - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$JAVA_HOME 
         ${GRADLE_OPTS:-}"
