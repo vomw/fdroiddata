@@ -19,7 +19,7 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - curl -Lo jdk17.tar.gz
+      - curl -Lo jdk17.tar.gz 
         https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz
       - JDK17_DIR="$(tar -tzf jdk17.tar.gz | sed -n '1p' | cut -d/ -f1)"
       - tar xzf jdk17.tar.gz -C /opt/
@@ -142,7 +142,7 @@ Builds:
       - perl -i -ne "print unless /credentials-play-services-auth|play-services-auth|googleid/"
         plugins/expo-autofill-plugin/build/android/withAndroidAutofillService.js
       - ./node_modules/.bin/expo prebuild --platform android --clean --no-install
-      - perl -i -ne "print unless
+      - perl -i -ne "print unless 
         /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
         android/app/build.gradle
       - rm -f android/app/debug.keystore
@@ -157,7 +157,7 @@ Builds:
         this\n  }\n}\n" > node_modules/@tetherto/swarmconf/index.js'
       - 'printf "{\n  \"name\": \"@tetherto/swarmconf\",\n  \"version\": \"1.0.0\",\n  \"main\":
         \"index.js\"\n}\n" > node_modules/@tetherto/swarmconf/package.json'
-      - perl -0pi -e
+      - perl -0pi -e 
         "s/require\\('\\@tetherto\\/swarmconf'\\)/require\\(\\['\\@tetherto','swarmconf'\\]\\.join\\('\\/'\\)\\)/g"
         node_modules/pearpass-lib-vault-core/src/worklet/utils/swarm.js
       - npm run bundle-bare
@@ -169,27 +169,29 @@ Builds:
       - if [ -n "${ANDROID_HOME:-}" ]; then printf "sdk.dir=%s\n" "$ANDROID_HOME"
         > android/local.properties; fi
       - cd android
-      - perl -i -ne "print unless
-        /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase/"
+      - perl -i -ne "print unless 
+        /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
         app/build.gradle
-      - find . -name '*.gradle' -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/"
-        {} +
-      - find . -name '*.gradle.kts' -type f -exec perl -i -ne "print unless /firebase|com\.google\.firebase/"
-        {} +
+      - find . ../node_modules -name '*.gradle' -type f -exec perl -i -ne "print unless
+        /firebase-messaging|com\.google\.firebase\.messaging/" {} +
+      - find . ../node_modules -name '*.gradle.kts' -type f -exec perl -i -ne "print
+        unless /firebase-messaging|com\.google\.firebase\.messaging/" {} +
+      - find ../node_modules/react-native-bare-kit -name 'classes.jar' -exec zip -q
+        -d {} "*/MessagingService*" \; 2>/dev/null || true
+      - rm -f app/google-services.json
+      - perl -i -ne "print unless /com\.google\.gms\.google-services/" app/build.gradle
+        build.gradle
       - 'if ! grep -q "fdroid-root-excludes" build.gradle; then printf "\n// fdroid-root-excludes\nsubprojects
-        { configurations.all { exclude group: \"com.google.firebase\" } }\n" >> build.gradle;
-        fi'
+        {\n  configurations.all {\n    exclude group: \"com.google.firebase\"\n    exclude
+        group: \"com.google.firebase\", module: \"firebase-messaging\"\n  }\n}\n"
+        >> build.gradle; fi'
       - 'if ! grep -q "fdroid-global-excludes" app/build.gradle; then printf "\n//
-        fdroid-global-excludes\nconfigurations.all { exclude group: \"com.google.firebase\"
-        }\nconfigurations.all { exclude group: \"com.google.firebase\", module: \"firebase-messaging\"
-        }\nconfigurations.all { exclude group: \"com.google.android.gms\", module:
-        \"play-services-fido\" }\nconfigurations.all { exclude group: \"com.google.android.gms\",
-        module: \"play-services-auth\" }\nconfigurations.all { exclude group: \"androidx.credentials\",
-        module: \"credentials-play-services-auth\" }\n" >> app/build.gradle; fi'
-      - find ../node_modules -name "*.gradle" -type f -exec perl -i -ne "print unless
-        /firebase|com\.google\.firebase/" {} + 2>/dev/null || true
-      - find ../node_modules -name "*.gradle.kts" -type f -exec perl -i -ne "print
-        unless /firebase|com\.google\.firebase/" {} + 2>/dev/null || true
+        fdroid-global-excludes\nconfigurations.all {\n  exclude group: \"com.google.firebase\"\n  exclude
+        group: \"com.google.firebase\", module: \"firebase-messaging\"\n  exclude
+        group: \"com.google.android.gms\", module: \"play-services-fido\"\n  exclude
+        group: \"com.google.android.gms\", module: \"play-services-auth\"\n  exclude
+        group: \"androidx.credentials\", module: \"credentials-play-services-auth\"\n}\n"
+        >> app/build.gradle; fi'
       - if ! grep -q "dependenciesInfo {" app/build.gradle; then perl -0777 -i -pe
         "s/android\s*\{\n/android {\n    dependenciesInfo {\n        includeInApk
         = false\n        includeInBundle = false\n    }\n/s" app/build.gradle; fi
