@@ -19,11 +19,7 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - curl -Lo jdk17.tar.gz 
-        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz
-      - JDK17_DIR="$(tar -tzf jdk17.tar.gz | sed -n '1p' | cut -d/ -f1)"
-      - tar xzf jdk17.tar.gz -C /opt/
-      - ln -sfn "/opt/${JDK17_DIR}" /opt/jdk17
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - curl -Lo node.tar.gz https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-x64.tar.gz
       - echo "e05a4d65232ae2b27b3d77da2e368522fb46b923335b8e0d5f77624c32484044 node.tar.gz"
         | sha256sum -c -
@@ -206,8 +202,6 @@ Builds:
         fi
       - if ! grep -q '^android.enableDependencyInfoInBundle=false$' gradle.properties;
         then printf "android.enableDependencyInfoInBundle=false\n" >> gradle.properties;
-        fi
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME=/opt/jdk17;
         fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find
         /usr/lib/jvm -maxdepth 1 -type d -name 'java-17*' | head -n 1)"; fi
