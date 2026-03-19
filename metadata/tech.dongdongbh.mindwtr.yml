@@ -65,11 +65,23 @@ Builds:
         compile_block + kotlin_block, 1)\n        else:\n            marker = \"android
         {\\n\"\n            if marker not in text:\n                raise SystemExit(f\"\
         expected android block not found: {path}\")\n            text = text.replace(marker,
-        marker + \"    \" + compile_block + kotlin_block, 1)\n\n    path.write_text(text)\n\
-        \nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle\"\
+        marker + \"    \" + compile_block + kotlin_block, 1)\n\n    path.write_text(text)\n
+        \ndef append_java17_override(path_str):\n    path = Path(path_str)\n    text
+        = path.read_text()\n    marker = \"// F-Droid: force mixed Java/Kotlin Android
+        modules to target JVM 17.\"\n    if marker in text:\n        return\n    text
+        = text.rstrip() + \"\\n\\n\" + marker + \"\\n\" + (\n        \"android {\\\
+        n\"\n        \"    compileOptions {\\n\"\n        \"        sourceCompatibility
+        JavaVersion.VERSION_17\\n\"\n        \"        targetCompatibility JavaVersion.VERSION_17\\\
+        n\"\n        \"    }\\n\"\n        \"    kotlinOptions {\\n\"\n        \"\
+        \        jvmTarget = JavaVersion.VERSION_17.toString()\\n\"\n        \"  \
+        \  }\\n\"\n        \"}\\n\"\n    )\n    path.write_text(text)\n\nensure_java17_kotlin17(\"\
+        apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle\"\
         )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-screens/android/build.gradle\"\
         )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-gesture-handler/android/build.gradle\"\
-        )\nPY"
+        )\nappend_java17_override(\"apps/mobile/node_modules/expo-modules-core/android/build.gradle\"\
+        )\nappend_java17_override(\"apps/mobile/node_modules/expo-calendar/android/build.gradle\"\
+        )\nappend_java17_override(\"apps/mobile/node_modules/expo-image-loader/android/build.gradle\"\
+        )\nPY\n"
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
