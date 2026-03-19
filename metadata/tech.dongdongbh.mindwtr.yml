@@ -18,7 +18,7 @@ Repo: https://github.com/dongdongbh/Mindwtr.git
 Builds:
   - versionName: 0.7.5
     versionCode: 49
-    commit: v0.7.5
+    commit: a37f7c0ec07f48ac694b60f6fe09fba0bf4fb610
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
@@ -34,54 +34,7 @@ Builds:
       - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash apps/mobile/scripts/fdroid_prep.sh
       - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund --prefix
         apps/mobile
-      - "python3 - <<'PY'\nfrom pathlib import Path\n\nreplacements = {\n    Path(\"\
-        apps/mobile/node_modules/@react-native/gradle-plugin/settings-plugin/build.gradle.kts\"\
-        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/shared/build.gradle.kts\"\
-        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/shared-testutil/build.gradle.kts\"\
-        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts\"\
-        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n    Path(\"apps/mobile/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt\"\
-        ): [\n        (\"project.kotlinExtension.jvmToolchain(17)\", \"project.kotlinExtension.jvmToolchain(JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n    Path(\"apps/mobile/node_modules/react-native/ReactAndroid/build.gradle.kts\"\
-        ): [\n        (\"jvmToolchain(17)\", \"jvmToolchain(org.gradle.api.JavaVersion.current().majorVersion.toInt())\"\
-        ),\n    ],\n}\n\nfor path, pairs in replacements.items():\n    text = path.read_text()\n\
-        \    original = text\n    for old, new in pairs:\n        text = text.replace(old,
-        new)\n    if text == original:\n        raise SystemExit(f\"expected patch
-        target not found: {path}\")\n    path.write_text(text)\n\ndef ensure_java17_kotlin17(path_str):\n\
-        \    path = Path(path_str)\n    text = path.read_text()\n\n    text = text.replace(\n\
-        \        \"sourceCompatibility JavaVersion.VERSION_1_8\",\n        \"sourceCompatibility
-        JavaVersion.VERSION_17\",\n    )\n    text = text.replace(\n        \"targetCompatibility
-        JavaVersion.VERSION_1_8\",\n        \"targetCompatibility JavaVersion.VERSION_17\"\
-        ,\n    )\n\n    compile_block = (\n        \"compileOptions {\\n\"\n     \
-        \   \"        sourceCompatibility JavaVersion.VERSION_17\\n\"\n        \"\
-        \        targetCompatibility JavaVersion.VERSION_17\\n\"\n        \"    }\\\
-        n\"\n    )\n    kotlin_block = (\n        \"    kotlinOptions {\\n\"\n   \
-        \     \"        jvmTarget = JavaVersion.VERSION_17.toString()\\n\"\n     \
-        \   \"    }\\n\"\n    )\n\n    if \"jvmTarget = JavaVersion.VERSION_17.toString()\"\
-        \ not in text:\n        if compile_block in text:\n            text = text.replace(compile_block,
-        compile_block + kotlin_block, 1)\n        else:\n            marker = \"android
-        {\\n\"\n            if marker not in text:\n                raise SystemExit(f\"\
-        expected android block not found: {path}\")\n            text = text.replace(marker,
-        marker + \"    \" + compile_block + kotlin_block, 1)\n\n    path.write_text(text)\n
-        \ndef append_java17_override(path_str):\n    path = Path(path_str)\n    text
-        = path.read_text()\n    marker = \"// F-Droid: force mixed Java/Kotlin Android
-        modules to target JVM 17.\"\n    if marker in text:\n        return\n    text
-        = text.rstrip() + \"\\n\\n\" + marker + \"\\n\" + (\n        \"android {\\\
-        n\"\n        \"    compileOptions {\\n\"\n        \"        sourceCompatibility
-        JavaVersion.VERSION_17\\n\"\n        \"        targetCompatibility JavaVersion.VERSION_17\\\
-        n\"\n        \"    }\\n\"\n        \"    kotlinOptions {\\n\"\n        \"\
-        \        jvmTarget = JavaVersion.VERSION_17.toString()\\n\"\n        \"  \
-        \  }\\n\"\n        \"}\\n\"\n    )\n    path.write_text(text)\n\nensure_java17_kotlin17(\"\
-        apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle\"\
-        )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-screens/android/build.gradle\"\
-        )\nensure_java17_kotlin17(\"apps/mobile/node_modules/react-native-gesture-handler/android/build.gradle\"\
-        )\nappend_java17_override(\"apps/mobile/node_modules/expo-modules-core/android/build.gradle\"\
-        )\nappend_java17_override(\"apps/mobile/node_modules/expo-calendar/android/build.gradle\"\
-        )\nappend_java17_override(\"apps/mobile/node_modules/expo-image-loader/android/build.gradle\"\
-        )\nPY\n"
+      - node apps/mobile/scripts/fdroid_patch_android_jvm_targets.js
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
