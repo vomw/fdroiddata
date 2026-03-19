@@ -35,10 +35,11 @@ Builds:
       - sed -i -e 's/\.\/gradlew/gradle/' Makefile
       - sed -i -e "s/-ldflags='/-ldflags='-buildid= /" Makefile
       - cat Makefile
+      - sed -i '/shellHook.*/a\            export GOPATH=/home/psanford/.cache/gopath'
+        flake.nix
+      - cat flake.nix
     build:
-      - export GOPATH=/home/psanford/.cache/gopath
       - nix develop -c make init
-      - nix develop -c echo $GOPATH
       - nix develop -c make release
 
 AllowedAPKSigningKeys: 4fbddd75065073634bd53d266fc43e7c616e40f4a448bbda2faf60d765eb3a0e
