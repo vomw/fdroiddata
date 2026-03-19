@@ -7,30 +7,6 @@ SourceCode: https://github.com/NoachDev/laughing-dollop
 IssueTracker: https://github.com/NoachDev/laughing-dollop/-/issues
 
 AutoName: laughing_dollop
-Description: |-
-  Laughing Dollop is a usefull application for share native resources like the microphone
-  through <b>wifi</b>.
-
-  You will need install the Laughing Dollop on both device,
-    * where you want share
-    * where you want receive
-
-    see the <a href="https://github.com/NoachDev/laughing-dollop/releases">releases page </a>
-
-  On server page you can streming your native resources to multiply devices
-
-  On client page you can, with an <b>ip</b> and <b>port</b>, connect to a single server.
-
-  Considerations :
-
-  This app have limitations:
-    * platforms availables:
-      * linux, client only
-      * android, server only
-
-  And, both librarys used on developement Srt and native/* are in a unstable version, so is expected to have errors like a lantecy of 4s .
-
-  New versions are incoming, to fix bugs and enchance the user experience.
 
 RepoType: git
 Repo: https://github.com/NoachDev/laughing-dollop.git
@@ -38,7 +14,7 @@ Repo: https://github.com/NoachDev/laughing-dollop.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 1bc5b742c3007eb358d456f1694ef96096d5e020
+    commit: 4470e5b6182866229d3ccbd0dab417cf59c15777
     output: build/app/outputs/apk/fdroid/release/fdroid-release.apk
     srclibs:
       - flutter@stable
@@ -48,10 +24,14 @@ Builds:
       - macos
       - web
       - windows
+    prebuild:
+      - export PATH=$$flutter$$/bin:$PATH
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter config --no-analytics
+      - flutter pub get
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$PATH
-      - flutter config --no-analytics
       - flutter build apk --release --flavor fdroid --split-per-abi --target-platform="android-arm64"
 
 AllowedAPKSigningKeys: bbab42e0fc82e8fb9115165b38fefd79d7c0a1f7ac7b288c3bb2ba220344af85
