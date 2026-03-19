@@ -1,0 +1,52 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on mempool.space
+Categories:
+  - Money
+  - Security
+  - Wallet
+License: GPL-3.0-or-later
+SourceCode: https://github.com/cortezhanny124/Shared-Haven
+IssueTracker: https://github.com/cortezhanny124/Shared-Haven/issues
+
+AutoName: SharedHaven
+
+RepoType: git
+Repo: https://github.com/cortezhanny124/Shared-Haven.git
+
+Builds:
+  - versionName: 2.0.6
+    versionCode: 2
+    commit: 31f4d9f2a5896d0ded6e10199e8bd5e7f6e790fa
+    output: build/app/outputs/bundle/release/app-release.aab
+    srclibs:
+      - flutter@stable
+      - bundletool@master
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/googleapis/d' android/build.gradle android/settings.gradle
+      - sed -i -e '/def keystorePropsFile/,/keystoreProps.load/d' -e '/signingConfig
+        /d' android/app/build.gradle
+      - flutterVersion=$(sed -n -E 's/.*Flutter version:\ (.*)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+      - android/app/.cxx
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.6
+CurrentVersionCode: 2
