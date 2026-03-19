@@ -17,7 +17,8 @@ Builds:
     commit: 5e890936faf37532f7f29e1589b0430c8499a0b2
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y nodejs npm openjdk-17-jdk-headless
+      - update-alternatives --auto java
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - npm install
@@ -26,6 +27,7 @@ Builds:
       - npx expo prebuild --platform android --no-install
       - rm -fr ios
       - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - cd android
       - gradle clean
     scanignore:
@@ -39,6 +41,7 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - cd android
       - gradle assembleRelease
 
