@@ -340,9 +340,8 @@ Builds:
       - flutter@stable
     prebuild:
       - export FLUTTER_VERSION=$(sed -n -E "s/flutter:\s([0-9.]+)/\1/p" versions)
-      - pushd $$flutter$$
-      - git checkout -f $FLUTTER_VERSION
-      - popd
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -360,9 +359,8 @@ Builds:
       - flutter@stable
     prebuild:
       - export FLUTTER_VERSION=$(sed -n -E "s/flutter:\s([0-9.]+)/\1/p" versions)
-      - pushd $$flutter$$
-      - git checkout -f $FLUTTER_VERSION
-      - popd
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -379,5 +377,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.4.0
-CurrentVersionCode: 123
+CurrentVersion: 2.1.0
+CurrentVersionCode: 153
