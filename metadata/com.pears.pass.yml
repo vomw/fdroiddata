@@ -176,8 +176,11 @@ Builds:
         /firebase-messaging|com\.google\.firebase\.messaging/" {} +
       - find . ../node_modules -name '*.gradle.kts' -type f -exec perl -i -ne "print
         unless /firebase-messaging|com\.google\.firebase\.messaging/" {} +
-      - find ../node_modules/react-native-bare-kit -name 'classes.jar' -exec zip -q
-        -d {} "*/MessagingService*" \; 2>/dev/null || true
+      - "python3 -c \"\nimport zipfile, shutil, glob\nfor j in glob.glob('../node_modules/react-native-bare-kit/**/classes.jar',
+        recursive=True):\n  t = j + '.tmp'\n  with zipfile.ZipFile(j) as zi, zipfile.ZipFile(t,
+        'w') as zo:\n    for i in zi.infolist():\n      if 'MessagingService' not
+        in i.filename: zo.writestr(i, zi.read(i.filename))\n  shutil.move(t, j)\n\"
+        2>/dev/null || true"
       - rm -f app/google-services.json
       - perl -i -ne "print unless /com\.google\.gms\.google-services/" app/build.gradle
         build.gradle
