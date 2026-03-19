@@ -19,6 +19,7 @@ Builds:
   - versionName: 0.7.5
     versionCode: 49
     commit: 71e24f730e45e0f73cf3c56e8e421ae0383b8115
+    subdir: apps/mobile
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
@@ -27,14 +28,13 @@ Builds:
       - echo "7ad28fb172a9ab0593f86c1a39e5c268d0d8fc3d6cb0167f455b5655a7a6e2fd node.tar.gz"
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-    output: apps/mobile/build/mindwtr-$$VERSION$$-arm64-v8a-foss.apk
+    output: build/mindwtr-$$VERSION$$-arm64-v8a-foss.apk
     prebuild:
       - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund --prefix
-        packages/core
-      - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash apps/mobile/scripts/fdroid_prep.sh
-      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund --prefix
-        apps/mobile
-      - node apps/mobile/scripts/fdroid_patch_android_jvm_targets.js
+        ../../packages/core
+      - FDROID_EXPO_BUILD_FROM_SOURCE=1 bash scripts/fdroid_prep.sh
+      - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund
+      - node scripts/fdroid_patch_android_jvm_targets.js
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -49,10 +49,7 @@ Builds:
       - packages/core/node_modules
     build:
       - export NODE_OPTIONS=--max-old-space-size=6144
-      - export JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")
-      - export ORG_GRADLE_JAVA_INSTALLATIONS_PATHS=$JAVA_HOME
-      - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$JAVA_HOME ${GRADLE_OPTS:-}"
-      - UNSIGNED_APK=1 FOSS_BUILD=1 SKIP_FDROID_PREP=1 ARCHS=arm64-v8a bash apps/mobile/scripts/android_build.sh
+      - UNSIGNED_APK=1 FOSS_BUILD=1 SKIP_FDROID_PREP=1 ARCHS=arm64-v8a bash scripts/android_build.sh
     ndk: r27b
 
 MaintainerNotes: |-
