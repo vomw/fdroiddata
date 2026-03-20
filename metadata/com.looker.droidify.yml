@@ -336,7 +336,9 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: sed -i -e '/jvm/s/17/21/' build.gradle.kts
+    prebuild:
+      - sed -i -e '/jvm/s/17/21/' -e '/JavaLanguageVersion/d' -e '/vendor/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
     scandelete:
       - app/src/androidTest
 
