@@ -383,7 +383,7 @@ Builds:
 
   - versionName: 0.10.0
     versionCode: 372
-    commit: v0.10.0
+    commit: df55e9e8aff99fa66bcec3560496e6b9d932a9c6
     timeout: 36000
     subdir: app
     sudo:
@@ -426,6 +426,13 @@ Builds:
       - flutter config --no-analytics
       - flutter pub global activate melos
       - melos bootstrap
+      - melos run update-assets --no-select
+      - pushd ../packages/flutter_mozilla_components/javascript/container_proxy
+      - npm ci
+      - popd
+      - pushd ../packages/flutter_mozilla_components/javascript/readability
+      - npm ci
+      - popd
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
     scandelete:
       - app/.pub-cache
@@ -433,14 +440,13 @@ Builds:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME=""
       - export MAVEN_PASSWORD=""
+      - pushd ../packages/flutter_mozilla_components/javascript/container_proxy
+      - npx webpack
+      - popd
+      - pushd ../packages/flutter_mozilla_components/javascript/readability
+      - npx webpack
+      - popd
       - source $$MozFennecComponents$$/setup.sh armeabi-v7a
-      - sh ../scripts/build-container-proxy.sh
-      - sh ../scripts/build-readability.sh
-      - bash ../scripts/download_bangs.sh
-      - python3 ../scripts/build_quotes_db.py
-      - sh ../scripts/update-bridges.sh
-      - sh ../scripts/update-url-cleaner-catalog.sh
-      - sh ../scripts/update-url-shorteners.sh
       - $$MozFennecComponents$$/build.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
@@ -454,7 +460,7 @@ Builds:
 
   - versionName: 0.10.0
     versionCode: 373
-    commit: v0.10.0
+    commit: df55e9e8aff99fa66bcec3560496e6b9d932a9c6
     timeout: 36000
     subdir: app
     sudo:
@@ -497,6 +503,13 @@ Builds:
       - flutter config --no-analytics
       - flutter pub global activate melos
       - melos bootstrap
+      - melos run update-assets --no-select
+      - pushd ../packages/flutter_mozilla_components/javascript/container_proxy
+      - npm ci
+      - popd
+      - pushd ../packages/flutter_mozilla_components/javascript/readability
+      - npm ci
+      - popd
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
     scandelete:
       - app/.pub-cache
@@ -504,14 +517,13 @@ Builds:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME=""
       - export MAVEN_PASSWORD=""
+      - pushd ../packages/flutter_mozilla_components/javascript/container_proxy
+      - npx webpack
+      - popd
+      - pushd ../packages/flutter_mozilla_components/javascript/readability
+      - npx webpack
+      - popd
       - source $$MozFennecComponents$$/setup.sh arm64-v8a
-      - sh ../scripts/build-container-proxy.sh
-      - sh ../scripts/build-readability.sh
-      - bash ../scripts/download_bangs.sh
-      - python3 ../scripts/build_quotes_db.py
-      - sh ../scripts/update-bridges.sh
-      - sh ../scripts/update-url-cleaner-catalog.sh
-      - sh ../scripts/update-url-shorteners.sh
       - $$MozFennecComponents$$/build.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
