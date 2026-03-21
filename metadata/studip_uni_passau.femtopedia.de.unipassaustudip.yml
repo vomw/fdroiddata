@@ -1,0 +1,49 @@
+Categories:
+  - Calendar & Agenda
+  - File Transfer
+  - Navigation
+  - News
+  - Science & Education
+  - Time
+License: MIT
+AuthorName: Nico Mexis
+AuthorEmail: info@femtopedia.de
+AuthorWebSite: https://nmexis.me
+SourceCode: https://github.com/ThexXTURBOXx/studipassau
+IssueTracker: https://github.com/ThexXTURBOXx/studipassau/issues
+Translation: 
+  https://app.localizely.com/projects/32cea4c8-ff53-4e34-94d8-bcdc8643b236/main/translations
+Donate: https://github.com/sponsors/ThexXTURBOXx
+
+AutoName: StudiPassau
+
+RepoType: git
+Repo: https://github.com/ThexXTURBOXx/studipassau.git
+
+Builds:
+  - versionName: 2.0.2
+    versionCode: 202
+    commit: 2.0.2
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    build:
+      - echo -e 
+        "CLIENT_ID=1\nSENTRY_DSN=https://c4e904a15f7a47e6ab28ec0ef791add3@o350176.ingest.sentry.io/5364455"
+        > .env
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/dart run intl_utils:generate
+      - $$flutter$$/bin/dart run build_runner build
+      - $$flutter$$/bin/flutter build apk
+    antifeatures:
+      - NonFreeNet
+      - TetheredNet
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags .*[0-9]$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.2
+CurrentVersionCode: 202
