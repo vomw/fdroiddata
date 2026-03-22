@@ -3,7 +3,6 @@ Categories:
 License: GPL-3.0-only
 SourceCode: https://github.com/dobval/ProteinValue
 IssueTracker: https://github.com/dobval/ProteinValue/issues
-Changelog: https://github.com/dobval/ProteinValue/releases
 
 AutoName: proteinvalue
 
@@ -13,19 +12,27 @@ Repo: https://github.com/dobval/ProteinValue.git
 Builds:
   - versionName: 0.1.0
     versionCode: 1
-    commit: d207e0c
+    commit: 4386d07
+    submodules: true
     output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.41.5
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
     scandelete:
+      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - .flutter/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
