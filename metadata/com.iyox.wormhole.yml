@@ -148,8 +148,9 @@ Builds:
     prebuild:
       - mkdir -p ~/.config/nix
       - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-    build: nix develop --command flutter build apk --split-per-abi --release --target-platform="android-x64"
-    ndk: 26.1.10909125
+    build:
+      - nix develop --command flutter_rust_bridge_codegen generate
+      - nix develop --command flutter build apk --split-per-abi --release --target-platform="android-x64"
 
   - versionName: 0.2.7
     versionCode: 5002
@@ -165,8 +166,9 @@ Builds:
     prebuild:
       - mkdir -p ~/.config/nix
       - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-    build: nix develop --command flutter build apk --split-per-abi --release --target-platform="android-arm"
-    ndk: 26.1.10909125
+    build:
+      - nix develop --command flutter_rust_bridge_codegen generate
+      - nix develop --command flutter build apk --split-per-abi --release --target-platform="android-arm"
 
   - versionName: 0.2.7
     versionCode: 5003
@@ -182,8 +184,9 @@ Builds:
     prebuild:
       - mkdir -p ~/.config/nix
       - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-    build: nix develop --command flutter build apk --split-per-abi --release --target-platform="android-arm64"
-    ndk: 26.1.10909125
+    build:
+      - nix develop --command flutter_rust_bridge_codegen generate
+      - nix develop --command flutter build apk --split-per-abi --release --target-platform="android-arm64"
 
 AllowedAPKSigningKeys: b70f0859f9bbde820cb3df381fc13b65bf03d8a2171751a75ec159481942424c
 
