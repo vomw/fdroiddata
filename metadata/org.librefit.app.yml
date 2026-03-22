@@ -1,0 +1,40 @@
+Categories:
+  - Sports & Health
+  - Workout
+License: GPL-3.0-or-later
+AuthorName: IamDg & LibreFit's Contributors
+WebSite: https://librefit.org
+SourceCode: https://github.com/LibreFitOrg/LibreFit
+IssueTracker: https://github.com/LibreFitOrg/LibreFit/issues
+Changelog: https://github.com/LibreFitOrg/LibreFit/blob/HEAD/CHANGELOG.md
+Donate: https://librefit.org/donate
+
+RepoType: git
+Repo: https://github.com/LibreFitOrg/LibreFit.git
+Binaries: https://github.com/LibreFitOrg/LibreFit/releases/download/v%v/LibreFit.apk
+
+Builds:
+  - versionName: 0.1.1
+    versionCode: 10101
+    commit: v0.1.1
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y wget apt-transport-https gnupg
+      - mkdir -p /etc/apt/keyrings
+      - wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee
+        /etc/apt/keyrings/adoptium.asc
+      - echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb
+        $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
+      - apt-get update
+      - apt-get install -y temurin-17-jdk
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: cf4861d4b5ad28512a0f56e6c3404ee9c5ab82e6cec2ac7615d20e5a26b59392
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.1
+CurrentVersionCode: 10101
