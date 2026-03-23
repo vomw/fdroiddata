@@ -1,0 +1,71 @@
+Categories:
+  - Money
+License: GPL-3.0-only
+AuthorName: UXAVIA
+WebSite: https://bitbag.app
+SourceCode: https://github.com/UXAVIA/bag
+IssueTracker: https://github.com/UXAVIA/bag/issues
+
+AutoName: Bag
+Summary: Bitcoin portfolio & net worth. No ads, no accounts.
+Description: |-
+  Track your Bitcoin net worth in real time. Enter your BTC holdings, pick up to
+  3 fiat currencies, and watch your portfolio value update alongside live price
+  charts and a DCA tracker.
+
+  Bitcoin-only. No altcoins. No ads. No accounts. No analytics. Your holdings
+  never leave your device.
+
+  FEATURES
+
+  * Net worth in up to 3 fiat currencies (USD, EUR, GBP and 50+ more)
+  * Live BTC price charts - 1D / 1W / 1M / 1Y / ALL-time
+  * DCA tracker with cost basis and P&L
+  * Home screen widget with live price and net worth
+  * Mempool fee estimates (sat/vB)
+  * Sats / BTC display toggle
+  * Dark and light theme
+
+  PRO - one-time purchase, no subscription
+
+  * Watch-only zpub wallet tracking (BIP84 / P2WPKH)
+  * Tor routing via Orbot for full network privacy
+  * Custom Esplora server support
+  * Bitcoin Health Check - privacy score across all wallets
+  * Sentinel: always-on balance monitoring with mempool alerts
+  * Mempool fee alerts (above/below threshold)
+
+  PRIVACY & SECURITY
+
+  Only address hashes ever reach the explorer - your zpub and balance stay
+  on-device. All network paths can be routed through Tor (Orbot required).
+  No phone-home, no telemetry, no third-party SDKs.
+
+AntiFeatures:
+  NonFreeAdd:
+    en-US: Pro features require a one-time payment via bitbag.app
+  NonFreeNet:
+    en-US: Price data fetched from CoinGecko (proprietary service)
+
+RepoType: git
+Repo: https://github.com/UXAVIA/bag
+
+Builds:
+  - versionName: '1.0.7'
+    versionCode: 12
+    commit: v1.0.7
+    srclibs:
+      - flutter@3.29.2
+    sudo:
+      - apt-get update
+      - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+    init: $$flutter$$/bin/flutter config --no-analytics && $$flutter$$/bin/flutter precache --android
+    prebuild: $$flutter$$/bin/flutter pub get
+    build: $$flutter$$/bin/flutter build apk --release --dart-define=FLAVOR=direct
+    output: build/app/outputs/flutter-apk/app-release.apk
+    ndk: 27.0.12077973
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v(.+)
+CurrentVersion: '1.0.7'
+CurrentVersionCode: 12
