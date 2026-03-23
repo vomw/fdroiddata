@@ -10,6 +10,8 @@ AutoName: HeavyMap
 
 RepoType: git
 Repo: https://gitlab.com/hc51t/HeavyMap.git
+Binaries: 
+  https://gitlab.com/api/v4/projects/79917009/packages/generic/heavymap/%v/app-release.apk
 
 Builds:
   - versionName: 0.1.0
@@ -18,6 +20,14 @@ Builds:
     subdir: app
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$
+
+AllowedAPKSigningKeys: dd0ba8aa202691d26f20dd69e852f009bb8a713b22db4de3440a5363406ad56a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
