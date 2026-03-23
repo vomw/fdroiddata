@@ -1,12 +1,5 @@
 Categories:
-  - Calendar & Agenda
-  - Inventory
-  - Note
-  - Reading
-  - Science & Education
-  - Text Editor
-  - Time
-  - Writing
+  - Task
 License: MIT
 AuthorName: Faraz Sheikh
 AuthorEmail: faraz.ar.sheikh@gmail.com
@@ -26,20 +19,12 @@ Builds:
     versionCode: 1
     commit: 9ed18c7b359a888c784810b283b315f3d81e5387
     subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y zip
     gradle:
       - yes
     srclibs:
       - reproducible-apk-tools@dc069dc4cddf6ab5162f3ed3be1bc8a14711273f
-    prebuild:
-      - echo "kotlin.compiler.execution.strategy=in-process" >> ../gradle.properties
-      - echo "org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64" >> ../gradle.properties
-      - echo "org.gradle.workers.max=1" >> ../gradle.properties
     postbuild:
       - mv $$OUT$$ unaligned.apk
-      - zip -d unaligned.apk 'META-INF/*'
       - python3 $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
