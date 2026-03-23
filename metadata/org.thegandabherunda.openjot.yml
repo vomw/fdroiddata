@@ -5,13 +5,15 @@ AuthorName: The Gandabherunda
 SourceCode: https://github.com/TheGandabherunda/OpenJot
 IssueTracker: https://github.com/TheGandabherunda/OpenJot/issues
 Changelog: https://github.com/TheGandabherunda/OpenJot/releases
+
 RepoType: git
 Repo: https://github.com/TheGandabherunda/OpenJot
+Binaries: https://github.com/TheGandabherunda/OpenJot/releases/download/v%v/app-arm64-v8a-release.apk
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: 15fb0d98f29bc7df0bf9d3fb500a21ce2b9c06ff
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -22,7 +24,9 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E '/^environment:/,/^dependencies:/{ s/^[[:space:]]*flutter:[[:space:]]*["'\'']?[^0-9]*([0-9]+\.[0-9]+\.[0-9]+).*["'\'']?/\1/p }' pubspec.yaml)
+      - flutterVersion=$(sed -n -E '/^environment:/,/^dependencies:/{ 
+        s/^[[:space:]]*flutter:[[:space:]]*["'\''"]?[^0-9]*([0-9]+\.[0-9]+\.[0-9]+).*["'\''"]?/\1/p
+        }' pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -35,8 +39,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
 
 AllowedAPKSigningKeys: 2a0e967dfb7bae9dd55daeb645b99feaa9ae5c6306e0e854b4d8b06d2d1bcb0d
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+CurrentVersionCode: 2001
