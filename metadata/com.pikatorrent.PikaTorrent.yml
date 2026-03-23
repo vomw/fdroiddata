@@ -35,6 +35,7 @@ Builds:
       - app/vcpkg/scripts/*.exe
     prebuild:
       - flutterVersion=$(yq -r .environment.flutter pubspec.yaml)
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
