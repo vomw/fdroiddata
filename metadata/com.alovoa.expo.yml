@@ -1492,7 +1492,6 @@ Builds:
     versionCode: 48
     commit: 5d7a73fb26e61a13b167fccf7068c0d2d9937d5c
     sudo:
-      - sysctl fs.inotify.max_user_watches=524288
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
@@ -1507,6 +1506,9 @@ Builds:
         package.json
       - yarn f-droid
       - rm -fr script/res ios
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc
       - node_modules/react-native/React/I18n
