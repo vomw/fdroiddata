@@ -989,7 +989,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev golang-go npm openjdk-21-jdk-headless
+      - apt-get install -y gcc libc-dev golang-go npm
     gradle:
       - yes
     srclibs:
@@ -1001,18 +1001,12 @@ Builds:
       - sed -i '/react-native-vision-camera/d' package.json
       - mv components/QRScanner.foss.tsx components/QRScanner.tsx
       - npm install --build-from-source
-      - sed -i 's/kotlin { jvmToolchain(17) }/kotlin { jvmToolchain(21) }/g' node_modules/@react-native/gradle-plugin/settings-plugin/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/shared/build.gradle.kts node_modules/@react-native/gradle-plugin/shared-testutil/build.gradle.kts
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
-        -e 's/configure the toolchain to 17\./configure the toolchain to 21 (Debian
-        Trixie \/ Java 21 default; avoids requiring JDK 17)./' 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/react-native/ReactAndroid/build.gradle.kts
-      - test -f node_modules/@op-engineering/op-sqlite/android/build.gradle && ( grep
-        -q 'ndkVersion rootProject.ext.ndkVersion' node_modules/@op-engineering/op-sqlite/android/build.gradle
-        || sed -i '/namespace "com.op.sqlite"/a\  ndkVersion rootProject.ext.ndkVersion'
-        node_modules/@op-engineering/op-sqlite/android/build.gradle )
+      - sed -i '/namespace "com.op.sqlite"/a ndkVersion rootProject.ext.ndkVersion'
+        node_modules/@op-engineering/op-sqlite/android/build.gradle
       - sed -i -e '/installReferrerVersion/,+12d' node_modules/react-native-device-info/android/build.gradle
       - sdkmanager "platforms;android-21" "build-tools;33.0.0"
     scanignore:
@@ -1036,13 +1030,9 @@ Builds:
       - pushd $$go$$/src
       - ./make.bash
       - popd
-      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      - export PATH="$JAVA_HOME/bin:$PATH"
-      - java -version
       - export GOROOT=$$go$$
       - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$PATH"
-      - export PATH="$GOPATH/bin:$PATH"
+      - export PATH="$GOPATH/bin:$GOROOT/bin:$PATH"
       - cd ../../BBMTLib
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250408133729-978277e7eaf7
       - ./build.sh
