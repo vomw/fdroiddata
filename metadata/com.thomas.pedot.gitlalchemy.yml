@@ -1,0 +1,50 @@
+Categories:
+  - Development
+License: MIT
+AuthorName: Thomas Pedot
+SourceCode: https://gitlab.com/thomas.pedot1/gitlalchemy
+IssueTracker: https://gitlab.com/thomas.pedot1/gitlalchemy/-/issues
+
+AutoName: Gitlalchemy
+
+RepoType: git
+Repo: https://gitlab.com/thomas.pedot1/gitlalchemy.git
+
+Builds:
+  - versionName: 1.2.2
+    versionCode: 1002002
+    commit: v1.2.2
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get install -y curl ca-certificates gnupg build-essential
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+      - npm install -g pnpm
+    init:
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
+        1.82
+      - source $HOME/.cargo/env && rustup target add aarch64-linux-android armv7-linux-androideabi
+        i686-linux-android x86_64-linux-android
+      - source $HOME/.cargo/env && cargo install tauri-cli --version "^2.0.0" --locked
+      - export PATH="$HOME/.cargo/bin:$PATH" && export ANDROID_HOME=$$SDK$$ && export
+        NDK_HOME=$$NDK$$ && cd apps/desktop && cargo tauri android init
+    output: 
+      apps/desktop/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    prebuild:
+      - sed -i 's|"bun run build"|"npm run build"|g' apps/desktop/src-tauri/tauri.conf.json
+      - sed -i '/"packageManager"/d' package.json
+      - echo 'packages:' > pnpm-workspace.yaml
+      - echo '  - "apps/*"' >> pnpm-workspace.yaml
+      - echo '  - "packages/*"' >> pnpm-workspace.yaml
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH" && pnpm install
+      - export ANDROID_HOME=$$SDK$$
+      - export NDK_HOME=$$NDK$$
+      - cd apps/desktop && cargo tauri android build --apk
+    ndk: r26d
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.2.2
+CurrentVersionCode: 1002002
