@@ -46,7 +46,11 @@ Builds:
       - npm ci
       - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i "/apply plugin: 'kotlin-android'/a tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kotlinOptions.jvmTarget = '17' }" node_modules/react-native-safe-area-context/android/build.gradle
+      - >-
+        sed -i "/apply plugin: 'kotlin-android'/a
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach
+        { kotlinOptions.jvmTarget = '17' }"
+        node_modules/react-native-safe-area-context/android/build.gradle
       - npm run sync-version
     prebuild:
       - gradle clean
