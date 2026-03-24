@@ -45,6 +45,7 @@ Builds:
       - cd ..
       - npm ci
       - sed -i 's/^hermesEnabled=true$/hermesEnabled=false/' android/gradle.properties
+      - sed -i '/ReactAndroid::jsctooling/d' node_modules/react-native-worklets/android/CMakeLists.txt
       - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - >-
@@ -87,6 +88,10 @@ MaintainerNotes: |
   Hermes is disabled in the F-Droid build recipe because the prebuilt
   `node_modules/hermes-compiler/.../hermesc` executable fails to start in the
   build environment. The build uses JSC instead.
+
+  `react-native-worklets` is additionally patched for the F-Droid build to
+  avoid linking against `ReactAndroid::jsctooling`, which is not exported by
+  the React Native Android prefab setup in this environment.
 
   Version information is read from the plain-text file `version`.
 
