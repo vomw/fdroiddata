@@ -44,6 +44,8 @@ Builds:
     init:
       - cd ..
       - npm ci
+      - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
+      - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npm run sync-version
     prebuild:
       - gradle clean
