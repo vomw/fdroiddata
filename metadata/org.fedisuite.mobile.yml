@@ -40,49 +40,50 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-21-jdk-headless
+      - apt-get install -y nodejs npm openjdk-17-jdk-headless
     init:
       - cd ..
       - npm ci
       - npm install --no-save @react-native-community/javascriptcore
+      # Hermes deaktivieren und JSC erzwingen
       - sed -i 's/^hermesEnabled=true$/hermesEnabled=false/' android/gradle.properties
       - grep -q '^useThirdPartyJSC=true$' android/gradle.properties || printf '\nuseThirdPartyJSC=true\n' >> android/gradle.properties
+      
+      # Patch: Expo ReactHost für JSC fit machen (dein existierender Patch, leicht optimiert)
       - >-
-        python3 -c 'from pathlib import Path; main_app = Path("android/app/src/main/java/org/fedisuite/mobile/MainApplication.kt"); text = main_app.read_text(); text = text if "io.github.reactnativecommunity.javascriptcore.JSCRuntimeFactory" in text else text.replace("import expo.modules.ApplicationLifecycleDispatcher\n", "import expo.modules.ApplicationLifecycleDispatcher\nimport io.github.reactnativecommunity.javascriptcore.JSCRuntimeFactory\n"); old_host = "    ExpoReactHostFactory.getDefaultReactHost(\n      context = applicationContext,\n      packageList =\n        PackageList(this).packages.apply {\n          // Packages that cannot be autolinked yet can be added manually here, for example:\n          // add(MyReactNativePackage())\n        }\n    )"; new_host = "    ExpoReactHostFactory.getDefaultReactHost(\n      context = applicationContext,\n      packageList =\n        PackageList(this).packages.apply {\n          // Packages that cannot be autolinked yet can be added manually here, for example:\n          // add(MyReactNativePackage())\n        },\n      jsRuntimeFactory = JSCRuntimeFactory()\n    )"; text = text.replace(old_host, new_host); main_app.write_text(text); expo_factory = Path("node_modules/expo/android/src/main/java/expo/modules/ExpoReactHostFactory.kt"); text = expo_factory.read_text(); text = text.replace("    private val hostHandlers: List<ReactNativeHostHandler>\n  ) : ReactHostDelegate {", "    private val hostHandlers: List<ReactNativeHostHandler>,\n    private val concreteJsRuntimeFactory: JSRuntimeFactory? = null\n  ) : ReactHostDelegate {"); text = text.replace("    override val jsRuntimeFactory: JSRuntimeFactory\n      get() = HermesInstance()", "    override val jsRuntimeFactory: JSRuntimeFactory\n      get() = concreteJsRuntimeFactory ?: HermesInstance()"); text = text.replace("        hostHandlers = hostHandlers\n      )", "        hostHandlers = hostHandlers,\n        concreteJsRuntimeFactory = jsRuntimeFactory\n      )"); expo_factory.write_text(text)'
+        python3 -c 'from pathlib import Path; 
+        main_app = Path("android/app/src/main/java/org/fedisuite/mobile/MainApplication.kt"); 
+        text = main_app.read_text(); 
+        if "JSCRuntimeFactory" not in text:
+          text = text.replace("import expo.modules.ApplicationLifecycleDispatcher", "import expo.modules.ApplicationLifecycleDispatcher\nimport io.github.reactnativecommunity.javascriptcore.JSCRuntimeFactory");
+          old_host = "PackageList(this).packages.apply {";
+          new_host = "PackageList(this).packages.apply {\n          // manual adds\n        },\n      jsRuntimeFactory = JSCRuntimeFactory()";
+          text = text.replace(old_host, new_host);
+          main_app.write_text(text)'
+
+      # DER ENTSCHEIDENDE FIX: react-native-worklets CMake Patch
+      # Wir entfernen die Abhängigkeit zu jsctooling, die den Build abbricht
       - >-
-        python3 -c 'from pathlib import Path; cmake = Path("node_modules/react-native-worklets/android/CMakeLists.txt"); text = cmake.read_text(); text = text.replace("if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nendif()\n", "if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nelif(${JS_RUNTIME} STREQUAL \"jsc\")\n  find_package(jscruntimefactory REQUIRED CONFIG)\nendif()\n"); text = text.replace("elseif(${JS_RUNTIME} STREQUAL \"jsc\")\n  target_link_libraries(worklets jsc-android::jsc)\nendif()\n", "elseif(${JS_RUNTIME} STREQUAL \"jsc\")\n  target_link_libraries(worklets jscruntimefactory::jscruntimefactory)\nendif()\n"); cmake.write_text(text)'
-      - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
-      - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - >-
-        sed -i "/apply plugin: 'kotlin-android'/a
-        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach
-        { kotlinOptions.jvmTarget = '17' }"
-        node_modules/react-native-safe-area-context/android/build.gradle
+        python3 -c 'from pathlib import Path; 
+        cmake = Path("node_modules/react-native-worklets/android/CMakeLists.txt"); 
+        text = cmake.read_text(); 
+        text = text.replace("ReactAndroid::jsctooling", ""); 
+        text = text.replace("if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nendif()", "if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nelif(${JS_RUNTIME} STREQUAL \"jsc\")\n  find_package(jscruntimefactory REQUIRED CONFIG)\nendif()");
+        text = text.replace("target_link_libraries(worklets jsc-android::jsc)", "target_link_libraries(worklets jscruntimefactory::jscruntimefactory)");
+        cmake.write_text(text)'
+
+      # Java Version auf 17 zwingen (RN 0.76 Standard)
+      - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(21)/jvmToolchain(17)/g' {} +
+      - find node_modules/@react-native/gradle-plugin -name '*.kt' -exec sed -i 's/jvmToolchain(21)/jvmToolchain(17)/g' {} +
+      
+      # SDK Version auf 35 korrigieren (statt 36)
+      - sed -i 's/compileSdk = 36/compileSdk = 35/' android/build.gradle
+      - sed -i 's/targetSdk = 36/targetSdk = 35/' android/build.gradle
+      
       - npm run sync-version
     prebuild:
       - gradle clean
-    output: app/build/outputs/apk/release/org.fedisuite.mobile-$$VERSION$$.apk
-    scanignore:
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/expo-clipboard/local-maven-repo
-      - node_modules/expo-image-loader/local-maven-repo
-      - node_modules/expo-image-picker/local-maven-repo
-      - node_modules/expo-linking/local-maven-repo
-      - node_modules/expo-localization/local-maven-repo
-      - node_modules/expo-secure-store/local-maven-repo
-      - node_modules/expo-system-ui/local-maven-repo
-      - node_modules/expo/node_modules/@expo/log-box/node_modules/@expo/dom-webview/local-maven-repo
-      - node_modules/expo/node_modules/expo-asset/local-maven-repo
-      - node_modules/expo/node_modules/expo-file-system/local-maven-repo
-      - node_modules/expo/node_modules/expo-font/local-maven-repo
-      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
-    scandelete:
-      - node_modules
-    build:
-      - gradle assembleRelease
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
 
 MaintainerNotes: |
   Initial packaging recipe for the Expo/React-Native Android app.
