@@ -6,29 +6,31 @@ License: Apache-2.0
 AuthorEmail: contact@tella-app.org
 AuthorWebSite: https://wearehorizontal.org
 WebSite: https://tella-app.org
-SourceCode: https://github.com/Horizontal-org/Tella-Android-FOSS
-IssueTracker: https://github.com/Horizontal-org/Tella-Android-FOSS/issues
+SourceCode: https://github.com/Horizontal-org/Tella-Android
+IssueTracker: https://github.com/Horizontal-org/Tella-Android/issues
 Translation: https://app.lokalise.com/public/9394139661a3d89da6fa91.77098206/
 Donate: https://wearehorizontal.org/donate.html
 
 AutoName: Tella
 
 RepoType: git
-Repo: https://github.com/Horizontal-org/Tella-Android-FOSS.git
-Binaries: 
-  https://github.com/Horizontal-org/Tella-Android-FOSS/releases/download/v%v(%c)/mobile-release-FOSS-%c.apk
+Repo: https://github.com/Horizontal-org/Tella-Android.git
+
+Binaries: |-
+  https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss%v(%c)/mobile-release-Foss-%c.apk
 
 Builds:
-  - versionName: 2.0.15
-    versionCode: 149
-    commit: d3e629da651380dcc290b019ba590b79da7075c6
+  - versionName: 2.20.0
+    versionCode: 228
+    commit: 72ee8effa6b74bbc6917d99606d36ffd2612a645
     subdir: mobile
     gradle:
-      - yes
+      - assembleFdroidRelease
+    gradleprops:
+      - fdroid
     srclibs:
       - reproducible-apk-tools@v0.2.3
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
-      'META-INF/services/*' 'assets/cleaninsights.json'
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$ 'META-INF/services/*' 'assets/cleaninsights.json'
 
   - versionName: 2.11.0
     versionCode: 186
@@ -41,5 +43,5 @@ AllowedAPKSigningKeys: 0f98d162b443e71de141a93aec27c6d5acaa725dba4c3fca97457258c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.11.0
-CurrentVersionCode: 186
+CurrentVersion: 2.20.0
+CurrentVersionCode: 228
