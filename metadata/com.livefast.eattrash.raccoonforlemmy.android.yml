@@ -1,4 +1,5 @@
 Categories:
+  - Forum
   - Internet
   - Reading
 License: GPL-3.0-only
@@ -13,7 +14,8 @@ AutoName: Raccoon for RaccoonForLemmy
 
 RepoType: git
 Repo: https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy.git
-Binaries: https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/%v/RaccoonForLemmy-universal-release.apk
+Binaries: 
+  https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/%v/RaccoonForLemmy-universal-release.apk
 
 Builds:
   - versionName: 1.13.0
@@ -47,7 +49,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -67,7 +70,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -87,7 +91,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -107,7 +112,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -127,7 +133,29 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
+      - unzip -q upstream.apk
+      - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
+      - popd
+      - for i in {1..10}; do gradle clean assembleRelease; mkdir local; pushd local;
+        unzip -q ../build/outputs/apk/release/RaccoonForLemmy-release-unsigned.apk;
+        export localhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1);
+        [[ $localhash == $upstreamhash ]] && break ; popd; rm -fr local; done
+
+  - versionName: 1.14.1
+    versionCode: 151
+    commit: b82b737b183ec4d289a64094464aec70d11b8597
+    subdir: androidApp
+    output: build/outputs/apk/release/RaccoonForLemmy-release-unsigned.apk
+    rm:
+      - iosApp
+    prebuild: sed -i -e '/isEnable/s/true/false/' build.gradle.kts
+    build:
+      - mkdir upstream
+      - pushd upstream
+      - curl -L -o upstream.apk 
+        https://github.com/LiveFastEatTrashRaccoon/RaccoonForLemmy/releases/download/$$VERSION$$/RaccoonForLemmy-universal-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -140,5 +168,5 @@ AllowedAPKSigningKeys: 694761bc0a59476e4b6b7f39d27f75d030c2a9c0c2b1f68f5ff398572
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
-CurrentVersion: 1.14.0
-CurrentVersionCode: 141
+CurrentVersion: 1.14.1
+CurrentVersionCode: 151
