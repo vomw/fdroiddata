@@ -1,0 +1,111 @@
+Categories:
+  - Internet
+  - Social Network
+License: GPL-3.0-only
+AuthorName: Christin Löhner
+WebSite: https://www.fedisuite.com/
+SourceCode: https://github.com/christinloehner/FediSuite-Android-App
+IssueTracker: https://github.com/christinloehner/FediSuite-Android-App/issues
+Changelog: https://github.com/christinloehner/FediSuite-Android-App/releases
+
+AutoName: FediSuite
+Summary: Manage, schedule and analyze your Fediverse accounts with FediSuite
+Description: |
+  FediSuite is a mobile client for the FediSuite Fediverse management platform.
+
+  It connects to a specific FediSuite instance chosen by the user. This can be
+  the official hosted instance at app.fedisuite.com or a self-hosted FediSuite
+  instance.
+
+  Features include:
+
+  * secure login with instance-scoped sessions
+  * mobile dashboard and account summaries
+  * account analytics and insights
+  * queue management for scheduled, draft, published and failed posts
+  * composer with media support and scheduling
+  * connected account management
+  * mobile preferences for theme, language, timezone and default account
+
+  The app is designed as a touch-first Android experience with bottom tabs,
+  card-based screens and explicit loading, empty and error states.
+
+RepoType: git
+Repo: https://github.com/christinloehner/FediSuite-Android-App.git
+
+Builds:
+  - versionName: 0.9.10
+    versionCode: 1
+    commit: v0.9.10
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm openjdk-17-jdk-headless
+    init:
+      - cd ..
+      - npm ci
+      - npm install --no-save @react-native-community/javascriptcore
+      # Hermes deaktivieren und JSC erzwingen
+      - sed -i 's/^hermesEnabled=true$/hermesEnabled=false/' android/gradle.properties
+      - grep -q '^useThirdPartyJSC=true$' android/gradle.properties || printf '\nuseThirdPartyJSC=true\n' >> android/gradle.properties
+      
+      # Patch: Expo ReactHost für JSC fit machen (dein existierender Patch, leicht optimiert)
+      - >-
+        python3 -c 'from pathlib import Path; 
+        main_app = Path("android/app/src/main/java/org/fedisuite/mobile/MainApplication.kt"); 
+        text = main_app.read_text(); 
+        if "JSCRuntimeFactory" not in text:
+          text = text.replace("import expo.modules.ApplicationLifecycleDispatcher", "import expo.modules.ApplicationLifecycleDispatcher\nimport io.github.reactnativecommunity.javascriptcore.JSCRuntimeFactory");
+          old_host = "PackageList(this).packages.apply {";
+          new_host = "PackageList(this).packages.apply {\n          // manual adds\n        },\n      jsRuntimeFactory = JSCRuntimeFactory()";
+          text = text.replace(old_host, new_host);
+          main_app.write_text(text)'
+
+      # DER ENTSCHEIDENDE FIX: react-native-worklets CMake Patch
+      # Wir entfernen die Abhängigkeit zu jsctooling, die den Build abbricht
+      - >-
+        python3 -c 'from pathlib import Path; 
+        cmake = Path("node_modules/react-native-worklets/android/CMakeLists.txt"); 
+        text = cmake.read_text(); 
+        text = text.replace("ReactAndroid::jsctooling", ""); 
+        text = text.replace("if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nendif()", "if(${JS_RUNTIME} STREQUAL \"hermes\")\n  find_package(hermes-engine REQUIRED CONFIG)\nelif(${JS_RUNTIME} STREQUAL \"jsc\")\n  find_package(jscruntimefactory REQUIRED CONFIG)\nendif()");
+        text = text.replace("target_link_libraries(worklets jsc-android::jsc)", "target_link_libraries(worklets jscruntimefactory::jscruntimefactory)");
+        cmake.write_text(text)'
+
+      # Java Version auf 17 zwingen (RN 0.76 Standard)
+      - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(21)/jvmToolchain(17)/g' {} +
+      - find node_modules/@react-native/gradle-plugin -name '*.kt' -exec sed -i 's/jvmToolchain(21)/jvmToolchain(17)/g' {} +
+      
+      # SDK Version auf 35 korrigieren (statt 36)
+      - sed -i 's/compileSdk = 36/compileSdk = 35/' android/build.gradle
+      - sed -i 's/targetSdk = 36/targetSdk = 35/' android/build.gradle
+      
+      - npm run sync-version
+    prebuild:
+      - gradle clean
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+
+MaintainerNotes: |
+  Initial packaging recipe for the Expo/React-Native Android app.
+
+  The Android build needs Node.js/npm in addition to Gradle because the release
+  build embeds the JavaScript bundle via Expo/React Native.
+
+  Hermes is disabled in the F-Droid build recipe because the prebuilt
+  `node_modules/hermes-compiler/.../hermesc` executable fails to start in the
+  build environment. The build uses JSC instead.
+
+  The F-Droid recipe installs `@react-native-community/javascriptcore`,
+  enables `useThirdPartyJSC=true`, and patches the Expo ReactHost wiring so the
+  Android build uses the third-party JSC runtime consistently.
+
+  Version information is read from the plain-text file `version`.
+
+  The upstream project currently keeps `versionCode` in
+  `android/app/build.gradle` at `1`, so future updates will require explicit
+  upstream versionCode bumps in addition to versionName/tag updates.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.9.10
+CurrentVersionCode: 1
