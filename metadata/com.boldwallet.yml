@@ -989,7 +989,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev golang-go npm openjdk-17-jdk openjdk-21-jdk
+      - apt-get install -y gcc libc-dev golang-go npm openjdk-21-jdk
     gradle:
       - yes
     srclibs:
@@ -1024,8 +1024,7 @@ Builds:
       - pushd $$go$$/src
       - ./make.bash
       - popd
-      - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64,/usr/lib/jvm/java-21-openjdk-amd64"
-      - /usr/lib/jvm/java-17-openjdk-amd64/bin/java -version
+      - export GRADLE_OPTS="-Dorg.gradle.java.installations.auto-detect=true -Dorg.gradle.java.installations.auto-download=true -Dorg.gradle.java.installations.paths=/usr/lib/jvm/java-21-openjdk-amd64"
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - export PATH="$JAVA_HOME/bin:$PATH"
       - java -version
