@@ -44,6 +44,7 @@ Builds:
     init:
       - cd ..
       - npm ci
+      - sed -i 's/^hermesEnabled=true$/hermesEnabled=false/' android/gradle.properties
       - find node_modules/@react-native/gradle-plugin -name '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - >-
@@ -82,6 +83,10 @@ MaintainerNotes: |
 
   The Android build needs Node.js/npm in addition to Gradle because the release
   build embeds the JavaScript bundle via Expo/React Native.
+
+  Hermes is disabled in the F-Droid build recipe because the prebuilt
+  `node_modules/hermes-compiler/.../hermesc` executable fails to start in the
+  build environment. The build uses JSC instead.
 
   Version information is read from the plain-text file `version`.
 
