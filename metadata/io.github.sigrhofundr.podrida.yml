@@ -1,0 +1,39 @@
+Categories:
+  - Games
+License: MIT
+SourceCode: https://github.com/Sigrhofundr/podrida
+IssueTracker: https://github.com/Sigrhofundr/podrida/issues
+Changelog: https://github.com/Sigrhofundr/podrida/releases
+
+AutoName: Segnapunti Podrida
+
+RepoType: git
+Repo: https://github.com/Sigrhofundr/podrida.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0.0-newid
+    subdir: podrida-android/android/app
+    sudo:
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm install
+      - npx cap sync
+    scanignore:
+      - podrida-android/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - podrida-android/node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
