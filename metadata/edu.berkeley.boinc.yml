@@ -309,11 +309,10 @@ Builds:
       - sed -i -e '/xiaomi_.* {/,/}/d' build.gradle
       - sed -i -e 's/^version.kotlin=1.8.21$/version.kotlin=1.9.24/' -e 's/^version.androidx.databinding=8.0.1$/version.androidx.databinding=8.3.2/'
         -e 's/^plugin.android=8.0.1$/plugin.android=8.3.2/' ../versions.properties
-      - "sed -i -e '/^    kotlinOptions {$/,/^    }$/c\\\n    kotlinOptions {\\\n\
-        \        jvmTarget = '\\''17'\\''\\\n    }\\\n    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile).configureEach
-        {\\\n        kotlinOptions {\\\n            jvmTarget = JavaVersion.VERSION_17.toString()\\\
-        \n        }\\\n        compilerOptions {\\\n            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17\\\
-        \n        }\\\n    }' build.gradle\n"
+      - sed -i -e '/kotlinOptions {/,/^    }$/c kotlinOptions { jvmTarget = 
+        "17"}\ntasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile).configureEach
+        { kotlinOptions { jvmTarget = JavaVersion.VERSION_17.toString() }\ncompilerOptions
+        {jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17 }}' build.gradle
     build:
       - cd ../../..
       - export VCPKG_FEATURE_FLAGS=-binarycaching
