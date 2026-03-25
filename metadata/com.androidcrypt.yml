@@ -9,24 +9,21 @@ AutoName: androidcrypt
 
 RepoType: git
 Repo: https://github.com/jmccoy600/androidCrypt.git
-Binaries: https://github.com/jmccoy600/androidCrypt/releases/download/%v/app-release.apk
 
 Builds:
-  - versionName: 1.0.4
-    versionCode: 4
-    commit: e94b42830e478eb1b225aa7edcbf7c90b7760c19
+  - versionName: 1.0.5
+    versionCode: 5
+    commit: 1.0.5
     subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+      - sdkmanager "cmake;3.22.1"
     gradle:
       - yes
-    prebuild:
-      - sdkmanager "cmake;3.22.1"
-      - sed -i 's/version = "4.2.3"/version = "3.22.1"/' build.gradle.kts
-      - sed -i 's/cmake_minimum_required(VERSION 4.2.3)/cmake_minimum_required(VERSION
-        3.22.1)/' src/main/cpp/CMakeLists.txt
-
-AllowedAPKSigningKeys: 5ab7105ff690e507be6d865c1f7f222a321d6b6189e9397fb304d8842a268026
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.4
+CurrentVersion: 1.0.5
 CurrentVersionCode: 4
