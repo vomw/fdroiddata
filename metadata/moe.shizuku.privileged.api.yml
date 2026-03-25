@@ -1,0 +1,45 @@
+Categories:
+  - System
+License: Apache-2.0
+SourceCode: https://github.com/RikkaApps/Shizuku
+IssueTracker: https://github.com/RikkaApps/Shizuku/issues
+
+RepoType: git
+Repo: https://github.com/RikkaApps/Shizuku
+
+Builds:
+  - versionName: 13.6.0.r1086.2650830c
+    versionCode: 1086
+    commit: 2650830c5b099ae0dd34fedf614d4f592ca05d65
+    subdir: manager
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/outputs/apk/release/*.apk
+    binary: https://github.com/RikkaApps/Shizuku/releases/download/v13.6.0/shizuku-v13.6.0.r1086.2650830c-release.apk
+    prebuild:
+      - sed -i -e '/signing.gradle/d' build.gradle
+      - gradle clean
+    scanignore:
+      - shell/src/main/java/rikka/shizuku/shell/ShizukuShellLoader.java
+    build:
+      - export repo=/home/runner/work/Shizuku
+      - mkdir -p $repo
+      - cd ../..
+      - mv moe.shizuku.privileged.api $repo/Shizuku
+      - pushd $repo/Shizuku/manager
+      - gradle assembleRelease
+      - popd
+      - mv $repo/Shizuku moe.shizuku.privileged.api
+
+AllowedAPKSigningKeys: 268b5590e868fb08bae7e0ac413564cd1ff88f5ccff74af9dbd0dc918e30db30
+
+AutoUpdateMode: None
+UpdateCheckMode: Static
+CurrentVersion: 13.6.0.r1086.2650830c
+CurrentVersionCode: 1086
