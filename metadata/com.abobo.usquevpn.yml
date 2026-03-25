@@ -1,0 +1,41 @@
+Categories:
+  - VPN & Proxy
+License: MIT
+AuthorName: Abobo
+SourceCode: https://github.com/Abobo7/usque-android
+IssueTracker: https://github.com/Abobo7/usque-android/issues
+
+AutoName: Usque VPN
+
+RepoType: git
+Repo: https://github.com/Abobo7/usque-android
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 3
+    commit: b990c29e745e9d7272958ffb27c865fb73c2d573
+    subdir: android/usque-vpn
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y make golang
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/*.apk
+    build:
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - pushd ../
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - export PATH=$PATH:~/go/bin
+      - gomobile init -v
+      - gomobile bind -v -target=android/arm64,android/arm -androidapi 24 -ldflags="-s
+        -w" -o usque.aar github.com/Diniboy1123/usque/android
+      - popd
+      - mkdir -p app/libs
+      - cp ../usque.aar app/libs/
+    ndk: r25b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.3
+CurrentVersionCode: 3
