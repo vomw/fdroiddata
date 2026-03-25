@@ -20,7 +20,6 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - npm install -g yarn
     gradle:
       - yes
     srclibs:
@@ -31,8 +30,7 @@ Builds:
       - sed -i -e '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - sed -i -e '/JavaVersion/s/17/21/' -e '/jvmToolchain/s/17/21/' 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - perl -0pi -e 's/android \{\n/android {\n    dependenciesInfo {\n        includeInApk
-        = false\n        includeInBundle = false\n    }\n/' android/app/build.gradle
+      - sed -i '/signingConfigs\.release/d' android/app/build.gradle
       - perl -0pi -e 's#api "org\.asyncstorage\.shared_storage:storage-android:1\.0\.0"#api
         files\("$$react-native-async-storage$$/shared-storage/build/outputs/aar/shared-storage.aar"\)#'
         node_modules/@react-native-async-storage/async-storage/android/build.gradle
