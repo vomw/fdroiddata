@@ -18,18 +18,14 @@ Repo: https://github.com/Horizontal-org/Tella-Android.git
 Binaries: https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss%v(%c)/mobile-release-Foss-%c.apk
 
 Builds:
-  - versionName: 2.20.0
-    versionCode: 228
-    commit: 72ee8effa6b74bbc6917d99606d36ffd2612a645
+  - versionName: 2.0.15
+    versionCode: 149
+    commit: d3e629da651380dcc290b019ba590b79da7075c6
     subdir: mobile
-    prebuild:
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle build.gradle
     gradle:
-      - assembleFdroidRelease
+      - yes
     srclibs:
       - reproducible-apk-tools@v0.2.3
-    gradleprops:
-      - fdroid
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
       'META-INF/services/*' 'assets/cleaninsights.json'
 
@@ -39,6 +35,22 @@ Builds:
     subdir: mobile
     gradle:
       - yes
+
+  - versionName: 2.20.0
+    versionCode: 228
+    commit: 72ee8effa6b74bbc6917d99606d36ffd2612a645
+    subdir: mobile
+    prebuild:
+      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
+      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/ && !/ENABLE_CRASHLYTICS/' build.gradle
+    gradle:
+      - assembleFdroidRelease
+    srclibs:
+      - reproducible-apk-tools@v0.2.3
+    gradleprops:
+      - fdroid
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*' 'assets/cleaninsights.json'
 
 AllowedAPKSigningKeys: 0f98d162b443e71de141a93aec27c6d5acaa725dba4c3fca97457258c193a729
 
