@@ -1,0 +1,47 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Uses external web APIs for earthquake data
+Categories:
+  - Internet
+  - Navigation
+License: Apache-2.0
+AuthorName: Aditya Halder
+WebSite: https://github.com/Fenirok/Earthquake_app
+SourceCode: https://github.com/Fenirok/Earthquake_app
+IssueTracker: https://github.com/Fenirok/Earthquake_app/issues
+
+AutoName: QuakeTrace
+
+RepoType: git
+Repo: https://github.com/Fenirok/Earthquake_app.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 3b541a65baa4e47c4814732eb902e3af099e3dc7
+    output: build/app/outputs/flutter-apk/*release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+      - test
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=/tmp/pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - export PUB_CACHE=/tmp/pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
