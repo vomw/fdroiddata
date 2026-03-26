@@ -42,6 +42,9 @@ Builds:
       - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      # React Native's gradle plugin requires Java 17 via JVM toolchains;
+      # the buildserver only has Java 21.
+      - apt-get update -qq && apt-get install -yqq openjdk-17-jdk-headless
       # pnpm is the package manager used by this project.
       - npm install -g pnpm
     prebuild:
