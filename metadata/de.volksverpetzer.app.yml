@@ -42,16 +42,19 @@ Builds:
       - mkdir -p /usr/lib/jvm/java-17-temurin && tar xzf jdk17.tar.gz --strip-components=1
         -C /usr/lib/jvm/java-17-temurin
       - npm install -g pnpm
+    gradle:
+      - yes
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="de.volksverpetzer.app"/>' > AndroidManifest.xml && echo
-        'target=android-36' > project.properties
+      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle
+      - printf 'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install --frozen-lockfile
       - npx expo prebuild --platform android --no-install
       - chmod -R a+r android/
       - sed -i
         's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
         android/gradle/wrapper/gradle-wrapper.properties
+      - cd android && gradlew-fdroid :app:assembleRelease
     scanignore:
       - node_modules/expo-*/local-maven-repo/
       - node_modules/@expo/dom-webview/local-maven-repo/
@@ -80,7 +83,6 @@ Builds:
       - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
       - node_modules/@gerrit0/mini-shiki/
       - node_modules/expo/template.tgz
-    build: cd android && gradlew-fdroid :app:assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
