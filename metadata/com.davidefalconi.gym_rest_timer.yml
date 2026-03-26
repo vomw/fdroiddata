@@ -1,0 +1,43 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-only
+SourceCode: https://github.com/davidefalconi69/gym_rest_timer
+IssueTracker: https://github.com/davidefalconi69/gym_rest_timer/issues
+
+AutoName: Gym Rest Timer
+
+RepoType: git
+Repo: https://github.com/davidefalconi69/gym_rest_timer.git
+Binaries: https://github.com/davidefalconi69/gym_rest_timer/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 8714e022fee719d33fc79dfc6afd3861559f10d3
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.38.5
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - ln -s $$flutter$$ .flutter
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release
+
+AllowedAPKSigningKeys: b57bb9793c91b652ffc2e67ba6f953bf63b28d2d562fc9551bdb136c173da5ec
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
