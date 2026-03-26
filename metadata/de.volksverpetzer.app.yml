@@ -5,8 +5,6 @@ AntiFeatures:
   Tracking:
     en-US: Plausible (Analytics) is enabled by default and cannot be disabled.
     de-DE: Plausible (Analytics) ist standardmäßig aktiv und nicht abschaltbar.
-  # Stripe pulls in com.google.android.gms (Play Services),
-  # expo-notifications pulls in com.google.firebase.
   NonFreeDep:
     en-US: Uses Google Play Services (via Stripe) and Firebase (via expo-notifications).
     de-DE: Nutzt Google Play Services (über Stripe) und Firebase (über expo-notifications).
@@ -31,65 +29,33 @@ Builds:
   - versionName: 2.1.6
     versionCode: 470010248
     commit: v2.1.6
-    # Expo/React Native app: no android/ dir in repo, so we cannot use subdir.
-    # Setting gradle: yes suppresses the legacy Ant "android update" step.
-    gradle:
-      - yes
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
-      # Install Node.js for the Expo/React Native build toolchain.
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
       - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-      # React Native's gradle plugin requires Java 17 via JVM toolchains;
-      # the buildserver (Debian Trixie) only ships Java 21.
-      # Install Eclipse Temurin JDK 17 so Gradle's toolchain detection finds it.
-      - curl -Lo jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
+      - curl -Lo jdk17.tar.gz
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
       - echo "0c94cbb54325c40dcf026143eb621562017db5525727f2d9131a11250f72c450 jdk17.tar.gz"
         | sha256sum -c -
       - mkdir -p /usr/lib/jvm/java-17-temurin && tar xzf jdk17.tar.gz --strip-components=1
         -C /usr/lib/jvm/java-17-temurin
-      # pnpm is the package manager used by this project.
       - npm install -g pnpm
     prebuild:
-      # Stub settings.gradle + build.gradle so fdroidserver's gradle clean
-      # succeeds in the project root (the real gradle project is in android/).
-      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && echo
-        "task clean {}" > build.gradle
+      - echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="de.volksverpetzer.app"/>' > AndroidManifest.xml
       - pnpm install --frozen-lockfile
-      # Generate the android/ directory from Expo config.
       - npx expo prebuild --platform android --no-install
-      # Expo prebuild creates files with mode 0200 (write-only);
-      # fix permissions first so subsequent commands can read/modify them.
       - chmod -R a+r android/
-      # React Native's gradle plugin references JvmVendorSpec.IBM_SEMERU which
-      # was removed in Gradle 9.0. Downgrade to 8.11.1 for compatibility.
-      - sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
+      - sed -i
+        's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
         android/gradle/wrapper/gradle-wrapper.properties
-    scandelete:
-      # Remove native binaries not needed for the Android build.
-      - node_modules/@esbuild/
-      - node_modules/fb-dotslash/
-      # Keep only the linux64 hermesc binary needed to compile JS → Hermes bytecode.
-      # Delete the macOS and Windows binaries that aren't needed on the Linux buildserver.
-      - node_modules/hermes-compiler/hermesc/osx-bin/
-      - node_modules/hermes-compiler/hermesc/win64-bin/
-      # Remove non-code archives flagged by the scanner.
-      - node_modules/@cspell/
-      - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
-      - node_modules/@gerrit0/mini-shiki/
-      - node_modules/expo/template.tgz
     scanignore:
-      # Prebuilt Expo module AARs/JARs in local maven repos — required for build.
       - node_modules/expo-*/local-maven-repo/
       - node_modules/@expo/dom-webview/local-maven-repo/
-      # Hermes compiler binary — needed to compile JS bundle into Hermes bytecode.
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      # React Native i18n .bin files — language packs, not executable code.
       - node_modules/react-native/React/I18n/strings/
-      # build.gradle files referencing local/unknown maven repos — safe, just
-      # point to node_modules paths for React Native and related libraries.
       - node_modules/rive-react-native/android/build.gradle
       - node_modules/expo-dev-launcher/android/build.gradle
       - node_modules/react-native/ReactAndroid/publish.gradle
@@ -101,16 +67,21 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      # "Usual suspects" — flagged by scanner for non-free deps.
-      # Covered by the NonFreeDep AntiFeature above.
       - node_modules/expo-application/android/build.gradle
       - node_modules/@stripe/stripe-react-native/android/build.gradle
       - node_modules/expo-notifications/android/build.gradle
-    # Build from the generated android/ directory using fdroidserver's gradle wrapper.
+    scandelete:
+      - node_modules/@esbuild/
+      - node_modules/fb-dotslash/
+      - node_modules/hermes-compiler/hermesc/osx-bin/
+      - node_modules/hermes-compiler/hermesc/win64-bin/
+      - node_modules/@cspell/
+      - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
+      - node_modules/@gerrit0/mini-shiki/
+      - node_modules/expo/template.tgz
     build: cd android && gradlew-fdroid :app:assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
 CurrentVersion: 2.1.6
 CurrentVersionCode: 470010248
-
