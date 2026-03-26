@@ -1,0 +1,44 @@
+Categories:
+  - Reading
+  - Education
+License: MIT
+AuthorName: gitrdm
+AuthorEmail: tba@ping.33mail.com
+AuthorWebSite: https://github.com/gitrdm/torrey_bible_app
+SourceCode: https://github.com/gitrdm/torrey_bible_app
+IssueTracker: https://github.com/gitrdm/torrey_bible_app/issues
+Changelog: https://github.com/gitrdm/torrey_bible_app/blob/master/CHANGELOG.md
+
+AutoName: Torrey Bible Study
+
+RepoType: git
+Repo: https://github.com/gitrdm/torrey_bible_app.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    gradle:
+      - yes
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.27.1
+    prebuild: 
+      - echo 'android.useAndroidX=true' >> ../gradle.properties
+      - echo 'android.enableJetifier=false' >> ../gradle.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter packages get
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
