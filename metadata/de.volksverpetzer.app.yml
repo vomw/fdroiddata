@@ -32,6 +32,14 @@ Builds:
       - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install -g pnpm@10.30.3
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - pnpm install
+      - APP=volksverpetzer pnpm exec expo prebuild --platform android --clean
+      - cd android/app
+      - sed -i -e '/signingConfig /d' build.gradle
+      - gradle assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
