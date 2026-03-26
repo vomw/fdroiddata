@@ -44,18 +44,18 @@ Builds:
       - npm install -g pnpm
     gradle:
       - yes
-    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle
-      - printf 'task clean {}\ntask assembleRelease {}\n' > build.gradle
+      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && echo
+        "task clean {}" > build.gradle
       - pnpm install --frozen-lockfile
       - npx expo prebuild --platform android --no-install
       - chmod -R a+r android/
       - sed -i
         's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
         android/gradle/wrapper/gradle-wrapper.properties
-      - cd android && gradlew-fdroid :app:assembleRelease
     scanignore:
+      - android/app/build/
+      - android/app/.cxx/
       - node_modules/expo-*/local-maven-repo/
       - node_modules/@expo/dom-webview/local-maven-repo/
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -83,6 +83,7 @@ Builds:
       - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
       - node_modules/@gerrit0/mini-shiki/
       - node_modules/expo/template.tgz
+    build: cd android && gradlew-fdroid :app:assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
