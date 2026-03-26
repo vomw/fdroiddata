@@ -22,10 +22,9 @@ Builds:
       - apt-get install -y nodejs
       - npm install -g pnpm
     init:
-      - source $HOME/.cargo/env
       - rustup default 1.82
-      - rustup target add aarch64-linux-android armv7-linux-androideabi
-        i686-linux-android x86_64-linux-android
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
       - cargo install tauri-cli --version "^2.0.0" --locked
       - export PATH="$HOME/.cargo/bin:$PATH"
       - export ANDROID_HOME=$$SDK$$
@@ -39,7 +38,8 @@ Builds:
       - sed -i '/"packageManager"/d' package.json
       - sed -i '/signingConfigs/,/^    }/d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - sed -i '/signingConfig = /d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
-      - sed -i '/buildFeatures/i\    dependenciesInfo {\n        includeInApk = false\n        includeInBundle = false\n    }' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
+      - sed -i '/buildFeatures/i\    dependenciesInfo {\n        includeInApk = false\n        includeInBundle
+        = false\n    }' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - echo 'packages:' > pnpm-workspace.yaml
       - echo '  - "apps/*"' >> pnpm-workspace.yaml
       - echo '  - "packages/*"' >> pnpm-workspace.yaml
