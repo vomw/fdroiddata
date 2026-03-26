@@ -12,6 +12,7 @@ AutoName: Notes
 
 RepoType: git
 Repo: https://github.com/amphi2024/notes.git
+Binaries: https://github.com/amphi2024/notes/releases/download/v%v/Notes-%v-Android.apk
 
 Builds:
   - versionName: 2.1.0
@@ -21,7 +22,6 @@ Builds:
       - mkdir -p /tmp/build
       - chown vagrant /tmp/build
     output: build/app/outputs/flutter-apk/app-release.apk
-    binary: https://github.com/amphi2024/notes/releases/download/v%v/Notes-%v-Android.apk
     srclibs:
       - flutter@stable
     rm:
@@ -35,7 +35,7 @@ Builds:
       - scripts
     prebuild:
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
-      - '[[ $flutterVersion ]] || exit 1'
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - mkdir -p /tmp/build
       - cd ..
