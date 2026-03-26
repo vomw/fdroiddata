@@ -44,12 +44,16 @@ Builds:
     gradle:
       - fdroid
     output: build/outputs/apk/fdroid/release/mobile-fdroid-universal-release*.apk
+    srclibs:
+      - reproducible-apk-tools@v0.2.3
     prebuild:
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/
         && !/ENABLE_CRASHLYTICS/' build.gradle
     gradleprops:
       - fdroid
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*' 'assets/cleaninsights.json'
 
 AllowedAPKSigningKeys: adfbd3e5bb78594f26faf49825927836ccace6cbabe27e100269b61c16ce3426
 
