@@ -1,0 +1,55 @@
+Categories:
+  - Internet
+  - Money
+License: GPL-3.0-only
+AuthorName: Ponos
+AuthorEmail: contact@ponos-job.eu
+AuthorWebSite: https://ponos-job.eu
+WebSite: https://ponos-job.eu
+SourceCode: https://gitlab.com/pablopernot/ponos
+IssueTracker: https://gitlab.com/pablopernot/ponos/-/issues
+Changelog: https://ponos-job.eu/changelog
+
+AutoName: Ponos
+Description: |
+  Ponos is a minimalist, ethical and open source professional social network.
+
+  Features:
+  * Create your professional profile
+  * Publish short posts (140 characters) with hashtags and mentions
+  * Connect with other professionals
+  * Private messaging
+  * Job offers via connectors (France Travail, FOREM, BOAMP)
+  * Cross-posting to Mastodon and Bluesky
+  * Available in 11 languages
+  * No trackers, no ads, privacy-friendly
+
+  This app is a WebView viewer for ponos-job.eu.
+
+RepoType: git
+Repo: https://gitlab.com/pablopernot/ponos.git
+
+Builds:
+  - versionName: 0.4.1
+    versionCode: 1
+    commit: v0.4.1
+    timeout: 20000
+    subdir: mobiles
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - mobiles/ios
+    scanignore:
+      - versions
+      - generated
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+      - flutter build apk --release
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.4.1
+CurrentVersionCode: 1
