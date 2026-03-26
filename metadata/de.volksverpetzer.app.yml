@@ -71,7 +71,10 @@ Builds:
       # Remove native binaries not needed for the Android build.
       - node_modules/@esbuild/
       - node_modules/fb-dotslash/
-      - node_modules/hermes-compiler/hermesc/
+      # Keep only the linux64 hermesc binary needed to compile JS → Hermes bytecode.
+      # Delete the macOS and Windows binaries that aren't needed on the Linux buildserver.
+      - node_modules/hermes-compiler/hermesc/osx-bin/
+      - node_modules/hermes-compiler/hermesc/win64-bin/
       # Remove non-code archives flagged by the scanner.
       - node_modules/@cspell/
       - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
@@ -81,6 +84,8 @@ Builds:
       # Prebuilt Expo module AARs/JARs in local maven repos — required for build.
       - node_modules/expo-*/local-maven-repo/
       - node_modules/@expo/dom-webview/local-maven-repo/
+      # Hermes compiler binary — needed to compile JS bundle into Hermes bytecode.
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       # React Native i18n .bin files — language packs, not executable code.
       - node_modules/react-native/React/I18n/strings/
       # build.gradle files referencing local/unknown maven repos — safe, just
