@@ -13,15 +13,11 @@ RepoType: git
 Repo: https://github.com/Koukobin/Ermis.git
 
 Builds:
-  - versionName: 1.3.0
-    versionCode: 2018
-    commit: ff0190067891611a27b802ba31d9f5f5ad1f59a7
+  - versionName: 1.4.0
+    versionCode: 2019
+    commit: af15f3c3af7423ccafe34193b9f59dba38b9fc42
     subdir: ErmisClient/Mobile/ermis_client
     sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-      - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
       - mkdir -p /home/ilias/Downloads/Ermis-master/ErmisClient/Mobile
       - chown -R vagrant /home/ilias
     output: build/app/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
@@ -62,11 +58,6 @@ Builds:
       - $$flutter$$/bin/dart run flutter_launcher_icons
       - $$flutter$$/bin/dart run intl_utils:generate
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-      # Strip nondeterministic metadata from generated APKs
-      - zip -X -o build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-      - zip -X -o build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-      - zip -X -o build/app/outputs/flutter-apk/app-x86_64-release.apk
-      - zip -X -o build/app/outputs/flutter-apk/app-release.apk
       - popd
       - mv $repo ermis_client
 
