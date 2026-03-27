@@ -17,12 +17,18 @@ Repo: https://github.com/flydecision/flydecision.git
 Builds:
   - versionName: '2.2' 
     versionCode: 33   
-    commit: v2.2       
+    commit: main       
     subdir: android    
+    sudo:
+      - apt-get update || true
+      - apt-get install -y nodejs npm
+    init:
+      - npm install
+      - npx cap sync android
     gradle:
-      - yes
+      - 'yes'
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
 CurrentVersion: '2.2'
-CurrentVersionCode: 100
+CurrentVersionCode: 33
