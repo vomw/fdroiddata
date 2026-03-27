@@ -1,0 +1,42 @@
+Categories:
+  - Launcher
+  - System
+  - Theming
+License: Apache-2.0
+AuthorName: Alex Sim
+AuthorEmail: ale.simula97@gmail.com
+SourceCode: https://github.com/alesimula/Murine-launcher
+IssueTracker: https://github.com/alesimula/Murine-launcher/issues
+Changelog: https://github.com/alesimula/Murine-launcher/releases
+Donate: https://www.paypal.com/donate/?hosted_button_id=3HRAWU9KVYKKS
+
+AutoName: Launcher:3
+Description: |-
+  A modern, lightweight Launcher3 fork delivering an enhanced stock Android experience,
+  providing a familiar AOSP feel out of the box, with some sprinkles on top :3
+
+RepoType: git
+Repo: https://github.com/alesimula/Murine-launcher
+Binaries: 
+  https://github.com/alesimula/Murine-launcher/releases/download/v%v/Murine-launcher.apk
+
+Builds:
+  - versionName: '0.9'
+    versionCode: 9
+    commit: v0.9
+    subdir: .
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - aosp
+      - withoutQuickstep
+
+AllowedAPKSigningKeys: 4ee045489a40c3072dca4ad7c50e30961c6256182511368c53a56a5acc07e2e5
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v(\d+(\.\d+)*)$
+CurrentVersion: '0.9'
+CurrentVersionCode: 9
