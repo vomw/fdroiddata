@@ -1,32 +1,32 @@
 Categories:
-  - Sports
+  - Sports & Health
   - Weather
-License: AGPL-3.0-only 
-SourceCode: https://github.com/flydecision/flydecision 
-IssueTracker: https://github.com/flydecision/flydecision/issues 
+License: AGPL-3.0-only
+SourceCode: https://github.com/flydecision/flydecision
+IssueTracker: https://github.com/flydecision/flydecision/issues
 
 Name: Fly Decision
-Summary: Pronóstico y análisis meteorológico para vuelo en parapente.
+Summary: Pronóstico y análisis meteorológico para vuelo en parapente
 Description: |-
-  Análisis automático del pronóstico de tiempo y orientaciones para despegues de parapente.
-  Tabla con lugares de vuelo y predicciones por horas para los próximos días, con evaluación visual por colores según límites de seguridad personalizables. Ayuda para decidir dónde puedes ir a volar en parapente. Incluye mapa de despegues.
+    Análisis automático del pronóstico de tiempo y orientaciones para despegues de parapente. Tabla con lugares de vuelo y predicciones por horas para los próximos días, con evaluación visual por colores según límites de seguridad personalizables. Ayuda para decidir dónde puedes ir a volar en parapente. Incluye mapa de despegues.
 
 RepoType: git
-Repo: https://github.com/flydecision/flydecision.git 
+Repo: https://github.com/flydecision/flydecision.git
 
 Builds:
-  - versionName: '2.2' 
-    versionCode: 33   
-    commit: main       
-    subdir: android    
+  - versionName: '2.2'
+    versionCode: 33
+    commit: v2.2
+    subdir: android
     sudo:
       - apt-get update || true
       - apt-get install -y nodejs npm
     init:
       - npm install
+      - npm run build || true
       - npx cap sync android
     gradle:
-      - 'yes'
+      - yes
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
