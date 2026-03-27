@@ -8,27 +8,25 @@ IssueTracker: https://github.com/flydecision/flydecision/issues
 RepoType: git
 Repo: https://github.com/flydecision/flydecision.git
 
-Name: Fly Decision
-Summary: Pronóstico y análisis meteorológico para vuelo en parapente
-Description: |-
-    Análisis automático del pronóstico de tiempo y orientaciones para despegues de parapente. Tabla con lugares de vuelo y predicciones por horas para los próximos días, con evaluación visual por colores según límites de seguridad personalizables. Ayuda para decidir dónde puedes ir a volar en parapente. Incluye mapa de despegues.
-
 Builds:
-  - versionName: '2.2'
-    versionCode: 33
+  - versionName: '2.2.1'
+    versionCode: 34
     commit: v2.2
     subdir: android
     sudo:
       - apt-get update || true
-      - apt-get install -y nodejs npm
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
     init:
-      - npm install
-      - npm run build || true
-      - npx cap sync android
+      # Volvemos a la raíz para instalar y compilar la web antes de entrar a Android
+      - cd .. && npm install
+      - cd .. && npm run build
+      - cd .. && npx cap sync android
     gradle:
       - yes
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
-CurrentVersion: '2.2'
-CurrentVersionCode: 33
+CurrentVersion: '2.2.1'
+CurrentVersionCode: 34
