@@ -73,10 +73,46 @@ Builds:
     scandelete:
       - rdp-kotlin/jniLibs/
 
+  - versionName: 3.24.0
+    versionCode: 1281
+    commit: 1ee3dc98b8b695ff6595ad21d77e4f6b6e400de2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk gcc libc-dev rustup
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - arm64
+    prebuild:
+      - rustup default 1.86.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
+  - versionName: 3.24.0
+    versionCode: 1282
+    commit: 1ee3dc98b8b695ff6595ad21d77e4f6b6e400de2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk gcc libc-dev rustup
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - x64
+    prebuild:
+      - rustup default 1.86.0
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
   - 10 * %c + 1
   - 10 * %c + 2
-CurrentVersion: 3.17.0
-CurrentVersionCode: 1172
+CurrentVersion: 3.24.0
+CurrentVersionCode: 1282
