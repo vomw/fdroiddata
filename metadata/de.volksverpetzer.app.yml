@@ -44,12 +44,14 @@ Builds:
       - npm install -g pnpm@10.30.3
     gradle:
       - yes
-    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    output: android/app/build/outputs/apk/release/app-*-unsigned.apk
     prebuild:
       - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && printf
         'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install --frozen-lockfile
       - npx expo prebuild --platform android --no-install
+      - sed -i 's/enableSeparateBuildPerCPUArchitecture = true/enableSeparateBuildPerCPUArchitecture
+        = false/' android/app/build.gradle || true
       - chmod -R a+r android/
       - sed -i 
         's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
