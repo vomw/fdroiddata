@@ -23,6 +23,12 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - npm ci --install-links --legacy-peer-deps --no-audit --no-fund
+      - mkdir -p node_modules/@tetherto/swarmconf
+      - 'printf "{\n  \"name\": \"@tetherto/swarmconf\",\n  \"version\": \"1.0.0-fdroid\",\n  \"main\":
+        \"index.js\"\n}\n" > node_modules/@tetherto/swarmconf/package.json'
+      - 'printf "module.exports = class SwarmConfig {\n  constructor() {\n    this.current
+        = { version: 0, blindRelays: [], blindPeers: [] }\n  }\n  async ready() {\n    return
+        this\n  }\n}\n" > node_modules/@tetherto/swarmconf/index.js'
       - rm -rf node_modules/expo-camera
       - mkdir -p node_modules/expo-camera
       - 'printf "{\n  \"name\": \"expo-camera\",\n  \"version\": \"16.1.11-fdroid\",\n  \"main\":
