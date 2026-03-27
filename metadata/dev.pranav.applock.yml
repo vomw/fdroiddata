@@ -55,9 +55,21 @@ Builds:
         break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; taskset --cpu-list
         0-15 gradle clean assembleRelease; done
 
+  - versionName: 2.2.3
+    versionCode: 223
+    commit: 4a0effcb75ec4fd23c67576787c9a05d5908145a
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: af7f36023c6a7750847252e5d4d14a992b621364600705e1d8b0fe44d1ac8c81
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.2.1
-CurrentVersionCode: 221
+CurrentVersion: 2.2.3
+CurrentVersionCode: 223
