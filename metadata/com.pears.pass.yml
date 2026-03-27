@@ -19,7 +19,7 @@ Builds:
     submodules: false
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends openjdk-17-jdk-headless nodejs npm
+      - apt-get install -y --no-install-recommends openjdk-21-jdk-headless nodejs npm
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - npm ci --install-links --legacy-peer-deps --no-audit --no-fund
@@ -100,9 +100,9 @@ Builds:
         then printf "android.enableDependencyInfoInBundle=false\n" >> gradle.properties;
         fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then JAVA_HOME="$(find
-        /usr/lib/jvm -maxdepth 1 -type d -name 'java-17*' | head -n 1)"; fi
+        /usr/lib/jvm -maxdepth 1 -type d -name 'java-21*' | head -n 1)"; fi
       - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then echo
-        "Java 17 not found in /usr/lib/jvm" >&2; exit 1; fi
+        "Java 21 not found in /usr/lib/jvm" >&2; exit 1; fi
       - JAVA_HOME="$JAVA_HOME" GRADLE_USER_HOME=/tmp/pearpass-gradle-home ./gradlew
         :app:clean :app:assembleRelease --no-daemon -Dorg.gradle.vfs.watch=false -Dorg.gradle.java.installations.auto-download=false
         -Dorg.gradle.java.installations.auto-detect=false -Dorg.gradle.java.installations.paths="$JAVA_HOME"
