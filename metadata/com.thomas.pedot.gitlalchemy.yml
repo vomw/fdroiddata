@@ -13,7 +13,7 @@ Repo: https://gitlab.com/thomas.pedot1/gitlalchemy.git
 Builds:
   - versionName: 1.2.2
     versionCode: 1002002
-    commit: 6629e4cb325db7b17e80382ce6b41c633094cb4f
+    commit: 45672f577b6f7362ad54e0de47ceb502db18f4fd
     timeout: 14400
     sudo:
       - apt-get update
@@ -35,8 +35,11 @@ Builds:
     output: 
       apps/desktop/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     prebuild:
-      - sed -i 's|"bun run build"|"npm run build"|g' apps/desktop/src-tauri/tauri.conf.json
       - sed -i '/"packageManager"/d' package.json
+      - for dpi in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do cp
+        apps/desktop/src-tauri/icons/android/$dpi/ic_launcher.png apps/desktop/src-tauri/gen/android/app/src/main/res/$dpi/ic_launcher.png;
+        cp apps/desktop/src-tauri/icons/android/$dpi/ic_launcher_foreground.png apps/desktop/src-tauri/gen/android/app/src/main/res/$dpi/ic_launcher_foreground.png;
+        cp apps/desktop/src-tauri/icons/android/$dpi/ic_launcher_round.png apps/desktop/src-tauri/gen/android/app/src/main/res/$dpi/ic_launcher_round.png; done
       - sed -i '/signingConfigs/,/^    }/d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - sed -i '/signingConfig = /d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - sed -i '/buildFeatures/i\    dependenciesInfo {\n        includeInApk = false\n        includeInBundle
@@ -55,5 +58,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: version.properties|versionCode=(\d+)|.|versionName=([\d.]+)
 CurrentVersion: 1.2.2
 CurrentVersionCode: 1002002
