@@ -44,9 +44,10 @@ Builds:
       - npm install -g pnpm
     gradle:
       - yes
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && echo
-        "task clean {}" > build.gradle
+      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && printf
+        'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install --frozen-lockfile
       - npx expo prebuild --platform android --no-install
       - chmod -R a+r android/
