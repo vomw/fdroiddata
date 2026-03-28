@@ -15,114 +15,16 @@ Repo: https://github.com/tetherto/pearpass-app-mobile.git
 Builds:
   - versionName: 1.5.0
     versionCode: 1
-    commit: 213c64c3ea6847d5b8ad02c89653d5cee9ec1543
+    commit: 0a967a9d5874404d04e032f1aed3aa5a503723d1
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends openjdk-21-jdk-headless 
         nodejs npm
     output: android/app/build/outputs/apk/release/app-release.apk
-    prebuild:
-      - npm ci --install-links --legacy-peer-deps --no-audit --no-fund
-      - mkdir -p node_modules/@tetherto/swarmconf
-      - 'printf "{\n  \"name\": \"@tetherto/swarmconf\",\n  \"version\": \"1.0.0-fdroid\",\n  \"main\":
-        \"index.js\"\n}\n" > node_modules/@tetherto/swarmconf/package.json'
-      - 'printf "module.exports = class SwarmConfig {\n  constructor() {\n    this.current
-        = { version: 0, blindRelays: [], blindPeers: [] }\n  }\n  async ready() {\n    return
-        this\n  }\n}\n" > node_modules/@tetherto/swarmconf/index.js'
-      - rm -rf node_modules/expo-camera
-      - mkdir -p node_modules/expo-camera
-      - 'printf "{\n  \"name\": \"expo-camera\",\n  \"version\": \"16.1.11-fdroid\",\n  \"main\":
-        \"index.js\",\n  \"expo\": {\n    \"plugin\": \"./app.plugin.js\"\n  }\n}\n"
-        > node_modules/expo-camera/package.json'
-      - printf "module.exports = (config) => config\n" > 
-        node_modules/expo-camera/app.plugin.js
-      - 'printf "const PermissionStatus = {\n  GRANTED: \"granted\",\n  DENIED: \"denied\"\n}\n\nconst
-        Camera = {\n  async getCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED
-        }\n  },\n  async requestCameraPermissionsAsync() {\n    return { status: PermissionStatus.DENIED,
-        canAskAgain: false }\n  },\n  async scanFromURLAsync() {\n    return []\n  }\n}\n\nfunction
-        CameraView() {\n  return null\n}\n\nmodule.exports = {\n  Camera,\n  CameraView,\n  PermissionStatus\n}\n"
-        > node_modules/expo-camera/index.js'
-      - npm run fdroid:patches:prebuild
-      - npm run build
-      - ./node_modules/.bin/expo prebuild --platform android --clean 
-        --no-install
-      - perl -0777 -i -pe "s/def reactNativeAndroidDir = new 
-        File\\([\\s\\S]*?\\n\\)\\n\\n//g" android/build.gradle
-      - perl -0777 -i -pe "s/\\n\\s*maven \\{\\n\\s*\\/\\/ All of React 
-        Native[^\\n]*\\n\\s*url\\(reactNativeAndroidDir\\)\\n\\s*\\}\\n/\\n/g" 
-        android/build.gradle
-      - perl -i -ne "print unless 
-        /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
-        android/app/build.gradle
-      - rm -f android/app/debug.keystore
+    prebuild: bash scripts/fdroid-build.sh prebuild
     scanignore:
       - node_modules/
-    build:
-      - if [ ! -f android/gradlew ]; then ./node_modules/.bin/expo prebuild 
-        --platform android --clean --no-install; fi
-      - npm run fdroid:patches:build
-      - npm run bundle-bare
-      - test -f bundles/app-android.bundle.js
-      - npm run lingui:compile
-      - test -f src/locales/en/messages.js
-      - if [ -d node_modules/bare-link/prebuilds ]; then find 
-        node_modules/bare-link/prebuilds -type f -name patchelf -exec chmod +x 
-        {} +; fi
-      - if [ -n "${ANDROID_HOME:-}" ]; then printf "sdk.dir=%s\n" 
-        "$ANDROID_HOME" > android/local.properties; fi
-      - cd android
-      - perl -i -ne "print unless 
-        /credentials-play-services-auth|play-services-auth|googleid|play-services-fido|firebase-messaging/"
-        app/build.gradle
-      - find . ../node_modules -name '*.gradle' -type f -exec perl -i -ne "print
-        unless /firebase-messaging|com\.google\.firebase\.messaging/" {} +
-      - find . ../node_modules -name '*.gradle.kts' -type f -exec perl -i -ne 
-        "print unless /firebase-messaging|com\.google\.firebase\.messaging/" {} 
-        +
-      - "python3 -c \"\nimport zipfile, shutil, glob\nfor j in glob.glob('../node_modules/react-native-bare-kit/**/classes.jar',
-        recursive=True):\n  t = j + '.tmp'\n  with zipfile.ZipFile(j) as zi, zipfile.ZipFile(t,
-        'w') as zo:\n    for i in zi.infolist():\n      if 'MessagingService' not
-        in i.filename: zo.writestr(i, zi.read(i.filename))\n  shutil.move(t, j)\n\"\
-        \ 2>/dev/null || true"
-      - rm -f app/google-services.json
-      - perl -i -ne "print unless /com\.google\.gms\.google-services/" 
-        app/build.gradle build.gradle
-      - 'if ! grep -q "fdroid-root-excludes" build.gradle; then printf "\n// fdroid-root-excludes\nsubprojects
-        {\n  configurations.all {\n    exclude group: \"com.google.firebase\"\n    exclude
-        group: \"com.google.firebase\", module: \"firebase-messaging\"\n  }\n}\n"
-        >> build.gradle; fi'
-      - 'if ! grep -q "fdroid-global-excludes" app/build.gradle; then printf "\n//
-        fdroid-global-excludes\nconfigurations.all {\n  exclude group: \"com.google.firebase\"\n  exclude
-        group: \"com.google.firebase\", module: \"firebase-messaging\"\n  exclude
-        group: \"com.google.android.gms\", module: \"play-services-fido\"\n  exclude
-        group: \"com.google.android.gms\", module: \"play-services-auth\"\n  exclude
-        group: \"androidx.credentials\", module: \"credentials-play-services-auth\"\n}\n"
-        >> app/build.gradle; fi'
-      - if ! grep -q "dependenciesInfo {" app/build.gradle; then perl -0777 -i 
-        -pe "s/android\s*\{\n/android {\n    dependenciesInfo {\n includeInApk =
-        false\n        includeInBundle = false\n    }\n/s" app/build.gradle; fi
-      - if ! grep -q '^android.enableDependencyInfoInApks=false$' 
-        gradle.properties; then printf 
-        "\nandroid.enableDependencyInfoInApks=false\n" >> gradle.properties; fi
-      - if ! grep -q '^android.enableDependencyInfoInApk=false$' 
-        gradle.properties; then printf 
-        "android.enableDependencyInfoInApk=false\n" >> gradle.properties; fi
-      - if ! grep -q '^android.enableDependencyInfoInBundle=false$' 
-        gradle.properties; then printf 
-        "android.enableDependencyInfoInBundle=false\n" >> gradle.properties; fi
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then 
-        JAVA_HOME="$(find /usr/lib/jvm -maxdepth 1 -type d -name 'java-21*' | 
-        head -n 1)"; fi
-      - if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then 
-        echo "Java 21 not found in /usr/lib/jvm" >&2; exit 1; fi
-      - JAVA_HOME="$JAVA_HOME" GRADLE_USER_HOME=/tmp/pearpass-gradle-home 
-        ./gradlew :app:clean :app:assembleRelease --no-daemon 
-        -Dorg.gradle.vfs.watch=false 
-        -Dorg.gradle.java.installations.auto-download=false 
-        -Dorg.gradle.java.installations.auto-detect=false 
-        -Dorg.gradle.java.installations.paths="$JAVA_HOME" 
-        -Pandroid.enableDependencyInfoInApk=false 
-        -Pandroid.enableDependencyInfoInBundle=false
+    build: bash scripts/fdroid-build.sh build
 
 AllowedAPKSigningKeys: 
   3f6bbdc5b347dad9e279e2e7531ab890d4823da7f01d9e87a70f3d57400ec70f
