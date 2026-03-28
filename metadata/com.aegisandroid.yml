@@ -21,7 +21,9 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release.apk
-    prebuild: npm --prefix .. ci --ignore-engines
+    prebuild:
+      - sed -i 's/27\.0\.12077973/27.2.12479018/g' ../node_modules/@op-engineering/op-sqlite/android/build.gradle
+      - npm --prefix .. ci --ignore-engines
     scanignore:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-biometrics/android/build.gradle
