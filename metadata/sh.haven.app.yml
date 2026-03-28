@@ -78,12 +78,14 @@ Builds:
     commit: 7d8ea6dff4d101e7f5566ff1921270c3bb3d8635
     subdir: app
     submodules: true
-    srclibs:
-      - rustup@1.27.1
     sudo:
       - apt-get update
       - apt-get install -y make binutils gawk
       - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - arm64
+    srclibs:
+      - rustup@1.27.1
     prebuild:
       - $$rustup$$/rustup-init.sh -y
       - source $HOME/.cargo/env
@@ -91,20 +93,20 @@ Builds:
       - cargo install cargo-ndk
     scandelete:
       - rdp-kotlin/jniLibs/
-    gradle:
-      - arm64
 
   - versionName: 3.25.0
     versionCode: 1292
     commit: 7d8ea6dff4d101e7f5566ff1921270c3bb3d8635
     subdir: app
     submodules: true
-    srclibs:
-      - rustup@1.27.1
     sudo:
       - apt-get update
       - apt-get install -y make binutils gawk
       - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - x64
+    srclibs:
+      - rustup@1.27.1
     prebuild:
       - $$rustup$$/rustup-init.sh -y
       - source $HOME/.cargo/env
@@ -112,8 +114,6 @@ Builds:
       - cargo install cargo-ndk
     scandelete:
       - rdp-kotlin/jniLibs/
-    gradle:
-      - x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
