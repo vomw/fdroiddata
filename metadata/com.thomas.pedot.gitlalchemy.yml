@@ -32,12 +32,12 @@ Builds:
       - export NDK_HOME=$$NDK$$
       - cd apps/desktop
       - cargo tauri android init
-    output: apps/desktop/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    output:
+      apps/desktop/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     prebuild:
       - sed -i 's|"bun run build"|"npm run build"|g' apps/desktop/src-tauri/tauri.conf.json
       - sed -i '/"packageManager"/d' package.json
-      - cp -r apps/desktop/src-tauri/icons/android/.
-        apps/desktop/src-tauri/gen/android/app/src/main/res/
+      - cp -r apps/desktop/src-tauri/icons/android/. apps/desktop/src-tauri/gen/android/app/src/main/res/
       - sed -i '/signingConfigs/,/^    }/d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - sed -i '/signingConfig = /d' apps/desktop/src-tauri/gen/android/app/build.gradle.kts
       - sed -i '/buildFeatures/i\    dependenciesInfo {\n        includeInApk = false\n        includeInBundle
