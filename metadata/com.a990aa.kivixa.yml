@@ -1,0 +1,52 @@
+Categories:
+  - Note
+License: MIT
+AuthorName: Abdul Ahad
+SourceCode: https://github.com/990aa/kivixa
+IssueTracker: https://github.com/990aa/kivixa/issues
+
+AutoName: kivixa
+
+RepoType: git
+Repo: https://github.com/990aa/kivixa.git
+
+Builds:
+  - versionName: 0.3.6
+    versionCode: 3006
+    commit: 29b2094ad3d15ea12286a4cac895268c66272560
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential file binutils rustup clang libclang-dev
+        cmake ninja-build
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - bash scripts/build-f-droid.sh
+      - rm -rf native/target native_math/target
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - android/app/src/main/jniLibs
+      - rust_builder/android/src/main/jniLibs
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r26b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.3.6
+CurrentVersionCode: 3006
