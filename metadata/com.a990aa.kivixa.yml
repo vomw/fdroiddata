@@ -1,0 +1,88 @@
+Categories:
+  - Productivity
+License: GPL-3.0-or-later
+SourceCode: https://github.com/990aa/kivixa
+IssueTracker: https://github.com/990aa/kivixa/issues
+Summary: Modern cross-platform notes and productivity app
+Description: |-
+  Kivixa is a modern cross-platform notes and productivity application.
+
+  Features:
+  - Rich Markdown Editor
+  - Digital Canvas with pressure sensitivity
+  - On-Device AI with multi-model MCP support
+  - Knowledge Graph visualization
+  - PDF Integration
+  - Productivity Clock with Pomodoro and Custom Sessions
+  - Math Module with Rust backend
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+
+Builds:
+  - versionName: 0.3.3
+    versionCode: 3003
+    commit: v0.3.3
+    ndk: r26b
+    sudo:
+      - apt-get update
+      - apt-get install -y curl build-essential file readelf
+    init:
+      # Install Rust toolchain for the F-Droid server
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - source $HOME/.cargo/env
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+    prebuild:
+      - source $HOME/.cargo/env
+      # Map F-Droid's NDK path to your script's expectations
+      - NDK_BIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
+      - API_LEVEL=23
+      # Export Rust cross-compilation variables
+      - export CC_aarch64_linux_android="${NDK_BIN}/aarch64-linux-android${API_LEVEL}-clang"
+      - export AR_aarch64_linux_android="${NDK_BIN}/llvm-ar"
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="${NDK_BIN}/aarch64-linux-android${API_LEVEL}-clang"
+      - export CC_armv7_linux_androideabi="${NDK_BIN}/armv7a-linux-androideabi${API_LEVEL}-clang"
+      - export AR_armv7_linux_androideabi="${NDK_BIN}/llvm-ar"
+      - export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER="${NDK_BIN}/armv7a-linux-androideabi${API_LEVEL}-clang"
+      - export CC_x86_64_linux_android="${NDK_BIN}/x86_64-linux-android${API_LEVEL}-clang"
+      - export AR_x86_64_linux_android="${NDK_BIN}/llvm-ar"
+      - export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER="${NDK_BIN}/x86_64-linux-android${API_LEVEL}-clang"
+      # Build native libraries
+      - cd native
+      - cargo build --release --target aarch64-linux-android
+      - cargo build --release --target armv7-linux-androideabi
+      - cargo build --release --target x86_64-linux-android
+      - cd ../native_math
+      - cargo build --release --target aarch64-linux-android
+      - cargo build --release --target armv7-linux-androideabi
+      - cargo build --release --target x86_64-linux-android
+      - cd ..
+      # Create jniLibs directories and copy the .so files
+      - mkdir -p android/app/src/main/jniLibs/arm64-v8a
+      - mkdir -p android/app/src/main/jniLibs/armeabi-v7a
+      - mkdir -p android/app/src/main/jniLibs/x86_64
+      - cp native/target/aarch64-linux-android/release/libkivixa_native.so android/app/src/main/jniLibs/arm64-v8a/
+      - cp native/target/armv7-linux-androideabi/release/libkivixa_native.so android/app/src/main/jniLibs/armeabi-v7a/
+      - cp native/target/x86_64-linux-android/release/libkivixa_native.so android/app/src/main/jniLibs/x86_64/
+      - cp native_math/target/aarch64-linux-android/release/libkivixa_math.so android/app/src/main/jniLibs/arm64-v8a/
+      - cp native_math/target/armv7-linux-androideabi/release/libkivixa_math.so android/app/src/main/jniLibs/armeabi-v7a/
+      - cp native_math/target/x86_64-linux-android/release/libkivixa_math.so android/app/src/main/jniLibs/x86_64/
+      - mkdir -p rust_builder/android/src/main/jniLibs/arm64-v8a
+      - mkdir -p rust_builder/android/src/main/jniLibs/armeabi-v7a
+      - mkdir -p rust_builder/android/src/main/jniLibs/x86_64
+      - cp native/target/aarch64-linux-android/release/libkivixa_native.so rust_builder/android/src/main/jniLibs/arm64-v8a/
+      - cp native/target/armv7-linux-androideabi/release/libkivixa_native.so rust_builder/android/src/main/jniLibs/armeabi-v7a/
+      - cp native/target/x86_64-linux-android/release/libkivixa_native.so rust_builder/android/src/main/jniLibs/x86_64/
+      - cp native_math/target/aarch64-linux-android/release/libkivixa_math.so rust_builder/android/src/main/jniLibs/arm64-v8a/
+      - cp native_math/target/armv7-linux-androideabi/release/libkivixa_math.so rust_builder/android/src/main/jniLibs/armeabi-v7a/
+      - cp native_math/target/x86_64-linux-android/release/libkivixa_math.so rust_builder/android/src/main/jniLibs/x86_64/
+      # Copy libc++_shared.so from NDK
+      - NDK_LIBCPP_ARM64="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so"
+      - NDK_LIBCPP_ARMV7="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so"
+      - NDK_LIBCPP_X86_64="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+      - cp "$NDK_LIBCPP_ARM64" android/app/src/main/jniLibs/arm64-v8a/ || true
+      - cp "$NDK_LIBCPP_ARM64" rust_builder/android/src/main/jniLibs/arm64-v8a/ || true
+      - cp "$NDK_LIBCPP_ARMV7" android/app/src/main/jniLibs/armeabi-v7a/ || true
+      - cp "$NDK_LIBCPP_ARMV7" rust_builder/android/src/main/jniLibs/armeabi-v7a/ || true
+      - cp "$NDK_LIBCPP_X86_64" android/app/src/main/jniLibs/x86_64/ || true
+      - cp "$NDK_LIBCPP_X86_64" rust_builder/android/src/main/jniLibs/x86_64/ || true
