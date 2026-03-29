@@ -29,15 +29,25 @@ Builds:
       - sed -i "s/VERSION_17/VERSION_21/g" app/build.gradle
       - sed -i "s/jvmTarget = '17'/jvmTarget = '21'/g" app/build.gradle
       - sed -i "s/jvmToolchain(17)/jvmToolchain(21)/g" app/build.gradle
+      - sed -i 's/JavaLanguageVersion\.of(17)/JavaLanguageVersion.of(21)/g' ../node_modules/react-native-quick-crypto/android/build.gradle
+      - sed -i 's/sourceCompatibility JavaVersion\.VERSION_17/sourceCompatibility JavaVersion.VERSION_21/g' ../node_modules/react-native-quick-crypto/android/build.gradle
+      - sed -i 's/targetCompatibility JavaVersion\.VERSION_17/targetCompatibility JavaVersion.VERSION_21/g' ../node_modules/react-native-quick-crypto/android/build.gradle
       - find ../node_modules -type f -name \*.gradle -print0 | xargs -0
         --no-run-if-empty sed -i 's/27\.0\.12077973/27.2.12479018/g'
       - find ../node_modules -type f -name \*.gradle -print0 | xargs -0
         --no-run-if-empty sed -i
         's/JavaLanguageVersion\.of(17)/JavaLanguageVersion.of(21)/g'
+      - find ../node_modules -type f -name \*.gradle -print0 | xargs -0
+        --no-run-if-empty sed -i 's/VERSION_17/VERSION_21/g'
       - find ../node_modules -type f -name \*.gradle.kts -print0 | xargs -0
         --no-run-if-empty sed -i 's/VERSION_17/VERSION_21/g'
       - find ../node_modules -type f -name \*.gradle.kts -print0 | xargs -0
         --no-run-if-empty sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
+      - find ../node_modules -type f -name \*.gradle.kts -print0 | xargs -0
+        --no-run-if-empty sed -i
+        's/JavaLanguageVersion\.of(17)/JavaLanguageVersion.of(21)/g'
+      - find ../node_modules -type f -name \*.gradle.kts -print0 | xargs -0
+        --no-run-if-empty sed -i 's/JVM_17/JVM_21/g'
       - find ../node_modules -type f -name gradle.properties -print0 | xargs -0
         --no-run-if-empty sed -i 's/27\.0\.12077973/27.2.12479018/g'
       - sed -i 's/"27\.0\.12077973"/"27.2.12479018"/g' app/build.gradle
