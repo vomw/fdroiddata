@@ -10,11 +10,7 @@ IssueTracker: https://gitlab.com/androidircx/AndroidIRCx/-/issues
 Changelog: https://gitlab.com/androidircx/AndroidIRCx/-/releases
 Donate: https://github.com/sponsors/AndroidIRCX
 
-RepoType: git
-Repo: https://gitlab.com/androidircx/AndroidIRCx.git
-
 AutoName: AndroidIRCX
-Summary: Feature-rich open source IRC client for Android
 Description: |
   AndroidIRCX is a modern open source IRC client for Android focused on
   reliable connectivity, deep customization, and advanced IRC workflows.
@@ -42,16 +38,19 @@ Description: |
   without Google analytics, crash reporting, ads, or in-app billing
   dependencies in the release path.
 
+RepoType: git
+Repo: https://gitlab.com/androidircx/AndroidIRCx.git
+
 Builds:
-  - versionName: "1.9.61"
+  - versionName: 1.9.61
     versionCode: 109
     commit: v1.9.61
     subdir: android
-    gradle:
-      - yes
     sudo:
       - apt-get update
       - apt-get install -y ccache yarnpkg
+    gradle:
+      - yes
     prebuild:
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - export GRADLE_USER_HOME=$PWD/.gradle
@@ -59,7 +58,7 @@ Builds:
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
       - cd ..
-      - yarnpkg install --frozen-lockfile --network-timeout 300000
+      - npx -y yarn@1.22.22 install --frozen-lockfile --network-timeout 300000 --non-interactive --silent
     build:
       - cd ..
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -68,10 +67,10 @@ Builds:
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
       - cd android
-      - ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache --stacktrace
+      - ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache
+        --stacktrace
 
-CurrentVersion: "1.9.61"
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.9.61
 CurrentVersionCode: 109
-
-UpdateCheckMode: Tags
-UpdateCheckIgnore: .*[+-]fdroid.*
