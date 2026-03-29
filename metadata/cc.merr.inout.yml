@@ -28,7 +28,7 @@ Repo: https://github.com/zocs/inout
 Builds:
   - versionName: '0.2.8'
     versionCode: 28
-    commit: d73bc8c0dbf0cf271f7e30ef244c9c6e9ff48fa2
+    commit: f249c27958e45a15172ae5cc82c7c42c5f03f2d9
     ndk: r27
     output: build/app/outputs/flutter-apk/app-release.apk
     sudo:
@@ -37,10 +37,13 @@ Builds:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
       - /root/.cargo/bin/rustup target add aarch64-linux-android
     init:
+      - cd ..
       - git clone --depth 1 --branch 3.41.5 https://github.com/flutter/flutter.git .flutter
+      - export PATH="$PWD/.flutter/bin:$PATH"
       - .flutter/bin/flutter precache --android
       - .flutter/bin/flutter config --no-analytics
     prebuild:
+      - cd ..
       - export PATH="$PWD/.flutter/bin:$PATH"
       - export PUB_CACHE="$PWD/.pub-cache"
       - .flutter/bin/flutter pub get
@@ -54,6 +57,7 @@ Builds:
       - .flutter
       - .pub-cache
     build:
+      - cd ..
       - export PATH="$PWD/.flutter/bin:$PATH"
       - export PUB_CACHE="$PWD/.pub-cache"
       - .flutter/bin/flutter build apk --release
