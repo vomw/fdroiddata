@@ -66,14 +66,7 @@ Builds:
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
       - grep -RIl 'jvmToolchain(17)' node_modules/@react-native/gradle-plugin | xargs
         sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
-      - python3 - <<'PY'
-        from pathlib import Path
-        path = Path("android/settings.gradle")
-        text = path.read_text(encoding="utf-8")
-        old = '    ex.autolinkLibrariesFromCommand([nodeBinary, "node_modules/@react-native-community/cli/build/bin.js", "config"])'
-        new = '    ex.autolinkLibrariesFromConfigFile(file("build/generated/autolinking/autolinking.json"))'
-        path.write_text(text.replace(old, new), encoding="utf-8")
-        PY
+      - sed -i '/autolinkLibrariesFromCommand/c\    ex.autolinkLibrariesFromConfigFile(file("build/generated/autolinking/autolinking.json"))' android/settings.gradle
     scanignore:
       - android/settings.gradle
       - android/build.gradle
