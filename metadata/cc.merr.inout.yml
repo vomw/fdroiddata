@@ -1,1 +1,69 @@
-{:value=>"Categories:\r\n  - Internet\r\n  - Files\r\nLicense: MIT\r\nAuthorName: zocs\r\nWebSite: https://github.com/zocs/inout\r\nSourceCode: https://github.com/zocs/inout\r\nIssueTracker: https://github.com/zocs/inout/issues\r\nChangelog: https://github.com/zocs/inout/releases\r\n\r\nName: inout\r\nAutoName: inout\r\nSummary: One-tap file sharing via browser 鈥?one install, everyone uploads & downloads\r\nDescription: |-\r\n  inout is a graphical file sharing application that lets you share files\r\n  from your device to any browser on your local network.\r\n\r\n  Features:\r\n  * One-tap file sharing via HTTP\r\n  * Upload files from any browser\r\n  * QR code for easy access\r\n  * File transfer log\r\n  * Customizable permissions\r\n  * Multi-language support\r\n  * Material 3 design\r\n\r\nRepoType: git\r\nRepo: https://github.com/zocs/inout\r\n\r\nBuilds:\r\n  - versionName: 0.2.8\r\n    versionCode: 28\r\n    commit: v0.2.8\r\n    subdir: android\r\n    sudo:\r\n      - apt-get update\r\n      - apt-get install -y protobuf-compiler\r\n    init:\r\n      - cd ..\r\n      - flutterVersion=$(sed -n -E \"s/.*flutter-version:\\ '(.*)'/\\1/p\" .github/workflows/build.yml)\r\n      - '[[ $flutterVersion ]]'\r\n      - git clone --depth 1 --branch ${flutterVersion} https://github.com/flutter/flutter.git\r\n      - export PATH=\"$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH\"\r\n      - flutter precache --android\r\n      - flutter config --no-analytics\r\n    prebuild:\r\n      - export PATH=\"$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH\"\r\n      # Install Rust\r\n      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y\r\n      - source $HOME/.cargo/env\r\n      - rustup target add aarch64-linux-android\r\n      # Compile dufs from source\r\n      - cd ..\r\n      - NDK=$(find \"$ANDROID_HOME/ndk\" -maxdepth 1 -type d | sort -V | tail -1)\r\n      - export ANDROID_NDK_HOME=\"$NDK\"\r\n      - bash scripts/build_dufs.sh android-arm64\r\n      - cd android\r\n    build:\r\n      - export PATH=\"$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH\"\r\n      - cd ..\r\n      - flutter build apk --release\r\n\r\nAllowedAPKSigningKeys:\r\n  - E4DB9054FF7070E4BEE3387E928E1388FACFEC0526DA10E4510282E9D26AED6A\r\n\r\nAutoUpdateMode: Version\r\nUpdateCheckMode: Tags\r\nCurrentVersion: 0.2.8\r\nCurrentVersionCode: 28\r\n", :PSPath=>"E:\\zocs\\git\\inout\\.fdroid.yml", :PSParentPath=>"E:\\zocs\\git\\inout", :PSChildName=>".fdroid.yml", :PSDrive=>{:CurrentLocation=>"", :Name=>"E", :Provider=>"Microsoft.PowerShell.Core\\FileSystem", :Root=>"E:\\", :Description=>"DATA1", :MaximumSize=>nil, :Credential=>"System.Management.Automation.PSCredential", :DisplayRoot=>nil}, :PSProvider=>{:ImplementingType=>"Microsoft.PowerShell.Commands.FileSystemProvider", :HelpFile=>"System.Management.Automation.dll-Help.xml", :Name=>"FileSystem", :PSSnapIn=>"Microsoft.PowerShell.Core", :ModuleName=>"Microsoft.PowerShell.Core", :Module=>nil, :Description=>"", :Capabilities=>52, :Home=>"C:\\Users\\zocs", :Drives=>"C D E"}, :ReadCount=>1}
+Categories:
+  - Internet
+  - Files
+License: MIT
+AuthorName: zocs
+WebSite: https://github.com/zocs/inout
+SourceCode: https://github.com/zocs/inout
+IssueTracker: https://github.com/zocs/inout/issues
+Changelog: https://github.com/zocs/inout/releases
+
+Name: inout
+AutoName: inout
+Summary: One-tap file sharing via browser 鈥?one install, everyone uploads & downloads
+Description: |-
+  inout is a graphical file sharing application that lets you share files
+  from your device to any browser on your local network.
+
+  Features:
+  * One-tap file sharing via HTTP
+  * Upload files from any browser
+  * QR code for easy access
+  * File transfer log
+  * Customizable permissions
+  * Multi-language support
+  * Material 3 design
+
+RepoType: git
+Repo: https://github.com/zocs/inout
+
+Builds:
+  - versionName: 0.2.8
+    versionCode: 28
+    commit: v0.2.8
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y protobuf-compiler
+    init:
+      - cd ..
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml)
+      - '[[ $flutterVersion ]]'
+      - git clone --depth 1 --branch ${flutterVersion} https://github.com/flutter/flutter.git
+      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
+      - flutter precache --android
+      - flutter config --no-analytics
+    prebuild:
+      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
+      # Install Rust
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - source $HOME/.cargo/env
+      - rustup target add aarch64-linux-android
+      # Compile dufs from source
+      - cd ..
+      - NDK=$(find "$ANDROID_HOME/ndk" -maxdepth 1 -type d | sort -V | tail -1)
+      - export ANDROID_NDK_HOME="$NDK"
+      - bash scripts/build_dufs.sh android-arm64
+      - cd android
+    build:
+      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
+      - cd ..
+      - flutter build apk --release
+
+AllowedAPKSigningKeys:
+  - E4DB9054FF7070E4BEE3387E928E1388FACFEC0526DA10E4510282E9D26AED6A
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.8
+CurrentVersionCode: 28
