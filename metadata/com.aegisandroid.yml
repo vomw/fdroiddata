@@ -48,6 +48,18 @@ Builds:
         's/JavaLanguageVersion\.of(17)/JavaLanguageVersion.of(21)/g'
       - find ../node_modules -type f -name \*.gradle.kts -print0 | xargs -0
         --no-run-if-empty sed -i 's/JVM_17/JVM_21/g'
+      - find ../node_modules -type f \( -name \*.gradle -o -name \*.gradle.kts
+        -o -name \*.kt \) -print0 | xargs -0 --no-run-if-empty sed -E -i
+        's/JavaLanguageVersion\.of\([[:space:]]*17[[:space:]]*\)/JavaLanguageVersion.of(21)/g'
+      - find ../node_modules -type f \( -name \*.gradle -o -name \*.gradle.kts
+        -o -name \*.kt \) -print0 | xargs -0 --no-run-if-empty sed -E -i
+        's/jvmToolchain\([[:space:]]*17[[:space:]]*\)/jvmToolchain(21)/g'
+      - find ../node_modules -type f \( -name \*.gradle -o -name \*.gradle.kts
+        -o -name \*.kt \) -print0 | xargs -0 --no-run-if-empty sed -E -i
+        's/JavaVersion\.VERSION_17/JavaVersion.VERSION_21/g'
+      - grep -RInE 'JavaLanguageVersion\.of\([[:space:]]*17|jvmToolchain\([[:space:]]*17|VERSION_17|JavaVersion\.VERSION_17'
+        ../node_modules/react-native-quick-crypto
+        ../node_modules/react-native-nitro-modules || true
       - find ../node_modules -type f -name gradle.properties -print0 | xargs -0
         --no-run-if-empty sed -i 's/27\.0\.12077973/27.2.12479018/g'
       - sed -i 's/"27\.0\.12077973"/"27.2.12479018"/g' app/build.gradle
