@@ -61,13 +61,12 @@ Builds:
       - corepack prepare yarn@1.22.22 --activate
       - corepack yarn install --frozen-lockfile --network-timeout 300000 --non-interactive
         --ignore-engines --silent
-      - mkdir -p android/build/generated/autolinking
-      - node node_modules/@react-native-community/cli/build/bin.js config > android/build/generated/autolinking/autolinking.json
+      - node node_modules/@react-native-community/cli/build/bin.js config > android/fdroid-autolinking.json
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
       - grep -RIl 'jvmToolchain(17)' node_modules/@react-native/gradle-plugin | xargs
         sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
       - sed -i '/autolinkLibrariesFromCommand/c\ 
-        ex.autolinkLibrariesFromConfigFile(file("build/generated/autolinking/autolinking.json"))'
+        ex.autolinkLibrariesFromConfigFile(file("fdroid-autolinking.json"))'
         android/settings.gradle
     scanignore:
       - android/settings.gradle
@@ -80,8 +79,6 @@ Builds:
       - export ANDROID_HOME=${ANDROID_HOME:-/opt/android-sdk}
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
-      - mkdir -p build/generated/autolinking
-      - node ../node_modules/@react-native-community/cli/build/bin.js config > build/generated/autolinking/autolinking.json
       - gradle assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache
         --stacktrace
 
