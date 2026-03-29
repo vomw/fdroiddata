@@ -38,21 +38,21 @@ Builds:
     init:
       - cd ..
       - git clone --depth 1 --branch 3.41.5 https://github.com/flutter/flutter.git
-      - export PATH="C:\Users\zocs\.openclaw\workspace/flutter/bin:C:\Users\zocs\.openclaw\workspace/flutter/bin/cache/dart-sdk/bin:"
+      - export PATH="PWD/flutter/bin:PWD/flutter/bin/cache/dart-sdk/bin:PATH"
       - flutter precache --android
       - flutter config --no-analytics
     prebuild:
-      - export PATH="C:\Users\zocs\.openclaw\workspace/flutter/bin:C:\Users\zocs\.openclaw\workspace/flutter/bin/cache/dart-sdk/bin:"
+      - export PATH="PWD/flutter/bin:PWD/flutter/bin/cache/dart-sdk/bin:PATH"
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - source C:\Users\zocs/.cargo/env
+      - source HOME/.cargo/env
       - rustup target add aarch64-linux-android
       - cd ..
-      - NDK=
-      - export ANDROID_NDK_HOME=""
+      - NDK=(find "ANDROID_HOME/ndk" -maxdepth 1 -type d | sort -V | tail -1)
+      - export ANDROID_NDK_HOME="NDK"
       - bash scripts/build_dufs.sh android-arm64
       - cd android
     build:
-      - export PATH="C:\Users\zocs\.openclaw\workspace/flutter/bin:C:\Users\zocs\.openclaw\workspace/flutter/bin/cache/dart-sdk/bin:"
+      - export PATH="PWD/flutter/bin:PWD/flutter/bin/cache/dart-sdk/bin:PATH"
       - cd ..
       - flutter build apk --release
 
