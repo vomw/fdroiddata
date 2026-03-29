@@ -23,6 +23,7 @@ Builds:
     output: app/build/outputs/apk/release/app-release.apk
     prebuild:
       - npm --prefix .. ci --ignore-engines
+      - grep -q 'ndkVersion "27.2.12479018"' ../node_modules/@op-engineering/op-sqlite/android/build.gradle || sed -i '/compileSdkVersion/a\  ndkVersion "27.2.12479018"' ../node_modules/@op-engineering/op-sqlite/android/build.gradle
       - node -e 'const fs=require("fs");const p="../package.json";const j=JSON.parse(fs.readFileSync(p,"utf8"));j["op-sqlite"]=Object.assign({},j["op-sqlite"]||{}, {ndkVersion:"27.2.12479018"});fs.writeFileSync(p,JSON.stringify(j,null,2)+"\n");'
       - sed -i 's/"27\.0\.12077973"/"27.2.12479018"/g' build.gradle
       - sed -i "s/VERSION_17/VERSION_21/g" app/build.gradle
