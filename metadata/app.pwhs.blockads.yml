@@ -15,17 +15,32 @@ Repo: https://github.com/pass-with-high-score/blockads-android.git
 Binaries: 
   https://github.com/pass-with-high-score/blockads-android/releases/download/v%v/app-universal-release.apk
 Builds:
-  - versionName: 6.0.0
-    versionCode: 36
-    commit: 02b3ca5077b122935d28b90a599b77f0d66a2e83
+  - versionName: v6.1.0
+    versionCode: 37 
+    commit: 977d450b631dbe2665da37512e5dde48dd4bc4cb
     subdir: app
     gradle:
       - yes
+    ndk: r26b
+    sudo:
+      - apt-get update
+      - apt-get install -y wget tar
+      - wget https://go.dev/dl/go1.22.12.linux-amd64.tar.gz
+      - rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.12.linux-amd64.tar.gz
+    prebuild:
+      - export PATH="/usr/local/go/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - go version
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20240404231514-09dbf07665ed
+      - gomobile init
+      - chmod +x scripts/build_tunnel.sh
+      - ./scripts/build_tunnel.sh
 
 AllowedAPKSigningKeys: 229ea49584360b22a8c7e7e530cfb7e1103faa1b6ba5f32837691fb96fdcfe5a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/build.gradle.kts|versionCode\s=\s(\d+)|.|versionName\s=\s"([\d.]+)"
-CurrentVersion: 6.0.0
-CurrentVersionCode: 36
+CurrentVersion: v6.1.0
+CurrentVersionCode: 37
