@@ -19,10 +19,16 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
-    subdir: .
+    subdir: android
     sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y wget curl unzip
+      - apt-get update
+      - apt-get install -y curl git unzip xz-utils libglu1-mesa
+    srclibs:
+      - flutter@3.24.0
+    prebuild:
+      - export PATH="$PATH:$$flutter$$/bin"
+      - flutter config --no-analytics
+      - flutter pub get
     gradle:
       - yes
 
