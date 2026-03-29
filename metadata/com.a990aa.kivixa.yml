@@ -14,14 +14,13 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y build-essential file binutils rustup clang libclang-dev
+      - apt-get install -y build-essential file binutils rustup clang libclang-dev cmake
     init:
       - rustup default stable
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-    prebuild:
-      - cd .. && bash scripts/build-f-droid.sh
     gradle:
       - yes
+    prebuild: bash ../scripts/build-f-droid.sh
     ndk: r26b
 
 AutoUpdateMode: Version
