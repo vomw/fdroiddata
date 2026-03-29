@@ -2,9 +2,10 @@ Categories:
   - Note
 License: MIT
 AuthorName: Abdul Ahad
-AutoName: kivixa
 SourceCode: https://github.com/990aa/kivixa
 IssueTracker: https://github.com/990aa/kivixa/issues
+
+AutoName: kivixa
 
 RepoType: git
 Repo: https://github.com/990aa/kivixa.git
@@ -34,7 +35,12 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+      - android/app/src/main/jniLibs
+      - rust_builder/android/src/main/jniLibs
     scandelete:
+      - $$flutter$$
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -42,8 +48,8 @@ Builds:
     ndk: r26b
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+UpdateCheckMode: Tags
 CurrentVersion: 0.3.6
 CurrentVersionCode: 3006
 
