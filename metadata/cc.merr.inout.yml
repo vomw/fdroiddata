@@ -30,10 +30,12 @@ Repo: https://github.com/zocs/inout
 Builds:
   - versionName: 0.2.8
     versionCode: 28
-    commit: dcb96d8431d6334f953ade1b6057f28280a5f653
+    commit: 24b1328bca70042dce84a4773df1985ac2f38ecd
     ndk: r27
     subdir: android
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.5
     sudo:
       - apt-get update
       - apt-get install -y protobuf-compiler build-essential
@@ -44,29 +46,31 @@ Builds:
       - web
       - windows
     init:
-      - cd ..
-      - git clone --depth 1 --branch 3.41.5 https://github.com/flutter/flutter.git
-      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
-      - flutter precache --android
-      - flutter config --no-analytics
-    prebuild:
-      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      # Install Rust (init phase has network access)
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - source $HOME/.cargo/env
       - rustup target add aarch64-linux-android
+      # Set up Flutter from srclib
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - flutter precache --android
+      - flutter config --no-analytics
+    prebuild:
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter pub get
+      # Compile dufs from source
       - cd ..
       - NDK=$(find "$ANDROID_HOME/ndk" -maxdepth 1 -type d | sort -V | tail -1)
       - export ANDROID_NDK_HOME="$NDK"
       - bash scripts/build_dufs.sh android-arm64
       - cd android
     scanignore:
-      - flutter/bin/cache
+      - .flutter/bin/cache
     scandelete:
-      - flutter
+      - .flutter
       - .pub-cache
     build:
-      - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - cd ..
       - flutter build apk --release
