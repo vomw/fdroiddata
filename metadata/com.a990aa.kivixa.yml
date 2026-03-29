@@ -11,6 +11,7 @@ Builds:
   - versionName: 0.3.6
     versionCode: 3006
     commit: 29b2094ad3d15ea12286a4cac895268c66272560
+    subdir: android
     sudo:
       - apt-get update
       - apt-get install -y build-essential file binutils rustup clang libclang-dev
@@ -18,10 +19,12 @@ Builds:
       - rustup default stable
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
     prebuild:
-      - bash scripts/build-f-droid.sh
+      - cd .. && bash scripts/build-f-droid.sh
+    gradle:
+      - yes
     ndk: r26b
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 0.3.6
 CurrentVersionCode: 3006
