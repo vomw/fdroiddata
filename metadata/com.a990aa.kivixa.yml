@@ -3,25 +3,26 @@ Categories:
 License: MIT
 SourceCode: https://github.com/990aa/kivixa
 IssueTracker: https://github.com/990aa/kivixa/issues
+
 RepoType: git
 Repo: https://github.com/990aa/kivixa.git
-
-CurrentVersion: 0.3.6
-CurrentVersionCode: 3006
-
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
 
 Builds:
   - versionName: 0.3.6
     versionCode: 3006
     commit: 29b2094ad3d15ea12286a4cac895268c66272560
-    ndk: r26b
     sudo:
       - apt-get update
-      - apt-get install -y build-essential file binutils rustup
+      - apt-get install -y build-essential file binutils rustup clang libclang-dev
     init:
       - rustup default stable
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
     prebuild:
       - bash scripts/build-f-droid.sh
+    ndk: r26b
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.3.6
+CurrentVersionCode: 3006
+
