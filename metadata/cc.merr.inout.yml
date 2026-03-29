@@ -37,7 +37,7 @@ Builds:
       - apt-get install -y protobuf-compiler
     init:
       - cd ..
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml | tr -d '\n')
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git clone --depth 1 --branch ${flutterVersion} https://github.com/flutter/flutter.git
       - export PATH="$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH"
