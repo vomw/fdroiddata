@@ -71,6 +71,7 @@ Builds:
         unquote; pkg = next(p for p in json.load(open('.dart_tool/package_config.json'))['packages']
         if p['name'] == 'sodium_libs'); print(unquote(urlparse(pkg['rootUri']).path))")
       - '[[ -n "$sodiumLibsPkg" && -d "$sodiumLibsPkg" ]]'
+      - sed -i -e '/dependsOn downloadLibsodium/d' $sodiumLibsPkg/android/build.gradle
       - sodiumLibsPath="$sodiumLibsPkg/android/src/main/jniLibs"
       - mkdir -p "$sodiumLibsPath"/armeabi-v7a "$sodiumLibsPath"/x86_64 "$sodiumLibsPath"/arm64-v8a
         "$sodiumLibsPath"/x86
