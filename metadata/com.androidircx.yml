@@ -45,6 +45,10 @@ Builds:
       - sed -i '/def transifexPullScript/,/preBuild.dependsOn("transifexPull")/d'
         android/app/build.gradle
       - sed -i 's/hermesEnabled.toBoolean()/true/g' android/app/build.gradle
+      - sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m
+        -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC/' android/gradle.properties
+      - sed -i 's/^org.gradle.daemon=.*/org.gradle.daemon=false/'
+        android/gradle.properties
     scanignore:
       - android/settings.gradle
       - android/build.gradle
@@ -56,8 +60,8 @@ Builds:
       - export ANDROID_HOME=${ANDROID_HOME:-/opt/android-sdk}
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
-      - gradle assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache
-        --stacktrace
+      - gradle --no-daemon assembleRelease -PreactNativeArchitectures=arm64-v8a
+        --no-configuration-cache --stacktrace
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
