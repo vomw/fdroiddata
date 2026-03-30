@@ -1,9 +1,5 @@
-# Copy this file to ~/fdroiddata/metadata/com.sarallekhan.yml
-# after forking the fdroiddata repo on GitLab
-
 Categories:
   - Writing
-  - Office
 License: MIT
 AuthorName: NxAdx
 WebSite: https://github.com/NxAdx/saral-lekhan-pro
@@ -20,7 +16,9 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      - apt-get install -y nodejs
     init:
       - cd ../..
       - npm install --legacy-peer-deps
@@ -29,15 +27,10 @@ Builds:
     prebuild:
       - cd ../..
       - npx expo prebuild --platform android --clean
-
-# Note: You may need to adjust build steps after F-Droid maintainers
-# test the build on their servers. React Native/Expo apps might need
-# additional configuration.
+    scandelete:
+      - node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: '2.17.33'
 CurrentVersionCode: 100
-
-# Anti-Features (optional, F-Droid team may add these):
-# NonFreeNet - if Gemini AI feature is flagged (it's opt-in, user brings own key)
