@@ -35,12 +35,9 @@ Builds:
       - corepack prepare yarn@1.22.22 --activate
       - corepack yarn install --frozen-lockfile --network-timeout 300000 --non-interactive
         --ignore-engines --silent
-      - node node_modules/@react-native-community/cli/build/bin.js config > android/fdroid-autolinking.json
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
       - grep -RIl 'jvmToolchain(17)' node_modules/@react-native/gradle-plugin | xargs
         sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
-      - sed -i '/autolinkLibrariesFromCommand/c\ ex.autolinkLibrariesFromConfigFile(file("fdroid-autolinking.json"))'
-        android/settings.gradle
       - sed -i '/transifex.env/d;/dotenv.gradle/d' android/app/build.gradle
       - sed -i '/def transifexPullScript/,/preBuild.dependsOn("transifexPull")/d'
         android/app/build.gradle
