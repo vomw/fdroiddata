@@ -44,6 +44,8 @@ Builds:
       - sed -i '/transifex.env/d;/dotenv.gradle/d' android/app/build.gradle
       - sed -i '/def transifexPullScript/,/preBuild.dependsOn("transifexPull")/d'
         android/app/build.gradle
+      - sed -i '/apply plugin: "com.facebook.react"/a project.ext.set("hermesEnabled", "true")'
+        android/app/build.gradle
       - sed -i 's/hermesEnabled.toBoolean()/true/g' android/app/build.gradle
     scanignore:
       - android/settings.gradle
@@ -57,8 +59,8 @@ Builds:
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
       - export PROJECT_DIR=$(dirname "$GRADLE_USER_HOME")
-      - gradle --no-daemon -p "$PROJECT_DIR" -Dorg.gradle.daemon=false
-        '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC'
+      - gradle --no-daemon -p "$PROJECT_DIR" -Dorg.gradle.daemon=false '-Dorg.gradle.jvmargs=-Xmx4096m
+        -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC'
         assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache
         --stacktrace
 
