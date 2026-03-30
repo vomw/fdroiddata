@@ -36,7 +36,10 @@ Builds:
       - corepack yarn install --frozen-lockfile --network-timeout 300000 --non-interactive
         --ignore-engines --silent
       - node node_modules/@react-native-community/cli/build/bin.js config > android/fdroid-autolinking.json
-      - node -e "const fs=require('fs');const p='android/fdroid-autolinking.json';const j=JSON.parse(fs.readFileSync(p,'utf8'));for(const dep of Object.values(j.dependencies||{})){const a=dep.platforms&&dep.platforms.android;const root=dep.root;if(!a||!root)continue;const cand=root+'/android';if(fs.existsSync(cand+'/build.gradle')||fs.existsSync(cand+'/build.gradle.kts'))a.sourceDir=cand;}fs.writeFileSync(p,JSON.stringify(j));"
+      - node -e "const fs=require('fs');const p='android/fdroid-autolinking.json';const
+        j=JSON.parse(fs.readFileSync(p,'utf8'));for(const dep of Object.values(j.dependencies||{})){const
+        a=dep.platforms&&dep.platforms.android;const root=dep.root;if(!a||!root)continue;const
+        cand=root+'/android';if(fs.existsSync(cand+'/build.gradle')||fs.existsSync(cand+'/build.gradle.kts'))a.sourceDir=cand;}fs.writeFileSync(p,JSON.stringify(j));"
       - test -s android/fdroid-autolinking.json
       - rg -l "com.facebook.react:react-native:" node_modules -g "**/android/build.gradle"
         -g "**/android/build.gradle.kts" | xargs sed -i "s/com.facebook.react:react-native:/com.facebook.react:react-android:/g"
