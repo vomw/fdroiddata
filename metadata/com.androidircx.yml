@@ -11,32 +11,6 @@ Changelog: https://gitlab.com/androidircx/AndroidIRCx/-/releases
 Donate: https://github.com/sponsors/AndroidIRCX
 
 AutoName: AndroidIRCX
-Description: |
-  AndroidIRCX is a modern open source IRC client for Android focused on
-  reliable connectivity, deep customization, and advanced IRC workflows.
-
-  It supports multiple IRC networks at the same time, with organized tabs for
-  servers, channels, private messages, and DCC sessions. The app includes
-  identity profiles with nick, alt nick, ident, and realname settings, plus
-  SASL authentication, NickServ identify, and optional Oper login support.
-
-  Messaging tools include grouped message formatting, inline timestamps, raw
-  IRC view, WHOIS and WHOWAS lookups, highlights, ignore lists, notifications,
-  and quick reactions. Favorite channels can be joined automatically, and the
-  app includes strong reconnect behavior for unstable networks.
-
-  AndroidIRCX also includes inline media preview, audio and video playback for
-  supported formats, file saving, DCC chat, DCC send and receive, transfer
-  progress controls, and customizable port ranges.
-
-  For power users, the app provides themes, layout controls, custom commands,
-  aliases, connection tuning, scripting-related automation tools, per-network
-  workflow handling, backup and restore support, and chat history export in
-  TXT, JSON, or CSV formats.
-
-  This degoogled build targets users who want the AndroidIRCX experience
-  without Google analytics, crash reporting, ads, or in-app billing
-  dependencies in the release path.
 
 RepoType: git
 Repo: https://gitlab.com/androidircx/AndroidIRCx.git
@@ -44,7 +18,7 @@ Repo: https://gitlab.com/androidircx/AndroidIRCx.git
 Builds:
   - versionName: 1.9.61
     versionCode: 109
-    commit: v1.9.61
+    commit: 5f9b8354eeff9638fcd86548544ae2a12349f5b9
     subdir: android
     sudo:
       - apt-get update
@@ -67,6 +41,11 @@ Builds:
         sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
       - sed -i '/autolinkLibrariesFromCommand/c\ ex.autolinkLibrariesFromConfigFile(file("fdroid-autolinking.json"))'
         android/settings.gradle
+      - sed -i '/transifex.env/d;/dotenv.gradle/d' android/app/build.gradle
+      - sed -i '/def transifexPullScript/,/preBuild.dependsOn("transifexPull")/d'
+        android/app/build.gradle
+      - sed -i 's/hermesEnabled.toBoolean()/(findProperty("hermesEnabled") ?:
+        "true").toString().toBoolean()/g' android/app/build.gradle
     scanignore:
       - android/settings.gradle
       - android/build.gradle
@@ -81,7 +60,7 @@ Builds:
       - gradle assembleRelease -PreactNativeArchitectures=arm64-v8a --no-configuration-cache
         --stacktrace
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
 CurrentVersion: 1.9.61
 CurrentVersionCode: 109
