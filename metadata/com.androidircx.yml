@@ -57,9 +57,9 @@ Builds:
       - export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
       - export PATH=$JAVA_HOME/bin:$PATH
       - sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m
-        -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC/' gradle.properties
-      - sed -i 's/^org.gradle.daemon=.*/org.gradle.daemon=false/' gradle.properties
-      - gradle --no-daemon assembleRelease -PreactNativeArchitectures=arm64-v8a
+        -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC/' android/gradle.properties
+      - sed -i 's/^org.gradle.daemon=.*/org.gradle.daemon=false/' android/gradle.properties
+      - gradle --no-daemon -p android assembleRelease -PreactNativeArchitectures=arm64-v8a
         --no-configuration-cache --stacktrace
 
 AutoUpdateMode: Version
