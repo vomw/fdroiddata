@@ -973,9 +973,13 @@ Builds:
       - yes
     rm:
       - puzlib/src/test
-    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
-    scanignore:
+      - composeApp/src/jvmTest/resources/test.puz
       - gfx/*.opacity
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../puzlib/build.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../composeApp/build.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../androidApp/build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
