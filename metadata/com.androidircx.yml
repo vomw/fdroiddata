@@ -41,8 +41,8 @@ Builds:
         a=dep.platforms&&dep.platforms.android;const root=dep.root;if(!a||!root)continue;const
         cand=root+'/android';if(fs.existsSync(cand+'/build.gradle')||fs.existsSync(cand+'/build.gradle.kts'))a.sourceDir=cand;}fs.writeFileSync(p,JSON.stringify(j));"
       - test -s android/fdroid-autolinking.json
-      - find node_modules -path "*/android/build.gradle" -o -path "*/android/build.gradle.kts"
-        | xargs grep -l "com.facebook.react:react-native:" | xargs sed -i "s/com.facebook.react:react-native:/com.facebook.react:react-android:/g"
+      - find node_modules \( -path "*/android/build.gradle" -o -path "*/android/build.gradle.kts"
+        \) -print0 | xargs -0 grep -l "com.facebook.react:react-native:" | xargs -r sed -i "s/com.facebook.react:react-native:/com.facebook.react:react-android:/g"
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
       - grep -RIl 'jvmToolchain(17)' node_modules/@react-native/gradle-plugin | xargs
         sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
