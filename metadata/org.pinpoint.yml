@@ -1,0 +1,53 @@
+Categories:
+  - Navigation
+License: GPL-3.0-or-later
+AuthorName: StrangeGirlMurph
+SourceCode: https://github.com/StrangeGirlMurph/Pinpoint
+IssueTracker: https://github.com/StrangeGirlMurph/Pinpoint/issues
+
+AutoName: Pinpoint
+
+RepoType: git
+Repo: https://github.com/StrangeGirlMurph/Pinpoint
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.41.1
+    rm:
+      - ios
+      - macos
+      - windows
+      - linux
+      - web
+    prebuild:
+      - sed -i -e 's/^#f//' pubspec.yaml
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+      - chmod -R u+w .pub-cache
+      - find .pub-cache -name "example" -type d -exec rm -rf {} + || true
+      - find .pub-cache -name "test" -type d -exec rm -rf {} + || true
+      - find .pub-cache -name "extension" -type d -exec rm -rf {} + || true
+      - find .pub-cache -name "*.zip" -type f -delete || true
+      - find .pub-cache -name "*.wasm" -type f -delete || true
+      - find .pub-cache -name "*.jar" -type f -delete || true
+      - find .pub-cache -name "*.so" -type f -delete || true
+      - find .pub-cache -name "*.gz" -type f -delete || true
+      - find .pub-cache -name "*.bin" -type f -delete || true
+      - rm -rf .pub-cache/hosted/pub.dev/archive-*/web || true
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: 29.0.13113456
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
