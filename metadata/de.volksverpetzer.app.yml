@@ -49,7 +49,7 @@ Builds:
       - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && printf
         'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install
-      - npx expo prebuild --platform android --no-install
+      - IS_FOSS=true npx expo prebuild --platform android --no-install
       - sed -i 's/enableSeparateBuildPerCPUArchitecture = true/enableSeparateBuildPerCPUArchitecture
         = false/' android/app/build.gradle || true
       - sed -i 's/versionCode [0-9]*/versionCode 470010254/' android/app/build.gradle
@@ -88,7 +88,7 @@ Builds:
       - node_modules/@trivago/prettier-plugin-sort-imports/.yarn/
       - node_modules/@gerrit0/mini-shiki/
       - node_modules/expo/template.tgz
-    build: cd android && NODE_ENV=production IS_FOSS=true gradlew-fdroid :app:assembleRelease
+    build: cd android && NODE_ENV=production gradlew-fdroid :app:assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
