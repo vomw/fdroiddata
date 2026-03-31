@@ -34,7 +34,7 @@ Builds:
       - fdroid
     output: build/outputs/apk/fdroid/release/mobile-fdroid-universal-release*.apk
     srclibs:
-      - reproducible-apk-tools@v0.2.3
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/
@@ -43,8 +43,13 @@ Builds:
         -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
     gradleprops:
       - fdroid
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
-      'META-INF/services/*'
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines $$OUT$$
+        'META-INF/services/*'
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 sort-baseline $$OUT$$
+        --apk
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-pg-map-id $$OUT$$
+        '381d455'
 
 AllowedAPKSigningKeys: 03219b7e39485556f4976cabb81b95de462168c8043d198e37282d4b1f269500
 
