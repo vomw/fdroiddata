@@ -27,26 +27,6 @@ Builds:
       - yes
 
   - versionName: 2.20.0
-    versionCode: 228
-    commit: a3b08bb6939812b957d5e2c1744fb22faad06db0
-    subdir: mobile
-    gradle:
-      - fdroid
-    output: build/outputs/apk/fdroid/release/mobile-fdroid-universal-release*.apk
-    srclibs:
-      - reproducible-apk-tools@v0.2.3
-    prebuild:
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/
-        && !/ENABLE_CRASHLYTICS/' build.gradle
-      - find src/main/assets -type f \( -name '*.json' -o -name '*.properties' \)
-        -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +
-    gradleprops:
-      - fdroid
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
-      'META-INF/services/*' 'assets/cleaninsights.json'
-
-  - versionName: 2.20.0
     versionCode: 229
     commit: 768ac2fde706ce15994cca5bfb8349dfedd92dda
     subdir: mobile
