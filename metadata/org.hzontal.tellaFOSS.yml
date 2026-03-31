@@ -38,14 +38,12 @@ Builds:
     prebuild:
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/ && !/ENABLE_CRASHLYTICS/' build.gradle
-      - |
-        if [ -d src/main/assets ]; then
-          find src/main/assets -type f \( -name '*.json' -o -name '*.properties' \) \
-            -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +
-        fi
+      - "if [ -d src/main/assets ]; then find src/main/assets -type f \\( -name '*.json' -o -name '*.properties' \\) -exec perl -0777 -pi -e 's/\\r\\n/\\n/g' {} +; fi"
     gradleprops:
       - fdroid
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$ 'META-INF/services/*'
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      - META-INF/services/*
 
 AllowedAPKSigningKeys: 03219b7e39485556f4976cabb81b95de462168c8043d198e37282d4b1f269500
 
