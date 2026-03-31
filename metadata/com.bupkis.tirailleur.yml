@@ -25,14 +25,24 @@ Builds:
       - FLUTTER_VERSION=$(sed -n -E 's/^flutter\s+(\S+)/\1/p' .tool-versions)
       - '[[ $FLUTTER_VERSION ]]'
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
 
   - versionName: 1.0.0
     versionCode: 12
@@ -46,14 +56,24 @@ Builds:
       - FLUTTER_VERSION=$(sed -n -E 's/^flutter\s+(\S+)/\1/p' .tool-versions)
       - '[[ $FLUTTER_VERSION ]]'
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
 
   - versionName: 1.0.0
     versionCode: 13
@@ -67,14 +87,24 @@ Builds:
       - FLUTTER_VERSION=$(sed -n -E 's/^flutter\s+(\S+)/\1/p' .tool-versions)
       - '[[ $FLUTTER_VERSION ]]'
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv com.bupkis.tirailleur /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv /tmp/build com.bupkis.tirailleur
 
 AllowedAPKSigningKeys: 64247b10fa44ed184b3ac543f5ee7123268bcad00349ca7de430bbd27beca5d7
 
