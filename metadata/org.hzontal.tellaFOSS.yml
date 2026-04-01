@@ -15,7 +15,8 @@ AutoName: Tella
 
 RepoType: git
 Repo: https://github.com/Horizontal-org/Tella-Android.git
-Binaries: https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss%v(%c)/mobile-release-Foss-%c.apk
+Binaries:
+  https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss%v(%c)/mobile-release-Foss-%c.apk
 
 Builds:
   - versionName: 2.11.0
@@ -36,16 +37,22 @@ Builds:
       - reproducible-apk-tools@v0.3.0
     prebuild:
       - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/ && !/ENABLE_CRASHLYTICS/' build.gradle
-      - if [ -d src/main/assets ]; then find src/main/assets -type f \( -name '*.json' -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
+      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/
+        && !/ENABLE_CRASHLYTICS/' build.gradle
+      - if [ -d src/main/assets ]; then find src/main/assets -type f \( -name '*.json'
+        -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
     gradleprops:
       - fdroid
     postbuild:
-      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 sort-baseline $$OUT$$ --apk
-      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-pg-map-id $$OUT$$ '381d455'
-      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines $$OUT$$ --from-crlf 'META-INF/services/*'
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 sort-baseline $$OUT$$
+        --apk
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-pg-map-id $$OUT$$
+        '381d455'
+      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines $$OUT$$
+        --from-crlf 'META-INF/services/*'
 
 AllowedAPKSigningKeys: 03219b7e39485556f4976cabb81b95de462168c8043d198e37282d4b1f269500
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v(Foss)?[0-9]+\.[0-9]+\.[0-9]+\([0-9]+\)$
 UpdateCheckData: mobile/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
