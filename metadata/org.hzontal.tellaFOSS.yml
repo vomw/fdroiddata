@@ -41,18 +41,20 @@ Builds:
         && !/ENABLE_CRASHLYTICS/' build.gradle
       - if [ -d src/main/assets ]; then find src/main/assets -type f \( -name '*.json'
         -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
-    build:
-      - mkdir upstream
-      - pushd upstream
-      - curl -L -o upstream.apk "https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss$$VERSION$$($$VERCODE$$)/mobile-release-Foss-$$VERCODE$$.apk"
-      - unzip -q upstream.apk
-      - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
-      - popd
-      - for i in {1..20}; do gradle clean assembleFdroidRelease; mkdir local; pushd
-        local; unzip -q ../build/outputs/apk/fdroid/release/mobile-fdroid-universal-release-unsigned.apk;
-        export localhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1);
-        if [[ $localhash == $upstreamhash ]]; then popd; rm -fr local; break; fi;
-        popd; rm -fr local; done
+      build:
+        - mkdir upstream
+        - pushd upstream
+        - curl -L -o upstream.apk
+          "https://github.com/Horizontal-org/Tella-Android/releases/download/vFoss$$VERSION$$($$VERCODE$$)/mobile-release-Foss-$$VERCODE$$.apk"
+        - unzip -q upstream.apk
+        - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof | cut -d " " -f1)
+        - popd
+        - for i in {1..20}; do gradle clean assembleFdroidRelease; mkdir local; pushd local;
+          unzip -q
+          ../build/outputs/apk/fdroid/release/mobile-fdroid-universal-release-unsigned.apk;
+          export localhash=$(sha256sum assets/dexopt/baseline.prof | cut -d " " -f1);
+          if [[ $localhash == $upstreamhash ]]; then popd; rm -fr local; break; fi;
+          popd; rm -fr local; done
       - '[[ $localhash == $upstreamhash ]] || exit 1'
     gradleprops:
       - fdroid
