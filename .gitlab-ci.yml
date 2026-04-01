@@ -708,6 +708,9 @@ weblate merge conflict:
   needs: []
   image: debian:trixie-slim
   rules:
+    # Weblate git can fail on forks (incomplete fetch / no common commits); run only on canonical repo.
+    - if: $CI_PROJECT_PATH != "fdroid/fdroiddata"
+      when: never
     - changes:
         - .gitlab-ci.yml
         - config/*/antiFeatures.yml
