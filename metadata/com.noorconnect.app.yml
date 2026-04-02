@@ -1,0 +1,32 @@
+Categories:
+  - Religion
+License: MIT
+SourceCode: https://github.com/darkmaster0345/Noor-connect
+IssueTracker: https://github.com/darkmaster0345/Noor-connect/issues
+
+AutoName: Noor Connect
+
+RepoType: git
+Repo: https://github.com/darkmaster0345/Noor-connect.git
+
+Builds:
+  - versionName: 1.2.0
+    versionCode: 4
+    commit: 7e34351120db4b8d593f32bbf88fc0616ff4d457
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    gradle:
+      - foss
+    prebuild:
+      - cd ..
+      - sed -i '/@capacitor\/background-runner/d' package.json
+      - npm install
+      - npm run build
+      - npx cap sync android
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.2.0
+CurrentVersionCode: 4
