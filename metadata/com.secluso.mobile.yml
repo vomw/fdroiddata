@@ -33,8 +33,7 @@ Builds:
       - macos
       - windows
     prebuild:
-      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" 
-        tool/repro/Dockerfile)
+      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" tool/repro/Dockerfile)
       - '[[ $flutterRevision ]]'
       - git -C $$flutter$$ checkout -f "$flutterRevision"
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -42,8 +41,7 @@ Builds:
       - export RUSTUP_HOME="$HOME/.rustup"
       - export PATH="$HOME/.cargo/bin:$PATH"
       - rustup default 1.90.0
-      - rustup target add armv7-linux-androideabi aarch64-linux-android 
-        x86_64-linux-android
+      - rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
@@ -57,8 +55,8 @@ Builds:
       - export SECLUSO_ANDROID_TARGET_PLATFORM=android-arm
       - export SECLUSO_ALLOW_UNSIGNED_RELEASE=1
       - export SECLUSO_FDROID_BUILD=1
-      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi 
-        --target-platform="android-arm" --dart-define=SECLUSO_FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi --target-platform="android-arm"
+        --dart-define=SECLUSO_FDROID_BUILD=true
 
   - versionName: 1.0.0
     versionCode: 42
@@ -78,8 +76,7 @@ Builds:
       - macos
       - windows
     prebuild:
-      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" 
-        tool/repro/Dockerfile)
+      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" tool/repro/Dockerfile)
       - '[[ $flutterRevision ]]'
       - git -C $$flutter$$ checkout -f "$flutterRevision"
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -87,8 +84,7 @@ Builds:
       - export RUSTUP_HOME="$HOME/.rustup"
       - export PATH="$HOME/.cargo/bin:$PATH"
       - rustup default 1.90.0
-      - rustup target add armv7-linux-androideabi aarch64-linux-android 
-        x86_64-linux-android
+      - rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
@@ -102,8 +98,7 @@ Builds:
       - export SECLUSO_ANDROID_TARGET_PLATFORM=android-arm64
       - export SECLUSO_ALLOW_UNSIGNED_RELEASE=1
       - export SECLUSO_FDROID_BUILD=1
-      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi 
-        --target-platform="android-arm64" 
+      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi --target-platform="android-arm64"
         --dart-define=SECLUSO_FDROID_BUILD=true
 
   - versionName: 1.0.0
@@ -124,8 +119,7 @@ Builds:
       - macos
       - windows
     prebuild:
-      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" 
-        tool/repro/Dockerfile)
+      - flutterRevision=$(sed -n -E "s/^ARG FLUTTER_REVISION=(.*)$/\\1/p" tool/repro/Dockerfile)
       - '[[ $flutterRevision ]]'
       - git -C $$flutter$$ checkout -f "$flutterRevision"
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -133,8 +127,7 @@ Builds:
       - export RUSTUP_HOME="$HOME/.rustup"
       - export PATH="$HOME/.cargo/bin:$PATH"
       - rustup default 1.90.0
-      - rustup target add armv7-linux-androideabi aarch64-linux-android 
-        x86_64-linux-android
+      - rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
@@ -148,11 +141,10 @@ Builds:
       - export SECLUSO_ANDROID_TARGET_PLATFORM=android-x64
       - export SECLUSO_ALLOW_UNSIGNED_RELEASE=1
       - export SECLUSO_FDROID_BUILD=1
-      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi 
-        --target-platform="android-x64" --dart-define=SECLUSO_FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --no-pub --split-per-abi --target-platform="android-x64"
+        --dart-define=SECLUSO_FDROID_BUILD=true
 
-AllowedAPKSigningKeys: 
-  f75eb11b6f59392bd7323748573d71e578541d5bc0fb66f90d41bde89b556f1b
+AllowedAPKSigningKeys: f75eb11b6f59392bd7323748573d71e578541d5bc0fb66f90d41bde89b556f1b
 
 MaintainerNotes: |
   The F-Droid build is manual rather than a normal Gradle flavor. The build
