@@ -376,9 +376,9 @@ Builds:
       - node_modules/
       - .yarn/install-state.gz
 
-  - versionName: 1.12.0
-    versionCode: 1775091439
-    commit: b6f65c756f1537f99a0d4dd57f897875adfd9cd7
+  - versionName: 1.12.1
+    versionCode: 1775095977
+    commit: 3db31de9ebce04b20d5afbd98c8f7df6b944f85a
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
@@ -388,9 +388,9 @@ Builds:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - corepack enable
     init:
+      - cd ../..
       - pnpm install --frozen-lockfile
       - CI_PLATFORM=android pnpm vite build
-      - cd ../..
       - npx cap sync android --deployment
     gradle:
       - yes
@@ -399,5 +399,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.12.0
-CurrentVersionCode: 1775091439
+CurrentVersion: 1.12.1
+CurrentVersionCode: 1775095977
