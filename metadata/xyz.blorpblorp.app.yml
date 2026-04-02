@@ -1,22 +1,17 @@
-AntiFeatures:
-  NonFreeNet:
-    en-US: Depends on lemmyverse.net
-  TetheredNet:
-    en-US: Connects to lemmy.zip
 Categories:
   - Forum
   - Internet
   - Social Network
-License: GPL-3.0-only
+License: AGPL-3.0-only
 WebSite: https://blorpblorp.xyz
-SourceCode: https://github.com/christianjuth/blorp
-IssueTracker: https://github.com/christianjuth/blorp/issues
-Changelog: https://github.com/christianjuth/blorp/releases
+SourceCode: https://github.com/Blorp-Labs/blorp
+IssueTracker: https://github.com/Blorp-Labs/blorp/issues
+Changelog: https://github.com/Blorp-Labs/blorp/releases
 
 AutoName: Blorp
 
 RepoType: git
-Repo: https://github.com/christianjuth/blorp.git
+Repo: https://github.com/Blorp-Labs/blorp.git
 
 Builds:
   - versionName: 1.9.10
@@ -381,7 +376,28 @@ Builds:
       - node_modules/
       - .yarn/install-state.gz
 
+  - versionName: 1.11.0
+    versionCode: 1774151714
+    commit: 020c0d9fff3f9269a84ef60cb3f16394898abd3b
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
+      - update-alternatives --auto java
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - corepack enable
+    init:
+      - pnpm install --frozen-lockfile
+      - CI_PLATFORM=android pnpm build
+      - cd ../..
+      - npx cap sync android --deployment
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.10.8
-CurrentVersionCode: 53
+CurrentVersion: 1.11.0
+CurrentVersionCode: 1774151714
