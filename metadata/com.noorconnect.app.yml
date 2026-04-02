@@ -16,19 +16,18 @@ Builds:
     subdir: android/app
     scandelete:
       - node_modules
-      - android/app/noorconnectjks
+      - noorconnectjks
     sudo:
       - apt-get update
       - apt-get install -y npm
     gradle:
       - foss
     prebuild:
-      - cd ..
+      - cd ../..
       - sed -i '/@capacitor\/background-runner/d' package.json
       - npm install
       - npm run build
       - npx cap sync android
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.2.0
