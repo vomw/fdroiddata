@@ -18,26 +18,29 @@ Binaries:
 Builds:
   - versionName: 6.1.4
     versionCode: 41
-    commit: 965831afe8b759829a71369df9772294c28cf72a
+    commit: 52fffb962862295870eb71e6c08fd3c97f66cdf7
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y wget
-      - wget -qO- https://go.dev/dl/go1.22.2.linux-amd64.tar.gz | tar -C /usr/local
-        -xzf -
+      - apt-get install -y golang-go gcc libc-dev make
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    srclibs:
+      - go@go1.22.2
     rm:
       - app/libs
     build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
       - sdkmanager 'platforms;android-24'
-      - export PATH="/usr/local/go/bin:$PATH"
       - export GOPATH="$PWD/.gopath"
       - export PATH="$GOPATH/bin:$PATH"
       - export GOFLAGS="-buildvcs=false"
       - go version
-      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20240404231514-09dbf07665ed
+      - go install github.com/SagerNet/gomobile@b2c30f47825831593d6980af8191527490f9c968
       - gomobile init
       - mkdir -p libs
       - cd ../tunnel
