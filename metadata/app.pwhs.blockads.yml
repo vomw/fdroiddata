@@ -18,16 +18,16 @@ Binaries:
 Builds:
   - versionName: 6.1.4
     versionCode: 41
-    commit: 52fffb962862295870eb71e6c08fd3c97f66cdf7
+    commit: 21f08438c7ab6ed2fb318d7733e8e8d4d6b58c5d
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y golang-go gcc libc-dev make
+    srclibs:
+      - go@go1.23.5
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
-    srclibs:
-      - go@go1.22.2
     rm:
       - app/libs
     build:
@@ -40,7 +40,7 @@ Builds:
       - export PATH="$GOPATH/bin:$PATH"
       - export GOFLAGS="-buildvcs=false"
       - go version
-      - go install github.com/SagerNet/gomobile@b2c30f47825831593d6980af8191527490f9c968
+      - go install github.com/sagernet/gomobile@v0.1.12
       - gomobile init
       - mkdir -p libs
       - cd ../tunnel
