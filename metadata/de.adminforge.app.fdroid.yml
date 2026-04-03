@@ -1,7 +1,7 @@
 Categories:
   - Internet
-  - System
-License: GPL-3.0-only
+  - Navigation
+License: GPL-3.0-or-later
 AuthorName: adminForge
 AuthorWebSite: https://adminforge.de
 SourceCode: https://git.adminforge.de/adminforge/adminforge-fdroid
@@ -18,11 +18,10 @@ Builds:
     versionCode: 363
     commit: v1.2.5
     subdir: app
-    gradleprops:
-      - org.gradle.java.installations.auto-download=false
-      - org.gradle.java.installations.auto-detect=false
-    prebuild:
-      - find . -name "*.gradle*" -exec sed -i 's/jvmToolchain(17)/\/\/ jvmToolchain(17)/g' {} +
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-25-jdk-headless
+      - update-alternatives --auto java
     gradle:
       - yes
 
