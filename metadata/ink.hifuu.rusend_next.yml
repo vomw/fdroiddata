@@ -1,0 +1,91 @@
+Categories:
+  - Internet
+  - Email
+License: MIT
+AuthorName: CGH0S7
+SourceCode: https://github.com/CGH0S7/remail
+IssueTracker: https://github.com/CGH0S7/remail/issues
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on the proprietary Resend email service.
+  TetheredNet:
+    en-US: Only works with the Resend service and cannot be pointed to an
+      alternative server.
+
+AutoName: Remail
+
+RepoType: git
+Repo: https://github.com/CGH0S7/remail.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: v1.0.1
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@3.41.4
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm
+        --build-name=1.0.1 --build-number=2
+
+  - versionName: 1.0.1
+    versionCode: 4
+    commit: v1.0.1
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.41.4
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
+        --build-name=1.0.1 --build-number=4
+
+  - versionName: 1.0.1
+    versionCode: 6
+    commit: v1.0.1
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.41.4
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-x64
+        --build-name=1.0.1 --build-number=6
+
+CurrentVersion: 1.0.1
+CurrentVersionCode: 6
