@@ -1,0 +1,53 @@
+Categories:
+  - VPN & Proxy
+License: GPL-3.0-or-later
+AuthorName: Q7DF1
+AuthorEmail: xiaom9853@gmail.com
+SourceCode: https://github.com/Q7DF1/XrayFA
+IssueTracker: https://github.com/Q7DF1/XrayFA/issues
+
+AutoName: xrayFA
+
+RepoType: git
+Repo: https://github.com/Q7DF1/XrayFA
+Binaries: 
+  https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-universal-release.apk
+
+Builds:
+  - versionName: 1.4.6
+    versionCode: 18
+    commit: c2dd33500860a0c123dca2406cb64037ea2bfee3
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - go@go1.24.4
+    prebuild:
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - export GO_VERSION=$(awk '/^go /{print $2}' ../AndroidLibXrayLite/go.mod)
+      - git -C $$go$$ checkout -f go$GO_VERSION
+      - sed -i -e '/dependsOn("copyXrayLib")/d' -e '/isEnable/d' build.gradle.kts
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT="$$go$$"
+      - export GOPATH="$HOME/gopath"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOFLAGS="-modcacherw -buildvcs=false"
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - go install golang.org/x/mobile/cmd/gobind@latest
+      - gradle copyXrayLib
+    ndk: 27.0.12077973
+
+AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9cc907381
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
+CurrentVersion: 1.4.6
+CurrentVersionCode: 18
