@@ -1194,9 +1194,9 @@ Builds:
       - sha256sum libxivpn_arm64.so
     ndk: r27
 
-  - versionName: 1.9.1
-    versionCode: 442
-    commit: 99f4afd03eadf801f0e0b2a27b7c97df82cacbf0
+  - versionName: 1.9.2
+    versionCode: 452
+    commit: 385930a586748b0a1db86eb2b05b7de48e97e33e
     subdir: app
     submodules: true
     sudo:
@@ -1210,8 +1210,10 @@ Builds:
     prebuild:
       - export goVersion=$(sed -n -E 's/^go (.*)/\1/p' ../libxivpn/go.mod)
       - git -C $$go$$ checkout -f go$goVersion
-    build:
+      - sed -i -e '/bootgo/s/1.24.6/1.24.4/' $$go$$/src/make.*
+      - sed -i -e '/minBootstrap/s/1.24.6/1.24.4/' $$go$$/src/cmd/dist/buildtool.go
       - patch -d $$go$$ -p1 -b < ../libxivpn/goruntime-boottime-over-monotonic.diff
+    build:
       - pushd $$go$$/src
       - ./make.bash
       - popd
@@ -1224,9 +1226,9 @@ Builds:
       - sha256sum libxivpn_x86_64.so
     ndk: r27
 
-  - versionName: 1.9.1
-    versionCode: 443
-    commit: 99f4afd03eadf801f0e0b2a27b7c97df82cacbf0
+  - versionName: 1.9.2
+    versionCode: 453
+    commit: 385930a586748b0a1db86eb2b05b7de48e97e33e
     subdir: app
     submodules: true
     sudo:
@@ -1240,8 +1242,10 @@ Builds:
     prebuild:
       - export goVersion=$(sed -n -E 's/^go (.*)/\1/p' ../libxivpn/go.mod)
       - git -C $$go$$ checkout -f go$goVersion
-    build:
+      - sed -i -e '/bootgo/s/1.24.6/1.24.4/' $$go$$/src/make.*
+      - sed -i -e '/minBootstrap/s/1.24.6/1.24.4/' $$go$$/src/cmd/dist/buildtool.go
       - patch -d $$go$$ -p1 -b < ../libxivpn/goruntime-boottime-over-monotonic.diff
+    build:
       - pushd $$go$$/src
       - ./make.bash
       - popd
@@ -1261,5 +1265,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
-CurrentVersion: 1.9.1
-CurrentVersionCode: 443
+CurrentVersion: 1.9.2
+CurrentVersionCode: 453
