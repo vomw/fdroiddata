@@ -1,0 +1,122 @@
+Categories:
+  - App Manager
+  - Battery
+License: GPL-3.0-only
+AuthorName: Adil Hanney
+SourceCode: https://github.com/adil192/no_more_background
+IssueTracker: https://github.com/adil192/no_more_background/issues
+Translation: https://hosted.weblate.org/engage/no_more_background/
+Donate: https://github.com/sponsors/adil192
+Liberapay: adil192
+
+AutoName: no_more_background
+
+RepoType: git
+Repo: https://github.com/adil192/no_more_background.git
+
+Builds:
+  - versionName: 2.3.1
+    versionCode: 2030101
+    commit: 2721d4d555774b87aa0dc0bb4f1f3047b4c5e683
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - .github
+      - .zed
+      - .vscode
+      - flatpak
+      - linux
+      - macos
+      - submodules/Delta-Icons
+      - submodules/lineage_wiki
+      - windows
+    prebuild:
+      - ./patches/remove_dev_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter config --no-analytics
+      - ./submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+
+  - versionName: 2.3.1
+    versionCode: 2030102
+    commit: 2721d4d555774b87aa0dc0bb4f1f3047b4c5e683
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - .github
+      - .zed
+      - .vscode
+      - flatpak
+      - linux
+      - macos
+      - submodules/Delta-Icons
+      - submodules/lineage_wiki
+      - windows
+    prebuild:
+      - ./patches/remove_dev_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter config --no-analytics
+      - ./submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+
+  - versionName: 2.3.1
+    versionCode: 2030103
+    commit: 2721d4d555774b87aa0dc0bb4f1f3047b4c5e683
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - .github
+      - .zed
+      - .vscode
+      - flatpak
+      - linux
+      - macos
+      - submodules/Delta-Icons
+      - submodules/lineage_wiki
+      - windows
+    prebuild:
+      - ./patches/remove_dev_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter config --no-analytics
+      - ./submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./submodules/flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.3.1
+CurrentVersionCode: 2030103
