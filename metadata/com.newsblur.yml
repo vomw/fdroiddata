@@ -2196,9 +2196,9 @@ Builds:
       - sed -i -e '/play/d' -e '/billing/d' build.gradle.kts
       - sed -i -z -E -e 's/<service[^>]+SubscriptionSyncService[^>]+\/>//' src/main/AndroidManifest.xml
       - cd src/main/java/com/newsblur
-      - echo 
-        cGFja2FnZSBjb20ubmV3c2JsdXIuYWN0aXZpdHkKY2xhc3MgSW5BcHBSZXZpZXdIZWxwZXIoYWN0aXZpdHk6IGFuZHJvaWQuYXBwLkFjdGl2aXR5LCBwcmVmc1JlcG86IGNvbS5uZXdzYmx1ci5wcmVmZXJlbmNlLlByZWZzUmVwbykgewogICAgZnVuIGNoZWNrKCkge30KICAgIGZ1biBpbnRlcmNlcHRCYWNrUHJlc3MoaXNHZXN0dXJlTmF2aWdhdGlvbjogQm9vbGVhbiwgb25Db21wbGV0ZTogKCkgLT4gVW5pdCk6IEJvb2xlYW4gPSBmYWxzZQp9Cg==
-        | base64 -d > activity/InAppReviewHelper.kt
+      - echo 'package com.newsblur.activity;class InAppReviewHelper(activity:android.app.Activity,
+        prefsRepo:com.newsblur.preference.PrefsRepo){fun check(){}fun interceptBackPress(g:Boolean,
+        c:()->Unit):Boolean=false}' > activity/InAppReviewHelper.kt
       - sed -i -e '/SubscriptionSyncService/d' activity/InitActivity.kt viewModel/LoginRegisterViewModel.kt
         preference/PrefsRepo.kt
       - echo 'package com.newsblur.activity;class SubscriptionActivity:NbActivity()
