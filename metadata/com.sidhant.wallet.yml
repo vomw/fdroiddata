@@ -21,7 +21,8 @@ Builds:
       - flutter@stable
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - git -C $$flutter$$ checkout -f $(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p" .metadata)
+      - git -C $$flutter$$ checkout -f $(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p"
+        .metadata)
       - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
@@ -29,8 +30,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
-AutoUpdateMode: Version
+AutoUpdateMode: Version V%v
 UpdateCheckMode: Tags
-UpdateCheckData: V%v
+UpdateCheckData: pubspec.yaml|version:\s+(\d+\.\d+\.\d+)\+(\d+)|version:\s+(\d+\.\d+\.\d+)||
 CurrentVersion: 1.0.25
 CurrentVersionCode: 28
