@@ -9,6 +9,7 @@ AutoName: Onym
 
 RepoType: git
 Repo: https://github.com/rinat-enikeev/stellar-mls.git
+Binaries: https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-release-%v.apk
 
 Builds:
   - versionName: 1.0.0
@@ -23,10 +24,10 @@ Builds:
       - rustup target add aarch64-linux-android x86_64-linux-android
     gradle:
       - fdroid
-    scandelete:
-      - src/main/jniLibs/
-      - ../../../../kotlin-mls/src/main/jniLibs/
     prebuild: rm -f google-services.json
+    scandelete:
+      - clients/android/StellarChat/app/src/main/jniLibs/
+      - kotlin-mls/src/main/jniLibs/
     build: export PATH="$HOME/.cargo/bin:$PATH" && pushd ../../../../ && ANDROID_NDK_HOME=$$NDK$$
       bash scripts/build-android.sh --out-dir kotlin-mls/src/main && popd
     ndk: r27c
