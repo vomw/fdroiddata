@@ -124,7 +124,8 @@ Builds:
       - export PATH="$PATH:$HOME/.local/bin"
       - pip3.11 install $$buildozer$$
       - ln -s $(which cython3) $HOME/.local/bin/cython
-      - buildozer android release
+      - buildozer android release > /tmp/buildozer.log 2>&1 || (tail -n 500 /tmp/buildozer.log
+        && false)
     ndk: r25b
 
 AutoUpdateMode: Version
