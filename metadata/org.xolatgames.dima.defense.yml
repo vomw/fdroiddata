@@ -19,7 +19,10 @@ Builds:
     subdir: android
     gradle:
       - yes
-    prebuild: sed -i -e "/signingConfig/d" build.gradle
+    prebuild:
+      - sed -i -e "/signingConfig/d" build.gradle
+      - sed -i -e "/s01.oss.sonatype.org/d" ../build.gradle
+      - sed -i -e "/org.gradle.toolchains.foojay-resolver-convention/d" ../settings.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
