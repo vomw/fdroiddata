@@ -23,11 +23,10 @@ Builds:
       - rustup target add aarch64-linux-android x86_64-linux-android
     gradle:
       - fdroid
-    binary: https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-release-%v.apk
-    prebuild:
-      - rm -f google-services.json
-      - rm -rf src/main/jniLibs/
-      - rm -rf ../../../../kotlin-mls/src/main/jniLibs/
+    scandelete:
+      - src/main/jniLibs/
+      - ../../../../kotlin-mls/src/main/jniLibs/
+    prebuild: rm -f google-services.json
     build: export PATH="$HOME/.cargo/bin:$PATH" && pushd ../../../../ && ANDROID_NDK_HOME=$$NDK$$
       bash scripts/build-android.sh --out-dir kotlin-mls/src/main && popd
     ndk: r27c
