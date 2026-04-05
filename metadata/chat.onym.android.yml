@@ -9,6 +9,7 @@ AutoName: Onym
 
 RepoType: git
 Repo: https://github.com/rinat-enikeev/stellar-mls.git
+Binaries: https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-release-%v.apk
 
 Builds:
   - versionName: 1.0.0
@@ -31,7 +32,29 @@ Builds:
       bash scripts/build-android.sh --out-dir kotlin-mls/src/main && popd
     ndk: r27c
 
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: f59a12aae78b7825518db0b88f631b9f77ccc85f
+    subdir: clients/android/StellarChat/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup build-essential
+    init:
+      - rustup default stable
+      - rustup target add aarch64-linux-android x86_64-linux-android
+    gradle:
+      - fdroid
+    prebuild: rm -f google-services.json
+    scandelete:
+      - clients/android/StellarChat/app/src/main/jniLibs/
+      - kotlin-mls/src/main/jniLibs/
+    build: export PATH="$HOME/.cargo/bin:$PATH" && pushd ../../../../ && ANDROID_NDK_HOME=$$NDK$$
+      bash scripts/build-android.sh --out-dir kotlin-mls/src/main && popd
+    ndk: r27c
+
+AllowedAPKSigningKeys: 40ad4e7826f29b0f434760190258f00cec5b547b5b0fd1b011f23272db90acad
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
