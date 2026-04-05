@@ -111,15 +111,15 @@ Builds:
       - buildozer@1.5.0
     prebuild:
       - sdkmanager 'platforms;android-33' 'build-tools;33.0.0'
-      - sed -i -e 's/log_level =.*/log_level = 2/' -e '/^\[app\]/aandroid.ndk_path
+      - sed -i -e 's/log_level =.*/log_level = 0/' -e '/^\[app\]/aandroid.ndk_path
         = $$NDK$$\nandroid.sdk_path = $$SDK$$\nandroid.skip_update = True\np4a.source_dir
         = $$python-for-android$$\nandroid.ant_path = /usr' -e 's/python3==3.11.5/python3==3.11.5,hostpython3==3.11.5/'
         buildozer.spec
     build:
       - pushd $$cpython$$
       - ./configure --prefix=$HOME/.local
-      - make -j`nproc`
-      - make altinstall
+      - make -j`nproc` -s
+      - make altinstall -s
       - popd
       - export PATH="$PATH:$HOME/.local/bin"
       - pip3.11 install $$buildozer$$
