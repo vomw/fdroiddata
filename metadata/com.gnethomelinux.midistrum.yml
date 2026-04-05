@@ -1,5 +1,6 @@
 Categories:
   - Multimedia
+  - Music Practice Tool
 License: GPL-3.0-only
 SourceCode: https://github.com/guysoft/midistrum
 IssueTracker: https://github.com/guysoft/midistrum/issues
@@ -56,12 +57,13 @@ Builds:
       - apt-get update
       - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
         libffi-dev libssl-dev python3-pip python3-pexpect python3-virtualenv python3-sh
-        cython3 ant openjdk-21-jdk-headless python3-platformdirs python3-colorama
+        cython3 ant openjdk-17-jdk-headless
+      - apt-get install -y -t bullseye-backports python3-appdirs python3-colorama
         python3-jinja2 python3-build python3-toml python3-packaging
       - update-alternatives --auto java
       - rm /opt/android-sdk/tools/bin/sdkmanager
       - ln -s $(which sdkmanager) /opt/android-sdk/tools/bin/sdkmanager
-      - echo -e '#!/bin/sh\\nls /opt/android-sdk/platforms | sed "s/android-/API
+      - echo -e '#!/usr/bin/sh\\nls /opt/android-sdk/platforms | sed "s/android-/API
         level:\\ /g"' > /opt/android-sdk/tools/bin/avdmanager
       - chmod +x /opt/android-sdk/tools/bin/avdmanager
     output: bin/*.apk
@@ -81,15 +83,15 @@ Builds:
       - make -j`nproc`
       - make altinstall
       - popd
-      - export PATH="$PATH:$HOME/.local/bin"
-      - pip3.8 install $$buildozer$$
+      - pip3 install $$buildozer$$
       - ln -s $(which cython3) $HOME/.local/bin/cython
+      - export PATH="$PATH:$HOME/.local/bin"
       - buildozer android release
     ndk: r25b
 
   - versionName: 0.2.10
     versionCode: 1021210
-    commit: v0.2.10
+    commit: 94009c29be21b2e6b4149f6b12cec0aad56e739f
     subdir: src
     sudo:
       - apt-get update
