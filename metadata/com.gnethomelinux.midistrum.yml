@@ -1,6 +1,5 @@
 Categories:
   - Multimedia
-  - Music Practice Tool
 License: GPL-3.0-only
 SourceCode: https://github.com/guysoft/midistrum
 IssueTracker: https://github.com/guysoft/midistrum/issues
@@ -24,8 +23,7 @@ Builds:
     output: src/bin/*.apk
     prebuild:
       - cd src
-      - wget --no-verbose -O /tmp/cmdline-tools.zip -t 5 
-        "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
+      - wget --no-verbose -O /tmp/cmdline-tools.zip -t 5 "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
       - echo "124f2d5115eee365df6cf3228ffbca6fc3911d16f8025bebd5b1c6e2fcfa7faf /tmp/cmdline-tools.zip"  |
         sha256sum -c -
       - unzip -qq -o /tmp/cmdline-tools.zip -d /tmp/cmdline-tools
@@ -89,8 +87,48 @@ Builds:
       - buildozer android release
     ndk: r25b
 
+  - versionName: 0.2.10
+    versionCode: 1021210
+    commit: v0.2.10
+    subdir: src
+    sudo:
+      - sed -i '/bullseye-backports/d' /etc/apt/sources.list
+      - apt-get update
+      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
+        libffi-dev libssl-dev python3-pip python3-pexpect python3-virtualenv python3-sh
+        cython3 ant openjdk-17-jdk-headless python3-appdirs python3-colorama python3-jinja2
+        python3-build python3-toml python3-packaging
+      - update-alternatives --auto java
+      - rm /opt/android-sdk/tools/bin/sdkmanager
+      - ln -s $(which sdkmanager) /opt/android-sdk/tools/bin/sdkmanager
+      - echo -e '#!/usr/bin/sh\nls /opt/android-sdk/platforms | sed "s/android-/API
+        level:\ /g"' > /opt/android-sdk/tools/bin/avdmanager
+      - chmod +x /opt/android-sdk/tools/bin/avdmanager
+    output: bin/*.apk
+    srclibs:
+      - cpython@v3.11.5
+      - python-for-android@v2024.01.21
+      - buildozer@1.5.0
+    prebuild:
+      - sdkmanager 'platforms;android-33' 'build-tools;33.0.0'
+      - sed -i -e 's/log_level =.*/log_level = 2/' -e '/^\[app\]/aandroid.ndk_path
+        = $$NDK$$\nandroid.sdk_path = $$SDK$$\nandroid.skip_update = True\np4a.source_dir
+        = $$python-for-android$$\nandroid.ant_path = /usr' -e 's/python3==3.11.5/python3==3.11.5,hostpython3==3.11.5/'
+        buildozer.spec
+    build:
+      - pushd $$cpython$$
+      - ./configure --prefix=$HOME/.local
+      - make -j`nproc`
+      - make altinstall
+      - popd
+      - pip3 install $$buildozer$$
+      - ln -s $(which cython3) $HOME/.local/bin/cython
+      - export PATH="$PATH:$HOME/.local/bin"
+      - buildozer android release
+    ndk: r25b
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: src/main.py|__version_code__ = (\d+)|.|__version__ = "([\d.]+)"
-CurrentVersion: 0.2.9
-CurrentVersionCode: 1021209
+CurrentVersion: 0.2.10
+CurrentVersionCode: 1021210
