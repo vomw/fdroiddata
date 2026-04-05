@@ -1,0 +1,129 @@
+Categories:
+  - Remote Access
+License: GPL-3.0-only
+AuthorName: GlassOnTin
+SourceCode: https://github.com/GlassOnTin/Haven
+IssueTracker: https://github.com/GlassOnTin/Haven/issues
+Changelog: https://github.com/GlassOnTin/Haven/releases
+
+AutoName: Haven
+
+RepoType: git
+Repo: https://github.com/GlassOnTin/Haven.git
+
+Builds:
+  - versionName: 2.2.2
+    versionCode: 661
+    commit: 2ed1f101b97d926b7e142c5b44f84b2c3f05b5a5
+    subdir: app
+    submodules: true
+    gradle:
+      - arm64
+
+  - versionName: 2.2.2
+    versionCode: 662
+    commit: 2ed1f101b97d926b7e142c5b44f84b2c3f05b5a5
+    subdir: app
+    submodules: true
+    gradle:
+      - x64
+
+  - versionName: 2.3.1-rc1
+    versionCode: 681
+    commit: 6b55afaf103561193e701772905957a1f966e966
+    subdir: app
+    submodules: true
+    gradle:
+      - arm64
+
+  - versionName: 2.3.1-rc1
+    versionCode: 682
+    commit: 6b55afaf103561193e701772905957a1f966e966
+    subdir: app
+    submodules: true
+    gradle:
+      - x64
+
+  - versionName: 3.17.0
+    versionCode: 1171
+    commit: 70891a87f5c8fe2fe07fd769c7180b5adab16895
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - arm64Foss
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
+  - versionName: 3.17.0
+    versionCode: 1172
+    commit: 70891a87f5c8fe2fe07fd769c7180b5adab16895
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - x64Foss
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
+  - versionName: 4.9.0
+    versionCode: 1481
+    disable: build failed
+    commit: 579bbf96f5f1eb03f8b796fbc852cd070bb52481
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y make binutils gawk gcc libc-dev rustup
+      - apt-get install -y -t forky golang-go
+    gradle:
+      - arm64
+    scandelete:
+      - rdp-kotlin/jniLibs/
+      - rclone-android/build
+    build:
+      - sdkmanager "cmake;3.31.6"
+      - rustup default 1.86.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+    ndk: r27
+
+  - versionName: 4.9.0
+    versionCode: 1482
+    disable: build failed
+    commit: 579bbf96f5f1eb03f8b796fbc852cd070bb52481
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y make binutils gawk gcc libc-dev rustup
+      - apt-get install -y -t forky golang-go
+    gradle:
+      - x64
+    scandelete:
+      - rdp-kotlin/jniLibs/
+      - rclone-android/build
+    build:
+      - sdkmanager "cmake;3.31.6"
+      - rustup default 1.86.0
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+    ndk: r27
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+CurrentVersion: 4.9.0
+CurrentVersionCode: 1482
