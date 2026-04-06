@@ -9,15 +9,18 @@ Repo: https://github.com/rdOxalis/bluesoundplayer
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 6fb001a89dda858d6648127967d2f01943293b2f
+    commit: 268b2c2a4a1e9d2f7ba5d3a29c2728d603c839e8
     subdir: flutter
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.22.0
+      - flutter@stable
     rm:
       - src
       - release
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -27,7 +30,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: flutter/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1
