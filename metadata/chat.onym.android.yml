@@ -13,14 +13,14 @@ Repo: https://github.com/rinat-enikeev/stellar-mls.git
 Builds:
   - versionName: 1.0.3
     versionCode: 4
-    commit: 8e2686ba973f70d3aa0655dab1dae2678d1c0021
+    commit: aa4937e3c22f5cf9bf4d742f8f502ad3e4d6dbfb
     subdir: clients/android/StellarChat/app
     sudo:
       - apt-get update
       - apt-get install -y rustup gcc libc-dev
     init:
       - rustup default 1.94.1
-      - rustup target add aarch64-linux-android x86_64-linux-android
+      - rustup target add aarch64-linux-android
     gradle:
       - fdroid
     rm:
@@ -34,7 +34,7 @@ Builds:
     build:
       - export PATH="$HOME/.cargo/bin:$PATH"
       - pushd ../../../../
-      - ANDROID_NDK_HOME=$$NDK$$ bash scripts/build-android.sh --out-dir kotlin-mls/src/main
+      - ANDROID_NDK_HOME=$$NDK$$ bash scripts/build-android.sh --out-dir kotlin-mls/src/main --abis arm64-v8a
       - popd
     ndk: r27c
 
