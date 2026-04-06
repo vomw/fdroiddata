@@ -17,16 +17,17 @@ Builds:
     subdir: clients/android/StellarChat/app
     sudo:
       - apt-get update
-      - apt-get install -y rustup build-essential
+      - apt-get install -y rustup gcc libc-dev
     init:
       - rustup default 1.94.1
       - rustup target add aarch64-linux-android x86_64-linux-android
     gradle:
       - fdroid
-    prebuild: rm -f google-services.json
+    rm:
+      - google-services.json
+      - clients/ios
     scanignore:
       - clients/android/StellarChat/app/src/main/assets/keyset-v1/
-      - clients/ios/StellarChat/StellarChat/Resources/keyset-v1/
       - keyset-v1/
     scandelete:
       - clients/android/StellarChat/app/src/main/jniLibs/
