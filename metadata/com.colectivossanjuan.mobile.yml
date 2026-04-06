@@ -8,18 +8,29 @@ IssueTracker: https://gitlab.com/leoalcaraz130/colectivos-sanjuan/issues
 
 AutoName: Colectivos San Juan
 
-RepoType: git
 Repo: https://gitlab.com/leoalcaraz130/colectivos-sanjuan.git
 
 Builds:
   - versionName: '1.3'
     versionCode: 1
-    commit: 28315012ce32b3dc85e0f0e51211379992688888
+    commit: a66d537a3b987449d2c7fc9015a1ffce6c5c430c
     subdir: android
-    build-environment:
-      - nodejs@22
     init:
       - npm install
+      - mv gradlew gradlew-orig
+      - printf '#!/bin/bash\n./gradlew-orig "$@"' > ./gradlew
+      - chmod +x ./gradlew
+    prebuild:
+      - find . -name "build" -type d -exec rm -rf {} +
+      - find ../node_modules -type f \( -name "*.jar" -o -name "*.aar" -o -name "*.bin" -o -name "*.exe" -o -name "*.dll" -o -name "*.wasm" -o -name "*.swf" -o -name "*.node" -o -name "*.bplist" -o -name "*.keystore" -o -name "*.xcuserstate" \) -delete
+      - rm -rf ../node_modules/react-native/sdks/hermesc
+      - find ../node_modules -name "*.gradle" -exec sed -i -e 's/url.*android.*/\/\/ url neutralized/g' -e 's/url.*jsc-android.*/\/\/ url neutralized/g' -e 's/.*mavenTempLocalUrl.*/\/\/ neutralized/g' {} +
+      - sed -i -e 's/url.*reactNativeAndroidPath.*/\/\/ url neutralized/g' -e 's/url.*jscAndroidPath.*/\/\/ url neutralized/g' build.gradle
+      - sed -i 's/implementation.*play-services-location/\/\/ implementation/g' ../node_modules/@maplibre/maplibre-react-native/android/build.gradle
+      - sed -i 's/java.srcDirs += .src\/main\/location-engine-google./\/\/ java.srcDirs/g' ../node_modules/@maplibre/maplibre-react-native/android/build.gradle
+      - sed -i 's/api .com.google.android.gms:play-services-location:/\/\/ api /g' ../node_modules/expo-location/android/build.gradle
+      - sed -i 's/implementation.*installreferrer/\/\/ implementation/g' ../node_modules/expo-application/android/build.gradle
+      - sed -i 's/implementation.*firebase/\/\/ implementation/g' ../node_modules/expo-notifications/android/build.gradle
     gradle:
       - yes
 
