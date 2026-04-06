@@ -1,0 +1,51 @@
+Categories:
+  - Money
+License: MIT
+AuthorName: The Fedimint Developers
+WebSite: https://fedimint.org
+SourceCode: https://github.com/m1sterc001guy/fedimintd-mobile
+IssueTracker: https://github.com/m1sterc001guy/fedimintd-mobile/issues
+Changelog: https://github.com/m1sterc001guy/fedimintd-mobile/releases
+
+AutoName: Fedimint
+
+RepoType: git
+Repo: https://github.com/m1sterc001guy/fedimintd-mobile.git
+
+Builds:
+  - versionName: 0.1.8
+    versionCode: 10890
+    commit: 89c42e7e1e273b5e8a2280877cc0c131c080d545
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang libclang-dev cmake ninja-build pkg-config
+        rustup
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - linux
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - rustup default 1.89.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk --version 4.1.2 --locked
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./scripts/build-rust-fdroid.sh
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 27.3.13750724
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[0-9.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.8
+CurrentVersionCode: 10890
