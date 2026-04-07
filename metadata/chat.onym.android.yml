@@ -9,7 +9,7 @@ AutoName: Onym
 
 RepoType: git
 Repo: https://github.com/rinat-enikeev/stellar-mls.git
-Binaries:
+Binaries: 
   https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-arm64-v8a-release-%v.apk
 
 Builds:
@@ -25,6 +25,8 @@ Builds:
       - rustup target add aarch64-linux-android
     gradle:
       - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     rm:
       - clients/ios
     scanignore:
@@ -40,8 +42,6 @@ Builds:
         --abis arm64-v8a
       - popd
     ndk: r27c
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
