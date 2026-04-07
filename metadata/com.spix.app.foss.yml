@@ -22,8 +22,8 @@ Builds:
       - apt-get install -y npm
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild: 
-      - sed -i -e 's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/' {../core/*,.}/build.gradle.kts
-      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - java -version || true
+      - echo "JAVA_HOME=$JAVA_HOME"
       - ./scripts/fdroid-prebuild.sh
     scanignore:
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
