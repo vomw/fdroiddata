@@ -1395,7 +1395,7 @@ Builds:
   - versionName: 1.2.0
     versionCode: 1002000
     commit: 5d4ebcd2ce164079bdff0ef24acf102e05e81f69
-    subdir: kmp_client/app
+    subdir: kmp_module/app
     submodules: true
     sudo:
       - apt-get update
@@ -1405,7 +1405,7 @@ Builds:
     srclibs:
       - go@go1.24.3
     rm:
-      - kmp_client/iosApp
+      - swift_module
     prebuild: sed -i -e '/languageVersion/s/17/21/' build.gradle.kts
     build:
       - pushd $$go$$/src
@@ -1415,9 +1415,9 @@ Builds:
       - export GOPATH="$HOME/go"
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - cd ../..
-      - mkdir -p go_client/modules/Cloak
-      - cp -r Cloak/internal go_client/modules/Cloak/
-      - pushd go_client
+      - mkdir -p go_module/modules/Cloak
+      - cp -r Cloak/internal go_module/modules/Cloak/
+      - pushd go_module
       - go mod tidy
       - go mod download
       - sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;27.0.11718014"
@@ -1436,13 +1436,13 @@ Builds:
       - go build -v -trimpath -ldflags="-buildid=" -buildvcs=false -buildmode=c-shared
         -o liboutline.so ./kotlin_exports/...
       - popd
-      - mkdir -p kmp_client/outline/src/main/cpp/include
-      - mkdir -p kmp_client/outline/src/main/jniLibs/arm64-v8a
-      - mkdir -p kmp_client/outline/src/main/cpp/include/arm64-v8a
-      - cp go_client/liboutline.h kmp_client/outline/src/main/cpp/include/arm64-v8a/liboutline.h
-      - cp go_client/liboutline.h kmp_client/outline/src/main/cpp/include/liboutline.h
-      - cp go_client/liboutline.so kmp_client/outline/src/main/jniLibs/arm64-v8a/liboutline.so
-      - cd kmp_client
+      - mkdir -p kmp_module/outline/src/main/cpp/include
+      - mkdir -p kmp_module/outline/src/main/jniLibs/arm64-v8a
+      - mkdir -p kmp_module/outline/src/main/cpp/include/arm64-v8a
+      - cp go_module/liboutline.h kmp_module/outline/src/main/cpp/include/arm64-v8a/liboutline.h
+      - cp go_module/liboutline.h kmp_module/outline/src/main/cpp/include/liboutline.h
+      - cp go_module/liboutline.so kmp_module/outline/src/main/jniLibs/arm64-v8a/liboutline.so
+      - cd kmp_module
       - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/"
         gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
