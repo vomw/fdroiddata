@@ -18,14 +18,15 @@ Builds:
     commit: 21730e6a6c5bcc666732227fe8344f42340b0250
     patch:
       - fdroid-signing.patch
+    output: 
+      app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
     scanignore:
       - app/src/main/assets/*.dat.zip
       - app/src/main/assets/*/*.dat.zip
-    build:
-      - gradle assembleLiteFdroidReleaseUnsigned
-    output: app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
+    build: gradle assembleLiteFdroidReleaseUnsigned
 
 AutoUpdateMode: Version +-lite-fdroid %v
 UpdateCheckMode: Tags .*[0-9]$
+UpdateCheckData: app/build.gradle|versionCode\\s+(\\d+)|app/build.gradle|versionName\\s+\"([\\d.]+)\"
 CurrentVersion: 1.7.23-lite-fdroid
 CurrentVersionCode: 717
