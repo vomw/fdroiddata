@@ -19,9 +19,12 @@ Builds:
     commit: 914c3c2db44649a2591eea13c424b2c05992e3b3
     sudo:
       - apt-get update
-      - apt-get install -y npm openjdk-17-jdk
+      - apt-get install -y npm
     output: android/app/build/outputs/apk/release/app-release.apk
-    prebuild: ./scripts/fdroid-prebuild.sh
+    prebuild: 
+      - sed -i -e 's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/' {../core/*,.}/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - ./scripts/fdroid-prebuild.sh
     scanignore:
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
@@ -30,8 +33,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - export PATH=$JAVA_HOME/bin:$PATH
       - cd android
       - gradle assembleRelease
     ndk: r26d
