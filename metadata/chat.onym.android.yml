@@ -13,9 +13,9 @@ Binaries:
   https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-arm64-v8a-release-%v.apk
 
 Builds:
-  - versionName: 1.0.6
-    versionCode: 7
-    commit: a7f4f1f94f4df45f111547dfdaa95e02e1f12969
+  - versionName: 1.0.8
+    versionCode: 9
+    commit: 9febcf2db84197f3fcb062d4e0ccac19a1615235
     subdir: clients/android/StellarChat/app
     sudo:
       - apt-get update
@@ -40,10 +40,16 @@ Builds:
         --abis arm64-v8a
       - popd
     ndk: r27c
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 40ad4e7826f29b0f434760190258f00cec5b547b5b0fd1b011f23272db90acad
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.6
-CurrentVersionCode: 7
+CurrentVersion: 1.0.8
+CurrentVersionCode: 9
