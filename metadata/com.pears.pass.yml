@@ -21,7 +21,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     output: android/app/build/outputs/apk/release/app-release.apk
-    prebuild: bash scripts/fdroid-build.sh prebuild
+    prebuild:
+      - rm -rf plugins/expo-autofill-plugin/android-template/jniLibs
+      - bash scripts/fdroid-build.sh prebuild
     scanignore:
       - node_modules/
     build: bash scripts/fdroid-build.sh build
