@@ -44,6 +44,9 @@ Builds:
     scanignore:
       - app/src/main/assets/*.dat.zip
       - app/src/main/assets/*/*.dat.zip
+    prebuild:
+      - perl -0pi -e 's/if \(signingConfigs\.release\.storeFile\) \{\n\s*signingConfig signingConfigs\.release\n\s*\}/def releaseSigning = signingConfigs.findByName("release")\n            if (releaseSigning?.storeFile) {\n                signingConfig releaseSigning\n            }/s'
+        app/build.gradle
     build:
       - gradle assembleLiteFdroidReleaseUnsigned
     output: app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
