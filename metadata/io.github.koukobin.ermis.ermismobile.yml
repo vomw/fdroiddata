@@ -14,7 +14,7 @@ Repo: https://github.com/Koukobin/Ermis.git
 
 Builds:
   - versionName: 1.4.0
-    versionCode: 2019
+    versionCode: 19
     commit: af15f3c3af7423ccafe34193b9f59dba38b9fc42
     subdir: ErmisClient/Mobile/ermis_client
     sudo:
@@ -57,6 +57,16 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/dart run flutter_launcher_icons
       - $$flutter$$/bin/dart run intl_utils:generate
+      - $$flutter$$/bin/dart run build_runner build
+      - cd assets/chat_backgrounds/doodle_icons
+      - rm -r vg
+      - dart run vector_graphics_compiler --input-dir SVG/ --out-dir vg/
+      - i=0
+      - for f in vg/*.svg.vec; do
+      -  out="vg/$i.vg"
+      -  mv "$f" "$out"
+      -  ((i++))
+      - done
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo ermis_client
@@ -66,5 +76,5 @@ AllowedAPKSigningKeys: 5173295a5861cf4d381416f83ee0f4a72fc03dfa4c7c9ca62ecd026c1
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^client-mobile-v
 UpdateCheckData: ErmisClient/Mobile/ermis_client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.3.0
-CurrentVersionCode: 18
+CurrentVersion: 1.4.0
+CurrentVersionCode: 19
