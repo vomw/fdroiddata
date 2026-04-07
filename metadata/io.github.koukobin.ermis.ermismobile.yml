@@ -21,7 +21,8 @@ Builds:
       - mkdir -p /home/ilias/Downloads/Ermis-master/ErmisClient/Mobile
       - chown -R vagrant /home/ilias
     output: build/app/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-    binary: https://github.com/Koukobin/Ermis/releases/download/client-mobile-v%v/android-app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/Koukobin/Ermis/releases/download/client-mobile-v%v/android-app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -63,9 +64,9 @@ Builds:
       - dart run vector_graphics_compiler --input-dir SVG/ --out-dir vg/
       - i=0
       - for f in vg/*.svg.vec; do
-      -  out="vg/$i.vg"
-      -  mv "$f" "$out"
-      -  ((i++))
+      - out="vg/$i.vg"
+      - mv "$f" "$out"
+      - ((i++))
       - done
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
@@ -75,6 +76,7 @@ AllowedAPKSigningKeys: 5173295a5861cf4d381416f83ee0f4a72fc03dfa4c7c9ca62ecd026c1
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^client-mobile-v
-UpdateCheckData: ErmisClient/Mobile/ermis_client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+UpdateCheckData: 
+  ErmisClient/Mobile/ermis_client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.4.0
 CurrentVersionCode: 19
