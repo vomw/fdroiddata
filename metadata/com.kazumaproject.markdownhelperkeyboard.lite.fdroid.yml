@@ -2,51 +2,30 @@ Categories:
   - Keyboard & IME
 License: MIT
 AuthorName: Kazuma Naka
-WebSite: https://github.com/KazumaProject/JapaneseKeyboard
 SourceCode: https://github.com/KazumaProject/JapaneseKeyboard
 IssueTracker: https://github.com/KazumaProject/JapaneseKeyboard/issues
 Changelog: https://github.com/KazumaProject/JapaneseKeyboard/releases
 Donate: https://github.com/sponsors/KazumaProject
-AutoName: Sumire Lite F-Droid
+
+AutoName: Sumire Lite
 
 RepoType: git
 Repo: https://github.com/KazumaProject/JapaneseKeyboard.git
 
-MaintainerNotes: |
-  Build the liteFdroid flavor only.
-
-  The upstream repository contains the llama.cpp submodule for the full edition,
-  but this F-Droid package builds the lightweight flavor only and does not use
-  the optional zenz or gemma model features.
-
-  This intentionally uses a new package ID for the dedicated F-Droid flavor:
-  com.kazumaproject.markdownhelperkeyboard.lite.fdroid
-
-  The existing fdroiddata entry for com.kazumaproject.markdownhelperkeyboard is a
-  different package and signing history, so this submission is kept separate.
-
-  Upstream fastlane metadata lives in fastlane/metadata/android/.
-
-  The submission draft builds the existing releaseUnsigned build type and reads
-  the APK from app/build/outputs/apk/liteFdroid/releaseUnsigned/.
-
-AutoUpdateMode: Version +-lite-fdroid %v
-UpdateCheckMode: Tags .*[0-9]$
-UpdateCheckData: app/build.gradle|versionCode\s+(\d+)||v([\d.]+)
-UpdateCheckName: Ignore
-CurrentVersion: 1.7.23-lite-fdroid
-CurrentVersionCode: 717
-
 Builds:
   - versionName: 1.7.23-lite-fdroid
     versionCode: 717
-    commit: v1.7.23
+    commit: 21730e6a6c5bcc666732227fe8344f42340b0250
+    patch:
+      - fdroid-signing.patch
     scanignore:
       - app/src/main/assets/*.dat.zip
       - app/src/main/assets/*/*.dat.zip
-    prebuild:
-      - perl -0pi -e 's/if \(signingConfigs\.release\.storeFile\) \{\n\s*signingConfig signingConfigs\.release\n\s*\}/def releaseSigning = signingConfigs.findByName("release")\n            if (releaseSigning?.storeFile) {\n                signingConfig releaseSigning\n            }/s'
-        app/build.gradle
     build:
       - gradle assembleLiteFdroidReleaseUnsigned
     output: app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
+
+AutoUpdateMode: Version +-lite-fdroid %v
+UpdateCheckMode: Tags .*[0-9]$
+CurrentVersion: 1.7.23-lite-fdroid
+CurrentVersionCode: 717
