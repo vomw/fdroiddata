@@ -416,8 +416,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
       - flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
-        --build-number=$$VERCODE$$
+        --build-number=$BASE_VERSION_CODE
     ndk: r27
 
   - versionName: 1.0.36
@@ -443,8 +444,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
       - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
-        --build-number=$$VERCODE$$
+        --build-number=$BASE_VERSION_CODE
     ndk: r27
 
   - versionName: 1.0.36
@@ -470,8 +472,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
       - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
-        --build-number=$$VERCODE$$
+        --build-number=$BASE_VERSION_CODE
     ndk: r27
 
 AllowedAPKSigningKeys: 011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
