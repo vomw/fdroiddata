@@ -19,7 +19,7 @@ Builds:
     commit: 914c3c2db44649a2591eea13c424b2c05992e3b3
     sudo:
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y npm openjdk-17-jdk
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild: ./scripts/fdroid-prebuild.sh
     scanignore:
@@ -30,6 +30,8 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export PATH=$JAVA_HOME/bin:$PATH
       - cd android
       - gradle assembleRelease
     ndk: r26d
