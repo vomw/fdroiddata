@@ -1,2 +1,61 @@
-cd /Users/gio/Desktop/stealth
-cat fdroid/metadata/com.securecall.app.fdroid.yml
+Categories:
+  - Phone & SMS
+  - Security
+
+License: GPL-3.0-only
+AuthorName: StealthX / Vendetta Labs
+AuthorWebSite: https://neabouli.github.io/stealth/
+WebSite: https://neabouli.github.io/stealth/
+SourceCode: https://github.com/NeaBouli/stealth
+IssueTracker: https://github.com/NeaBouli/stealth/issues
+
+AutoName: SecureCall
+
+Summary: End-to-end encrypted voice calls — no phone number required
+
+Description: |
+  SecureCall is a privacy-first encrypted calling app.
+  No phone number, no account, no personal data required.
+
+  Features:
+  * XChaCha20-Poly1305 end-to-end encryption
+  * X25519 key exchange + DTLS-SRTP media transport
+  * No phone number required — identified by SecureID
+  * Custom Call ID support
+  * STEALTH-DELETE: 5-tap emergency data wipe
+  * Emergency Broadcast System
+  * WalletConnect v2 for IFR token verification
+  * 30-day free trial (F-Droid edition)
+  * Unlock with activation code or IFR token lock
+  * No ads, no tracking, no telemetry
+
+  F-Droid Edition:
+  This build contains no proprietary libraries — no Google Play
+  Services, no Firebase, no AdMob, no Crashlytics.
+  After 30 days, unlock outgoing calls with an activation code
+  or by locking IFR tokens via WalletConnect.
+
+RepoType: git
+Repo: https://github.com/NeaBouli/stealth.git
+
+Builds:
+  - versionName: 0.2-beta-fdroid
+    versionCode: 2
+    commit: v2.4-broadcast
+    subdir: client_android/app
+    gradle:
+      - fdroid
+
+  - versionName: 1.0.13
+    versionCode: 31
+    commit: v1.0.13-fdroid
+    subdir: client_android/app
+    gradle:
+      - fdroid
+    prebuild:
+      - echo "sdk.dir=$ANDROID_HOME" > ../local.properties
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.13
+CurrentVersionCode: 31
