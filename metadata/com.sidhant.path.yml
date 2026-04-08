@@ -1,0 +1,36 @@
+Categories:
+  - Sports & Health
+License: AGPL-3.0-only
+AuthorName: Sidhant
+AuthorWebSite: https://sidhant947.github.io
+SourceCode: https://github.com/sidhant947/Path
+IssueTracker: https://github.com/sidhant947/Path/issues
+
+AutoName: Path
+
+RepoType: git
+Repo: https://github.com/sidhant947/Path.git
+
+Builds:
+  - versionName: 1.0.4
+    versionCode: 5
+    commit: 2adb9b54978152388e41eeada312db8c642333c8
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - git -C $$flutter$$ checkout -f $(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p"
+        .metadata)
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s+.*\+([0-9]+)|pubspec.yaml|version:\s+([0-9.]+)
+CurrentVersion: 1.0.4
+CurrentVersionCode: 5
