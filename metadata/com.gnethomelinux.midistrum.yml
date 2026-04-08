@@ -112,7 +112,7 @@ Builds:
       - buildozer@1.5.0
     prebuild:
       - sdkmanager 'platforms;android-33' 'build-tools;33.0.0'
-      - sed -i -e 's/log_level =.*/log_level = 2/' -e '/^\[app\]/aandroid.ndk_path
+      - sed -i -e 's/log_level =.*/log_level = 1/' -e '/^\[app\]/aandroid.ndk_path
         = $$NDK$$\nandroid.sdk_path = $$SDK$$\nandroid.skip_update = True\np4a.source_dir
         = $$python-for-android$$\nandroid.ant_path = /usr' -e 's/python3==3.11.5/python3==3.11.5,hostpython3==3.11.5/'
         buildozer.spec
@@ -120,15 +120,13 @@ Builds:
         $$python-for-android$$/pythonforandroid/bootstraps/common/build/gradle/wrapper/gradle-wrapper.properties
     build:
       - pushd $$cpython$$
-      - ./configure --prefix=$HOME/.local > /dev/null 2>&1
-      - make -j`nproc` -s > /dev/null 2>&1
-      - make altinstall -s > /dev/null 2>&1
+      - ./configure --prefix=$HOME/.local
+      - make -j`nproc`
+      - make altinstall
       - popd
       - export PATH="$PATH:$HOME/.local/bin"
       - pip3.11 install $$buildozer$$
-      - export P4A_FULL_DEBUG=1
-      - buildozer android release > $HOME/tmp/buildozer.log 2>&1 || (sed 's/\x1b\[[0-9;]*m//g'
-        $HOME/tmp/buildozer.log | grep -v '^# ' | tail -200 && false)
+      - buildozer android release
     ndk: r25b
 
 AutoUpdateMode: Version
