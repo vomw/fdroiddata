@@ -1,0 +1,44 @@
+Categories:
+  - Money
+License: GPL-3.0-or-later
+AuthorName: Max Demon
+AuthorEmail: maxdemon@outlook.com
+WebSite: https://itsmaxyd.github.io/fillup/
+SourceCode: https://github.com/itsmaxyd/fillup
+IssueTracker: https://github.com/itsmaxyd/fillup/issues
+Donate: https://buymeacoffee.com/maxdemon
+
+AutoName: Fillup
+
+RepoType: git
+Repo: https://github.com/itsmaxyd/fillup.git
+
+Builds:
+  - versionName: 1.2.0
+    versionCode: 17
+    commit: 6eb575ba3b85cae9bf7bc8b158a88357d17b475f
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - version=$(grep -A 5 environment pubspec.yaml | grep flutter | sed "s/[^0-9.]//g")
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/java.home/d' android/gradle.properties
+      - sed -i -e '/jvmToolchain/d' android/app/build.gradle
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter build apk --release --target-platform="android-arm64"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.2.0
+CurrentVersionCode: 17
