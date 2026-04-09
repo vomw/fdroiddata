@@ -21,6 +21,8 @@ Builds:
     output: output.apk
     srclibs:
       - Godot@4.6.2-stable
+    prebuild: sed -i -e '/custom_template\/release/s|""|"$$Godot$$/bin/android_release.apk"|'
+      -e '/signed/s/true/false/' export_presets.cfg
     build:
       - pushd $$Godot$$
       - export ANDROID_NDK_ROOT=$$NDK$$
