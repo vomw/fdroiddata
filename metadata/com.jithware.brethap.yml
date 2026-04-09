@@ -1,7 +1,7 @@
 Categories:
   - Sports & Health
 License: GPL-3.0-only
-WebSite: http://www.jithware.com
+WebSite: https://jithware.github.io/brethap
 SourceCode: https://github.com/jithware/brethap
 IssueTracker: https://github.com/jithware/brethap/issues
 Translation: https://github.com/jithware/brethap/discussions/52
@@ -1140,7 +1140,8 @@ Builds:
       - submodules/flutter/bin/flutter config --no-analytics
       - submodules/flutter/bin/flutter --version
       - submodules/flutter/bin/flutter packages pub get
-      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{path_provider,url_launcher}_android-*/android/build.gradle
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{path_provider,url_launcher}_android-*/android/build.gradle
     scanignore:
       - submodules/flutter/bin/cache
     scandelete:
@@ -1151,8 +1152,62 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - submodules/flutter/bin/flutter build apk
 
+  - versionName: 1.8.5
+    versionCode: 138
+    commit: c958a7d2213728f92ce26581cedf8a376d2bcc01
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - .vscode
+      - docs/assets/AssetManifest.bin
+      - ios
+      - linux
+      - test
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter --version
+      - submodules/flutter/bin/flutter packages pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - docs
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk
+
+  - versionName: 1.8.6
+    versionCode: 140
+    commit: d3cd14d0b2d7a1435b7d4cb6836eae89531cf719
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - .vscode
+      - docs/assets/AssetManifest.bin
+      - ios
+      - test
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter --version
+      - submodules/flutter/bin/flutter packages pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - docs
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk
+    ndk: r28c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.8.4
-CurrentVersionCode: 136
+CurrentVersion: 1.8.6
+CurrentVersionCode: 140

@@ -160,7 +160,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic_v%v_fdroid.apk
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic_v%v_fdroid.apk
 
   - versionName: 0.2.5
     versionCode: 22
@@ -175,7 +176,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v0.2.8/SimpMusic_v0.2.8-fdroid.apk
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v0.2.8/SimpMusic_v0.2.8-fdroid.apk
 
   - versionName: 0.2.12
     versionCode: 29
@@ -184,7 +186,8 @@ Builds:
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic_v%v-universal-release.apk
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic_v%v-universal-release.apk
 
   - versionName: 0.2.17
     versionCode: 35
@@ -205,7 +208,8 @@ Builds:
     gradle:
       - foss
     output: build/outputs/apk/foss/release/app-foss-universal-release-unsigned.apk
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
     srclibs:
       - maxrave-dev-ffmpeg-kit@9b487fccce5dad5772d4d2ed22d3be37b6ff2321
     scandelete:
@@ -220,7 +224,8 @@ Builds:
         --enable-twolame --enable-vo-amrwbenc --enable-android-media-codec --enable-android-zlib
         --disable-arm-v7a --disable-x86
       - popd
-      - mv /home/runner/work/ffmpeg-kit/ffmpeg-kit/prebuilt/bundle-android-aar-lts/ffmpeg-kit/*.aar
+      - mv 
+        /home/runner/work/ffmpeg-kit/ffmpeg-kit/prebuilt/bundle-android-aar-lts/ffmpeg-kit/*.aar
         ../ffmpeg-kit/ffmpeg-kit-release.aar
     ndk: r22b
 
@@ -243,7 +248,8 @@ Builds:
     gradle:
       - foss
     output: build/outputs/apk/foss/release/app-foss-universal-release-unsigned.apk
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
     srclibs:
       - maxrave-dev-ffmpeg-kit@9b487fccce5dad5772d4d2ed22d3be37b6ff2321
     scandelete:
@@ -258,53 +264,119 @@ Builds:
         --enable-twolame --enable-vo-amrwbenc --enable-android-media-codec --enable-android-zlib
         --disable-arm-v7a --disable-x86
       - popd
-      - mv /home/runner/work/ffmpeg-kit/ffmpeg-kit/prebuilt/bundle-android-aar-lts/ffmpeg-kit/*.aar
+      - mv 
+        /home/runner/work/ffmpeg-kit/ffmpeg-kit/prebuilt/bundle-android-aar-lts/ffmpeg-kit/*.aar
         ../ffmpeg-kit/ffmpeg-kit-release.aar
     ndk: r22b
 
-  - versionName: 0.2.20
-    versionCode: 39
-    disable: https://github.com/maxrave-dev/SimpMusic/issues/1267
-    commit: e04496222b5fec4339aafe7114b3cb93cf60c1ca
-    subdir: app
+  - versionName: 1.0.1-hf
+    versionCode: 43
+    commit: 371e73f2b78e197fcd1c93327dae5eaf47459814
+    subdir: composeApp
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    prebuild:
+      - sed -i -e '/jogamp/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
+    scandelete:
+      - MediaServiceCore/SharedModules
+
+  - versionName: 1.0.2
+    versionCode: 44
+    commit: df906f49f8ebc3f0134735c2e81e981fcbe0344b
+    subdir: androidApp
     submodules: true
     sudo:
       - export CPUS_MAX=16
       - export CPUS=$(getconf _NPROCESSORS_ONLN)
       - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
         ; done
-      - apt-get update
-      - apt-get install -y make autoconf automake libtool pkg-config curl doxygen
-        nasm cmake gcc gperf texinfo yasm bison autogen wget autopoint meson ninja-build
-        ragel groff gtk-doc-tools libtasn1-6-dev libtasn1-bin libgnutls28-dev libunistring-dev
-      - mkdir -p /home/runner/work/ffmpeg-kit
-      - chown vagrant /home/runner/work/ffmpeg-kit
     gradle:
-      - foss
-    output: build/outputs/apk/foss/release/app-foss-universal-release-unsigned.apk
-    binary: https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
-    srclibs:
-      - maxrave-dev-ffmpeg-kit@9b487fccce5dad5772d4d2ed22d3be37b6ff2321
+      - yes
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    prebuild:
+      - sed -i -e '/jogamp/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
     scandelete:
-      - ffmpeg-kit
       - MediaServiceCore/SharedModules
-    build:
-      - mv $$maxrave-dev-ffmpeg-kit$$ /home/runner/work/ffmpeg-kit/ffmpeg-kit
-      - pushd /home/runner/work/ffmpeg-kit/ffmpeg-kit
-      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ANDROID_SDK_ROOT=$$SDK$$ ANDROID_NDK_ROOT=$$NDK$$
-        ./android.sh -l --enable-gpl --enable-lame --enable-libilbc --enable-libvorbis
-        --enable-opencore-amr --enable-opus --enable-shine --enable-soxr --enable-speex
-        --enable-twolame --enable-vo-amrwbenc --enable-android-media-codec --enable-android-zlib
-        --disable-arm-v7a --disable-x86
-      - popd
-      - mv /home/runner/work/ffmpeg-kit/ffmpeg-kit/prebuilt/bundle-android-aar-lts/ffmpeg-kit/*.aar
-        ../ffmpeg-kit/ffmpeg-kit-release.aar
-    ndk: r22b
+
+  - versionName: 1.0.3
+    versionCode: 45
+    commit: 752f9501dfa3fd5a79b8576461757d878b70b4a4
+    subdir: androidApp
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    prebuild:
+      - sed -i -e '/jogamp/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
+    scandelete:
+      - MediaServiceCore/SharedModules
+
+  - versionName: 1.0.4
+    versionCode: 46
+    commit: e0954e8bd82d62c403907b30bcec4c319b788279
+    subdir: androidApp
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    prebuild:
+      - sed -i -e '/jogamp/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
+    scandelete:
+      - MediaServiceCore/SharedModules
+
+  - versionName: 1.1.0
+    versionCode: 47
+    commit: 1959c12a20e3d61f5f81a3fd1fbd6a0899857f77
+    subdir: androidApp
+    submodules: true
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    binary: 
+      https://github.com/maxrave-dev/SimpMusic/releases/download/v%v/SimpMusic-foss-universal-release.apk
+    rm:
+      - gradle/gradle-daemon-jvm.properties
+    prebuild:
+      - sed -i -e '/jogamp/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/isEnable/d' build.gradle.kts
 
 AllowedAPKSigningKeys: 76c53bd813ae8f1ce2778f7814b515785719bf9a82c6bee03b8b2dfd706055a1
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: gradle/libs.versions.toml|version-code="(\d+)"|.|version-name="(.*)"
-CurrentVersion: 0.2.20
-CurrentVersionCode: 39
+UpdateCheckData: gradle/libs.versions.toml|version-code\s=\s"(\d+)"|.|version-name\s=\s"(.*)"
+CurrentVersion: 1.1.0
+CurrentVersionCode: 47

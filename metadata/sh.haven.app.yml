@@ -1,0 +1,145 @@
+Categories:
+  - Remote Access
+License: GPL-3.0-only
+AuthorName: GlassOnTin
+SourceCode: https://github.com/GlassOnTin/Haven
+IssueTracker: https://github.com/GlassOnTin/Haven/issues
+Changelog: https://github.com/GlassOnTin/Haven/releases
+
+AutoName: Haven
+
+RepoType: git
+Repo: https://github.com/GlassOnTin/Haven.git
+
+Builds:
+  - versionName: 2.2.2
+    versionCode: 661
+    commit: 2ed1f101b97d926b7e142c5b44f84b2c3f05b5a5
+    subdir: app
+    submodules: true
+    gradle:
+      - arm64
+
+  - versionName: 2.2.2
+    versionCode: 662
+    commit: 2ed1f101b97d926b7e142c5b44f84b2c3f05b5a5
+    subdir: app
+    submodules: true
+    gradle:
+      - x64
+
+  - versionName: 2.3.1-rc1
+    versionCode: 681
+    commit: 6b55afaf103561193e701772905957a1f966e966
+    subdir: app
+    submodules: true
+    gradle:
+      - arm64
+
+  - versionName: 2.3.1-rc1
+    versionCode: 682
+    commit: 6b55afaf103561193e701772905957a1f966e966
+    subdir: app
+    submodules: true
+    gradle:
+      - x64
+
+  - versionName: 3.17.0
+    versionCode: 1171
+    commit: 70891a87f5c8fe2fe07fd769c7180b5adab16895
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - arm64Foss
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
+  - versionName: 3.17.0
+    versionCode: 1172
+    commit: 70891a87f5c8fe2fe07fd769c7180b5adab16895
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make binutils gawk
+      - sdkmanager "ndk;27.0.12077973" "ndk;28.0.13004108" "cmake;3.31.6"
+    gradle:
+      - x64Foss
+    scandelete:
+      - rdp-kotlin/jniLibs/
+
+  - versionName: 4.51.4
+    versionCode: 1961
+    commit: 29104f0e0e354b0f39f7f263fc113d0432a563ef
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y automake make binutils gawk libc-dev rustup libntirpc-dev
+        meson ninja-build pkg-config libtool libltdl-dev cmake libwayland-dev bison
+        g++ xutils-dev python3-xcbgen
+      - apt-get install -y -t forky golang-go
+    gradle:
+      - arm64
+    scandelete:
+      - core/local/src/main/jniLibs
+      - core/wayland/src/main/jniLibs
+      - rdp-kotlin/jniLibs/
+      - rclone-android/build
+      - wayland-android
+    build:
+      - sdkmanager "cmake;3.31.6"
+      - rustup default 1.94.1
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - cd ../wayland-android
+      - ABI=arm64-v8a ./build_liblabwc_android.sh
+      - mkdir -p ../core/wayland/src/main/jniLibs/arm64-v8a/
+      - cp jniLibs/arm64-v8a/liblabwc_android.so ../core/wayland/src/main/jniLibs/arm64-v8a/
+    ndk: r28c
+
+  - versionName: 4.51.4
+    versionCode: 1962
+    commit: 29104f0e0e354b0f39f7f263fc113d0432a563ef
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y automake make binutils gawk libc-dev rustup libntirpc-dev
+        meson ninja-build pkg-config libtool libltdl-dev cmake libwayland-dev bison
+        g++ xutils-dev python3-xcbgen
+      - apt-get install -y -t forky golang-go
+    gradle:
+      - x64
+    scandelete:
+      - core/local/src/main/jniLibs
+      - core/wayland/src/main/jniLibs
+      - rdp-kotlin/jniLibs/
+      - rclone-android/build
+      - wayland-android
+    build:
+      - sdkmanager "cmake;3.31.6"
+      - rustup default 1.94.1
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20250606033058-a2a15c67f36f
+      - cd ../wayland-android
+      - ABI=x86_64 ./build_liblabwc_android.sh
+      - mkdir -p ../core/wayland/src/main/jniLibs/x86_64/
+      - cp jniLibs/x86_64/liblabwc_android.so ../core/wayland/src/main/jniLibs/x86_64/
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+CurrentVersion: 4.51.4
+CurrentVersionCode: 1962

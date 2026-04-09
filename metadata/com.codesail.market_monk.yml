@@ -25,7 +25,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -66,7 +67,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -107,7 +109,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -148,7 +151,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -189,7 +193,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -230,7 +235,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -271,7 +277,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -312,7 +319,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -353,7 +361,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -384,6 +393,174 @@ Builds:
       - mv /home/brandon/market_monk com.codesail.market_monk
     ndk: r27
 
+  - versionName: 1.0.36
+    versionCode: 371
+    commit: 164486e369a9e8d7a80857a3f2bd9dbec1f20b4f
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
+  - versionName: 1.0.36
+    versionCode: 372
+    commit: 164486e369a9e8d7a80857a3f2bd9dbec1f20b4f
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
+  - versionName: 1.0.36
+    versionCode: 373
+    commit: 164486e369a9e8d7a80857a3f2bd9dbec1f20b4f
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
+  - versionName: 1.0.37
+    versionCode: 381
+    commit: 14ce7eec1c8c5b03351a8673cd9134b0ae5997af
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
+  - versionName: 1.0.37
+    versionCode: 382
+    commit: 14ce7eec1c8c5b03351a8673cd9134b0ae5997af
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
+  - versionName: 1.0.37
+    versionCode: 383
+    commit: 14ce7eec1c8c5b03351a8673cd9134b0ae5997af
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - ./flutter/bin/dart run build_runner build -d
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - BASE_VERSION_CODE=$(grep '^version:' pubspec.yaml | sed 's/.*+//')
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number=$BASE_VERSION_CODE
+    ndk: r27
+
 AllowedAPKSigningKeys: 011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
 
 AutoUpdateMode: Version
@@ -393,5 +570,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.32
-CurrentVersionCode: 333
+CurrentVersion: 1.0.37
+CurrentVersionCode: 383

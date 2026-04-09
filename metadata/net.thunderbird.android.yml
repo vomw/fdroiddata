@@ -15,7 +15,8 @@ AutoName: 'Thunderbird: Free Your Inbox'
 
 RepoType: git
 Repo: https://github.com/thunderbird/thunderbird-android.git
-Binaries: https://ftp.mozilla.org/pub/thunderbird-mobile/android/releases/%v/thunderbird-%v.apk
+Binaries: 
+  https://ftp.mozilla.org/pub/thunderbird-mobile/android/releases/%v/thunderbird-%v.apk
 
 Builds:
   - versionName: '8.0'
@@ -23,7 +24,8 @@ Builds:
     commit: e8f11477f608287a4517a4a05766ccfa9c97cb88
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -39,7 +41,8 @@ Builds:
     commit: 4a9db04a9a0d805dba477258a65dc5a4d2b4fa6a
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -55,7 +58,8 @@ Builds:
     commit: 1a8409aed3eeebbe7a85b85825cb990354ada144
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -71,7 +75,8 @@ Builds:
     commit: 53354f04f64bb72b6fac9d8367b14ca8b1cec178
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -87,7 +92,8 @@ Builds:
     commit: ac76f6eed67610c5993b741afb543132390f3cb5
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -103,7 +109,8 @@ Builds:
     commit: 8a4fefcc1b8511f415708d507bf86c5cae58ad2a
     gradle:
       - foss
-    output: app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
+    output: 
+      app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-foss-release-unsigned.apk
     rm:
       - feature/funding/googleplay
     prebuild:
@@ -215,6 +222,75 @@ Builds:
     scandelete:
       - build-plugin
 
+  - versionName: '15.0'
+    versionCode: 18
+    commit: fc0fa029eea8593fae4ecc7ac2faec4f1a622bea
+    subdir: app-thunderbird
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+    rm:
+      - app-k9mail
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-k9mail/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '16.0'
+    versionCode: 19
+    commit: 69c112cea0547280e4e714f7d1c6e72f20a68654
+    subdir: app-thunderbird
+    gradle:
+      - foss
+    rm:
+      - app-k9mail
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-k9mail/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '16.1'
+    versionCode: 20
+    commit: 9dfc10b2ce8020713284a463961ddc5c0123f580
+    subdir: app-thunderbird
+    gradle:
+      - foss
+    rm:
+      - app-k9mail
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-k9mail/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '17.0'
+    versionCode: 21
+    commit: 4cea36e9fa18d4120a44086014ffbdfa88e2c8b1
+    subdir: app-thunderbird
+    gradle:
+      - foss
+    rm:
+      - app-k9mail
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-k9mail/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
 AllowedAPKSigningKeys: b6524779b3dbbc5ac17a5ac271ddb29dcfbf723578c238e03c3c217811356dd1
 
 MaintainerNotes: |-
@@ -236,5 +312,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '14.0'
-CurrentVersionCode: 17
+CurrentVersion: '17.0'
+CurrentVersionCode: 21
