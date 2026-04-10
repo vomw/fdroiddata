@@ -2,7 +2,6 @@ Categories:
   - Keyboard & IME
 License: MIT
 AuthorName: Kazuma Naka
-WebSite: https://github.com/KazumaProject/JapaneseKeyboard
 SourceCode: https://github.com/KazumaProject/JapaneseKeyboard
 IssueTracker: https://github.com/KazumaProject/JapaneseKeyboard/issues
 Changelog: https://github.com/KazumaProject/JapaneseKeyboard/releases
@@ -15,47 +14,23 @@ Repo: https://github.com/KazumaProject/JapaneseKeyboard.git
 Binaries: https://github.com/KazumaProject/JapaneseKeyboard/releases/latest/download/app-liteFdroid-arm64-v8a-release.apk
 
 Builds:
-  - versionName: 1.7.24-lite-fdroid
-    versionCode: 718
-    commit: 6fd6ad0fcc80f7f294ab075e1bef580be4327b02
-    output: 
-      app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
-    scanignore:
-      - app/src/main/assets/*.dat.zip
-      - app/src/main/assets/*/*.dat.zip
-    build: gradle assembleLiteFdroidReleaseUnsigned
-
   - versionName: 1.7.25-lite-fdroid
     versionCode: 719
     commit: a1807a22325d08d16d86deec00aa548160ae1db1
-    output: 
-      app/build/outputs/apk/liteFdroid/releaseUnsigned/app-liteFdroid-release-unsigned.apk
+    subdir: app
+    gradle:
+      - lite
+      - fdroid
     scanignore:
       - app/src/main/assets/*.dat.zip
       - app/src/main/assets/*/*.dat.zip
-    build: gradle assembleLiteFdroidReleaseUnsigned
-
-MaintainerNotes: |
-  Build the liteFdroid flavor only.
-
-  The upstream repository contains the llama.cpp submodule for the full edition,
-  but this F-Droid package builds the lightweight flavor only and does not use
-  the optional zenz or gemma model features.
-
-  This intentionally uses a new package ID for the dedicated F-Droid flavor:
-  com.kazumaproject.markdownhelperkeyboard.lite.fdroid
-
-  The existing fdroiddata entry for com.kazumaproject.markdownhelperkeyboard is a
-  different package and signing history, so this submission is kept separate.
-
-  Upstream fastlane metadata lives in fastlane/metadata/android/.
-
-  The submission draft builds the existing releaseUnsigned build type and reads
-  the APK from app/build/outputs/apk/liteFdroid/releaseUnsigned/.
 
 AllowedAPKSigningKeys:
   - ec676c30f05f3947a1aec86d02ecead150f772790b35fcaf8af484c1dd5eb4c0
 
+# Track dedicated F-Droid tags like "fdroid-v1.7.25-lite-fdroid" so
+# checkupdates can keep the full versionName without relying on the broken
+# "+suffix" handling in AutoUpdateMode.
 AutoUpdateMode: Version
 UpdateCheckMode: Tags fdroid-v.*-lite-fdroid$
 UpdateCheckData: app/build.gradle|versionCode\s+(\d+)||fdroid-v([\d.]+-lite-fdroid)$
