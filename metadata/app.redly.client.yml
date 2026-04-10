@@ -1,0 +1,40 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on Reddit.
+Categories:
+  - Internet
+  - Reading
+License: GPL-3.0-or-later
+AuthorName: dinler03
+SourceCode: https://github.com/dinler03/redly
+IssueTracker: https://github.com/dinler03/redly/issues
+Changelog: https://github.com/dinler03/redly/blob/HEAD/CHANGELOG.md
+
+AutoName: Redly
+
+RepoType: git
+Repo: https://github.com/dinler03/redly.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: android/app
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y --no-install-recommends npm
+    init: cd ../.. && npm ci --no-audit --no-fund
+    gradle:
+      - yes
+    rm:
+      - android/app/src/main/assets/public
+    prebuild: cd ../.. && npm run build
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
