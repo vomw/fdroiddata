@@ -45,17 +45,14 @@ Builds:
     gradle:
       - yes
     output: android/app/build/outputs/apk/release/app-release.apk
-    srclibs:
-      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     prebuild:
       - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && printf
         'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install
+      - pnpm prepare:fdroid
       - printf 
         'module.exports={dependencies:{"@stripe/stripe-react-native":{platforms:{android:null}}}};'
         > react-native.config.js
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - IS_FOSS=true npx expo prebuild --platform android --no-install
       - sed -i 's/enableSeparateBuildPerCPUArchitecture = true/enableSeparateBuildPerCPUArchitecture
         = false/' android/app/build.gradle || true
