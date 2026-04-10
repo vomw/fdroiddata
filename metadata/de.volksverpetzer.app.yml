@@ -58,8 +58,10 @@ Builds:
         = false/' android/app/build.gradle || true
       - sed -i 's/versionCode [0-9]*/versionCode 470010260/' android/app/build.gradle
       - echo 'android { dependenciesInfo { includeInApk false } }' >> android/app/build.gradle
-      - "echo 'configurations.all { exclude group: \"com.android.installreferrer\"\
-        \ }' >> android/app/build.gradle"
+      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+        -e '/getInstallReferrerAsync/apromise.resolve("")' 
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - chmod -R a+r android/
       - sed -i 
         's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
