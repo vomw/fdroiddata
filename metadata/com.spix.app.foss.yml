@@ -23,6 +23,9 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - ./scripts/fdroid-prebuild.sh
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc
       - node_modules/react-native/React/I18n
@@ -34,9 +37,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - cd android
       - gradle assembleRelease
     ndk: r26d
