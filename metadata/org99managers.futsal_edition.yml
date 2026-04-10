@@ -21,16 +21,16 @@ Builds:
     commit: 57633a5cc9254d79c1360251294b57bfea763bf1
     sudo:
       - apt-get update
-	  # For llvm build use clang instead
+      # For llvm build use clang instead
       - apt-get install -y pkgconf scons g++
     output: 99managers-futsal-edition.apk
     srclibs:
-	  # Set the Godot version here
+      # Set the Godot version here
       - Godot@4.6-stable
     prebuild:
       - mv fdroid/export_presets.cfg game/export_presets.cfg
     build:
-	  # Build Godot
+      # Build Godot
       - pushd $$Godot$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export ANDROID_HOME=$$SDK$$
@@ -38,9 +38,9 @@ Builds:
       - scons -j `nproc` platform=linuxbsd target=editor
       - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
       - popd
-	  # Move the template apk. This path is set by custom_template/release in export_presets.cfg
+      # Move the template apk. This path is set by custom_template/release in export_presets.cfg
       - mv $$Godot$$/bin/android_release.apk android-release.apk
-	  # Use your preset name here.
+      # Use your preset name here.
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release
         "Android Release" 99managers-futsal-edition.apk
     ndk: r28b
