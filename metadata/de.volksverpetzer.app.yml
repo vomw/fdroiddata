@@ -53,6 +53,12 @@ Builds:
       - printf 
         'module.exports={dependencies:{"@stripe/stripe-react-native":{platforms:{android:null}}}};'
         > react-native.config.js
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+        -e '/getInstallReferrerAsync/apromise.resolve("")' 
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - IS_FOSS=true npx expo prebuild --platform android --no-install
       - sed -i 's/enableSeparateBuildPerCPUArchitecture = true/enableSeparateBuildPerCPUArchitecture
         = false/' android/app/build.gradle || true
@@ -60,10 +66,6 @@ Builds:
       - echo 'android { dependenciesInfo { includeInApk false } }' >> android/app/build.gradle
       - "echo 'allprojects { configurations.all { exclude group: \"com.android.installreferrer\"\
         \ } }' >> android/build.gradle"
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
-        -e '/getInstallReferrerAsync/apromise.resolve("")' 
-        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - chmod -R a+r android/
       - sed -i 
         's|distributionUrl=.*|distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip|'
