@@ -1,0 +1,59 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+AuthorName: Giovanni Drago
+SourceCode: https://github.com/GiovanniDrago/motivationalApp
+IssueTracker: https://github.com/GiovanniDrago/motivationalApp/issues
+Changelog: https://github.com/GiovanniDrago/motivationalApp/releases
+
+AutoName: Motivational App
+Summary: A tiny joke app that delivers brutally direct motivation.
+Description: |-
+  Motivational App is a tiny ironic joke app built around one very specific idea:
+  type your name, tap the button, and receive a short burst of extremely direct motivation.
+
+  It is intentionally minimal. No account, no feed, no subscriptions, and no productivity theater.
+  Just one fast interaction, one ridiculous payoff, and a deliberately rude sense of humor.
+
+  Features:
+  .
+    * one quick name-based interaction
+    * English and Italian localization
+    * lightweight About menu
+    * small, fast, and intentionally absurd design
+
+  This app is not pretending to be a life coach.
+  It knows exactly how silly it is, and that is the point.
+
+RepoType: git
+Repo: https://github.com/GiovanniDrago/motivationalApp.git
+
+Builds:
+  - versionName: 2.0.4
+    versionCode: 20004
+    commit: 86c11e6383dc9f1da077165511b1eb56988c50b4
+    output: build/app/outputs/flutter-apk/app-direct-release.apk
+    srclibs:
+      - flutter@3.41.6
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+
+CurrentVersion: 2.0.4
+CurrentVersionCode: 20004
