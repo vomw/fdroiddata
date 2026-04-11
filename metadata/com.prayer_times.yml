@@ -44,6 +44,8 @@ Builds:
     init:
       - cd ..
       - npm ci --no-audit
+    patch:
+      - fdroid-release-signing-ifelse.patch
     gradle:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release.apk
@@ -60,6 +62,9 @@ MaintainerNotes: |
   JDK 21 does not satisfy that request. Trixie has no OpenJDK 17 apt package, so
   install Eclipse Temurin 17.0.18+8 (checksum-verified) to `/usr/local/jdk-17` and
   set `org.gradle.java.home` in `prebuild`.
+  `patch`: fdroidserver `remove_signing_keys` strips `signingConfig` lines; a
+  multi-line ternary in `release` then leaves stray `? :` and breaks Groovy;
+  apply `fdroid-release-signing-ifelse.patch` (if/else) before that step.
   Scanner: `scanignore` uses `node_modules` (RN layout
   changes make per-package paths brittle) plus `android/build.gradle` for the
   AsyncStorage `local_repo` maven entry. If policy tightens, consider `scandelete`
