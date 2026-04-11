@@ -47,10 +47,11 @@ Builds:
       - npm ci --no-audit
     patch:
       - fdroid-release-signing-ifelse.patch
+    prebuild:
+      - printf '\norg.gradle.java.home=/usr/local/jdk-17\n' >> gradle.properties
     gradle:
       - fdroid
-    output: app/build/outputs/apk/fdroid/release/app-fdroid-release.apk
-    prebuild: printf '\norg.gradle.java.home=/usr/local/jdk-17\n' >> gradle.properties
+    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     scanignore:
       - android/build.gradle
       - node_modules
@@ -66,6 +67,8 @@ MaintainerNotes: |
   `patch`: fdroidserver `remove_signing_keys` strips `signingConfig` lines; a
   multi-line ternary in `release` then leaves stray `? :` and breaks Groovy;
   apply `fdroid-release-signing-ifelse.patch` (if/else) before that step.
+  After stripping, the Gradle output is `app-fdroid-release-unsigned.apk` (not
+  `-release.apk`).
   Scanner: `scanignore` uses `node_modules` (RN layout
   changes make per-package paths brittle) plus `android/build.gradle` for the
   AsyncStorage `local_repo` maven entry. If policy tightens, consider `scandelete`
