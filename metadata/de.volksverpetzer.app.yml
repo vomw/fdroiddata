@@ -53,8 +53,9 @@ Builds:
       - printf 
         'module.exports={dependencies:{"@stripe/stripe-react-native":{platforms:{android:null}}}};'
         > react-native.config.js
-      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
-        package.json
+      - python3 -c "import json; f=open('package.json','r+'); d=json.load(f); 
+        d.setdefault('expo',{}).setdefault('autolinking',{}).setdefault('android',{})['buildFromSource']=['.*'];
+        f.seek(0); json.dump(d,f,indent=2); f.truncate()"
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
       - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
         -e '/getInstallReferrerAsync/apromise.resolve("")' 
