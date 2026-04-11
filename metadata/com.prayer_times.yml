@@ -49,6 +49,7 @@ Builds:
       - fdroid-release-signing-ifelse.patch
     gradle:
       - fdroid
+    output: app/build/outputs/apk/fdroid/release/*.apk
     prebuild:
       - printf '\norg.gradle.java.home=/usr/local/jdk-17\n' >> gradle.properties
       - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=1024m/'
@@ -69,10 +70,11 @@ MaintainerNotes: |
   `patch`: fdroidserver `remove_signing_keys` strips `signingConfig` lines; a
   multi-line ternary in `release` then leaves stray `? :` and breaks Groovy;
   apply `fdroid-release-signing-ifelse.patch` (if/else) before that step.
-  No `output:` key: fdroidserver picks up `*-release-unsigned.apk` under the
-  `fdroid` flavor dir. `prebuild` bumps Metaspace and disables daemon perf log
-  noise for large RN builds (upstream tag may predate `android/gradle.properties`
-  tweaks).
+  `output` must point under **`app/build/`** (application module). F-Droid’s
+  default Gradle APK discovery only checks `build/outputs/apk/`, which does not
+  exist for typical React Native layouts.
+  `prebuild` bumps Metaspace and disables daemon perf log noise for large RN
+  builds (upstream tag may predate `android/gradle.properties` tweaks).
   Scanner: `scanignore` uses `node_modules` (RN layout
   changes make per-package paths brittle) plus `android/build.gradle` for the
   AsyncStorage `local_repo` maven entry. If policy tightens, consider `scandelete`
