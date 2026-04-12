@@ -8,31 +8,106 @@ AutoName: VoxSherpa TTS
 
 RepoType: git
 Repo: https://github.com/CodeBySonu95/VoxSherpa-TTS
-Binaries: 
-  https://github.com/CodeBySonu95/VoxSherpa-TTS/releases/download/v%v/VoxSherpa-TTS.apk
+
+AllowedAPKSigningKeys: 0d4fa1d53dc66c262a6e206d32276038ec7bbcd4086c40d23e1e93721e4292d2
 
 Builds:
   - versionName: 1.0-beta
     versionCode: 1
-    commit: 961c533f0011ae4ca37f4e2e4252f9a3d6d1d459
+    commit: f3e9bdc05ce123e1a4742ba878f7117999fbb20b
     subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - enableApkSplits=false
+      - includeUniversalApk=true
+      - vc=1
     prebuild:
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
       - echo "org.gradle.workers.max=1" >> gradle.properties
       - echo "org.gradle.parallel=false" >> gradle.properties
     scanignore:
       - app/src/main/assets/espeak-ng-data.zip
-    build:
-      - $$GRADLE$$ -PbuildAbi=arm64-v8a assembleRelease
-      - $$GRADLE$$ -PbuildAbi=armeabi-v7a assembleRelease
-      - $$GRADLE$$ -PbuildAbi=x86 assembleRelease
-      - $$GRADLE$$ -PbuildAbi=x86_64 assembleRelease
-      - $$GRADLE$$ -PbuildAbi=universal assembleRelease
+    ndk: 27.0.12077973
+    binary: https://github.com/CodeBySonu95/VoxSherpa-TTS/releases/download/v%v/VoxSherpa-TTS.apk
+
+  - versionName: 1.0-beta
+    versionCode: 2
+    commit: f3e9bdc05ce123e1a4742ba878f7117999fbb20b
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - enableApkSplits=true
+      - includeUniversalApk=false
+      - targetAbi=arm64-v8a
+      - vc=2
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
+      - echo "org.gradle.workers.max=1" >> gradle.properties
+      - echo "org.gradle.parallel=false" >> gradle.properties
+    scanignore:
+      - app/src/main/assets/espeak-ng-data.zip
     ndk: 27.0.12077973
 
-AllowedAPKSigningKeys: 0d4fa1d53dc66c262a6e206d32276038ec7bbcd4086c40d23e1e93721e4292d2
+  - versionName: 1.0-beta
+    versionCode: 3
+    commit: f3e9bdc05ce123e1a4742ba878f7117999fbb20b
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - enableApkSplits=true
+      - includeUniversalApk=false
+      - targetAbi=armeabi-v7a
+      - vc=3
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
+      - echo "org.gradle.workers.max=1" >> gradle.properties
+      - echo "org.gradle.parallel=false" >> gradle.properties
+    scanignore:
+      - app/src/main/assets/espeak-ng-data.zip
+    ndk: 27.0.12077973
+
+  - versionName: 1.0-beta
+    versionCode: 4
+    commit: f3e9bdc05ce123e1a4742ba878f7117999fbb20b
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - enableApkSplits=true
+      - includeUniversalApk=false
+      - targetAbi=x86
+      - vc=4
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
+      - echo "org.gradle.workers.max=1" >> gradle.properties
+      - echo "org.gradle.parallel=false" >> gradle.properties
+    scanignore:
+      - app/src/main/assets/espeak-ng-data.zip
+    ndk: 27.0.12077973
+
+  - versionName: 1.0-beta
+    versionCode: 5
+    commit: f3e9bdc05ce123e1a4742ba878f7117999fbb20b
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - enableApkSplits=true
+      - includeUniversalApk=false
+      - targetAbi=x86_64
+      - vc=5
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
+      - echo "org.gradle.workers.max=1" >> gradle.properties
+      - echo "org.gradle.parallel=false" >> gradle.properties
+    scanignore:
+      - app/src/main/assets/espeak-ng-data.zip
+    ndk: 27.0.12077973
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.0-beta
-CurrentVersionCode: 1
+CurrentVersionCode: 5
