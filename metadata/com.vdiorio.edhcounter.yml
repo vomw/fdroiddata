@@ -15,11 +15,10 @@ Description: |-
   experience counters.
 
 Builds:
-  - versionName: 1.0.17
+  - versionName: '1.0.17'
     versionCode: 17
     commit: v1.0.17
     subdir: android
-
     sudo:
       - apt-get update
       - sysctl fs.inotify.max_user_watches=524288 || true
@@ -34,54 +33,21 @@ Builds:
       - npx patch-package
       - sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' node_modules/react-native-reanimated/android/build.gradle
       - grep -q '^kotlin.jvm.target.validation.mode=' android/gradle.properties || echo 'kotlin.jvm.target.validation.mode=ignore' >> android/gradle.properties
-      - |
-          if ! grep -q 'fdroidForceJvm17Safe' android/build.gradle; then
-            cat >> android/build.gradle <<'EOF'
+      - grep -q 'fdroidForceJvm17Safe' android/build.gradle || printf '\n// fdroidForceJvm17Safe\nsubprojects { p ->\n  p.plugins.withId("com.android.application") {\n    p.android {\n      compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n      }\n    }\n  }\n  p.plugins.withId("com.android.library") {\n    p.android {\n      compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n      }\n    }\n  }\n  p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {\n    kotlinOptions {\n      jvmTarget = "17"\n    }\n  }\n}\n' >> android/build.gradle
 
-// fdroidForceJvm17Safe
-subprojects { p ->
-  p.plugins.withId("com.android.application") {
-    p.android {
-      compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-      }
-    }
-  }
-
-  p.plugins.withId("com.android.library") {
-    p.android {
-      compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-      }
-    }
-  }
-
-  p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-      jvmTarget = "17"
-    }
-  }
-}
-
-EOF
-          fi
+    scandelete:
+      - node_modules
 
     scanignore:
       - node_modules/jsc-android/dist
       - node_modules/react-native/sdks/hermesc
 
-    scandelete:
-      - node_modules
-
     gradle:
       - yes
-
     output: app/build/outputs/apk/release/*.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 
-CurrentVersion: 1.0.17
+CurrentVersion: '1.0.17'
 CurrentVersionCode: 17
