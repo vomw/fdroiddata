@@ -42,3 +42,54 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: "1.0.0"
 CurrentVersionCode: 1
+Categories:
+  - Science & Education
+License: MIT
+WebSite: https://github.com/neweradev17/LocalMeteorology
+SourceCode: https://github.com/neweradev17/LocalMeteorology
+IssueTracker: https://github.com/neweradev17/LocalMeteorology/issues
+Changelog: https://github.com/neweradev17/LocalMeteorology/releases
+
+Summary: Privacy-first 7-day weather forecast app
+Description: |
+  A clean, fast, and privacy-respecting weather app built with Expo (React Native).
+
+  Features:
+  * 7-day weather forecast with detailed daily views
+  * Interactive map using OpenStreetMap + Leaflet
+  * Location search powered by Nominatim
+  * No accounts, no tracking, no ads
+  * Only language preference is stored locally
+  * Supports English and Portuguese
+
+  All data is fetched directly from open services (Open-Meteo and OpenStreetMap).
+
+AutoName: LocalMeteorology
+
+RepoType: git
+Repo: https://github.com/neweradev17/LocalMeteorology.git
+
+Builds:
+  - versionName: "1.0.0"
+    versionCode: 1
+    commit: 1.0.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - npm ci --include=dev
+      - npx expo prebuild --platform android --no-install
+    gradle:
+      - :app
+
+MaintainerNotes: |
+  Expo React Native app using bare workflow.
+  We run `npm ci` and `npx expo prebuild` before Gradle build.
+  Node.js is installed via apt in the build environment.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: "1.0.0"
+CurrentVersionCode: 1
+
