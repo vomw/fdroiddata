@@ -6,10 +6,9 @@ SourceCode: https://github.com/neweradev17/LocalMeteorology
 IssueTracker: https://github.com/neweradev17/LocalMeteorology/issues
 Changelog: https://github.com/neweradev17/LocalMeteorology/releases
 
-Summary: Privacy-first 7-day weather forecast app
+AutoName: LocalMeteorology
 Description: |
   A clean, fast, and privacy-respecting weather app built with Expo (React Native).
-
   Features:
   * 7-day weather forecast with detailed daily views
   * Interactive map using OpenStreetMap + Leaflet
@@ -17,7 +16,6 @@ Description: |
   * No accounts, no tracking, no ads
   * Only language preference is stored locally
   * Supports English and Portuguese
-
   All data is fetched directly from open services (Open-Meteo and OpenStreetMap).
 
 RepoType: git
@@ -30,19 +28,40 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
-    init:
-      - npm ci --include=dev
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs openjdk-21-jdk-headless
+    init: cd .. && bash fdroid-init.sh
     gradle:
-      - :app
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    scanignore:
+      - node_modules/react-native-svg/android
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/expo-system-ui/local-maven-repo
+      - node_modules/expo-modules-core/prebuilds
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo/template.tgz
+      - node_modules/expo/node_modules/@expo/log-box/node_modules/@expo/dom-webview/local-maven-repo
+      - node_modules/expo/node_modules/expo-asset/local-maven-repo
+      - node_modules/expo/node_modules/expo-file-system/local-maven-repo
+      - node_modules/expo/node_modules/expo-file-system/prebuilds
+      - node_modules/expo/node_modules/expo-font/local-maven-repo
+      - node_modules/expo/node_modules/expo-font/prebuilds
+      - node_modules/hermes-compiler
+      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
+    scandelete:
+      - node_modules/react-native
+      - node_modules/fb-dotslash
 
 MaintainerNotes: |
-  Expo bare workflow app.
-  android/ folder is committed to the repository.
-  Runs `npm ci` before building with Gradle.
+  Expo bare workflow app (SDK 55).
+  android/ folder is committed to the repo.
+  Init script (fdroid-init.sh) in repo root handles Java 21 patching and
+  Gradle wrapper pinning, avoiding YAML quoting issues with rewritemeta.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: "1.0.0"
+CurrentVersion: 1.0.0
 CurrentVersionCode: 1
-
