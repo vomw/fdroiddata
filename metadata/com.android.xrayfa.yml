@@ -17,7 +17,7 @@ Binaries:
 Builds:
   - versionName: 1.5.3
     versionCode: 22
-    commit: f8b94adc5cdd2822148cd57c0a8ab68085679987
+    commit: v1.5.3
     subdir: app
     submodules: true
     sudo:
@@ -31,21 +31,17 @@ Builds:
     prebuild:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - echo "1.26.2" > $$go$$/VERSION
-      - curl -Lf https://go.dev/dl/go1.26.2.linux-amd64.tar.gz -o /tmp/go.tar.gz
-      - rm -rf /tmp/go
-      - mkdir -p /tmp/go
-      - tar -C /tmp/go --strip-components=1 -xzf /tmp/go.tar.gz
+      - cd $$go$$/src
+      - git checkout -f go1.26.2
     build:
-      - export GOROOT="/tmp/go"
-      - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
       - export GOFLAGS="-modcacherw -buildvcs=false -trimpath -ldflags=-buildid="
-      - sudo ln -sf $GOROOT/bin/go /usr/bin/go
-      - sudo ln -sf $GOROOT/bin/gofmt /usr/bin/gofmt
       - go install golang.org/x/mobile/cmd/gobind@latest
       - go install golang.org/x/mobile/cmd/gomobile@latest
-      - sudo cp $GOPATH/bin/gomobile /usr/bin/
-      - sudo cp $GOPATH/bin/gobind /usr/bin/
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9cc907381
