@@ -14,14 +14,18 @@ Binaries:
 Builds:
   - versionName: 1.0-beta
     versionCode: 1
-    commit: e45178f1ceb3d588a99fa48f44da18a5ceb33b46
+    commit: 961c533f0011ae4ca37f4e2e4252f9a3d6d1d459
     subdir: app
-    gradle:
-      - yes
     prebuild:
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
       - echo "org.gradle.workers.max=1" >> gradle.properties
       - echo "org.gradle.parallel=false" >> gradle.properties
+    build:
+      - $$GRADLE$$ -PbuildAbi=arm64-v8a assembleRelease
+      - $$GRADLE$$ -PbuildAbi=armeabi-v7a assembleRelease
+      - $$GRADLE$$ -PbuildAbi=x86 assembleRelease
+      - $$GRADLE$$ -PbuildAbi=x86_64 assembleRelease
+      - $$GRADLE$$ -PbuildAbi=universal assembleRelease
     scanignore:
       - app/src/main/assets/espeak-ng-data.zip
     ndk: 27.0.12077973
