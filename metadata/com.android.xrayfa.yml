@@ -32,8 +32,9 @@ Builds:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
         '\r')
-      - cd $$go$$/src
-      - git checkout -f "go${GO_VER}"
+      - git -C $$go$$ checkout -f "go${GO_VER}"
+      - sed -i -e '/bootgo/s/1.24.6/1.24.4/' $$go$$/src/make.*
+      - sed -i -e '/minBootstrap/s/1.24.6/1.24.4/' $$go$$/src/cmd/dist/buildtool.go
     build:
       - pushd $$go$$/src
       - ./make.bash
