@@ -20,14 +20,14 @@ Builds:
       - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> gradle.properties
       - echo "org.gradle.workers.max=1" >> gradle.properties
       - echo "org.gradle.parallel=false" >> gradle.properties
+    scanignore:
+      - app/src/main/assets/espeak-ng-data.zip
     build:
       - $$GRADLE$$ -PbuildAbi=arm64-v8a assembleRelease
       - $$GRADLE$$ -PbuildAbi=armeabi-v7a assembleRelease
       - $$GRADLE$$ -PbuildAbi=x86 assembleRelease
       - $$GRADLE$$ -PbuildAbi=x86_64 assembleRelease
       - $$GRADLE$$ -PbuildAbi=universal assembleRelease
-    scanignore:
-      - app/src/main/assets/espeak-ng-data.zip
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 0d4fa1d53dc66c262a6e206d32276038ec7bbcd4086c40d23e1e93721e4292d2
