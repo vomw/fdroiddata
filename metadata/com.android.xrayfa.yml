@@ -15,9 +15,9 @@ Binaries:
   https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-universal-release.apk
 
 Builds:
-  - versionName: 1.5.3
-    versionCode: 22
-    commit: v1.5.3
+  - versionName: 1.5.4
+    versionCode: 23
+    commit: 81ca2c6f0363732cc3954adb99f7b9d3484fc26e
     subdir: app
     submodules: true
     sudo:
@@ -30,9 +30,11 @@ Builds:
       - go@go1.26.2
     prebuild:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - echo "1.26.2" > $$go$$/VERSION
+      - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
+        '\r')
+      - echo ${GO_VER} > $$go$$/VERSION
       - cd $$go$$/src
-      - git checkout -f go1.26.2
+      - git checkout -f "go${GO_VER}"
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -49,5 +51,5 @@ AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9c
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
-CurrentVersion: 1.5.3
-CurrentVersionCode: 22
+CurrentVersion: 1.5.4
+CurrentVersionCode: 23
