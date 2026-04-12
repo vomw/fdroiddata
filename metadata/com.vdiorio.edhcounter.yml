@@ -18,32 +18,64 @@ Builds:
   - versionName: '1.0.17'
     versionCode: 17
     commit: v1.0.17
-    subdir: android
+    subdir: android/app
+
     sudo:
-      - apt-get update
       - sysctl fs.inotify.max_user_watches=524288 || true
-      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      - curl -Lo node.tar.gz https://nodejs.org/download/release/v18.19.1/node-v18.19.1-linux-x64.tar.gz
-      - echo "724802c45237477dbe5777923743e6c77906830cae03a82b5653ebd75b301dda node.tar.gz" | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - apt-get update
+      - apt-get install -y nodejs npm
+      - npm -g install yarn
 
     init:
-      - cd ..
-      - npm install
+      - cd ../..
+      - npm install --build-from-source
       - npx patch-package
       - sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' node_modules/react-native-reanimated/android/build.gradle
       - grep -q '^kotlin.jvm.target.validation.mode=' android/gradle.properties || echo 'kotlin.jvm.target.validation.mode=ignore' >> android/gradle.properties
-      - grep -q 'fdroidForceJvm17Safe' android/build.gradle || printf '\n// fdroidForceJvm17Safe\nsubprojects { p ->\n  p.plugins.withId("com.android.application") {\n    p.android {\n      compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n      }\n    }\n  }\n  p.plugins.withId("com.android.library") {\n    p.android {\n      compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n      }\n    }\n  }\n  p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {\n    kotlinOptions {\n      jvmTarget = "17"\n    }\n  }\n}\n' >> android/build.gradle
+      - |
+          if ! grep -q fdroidForceJvm17Safe android/build.gradle; then
+            cat >> android/build.gradle <<EOF
 
-    scandelete:
-      - node_modules
+// fdroidForceJvm17Safe
+subprojects { p ->
+  p.plugins.withId("com.android.application") {
+    p.android {
+      compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+      }
+    }
+  }
+
+  p.plugins.withId("com.android.library") {
+    p.android {
+      compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+      }
+    }
+  }
+
+  p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+      jvmTarget = "17"
+    }
+  }
+}
+
+EOF
+          fi
+
+    gradle:
+      - yes
 
     scanignore:
       - node_modules/jsc-android/dist
       - node_modules/react-native/sdks/hermesc
 
-    gradle:
-      - yes
+    scandelete:
+      - node_modules
+
     output: app/build/outputs/apk/release/*.apk
 
 AutoUpdateMode: Version
