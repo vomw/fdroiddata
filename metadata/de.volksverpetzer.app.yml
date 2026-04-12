@@ -25,7 +25,7 @@ Repo: https://github.com/Volksverpetzer/vvp_app.git
 Builds:
   - versionName: 2.1.7
     versionCode: 470010260
-    commit: 85fd0f02be7ad0342f2de4a64d25090a54ec7c38
+    commit: bea5ed8616c01e8e6c4825e91975e6b354434b25
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
@@ -50,14 +50,10 @@ Builds:
       - printf 
         'module.exports={dependencies:{"@stripe/stripe-react-native":{platforms:{android:null}}}};'
         > react-native.config.js
-      - python3 -c "import json; f=open('package.json','r+'); d=json.load(f); 
-        d.setdefault('expo',{}).setdefault('autolinking',{}).setdefault('android',{})['buildFromSource']=['.*'];
-        f.seek(0); json.dump(d,f,indent=2); f.truncate()"
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
       - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
         -e '/getInstallReferrerAsync/apromise.resolve("")' 
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
-      - IS_FOSS=true npx expo prebuild --platform android --no-install
+      - BUILD_FLAVOR=fdroid npx expo prebuild --platform android --no-install
       - sed -i 's/enableSeparateBuildPerCPUArchitecture = true/enableSeparateBuildPerCPUArchitecture
         = false/' android/app/build.gradle || true
       - sed -i 's/versionCode [0-9]*/versionCode 470010260/' android/app/build.gradle
