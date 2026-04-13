@@ -43,12 +43,11 @@ Builds:
       - apt-get update
       - apt-get install -y build-essential
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - source $HOME/.cargo/env
+      - source $HOME/.cargo/env && rustup target add aarch64-linux-android armv7-linux-androideabi
+      - ln -sf $HOME/.cargo/bin/* /usr/local/bin/
     gradle:
       - yes
     ndk: 29.0.13846066
-    prebuild:
-      - rustup target add aarch64-linux-android armv7-linux-androideabi
     build:
       - cd ../../external/ckb-light-client
       - ANDROID_NDK_HOME=$$NDK$$ ./build-android-jni.sh
