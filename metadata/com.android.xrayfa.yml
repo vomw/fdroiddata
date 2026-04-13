@@ -17,7 +17,7 @@ Binaries:
 Builds:
   - versionName: 1.5.4
     versionCode: 23
-    commit: 81ca2c6f0363732cc3954adb99f7b9d3484fc26e
+    commit: 0735cdd7a66b37f3b342007d69f34d77bc5a08db
     subdir: app
     submodules: true
     sudo:
@@ -39,11 +39,22 @@ Builds:
       - pushd $$go$$/src
       - ./make.bash
       - popd
-      - export GOPATH=$$go$$
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$PATH"
       - export PATH="$GOPATH/bin:$PATH"
-      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath -ldflags=-buildid="
-      - go install golang.org/x/mobile/cmd/gobind@latest
+      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath"
+      - export CGO_LDFLAGS="-Wl,--build-id=none"
       - go install golang.org/x/mobile/cmd/gomobile@latest
+      - cd ../AndroidLibXrayLite
+      - gomobile init
+      - go mod tidy -v
+      - CURRENT_PATH=$(pwd)
+      - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
+      - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
+      - gomobile bind -v -trimpath -androidapi 21 -ldflags="-s -w -buildid=" ./
+      - mkdir -p ../app/libs
+      - cp libv2ray.aar ../app/libs/
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9cc907381
