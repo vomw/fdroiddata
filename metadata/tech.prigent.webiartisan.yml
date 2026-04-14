@@ -18,13 +18,19 @@ Builds:
     versionCode: 53
     commit: fbf235d7f43de1423a1c4f8f11e2ba37fb8d9bca
     output: build/app/outputs/flutter-apk/app-release.apk
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y node-semver
     srclibs:
-      - flutter@3.41.6
+      - flutter-fdroid@master
     prebuild:
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
-      --build-number=$$VERCODE$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter-fdroid$$/flutter-fdroid config --no-analytics
+      - $$flutter-fdroid$$/flutter-fdroid packages pub get
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter-fdroid$$/flutter-fdroid build apk --release --dart-define=FDROID_BUILD=true
+        --build-number=$$VERCODE$$
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9].*
