@@ -24,8 +24,8 @@ Repo: https://github.com/Volksverpetzer/vvp_app.git
 
 Builds:
   - versionName: 2.1.7
-    versionCode: 470010261
-    commit: c8de7086cbbc46c23d1c8bd957c1c78239a4354f
+    versionCode: 470010262
+    commit: 11feb6ec847b8ef3d8591444dbd45da803bf876f
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
@@ -48,7 +48,7 @@ Builds:
       - pnpm install --frozen-lockfile
       - pnpm prepare:fdroid
       - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --no-install
-      - sed -i 's/versionCode [0-9]*/versionCode 470010261/' android/app/build.gradle
+      - sed -i 's/versionCode [0-9]*/versionCode 470010262/' android/app/build.gradle
       - echo 'android { dependenciesInfo { includeInApk false } }' >> android/app/build.gradle
     scanignore:
       - node_modules/@expo/dom-webview/local-maven-repo/
@@ -73,6 +73,6 @@ Builds:
     build: cd android && NODE_ENV=production gradlew-fdroid :app:assembleRelease
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags v(.+)
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
 CurrentVersion: 2.1.7
-CurrentVersionCode: 470010261
+CurrentVersionCode: 470010262
