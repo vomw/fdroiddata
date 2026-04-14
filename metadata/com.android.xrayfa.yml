@@ -14,8 +14,8 @@ Repo: https://github.com/Q7DF1/XrayFA
 
 Builds:
   - versionName: 1.5.4
-    versionCode: 1023
-    commit: ee71b946b3ac5c10efaf829810c314f5ee8cb5e6
+    versionCode: 23001
+    commit: 1e0874047c7c8dc8621fe1040c39a6397aed0c38
     subdir: app
     submodules: true
     sudo:
@@ -61,14 +61,17 @@ Builds:
       - CURRENT_PATH=$(pwd)
       - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
       - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -ldflags="-s -w -buildid=" ./
+      - gomobile bind -v -trimpath -androidapi 21 -target=android/arm -ldflags="-s
+        -w -buildid=" ./
       - mkdir -p ../app/libs
       - cp libv2ray.aar ../app/libs/
+      - sed -i -e 's/include("armeabi-v7a".*/include("armeabi-v7a")/' ../app/build.gradle.kts
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' ../app/build.gradle.kts
     ndk: 27.0.12077973
 
   - versionName: 1.5.4
-    versionCode: 2023
-    commit: ee71b946b3ac5c10efaf829810c314f5ee8cb5e6
+    versionCode: 23002
+    commit: 1e0874047c7c8dc8621fe1040c39a6397aed0c38
     subdir: app
     submodules: true
     sudo:
@@ -114,14 +117,17 @@ Builds:
       - CURRENT_PATH=$(pwd)
       - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
       - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -ldflags="-s -w -buildid=" ./
+      - gomobile bind -v -trimpath -androidapi 21 -target=android/arm64 -ldflags="-s
+        -w -buildid=" ./
       - mkdir -p ../app/libs
       - cp libv2ray.aar ../app/libs/
+      - sed -i -e 's/include("armeabi-v7a".*/include("arm64-v8a")/' ../app/build.gradle.kts
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' ../app/build.gradle.kts
     ndk: 27.0.12077973
 
   - versionName: 1.5.4
-    versionCode: 3023
-    commit: ee71b946b3ac5c10efaf829810c314f5ee8cb5e6
+    versionCode: 23003
+    commit: 1e0874047c7c8dc8621fe1040c39a6397aed0c38
     subdir: app
     submodules: true
     sudo:
@@ -166,14 +172,17 @@ Builds:
       - CURRENT_PATH=$(pwd)
       - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
       - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -ldflags="-s -w -buildid=" ./
+      - gomobile bind -v -trimpath -androidapi 21 -target=android/386 -ldflags="-s
+        -w -buildid=" ./
       - mkdir -p ../app/libs
       - cp libv2ray.aar ../app/libs/
+      - sed -i -e 's/include("armeabi-v7a".*/include("x86")/' ../app/build.gradle.kts
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' ../app/build.gradle.kts
     ndk: 27.0.12077973
 
   - versionName: 1.5.4
-    versionCode: 4023
-    commit: ee71b946b3ac5c10efaf829810c314f5ee8cb5e6
+    versionCode: 23004
+    commit: 1e0874047c7c8dc8621fe1040c39a6397aed0c38
     subdir: app
     submodules: true
     sudo:
@@ -218,9 +227,12 @@ Builds:
       - CURRENT_PATH=$(pwd)
       - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
       - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -ldflags="-s -w -buildid=" ./
+      - gomobile bind -v -trimpath -androidapi 21 -target=android/amd64 -ldflags="-s
+        -w -buildid=" ./
       - mkdir -p ../app/libs
       - cp libv2ray.aar ../app/libs/
+      - sed -i -e 's/include("armeabi-v7a".*/include("x86_64")/' ../app/build.gradle.kts
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' ../app/build.gradle.kts
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9cc907381
@@ -228,10 +240,10 @@ AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9c
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 1 * 1000 + %c
-  - 2 * 1000 + %c
-  - 3 * 1000 + %c
-  - 4 * 1000 + %c
+  - 1000 * %c + 1
+  - 1000 * %c + 2
+  - 1000 * %c + 3
+  - 1000 * %c + 4
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
 CurrentVersion: 1.5.4
-CurrentVersionCode: 4023
+CurrentVersionCode: 23004
