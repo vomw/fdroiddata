@@ -24,17 +24,11 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - XposedBridge@v82
+      - XposedBridge@v82-updated
     prebuild:
       - sed -i -e '/foojay/d' -e '/api.xposed.info/d' ../settings.gradle.kts
       - sed -i -e 's|libs.rovo89.xposed.api|files("$$XposedBridge$$/app/build/api/api.jar")|'
         build.gradle.kts
-      - cd $$XposedBridge$$
-      - sed -i -e 's/1.5.0/3.3.3/' -e '/repositories {/a google()' -e 's/jcenter/mavenCentral/g'
-        build.gradle
-      - sed -i -e 's/2.10/4.10.1/' gradle/wrapper/gradle-wrapper.properties
-      - sed -i -e '/sdkSources/d' -e 's/hiddenapi.assembleRelease/":hiddenapistubs:assembleRelease"/'
-        app/build.gradle
     build:
       - cd $$XposedBridge$$
       - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 gradle :app:generateAPI
