@@ -1,8 +1,6 @@
 Categories:
   - Email
-
 License: MIT
-
 AuthorName: TheRipper
 SourceCode: https://github.com/printpagestopdf/slow_mail
 IssueTracker: https://github.com/printpagestopdf/slow_mail/issues
@@ -13,38 +11,38 @@ Description: |
   Slow Mail is an email client for reading and composing emails.
 
 RepoType: git
-Repo: https://github.com/printpagestopdf/slow_mail.git
+Repo: https://github.com/printpagestopdf/slow_mail
+Binaries: https://github.com/printpagestopdf/slow_mail/releases/download/v0.9.0/slowmail.apk
 
 Builds:
   - versionName: 0.9.0
     versionCode: 1
     commit: v0.9.0
-
     subdir: .
-
-    prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - git clone https://github.com/flutter/flutter.git -b 3.41.6 --depth 1
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - flutter config --no-analytics
-      - flutter pub get
-
-    build:
-      - export SOURCE_DATE_EPOCH=1776113449
-      - flutter build apk --release --no-tree-shake-icons
-
     output: build/app/outputs/flutter-apk/app-release.apk
-
+    srclibs:
+      - flutter@stable
     rm:
       - ios
       - linux
       - macos
       - windows
       - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - git clone https://github.com/flutter/flutter.git -b 3.41.6 --depth 1
+      - export PATH="$PWD/flutter/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+    build:
+      - export SOURCE_DATE_EPOCH=1776113449
+      - flutter build apk --release --no-tree-shake-icons
 
+AllowedAPKSigningKeys: caf5ac430eeeb7850fcf3ff5a2ba3398fa4c26b40cf0a69ba1a569b155aeeb65
 
-Binaries: https://github.com/printpagestopdf/slow_mail/releases/download/v%v/slowmail.apk
-
-AllowedAPKSigningKeys:
-  - caf5ac430eeeb7850fcf3ff5a2ba3398fa4c26b40cf0a69ba1a569b155aeeb65
-
+ArchivePolicy: 0
+AutoUpdateMode: None
+UpdateCheckMode: None
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.9.0
+CurrentVersionCode: 1
