@@ -39,11 +39,13 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-17-jdk
+      - apt-get install -y nodejs npm default-jdk-headless
     init:
       - cd ..
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - export PATH=$JAVA_HOME/bin:$PATH
+      - export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(which javac)")")")"
+      - export PATH="$JAVA_HOME/bin:$PATH"
+      - java -version
+      - javac -version
       - npm ci
     scanignore:
       - node_modules/expo/template.tgz
