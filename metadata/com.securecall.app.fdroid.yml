@@ -33,12 +33,12 @@ Builds:
       - echo "android.enableJetifier=true" >> ../gradle.properties
       - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target 
-        aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android
       - source $HOME/.cargo/env
       - cargo install cargo-ndk@3.4.0 --locked
-      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 
-        -o ../client_android/app/src/main/jniLibs build --release
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 -o
+        ../client_android/app/src/main/jniLibs build --release
     scanignore:
       - client_android/build.gradle
     scandelete:
@@ -46,8 +46,7 @@ Builds:
       - core_crypto/target/
     ndk: 27.0.12077973
 
-AllowedAPKSigningKeys: 
-  1e0a8eb419540de8545f770e78dcdb93ab1ba8a0713da8999222fc88c3fdb21d
+AllowedAPKSigningKeys: 1e0a8eb419540de8545f770e78dcdb93ab1ba8a0713da8999222fc88c3fdb21d
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
