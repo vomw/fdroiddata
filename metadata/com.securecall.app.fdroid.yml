@@ -12,27 +12,33 @@ AutoName: SecureCall
 
 RepoType: git
 Repo: https://github.com/NeaBouli/stealth.git
-Binaries: https://github.com/NeaBouli/stealth/releases/download/v%v-stable/securecall-fdroid-v%v-vC%c.apk
+Binaries: 
+  https://github.com/NeaBouli/stealth/releases/download/v%v-stable/securecall-fdroid-v%v-vC%c.apk
 
 Builds:
   - versionName: 1.0.21
     versionCode: 42
     commit: 00181edccabf471193e71c9c5f1d1997cb333580
     subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential
+    gradle:
+      - fdroid
     srclibs:
       - rustup@1.25.2
     prebuild:
-      - printf 'org.gradle.jvmargs=-Xmx2048m\nandroid.useAndroidX=true\nandroid.enableJetifier=true\nandroid.enableGlobalSynthetics=true\n'
-        > ../gradle.properties
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target aarch64-linux-android
-        armv7-linux-androideabi x86_64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target 
+        aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - source $HOME/.cargo/env
       - cargo install cargo-ndk@3.4.0 --locked
-      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 
         -o ../client_android/app/src/main/jniLibs build --release
-    gradle:
-      - fdroid
     scanignore:
       - client_android/build.gradle
     scandelete:
@@ -40,7 +46,8 @@ Builds:
       - core_crypto/target/
     ndk: 27.0.12077973
 
-AllowedAPKSigningKeys: 1e0a8eb419540de8545f770e78dcdb93ab1ba8a0713da8999222fc88c3fdb21d
+AllowedAPKSigningKeys: 
+  1e0a8eb419540de8545f770e78dcdb93ab1ba8a0713da8999222fc88c3fdb21d
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
