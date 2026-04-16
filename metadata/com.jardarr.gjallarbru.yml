@@ -1,40 +1,39 @@
 Categories:
   - Reading
   - Science & Education
-
 License: MIT
 AuthorName: jrdrr
 SourceCode: https://github.com/Jardarr/gjallarbru
 IssueTracker: https://github.com/Jardarr/gjallarbru/issues
 Changelog: https://github.com/Jardarr/gjallarbru/releases
+
 RepoType: git
 Repo: https://github.com/Jardarr/gjallarbru.git
-
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-
-CurrentVersion: 1.0.0
-CurrentVersionCode: 1
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 408cfbbcded54762c7abf9ab695245360190e424
+    commit: 57e00af3da082ae3db228c56ad9bff2f31ba11e1
     subdir: android
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm ca-certificates
-      - echo 'deb http://security.debian.org/debian-security bookworm-security main' > /etc/apt/sources.list.d/bookworm-security.list
+      - >-
+        echo 'deb http://security.debian.org/debian-security bookworm-security
+        main' > /etc/apt/sources.list.d/bookworm-security.list
       - apt-get update
       - apt-get install -y openjdk-17-jdk-headless
-
     init:
       - cd ..
-      - export JDK17_HOME="$(dirname "$(dirname "$(readlink -f "$(dpkg -L openjdk-17-jdk-headless | grep '/bin/javac$' | head -n 1)")")")"
+      - >-
+        export JDK17_HOME="$(dirname "$(dirname "$(readlink -f "$(dpkg -L
+        openjdk-17-jdk-headless | grep '/bin/javac$' | head -n 1)")")")"
       - test -x "$JDK17_HOME/bin/java"
       - test -x "$JDK17_HOME/bin/javac"
       - export PATH="$JDK17_HOME/bin:$PATH"
-      - printf '\norg.gradle.java.installations.fromEnv=JDK17_HOME\norg.gradle.java.installations.paths=%s\norg.gradle.java.home=%s\n' "$JDK17_HOME" "$JDK17_HOME" >> android/gradle.properties
+      - >-
+        printf '\norg.gradle.java.installations.fromEnv=JDK17_HOME\norg.gradle.java.installations.paths=%s\norg.gradle.java.home=%s\n'
+        "$JDK17_HOME" "$JDK17_HOME" >> android/gradle.properties
       - java -version
       - javac -version
       - npm ci
@@ -60,3 +59,8 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/*.apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
