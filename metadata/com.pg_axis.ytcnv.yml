@@ -1,3 +1,5 @@
+AntiFeatures:
+  - NonFreeNet
 Categories:
   - Multimedia
 License: GPL-3.0-only
@@ -15,24 +17,26 @@ Binaries:
 Builds:
   - versionName: 3.8.1
     versionCode: 45
-    commit: v3.8.1
+    commit: ef5a2b9e50999d1197202d1778d70c431e31fb62
     subdir: app
-    sudo: apt-get install -y make automake autoconf libtool gperf
-      groff cmake gettext pkg-config
+    sudo: apt-get install -y make automake autoconf libtool gperf groff cmake gettext
+      pkg-config
     gradle:
       - fdroid
     srclibs:
-      - ffmpeg-kit-16KB-for-YTCnv@v3.0
-    build: ORIG=$(pwd) && cd $$ffmpeg-kit-16KB-for-YTCnv$$ && export ANDROID_SDK_ROOT=$$SDK$$
-      && export ANDROID_NDK_ROOT=$$NDK$$ && bash android.sh || { cat build.log >&2;
-      exit 1; } && cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar $ORIG/libs/ffmpeg-kit.aar
+      - ffmpeg-kit-16KB-for-YTCnv@v5.2
     scanignore:
       - app/libs/ffmpeg-kit.aar
+    build:
+      - ORIG=$(pwd)
+        cd $$ffmpeg-kit-16KB-for-YTCnv$$
+        export ANDROID_SDK_ROOT=$$SDK$$
+        export ANDROID_NDK_ROOT=$$NDK$$
+        bash android.sh || { cat build.log >&2; exit 1; }
+        cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar $ORIG/libs/ffmpeg-kit.aar
     ndk: 27.2.12479018
 
 AllowedAPKSigningKeys: c9599ab3880f3bd6605aec122e8a9b068330ea6361e5071fd1180d26e2060bf1
-
-AntiFeatures: NonFreeNet
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
