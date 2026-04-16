@@ -1,0 +1,47 @@
+AntiFeatures:
+  - NonFreeDep
+Categories:
+  - Religion
+  - Time
+License: MIT
+AuthorName: Mehmet Ali B.
+AuthorWebSite: https://github.com/AllLiveSupport
+SourceCode: https://github.com/AllLiveSupport/ezan-vakti
+IssueTracker: https://github.com/AllLiveSupport/ezan-vakti/issues
+
+AutoName: Ezan Vakti
+
+RepoType: git
+Repo: https://github.com/AllLiveSupport/ezan-vakti.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: 7eaa4f4dcfd6037684c3beb4128eb722326a7cb3
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:.?'(.*)'/\1/p" .github/workflows/build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - echo 'org.gradle.logging.stacktrace=all' >> android/gradle.properties
+      - echo 'android.newDsl=false' >> android/gradle.properties
+      - find .pub-cache/hosted/pub.dev -name build.gradle -path "*/android/*" -exec sh -c 'sed -i "/^buildscript/,/^}/d" "$1"; sed -i "/^rootProject\.allprojects/,/^}/d" "$1"; sed -i "/apply plugin/d" "$1"; sed -i "1i\\plugins { id \"com.android.library\" version \"8.11.1\" }" "$1"' _ {} \;
+      - sed -i 's/flutter\.compileSdkVersion/36/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
+      - sed -i 's/flutter\.minSdkVersion/24/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
+      - sed -i 's/flutter\.targetSdkVersion/36/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
