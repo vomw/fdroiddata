@@ -55,9 +55,4 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
     gradle:
       - yes
-    output: fdroid-output/app.apk
-    postbuild: |
-      apk="$(find app/build/outputs/apk -type f -name '*.apk' ! -name '*unaligned*' | sort | head -n 1)"
-      test -n "$apk"
-      mkdir -p "$(dirname "$$OUT$$")"
-      cp "$apk" "$$OUT$$"
+    output: app/build/outputs/apk/**/*.apk
