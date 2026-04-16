@@ -25,12 +25,13 @@ Builds:
       - apt-get update
       - apt-get install -y nodejs npm
     init:
-      - cd ..
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
-      - export PATH="$JAVA_HOME/bin:$PATH"
-      - printf '\norg.gradle.java.home=%s\n' "$JAVA_HOME" >> android/gradle.properties
-      - java -version
-      - npm ci
+    - cd ..
+    - export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(which javac)")")")"
+    - export PATH="$JAVA_HOME/bin:$PATH"
+    - printf '\norg.gradle.java.home=%s\n' "$JAVA_HOME" >> android/gradle.properties
+    - java -version
+    - javac -version
+    - npm ci
     scanignore:
       - node_modules/expo/template.tgz
       - node_modules/react-native/React/I18n
