@@ -23,16 +23,13 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm ca-certificates gnupg
-      - echo "deb http://security.debian.org/debian-security bookworm-security main" > /etc/apt/sources.list.d/bookworm-security.list
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
+      - apt-get install -y nodejs npm
     init:
       - cd ..
-      - export JDK17_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - $JDK17_HOME/bin/java -version
-      - $JDK17_HOME/bin/javac -version
-      - printf '\norg.gradle.java.home=%s\norg.gradle.java.installations.paths=%s\n' "$JDK17_HOME" "$JDK17_HOME" >> android/gradle.properties
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+      - export PATH="$JAVA_HOME/bin:$PATH"
+      - printf '\norg.gradle.java.home=%s\n' "$JAVA_HOME" >> android/gradle.properties
+      - java -version
       - npm ci
     scanignore:
       - node_modules/expo/template.tgz
@@ -55,4 +52,4 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
     gradle:
       - yes
-    output: app/build/outputs/apk/**/*.apk
+    output: app/build/outputs/apk/**/release/*.apk
