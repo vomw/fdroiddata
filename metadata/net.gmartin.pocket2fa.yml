@@ -15,66 +15,115 @@ Repo: https://github.com/gmag11/Pocket2FA
 Builds:
   - versionName: 0.9.9
     versionCode: 201
-    commit: 105c2bc665ce5c2438c0504ac36aea6a47063b38
+    commit: c4d83e9a30695e798112284dd874a2a6824dbbfe
+    sudo:
+      - mkdir -p /home/runner/work/Pocket2FA/
+      - chown vagrant /home/runner/work/Pocket2FA/
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/gmag11/Pocket2FA/releases/download/%v/app-armeabi-v7a-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.35.1
     prebuild:
-      - export flutterVersion=$(sed -n -E 's/^\s+flutter:\s+"?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
-        pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
+      - pushd $$flutter$$
+      - git checkout -f 3.35.1
+      - popd
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
 
   - versionName: 0.9.9
     versionCode: 202
-    commit: 105c2bc665ce5c2438c0504ac36aea6a47063b38
+    commit: c4d83e9a30695e798112284dd874a2a6824dbbfe
+    sudo:
+      - mkdir -p /home/runner/work/Pocket2FA/
+      - chown vagrant /home/runner/work/Pocket2FA/
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/gmag11/Pocket2FA/releases/download/%v/app-arm64-v8a-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.35.1
     prebuild:
-      - export flutterVersion=$(sed -n -E 's/^\s+flutter:\s+"?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
-        pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
+      - pushd $$flutter$$
+      - git checkout -f 3.35.1
+      - popd
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
 
   - versionName: 0.9.9
     versionCode: 203
-    commit: 105c2bc665ce5c2438c0504ac36aea6a47063b38
+    commit: c4d83e9a30695e798112284dd874a2a6824dbbfe
+    sudo:
+      - mkdir -p /home/runner/work/Pocket2FA/
+      - chown vagrant /home/runner/work/Pocket2FA/
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/gmag11/Pocket2FA/releases/download/%v/app-x86_64-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.35.1
     prebuild:
-      - export flutterVersion=$(sed -n -E 's/^\s+flutter:\s+"?([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'
-        pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
+      - pushd $$flutter$$
+      - git checkout -f 3.35.1
+      - popd
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/Pocket2FA
+      - cd ..
+      - mv net.gmartin.pocket2fa $repo/Pocket2FA
+      - pushd $repo/Pocket2FA
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
+
+AllowedAPKSigningKeys: db4737b51964dec5aae1d67b792dddfd774fa02b483e395baa4e3b0eb528c9e3
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
