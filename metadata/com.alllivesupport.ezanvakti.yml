@@ -18,20 +18,27 @@ Repo: https://github.com/AllLiveSupport/ezan-vakti.git
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: d575a4978fd89b0fffbf0ef84b8d27ad30252207
+    commit: 7eaa4f4dcfd6037684c3beb4128eb722326a7cb3
+    submodules: true
     output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - find .pub-cache -name "build.gradle*" -exec sed -i -e 's/8.12.1/8.11.1/g' -e 's/8.13.1/8.11.1/g' {} +
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
     scandelete:
+      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - .flutter/bin/flutter build apk --release
 
 AutoUpdateMode: None
 UpdateCheckMode: None
