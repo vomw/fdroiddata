@@ -15,7 +15,7 @@ Repo: https://github.com/gmag11/Pocket2FA
 Builds:
   - versionName: 0.9.9
     versionCode: 201
-    commit: 26567131d159f88148b4e39e984ab3fcee935a1d
+    commit: 0e58a9430a6a2f3ffc4d2327ef27c22207adae86
     sudo:
       - mkdir -p /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
       - chown vagrant /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
@@ -35,8 +35,6 @@ Builds:
       - pushd $repo/Pocket2FA
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
-        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     build:
@@ -45,14 +43,18 @@ Builds:
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
       - pushd $repo/Pocket2FA
+      - $$flutter$$/bin/flutter pub get
+      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
+        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+        --no-pub
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
 
   - versionName: 0.9.9
     versionCode: 202
-    commit: 26567131d159f88148b4e39e984ab3fcee935a1d
+    commit: 0e58a9430a6a2f3ffc4d2327ef27c22207adae86
     sudo:
       - mkdir -p /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
       - chown vagrant /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
@@ -72,8 +74,6 @@ Builds:
       - pushd $repo/Pocket2FA
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
-        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     build:
@@ -82,14 +82,18 @@ Builds:
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
       - pushd $repo/Pocket2FA
+      - $$flutter$$/bin/flutter pub get
+      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
+        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+        --no-pub
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
 
   - versionName: 0.9.9
     versionCode: 203
-    commit: 26567131d159f88148b4e39e984ab3fcee935a1d
+    commit: 0e58a9430a6a2f3ffc4d2327ef27c22207adae86
     sudo:
       - mkdir -p /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
       - chown vagrant /home/runner/work/Pocket2FA/ /home/runner/.pub-cache
@@ -108,8 +112,6 @@ Builds:
       - pushd $repo/Pocket2FA
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
-        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     build:
@@ -118,7 +120,11 @@ Builds:
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
       - pushd $repo/Pocket2FA
+      - $$flutter$$/bin/flutter pub get
+      - echo 'target_compile_options(flutter_zxing PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)'
+        >> $PUB_CACHE/hosted/pub.dev/flutter_zxing-1.9.1/src/CMakeLists.txt
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+        --no-pub
       - popd
       - mv $repo/Pocket2FA net.gmartin.pocket2fa
     ndk: 27.0.12077973
