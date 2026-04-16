@@ -24,9 +24,10 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: echo -e "versionCode=99\nversionName=1.0.37" >> ../gradle.properties
+    prebuild: echo -e "versionCode=$$VERCODE$$\nversionName=$$VERSION$$" >> ../gradle.properties
 
-AutoUpdateMode: None
-UpdateCheckMode: Tags
+AutoUpdateMode: Version
+UpdateCheckMode: HTTP
+UpdateCheckData: https://github.com/Musheer360/SwiftSlate/releases/latest/download/versionCode.txt|(\d+)|https://github.com/Musheer360/SwiftSlate/releases/latest|/Musheer360/SwiftSlate/releases/tag/v([\d.]+)
 CurrentVersion: 1.0.37
 CurrentVersionCode: 99
