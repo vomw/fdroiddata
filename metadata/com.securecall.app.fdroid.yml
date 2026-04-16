@@ -31,12 +31,42 @@ Builds:
       - echo "android.enableJetifier=true" >> ../gradle.properties
       - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target aarch64-linux-android
-        armv7-linux-androideabi x86_64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target 
+        aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - source $HOME/.cargo/env
       - cargo install cargo-ndk@3.4.0 --locked
-      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 -o
-        ../client_android/app/src/main/jniLibs build --release
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 
+        -o ../client_android/app/src/main/jniLibs build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.22
+    versionCode: 43
+    commit: fda8b53f9fd6774a5881584e6b569934973e11e4
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential
+    gradle:
+      - fdroid
+    srclibs:
+      - rustup@1.25.2
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target 
+        aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - source $HOME/.cargo/env
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 
+        -o ../client_android/app/src/main/jniLibs build --release
     scanignore:
       - client_android/build.gradle
     scandelete:
@@ -46,5 +76,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.21
-CurrentVersionCode: 42
+CurrentVersion: 1.0.22
+CurrentVersionCode: 43
