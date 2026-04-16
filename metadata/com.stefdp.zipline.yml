@@ -21,7 +21,13 @@ Builds:
     subdir: app
     gradle:
       - yes
-    ndk: 29.0.14206865
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    ndk: r29
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 18ce5ecbc7d3a3c591bcbbe9900d14becdbb91617300198c9cca07d737dd1e26
 
