@@ -8,9 +8,7 @@ SourceCode: https://github.com/AllLiveSupport/ezan-vakti
 IssueTracker: https://github.com/AllLiveSupport/ezan-vakti/issues
 
 AntiFeatures:
-  NonFreeDep:
-    en-US: Uses Google Play Services via geolocator for location access
-    tr-TR: Konum erişimi için geolocator üzerinden Google Play Services kullanır
+  - NonFreeDep
 
 AutoName: Ezan Vakti
 
@@ -20,7 +18,7 @@ Repo: https://github.com/AllLiveSupport/ezan-vakti.git
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: e505666775fe0864c82505e1d8509a1f9b46a5f0
+    commit: d575a4978fd89b0fffbf0ef84b8d27ad30252207
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
@@ -28,8 +26,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scandelete:
-      - .pub-cache
+      - sed -i -e 's/8.12.1/8.11.1/g' -e 's/8.13.1/8.11.1/g'
+        .pub-cache/hosted/pub.dev/*/android/build.gradle
+        .pub-cache/hosted/pub.dev/*/android/build.gradle.kts
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
