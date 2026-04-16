@@ -30,15 +30,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get
       - echo 'org.gradle.logging.stacktrace=all' >> android/gradle.properties
       - echo 'android.newDsl=false' >> android/gradle.properties
-      - |
-        for f in .pub-cache/hosted/pub.dev/*/android/build.gradle; do
-          if [ -f "$f" ]; then
-            sed -i '/^buildscript/,/^}/d' "$f"
-            sed -i '/^rootProject\.allprojects/,/^}/d' "$f"
-            sed -i '/apply plugin/d' "$f"
-            sed -i '1i\plugins { id "com.android.library" version "8.11.1" }' "$f"
-          fi
-        done
+      - find .pub-cache/hosted/pub.dev -name build.gradle -path "*/android/*" -exec sh -c 'sed -i "/^buildscript/,/^}/d" "$1"; sed -i "/^rootProject\.allprojects/,/^}/d" "$1"; sed -i "/apply plugin/d" "$1"; sed -i "1i\\plugins { id \"com.android.library\" version \"8.11.1\" }" "$1"' _ {} \;
       - sed -i 's/flutter\.compileSdkVersion/36/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
       - sed -i 's/flutter\.minSdkVersion/24/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
       - sed -i 's/flutter\.targetSdkVersion/36/g' .pub-cache/hosted/pub.dev/*/android/build.gradle .pub-cache/hosted/pub.dev/*/android/build.gradle.kts 2>/dev/null || true
