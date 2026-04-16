@@ -20,20 +20,11 @@ Repo: https://github.com/AllLiveSupport/ezan-vakti.git
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: 322e48cf727b03f8347390408927690963c8fadf
+    commit: c596c2d80a2b941ca7b6e63dbb1b9e2bf0611c1a
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@stable
-    rm:
-      - ios
-      - linux
-      - macos
-      - web
-      - windows
+      - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
