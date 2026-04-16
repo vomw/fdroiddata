@@ -26,9 +26,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/8.12.1/8.11.1/g' -e 's/8.13.1/8.11.1/g'
-        .pub-cache/hosted/pub.dev/*/android/build.gradle
-        .pub-cache/hosted/pub.dev/*/android/build.gradle.kts
+      - find .pub-cache -name "build.gradle*" -exec sed -i -e 's/8.12.1/8.11.1/g' -e 's/8.13.1/8.11.1/g' {} +
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
