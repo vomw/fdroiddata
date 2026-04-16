@@ -27,9 +27,14 @@ Builds:
       - ffmpeg-kit-16KB-for-YTCnv@v5.2
     scanignore:
       - app/libs/ffmpeg-kit.aar
-    build: ORIG=$(pwd) cd $$ffmpeg-kit-16KB-for-YTCnv$$ export ANDROID_SDK_ROOT=$$SDK$$
-      export ANDROID_NDK_ROOT=$$NDK$$ bash android.sh || { cat build.log >&2; exit
-      1; } cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar $ORIG/libs/ffmpeg-kit.aar
+    build:
+      - set -e
+      - ORIG=$(pwd)
+      - cd $$ffmpeg-kit-16KB-for-YTCnv$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - bash android.sh || { cat build.log >&2; exit 1; }
+      - cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar "$ORIG/libs/ffmpeg-kit.aar"
     ndk: 27.2.12479018
 
 AllowedAPKSigningKeys: c9599ab3880f3bd6605aec122e8a9b068330ea6361e5071fd1180d26e2060bf1
