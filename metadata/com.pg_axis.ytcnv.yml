@@ -19,8 +19,10 @@ Builds:
     versionCode: 46
     commit: 2f8e018a80d755fbc6db0475a697c3e269d4b10a
     subdir: app
-    sudo: apt-get install -y make automake autoconf libtool gperf groff cmake gettext
-      pkg-config
+    sudo:
+      - apt-get update
+      - apt-get install -y make automake autoconf libtool gperf groff cmake gettext
+        pkg-config
     gradle:
       - fdroid
     srclibs:
@@ -28,13 +30,12 @@ Builds:
     scanignore:
       - app/libs/ffmpeg-kit.aar
     build:
-      - set -e
-      - ORIG=$(pwd)
-      - cd $$ffmpeg-kit-16KB-for-YTCnv$$
+      - pushd $$ffmpeg-kit-16KB-for-YTCnv$$
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - bash android.sh || { cat build.log >&2; exit 1; }
-      - cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar "$ORIG/libs/ffmpeg-kit.aar"
+      - popd
+      - cp $$ffmpeg-kit-16KB-for-YTCnv$$/prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar libs
     ndk: 27.2.12479018
 
 AllowedAPKSigningKeys: c9599ab3880f3bd6605aec122e8a9b068330ea6361e5071fd1180d26e2060bf1
