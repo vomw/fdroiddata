@@ -23,11 +23,11 @@ Builds:
     binary: 
       https://github.com/gmag11/Pocket2FA/releases/download/%v/app-armeabi-v7a-release.apk
     srclibs:
-      - flutter@3.35.1
+      - flutter@stable
     prebuild:
-      - pushd $$flutter$$
-      - git checkout -f 3.35.1
-      - popd
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release-build-android.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/Pocket2FA
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
@@ -63,11 +63,11 @@ Builds:
     binary: 
       https://github.com/gmag11/Pocket2FA/releases/download/%v/app-arm64-v8a-release.apk
     srclibs:
-      - flutter@3.35.1
+      - flutter@stable
     prebuild:
-      - pushd $$flutter$$
-      - git checkout -f 3.35.1
-      - popd
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release-build-android.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/Pocket2FA
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
@@ -102,11 +102,11 @@ Builds:
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/gmag11/Pocket2FA/releases/download/%v/app-x86_64-release.apk
     srclibs:
-      - flutter@3.35.1
+      - flutter@stable
     prebuild:
-      - pushd $$flutter$$
-      - git checkout -f 3.35.1
-      - popd
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release-build-android.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/Pocket2FA
       - cd ..
       - mv net.gmartin.pocket2fa $repo/Pocket2FA
