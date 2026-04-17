@@ -39,12 +39,8 @@ Builds:
       - mkdir -p /usr/lib/jvm/java-17-temurin && tar xzf jdk17.tar.gz --strip-components=1
         -C /usr/lib/jvm/java-17-temurin
       - npm install -g pnpm@10.30.3
-    gradle:
-      - yes
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
-      - echo "rootProject.name = 'de.volksverpetzer.app'" > settings.gradle && printf
-        'task clean {}\ntask assembleRelease {}\n' > build.gradle
       - pnpm install --frozen-lockfile
       - pnpm prepare:fdroid
       - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --no-install
