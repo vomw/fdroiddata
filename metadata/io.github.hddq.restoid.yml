@@ -1,0 +1,46 @@
+Categories:
+  - System
+License: GPL-3.0-only
+AuthorName: hddq
+SourceCode: https://github.com/hddq/restoid
+IssueTracker: https://github.com/hddq/restoid/issues
+
+AutoName: Restoid
+
+RepoType: git
+Repo: https://github.com/hddq/restoid
+Binaries: 
+  https://github.com/hddq/restoid/releases/download/v%v/app-bundled-universal-release.apk
+
+Builds:
+  - versionName: 0.3.4
+    versionCode: 7
+    commit: b4e4831b3e9ee28e7dec9db999ec9b282c1c65c5
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y wget tar
+      - GO_VER=$(cat build/io.github.hddq.restoid/.go-version | tr -d '\r\n') && wget
+        "https://go.dev/dl/go${GO_VER}.linux-amd64.tar.gz" -O /tmp/go.tar.gz && rm
+        -rf /tmp/go && tar -xzf /tmp/go.tar.gz -C /tmp && rm /tmp/go.tar.gz && ln
+        -sf /tmp/go/bin/go /usr/local/bin/go && ln -sf /tmp/go/bin/gofmt /usr/local/bin/gofmt
+    gradle:
+      - Bundled
+    output: build/outputs/apk/bundled/release/app-bundled-universal-release-unsigned.apk
+    binary: 
+      https://github.com/hddq/restoid/releases/download/v%v/app-bundled-universal-release.apk
+    prebuild: go version
+    scanignore:
+      - restic/internal/repository/testdata/test-repo.tar.gz
+      - restic/internal/backend/testdata/repo-layout-default.tar.gz
+      - restic/internal/checker/testdata/duplicate-packs-in-index-test-repo.tar.gz
+      - restic/internal/checker/testdata/checker-test-repo.tar.gz
+      - restic/cmd/restic/testdata
+
+AllowedAPKSigningKeys: f15f66103ee8daaf23c3913025500f08ef360849a69c427bed7db7016c3b14d3
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.3.4
+CurrentVersionCode: 7
