@@ -20,11 +20,15 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y wget tar
-      - GO_VER=$(cat build/io.github.hddq.restoid/.go-version | tr -d '\r\n') && wget
-        "https://go.dev/dl/go${GO_VER}.linux-amd64.tar.gz" -O /tmp/go.tar.gz && rm
-        -rf /tmp/go && tar -xzf /tmp/go.tar.gz -C /tmp && rm /tmp/go.tar.gz && ln
-        -sf /tmp/go/bin/go /usr/local/bin/go && ln -sf /tmp/go/bin/gofmt /usr/local/bin/gofmt
+      - apt-get install -y -t unstable golang-go
+      - apt-get install -y gcc libc-dev
+      - GO_VER=$(tr -d '\r\n' < build/io.github.hddq.restoid/.go-version)
+      - GO_VER=${GO_VER#go}
+      - rm -rf /tmp/go-src
+      - git clone --depth 1 --branch "go${GO_VER}" https://github.com/golang/go.git /tmp/go-src
+      - cd /tmp/go-src/src && GOROOT_BOOTSTRAP=$(go env GOROOT) ./make.bash
+      - ln -sf /tmp/go-src/bin/go /usr/bin/go
+      - ln -sf /tmp/go-src/bin/gofmt /usr/bin/gofmt
     gradle:
       - Bundled
     output: build/outputs/apk/bundled/release/app-bundled-universal-release-unsigned.apk
