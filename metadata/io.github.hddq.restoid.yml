@@ -32,11 +32,14 @@ Builds:
     srclibs:
       - go@go1.26.2
     prebuild:
-      - pushd $$go$$/src
+      - GO_VER=$(cat ../.go-version | tr -d '\r\n')
+      - pushd $$go$$
+      - git checkout -f "go${GO_VER#go}"
+      - cd src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
       - popd
-      - ln -sf $(pwd)/$$go$$/bin/go /usr/local/bin/go
-      - ln -sf $(pwd)/$$go$$/bin/gofmt /usr/local/bin/gofmt
+      - ln -sf $$go$$/bin/go /usr/local/bin/go
+      - ln -sf $$go$$/bin/gofmt /usr/local/bin/gofmt
       - go version
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
@@ -64,11 +67,14 @@ Builds:
     srclibs:
       - go@go1.26.2
     prebuild:
-      - pushd $$go$$/src
+      - GO_VER=$(cat ../.go-version | tr -d '\r\n')
+      - pushd $$go$$
+      - git checkout -f "go${GO_VER#go}"
+      - cd src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
       - popd
-      - ln -sf $(pwd)/$$go$$/bin/go /usr/local/bin/go
-      - ln -sf $(pwd)/$$go$$/bin/gofmt /usr/local/bin/gofmt
+      - ln -sf $$go$$/bin/go /usr/local/bin/go
+      - ln -sf $$go$$/bin/gofmt /usr/local/bin/gofmt
       - go version
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
