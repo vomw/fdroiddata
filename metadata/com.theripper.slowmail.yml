@@ -11,8 +11,8 @@ Description: |
   Slow Mail is an email client for reading and composing emails.
 
 RepoType: git
-Repo: https://github.com/printpagestopdf/slow_mail
-Binaries: https://github.com/printpagestopdf/slow_mail/releases/download/v%v/slowmail.apk
+Repo: https://github.com/printpagestopdf/slow_mail.git
+Binaries: https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 0.9.0
@@ -22,14 +22,15 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      # - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=/tmp/pub-cache
       - export FLUTTER_VERSION=$(cat flutter_version)
       - pushd $$flutter$$
       - git fetch
       - git checkout -f $FLUTTER_VERSION
       - popd
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     build:
       - export SOURCE_DATE_EPOCH=1776113449
       - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
