@@ -36,6 +36,9 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - pnpm install --frozen-lockfile
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - pnpm prepare:fdroid
       - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --no-install
       - sed -i 's/versionCode [0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
