@@ -11,6 +11,7 @@ Categories:
   - Reading
   - Writing
 License: MIT
+AuthorName: Volksverpetzer
 WebSite: https://volksverpetzer.de/app/
 SourceCode: https://github.com/Volksverpetzer/vvp_app
 IssueTracker: https://github.com/Volksverpetzer/vvp_app/issues
@@ -40,7 +41,7 @@ Builds:
       - pnpm prepare:fdroid
       - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --no-install
       - sed -i 's/versionCode [0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
-      - echo 'android { dependenciesInfo { includeInApk false } }' >> android/app/build.gradle
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - node_modules/@esbuild/linux-x64/
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
