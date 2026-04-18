@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/hddq/restoid
 
 Builds:
-  - versionName: 0.3.5
-    versionCode: 81
-    commit: ed123f7db6324167dfef20434feafb39dfd11ecf
+  - versionName: 0.3.6
+    versionCode: 91
+    commit: 94233158c49b195cd793e8aad91672e72f78ac64
     subdir: app
     submodules: true
     sudo:
@@ -32,14 +32,12 @@ Builds:
       - go@go1.26.2
     prebuild:
       - GO_VER=$(cat ../.go-version | tr -d '\r\n')
-      - pushd $$go$$
-      - git checkout -f "go${GO_VER#go}"
-      - cd src
+      - git -C $$go$$ checkout -f "go${GO_VER#go}"
+    build:
+      - pushd $$go$$/src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
       - popd
-      - ln -sf $$go$$/bin/go /usr/local/bin/go
-      - ln -sf $$go$$/bin/gofmt /usr/local/bin/gofmt
-      - go version
+      - ../scripts/build_restic.sh $$go$$/bin/go
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
       - restic/internal/backend/testdata/repo-layout-default.tar.gz
@@ -47,19 +45,18 @@ Builds:
       - restic/internal/checker/testdata/checker-test-repo.tar.gz
       - restic/cmd/restic/testdata
 
-  - versionName: 0.3.5
-    versionCode: 82
-    commit: ed123f7db6324167dfef20434feafb39dfd11ecf
+  - versionName: 0.3.6
+    versionCode: 92
+    commit: 94233158c49b195cd793e8aad91672e72f78ac64
     subdir: app
     submodules: true
     sudo:
-      - echo "deb http://deb.debian.org/debian unstable main" > /etc/apt/sources.list.d/unstable.list
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y -t unstable golang-go gcc libc-dev
-      - mkdir -p /usr/local/bin
-      - chmod 777 /usr/local/bin
+      - apt-get install -y -t forky golang-go
+      - apt-get install -y gcc libc-dev
     gradle:
-      - Bundled
+      - bundled
     output: build/outputs/apk/bundled/release/app-bundled-x86_64-release-unsigned.apk
     binary: 
       https://github.com/hddq/restoid/releases/download/v%v/app-bundled-x86_64-release.apk
@@ -67,14 +64,12 @@ Builds:
       - go@go1.26.2
     prebuild:
       - GO_VER=$(cat ../.go-version | tr -d '\r\n')
-      - pushd $$go$$
-      - git checkout -f "go${GO_VER#go}"
-      - cd src
+      - git -C $$go$$ checkout -f "go${GO_VER#go}"
+    build:
+      - pushd $$go$$/src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
       - popd
-      - ln -sf $$go$$/bin/go /usr/local/bin/go
-      - ln -sf $$go$$/bin/gofmt /usr/local/bin/gofmt
-      - go version
+      - ../scripts/build_restic.sh $$go$$/bin/go
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
       - restic/internal/backend/testdata/repo-layout-default.tar.gz
@@ -87,8 +82,7 @@ AllowedAPKSigningKeys: f15f66103ee8daaf23c3913025500f08ef360849a69c427bed7db7016
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 10 * %c
   - 10 * %c + 1
   - 10 * %c + 2
-CurrentVersion: 0.3.5
-CurrentVersionCode: 82
+CurrentVersion: 0.3.6
+CurrentVersionCode: 92
