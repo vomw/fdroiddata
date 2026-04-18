@@ -27,11 +27,9 @@ Builds:
     versionCode: 2026041701
     commit: f014d299ccd52499084cbfdf102f96d62028af26
     sudo:
-      - sysctl fs.inotify.max_user_watches=524288 || true
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
-      - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
       - npm install -g pnpm@10.30.3
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
