@@ -1,6 +1,6 @@
 Categories:
-  - Internet
   - Development
+  - Internet
 License: MIT
 AuthorName: kk__777
 SourceCode: https://github.com/kk-house-777/throttling-vpn-app
@@ -13,14 +13,15 @@ Repo: https://github.com/kk-house-777/throttling-vpn-app.git
 
 Builds:
   - versionName: 1.0.0
-    versionCode: 2
-    commit: d0d6ec3125e44217da57cf5acfeab40e58dfe64e
+    versionCode: 42
+    commit: 083ebedc480e67e0ac6d63013afc6ac431a703ef
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y golang-go gcc libc-dev
     gradle:
       - fdroid
+    output: build/outputs/apk/fdroid/release/*arm64-v8a*.apk
     srclibs:
       - go@go1.25.9
     build:
@@ -40,6 +41,102 @@ Builds:
       - go mod download all
       - gomobile bind -target=android -androidapi 26 -o ../../app/libs/tun2socks.aar .
     ndk: 29.0.14206865
+
+  - versionName: 1.0.0
+    versionCode: 22
+    commit: 083ebedc480e67e0ac6d63013afc6ac431a703ef
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*armeabi-v7a*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android -androidapi 26 -o ../../app/libs/tun2socks.aar .
+    ndk: 29.0.14206865
+
+  - versionName: 1.0.0
+    versionCode: 32
+    commit: 083ebedc480e67e0ac6d63013afc6ac431a703ef
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*x86_64*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android -androidapi 26 -o ../../app/libs/tun2socks.aar .
+    ndk: 29.0.14206865
+
+  - versionName: 1.0.0
+    versionCode: 12
+    commit: 083ebedc480e67e0ac6d63013afc6ac431a703ef
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*-x86-*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android -androidapi 26 -o ../../app/libs/tun2socks.aar .
+    ndk: 29.0.14206865
+
+VercodeOperation:
+  - '%c + 40'
+  - '%c + 20'
+  - '%c + 30'
+  - '%c + 10'
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
