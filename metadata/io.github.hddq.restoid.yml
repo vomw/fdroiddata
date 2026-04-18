@@ -18,14 +18,18 @@ Builds:
     commit: ed123f7db6324167dfef20434feafb39dfd11ecf
     subdir: app
     submodules: true
-    srclibs:
-      - go@go1.26.2
     sudo:
       - echo "deb http://deb.debian.org/debian unstable main" > /etc/apt/sources.list.d/unstable.list
       - apt-get update
       - apt-get install -y -t unstable golang-go gcc libc-dev
       - mkdir -p /usr/local/bin
       - chmod 777 /usr/local/bin
+    gradle:
+      - Bundled
+    output: build/outputs/apk/bundled/release/app-bundled-arm64-v8a-release-unsigned.apk
+    binary: https://github.com/hddq/restoid/releases/download/v%v/app-bundled-arm64-v8a-release.apk
+    srclibs:
+      - go@go1.26.2
     prebuild:
       - pushd $$go$$/src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
@@ -33,11 +37,6 @@ Builds:
       - ln -sf $(pwd)/$$go$$/bin/go /usr/local/bin/go
       - ln -sf $(pwd)/$$go$$/bin/gofmt /usr/local/bin/gofmt
       - go version
-    gradle:
-      - Bundled
-    output: build/outputs/apk/bundled/release/app-bundled-arm64-v8a-release-unsigned.apk
-    binary: 
-      https://github.com/hddq/restoid/releases/download/v%v/app-bundled-arm64-v8a-release.apk
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
       - restic/internal/backend/testdata/repo-layout-default.tar.gz
@@ -50,14 +49,18 @@ Builds:
     commit: ed123f7db6324167dfef20434feafb39dfd11ecf
     subdir: app
     submodules: true
-    srclibs:
-      - go@go1.26.2
     sudo:
       - echo "deb http://deb.debian.org/debian unstable main" > /etc/apt/sources.list.d/unstable.list
       - apt-get update
       - apt-get install -y -t unstable golang-go gcc libc-dev
       - mkdir -p /usr/local/bin
       - chmod 777 /usr/local/bin
+    gradle:
+      - Bundled
+    output: build/outputs/apk/bundled/release/app-bundled-x86_64-release-unsigned.apk
+    binary: https://github.com/hddq/restoid/releases/download/v%v/app-bundled-x86_64-release.apk
+    srclibs:
+      - go@go1.26.2
     prebuild:
       - pushd $$go$$/src
       - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
@@ -65,11 +68,6 @@ Builds:
       - ln -sf $(pwd)/$$go$$/bin/go /usr/local/bin/go
       - ln -sf $(pwd)/$$go$$/bin/gofmt /usr/local/bin/gofmt
       - go version
-    gradle:
-      - Bundled
-    output: build/outputs/apk/bundled/release/app-bundled-x86_64-release-unsigned.apk
-    binary: 
-      https://github.com/hddq/restoid/releases/download/v%v/app-bundled-x86_64-release.apk
     scanignore:
       - restic/internal/repository/testdata/test-repo.tar.gz
       - restic/internal/backend/testdata/repo-layout-default.tar.gz
