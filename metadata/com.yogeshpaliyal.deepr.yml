@@ -12,7 +12,8 @@ AutoName: Deepr
 
 RepoType: git
 Repo: https://github.com/yogeshpaliyal/Deepr.git
-Binaries: https://github.com/yogeshpaliyal/Deepr/releases/download/v%v/deepr-release-v%v.apk
+Binaries: 
+  https://github.com/yogeshpaliyal/Deepr/releases/download/v%v/deepr-release-v%v.apk
 
 Builds:
   - versionName: 1.0.5
@@ -114,9 +115,87 @@ Builds:
       - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
     build: taskset --cpu-list 0-7 gradle assembleFreeRelease
 
+  - versionName: 1.0.20
+    versionCode: 21
+    disable: baseline.prof fail
+    commit: 2f2da7ad8ca5c395a9852341f02ce1b09274e6a3
+    subdir: app
+    gradle:
+      - free
+    prebuild:
+      - sed -i -e '/freePlaystoreImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+    build: taskset --cpu-list 0-3 gradle assembleFreeRelease
+
+  - versionName: 1.0.21
+    versionCode: 22
+    commit: d82c4a50dd1e6f6beaded20aebe9d19d7aa3f078
+    subdir: app
+    gradle:
+      - free
+    prebuild:
+      - sed -i -e '/freePlaystoreImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+    build: taskset --cpu-list 0-3 gradle assembleFreeRelease
+
+  - versionName: 1.0.22
+    versionCode: 23
+    commit: 68eea6f2a1414b2b81d469c0467752dd900265f7
+    subdir: app
+    gradle:
+      - free
+    prebuild:
+      - sed -i -e '/freePlaystoreImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+    build: taskset --cpu-list 0-3 gradle assembleFreeRelease
+
+  - versionName: 1.0.23
+    versionCode: 24
+    disable: fails to build
+    commit: 7c6235aa0da2eba96d1e0512429a43d11a4f7052
+    subdir: app
+    gradle:
+      - free
+    prebuild:
+      - sed -i -e '/freePlaystoreImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+    build: taskset --cpu-list 0-3 gradle assembleFreeRelease
+
+  - versionName: 1.0.26
+    versionCode: 27
+    commit: ae5e5d853f9c840c8d06e1be3a0f763b1229946a
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/proImplementation/d' build.gradle.kts
+      - sed -i -e '/freeImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+
+  - versionName: 1.0.27
+    versionCode: 28
+    commit: 217207095cb43484c83c151418ed19710c8c58aa
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/proImplementation/d' build.gradle.kts
+      - sed -i -e '/freeImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
+
 AllowedAPKSigningKeys: fea819bc3affd62731572044462abe340f6e288e4c2cad3c4f4d8b6cdfd8c04a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v.*[0-9]$
-CurrentVersion: 1.0.19
-CurrentVersionCode: 20
+CurrentVersion: 1.0.27
+CurrentVersionCode: 28

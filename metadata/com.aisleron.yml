@@ -3,17 +3,20 @@ Categories:
   - Shopping List
 License: AGPL-3.0-or-later
 AuthorName: aisleron.com
-AuthorEmail: aisleron@roux.one
+AuthorEmail: support@aisleron.com
 WebSite: https://aisleron.com
 SourceCode: https://github.com/aisleron/aisleron
 IssueTracker: https://github.com/aisleron/aisleron/issues
+Translation: https://aisleron.com/docs/contribute/translate.html
 Changelog: https://aisleron.com/docs/version-history.html
+Donate: https://aisleron.com/docs/contribute/donate.html
 
 AutoName: Aisleron
 
 RepoType: git
 Repo: https://github.com/aisleron/aisleron.git
-Binaries: https://github.com/aisleron/aisleron/releases/download/v%v/com.aisleron-%v-release.apk
+Binaries: 
+  https://github.com/aisleron/aisleron/releases/download/v%v/com.aisleron-%v-release.apk
 
 Builds:
   - versionName: 2025.4.4
@@ -70,9 +73,65 @@ Builds:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
       - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
 
+  - versionName: 2025.10.0
+    versionCode: 14
+    commit: b2dc361ef25322125605a3aea061d0894c498fc7
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
+
+  - versionName: 2025.11.1
+    versionCode: 16
+    commit: de812d141ad14bd53b6e80c583774134f2e8b40f
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
+
+  - versionName: 2025.11.2
+    versionCode: 17
+    commit: c26daa8ad2ac3cb3885f541fc9ef090692b36a29
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
+
+  - versionName: 2026.1.0
+    versionCode: 18
+    commit: 6321c0995c4fb884f11ab6f3fa0b392b184123ad
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
+
+  - versionName: 2026.3.0
+    versionCode: 20
+    commit: 408f32a731c4e39baa0888366fc1b99ca47072b3
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' -e '/gradle.taskGraph.whenReady/,/^}/d'
+        build.gradle.kts
+
 AllowedAPKSigningKeys: e1a1725f32b302c6c69aeebd25c5e50741821af7bfec0ae18adfca28705639ea
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2025.9.1
-CurrentVersionCode: 13
+CurrentVersion: 2026.3.0
+CurrentVersionCode: 20

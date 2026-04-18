@@ -1,4 +1,5 @@
 Categories:
+  - Clock
   - Time
 License: GPL-3.0-only
 AuthorName: Fossify
@@ -14,7 +15,8 @@ Bitcoin: bc1q5flmuh5f3canqza07cfekjn64p2aqvd2w7pnn3
 
 RepoType: git
 Repo: https://github.com/FossifyOrg/Clock.git
-Binaries: https://github.com/FossifyOrg/Clock/releases/download/%v/clock-%c-foss-release.apk
+Binaries: 
+  https://github.com/FossifyOrg/Clock/releases/download/%v/clock-%c-foss-release.apk
 
 Builds:
   - versionName: 1.0.0
@@ -73,10 +75,29 @@ Builds:
     gradle:
       - foss
 
+  - versionName: 1.5.0
+    versionCode: 9
+    commit: d85eb996676e48edb1c503384b18d349150c6e8d
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.6.0
+    versionCode: 10
+    commit: 4ecb9e33c51c0b2096af2379e7ac9dc17c3e07e6
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
 AllowedAPKSigningKeys: affdb124d3f4720c2f98dbca9eacba0514fba4306e20a2786c861c3c0d6ff292
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
-CurrentVersion: 1.4.0
-CurrentVersionCode: 8
+CurrentVersion: 1.6.0
+CurrentVersionCode: 10

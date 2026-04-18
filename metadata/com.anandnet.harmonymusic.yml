@@ -3,6 +3,7 @@ AntiFeatures:
     en-US: Depends on non-free sites eg - Youtube,Youtube Music
 Categories:
   - Multimedia
+  - Radio
 License: GPL-3.0-only
 AuthorName: anandnet
 SourceCode: https://github.com/anandnet/Harmony-Music
@@ -11,6 +12,31 @@ Translation: https://hosted.weblate.org/projects/harmony-music/project-translati
 Changelog: https://github.com/anandnet/Harmony-Music/releases
 
 AutoName: Harmony Music
+Description: |-
+  <b>NOTE:</b> App is no longer developed.
+
+  Features:
+
+  - Ability to play song from Ytube/Ytube Music.
+  - Song cache while playing
+  - Radio feature support
+  - Background music
+  - Playlist creation & bookmark support
+  - Artist & Album bookmark support
+  - Import song,Playlist,Album,Artist via sharing from Ytube/Ytube Music.
+  - Streaming quality control
+  - Song downloading support
+  - Language support
+  - Skip silence
+  - Dynamic Theme
+  - Flexibility to switch between Bottom & Side Nav bar
+  - Equalizer support
+  - Synced & Plain Lyrics support
+  - Sleep Timer
+  - Android Auto support
+  - No Advertisment
+  - No Login required
+  - Piped playlist integration
 
 RepoType: git
 Repo: https://github.com/anandnet/Harmony-Music.git
@@ -450,8 +476,34 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter build apk --release
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
+  - versionName: 1.12.2
+    versionCode: 27
+    commit: c3dd9e1ae4b899e97a695871c7e5b66c0e64e6f7
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release
+
+AutoUpdateMode: None
+UpdateCheckMode: None
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.12.1
-CurrentVersionCode: 26
+CurrentVersion: 1.12.2
+CurrentVersionCode: 27
+
+NoSourceSince: 1.12.2

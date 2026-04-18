@@ -466,9 +466,52 @@ Builds:
         break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
         assembleRelease; done
 
+  - versionName: 5.5.2
+    versionCode: 5520
+    commit: afd7698c617f2eaef289410ea744bd5b533f62b4
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 5.6.0
+    versionCode: 5600
+    commit: d5bdc915e93fd3111e3f06af21c8ddd264f45b80
+    subdir: app
+    gradle:
+      - foss
+    binary: https://github.com/shub39/Rush/releases/download/%v/app-foss-release.apk
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    ndk: r28c
+
+  - versionName: 5.7.2
+    versionCode: 5720
+    commit: 4529d6e8c4cb3a29199b0ef037cfbe6916b63371
+    subdir: app
+    gradle:
+      - foss
+    binary: https://github.com/shub39/Rush/releases/download/%v/app-foss-release.apk
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/9.4.0-rc-1/9.4.0/' ../gradle/wrapper/gradle-wrapper.properties
+    ndk: r28c
+
+  - versionName: 5.7.3
+    versionCode: 5730
+    commit: 2e47c9acdff5c27b18c24b86bb5ac10ca6a980c8
+    subdir: app
+    gradle:
+      - foss
+    binary: https://github.com/shub39/Rush/releases/download/%v/app-foss-release.apk
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/9.4.0-rc-1/9.4.0/' ../gradle/wrapper/gradle-wrapper.properties
+    ndk: r28c
+
 AllowedAPKSigningKeys: 0fe1b9f44a4db97ec50948f5189f6b4300716cc6d4843f5698d614a2152e2188
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 3.2.1
-CurrentVersionCode: 3210
+UpdateCheckData: app/build.gradle.kts|appVersionCode\s=\s(\d+)|.|appVersionName\s=\s"(.*)"
+CurrentVersion: 5.7.3
+CurrentVersionCode: 5730

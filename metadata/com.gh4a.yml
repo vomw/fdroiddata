@@ -31,7 +31,8 @@ Builds:
       - cp -a $$GH4AGitHubAPI$$/src/org src
       - sed -i -e '/populov/d' -e '/mavenCentral/imavenLocal()' build.gradle
       - pushd $$ViewPagerIndicator$$
-      - sed -i 's;<android-maven.version>3.3.0</android-maven.version>;<android-maven.version>3.7.0</android-maven.version>;'
+      - sed -i 
+        's;<android-maven.version>3.3.0</android-maven.version>;<android-maven.version>3.7.0</android-maven.version>;'
         ../pom.xml pom.xml
       - sed -i -e 's/apklib/aar/g' pom.xml
       - rm libs/*
@@ -299,7 +300,23 @@ Builds:
       - echo 'ClientId="f0f32f2ee4a709ba3640"' >> client.properties
       - echo 'ClientSecret="f94cffda88486696c2762ad986bc0b8b830c9cff"' >> client.properties
 
+  - versionName: 4.6.15
+    versionCode: 78
+    commit: 4ba766e189db16735ce802447c7bdd5f438bdd5d
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/fabric/d' -e '/playstoreImplementation(.*) {/,/}/d' build.gradle
+      - echo 'ClientId="f0f32f2ee4a709ba3640"' >> client.properties
+      - echo 'ClientSecret="f94cffda88486696c2762ad986bc0b8b830c9cff"' >> client.properties
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 4.6.14
-CurrentVersionCode: 77
+CurrentVersion: 4.6.15
+CurrentVersionCode: 78

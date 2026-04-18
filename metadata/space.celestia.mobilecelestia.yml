@@ -1165,33 +1165,440 @@ Builds:
       - cd ..
       - sh "$(pwd)/space.celestia.mobilecelestia/app/run_gperf.sh" "$(pwd)/Celestia"
 
+  - versionName: 1.9.3
+    versionCode: 649
+    commit: e34fe9ce424ac44a0762c2dcbd9a3e494d916b23
+    timeout: 10800
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - celestia-apple-android-dependencies@1.0.22
+      - Celestia@1_9_3_rc1
+      - CelestiaContent@b6d3daa2260cdbd251336264eb62334a4d6e62c6
+      - CelestiaLocalization@81d90fd8254763516000edfff0dace9975187358
+    prebuild:
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - sed -i -e 's/$HOST_CC/"$HOST_CC"/' build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.6
+    versionCode: 670
+    commit: 821ee6e5072005d48fb9b813cd65017d453128c3
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - celestia-apple-android-dependencies@1.0.36
+      - Celestia@1_9_4_rc1
+      - CelestiaContent@7c1a1f7f9189b5c207d0ef185e880077136716a3
+      - CelestiaLocalization@a93bcf2e40561136e2d9d66a54bff5f5336ae723
+    prebuild:
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.7
+    versionCode: 682
+    commit: fe4198674eb662633d857fe3b6c41caa464803d8
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_7_rc1
+      - CelestiaContent@9cdd5d71ae696fa9803f33e512e918bd9799e49c
+      - CelestiaLocalization@a93bcf2e40561136e2d9d66a54bff5f5336ae723
+      - celestia-apple-android-dependencies@1.0.36
+    prebuild:
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.8
+    versionCode: 687
+    commit: 414ab8cbba93d50708b29ea1942bdaa5adc6578d
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_7_rc1
+      - CelestiaContent@9cdd5d71ae696fa9803f33e512e918bd9799e49c
+      - CelestiaLocalization@a93bcf2e40561136e2d9d66a54bff5f5336ae723
+      - celestia-apple-android-dependencies@1.0.36
+    prebuild:
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.9
+    versionCode: 693
+    commit: 17fc9604e3ae89736902b9c2cbb0f3edc48461ff
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_9_rc1
+      - CelestiaContent@cefcbe9824b90aded2fa292c64439b4b4bdd5d39
+      - CelestiaLocalization@dc5f7da1f3e7dbc80e196d585b2bf30468f878a8
+      - celestia-apple-android-dependencies@08f5bcfbe3d1acde2d0d6c3ac2ebd889eb3e6e0e
+    prebuild:
+      - export CELESTIA_HASH=$(sed -nr 's/^Celestia=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CELESTIA_HASH ]]'
+      - git -C $$Celestia$$ checkout -f $CELESTIA_HASH
+      - export CONTENT_HASH=$(sed -nr 's/^CelestiaContent=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CONTENT_HASH ]]'
+      - git -C $$CelestiaContent$$ checkout -f $CONTENT_HASH
+      - export LOC_HASH=$(sed -nr 's/^CelestiaLocalization=(.*)$/\1/p' ../versions.txt)
+      - '[[ $LOC_HASH ]]'
+      - git -C $$CelestiaLocalization$$ checkout -f $LOC_HASH
+      - export DEP_HASH=$(sed -nr 's/^apple-android-dependencies=(.*)$/\1/p' ../versions.txt)
+      - '[[ $DEP_HASH ]]'
+      - git -C $$celestia-apple-android-dependencies$$ checkout -f $DEP_HASH
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.10
+    versionCode: 695
+    commit: 6b56d2bfdcc28d3f75e7bda3f75fb35a90de8e23
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_9_rc1
+      - CelestiaContent@cefcbe9824b90aded2fa292c64439b4b4bdd5d39
+      - CelestiaLocalization@dc5f7da1f3e7dbc80e196d585b2bf30468f878a8
+      - celestia-apple-android-dependencies@08f5bcfbe3d1acde2d0d6c3ac2ebd889eb3e6e0e
+    prebuild:
+      - export CELESTIA_HASH=$(sed -nr 's/^Celestia=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CELESTIA_HASH ]]'
+      - git -C $$Celestia$$ checkout -f $CELESTIA_HASH
+      - export CONTENT_HASH=$(sed -nr 's/^CelestiaContent=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CONTENT_HASH ]]'
+      - git -C $$CelestiaContent$$ checkout -f $CONTENT_HASH
+      - export LOC_HASH=$(sed -nr 's/^CelestiaLocalization=(.*)$/\1/p' ../versions.txt)
+      - '[[ $LOC_HASH ]]'
+      - git -C $$CelestiaLocalization$$ checkout -f $LOC_HASH
+      - export DEP_HASH=$(sed -nr 's/^apple-android-dependencies=(.*)$/\1/p' ../versions.txt)
+      - '[[ $DEP_HASH ]]'
+      - git -C $$celestia-apple-android-dependencies$$ checkout -f $DEP_HASH
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.11
+    versionCode: 697
+    commit: 1544effdc841cd4a610962a4f391cc9eebbdd383
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_9_rc1
+      - CelestiaContent@cefcbe9824b90aded2fa292c64439b4b4bdd5d39
+      - CelestiaLocalization@dc5f7da1f3e7dbc80e196d585b2bf30468f878a8
+      - celestia-apple-android-dependencies@08f5bcfbe3d1acde2d0d6c3ac2ebd889eb3e6e0e
+    prebuild:
+      - export CELESTIA_HASH=$(sed -nr 's/^Celestia=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CELESTIA_HASH ]]'
+      - git -C $$Celestia$$ checkout -f $CELESTIA_HASH
+      - export CONTENT_HASH=$(sed -nr 's/^CelestiaContent=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CONTENT_HASH ]]'
+      - git -C $$CelestiaContent$$ checkout -f $CONTENT_HASH
+      - export LOC_HASH=$(sed -nr 's/^CelestiaLocalization=(.*)$/\1/p' ../versions.txt)
+      - '[[ $LOC_HASH ]]'
+      - git -C $$CelestiaLocalization$$ checkout -f $LOC_HASH
+      - export DEP_HASH=$(sed -nr 's/^apple-android-dependencies=(.*)$/\1/p' ../versions.txt)
+      - '[[ $DEP_HASH ]]'
+      - git -C $$celestia-apple-android-dependencies$$ checkout -f $DEP_HASH
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.12
+    versionCode: 699
+    commit: 118cb8b49b3dcbc70a1898309259386ffb7c7f07
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_9_rc1
+      - CelestiaContent@cefcbe9824b90aded2fa292c64439b4b4bdd5d39
+      - CelestiaLocalization@dc5f7da1f3e7dbc80e196d585b2bf30468f878a8
+      - celestia-apple-android-dependencies@08f5bcfbe3d1acde2d0d6c3ac2ebd889eb3e6e0e
+    prebuild:
+      - export CELESTIA_HASH=$(sed -nr 's/^Celestia=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CELESTIA_HASH ]]'
+      - git -C $$Celestia$$ checkout -f $CELESTIA_HASH
+      - export CONTENT_HASH=$(sed -nr 's/^CelestiaContent=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CONTENT_HASH ]]'
+      - git -C $$CelestiaContent$$ checkout -f $CONTENT_HASH
+      - export LOC_HASH=$(sed -nr 's/^CelestiaLocalization=(.*)$/\1/p' ../versions.txt)
+      - '[[ $LOC_HASH ]]'
+      - git -C $$CelestiaLocalization$$ checkout -f $LOC_HASH
+      - export DEP_HASH=$(sed -nr 's/^apple-android-dependencies=(.*)$/\1/p' ../versions.txt)
+      - '[[ $DEP_HASH ]]'
+      - git -C $$celestia-apple-android-dependencies$$ checkout -f $DEP_HASH
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
+  - versionName: 1.9.13
+    versionCode: 701
+    commit: 842e32746b636dfdb7fe9998426522fe1a133507
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install cmake tcsh gcc-multilib g++-multilib gettext gperf make meson
+        ncompress wget xz-utils imagemagick
+    gradle:
+      - unofficial
+    srclibs:
+      - Celestia@1_9_9_rc1
+      - CelestiaContent@cefcbe9824b90aded2fa292c64439b4b4bdd5d39
+      - CelestiaLocalization@dc5f7da1f3e7dbc80e196d585b2bf30468f878a8
+      - celestia-apple-android-dependencies@08f5bcfbe3d1acde2d0d6c3ac2ebd889eb3e6e0e
+    prebuild:
+      - export CELESTIA_HASH=$(sed -nr 's/^Celestia=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CELESTIA_HASH ]]'
+      - git -C $$Celestia$$ checkout -f $CELESTIA_HASH
+      - export CONTENT_HASH=$(sed -nr 's/^CelestiaContent=(.*)$/\1/p' ../versions.txt)
+      - '[[ $CONTENT_HASH ]]'
+      - git -C $$CelestiaContent$$ checkout -f $CONTENT_HASH
+      - export LOC_HASH=$(sed -nr 's/^CelestiaLocalization=(.*)$/\1/p' ../versions.txt)
+      - '[[ $LOC_HASH ]]'
+      - git -C $$CelestiaLocalization$$ checkout -f $LOC_HASH
+      - export DEP_HASH=$(sed -nr 's/^apple-android-dependencies=(.*)$/\1/p' ../versions.txt)
+      - '[[ $DEP_HASH ]]'
+      - git -C $$celestia-apple-android-dependencies$$ checkout -f $DEP_HASH
+      - ln -s $$Celestia$$ ../..
+      - ln -s $$CelestiaContent$$ ../..
+      - ln -s $$CelestiaLocalization$$ ../..
+      - mv $$celestia-apple-android-dependencies$$ ../dependencies
+      - gradle clean
+      - cd ../dependencies
+      - sed -i -e 's/wget/wget -q/' download.sh build_android.sh
+      - bash download.sh
+      - mkdir targz tarxz tgz
+      - for i in *.tar.gz; do tar -xzf $i -C targz; done
+      - for i in *.tar.xz; do tar -xJf $i -C tarxz; done
+      - for i in *.tgz; do tar -xzf $i -C tgz; done
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - dependencies
+    build:
+      - bash downsize_textures.sh
+      - bash run_gperf.sh $$Celestia$$
+      - cd ../dependencies
+      - for i in $(ls targz); do tar -czf $i.tar.gz -C targz $i; done
+      - for i in $(ls tarxz); do tar -cJf $i.tar.xz -C tarxz $i; done
+      - for i in $(ls tgz); do tar -czf $i.tgz -C tgz $i; done
+      - bash prepare_icu.sh
+      - bash build_android.sh $(pwd) $$SDK$$/ndk/*
+
 MaintainerNotes: |-
   Celestia for android requires 4 more repositories to build:
     - Celestia;
     - CelestiaContent;
     - CelestiaLocalization;
-    - apple-android (contains build scripts for dependencies).
+    - apple-android-dependencies (contains build scripts for dependencies).
   These repositories need to be present in parent directory of AndroidCelestia.
   Commit hashes for these repositories are located upstream in 'versions.txt'
   file. We parse this file to get the correct hashes for dependencies.
 
-  During the prebuild they are temporarily moved into AndroidCelestia directory
-  to allow f-droid scanner to scan it. Third party dependencies are downloaded
-  with './prebuild.sh' during prebuilt stage, however they are compressed
-  and only unpacked during the build stage with './prepare_icu.sh' and './build_android.sh'
-  scripts. Because of that, we unpack these archives during the prebuild stage
-  to allow F-Droid scanner to scan them, and then pack it back so build scripts
-  can process them as expected.
-
-  During the build stage, we move previously cloned repositories in their expected
-  locations. Third party dependencies are also built and moved to AndroidCelestia
-  directory.
-
-  F-Droid scanner detects various binaries in third party libraries, however
-  these are various test data and other files not needed for actual compilation.
-  They can be safely scandeleted.
-
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.9.2
-CurrentVersionCode: 643
+CurrentVersion: 1.9.13
+CurrentVersionCode: 701

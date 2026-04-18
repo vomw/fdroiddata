@@ -415,7 +415,115 @@ Builds:
       - pushd ../..
       - APP_MODE=release APP_CONFIG=prod npm run build
 
+  - versionName: 8.0.0+ble2.3.1
+    versionCode: 25
+    commit: e6e2a81a1952b1fe27f9ab922be5bce2d4021df3
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ make
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
+      - update-alternatives --auto java
+    init:
+      - pushd ../..
+      - npm install
+      - touch www/index.html
+      - npx cap update android
+      - npm run fetch-nnue
+      - sed 's/lichess\.dev/lichess.org/g' appconfig.dev.json > appconfig.prod.json
+    gradle:
+      - yes
+    rm:
+      - ios/
+    scandelete:
+      - node_modules/
+    build:
+      - pushd ../..
+      - APP_MODE=release APP_CONFIG=prod npm run build
+
+  - versionName: 8.0.0+ble2.4.0
+    versionCode: 26
+    commit: e78312f2c67ff1166769d45127848a7acca4fad3
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ make
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
+      - update-alternatives --auto java
+    init:
+      - pushd ../..
+      - npm install
+      - touch www/index.html
+      - npx cap update android
+      - npm run fetch-nnue
+      - sed 's/lichess\.dev/lichess.org/g' appconfig.dev.json > appconfig.prod.json
+    gradle:
+      - yes
+    rm:
+      - ios/
+    scandelete:
+      - node_modules/
+    build:
+      - pushd ../..
+      - APP_MODE=release APP_CONFIG=prod npm run build
+
+  - versionName: 8.0.0+ble2.4.1
+    versionCode: 27
+    commit: d7800a5f8679fc6365caf8ddf1af0593d7feb844
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ make
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
+      - update-alternatives --auto java
+    init:
+      - pushd ../..
+      - npm install
+      - touch www/index.html
+      - npx cap update android
+      - npm run fetch-nnue
+      - sed 's/lichess\.dev/lichess.org/g' appconfig.dev.json > appconfig.prod.json
+    gradle:
+      - yes
+    rm:
+      - ios/
+    scandelete:
+      - node_modules/
+    build:
+      - pushd ../..
+      - APP_MODE=release APP_CONFIG=prod npm run build
+
+  - versionName: 8.0.0+ble2.5.0
+    versionCode: 28
+    commit: 429762973ac8d5b7b475ae279144d7a71cddb31f
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ make npm
+    init:
+      - pushd ../..
+      - npm install
+      - touch www/index.html
+      - npx cap update android
+      - npm run fetch-nnue
+      - sed 's/lichess\.dev/lichess.org/g' appconfig.dev.json > appconfig.prod.json
+    gradle:
+      - yes
+    rm:
+      - ios/
+    scandelete:
+      - node_modules/
+    build:
+      - pushd ../..
+      - APP_MODE=release APP_CONFIG=prod npm run build
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 8.0.0+ble2.3.0
-CurrentVersionCode: 24
+CurrentVersion: 8.0.0+ble2.5.0
+CurrentVersionCode: 28

@@ -15,7 +15,8 @@ Bitcoin: bc1q5flmuh5f3canqza07cfekjn64p2aqvd2w7pnn3
 
 RepoType: git
 Repo: https://github.com/FossifyOrg/Keyboard.git
-Binaries: https://github.com/FossifyOrg/Keyboard/releases/download/%v/keyboard-%c-foss-release.apk
+Binaries: 
+  https://github.com/FossifyOrg/Keyboard/releases/download/%v/keyboard-%c-foss-release.apk
 
 Builds:
   - versionName: 1.0.0
@@ -81,10 +82,43 @@ Builds:
     gradle:
       - foss
 
+  - versionName: 1.7.0
+    versionCode: 11
+    commit: 9f2ace26e751f96c11525b3d8c7087d835e79ff6
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.8.0
+    versionCode: 12
+    commit: 0483fdc1393b7eb38bc2882fb7af4e69507bdb40
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.9.0
+    versionCode: 13
+    commit: bcfb6d22cbe6bbc1cec4803142be382db64578a8
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.9.1
+    versionCode: 14
+    commit: 1a2ecdff4e07826d8673576c82637541abbe5264
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
 AllowedAPKSigningKeys: affdb124d3f4720c2f98dbca9eacba0514fba4306e20a2786c861c3c0d6ff292
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
-CurrentVersion: 1.6.0
-CurrentVersionCode: 10
+CurrentVersion: 1.9.1
+CurrentVersionCode: 14
