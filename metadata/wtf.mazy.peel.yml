@@ -1,0 +1,77 @@
+AntiFeatures:
+  NonFreeDep:
+    en-US: GeckoView depends on play-services-fido (and its transitive GMS dependencies)
+      for WebAuthn/passkey support
+Categories:
+  - Browser
+  - Internet
+License: GPL-3.0-only
+AuthorName: mazzz1y
+SourceCode: https://github.com/mazzz1y/peel
+IssueTracker: https://github.com/mazzz1y/peel/issues
+Changelog: https://github.com/mazzz1y/peel/releases
+
+AutoName: Peel
+
+RepoType: git
+Repo: https://github.com/mazzz1y/peel.git
+
+Builds:
+  - versionName: 0.31.4
+    versionCode: 31041
+    commit: 472dfffca92d62f304844dffbd41f02e1fb9131b
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    binary: https://github.com/mazzz1y/peel/releases/download/v%v/peel-v%v-armeabi-v7a.apk
+    scanignore:
+      - settings.gradle
+
+  - versionName: 0.31.4
+    versionCode: 31042
+    commit: 472dfffca92d62f304844dffbd41f02e1fb9131b
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    binary: https://github.com/mazzz1y/peel/releases/download/v%v/peel-v%v-arm64-v8a.apk
+    scanignore:
+      - settings.gradle
+
+  - versionName: 0.31.4
+    versionCode: 31043
+    commit: 472dfffca92d62f304844dffbd41f02e1fb9131b
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    binary: https://github.com/mazzz1y/peel/releases/download/v%v/peel-v%v-x86_64.apk
+    scanignore:
+      - settings.gradle
+
+AllowedAPKSigningKeys: 71192d55ab63848e9135a5bf49ae3859cf3f43125fd7c740c7e05f4615e60e05
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[\d.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+CurrentVersion: 0.31.4
+CurrentVersionCode: 31043
