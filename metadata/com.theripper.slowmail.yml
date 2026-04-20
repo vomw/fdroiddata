@@ -22,27 +22,23 @@ Builds:
       - chown -R vagrant /home/runner/work
     init:
       - cp -r . /home/runner/work/slow_mail/slow_mail
-      - cd /home/runner/work/slow_mail/slow_mail
-    output: /home/runner/work/slow_mail/slow_mail/build/app/outputs/flutter-apk/app-release.apk
-    binary:
-      https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      # - export PUB_CACHE=$(pwd)/.pub-cache
       - export PUB_CACHE=/tmp/pub-cache
+      - export SOURCE_DATE_EPOCH=1776113449
       - export FLUTTER_VERSION=$(cat flutter_version)
       - pushd $$flutter$$
       - git fetch
       - git checkout -f $FLUTTER_VERSION
       - popd
-      - cd /home/runner/work/slow_mail/slow_mail
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter pub get --enforce-lockfil
     build:
       - export SOURCE_DATE_EPOCH=1776113449
-      - cd /home/runner/work/slow_mail/slow_mail
-      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+      - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+    output: /home/runner/work/slow_mail/slow_mail/build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
 
 AllowedAPKSigningKeys: caf5ac430eeeb7850fcf3ff5a2ba3398fa4c26b40cf0a69ba1a569b155aeeb65
 
