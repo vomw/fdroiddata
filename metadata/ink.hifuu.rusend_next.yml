@@ -11,6 +11,8 @@ License: MIT
 AuthorName: CGH0S7
 SourceCode: https://github.com/CGH0S7/remail
 IssueTracker: https://github.com/CGH0S7/remail/issues
+AllowedAPKSigningKeys:
+  - f7e457963df7eba8a97e5ac0a60faf791cdf35f0bddd49650e242856c753b63a
 
 AutoName: Remail
 
@@ -18,10 +20,11 @@ RepoType: git
 Repo: https://github.com/CGH0S7/remail.git
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 11
-    commit: 2a682c085b0b85ba2349fb8b6e59558f70170641
+  - versionName: 1.0.2
+    versionCode: 21
+    commit: 26abf3da510b1f16c98a09efb065ede5b273ac95
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/CGH0S7/remail/releases/download/v1.0.2/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -43,10 +46,11 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
-  - versionName: 1.0.1
-    versionCode: 12
-    commit: 2a682c085b0b85ba2349fb8b6e59558f70170641
+  - versionName: 1.0.2
+    versionCode: 22
+    commit: 26abf3da510b1f16c98a09efb065ede5b273ac95
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/CGH0S7/remail/releases/download/v1.0.2/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -68,10 +72,11 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
-  - versionName: 1.0.1
-    versionCode: 13
-    commit: 2a682c085b0b85ba2349fb8b6e59558f70170641
+  - versionName: 1.0.2
+    versionCode: 23
+    commit: 26abf3da510b1f16c98a09efb065ede5b273ac95
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/CGH0S7/remail/releases/download/v1.0.2/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -93,7 +98,12 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0.1
-CurrentVersionCode: 13
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.2
+CurrentVersionCode: 23
