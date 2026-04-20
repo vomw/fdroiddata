@@ -34,7 +34,7 @@ Builds:
       - windows
     prebuild:
       - sed -i -e '/googleapis/d' android/build.gradle android/settings.gradle
-      - sed -i -e '/java.home/d' android/gradle.properties
+      - sed -i -e '/java.home/d' -e 's/Xmx512m/Xmx4096m/' android/gradle.properties
       - sed -i -e '/def keystorePropsFile/,/keystoreProps.load/d' -e '/signingConfig
         /d' android/app/build.gradle
       - flutterVersion=$(sed -n -E 's/.*Flutter version:\ (.*)/\1/p' pubspec.yaml)
