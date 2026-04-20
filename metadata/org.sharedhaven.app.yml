@@ -21,6 +21,10 @@ Builds:
     versionCode: 2
     commit: 31f4d9f2a5896d0ded6e10199e8bd5e7f6e790fa
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - mkdir -p /home/ciprian/Desktop/flutterProjects
       - chown -R vagrant /home/ciprian
     output: build/app/outputs/bundle/release/app-release.aab
