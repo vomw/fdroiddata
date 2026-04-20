@@ -62,9 +62,30 @@ Builds:
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release
     ndk: 27.0.12077973
+  - versionName: 1.0.3
+    versionCode: 5
+    commit: f40996631dafaf6dc99f17cb337bd3d1c7f04fe4
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(tr -d '\n' < .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 27.0.12077973
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.2
-CurrentVersionCode: 4
+CurrentVersion: 1.0.3
+CurrentVersionCode: 5
