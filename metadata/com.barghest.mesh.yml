@@ -14,30 +14,6 @@ Repo: https://github.com/BARGHEST-ngo/MESH
 Binaries: https://github.com/BARGHEST-ngo/MESH/releases/download/v%v/mesh-%v.apk
 
 Builds:
-  - versionName: 0.1.4-alpha
-    versionCode: 360
-    commit: b3af98a2da44fc5797f1dc0275090c0be823175c
-    subdir: android-client/android
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y golang-go gcc libc-dev make zip
-    gradle:
-      - yes
-    prebuild:
-      - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> gradle.properties
-      - sdkmanager 'platforms;android-34' 'platform-tools' 'build-tools;36.0.0'
-      - sed -i -e 's|$(ANDROID_HOME)/cmdline-tools/latest/bin/sdkmanager|sdkmanager|g'
-        -e 's/list_installed/list/' ../Makefile
-      - sed -i -e 's/getVersionProperty("VERSION_LONG")/"$$VERSION$$"/' build.gradle
-    scandelete:
-      - tailscale
-    build:
-      - export ANDROID_NDK_ROOT=$$NDK$$
-      - make -C .. env
-      - make -C .. libtailscale
-    ndk: r23c
-
   - versionName: 0.1.5-alpha
     versionCode: 361
     commit: v0.1.5-alpha
