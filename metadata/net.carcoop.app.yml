@@ -10,6 +10,7 @@ IssueTracker: https://github.com/haukepauke/car-coop-app/issues
 Changelog: https://github.com/haukepauke/car-coop-app/releases
 
 Name: Car Coop
+AutoName: Car Coop
 Description: |-
   Car Coop is the mobile companion app for the self-hosted Car Coop platform.
 
@@ -40,23 +41,30 @@ RepoType: git
 Repo: https://github.com/haukepauke/car-coop-app.git
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 3
-    commit: 1.0.1
+  - versionName: 1.0.2
+    versionCode: 4
+    commit: f9538c91f90b8fb64f5213be3a1c6051af316765
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
     prebuild:
+      - flutterVersion=$(tr -d '\n' < .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
     build:
-      - export PUB_CACHE=/tmp/pub-cache
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release
     ndk: 27.0.12077973
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0.1
-CurrentVersionCode: 3
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^\d+\.\d+\.\d+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.2
+CurrentVersionCode: 4
