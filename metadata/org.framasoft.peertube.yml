@@ -319,9 +319,7 @@ Builds:
       - ios
     prebuild:
       - pushd submodules/flutter
-      - flutterCommit=$(git rev-parse HEAD)
       - git checkout -f stable
-      - git reset --hard $flutterCommit
       - popd
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
@@ -340,6 +338,9 @@ Builds:
       - submodules/flutter
       - .pub-cache
     build:
+      - pushd submodules/flutter
+      - git checkout -f stable
+      - popd
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
