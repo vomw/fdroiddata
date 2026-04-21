@@ -36,6 +36,7 @@ Builds:
       - popd
       - $$flutter$$/bin/flutter config --no-analytics
       - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
     build:
       - export SOURCE_DATE_EPOCH=1776113449
       - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
