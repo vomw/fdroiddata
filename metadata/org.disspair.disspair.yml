@@ -1,0 +1,50 @@
+Categories:
+  - Security
+
+License: MIT
+
+AuthorName: threadpoolx
+AuthorEmail: your@email.com
+
+WebSite: https://github.com/threadpoolx/DissPair
+SourceCode: https://github.com/threadpoolx/DissPair
+IssueTracker: https://github.com/threadpoolx/DissPair/issues
+
+Name: DissPair
+Summary: Bluetooth Security Toolkit
+Description: |-
+  DissPair is a Python-based security auditing tool for Bluetooth Classic and BLE vulnerability assessment.
+
+RepoType: git
+Repo: https://github.com/threadpoolx/DissPair
+
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
+
+MaintainerNotes: |-
+  Uses Buildozer to package a Python application. No proprietary dependencies.
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip python3-venv zip unzip default-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev patch git libsqlite3-dev
+    build: |-
+      python3 -m venv venv
+      . venv/bin/activate
+      pip install buildozer==1.5.0 Cython==0.29.36 wheel setuptools
+
+      sed -i 's/^#\? \?android.accept_sdk_license.*/android.accept_sdk_license = True/' buildozer.spec
+      sed -i 's/^#\? \?android.api.*/android.api = 34/' buildozer.spec
+      sed -i 's/^#\? \?android.archs.*/android.archs = arm64-v8a/' buildozer.spec
+      sed -i 's/^#\? \?android.ndk_api.*/android.ndk_api = 24/' buildozer.spec
+
+      yes | buildozer android release
+
+    output: bin/*.apk
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+UpdateCheckData: v\d+\.\d+
