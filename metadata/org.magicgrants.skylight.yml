@@ -1,0 +1,65 @@
+Categories:
+  - Money
+License: MIT
+AuthorName: MAGIC Grants
+AuthorEmail: info@magicgrants.org
+WebSite: https://skylight.magicgrants.org
+SourceCode: https://github.com/magicgrants/skylight-wallet
+IssueTracker: https://github.com/magicgrants/skylight-wallet/issues
+Changelog: https://github.com/magicgrants/skylight-wallet/releases
+AutoName: Skylight Wallet for Monero
+Summary: A Monero light-wallet
+Description: |
+  This is not your normal Monero wallet app. Read the description to learn more.
+
+  Skylight Wallet REQUIRES you to specify a Monero light-wallet server (LWS). This can be a server that you already have, or a server that is operated by a trusted friend. Read "About Monero Light-Wallets" below to learn more.
+
+  FEATURES
+  * Fully self-custody. Only you have your private keys and seed, not us.
+  * Completely open-source.
+  * No local wallet syncing needed! Syncing is handled by the LWS you specify. Save time, data, and your battery.
+  * Built-in Tor support. Optionally connect to your LWS over Tor, and your connections to all helper APIs are automatically protected with Tor.
+  * Address book for managing contacts.
+  * OpenAlias, for easy and secure sending without cumbersome addresses.
+  * Subaddress support.
+
+  ABOUT MONERO LIGHT-WALLETS
+  Skylight Wallet is a modern Monero light-wallet. Monero light-wallets provide the private view key to a light-wallet server (LWS) that you specify, such as your own. This LWS uses the view key to search for transactions that your wallet may be interested in. It sends these transactions to Skylight Wallet.
+
+  Since Skylight Wallet only needs to receive this minimal information, connections are fast and efficient, even over Tor.
+
+
+  Skylight Wallet is developed by MAGIC Grants, a 501(c)(3) public charity.
+RepoType: git
+Repo: https://github.com/magicgrants/skylight-wallet
+MaintainerNotes: |
+  jniLibs added to scanignore contains prebuilt libraries, which are verifiably built upstream by GitHub Actions.
+Builds:
+  - versionName: '1.0.9'
+    versionCode: 15
+    commit: v1.0.9
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.7
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - android/app/src/main/jniLibs
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-${ANDROID_HOME}/ndk/28.1.13356709}"
+      - $$flutter$$/bin/flutter build apk --release
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.9
+CurrentVersionCode: 15
