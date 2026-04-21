@@ -23,16 +23,16 @@ Builds:
     init:
       - cp -r . /home/runner/work/slow_mail/slow_mail
     srclibs:
-      - flutter@stable
+      - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
     ndk: r28b  # Wichtig: Gleiche Version wie in build.gradle.kts
     prebuild:
       - export PUB_CACHE=/tmp/pub-cache
       - export SOURCE_DATE_EPOCH=1776113449
-      - export FLUTTER_VERSION=$(cat flutter_version)
-      - pushd $$flutter$$
-      - git fetch
-      - git checkout -f $FLUTTER_VERSION
-      - popd
+      # - export FLUTTER_VERSION=$(cat flutter_version)
+      # - pushd $$flutter$$
+      # - git fetch
+      # - git checkout -f $FLUTTER_VERSION
+      # - popd
       - $$flutter$$/bin/flutter config --no-analytics
       - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter pub get --enforce-lockfile
     build:
