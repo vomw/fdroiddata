@@ -308,13 +308,14 @@ Builds:
       - mv $repo org.framasoft.peertube
 
   - versionName: 2.1.2
-    versionCode: 32
+    versionCode: 321
     commit: v2.1.2
+    binary: https://builds.joinpeertube.org/mobile/peertube_v%v_arm64.apk
     submodules: true
     sudo:
       - mkdir -p /builds/framasoft/peertube
       - chown -R vagrant /builds
-    output: build/app/outputs/flutter-apk/app-*-stable-release.apk
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-stable-release.apk
     rm:
       - ios
     prebuild:
@@ -346,7 +347,95 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - submodules/flutter/bin/flutter build apk --release --dart-define-from-file=env-stable.json
-        --flavor=stable --dart-define=buildType=fdroid --split-per-abi
+        --flavor=stable --dart-define=buildType=fdroid --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo org.framasoft.peertube
+
+  - versionName: 2.1.2
+    versionCode: 322
+    commit: v2.1.2
+    binary: https://builds.joinpeertube.org/mobile/peertube_v%v_arm.apk
+    submodules: true
+    sudo:
+      - mkdir -p /builds/framasoft/peertube
+      - chown -R vagrant /builds
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-stable-release.apk
+    rm:
+      - ios
+    prebuild:
+      - pushd submodules/flutter
+      - flutterCommit=$(git rev-parse HEAD)
+      - git checkout stable
+      - git reset --hard $flutterCommit
+      - popd
+      - export repo=/builds/framasoft/peertube/mobile-application
+      - cd ..
+      - mv org.framasoft.peertube $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - submodules/flutter/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - popd
+      - mv $repo org.framasoft.peertube
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export repo=/builds/framasoft/peertube/mobile-application
+      - cd ..
+      - mv org.framasoft.peertube $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --dart-define-from-file=env-stable.json
+        --flavor=stable --dart-define=buildType=fdroid --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo org.framasoft.peertube
+
+  - versionName: 2.1.2
+    versionCode: 323
+    commit: v2.1.2
+    binary: https://builds.joinpeertube.org/mobile/peertube_v%v_x86_64.apk
+    submodules: true
+    sudo:
+      - mkdir -p /builds/framasoft/peertube
+      - chown -R vagrant /builds
+    output: build/app/outputs/flutter-apk/app-x86_64-stable-release.apk
+    rm:
+      - ios
+    prebuild:
+      - pushd submodules/flutter
+      - flutterCommit=$(git rev-parse HEAD)
+      - git checkout stable
+      - git reset --hard $flutterCommit
+      - popd
+      - export repo=/builds/framasoft/peertube/mobile-application
+      - cd ..
+      - mv org.framasoft.peertube $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - submodules/flutter/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - popd
+      - mv $repo org.framasoft.peertube
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export repo=/builds/framasoft/peertube/mobile-application
+      - cd ..
+      - mv org.framasoft.peertube $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --dart-define-from-file=env-stable.json
+        --flavor=stable --dart-define=buildType=fdroid --split-per-abi --target-platform="android-x86_64"
       - popd
       - mv $repo org.framasoft.peertube
 
@@ -356,4 +445,4 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.1.2
-CurrentVersionCode: 32
+CurrentVersionCode: 323
