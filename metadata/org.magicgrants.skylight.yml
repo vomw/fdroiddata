@@ -39,6 +39,9 @@ Builds:
     versionCode: 15
     commit: v1.0.9
     output: build/app/outputs/flutter-apk/app-release.apk
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential
     srclibs:
       - flutter@3.41.7
       - rustup@1.29.0
@@ -68,6 +71,7 @@ Builds:
 MaintainerNotes: |
   jniLibs added to scanignore contains prebuilt libraries, which are verifiably built upstream by GitHub Actions.
   Cargokit (tor_ffi_plugin) needs Rust on PATH: rustup srclib + rustup-init in build; toolchain 1.83.0 matches upstream Dockerfile.builder (adjust if either changes).
+  build-essential (gcc as cc): required so cargo can compile build scripts before cross-compiling to Android.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
