@@ -41,6 +41,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.7
+      - rustup@1.29.0
     rm:
       - ios
       - linux
@@ -55,12 +56,16 @@ Builds:
       - android/app/src/main/jniLibs
       - .pub-cache
     build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.83.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android
+      - source $HOME/.cargo/env
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-${ANDROID_HOME}/ndk/28.1.13356709}"
       - $$flutter$$/bin/flutter build apk --release
 
 MaintainerNotes: |
   jniLibs added to scanignore contains prebuilt libraries, which are verifiably built upstream by GitHub Actions.
+  Cargokit (tor_ffi_plugin) needs Rust on PATH: rustup srclib + rustup-init in build; toolchain 1.83.0 matches upstream Dockerfile.builder (adjust if either changes).
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
