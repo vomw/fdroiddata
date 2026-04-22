@@ -20,10 +20,13 @@ Builds:
     sudo:
       - mkdir -p /home/runner/work/slow_mail
       - chown -R vagrant /home/runner
+      - apt-get update
+      - apt-get install -y golang-go make gcc libc-dev
     init:
       - cp -r . /home/runner/work/slow_mail/slow_mail
     srclibs:
       - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
+      - openpgp-mobile@v1.13.0
     ndk: r28b  # Wichtig: Gleiche Version wie in build.gradle.kts
     prebuild:
       - export SOURCE_DATE_EPOCH=1776113449
@@ -56,9 +59,15 @@ Builds:
       - mv com.theripper.slowmail $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - pushd $$openpgp-mobile$$
+      - make binding_android
+      - pushd output/binding/android
+      - openpgp_dir=($PUB_CACHE/hosted/pub.dev/openpgp-*) && find . -type f -name
+        '*.so' -print0 | xargs --null -I{} mv "{}" "$openpgp_dir/android/src/main/{}"
+      - popd && popd
       # - export PUB_CACHE=/tmp/pub-cache
       # - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
-      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons  --dart-define=ORGRO_VERSION=$$VERSION$$
       - popd
       - mv $repo com.theripper.slowmail
     # output: /home/runner/work/slow_mail/slow_mail/build/app/outputs/flutter-apk/app-release.apk
