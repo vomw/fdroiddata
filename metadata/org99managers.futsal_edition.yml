@@ -15,19 +15,18 @@ AutoName: 99Managers Futsal Edition
 RepoType: git
 Repo: https://codeberg.org/dulvui/99managers-futsal-edition.git
 Binaries: 
-  https://codeberg.org/dulvui/99managers-futsal-edition/releases/download/v%v/99managers-futsal-edition-android.apk
+  https://codeberg.org/dulvui/99managers-futsal-edition/releases/download/%v/99managers-futsal-edition-android.apk
 
 Builds:
-  - versionName: v0.7.3
-    versionCode: 2
-    commit: 8a8ed0250a5d445caeeb6f3a380e26927e953b7d
+  - versionName: v0.7.4
+    versionCode: 3
+    commit: a25531c225d642fc3cd3f22cceddbbbe72dcf4fe
     sudo:
       - apt-get update
       - apt-get install -y pkgconf scons g++
     output: game/99managers-futsal-edition.apk
     srclibs:
       - Godot@4.6-stable
-    prebuild: mv fdroid/export_presets.cfg game/export_presets.cfg
     build:
       - pushd $$Godot$$
       - export ANDROID_NDK_ROOT=$$NDK$$
@@ -36,15 +35,14 @@ Builds:
       - scons -j `nproc` platform=linuxbsd target=editor
       - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
       - popd
-      - mv $$Godot$$/bin/android_release.apk android-release.apk
+      - mv $$Godot$$/bin/android_release.apk game/android-release.apk
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --path game --export-release
-        "Android APK" 99managers-futsal-edition.apk
+        "Android F-Droid" 99managers-futsal-edition.apk
     ndk: r28b
 
 AllowedAPKSigningKeys: fb0febc96059f6d76f077d774f0134f7903d66a55e8ff1fe185c49c5ffe12b7f
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags v\d+\.\d+
-UpdateCheckData: fdroid/export_presets.cfg|version/code=(\d+)|.|version/name="(v\d+\.\d+)"
-CurrentVersion: v0.7.3
-CurrentVersionCode: 2
+UpdateCheckMode: Tags
+CurrentVersion: v0.7.4
+CurrentVersionCode: 3
