@@ -15,23 +15,20 @@ RepoType: git
 Repo: https://github.com/haukepauke/car-coop-app.git
 
 Builds:
-  - versionName: 1.0.3
-    versionCode: 51
-    commit: f40996631dafaf6dc99f17cb337bd3d1c7f04fe4
+  - versionName: 1.0.4
+    versionCode: 61
+    commit: 16c08d34dc631934b2da91b0653fb904209bf10d
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
-    prebuild: "flutterVersion=$(tr -d '\\n' < .flutter-version)\n[[ $flutterVersion
-      ]]\ngit -C $$flutter$$ checkout -f $flutterVersion\nexport PUB_CACHE=$(pwd)/.pub-cache\n
-      $$flutter$$/bin/flutter config --no-analytics\n$$flutter$$/bin/flutter pub get\n
-      $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs\nsed
-      -i '1i import com.android.build.gradle.internal.api.ApkVariantOutputImpl' android/app/build.gradle\n
-      cat >> android/app/build.gradle <<'EOF'\ndef abiCodes = [\"armeabi-v7a\": 1,
-      \"arm64-v8a\": 2, \"x86_64\": 3]\n\nandroid.applicationVariants.configureEach
-      { variant ->\n    variant.outputs.each { output ->\n        def abiVersionCode
-      = abiCodes[output.filters.find { it.filterType == \"ABI\" }?.identifier]\n \
-      \       if (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
-      = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\nEOF\n"
+    prebuild:
+      - flutterVersion=$(tr -d '\n' < .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scandelete:
       - .pub-cache
     build:
@@ -40,23 +37,20 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
     ndk: 27.0.12077973
 
-  - versionName: 1.0.3
-    versionCode: 52
-    commit: f40996631dafaf6dc99f17cb337bd3d1c7f04fe4
+  - versionName: 1.0.4
+    versionCode: 62
+    commit: 16c08d34dc631934b2da91b0653fb904209bf10d
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
-    prebuild: "flutterVersion=$(tr -d '\\n' < .flutter-version)\n[[ $flutterVersion
-      ]]\ngit -C $$flutter$$ checkout -f $flutterVersion\nexport PUB_CACHE=$(pwd)/.pub-cache\n
-      $$flutter$$/bin/flutter config --no-analytics\n$$flutter$$/bin/flutter pub get\n
-      $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs\nsed
-      -i '1i import com.android.build.gradle.internal.api.ApkVariantOutputImpl' android/app/build.gradle\n
-      cat >> android/app/build.gradle <<'EOF'\ndef abiCodes = [\"armeabi-v7a\": 1,
-      \"arm64-v8a\": 2, \"x86_64\": 3]\n\nandroid.applicationVariants.configureEach
-      { variant ->\n    variant.outputs.each { output ->\n        def abiVersionCode
-      = abiCodes[output.filters.find { it.filterType == \"ABI\" }?.identifier]\n \
-      \       if (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
-      = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\nEOF\n"
+    prebuild:
+      - flutterVersion=$(tr -d '\n' < .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scandelete:
       - .pub-cache
     build:
@@ -65,23 +59,20 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
     ndk: 27.0.12077973
 
-  - versionName: 1.0.3
-    versionCode: 53
-    commit: f40996631dafaf6dc99f17cb337bd3d1c7f04fe4
+  - versionName: 1.0.4
+    versionCode: 63
+    commit: 16c08d34dc631934b2da91b0653fb904209bf10d
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
-    prebuild: "flutterVersion=$(tr -d '\\n' < .flutter-version)\n[[ $flutterVersion
-      ]]\ngit -C $$flutter$$ checkout -f $flutterVersion\nexport PUB_CACHE=$(pwd)/.pub-cache\n
-      $$flutter$$/bin/flutter config --no-analytics\n$$flutter$$/bin/flutter pub get\n
-      $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs\nsed
-      -i '1i import com.android.build.gradle.internal.api.ApkVariantOutputImpl' android/app/build.gradle\n
-      cat >> android/app/build.gradle <<'EOF'\ndef abiCodes = [\"armeabi-v7a\": 1,
-      \"arm64-v8a\": 2, \"x86_64\": 3]\n\nandroid.applicationVariants.configureEach
-      { variant ->\n    variant.outputs.each { output ->\n        def abiVersionCode
-      = abiCodes[output.filters.find { it.filterType == \"ABI\" }?.identifier]\n \
-      \       if (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
-      = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\nEOF\n"
+    prebuild:
+      - flutterVersion=$(tr -d '\n' < .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scandelete:
       - .pub-cache
     build:
@@ -97,5 +88,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.3
-CurrentVersionCode: 53
+CurrentVersion: 1.0.4
+CurrentVersionCode: 63
