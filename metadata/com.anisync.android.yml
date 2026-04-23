@@ -23,9 +23,8 @@ Builds:
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
-      - yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null
-      - /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-37"
-      - if [ -d /opt/android-sdk/platforms/android-37.0 ] && [ ! -e /opt/android-sdk/platforms/android-37 ]; then ln -sfn /opt/android-sdk/platforms/android-37.0 /opt/android-sdk/platforms/android-37; fi
+      - sdkmanager "platforms;android-37"
+      - cd /opt/android-sdk/platforms && ln -sfn android-37.0 android-37
     gradle:
       - stable
     output: build/outputs/apk/stable/release/AniSync-v1.5.2-universal-release.apk
