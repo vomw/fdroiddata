@@ -14,9 +14,9 @@ RepoType: git
 Repo: https://github.com/Marco-9456/AniSync.git
 
 Builds:
-  - versionName: 1.5.1
-    versionCode: 10
-    commit: v1.5.1
+  - versionName: 1.5.2
+    versionCode: 11
+    commit: v1.5.2
     subdir: app
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
@@ -25,23 +25,21 @@ Builds:
       - update-alternatives --auto java
     gradle:
       - stable
-    prebuild:
-      - sed -i -e '/signingConfig = signingConfigs.getByName("release")/d' build.gradle.kts
-    output: build/outputs/apk/stable/release/AniSync-v1.5.1-universal-release.apk
+    output: build/outputs/apk/stable/release/AniSync-v1.5.2-universal-release.apk
 
 AllowedAPKSigningKeys: bdf6c7c1242c1ac45f1bc44c9c7c04fc49c33489dacb11013c4d611a338af9db
 
 MaintainerNotes: |
-    App ID: com.anisync.android (stable flavor; the preview flavor has .preview suffix and is not submitted).
-    Build notes:
-    - Kotlin 2.2.21 / AGP 9.1.0 / Gradle 9.3.1. JDK 21 installed from Debian trixie via sudo.
-    - Apollo GraphQL schema is committed at app/src/main/graphql/schema.graphqls; no network at build time.
-    - Room schemas are committed under app/schemas.
-    - Release builds disable VCS info embedding (vcsInfo.include = false) for reproducibility.
-    - prebuild strips the signingConfig assignment so AGP produces an unsigned APK in the F-Droid buildserver.
-    - ABI splits produce arm64/armv7/x86/x86_64 APKs plus a universal APK; only the universal is consumed by F-Droid via output:.
+  App ID: com.anisync.android (stable flavor; the preview flavor has .preview suffix and is not submitted).
+  Build notes:
+  - Kotlin 2.2.21 / AGP 9.1.0 / Gradle 9.3.1. JDK 21 installed from Debian trixie via sudo.
+  - Apollo GraphQL schema is committed at app/src/main/graphql/schema.graphqls; no network at build time.
+  - Room schemas are committed under app/schemas.
+  - Release builds disable VCS info embedding (vcsInfo.include = false) for reproducibility.
+  - F-Droid auto-strips the signingConfig assignment ("Cleaned build.gradle.kts of keysigning configs"); no prebuild needed.
+  - ABI splits produce arm64/armv7/x86/x86_64 APKs plus a universal APK; only the universal is consumed by F-Droid via output:.
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.5.1
-CurrentVersionCode: 10
+CurrentVersion: 1.5.2
+CurrentVersionCode: 11
