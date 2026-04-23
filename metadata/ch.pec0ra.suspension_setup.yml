@@ -1,0 +1,37 @@
+Categories:
+  - Note
+  - Sports & Health
+License: GPL-3.0-only
+AuthorName: pec0ra
+SourceCode: https://github.com/pec0ra/suspension_setup
+IssueTracker: https://github.com/pec0ra/suspension_setup/issues
+
+Name: Suspension Setup
+AutoName: Suspension Setup
+Description: Suspension setup application
+
+RepoType: git
+Repo: https://github.com/pec0ra/suspension_setup
+
+Builds:
+  - versionName: 2.0.2
+    versionCode: 6
+    commit: 3ea768ea3f15e79bb9f313908c9204c6b0bef122
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.2
+CurrentVersionCode: 6
