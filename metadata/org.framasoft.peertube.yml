@@ -307,9 +307,9 @@ Builds:
       - popd
       - mv $repo org.framasoft.peertube
 
-  - versionName: 2.1.3
-    versionCode: 3301
-    commit: v2.1.3
+  - versionName: 2.1.4
+    versionCode: 3401
+    commit: v2.1.4
     submodules: true
     sudo:
       - mkdir -p /builds/framasoft/peertube
@@ -319,7 +319,11 @@ Builds:
     rm:
       - ios
     prebuild:
-      - git -C submodules/flutter checkout stable
+      - pushd submodules/flutter
+      - flutterCommit=$(git rev-parse HEAD)
+      - git checkout stable
+      - git reset --hard $flutterCommit
+      - popd
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -347,9 +351,9 @@ Builds:
       - popd
       - mv $repo org.framasoft.peertube
 
-  - versionName: 2.1.3
-    versionCode: 3302
-    commit: v2.1.3
+  - versionName: 2.1.4
+    versionCode: 3402
+    commit: v2.1.4
     submodules: true
     sudo:
       - mkdir -p /builds/framasoft/peertube
@@ -359,7 +363,11 @@ Builds:
     rm:
       - ios
     prebuild:
-      - git -C submodules/flutter checkout stable
+      - pushd submodules/flutter
+      - flutterCommit=$(git rev-parse HEAD)
+      - git checkout stable
+      - git reset --hard $flutterCommit
+      - popd
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -387,9 +395,9 @@ Builds:
       - popd
       - mv $repo org.framasoft.peertube
 
-  - versionName: 2.1.3
-    versionCode: 3303
-    commit: v2.1.3
+  - versionName: 2.1.4
+    versionCode: 3403
+    commit: v2.1.4
     submodules: true
     sudo:
       - mkdir -p /builds/framasoft/peertube
@@ -399,7 +407,11 @@ Builds:
     rm:
       - ios
     prebuild:
-      - git -C submodules/flutter checkout stable
+      - pushd submodules/flutter
+      - flutterCommit=$(git rev-parse HEAD)
+      - git checkout stable
+      - git reset --hard $flutterCommit
+      - popd
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -436,5 +448,5 @@ VercodeOperation:
   - '%c * 100 + 2'
   - '%c * 100 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.1.3
-CurrentVersionCode: 3303
+CurrentVersion: 2.1.4
+CurrentVersionCode: 3403
