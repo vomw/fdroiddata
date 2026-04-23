@@ -23,7 +23,7 @@ Builds:
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
-      - sdkmanager "platforms;android-37"
+      - mkdir -p /opt/android-sdk/platforms
       - cd /opt/android-sdk/platforms && ln -sfn android-37.0 android-37
     gradle:
       - stable
@@ -39,7 +39,7 @@ MaintainerNotes: |
   - Room schemas are committed under app/schemas.
   - Release builds disable VCS info embedding (vcsInfo.include = false) for reproducibility.
   - F-Droid auto-strips the signingConfig assignment ("Cleaned build.gradle.kts of keysigning configs"); no prebuild needed.
-  - SDK Platform 37 is still in preview (installs to /opt/android-sdk/platforms/android-37.0 but AGP/R8 expects "android-37"); sudo: installs the platform eagerly and symlinks android-37 -> android-37.0 so the build can find it.
+  - SDK Platform 37 is still in preview (AGP installs it to /opt/android-sdk/platforms/android-37.0 but AGP/R8 expects the canonical "android-37" hash). sudo: pre-creates a dangling symlink android-37 -> android-37.0 before AGP runs; AGP then installs into android-37.0 during gradle configure and the symlink becomes live in time for R8.
   - ABI splits produce arm64/armv7/x86/x86_64 APKs plus a universal APK; only the universal is consumed by F-Droid via output:.
 
 AutoUpdateMode: Version
