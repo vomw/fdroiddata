@@ -319,11 +319,7 @@ Builds:
     rm:
       - ios
     prebuild:
-      - pushd submodules/flutter
-      - flutterCommit=$(git rev-parse HEAD)
-      - git checkout stable
-      - git reset --hard $flutterCommit
-      - popd
+      - git -C submodules/flutter checkout stable
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -332,7 +328,7 @@ Builds:
       - submodules/flutter/bin/flutter config --no-analytics
       - submodules/flutter/bin/flutter pub get
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - submodules/flutter/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - submodules/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo org.framasoft.peertube
     scanignore:
@@ -363,11 +359,7 @@ Builds:
     rm:
       - ios
     prebuild:
-      - pushd submodules/flutter
-      - flutterCommit=$(git rev-parse HEAD)
-      - git checkout stable
-      - git reset --hard $flutterCommit
-      - popd
+      - git -C submodules/flutter checkout stable
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -376,7 +368,7 @@ Builds:
       - submodules/flutter/bin/flutter config --no-analytics
       - submodules/flutter/bin/flutter pub get
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - submodules/flutter/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - submodules/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo org.framasoft.peertube
     scanignore:
@@ -407,11 +399,7 @@ Builds:
     rm:
       - ios
     prebuild:
-      - pushd submodules/flutter
-      - flutterCommit=$(git rev-parse HEAD)
-      - git checkout stable
-      - git reset --hard $flutterCommit
-      - popd
+      - git -C submodules/flutter checkout stable
       - export repo=/builds/framasoft/peertube/mobile-application
       - cd ..
       - mv org.framasoft.peertube $repo
@@ -420,7 +408,7 @@ Builds:
       - submodules/flutter/bin/flutter config --no-analytics
       - submodules/flutter/bin/flutter pub get
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - submodules/flutter/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - submodules/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo org.framasoft.peertube
     scanignore:
