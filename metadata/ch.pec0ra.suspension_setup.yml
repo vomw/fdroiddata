@@ -11,8 +11,7 @@ AutoName: Suspension Setup
 
 RepoType: git
 Repo: https://github.com/pec0ra/suspension_setup
-Binaries: 
-  https://github.com/pec0ra/suspension_setup/releases/download/v%v/app-release.apk
+Binaries: https://github.com/pec0ra/suspension_setup/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 2.0.3
@@ -22,8 +21,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" 
-        .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -35,8 +33,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
-AllowedAPKSigningKeys: 
-  8c25ba90b61d571fea99ccb8b7935343cd9d75a2f720acbaa60f5efbbdb5e1be
+AllowedAPKSigningKeys: 8c25ba90b61d571fea99ccb8b7935343cd9d75a2f720acbaa60f5efbbdb5e1be
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
