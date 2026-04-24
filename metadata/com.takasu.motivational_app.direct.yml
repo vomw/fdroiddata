@@ -7,22 +7,7 @@ IssueTracker: https://github.com/GiovanniDrago/motivationalApp/issues
 Changelog: https://github.com/GiovanniDrago/motivationalApp/releases
 
 AutoName: Motivational App
-Description: |-
-  Motivational App is a tiny ironic joke app built around one very specific idea:
-  type your name, tap the button, and receive a short burst of extremely direct motivation.
-
-  It is intentionally minimal. No account, no feed, no subscriptions, and no productivity theater.
-  Just one fast interaction, one ridiculous payoff, and a deliberately rude sense of humor.
-
-  Features:
-  .
-    * one quick name-based interaction
-    * English and Italian localization
-    * lightweight About menu
-    * small, fast, and intentionally absurd design
-
-  This app is not pretending to be a life coach.
-  It knows exactly how silly it is, and that is the point.
+Binaries: https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/motivational-app-direct-v%v+%c.apk
 
 RepoType: git
 Repo: https://github.com/GiovanniDrago/motivationalApp.git
@@ -30,10 +15,10 @@ Repo: https://github.com/GiovanniDrago/motivationalApp.git
 Builds:
   - versionName: 2.0.5
     versionCode: 20005
-    commit: v2.0.5
+    commit: 7eebf260cdc8c4f8bada1a191d5b3f745fcb30dc
     output: build/app/outputs/flutter-apk/app-direct-release.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -41,6 +26,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version: '(.*)'/\1/p" .github/workflows/android-release-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -56,3 +44,4 @@ UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.0.5
 CurrentVersionCode: 20005
+AllowedAPKSigningKeys: 410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
