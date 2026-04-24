@@ -10,18 +10,20 @@ RepoType: git
 Repo: https://github.com/printpagestopdf/slow_mail.git
 
 Builds:
-  - versionName: '0.9.0'
+  - versionName: 0.9.0
     versionCode: 1
     commit: v0.9.0
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/slow_mail
       - chown -R vagrant /home/runner
-    init:
-      - cp -r . /home/runner/work/slow_mail/slow_mail
+    init: cp -r . /home/runner/work/slow_mail/slow_mail
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
     srclibs:
       - flutter@stable
-    ndk: r28b  # Wichtig: Gleiche Version wie in build.gradle.kts
+    ndk: r28b
     prebuild:
       - export SOURCE_DATE_EPOCH=1776113449
       - export repo=/home/runner/work/slow_mail/slow_mail
@@ -60,8 +62,6 @@ Builds:
       - popd
       - mv $repo com.theripper.slowmail
     # output: /home/runner/work/slow_mail/slow_mail/build/app/outputs/flutter-apk/app-release.apk
-    output: build/app/outputs/flutter-apk/app-release.apk
-    binary: https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
 
 AllowedAPKSigningKeys: caf5ac430eeeb7850fcf3ff5a2ba3398fa4c26b40cf0a69ba1a569b155aeeb65
 
