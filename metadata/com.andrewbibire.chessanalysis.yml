@@ -1,0 +1,48 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+AuthorName: Andrew Bibire
+AuthorEmail: andrewbibire@protonmail.com
+SourceCode: https://github.com/abibire/ChessAnalysisMultiplatform
+IssueTracker: https://github.com/abibire/ChessAnalysisMultiplatform/issues
+
+AutoName: Chess Game Review
+
+RepoType: git
+Repo: https://github.com/abibire/ChessAnalysisMultiplatform.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: b0cf1de949707a070747b175300a1641067441ca
+    subdir: composeApp
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - apt-get install -y make
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    rm:
+      - iosApp
+    prebuild: sed -i -e '/foojay/d' -e '/maven.pkg.jetbrains.space/d' ../settings.gradle.kts
+    scandelete:
+      - composeApp/src/jvmMain/resources/stockfish
+    build:
+      - mkdir -p ../composeApp/src/androidMain/jniLibs/arm64-v8a
+      - cd ../Stockfish/src
+      - export NDK_PATH=$$NDK$$
+      - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+      - make net
+      - make -j$(nproc) build ARCH=armv8 COMP=ndk EXTRACXXFLAGS="-fPIC" EXTRALDFLAGS="-shared
+        -Wl,--gc-sections,-z,max-page-size=16384 -static-libstdc++" EXE=libstockfish.so
+      - cp libstockfish.so ../../composeApp/src/androidMain/jniLibs/arm64-v8a/
+      - make clean
+    ndk: 27.0.12077973
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
