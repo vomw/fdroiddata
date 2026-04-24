@@ -1649,6 +1649,9 @@ Builds:
 
 AllowedAPKSigningKeys: e543d576fa0f2a33d412bca4c7d61e2301830e956e7d947e75b9052d176027d3
 
+LintIgnore:
+  - Branch 'develop' used as commit in srclib 'spesmilo-python-for-android@develop'
+  - Branch 'master' used as commit in srclib 'spesmilo-buildozer@master'
 MaintainerNotes: |-
   When updating this file, please note that:
   - paths affect the build. specially ndk and working directory.
@@ -1656,6 +1659,11 @@ MaintainerNotes: |-
     https://github.com/spesmilo/electrum/blob/master/contrib/android/apt.sources.list and
     https://github.com/spesmilo/electrum/blob/master/contrib/android/apt.preferences
   - ndk version is same as the one in buildozer_qml.spec file
+
+  This app is set to be built reproducibly, so there needs to be fixed
+  references to all the source code.  In srclibs:, _master_ and
+  _develop_ are branches.  This uses code in `prebuild:` to get the
+  commit ID from the source code, and check that out.
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
