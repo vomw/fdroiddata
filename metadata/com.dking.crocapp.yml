@@ -19,7 +19,7 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y golang-go gcc libc-dev zip
+      - apt-get install -y golang-go gcc libc-dev
     gradle:
       - yes
     srclibs:
@@ -30,10 +30,8 @@ Builds:
       - ./make.bash
       - popd
       - ln -sfn $$go$$ ../.fdroid-go
-    postbuild:
-      - zip -d $$OUT$$ 'assets/dexopt/*'
-      - $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
-        'META-INF/services/*'
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
 
 AllowedAPKSigningKeys: 73aa29bf436123e6765233d11f05ed82d8ee72d4d3f8d9a00ed6a270be9a296a
 
