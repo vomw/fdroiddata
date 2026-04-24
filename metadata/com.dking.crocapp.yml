@@ -18,21 +18,20 @@ Builds:
     commit: 21cdfa91bd137dd88a649b45745d932c543a30af
     subdir: app
     sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y -t trixie golang-go gcc libc6-dev zip
+      - apt-get install -y golang-go gcc libc-dev zip
     gradle:
       - yes
     srclibs:
       - go@go1.25.3
-      - reproducible-apk-tools@v0.2.3
+      - reproducible-apk-tools@v0.3.0
     build:
       - pushd $$go$$/src
       - ./make.bash
       - popd
       - ln -sfn $$go$$ ../.fdroid-go
     postbuild:
-      - zip -d $$OUT$$ 'assets/dexopt/*' || true
+      - zip -d $$OUT$$ 'assets/dexopt/*'
       - $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
         'META-INF/services/*'
 
