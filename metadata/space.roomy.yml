@@ -1,0 +1,175 @@
+Categories:
+  - Messaging
+  - Social Network
+License: MPL-2.0
+SourceCode: https://github.com/muni-town/roomy
+IssueTracker: https://github.com/muni-town/roomy/issues
+
+AutoName: Roomy
+
+RepoType: git
+Repo: https://github.com/muni-town/roomy
+
+Builds:
+  - versionName: 0.1.0-alpha-7
+    versionCode: 71
+    commit: v0.1.0-alpha-7
+    subdir: packages/app/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm make gcc libc-dev libwebkit2gtk-4.1-dev libappindicator3-dev
+        golang-go librsvg2-dev patchelf jq
+      - npm -g install pnpm
+    output: app/build/outputs/apk/arm/release/app-arm-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - export NDK_HOME=$$NDK$$
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88 --target armv7-linux-androideabi
+      - source "$HOME/.cargo/env"
+      - pnpm install --frozen-lockfile
+      - pushd ../../..
+      - jq '.bundle.android.versionCode += 1' ./src-tauri/tauri.conf.json > tmp
+      - mv tmp ./src-tauri/tauri.conf.json
+      - mkdir ./src-tauri/icons
+      - pnpm turbo run build-lib
+      - pnpm tauri icon -o ./src-tauri/icons ./static/icons/icon-512.png
+      - pnpm build:t
+      - popd
+    scanignore:
+      - packages/app/build
+      - packages/app/static
+    scandelete:
+      - packages/app/.svelte-kit
+      - node_modules
+      - packages/sdk
+    build:
+      - export NDK_HOME=$$NDK$$
+      - source "$HOME/.cargo/env"
+      - pnpm tauri android build --apk --split-per-abi -t armv7
+    ndk: 27.0.12077973
+
+  - versionName: 0.1.0-alpha-7
+    versionCode: 72
+    commit: v0.1.0-alpha-7
+    subdir: packages/app/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm make gcc libc-dev libwebkit2gtk-4.1-dev libappindicator3-dev
+        golang-go librsvg2-dev patchelf jq
+      - npm -g install pnpm
+    output: app/build/outputs/apk/arm64/release/app-arm64-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - export NDK_HOME=$$NDK$$
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88 --target aarch64-linux-android
+      - source "$HOME/.cargo/env"
+      - pnpm install --frozen-lockfile
+      - pushd ../../..
+      - jq '.bundle.android.versionCode += 2' ./src-tauri/tauri.conf.json > tmp
+      - mv tmp ./src-tauri/tauri.conf.json
+      - mkdir ./src-tauri/icons
+      - pnpm turbo run build-lib
+      - pnpm tauri icon -o ./src-tauri/icons ./static/icons/icon-512.png
+      - pnpm build:t
+      - popd
+    scanignore:
+      - packages/app/build
+      - packages/app/static
+    scandelete:
+      - packages/app/.svelte-kit
+      - node_modules
+      - packages/sdk
+    build:
+      - export NDK_HOME=$$NDK$$
+      - source "$HOME/.cargo/env"
+      - pnpm tauri android build --apk --split-per-abi -t aarch64
+    ndk: 27.0.12077973
+
+  - versionName: 0.1.0-alpha-7
+    versionCode: 73
+    commit: v0.1.0-alpha-7
+    subdir: packages/app/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm make gcc libc-dev libwebkit2gtk-4.1-dev libappindicator3-dev
+        golang-go librsvg2-dev patchelf jq
+      - npm -g install pnpm
+    output: app/build/outputs/apk/x86/release/app-x86-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - export NDK_HOME=$$NDK$$
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88 --target x86_64686-linux-android
+      - source "$HOME/.cargo/env"
+      - pnpm install --frozen-lockfile
+      - pushd ../../..
+      - jq '.bundle.android.versionCode += 3' ./src-tauri/tauri.conf.json > tmp
+      - mv tmp ./src-tauri/tauri.conf.json
+      - mkdir ./src-tauri/icons
+      - pnpm turbo run build-lib
+      - pnpm tauri icon -o ./src-tauri/icons ./static/icons/icon-512.png
+      - pnpm build:t
+      - popd
+    scanignore:
+      - packages/app/build
+      - packages/app/static
+    scandelete:
+      - packages/app/.svelte-kit
+      - node_modules
+      - packages/sdk
+    build:
+      - export NDK_HOME=$$NDK$$
+      - source "$HOME/.cargo/env"
+      - pnpm tauri android build --apk --split-per-abi -t i686
+    ndk: 27.0.12077973
+
+  - versionName: 0.1.0-alpha-7
+    versionCode: 74
+    commit: v0.1.0-alpha-7
+    subdir: packages/app/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm make gcc libc-dev libwebkit2gtk-4.1-dev libappindicator3-dev
+        golang-go librsvg2-dev patchelf jq
+      - npm -g install pnpm
+    output: app/build/outputs/apk/x86_64/release/app-x86_64-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - export NDK_HOME=$$NDK$$
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88 --target x86_64-linux-android
+      - source "$HOME/.cargo/env"
+      - pnpm install --frozen-lockfile
+      - pushd ../../..
+      - jq '.bundle.android.versionCode += 4' ./src-tauri/tauri.conf.json > tmp
+      - mv tmp ./src-tauri/tauri.conf.json
+      - mkdir ./src-tauri/icons
+      - pnpm turbo run build-lib
+      - pnpm tauri icon -o ./src-tauri/icons ./static/icons/icon-512.png
+      - pnpm build:t
+      - popd
+    scanignore:
+      - packages/app/build
+      - packages/app/static
+    scandelete:
+      - packages/app/.svelte-kit
+      - node_modules
+      - packages/sdk
+    build:
+      - export NDK_HOME=$$NDK$$
+      - source "$HOME/.cargo/env"
+      - pnpm tauri android build --apk --split-per-abi -t x86_64
+    ndk: 27.0.12077973
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z].*)?$
+VercodeOperation:
+  - 1 + %c
+  - 2 + %c
+  - 3 + %c
+  - 4 + %c
+UpdateCheckData: packages/app/src-tauri/tauri.conf.json|"versionCode":\s*(\d+)|.|"version":\s*"([^""]+)"
+CurrentVersion: 0.1.0-alpha-7
+CurrentVersionCode: 74
