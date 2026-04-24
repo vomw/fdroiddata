@@ -23,25 +23,14 @@ Builds:
       https://github.com/printpagestopdf/slow_mail/releases/download/v%v/app-release.apk
     srclibs:
       - flutter@stable
-    ndk: r28b
     prebuild:
       - export SOURCE_DATE_EPOCH=1776113449
       - export repo=/home/runner/work/slow_mail/slow_mail
       - cd ..
       - mv com.theripper.slowmail $repo
       - pushd $repo
-      # - version=db50e20168db8fee486b9abf32fc912de3bc5b6a
-      # - '[[ $version ]]'
-      # - git -C $$flutter$$ reset --hard $version
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # - export FLUTTER_VERSION=$(cat flutter_version)
-      # - pushd $$flutter$$
-      # - git fetch
-      # - git checkout -f $FLUTTER_VERSION
-      # - git checkout -f db50e20168db8fee486b9abf32fc912de3bc5b6a
-      # - popd
       - $$flutter$$/bin/flutter config --no-analytics
-      # - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
@@ -56,12 +45,10 @@ Builds:
       - mv com.theripper.slowmail $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # - export PUB_CACHE=/tmp/pub-cache
-      # - cd /home/runner/work/slow_mail/slow_mail && $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
       - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
       - popd
       - mv $repo com.theripper.slowmail
-    # output: /home/runner/work/slow_mail/slow_mail/build/app/outputs/flutter-apk/app-release.apk
+    ndk: r28b
 
 AllowedAPKSigningKeys: caf5ac430eeeb7850fcf3ff5a2ba3398fa4c26b40cf0a69ba1a569b155aeeb65
 
