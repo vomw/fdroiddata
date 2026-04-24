@@ -1,0 +1,123 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: Artemiy Dudko
+AuthorWebSite: https://github.com/pioh
+WebSite: https://github.com/pioh/squeeze-clip
+SourceCode: https://github.com/pioh/squeeze-clip
+IssueTracker: https://github.com/pioh/squeeze-clip/issues
+Changelog: https://github.com/pioh/squeeze-clip/releases
+
+AutoName: SqueezeClip
+
+RepoType: git
+Repo: https://github.com/pioh/squeeze-clip.git
+
+Builds:
+  - versionName: 0.1.9
+    versionCode: 101
+    commit: 44aabff96ba4fdb534247688cf742d000a4be5d8
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/pioh/squeeze-clip/releases/download/v%v/SqueezeClip-%v-armeabi-v7a.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter pub get
+    scanignore:
+      - third_party/flutter/bin/cache
+    scandelete:
+      - third_party/flutter
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.pioh.squeezeclip /tmp/build
+      - cd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - cd /
+      - mv /tmp/build /home/vagrant/build/io.github.pioh.squeezeclip
+
+  - versionName: 0.1.9
+    versionCode: 102
+    commit: 44aabff96ba4fdb534247688cf742d000a4be5d8
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/pioh/squeeze-clip/releases/download/v%v/SqueezeClip-%v-arm64-v8a.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter pub get
+    scanignore:
+      - third_party/flutter/bin/cache
+    scandelete:
+      - third_party/flutter
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.pioh.squeezeclip /tmp/build
+      - cd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - cd /
+      - mv /tmp/build /home/vagrant/build/io.github.pioh.squeezeclip
+
+  - versionName: 0.1.9
+    versionCode: 103
+    commit: 44aabff96ba4fdb534247688cf742d000a4be5d8
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/pioh/squeeze-clip/releases/download/v%v/SqueezeClip-%v-x86_64.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter pub get
+    scanignore:
+      - third_party/flutter/bin/cache
+    scandelete:
+      - third_party/flutter
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.pioh.squeezeclip /tmp/build
+      - cd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
+      - bash ./scripts/prepare_flutter_submodule.sh
+      - ./third_party/flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - cd /
+      - mv /tmp/build /home/vagrant/build/io.github.pioh.squeezeclip
+
+AllowedAPKSigningKeys: e8eb4d9889b4eb11511da79a13a65bffd377dcf8cebda35ab0f9c7cd8ab75637
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.9
+CurrentVersionCode: 103
