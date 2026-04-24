@@ -13,32 +13,18 @@ AutoName: AniSync
 RepoType: git
 Repo: https://github.com/Marco-9456/AniSync.git
 
+Binaries: https://github.com/Marco-9456/AniSync/releases/download/v%v/AniSync-v%v-universal-release.apk
+
 Builds:
   - versionName: 1.5.3
     versionCode: 12
-    commit: v1.5.3
+    commit: c5c55b4fb72063dd3bfe59dc259067410f928f27
     subdir: app
-    sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-      - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
     gradle:
       - stable
     output: build/outputs/apk/stable/release/AniSync-v1.5.3-universal-release.apk
 
 AllowedAPKSigningKeys: bdf6c7c1242c1ac45f1bc44c9c7c04fc49c33489dacb11013c4d611a338af9db
-
-MaintainerNotes: |
-  App ID: com.anisync.android (stable flavor; the preview flavor has .preview suffix and is not submitted).
-  Build notes:
-  - Kotlin 2.2.21 / AGP 9.1.0 / Gradle 9.3.1. JDK 21 installed from Debian trixie via sudo.
-  - Apollo GraphQL schema is committed at app/src/main/graphql/schema.graphqls; no network at build time.
-  - Room schemas are committed under app/schemas.
-  - Release builds disable VCS info embedding (vcsInfo.include = false) for reproducibility.
-  - F-Droid auto-strips the signingConfig assignment ("Cleaned build.gradle.kts of keysigning configs"); no prebuild needed.
-  - compileSdk/targetSdk are pinned to 36; SDK 37 is preview and not yet in F-Droid's transparency log. Will re-bump once SDK 37 is final.
-  - ABI splits produce arm64/armv7/x86/x86_64 APKs plus a universal APK; only the universal is consumed by F-Droid via output:.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
