@@ -1,0 +1,71 @@
+Categories:
+  - Internet
+  - System
+License: MIT
+AutoName: Zabb
+AuthorName: Vítězslav Dvořák
+AuthorEmail: info@vitexsoftware.com
+WebSite: https://github.com/VitexSoftware/Zabb
+SourceCode: https://github.com/VitexSoftware/Zabb
+IssueTracker: https://github.com/VitexSoftware/Zabb/issues
+Changelog: https://github.com/VitexSoftware/Zabb/releases
+
+Summary: Mobile client for Zabbix monitoring
+
+Description: |-
+  Zabb is a Flutter-based mobile client for the Zabbix monitoring system,
+  designed to bring enterprise IT infrastructure monitoring to your mobile device.
+
+  Features:
+
+  * Real-time problem monitoring with auto-refresh
+  * Advanced filtering by severity and hostname
+  * Search functionality across all problems
+  * Problem acknowledgment and closure
+  * Trigger disable functionality
+  * Pull-to-refresh for instant updates
+  * Audio notifications with customizable sounds per severity
+  * Recovery sound notifications when problems are resolved
+  * SSL support for self-signed certificates
+
+  Mobile platform features:
+
+  * Background monitoring via foreground service
+  * System notifications
+  * Custom sound file uploads
+  * Battery optimization management
+
+RepoType: git
+Repo: https://github.com/VitexSoftware/Zabb.git
+
+Builds:
+  - versionName: '0.6.1'
+    versionCode: 1
+    commit: v0.6.1
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '0.6.1'
+CurrentVersionCode: 1
