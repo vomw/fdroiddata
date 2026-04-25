@@ -1,0 +1,35 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: oxy
+SourceCode: https://github.com/probably-oxy/drift-audio
+IssueTracker: https://github.com/probably-oxy/drift-audio/issues
+
+AutoName: Drift
+
+# Drift is a Capacitor app — a web app (HTML/JS/CSS) wrapped in a native
+# Android shell. The build requires npm install + cap sync to copy the web
+# assets into the Android project before Gradle can build. This is why the
+# sudo and init blocks below install Node.js and run Capacitor's sync step.
+
+RepoType: git
+Repo: https://github.com/probably-oxy/drift-audio.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - npm install
+      - npx cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
