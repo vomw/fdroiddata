@@ -1,0 +1,43 @@
+Categories:
+  - Connectivity
+  - Sports & Health
+License: MIT
+AuthorName: Perfice
+AuthorEmail: p0lloc@protonmail.com
+WebSite: https://perfice.adoe.dev
+SourceCode: https://github.com/p0lloc/perfice
+IssueTracker: https://github.com/p0lloc/perfice/issues
+
+AutoName: Perfice
+
+RepoType: git
+Repo: https://github.com/p0lloc/perfice
+Binaries: https://github.com/p0lloc/perfice/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 0.0.18
+    versionCode: 18
+    commit: 166207a0a3abfdb79f08da99779b07b1e00f050c
+    subdir: client/android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - npm install --global @capacitor/cli
+    gradle:
+      - yes
+    build:
+      - cd ../../../android
+      - npm install
+      - npm run build
+      - cd ../client
+      - npm install
+      - CAPACITOR=true npm run build
+      - npx cap sync
+
+AllowedAPKSigningKeys: 78e5bc9e4486e2c454960472c3f1fa16b5a7cfe905c65af0623bdc0110d03234
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.0.18
+CurrentVersionCode: 18
