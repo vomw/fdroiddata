@@ -1,6 +1,6 @@
-**Please make sure your fdroiddata fork is public and your branch is not protected. See <https://docs.gitlab.com/ee/user/project/protected_branches.html>. We enable fast-forward merges by default. If your branch is protected, we can't rebase it before merge it.**
+**Please make sure your fdroiddata fork is public and your branch is not protected. See <https://docs.gitlab.com/user/project/repository/branches/protected/>. We enable fast-forward merges by default. If your branch is protected, we can't rebase it before merge it.**
 
-**Please read [our Git guide](https://gitlab.com/fdroid/wiki/-/wikis/Tips-for-fdroiddata-contributors/Git-Usage) if you don't know how to rebase your branch. Do rebase your branch if there is no conflict.**
+**Please read [our Git guide](https://gitlab.com/fdroid/wiki/-/wikis/Tips-for-fdroiddata-contributors/Git-Usage) if you don't know how to rebase your branch. Don't rebase your branch if there is no conflict.**
 
 **Please read [the guide](https://gitlab.com/fdroid/fdroiddata/-/blob/master/CONTRIBUTING.md) first if this is your first contribution. Please make sure your metadata follows the best practice in [our templates](https://gitlab.com/fdroid/fdroiddata/tree/master/templates).**
 
@@ -20,13 +20,14 @@
 * [ ] The original app author has been notified (and does not oppose the inclusion) <!--If you are not the author, please paste the link of the reply from the author.-->
 * [ ] All related [fdroiddata](https://gitlab.com/fdroid/fdroiddata/issues) and [RFP issues](https://gitlab.com/fdroid/rfp/issues) have been referenced in this merge request
 * [ ] Builds with `fdroid build` and all pipelines pass
+* [ ] There is an issue tracker and contact info of the author so that we can report bugs and contact the author.
 
 ## Strongly Recommended
 
 <!--We highly encourage you doing these things. They are not hard requirements but unless there are special reasons they are required.-->
 
 * [ ] The upstream app source code repo contains the app metadata _(summary/description/images/changelog/etc)_ in a [Fastlane](https://gitlab.com/snippets/1895688) or [Triple-T](https://gitlab.com/snippets/1901490) folder structure <!--If you are the author, please do add metadata in your repo; If you are not the author, please at least open an issue upstream for the metadata. With metadata in your repo, you can maintain it directly. Do not add summary and description in fdroiddata.-->
-* [ ] Releases are tagged <!--Our autoupdate workflow relies on the tag. Without this you have to add every version manually.-->
+* [ ] Releases are tagged and auto update is enabled <!--Our autoupdate workflow relies on the tag. Without this you have to add every version manually.-->
 
 ## Suggested
 
