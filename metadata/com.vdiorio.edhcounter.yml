@@ -32,6 +32,26 @@ Builds:
     scandelete:
       - node_modules
 
+  - versionName: 1.0.20
+    versionCode: 20
+    commit: 18f0919d4ca7b935df0cce667fa8741843dd50bb
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+      - npx patch-package
+    gradle:
+      - yes
+    scanignore:
+      - node_modules/jsc-android/dist
+      - node_modules/react-native/sdks/hermesc
+    output: app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    scandelete:
+      - node_modules
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.0.20
