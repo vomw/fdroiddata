@@ -19,9 +19,15 @@ Builds:
       - fdroid
     output: 
       androidApp/build/outputs/apk/fdroid/release/androidApp-fdroid-release-unsigned.apk
-    scanignore:
-      - androidApp/build.gradle.kts
-      - wearApp/build.gradle.kts
+    prebuild:
+      - sed -i -e '/^  versionCatalogs {$/,/^  }$/d' settings.gradle.kts
+      - sed -i -e '/playstore\.plugins\.google\.services/d' -e '/playstore\.plugins\.crash\.reporting/d'
+        -e '/^if (shouldApplyGoogleServices) {$/,/^}$/d' -e '/add("playstoreImplementation"/d'
+        androidApp/build.gradle.kts
+      - sed -i -e '/playstore\.plugins\.google\.services/d' -e '/playstore\.plugins\.crash\.reporting/d'
+        -e '/^if (crashReportingEnabled) {$/,/^}$/d' -e '/add("playstoreImplementation"/d'
+        wearApp/build.gradle.kts
+      - rm -f gradle/libs.playstore.versions.toml
 
 AllowedAPKSigningKeys: b41670e44632eac4bcdf1630fa784b7f6d284246947b5ff7a3b46b9d9dde1bd5
 
