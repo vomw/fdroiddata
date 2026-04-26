@@ -5121,7 +5121,100 @@ Builds:
       - ./flutterw build apk -t lib/main_libre.dart --flavor libre --split-per-abi
         --target-platform="android-x64"
 
-MaintainerNotes: scanignore is used to skip lint false positives triggered by Google/Huawei
+  - versionName: 1.14.1
+    versionCode: 16501
+    commit: f2d7faa166f86248de8c3d451e7757f659b68081
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-*-libre-release.apk
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw config --no-analytics
+      - scripts/apply_flavor_libre.sh
+      - sed -i -e '/foojay/d' android/settings.gradle.kts
+      - sed -i -e 
+        's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/'
+        android/app/build.gradle.kts plugins/*/android/build.gradle.kts $PUB_CACHE/git/*/android/build.gradle.kts
+    scanignore:
+      - .flutter/bin/cache/artifacts
+      - .flutter/bin/cache/dart-sdk
+      - .flutter/packages/flutter_tools/gradle
+      - android/build.gradle.kts
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw build apk -t lib/main_libre.dart --flavor libre --split-per-abi
+        --target-platform="android-arm"
+
+  - versionName: 1.14.1
+    versionCode: 16502
+    commit: f2d7faa166f86248de8c3d451e7757f659b68081
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-*-libre-release.apk
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw config --no-analytics
+      - scripts/apply_flavor_libre.sh
+      - sed -i -e '/foojay/d' android/settings.gradle.kts
+      - sed -i -e 
+        's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/'
+        android/app/build.gradle.kts plugins/*/android/build.gradle.kts $PUB_CACHE/git/*/android/build.gradle.kts
+    scanignore:
+      - .flutter/bin/cache/artifacts
+      - .flutter/bin/cache/dart-sdk
+      - .flutter/packages/flutter_tools/gradle
+      - android/build.gradle.kts
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw build apk -t lib/main_libre.dart --flavor libre --split-per-abi
+        --target-platform="android-arm64"
+
+  - versionName: 1.14.1
+    versionCode: 16504
+    commit: f2d7faa166f86248de8c3d451e7757f659b68081
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-*-libre-release.apk
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw config --no-analytics
+      - scripts/apply_flavor_libre.sh
+      - sed -i -e '/foojay/d' android/settings.gradle.kts
+      - sed -i -e 
+        's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/'
+        android/app/build.gradle.kts plugins/*/android/build.gradle.kts $PUB_CACHE/git/*/android/build.gradle.kts
+    scanignore:
+      - .flutter/bin/cache/artifacts
+      - .flutter/bin/cache/dart-sdk
+      - .flutter/packages/flutter_tools/gradle
+      - android/build.gradle.kts
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw build apk -t lib/main_libre.dart --flavor libre --split-per-abi
+        --target-platform="android-x64"
+
+MaintainerNotes: scanignore is used to skip lint false positives triggered by Google
   repos and dependencies used by other flavors.
 
 AutoUpdateMode: Version
@@ -5131,5 +5224,5 @@ VercodeOperation:
   - '%c * 100 + 2'
   - '%c * 100 + 4'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.13.12
-CurrentVersionCode: 16304
+CurrentVersion: 1.14.1
+CurrentVersionCode: 16504
