@@ -458,6 +458,80 @@ Builds:
       - popd
       - mv /tmp/build com.om1cael.hidroly
 
+  - versionName: 2.0.3
+    versionCode: 132
+    commit: 02e7a153617913624d8bc62428ee15af332f43c1
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/om1cael/hidroly/releases/download/v%v/app-armeabi-v7a-fdroid-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - cd ..
+      - mv com.om1cael.hidroly /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - popd
+      - mv /tmp/build com.om1cael.hidroly
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+      - .pub-cache
+    build:
+      - cd ..
+      - mv com.om1cael.hidroly /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter build apk --target-platform=android-arm --split-per-abi
+        --flavor fdroid
+      - popd
+      - mv /tmp/build com.om1cael.hidroly
+
+  - versionName: 2.0.3
+    versionCode: 133
+    commit: 02e7a153617913624d8bc62428ee15af332f43c1
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/om1cael/hidroly/releases/download/v%v/app-arm64-v8a-fdroid-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - cd ..
+      - mv com.om1cael.hidroly /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter pub get
+      - popd
+      - mv /tmp/build com.om1cael.hidroly
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+      - .pub-cache
+    build:
+      - cd ..
+      - mv com.om1cael.hidroly /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter build apk --target-platform=android-arm64 --split-per-abi
+        --flavor fdroid
+      - popd
+      - mv /tmp/build com.om1cael.hidroly
+
 AllowedAPKSigningKeys: ecd93b0e9444d2f2ad985d35031ba0c9ab2b1708dc9b4e6ae73915135945efa0
 
 AutoUpdateMode: Version
@@ -466,5 +540,5 @@ VercodeOperation:
   - 10*%c + 2
   - 10*%c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.3.3
-CurrentVersionCode: 93
+CurrentVersion: 2.0.3
+CurrentVersionCode: 133
