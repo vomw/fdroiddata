@@ -23,9 +23,8 @@ Builds:
     srclibs:
       - flutter@stable
       - reproducible-apk-tools@v0.3.0
-    ndk: r27
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(awk -F"'" '/flutter-version/{print $2}' .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ..
@@ -47,9 +46,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
       - popd
       - mv /tmp/build com.reloado.auth
+    ndk: r27
     postbuild:
       - mv $$OUT$$ unaligned.apk
-      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner --replace unaligned.apk $$OUT$$
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
   - versionName: 1.0.2
     versionCode: 32
@@ -60,9 +61,8 @@ Builds:
     srclibs:
       - flutter@stable
       - reproducible-apk-tools@v0.3.0
-    ndk: r27
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(awk -F"'" '/flutter-version/{print $2}' .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ..
@@ -84,9 +84,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
       - popd
       - mv /tmp/build com.reloado.auth
+    ndk: r27
     postbuild:
       - mv $$OUT$$ unaligned.apk
-      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner --replace unaligned.apk $$OUT$$
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
   - versionName: 1.0.2
     versionCode: 33
@@ -97,9 +99,8 @@ Builds:
     srclibs:
       - flutter@stable
       - reproducible-apk-tools@v0.3.0
-    ndk: r27
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(awk -F"'" '/flutter-version/{print $2}' .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ..
@@ -121,9 +122,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
       - popd
       - mv /tmp/build com.reloado.auth
+    ndk: r27
     postbuild:
       - mv $$OUT$$ unaligned.apk
-      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner --replace unaligned.apk $$OUT$$
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 611c68cd6708ea63e7ec9a08c6a78d68e69ae085a2c7c8d1fc196d16d62c1fac
 
