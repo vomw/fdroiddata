@@ -13,29 +13,6 @@ RepoType: git
 Repo: https://github.com/Hassan-PS/PrayerApp
 
 Builds:
-  - versionName: 1.5.37
-    versionCode: 60
-    commit: v1.5.37
-    subdir: android
-    sudo:
-      - apt-get update
-      - apt-get install -y npm curl ca-certificates
-      - curl -Lo /tmp/jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
-      - echo "0c94cbb54325c40dcf026143eb621562017db5525727f2d9131a11250f72c450  /tmp/jdk17.tar.gz" | sha256sum -c -
-      - tar xzf /tmp/jdk17.tar.gz -C /usr/local
-      - ln -sfn /usr/local/jdk-17.0.18+8 /usr/local/jdk-17
-      - rm -f /tmp/jdk17.tar.gz
-    gradle:
-      - fdroid
-    output: app/build/outputs/apk/fdroid/release/*.apk
-    prebuild:
-      - printf '\norg.gradle.java.home=/usr/local/jdk-17\n' >> gradle.properties
-      - cd ..
-      - npm ci --no-audit --build-from-source
-    scandelete:
-      - node_modules
-    ndk: 27.1.12297006
-
   - versionName: 1.5.21
     versionCode: 44
     commit: v1.5.21
@@ -70,6 +47,30 @@ Builds:
       - node_modules
     ndk: 27.1.12297006
 
+  - versionName: 1.5.39
+    versionCode: 62
+    commit: v1.5.39
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm curl ca-certificates
+      - curl -Lo /tmp/jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz
+      - echo "0c94cbb54325c40dcf026143eb621562017db5525727f2d9131a11250f72c450  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - tar xzf /tmp/jdk17.tar.gz -C /usr/local
+      - ln -sfn /usr/local/jdk-17.0.18+8 /usr/local/jdk-17
+      - rm -f /tmp/jdk17.tar.gz
+    gradle:
+      - fdroid
+    output: app/build/outputs/apk/fdroid/release/*.apk
+    prebuild:
+      - printf '\norg.gradle.java.home=/usr/local/jdk-17\n' >> gradle.properties
+      - cd ..
+      - npm ci --no-audit --build-from-source
+    scandelete:
+      - node_modules
+    ndk: 27.1.12297006
+
 MaintainerNotes: |
   React Native 0.83: Node 20 from upstream tarball (checksum-verified). `npm ci`
   runs from repo root; Gradle runs in `android/` with product flavor `fdroid`
@@ -98,5 +99,5 @@ MaintainerNotes: |
 ArchivePolicy: 6
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.5.37
-CurrentVersionCode: 60
+CurrentVersion: 1.5.39
+CurrentVersionCode: 62
