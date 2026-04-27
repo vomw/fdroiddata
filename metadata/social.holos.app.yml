@@ -15,15 +15,17 @@ RepoType: git
 Repo: https://codeberg.org/tom79/Holos-App.git
 
 Builds:
-  - versionName: 1.3.0
-    versionCode: 27
-    commit: a2428b87eaca2d6f8529b5b875c76a3dc8eee665
+  - versionName: 1.5.1
+    versionCode: 30
+    commit: 048baff13f81cb4d4657f6f6004a0259b23a3e48
     timeout: 36000
     sudo:
       - apt-get update > /dev/null
       - apt-get install -y -qq python3-requests nodejs npm build-essential cmake golang-go
         gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
         libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
+      - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip
+        && unzip -q /tmp/gradle.zip -d /opt && ln -s /opt/gradle-8.13/bin/gradle /usr/local/bin/gradle
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - cpython@v3.11.9
@@ -40,13 +42,13 @@ Builds:
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - APP_VARIANT=production npx expo prebuild --platform android --clean
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
-      - rm -rf 
-        android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
+      - rm -rf android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
         android/app/build.gradle
       - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> android/gradle.properties
       - rm -fr ios
       - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - sed -i -e '/exclude group.*installreferrer/d' android/app/build.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
@@ -66,6 +68,8 @@ Builds:
       - pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - pushd $$esbuild$$
       - make esbuild > /dev/null
       - popd
@@ -86,10 +90,10 @@ Builds:
         node_modules/nodejs-mobile-react-native/android/build.gradle
       - sed -i '/ndkVersion/a \    androidResources {\n        ignoreAssetsPattern
         "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }' node_modules/nodejs-mobile-react-native/android/build.gradle
-      - sed -i 's/\.build()$/\.build().toMutableMap()/' 
-        node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+      - sed -i 's/\.build()$/\.build().toMutableMap()/' node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
       - cd android
-      - echo 'org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m' >> gradle.properties
+      - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> gradle.properties
+      - echo 'org.gradle.workers.max=2' >> gradle.properties
       - gradle assembleRelease --no-daemon
     ndk: 27.0.12077973
 
@@ -100,5 +104,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+(-rc-\d+)?$
 UpdateCheckIgnore: .*beta.*
 UpdateCheckData: app.json|"versionCode":\s(\d+)|.|"version":\s"([^"]+)"
-CurrentVersion: 1.3.0
-CurrentVersionCode: 27
+CurrentVersion: 1.5.1
+CurrentVersionCode: 30
