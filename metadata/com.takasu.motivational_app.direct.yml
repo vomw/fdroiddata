@@ -30,7 +30,6 @@ Builds:
       - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - sed -i '/^[[:space:]]*ndkVersion flutter\.ndkVersion$/d' android/app/build.gradle
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -38,10 +37,14 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor direct --dart-define=DISTRIBUTION_CHANNEL=direct
-        --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --build-name
+        2.0.5 --build-number 20005 --dart-define=DISTRIBUTION_CHANNEL=direct 
+        --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+        --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+    ndk: r28c
 
-AllowedAPKSigningKeys: 410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
+AllowedAPKSigningKeys: 
+  410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
