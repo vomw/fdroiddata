@@ -25,7 +25,8 @@ Builds:
         gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
         libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
       - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip
-        && unzip -q /tmp/gradle.zip -d /opt && ln -sf /opt/gradle-8.13/bin/gradle /usr/local/bin/gradle
+        && unzip -q /tmp/gradle.zip -d /opt && ln -sf /opt/gradle-8.13/bin/gradle
+        /usr/local/bin/gradle
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - cpython@v3.11.9
@@ -42,7 +43,7 @@ Builds:
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - APP_VARIANT=production npx expo prebuild --platform android --clean
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
-      - rm -rf
+      - rm -rf 
         android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
         android/app/build.gradle
@@ -91,7 +92,7 @@ Builds:
         node_modules/nodejs-mobile-react-native/android/build.gradle
       - sed -i '/ndkVersion/a \    androidResources {\n        ignoreAssetsPattern
         "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }' node_modules/nodejs-mobile-react-native/android/build.gradle
-      - sed -i 's/\.build()$/\.build().toMutableMap()/'
+      - sed -i 's/\.build()$/\.build().toMutableMap()/' 
         node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
       - cd android
       - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> gradle.properties
