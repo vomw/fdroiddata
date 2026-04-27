@@ -48,11 +48,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get
-      - "JNI_CMAKE=$(find $PUB_CACHE/hosted/pub.dev -path \"*/jni-*/src/CMakeLists.txt\"\
-        \ | head -n 1)\nif [ -n \"$JNI_CMAKE\" ] && [ -f \"$JNI_CMAKE\" ]; then\n\
-        \  sed -i '2i add_link_options(\"LINKER:--build-id=none\")' \"$JNI_CMAKE\"\
-        \n  echo \"Patched CMakeLists.txt in $JNI_CMAKE\"\nelse\n  echo \"Error: jni
-        CMakeLists.txt not found in expected location.\"\n  exit 1\nfi\n"
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
     scanignore:
       - .flutter/bin/cache
     scandelete:
@@ -78,11 +74,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get
-      - "JNI_CMAKE=$(find $PUB_CACHE/hosted/pub.dev -path \"*/jni-*/src/CMakeLists.txt\"\
-        \ | head -n 1)\nif [ -n \"$JNI_CMAKE\" ] && [ -f \"$JNI_CMAKE\" ]; then\n\
-        \  sed -i '2i add_link_options(\"LINKER:--build-id=none\")' \"$JNI_CMAKE\"\
-        \n  echo \"Patched CMakeLists.txt in $JNI_CMAKE\"\nelse\n  echo \"Error: jni
-        CMakeLists.txt not found in expected location.\"\n  exit 1\nfi\n"
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
     scanignore:
       - .flutter/bin/cache
     scandelete:
