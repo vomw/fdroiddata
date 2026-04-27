@@ -9,11 +9,11 @@ SourceCode: https://github.com/cooaer/v2compose
 IssueTracker: https://github.com/cooaer/v2compose/issues
 Changelog: https://github.com/cooaer/v2compose/releases
 
-AutoName: V2compose
+AutoName: V2X
 
 RepoType: git
 Repo: https://github.com/cooaer/v2compose.git
-Binaries: https://github.com/cooaer/v2compose/releases/download/v%v/v2compose-v%v-foss.apk
+Binaries: https://github.com/cooaer/v2compose/releases/download/v%v/v2v-v%v-foss.apk
 
 Builds:
   - versionName: 1.0.0
@@ -32,9 +32,22 @@ Builds:
       - foss
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle
 
+  - versionName: 2.0.3
+    versionCode: 203
+    commit: 9191d8ce55528db19398f376e484f9732fc0bf57
+    subdir: androidApp
+    submodules: true
+    gradle:
+      - foss
+    binary: https://github.com/cooaer/v2compose/releases/download/v%v/v2v-v%v-foss.apk
+    rm:
+      - iosApp
+    prebuild: sed -i -e '/crashlytics/d' build.gradle.kts
+
 AllowedAPKSigningKeys: f8ad4fc3d08e077a990d66634ab6f63fd2d79114e3d785ebd307265cec0edac0
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.1
-CurrentVersionCode: 101
+UpdateCheckData: gradle.properties|app.versionCode=([0-9]+)|.|app.versionName=(.+)
+CurrentVersion: 2.0.3
+CurrentVersionCode: 203
