@@ -19,7 +19,9 @@ Builds:
     commit: cc7031bc7a15320229184a45efc0ab62b7959920
     sudo:
       - apt-get update
-      - apt-get install -y build-essential rustup pkg-config autoconf automake libtool ccache cmake git curl lbzip2 gperf unzip python3 llvm libssl-dev zlib1g-dev libncurses-dev
+      - apt-get install -y build-essential rustup pkg-config autoconf automake libtool
+        ccache cmake git curl lbzip2 gperf unzip python3 llvm libssl-dev zlib1g-dev
+        libncurses-dev
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -32,45 +34,41 @@ Builds:
       - windows
     prebuild:
       - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 's/.*flutter:\s*//')
-      - "[[ $flutterVersion ]]"
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - |
-        set -euo pipefail
-        git config --global --add safe.directory '*'
-        git config --global user.name 'MAGIC Grants'
-        git config --global user.email 'info@magicgrants.org'
-        mkdir -p android/app/src/main/jniLibs/arm64-v8a
-        mkdir -p android/app/src/main/jniLibs/armeabi-v7a
-        mkdir -p android/app/src/main/jniLibs/x86_64
-        rm -rf monero_c
-        git clone https://github.com/vtnerd/monero_c.git monero_c
-        cd monero_c
-        git checkout lwsf
-        git submodule update --init --recursive
-        ./apply_patches.sh monero
-        ./build_single.sh monero aarch64-linux-android -j1
-        cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so \
-          ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
-        ./build_single.sh monero armv7a-linux-androideabi -j1
-        cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so \
-          ../android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
-        ./build_single.sh monero x86_64-linux-android -j1
-        cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so \
-          ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
-        cd ..
-        rm -rf monero_c
+      - git config --global --add safe.directory '*'
+      - git config --global user.name 'MAGIC Grants'
+      - git config --global user.email 'info@magicgrants.org'
+      - mkdir -p android/app/src/main/jniLibs/arm64-v8a
+      - mkdir -p android/app/src/main/jniLibs/armeabi-v7a
+      - mkdir -p android/app/src/main/jniLibs/x86_64
+      - rm -rf monero_c
+      - git clone https://github.com/vtnerd/monero_c.git monero_c
+      - cd monero_c
+      - git checkout lwsf
+      - git submodule update --init --recursive
+      - ./apply_patches.sh monero
+      - ./build_single.sh monero aarch64-linux-android -j1
+      - cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
+        ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
+      - ./build_single.sh monero armv7a-linux-androideabi -j1
+      - cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
+        ../android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
+      - ./build_single.sh monero x86_64-linux-android -j1
+      - cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
+        ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
+      - cd ..
+      - rm -rf monero_c
     scandelete:
       - .pub-cache
     build:
-      - |
-        set -euo pipefail
-        rustup default 1.83.0
-        rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-        export PUB_CACHE="$(pwd)/.pub-cache"
-        $$flutter$$/bin/flutter build apk --release
+      - rustup default 1.83.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter build apk --release
 
 MaintainerNotes: |
   monero_c: vendored jniLibs are removed (rm) and rebuilt from vtnerd/monero_c branch lwsf before flutter build;
