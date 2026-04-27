@@ -30,6 +30,7 @@ Builds:
       - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i '/^[[:space:]]*ndkVersion flutter\.ndkVersion$/d' android/app/build.gradle
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
