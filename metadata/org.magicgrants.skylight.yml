@@ -16,41 +16,66 @@ Repo: https://github.com/magicgrants/skylight-wallet
 Builds:
   - versionName: 1.0.9
     versionCode: 17
-    commit: v1.0.9
+    commit: cc7031bc7a15320229184a45efc0ab62b7959920
     sudo:
       - apt-get update
-      - apt-get install -y build-essential
+      - apt-get install -y build-essential rustup pkg-config autoconf automake libtool ccache cmake git curl lbzip2 gperf unzip python3 llvm libssl-dev zlib1g-dev libncurses-dev
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.7
-      - rustup@1.29.0
+      - flutter@stable
     rm:
+      - android/app/src/main/jniLibs
       - ios
       - linux
       - macos
       - web
       - windows
     prebuild:
+      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 's/.*flutter:\s*//')
+      - "[[ $flutterVersion ]]"
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - android/app/src/main/jniLibs
+      - |
+        set -euo pipefail
+        git config --global --add safe.directory '*'
+        git config --global user.name 'MAGIC Grants'
+        git config --global user.email 'info@magicgrants.org'
+        mkdir -p android/app/src/main/jniLibs/arm64-v8a
+        mkdir -p android/app/src/main/jniLibs/armeabi-v7a
+        mkdir -p android/app/src/main/jniLibs/x86_64
+        rm -rf monero_c
+        git clone https://github.com/vtnerd/monero_c.git monero_c
+        cd monero_c
+        git checkout lwsf
+        git submodule update --init --recursive
+        ./apply_patches.sh monero
+        ./build_single.sh monero aarch64-linux-android -j1
+        cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so \
+          ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
+        ./build_single.sh monero armv7a-linux-androideabi -j1
+        cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so \
+          ../android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
+        ./build_single.sh monero x86_64-linux-android -j1
+        cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so \
+          ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
+        cd ..
+        rm -rf monero_c
+    scandelete:
       - .pub-cache
     build:
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.83.0
-      - source $HOME/.cargo/env
-      - rustup target add aarch64-linux-android
-      - rustup target add armv7-linux-androideabi
-      - rustup target add x86_64-linux-android
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-${ANDROID_HOME}/ndk/28.1.13356709}"
-      - $$flutter$$/bin/flutter build apk --release
+      - |
+        set -euo pipefail
+        rustup default 1.83.0
+        rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        export PUB_CACHE="$(pwd)/.pub-cache"
+        $$flutter$$/bin/flutter build apk --release
 
 MaintainerNotes: |
-  jniLibs added to scanignore contains prebuilt libraries, which are verifiably built upstream by GitHub Actions.
-  Cargokit (tor_ffi_plugin) needs Rust on PATH: rustup srclib + rustup-init in build; toolchain 1.83.0 matches upstream Dockerfile.builder (adjust if either changes).
-  build-essential (gcc as cc): required so cargo can compile build scripts before cross-compiling to Android.
+  monero_c: vendored jniLibs are removed (rm) and rebuilt from vtnerd/monero_c branch lwsf before flutter build;
+  using build_single.sh -j1 (-j$(nproc) may trigger invalid --jobserver-auth).
+  tor_ffi_plugin: needs Rust; toolchain 1.83.0 matches upstream Dockerfile.builder.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
