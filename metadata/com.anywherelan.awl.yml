@@ -38,7 +38,6 @@ Builds:
     prebuild:
       - sdkmanager "platforms;android-24" "platforms;android-36" "platform-tools"
       - git -C $$awl$$ checkout -f v$$VERSION$$
-      - export CI_ROOT=/home/runner/work/awl/awl
       - 'goVersion=$(grep -m1 go-version: $$awl$$/.github/workflows/build-manual.yml
         | grep -oP "(?<=go-version: )\S+")'
       - '[[ $goVersion ]]'
@@ -54,28 +53,25 @@ Builds:
       - export GOMOBILE_VERSION=$(cd $$awl$$ && go list -m -f '{{.Version}}' golang.org/x/mobile)
       - go install golang.org/x/mobile/cmd/gomobile@$GOMOBILE_VERSION
       - gomobile init
-      - cp -r $$awl$$ $CI_ROOT/awl
-      - cd ..
-      - cp -r com.anywherelan.awl $CI_ROOT/awl-flutter
-      - pushd $CI_ROOT/awl-flutter
-      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
-      - flutterVersion=$(sed -n -E "s/^\s+flutter-version:\ '([0-9.]+)'/\1/p" $CI_ROOT/awl/.github/workflows/build-manual.yml)
+      - flutterVersion=$(sed -n -E "s/^\s+flutter-version:\ '([0-9.]+)'/\1/p" $$awl$$/.github/workflows/build-manual.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$CI_ROOT/awl-flutter/.pub-cache
+      - export PUB_CACHE=/tmp/awl-pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
-      - popd
     build:
       - export CI_ROOT=/home/runner/work/awl/awl
       - export repo=$CI_ROOT/awl-flutter
+      - cd ..
+      - mv com.anywherelan.awl $CI_ROOT/awl-flutter
+      - mv $$awl$$ $CI_ROOT/awl
       - export SOURCE_DATE_EPOCH=$(git -C $repo log -1 --format=%ct)
       - export GOPATH=/tmp/awl-gopath
       - export PATH=$$go$$/bin:$GOPATH/bin:$$flutter$$/bin:$PATH
       - export ANDROID_NDK_ROOT=$$NDK$$
       - unset ANDROID_NDK_HOME
-      - export PUB_CACHE=$repo/.pub-cache
+      - export PUB_CACHE=/tmp/awl-pub-cache
       - cd $CI_ROOT/awl
       - mkdir -p static
       - touch static/anything
