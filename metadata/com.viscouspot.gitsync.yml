@@ -12,88 +12,34 @@ Repo: https://github.com/ViscousPot/GitSync.git
 
 Builds:
   - versionName: 1.8.55
-    versionCode: 3855
-    commit: v1.855
+    versionCode: 18551
+    commit: a17aed44cad7884de29088d8ca76b4c1fea6fc6a
     timeout: 10800
     sudo:
       - apt-get update
-      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    srclibs:
-      - flutter@3.35.2
-    rm:
-      - ios
-    prebuild:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
-        stable
-      - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - cargo install flutter_rust_bridge_codegen
-      - cargo install cargo-expand
-      - cp lib/constant/secrets.dart.template lib/constant/secrets.dart
-      - sed -i 's|oauthRedirectUrl = ""|oauthRedirectUrl = "gitsync://auth"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientId = ""|gitHubClientId = "Ov23lifj0BGiuwsRpS9V"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientSecret = ""|gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientId = ""|gitHubAppClientId = "Iv23liYhW00bkcw9EuX4"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientSecret = ""|gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8"|'
-        lib/constant/secrets.dart
-      - sed -i 's|giteaClientId = ""|giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitlabClientId = ""|gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c"|'
-        lib/constant/secrets.dart
-      - sed -i 's|codebergClientId = ""|codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb"|'
-        lib/constant/secrets.dart
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - flutter_rust_bridge_codegen generate
-    scanignore:
-      - rust/target
-    scandelete:
-      - .pub-cache
-    build:
-      - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-    ndk: 29.0.13113456
-
-  - versionName: 1.8.55
-    versionCode: 2855
-    commit: v1.855
-    timeout: 10800
-    sudo:
-      - apt-get update
-      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
+      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev rustup
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.35.2
     rm:
       - ios
     prebuild:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
-        stable
+      - rustup default 1.85.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - cargo install flutter_rust_bridge_codegen
-      - cargo install cargo-expand
-      - cp lib/constant/secrets.dart.template lib/constant/secrets.dart
-      - sed -i 's|oauthRedirectUrl = ""|oauthRedirectUrl = "gitsync://auth"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientId = ""|gitHubClientId = "Ov23lifj0BGiuwsRpS9V"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientSecret = ""|gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientId = ""|gitHubAppClientId = "Iv23liYhW00bkcw9EuX4"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientSecret = ""|gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8"|'
-        lib/constant/secrets.dart
-      - sed -i 's|giteaClientId = ""|giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitlabClientId = ""|gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c"|'
-        lib/constant/secrets.dart
-      - sed -i 's|codebergClientId = ""|codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb"|'
-        lib/constant/secrets.dart
+      - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
+      - cargo install cargo-expand --version 1.0.121 --locked
+      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
+        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
+        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
+        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
+        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
+        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
+        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - flutter_rust_bridge_codegen generate
@@ -108,40 +54,76 @@ Builds:
     ndk: 29.0.13113456
 
   - versionName: 1.8.55
-    versionCode: 5855
-    commit: v1.855
+    versionCode: 18552
+    commit: a17aed44cad7884de29088d8ca76b4c1fea6fc6a
     timeout: 10800
     sudo:
       - apt-get update
-      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
+      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.35.2
+    rm:
+      - ios
+    prebuild:
+      - rustup default 1.85.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
+      - cargo install cargo-expand --version 1.0.121 --locked
+      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
+        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
+        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
+        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
+        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
+        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
+        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - flutter_rust_bridge_codegen generate
+    scanignore:
+      - rust/target
+    scandelete:
+      - .pub-cache
+    build:
+      - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    ndk: 29.0.13113456
+
+  - versionName: 1.8.55
+    versionCode: 18553
+    commit: a17aed44cad7884de29088d8ca76b4c1fea6fc6a
+    timeout: 10800
+    sudo:
+      - apt-get update
+      - apt-get install -y clang libclang-dev cmake pkg-config libssl-dev rustup
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@3.35.2
     rm:
       - ios
     prebuild:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
-        stable
+      - rustup default 1.85.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - cargo install flutter_rust_bridge_codegen
-      - cargo install cargo-expand
-      - cp lib/constant/secrets.dart.template lib/constant/secrets.dart
-      - sed -i 's|oauthRedirectUrl = ""|oauthRedirectUrl = "gitsync://auth"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientId = ""|gitHubClientId = "Ov23lifj0BGiuwsRpS9V"|' lib/constant/secrets.dart
-      - sed -i 's|gitHubClientSecret = ""|gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientId = ""|gitHubAppClientId = "Iv23liYhW00bkcw9EuX4"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitHubAppClientSecret = ""|gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8"|'
-        lib/constant/secrets.dart
-      - sed -i 's|giteaClientId = ""|giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54"|'
-        lib/constant/secrets.dart
-      - sed -i 's|gitlabClientId = ""|gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c"|'
-        lib/constant/secrets.dart
-      - sed -i 's|codebergClientId = ""|codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb"|'
-        lib/constant/secrets.dart
+      - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
+      - cargo install cargo-expand --version 1.0.121 --locked
+      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
+        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
+        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
+        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
+        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
+        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
+        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - flutter_rust_bridge_codegen generate
@@ -158,9 +140,9 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c + 2000'
-  - '%c + 1000'
-  - '%c + 4000'
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.8.55
-CurrentVersionCode: 3855
+CurrentVersionCode: 18553
