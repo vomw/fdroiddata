@@ -23,8 +23,10 @@ Builds:
     subdir: app/android/app
     sudo:
       - apt-get update
-      - apt-get install -y make g++ libc-dev npm
-      - sysctl fs.inotify.max_user_watches=524288 || true
+      - apt-get install -y make g++ libc-dev
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
     init:
       - cd ../..
       - npm_config_build_from_source=true npm install
@@ -36,7 +38,7 @@ Builds:
       - npx react-native bundle --platform android --dev false --entry-file index.js
         --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest
         android/app/src/main/res/
-    scanignore:
+    scandelete:
       - app/node_modules
 
 AutoUpdateMode: Version
