@@ -718,7 +718,10 @@ Builds:
     subdir: app
     submodules: true
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - export CPUS_MAX=4
       - export CPUS=$(getconf _NPROCESSORS_ONLN)
       - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
@@ -726,15 +729,12 @@ Builds:
     gradle:
       - fdroid
     binary: 
-      https://github.com/meshtastic/Meshtastic-Android/releases/download/v2.7.13/app-fdroid-release.apk
+      https://github.com/meshtastic/Meshtastic-Android/releases/download/v2.7.14-open.1/app-fdroid-universal-release.apk
     prebuild:
       - sed -i -e '/foojay-resolver/d' -e '/UnstableApiUsage/d' -e '/toolchainManagement
         {/,$d' ../settings.gradle.kts
       - sed -i -e '/firebase/d' {..,../build-logic/convention}/build.gradle.kts
       - sed -i -e '/firebase-crashlytics/d' ../build-logic/convention/src/main/kotlin/AnalyticsConventionPlugin.kt
-      - sed -i -e '/jvmToolchain/s/17/21/' 
-        ../build-logic/convention/src/main/kotlin/org/meshtastic/buildlogic/KotlinAndroid.kt
-      - sed -i -e 's/17/21/' ../gradle/gradle-daemon-jvm.properties
       - sed -i -e '/maven.pkg.github.com/d' ../gradle/publishing.gradle.kts
       - sed -i -e '/isEnable/d' build.gradle.kts
     scandelete:
