@@ -24,8 +24,9 @@ Builds:
     rm:
       - ios
     prebuild:
-      - rustup default 1.85.0
-      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - rustup default 1.88.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
+        -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
@@ -33,13 +34,18 @@ Builds:
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
       - cargo install cargo-expand --version 1.0.121 --locked
-      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
-        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
-        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
-        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
-        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
-        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
-        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
+      - echo 'const oauthRedirectUrl = "gitsync://auth";' > lib/constant/secrets.dart
+      - echo 'const gitHubClientId = "Ov23lifj0BGiuwsRpS9V";' >> lib/constant/secrets.dart
+      - echo 'const gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a";'
+        >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientId = "Iv23liYhW00bkcw9EuX4";' >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8";'
+        >> lib/constant/secrets.dart
+      - echo 'const giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54";' >> lib/constant/secrets.dart
+      - echo 'const gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c";'
+        >> lib/constant/secrets.dart
+      - echo 'const codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb";' >>
+        lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - flutter_rust_bridge_codegen generate
@@ -66,8 +72,9 @@ Builds:
     rm:
       - ios
     prebuild:
-      - rustup default 1.85.0
-      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - rustup default 1.88.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
+        -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
@@ -75,13 +82,18 @@ Builds:
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
       - cargo install cargo-expand --version 1.0.121 --locked
-      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
-        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
-        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
-        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
-        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
-        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
-        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
+      - echo 'const oauthRedirectUrl = "gitsync://auth";' > lib/constant/secrets.dart
+      - echo 'const gitHubClientId = "Ov23lifj0BGiuwsRpS9V";' >> lib/constant/secrets.dart
+      - echo 'const gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a";'
+        >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientId = "Iv23liYhW00bkcw9EuX4";' >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8";'
+        >> lib/constant/secrets.dart
+      - echo 'const giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54";' >> lib/constant/secrets.dart
+      - echo 'const gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c";'
+        >> lib/constant/secrets.dart
+      - echo 'const codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb";' >>
+        lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - flutter_rust_bridge_codegen generate
@@ -108,8 +120,9 @@ Builds:
     rm:
       - ios
     prebuild:
-      - rustup default 1.85.0
-      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head -1)
+      - rustup default 1.88.0
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
+        -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
@@ -117,13 +130,18 @@ Builds:
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked
       - cargo install cargo-expand --version 1.0.121 --locked
-      - "cat > lib/constant/secrets.dart <<'EOF'\nconst oauthRedirectUrl = \"gitsync://auth\"\
-        ;\nconst gitHubClientId = \"Ov23lifj0BGiuwsRpS9V\";\nconst gitHubClientSecret\
-        \ = \"9370aafe91536f88b20a041cb140376941c8c59a\";\nconst gitHubAppClientId\
-        \ = \"Iv23liYhW00bkcw9EuX4\";\nconst gitHubAppClientSecret = \"d63e073d3b07de1c86e9ec0b871ab7f60eea15d8\"\
-        ;\nconst giteaClientId = \"f33ae6b1-a79c-426f-99ff-e8fd299f0a54\";\nconst\
-        \ gitlabClientId = \"dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c\"\
-        ;\nconst codebergClientId = \"426db6d5-07df-4ad2-b0bb-5d28d306f9fb\";\nEOF\n"
+      - echo 'const oauthRedirectUrl = "gitsync://auth";' > lib/constant/secrets.dart
+      - echo 'const gitHubClientId = "Ov23lifj0BGiuwsRpS9V";' >> lib/constant/secrets.dart
+      - echo 'const gitHubClientSecret = "9370aafe91536f88b20a041cb140376941c8c59a";'
+        >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientId = "Iv23liYhW00bkcw9EuX4";' >> lib/constant/secrets.dart
+      - echo 'const gitHubAppClientSecret = "d63e073d3b07de1c86e9ec0b871ab7f60eea15d8";'
+        >> lib/constant/secrets.dart
+      - echo 'const giteaClientId = "f33ae6b1-a79c-426f-99ff-e8fd299f0a54";' >> lib/constant/secrets.dart
+      - echo 'const gitlabClientId = "dd6666081443e81854c2a31b3bbb6dae3a7715338fdbae4bc18f151e5597398c";'
+        >> lib/constant/secrets.dart
+      - echo 'const codebergClientId = "426db6d5-07df-4ad2-b0bb-5d28d306f9fb";' >>
+        lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - flutter_rust_bridge_codegen generate
