@@ -47,38 +47,54 @@ Builds:
       - git checkout lwsf
       - git submodule update --init --recursive
       - ./apply_patches.sh monero
+      - cd ..
+      - cp -a monero_c monero_c_aarch64
+      - cp -a monero_c monero_c_armv7a
+      - cp -a monero_c monero_c_x86_64
+      - rm -rf monero_c
     scandelete:
       - .pub-cache
-      - monero_c/monero/tests
-      - monero_c/wownero/tests
-      - monero_c/zano/contrib/epee/tests
-      - monero_c/zano/utils/test_api_files
-      - monero_c/monero/external/rapidjson/package.json
-      - monero_c/wownero/external/rapidjson/package.json
-      - monero_c/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
-      - monero_c/wownero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_aarch64/monero/tests
+      - monero_c_armv7a/monero/tests
+      - monero_c_x86_64/monero/tests
+      - monero_c_aarch64/wownero/tests
+      - monero_c_armv7a/wownero/tests
+      - monero_c_x86_64/wownero/tests
+      - monero_c_aarch64/zano/contrib/epee/tests
+      - monero_c_armv7a/zano/contrib/epee/tests
+      - monero_c_x86_64/zano/contrib/epee/tests
+      - monero_c_aarch64/zano/utils/test_api_files
+      - monero_c_armv7a/zano/utils/test_api_files
+      - monero_c_x86_64/zano/utils/test_api_files
+      - monero_c_aarch64/monero/external/rapidjson/package.json
+      - monero_c_armv7a/monero/external/rapidjson/package.json
+      - monero_c_x86_64/monero/external/rapidjson/package.json
+      - monero_c_aarch64/wownero/external/rapidjson/package.json
+      - monero_c_armv7a/wownero/external/rapidjson/package.json
+      - monero_c_x86_64/wownero/external/rapidjson/package.json
+      - monero_c_aarch64/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_armv7a/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_x86_64/monero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_aarch64/wownero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_armv7a/wownero/external/trezor-common/defs/ethereum/tokens/build.gradle
+      - monero_c_x86_64/wownero/external/trezor-common/defs/ethereum/tokens/build.gradle
     build:
-      - cd monero_c
-      - mkdir -p ../android/app/src/main/jniLibs/arm64-v8a
-      - mkdir -p ../android/app/src/main/jniLibs/armeabi-v7a
-      - mkdir -p ../android/app/src/main/jniLibs/x86_64
-      - echo "Building monero_libwallet2_api_c for aarch64-linux-android"
-      - ./build_single.sh monero aarch64-linux-android -j1 > aarch64-build.log 2>&1
-        || { cat aarch64-build.log; exit 1; }
-      - cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
-        ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
-      - echo "Building monero_libwallet2_api_c for armv7a-linux-androideabi"
-      - ./build_single.sh monero armv7a-linux-androideabi -j1 > armv7a-build.log 2>&1
-        || { cat armv7a-build.log; exit 1; }
-      - cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
+      - mkdir -p android/app/src/main/jniLibs/arm64-v8a
+      - mkdir -p android/app/src/main/jniLibs/armeabi-v7a
+      - mkdir -p android/app/src/main/jniLibs/x86_64
+      - fail=0; ( cd monero_c_aarch64 && ./build_single.sh monero aarch64-linux-android
+        -j1 && cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
+        ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so )
+        > aarch64-build.log 2>&1 & p1=$!; ( cd monero_c_armv7a && ./build_single.sh
+        monero armv7a-linux-androideabi -j1 && cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
         ../android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
-      - echo "Building monero_libwallet2_api_c for x86_64-linux-android"
-      - ./build_single.sh monero x86_64-linux-android -j1 > x86_64-build.log 2>&1
-        || { cat x86_64-build.log; exit 1; }
-      - cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
-        ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
-      - cd ..
-      - rm -rf monero_c
+        ) > armv7a-build.log 2>&1 & p2=$!; ( cd monero_c_x86_64 && ./build_single.sh
+        monero x86_64-linux-android -j1 && cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
+        ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so ) > x86_64-build.log
+        2>&1 & p3=$!; wait $p1 || fail=1; wait $p2 || fail=1; wait $p3 || fail=1;
+        [ "$fail" -eq 0 ] || { cat aarch64-build.log armv7a-build.log x86_64-build.log;
+        exit 1; }
+      - rm -rf monero_c_aarch64 monero_c_armv7a monero_c_x86_64
       - rustup default 1.83.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - export PUB_CACHE="$(pwd)/.pub-cache"
