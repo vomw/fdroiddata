@@ -62,18 +62,19 @@ Builds:
       - mkdir -p ../android/app/src/main/jniLibs/arm64-v8a
       - mkdir -p ../android/app/src/main/jniLibs/armeabi-v7a
       - mkdir -p ../android/app/src/main/jniLibs/x86_64
-      - echo 'Building monero_libwallet2_api_c (aarch64/armv7/x86_64 in parallel)';
-        ( ./build_single.sh monero aarch64-linux-android -j1 > aarch64-build.log 2>&1
-        ) & P1=$!; ( ./build_single.sh monero armv7a-linux-androideabi -j1 > armv7a-build.log
-        2>&1 ) & P2=$!; ( ./build_single.sh monero x86_64-linux-android -j1 > x86_64-build.log
-        2>&1 ) & P3=$!; set +e; wait $P1; E1=$?; wait $P2; E2=$?; wait $P3; E3=$?;
-        set -e; [ "$E1" -eq 0 ] || cat aarch64-build.log; [ "$E2" -eq 0 ] || cat armv7a-build.log;
-        [ "$E3" -eq 0 ] || cat x86_64-build.log; if [ "$E1" -ne 0 ] || [ "$E2" -ne
-        0 ] || [ "$E3" -ne 0 ]; then exit 1; fi
+      - echo "Building monero_libwallet2_api_c for aarch64-linux-android"
+      - ./build_single.sh monero aarch64-linux-android -j1 > aarch64-build.log 2>&1
+        || { cat aarch64-build.log; exit 1; }
       - cp monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
         ../android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
+      - echo "Building monero_libwallet2_api_c for armv7a-linux-androideabi"
+      - ./build_single.sh monero armv7a-linux-androideabi -j1 > armv7a-build.log 2>&1
+        || { cat armv7a-build.log; exit 1; }
       - cp monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
         ../android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
+      - echo "Building monero_libwallet2_api_c for x86_64-linux-android"
+      - ./build_single.sh monero x86_64-linux-android -j1 > x86_64-build.log 2>&1
+        || { cat x86_64-build.log; exit 1; }
       - cp monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
         ../android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
       - cd ..
@@ -86,8 +87,6 @@ Builds:
 MaintainerNotes: |
   monero_c: vendored jniLibs are removed (rm) and rebuilt from vtnerd/monero_c branch lwsf before flutter build;
   using build_single.sh -j1 (-j$(nproc) may trigger invalid --jobserver-auth).
-  Three ABIs are built concurrently; if contrib/depends or other shared paths race, switch back to serial builds.
-  Parallel builds also triple peak CPU/RAM use on the builder.
   tor_ffi_plugin: needs Rust; toolchain 1.83.0 matches upstream Dockerfile.builder.
 
 AutoUpdateMode: Version
