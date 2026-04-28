@@ -161,21 +161,41 @@ Builds:
       - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
     build: taskset --cpu-list 0-3 gradle assembleFreeRelease
 
-  - versionName: 1.0.25
-    versionCode: 26
-    commit: 7221caa7f170e572c22dedcc5128747063eaf40d
+  - versionName: 1.0.26
+    versionCode: 27
+    commit: ae5e5d853f9c840c8d06e1be3a0f763b1229946a
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
     prebuild:
       - sed -i -e '/proImplementation/d' build.gradle.kts
       - sed -i -e '/freeImplementation/d' build.gradle.kts
       - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
-    build: taskset --cpu-list 0-3 gradle assembleGithubRelease
+
+  - versionName: 1.0.27
+    versionCode: 28
+    commit: 217207095cb43484c83c151418ed19710c8c58aa
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    prebuild:
+      - sed -i -e '/proImplementation/d' build.gradle.kts
+      - sed -i -e '/freeImplementation/d' build.gradle.kts
+      - sed -i -e '/googleServices/d' -e '/firebaseCrashlytics/d' ../build.gradle.kts
 
 AllowedAPKSigningKeys: fea819bc3affd62731572044462abe340f6e288e4c2cad3c4f4d8b6cdfd8c04a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v.*[0-9]$
-CurrentVersion: 1.0.25
-CurrentVersionCode: 26
+CurrentVersion: 1.0.27
+CurrentVersionCode: 28
