@@ -21,10 +21,9 @@ Builds:
     timeout: 36000
     sudo:
       - apt-get update > /dev/null
-      - apt-get install -y -qq openjdk-17-jdk-headless python3-requests nodejs npm
-        build-essential cmake golang-go gcc-multilib g++-multilib unzip wget libssl-dev
-        zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libncurses-dev libffi-dev
-        liblzma-dev
+      - apt-get install -y -qq python3-requests nodejs npm build-essential cmake golang-go
+        gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
+        libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
       - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip
         && unzip -q /tmp/gradle.zip -d /opt && ln -sf /opt/gradle-8.13/bin/gradle
         /usr/local/bin/gradle
@@ -98,9 +97,8 @@ Builds:
       - cd android
       - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> gradle.properties
       - echo 'org.gradle.workers.max=2' >> gradle.properties
-      - export JAVA_HOME=$(dpkg -L openjdk-17-jdk-headless | grep -E '/bin/javac$'
-        | head -1 | sed 's:/bin/javac::') && export PATH=$JAVA_HOME/bin:$PATH && gradle
-        assembleRelease --no-daemon
+      - export JAVA_HOME=$(readlink -f $(which javac) | sed 's:/bin/javac::') &&
+        gradle assembleRelease --no-daemon
     ndk: 27.0.12077973
 
 MaintainerNotes: Binary scanner detects `com/google/firebase` classes from firebase-stub
