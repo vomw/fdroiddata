@@ -5,11 +5,8 @@ AuthorName: Okazakee
 WebSite: https://pearlift.okazakee.dev/
 SourceCode: https://github.com/Okazakee/PearLift
 IssueTracker: https://github.com/Okazakee/PearLift/issues
-RepoType: git
-Repo: https://github.com/Okazakee/PearLift
 
 Summary: Privacy-focused local workout tracker with timers and backups
-
 Description: |-
   PearLift is a local-first workout tracker built for lifters who want fast logging without accounts or cloud lock-in.
 
@@ -29,23 +26,22 @@ Description: |-
   - No analytics or tracking SDKs
   - No Firebase or Google Play Services dependency
 
+RepoType: git
+Repo: https://github.com/Okazakee/PearLift
+
 Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
-    # Expo/React Native project, Android Gradle project lives here.
-    subdir: android
-    # Install JS deps + generate android/ deterministically.
+    subdir: .
+    output: android/app/build/outputs/apk/fdroid/app-fdroid.apk
     prebuild:
-      - cd ..
       - npm install
       - npx --yes expo prebuild --clean --platform android
-      - cd android
-    # Build an unsigned APK variant that does not require the upstream release keystore.
-    build: ./gradlew :app:assembleFdroid
-    output: app/build/outputs/apk/fdroid/app-fdroid.apk
+    build: cd android && ./gradlew :app:assembleFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: fdroid-version.txt|versionCode=(\\d+)|.|versionName=([0-9.]+)
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1
