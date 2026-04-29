@@ -21,13 +21,12 @@ Builds:
     timeout: 36000
     sudo:
       - apt-get update > /dev/null
-      - apt-get install -y -qq python3-requests nodejs npm build-essential cmake
-        golang-go gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev 
-        libbz2-dev libreadline-dev libsqlite3-dev libncurses-dev libffi-dev 
-        liblzma-dev
-      - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O
-        /tmp/gradle.zip && unzip -q /tmp/gradle.zip -d /opt && ln -sf 
-        /opt/gradle-8.13/bin/gradle /usr/local/bin/gradle
+      - apt-get install -y -qq python3-requests nodejs npm build-essential cmake golang-go
+        gcc-multilib g++-multilib unzip wget libssl-dev zlib1g-dev libbz2-dev libreadline-dev
+        libsqlite3-dev libncurses-dev libffi-dev liblzma-dev
+      - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip
+        && unzip -q /tmp/gradle.zip -d /opt && ln -sf /opt/gradle-8.13/bin/gradle
+        /usr/local/bin/gradle
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - cpython@v3.11.9
@@ -38,21 +37,17 @@ Builds:
       - rm -f patches/react-native-blurhash+2.1.2.patch
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
-      - sed -i -e '/firebase/d' 
-        node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src 
-        node_modules/expo-notifications/android
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - APP_VARIANT=production npx expo prebuild --platform android --clean
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - rm -rf 
         android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
-      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" 
-        }' android/app/build.gradle
-      - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> 
-        android/gradle.properties
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
+        android/app/build.gradle
+      - echo 'android.ndk.abiFilters=arm64-v8a,armeabi-v7a' >> android/gradle.properties
       - rm -fr ios
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - sed -i -e '/exclude group.*installreferrer/d' android/app/build.gradle
@@ -79,12 +74,10 @@ Builds:
       - npm install --legacy-peer-deps --loglevel=error
       - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' 
         node_modules/expo-modules-autolinking/android/expo-gradle-plugin/*/build.gradle.kts
-      - sed -i -e '/firebase/d' 
-        node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src 
-        node_modules/expo-notifications/android
-      - sed -i -e '/installreferrer/d' 
-        node_modules/expo-application/android/build.gradle
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - test -f node_modules/expo-application/android/build.gradle && sed -i -e '/installreferrer/d'
+        node_modules/expo-application/android/build.gradle || true
       - pushd $$esbuild$$
       - make esbuild > /dev/null
       - popd
@@ -92,37 +85,30 @@ Builds:
       - mkdir -p node_modules/esbuild/bin
       - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/
       - cp $$esbuild$$/esbuild node_modules/esbuild/bin/esbuild
-      - mkdir -p 
-        node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
-      - mkdir -p 
-        node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a
+      - mkdir -p node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a
       - pushd $$NodejsMobile$$
       - ./tools/android_build.sh $$NDK$$ 24 arm64 > /dev/null 2>&1
       - ./tools/android_build.sh $$NDK$$ 24 arm > /dev/null 2>&1
       - popd
-      - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so 
-        node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
-      - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so 
-        node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
-      - sed -i "/abiFilters/d" 
+      - cp $$NodejsMobile$$/out_android/arm64-v8a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/arm64-v8a/
+      - cp $$NodejsMobile$$/out_android/armeabi-v7a/libnode.so node_modules/nodejs-mobile-react-native/android/libnode/bin/armeabi-v7a/
+      - sed -i "/abiFilters/d" node_modules/nodejs-mobile-react-native/android/build.gradle
+      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" }'
         node_modules/nodejs-mobile-react-native/android/build.gradle
-      - sed -i '/defaultConfig {/a ndk { abiFilters "arm64-v8a", "armeabi-v7a" 
-        }' node_modules/nodejs-mobile-react-native/android/build.gradle
-      - sed -i '/ndkVersion/a \    androidResources {\n ignoreAssetsPattern 
-        "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }' 
+      - sed -i '/ndkVersion/a \    androidResources {\n ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"\n    }'
         node_modules/nodejs-mobile-react-native/android/build.gradle
       - sed -i 's/\.build()$/\.build().toMutableMap()/' 
         node_modules/react-native-blurhash/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
       - cd android
-      - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> 
-        gradle.properties
+      - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> gradle.properties
       - echo 'org.gradle.workers.max=2' >> gradle.properties
-      - export JAVA_HOME=$(readlink -f $(which javac) | sed 's:/bin/javac::') &&
-        gradle assembleRelease --no-daemon
+      - export JAVA_HOME=$(readlink -f $(which javac) | sed 's:/bin/javac::') && gradle
+        assembleRelease --no-daemon
     ndk: 27.0.12077973
 
-MaintainerNotes: Binary scanner detects `com/google/firebase` classes from 
-  firebase-stub srclib.
+MaintainerNotes: Binary scanner detects `com/google/firebase` classes from firebase-stub
+  srclib.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+(-rc-\d+)?$
