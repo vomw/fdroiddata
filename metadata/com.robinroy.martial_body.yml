@@ -22,6 +22,23 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     build: $$flutter$$/bin/flutter build apk --release
+    postbuild: |
+      # Post-build: Remove Google Play Core classes that Flutter's engine includes for optional
+      # deferred components support. These classes are compiled into Flutter's engine (not a separate
+      # dependency) so they can't be excluded at build time. This app doesn't use deferred components,
+      # so the classes are unused and R8 can't remove them because FlutterEngine references the manager.
+      # We remove them from the DEX file after the build completes.
+      if command -v apktool &> /dev/null; then
+        mkdir -p /tmp/apk_strip/{decode,build};
+        cd /tmp/apk_strip/decode;
+        apktool d -f "$APK_PATH" -o . || exit 0;
+        rm -rf smali*/com/google/android/play || true;
+        apktool b . -o ../app-stripped.apk || exit 0;
+        if [ -f ../app-stripped.apk ]; then
+          cp ../app-stripped.apk "$APK_PATH";
+          echo "Removed Play Core classes from APK";
+        fi;
+      fi
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
