@@ -72,8 +72,8 @@ Builds:
       - pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
-      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' 
-        node_modules/expo-modules-autolinking/android/expo-gradle-plugin/*/build.gradle.kts
+      - find node_modules -name 'build.gradle.kts' -exec grep -l 'jvmToolchain(17)'
+        {} + | xargs sed -i 's/jvmToolchain(17)/jvmToolchain(21)/'
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - test -f node_modules/expo-application/android/build.gradle && sed -i -e '/installreferrer/d'
