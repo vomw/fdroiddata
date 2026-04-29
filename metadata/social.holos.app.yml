@@ -27,6 +27,10 @@ Builds:
       - wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip
         && unzip -q /tmp/gradle.zip -d /opt && ln -sf /opt/gradle-8.13/bin/gradle
         /usr/local/bin/gradle
+      - wget -q 
+        'https://api.adoptium.net/v3/binary/latest/17/ga/linux/x64/jdk/hotspot/normal/eclipse'
+        -O /tmp/jdk17.tar.gz && mkdir -p /usr/lib/jvm/java-17 && tar xzf /tmp/jdk17.tar.gz
+        --strip-components=1 -C /usr/lib/jvm/java-17
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - cpython@v3.11.9
@@ -72,8 +76,6 @@ Builds:
       - pip3 install -q requests
       - npm cache clean --force > /dev/null
       - npm install --legacy-peer-deps --loglevel=error
-      - find node_modules -name 'build.gradle.kts' -exec grep -l 'jvmToolchain(17)'
-        {} + | xargs sed -i 's/jvmToolchain(17)/jvmToolchain(21)/'
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - test -f node_modules/expo-application/android/build.gradle && sed -i -e '/installreferrer/d'
@@ -103,6 +105,7 @@ Builds:
       - cd android
       - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m' >> gradle.properties
       - echo 'org.gradle.workers.max=2' >> gradle.properties
+      - echo 'org.gradle.java.installations.paths=/usr/lib/jvm/java-17' >> gradle.properties
       - export JAVA_HOME=$(readlink -f $(which javac) | sed 's:/bin/javac::') && gradle
         assembleRelease --no-daemon
     ndk: 27.0.12077973
