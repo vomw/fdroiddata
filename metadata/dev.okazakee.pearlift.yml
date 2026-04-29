@@ -34,7 +34,7 @@ Builds:
     commit: v1.0.0
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-17-jdk-headless
+      - apt-get install -y nodejs npm
     output: android/app/build/outputs/apk/fdroid/app-fdroid.apk
     prebuild:
       - npm install
@@ -64,7 +64,7 @@ Builds:
       - node_modules/zxing-wasm/dist/
       - node_modules/expo/node_modules/@expo/log-box/node_modules/@expo/dom-webview/local-maven-repo/
       - node_modules/expo/node_modules/expo-asset/local-maven-repo/
-    build: cd android && $HOME/gradlew-fdroid/gradlew-fdroid :app:assembleFdroid
+    build: cd android && $HOME/gradlew-fdroid/gradlew-fdroid -Dorg.gradle.java.installations.auto-download=true :app:assembleFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
