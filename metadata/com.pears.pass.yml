@@ -46,6 +46,7 @@ Builds:
       - npm run build
       - bash scripts/fdroid/patch-gradle.sh armeabi-v7a
       - perl -0777 -i -pe "s|\\n*// Per-ABI versionCode[\\s\\S]*?\\n\\}\\n||" android/app/build.gradle
+      - perl -i -pe 's/versionCode\s+\d+/versionCode $$VERCODE$$/' android/app/build.gradle
       - printf 
         '\nreactNativeArchitectures=armeabi-v7a\nandroid.lint.checkReleaseBuilds=false\nandroid.enableDependencyInfoInApks=false\nVisionCamera_enableCodeScanner=false\n'
         >> android/gradle.properties
@@ -129,6 +130,7 @@ Builds:
       - npm run build
       - bash scripts/fdroid/patch-gradle.sh arm64-v8a
       - perl -0777 -i -pe "s|\\n*// Per-ABI versionCode[\\s\\S]*?\\n\\}\\n||" android/app/build.gradle
+      - perl -i -pe 's/versionCode\s+\d+/versionCode $$VERCODE$$/' android/app/build.gradle
       - printf 
         '\nreactNativeArchitectures=arm64-v8a\nandroid.lint.checkReleaseBuilds=false\nandroid.enableDependencyInfoInApks=false\nVisionCamera_enableCodeScanner=false\n'
         >> android/gradle.properties
