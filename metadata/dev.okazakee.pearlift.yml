@@ -66,13 +66,8 @@ Builds:
       - node_modules/expo/node_modules/expo-asset/local-maven-repo/
     build:
       - cd android
-      - |
-        set -euo pipefail
-
-        # F-Droid buildserver image uses Java 21. React Native's Gradle plugin
-        # aligns toolchains to Java 17 by default; disable that so Gradle uses
-        # the buildserver JDK instead.
-        echo "react.internal.disableJavaVersionAlignment=true" >> gradle.properties
+      - set -euo pipefail
+      - echo "react.internal.disableJavaVersionAlignment=true" >> gradle.properties
       - $HOME/gradlew-fdroid/gradlew-fdroid :app:assembleFdroid
 
 AutoUpdateMode: Version
