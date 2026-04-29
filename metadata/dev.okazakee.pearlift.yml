@@ -32,17 +32,21 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
-    output: android/app/build/outputs/apk/fdroid/app-fdroid.apk
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
+    output: android/app/build/outputs/apk/fdroid/app-fdroid.apk
     prebuild:
       - npm install
       - npx --yes expo prebuild --clean --platform android
+    scandelete:
+      - node_modules/**/prebuilds/
+      - node_modules/**/local-maven-repo/
+      - node_modules/**/*.wasm
     build: cd android && ./gradlew :app:assembleFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: fdroid-version.txt|versionCode=(\\d+)|.|versionName=([0-9.]+)
+UpdateCheckData: fdroid-version.txt|versionCode=([0-9]+)|.|versionName=([0-9.]+)
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1
