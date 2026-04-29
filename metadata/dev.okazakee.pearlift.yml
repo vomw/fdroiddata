@@ -64,8 +64,16 @@ Builds:
       - node_modules/zxing-wasm/dist/
       - node_modules/expo/node_modules/@expo/log-box/node_modules/@expo/dom-webview/local-maven-repo/
       - node_modules/expo/node_modules/expo-asset/local-maven-repo/
-    build: cd android && GRADLE_OPTS='-Dorg.gradle.java.installations.auto-download=true -Dorg.gradle.java.installations.auto-detect=true' $HOME/gradlew-fdroid/gradlew-fdroid
-      :app:assembleFdroid
+    build:
+      - cd android
+      - |
+        set -euo pipefail
+
+        # F-Droid buildserver image uses Java 21. React Native's Gradle plugin
+        # aligns toolchains to Java 17 by default; disable that so Gradle uses
+        # the buildserver JDK instead.
+        echo "react.internal.disableJavaVersionAlignment=true" >> gradle.properties
+      - $HOME/gradlew-fdroid/gradlew-fdroid :app:assembleFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
