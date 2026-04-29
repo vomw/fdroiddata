@@ -22,6 +22,7 @@ Builds:
       - npm -g install yarn
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
+      - sed -i '/"packageManager":/d' package.json
       - yarn install --frozen-lockfile
       - yarn expo prebuild -p android --clean
     scanignore:
