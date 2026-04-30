@@ -66,6 +66,7 @@
           "Radio",
           "Reading",
           "Recipe Manager",
+          "Remote Access",
           "Remote Controller",
           "Religion",
           "Science & Education",
@@ -76,6 +77,7 @@
           "System",
           "Task",
           "Text Editor",
+          "Text to Speech",
           "Theming",
           "Time",
           "Translation & Dictionary",
@@ -790,6 +792,39 @@
       }
     },
     {
+      "anyOf": [
+        {
+          "required": [
+            "Binaries"
+          ]
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "required": [
+                  "binary"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "not": {
+                  "required": [
+                    "binary"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "if": {
         "properties": {
           "UpdateCheckMode": {
@@ -912,7 +947,6 @@
               "NonFreeDep",
               "NonFreeNet",
               "NoSourceSince",
-              "NSFW",
               "TetheredNet",
               "Tracking"
             ]
@@ -923,7 +957,7 @@
         {
           "type": "object",
           "patternProperties": {
-            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|NSFW|TetheredNet|Tracking)$": {
+            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|TetheredNet|Tracking)$": {
               "$ref": "#/definitions/localized_string"
             }
           },
