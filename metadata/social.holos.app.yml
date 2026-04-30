@@ -78,8 +78,11 @@ Builds:
       - npm install --legacy-peer-deps --loglevel=error
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
-      - test -f node_modules/expo-application/android/build.gradle && sed -i -e '/installreferrer/d'
-        node_modules/expo-application/android/build.gradle || true
+      - npm install expo-application --legacy-peer-deps --loglevel=error
+      - sed -i '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/import com.android.installreferrer/d' -e '/import android.os.RemoteException/d'
+        -e '/getInstallReferrerAsync/,/^    }$/d' 
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - pushd $$esbuild$$
       - make esbuild > /dev/null
       - popd
