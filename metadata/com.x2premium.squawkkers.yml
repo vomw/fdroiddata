@@ -1,0 +1,50 @@
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Internet
+License: MIT
+AuthorName: X2premium
+AuthorEmail: 104212756+X2premium@users.noreply.github.com
+WebSite: https://github.com/X2premium/squawkkers-public
+SourceCode: https://github.com/X2premium/squawkkers-public
+IssueTracker: https://github.com/X2premium/squawkkers-public/issues
+Changelog: https://github.com/X2premium/squawkkers-public/releases
+
+AutoName: Squawkkers
+Description: |-
+  Squawkkers is an open-source client for reading X/Twitter content
+  without requiring a first-party app account session.
+
+  Features include:
+  * Chronological feed from subscriptions
+  * Profile browsing (Tweets, Tweets & Replies, Media, Saved)
+  * Search and trends
+  * Local saved tweets
+  * Light and dark themes
+
+  This app depends on network APIs operated by a proprietary service.
+
+RepoType: git
+Repo: https://github.com/X2premium/squawkkers-public.git
+
+Builds:
+  - versionName: 3.8.9
+    versionCode: 52
+    commit: 3.8.9
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.7
+    rm:
+      - ios/build
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run intl_utils:generate
+    build: $$flutter$$/bin/flutter build apk --dart-define=app.flavor=fdroid --release
+      --no-tree-shake-icons
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 3.8.9
+CurrentVersionCode: 52
