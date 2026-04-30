@@ -14,15 +14,13 @@ Builds:
     commit: v2.2.1
     subdir: android
     sudo:
-      - apt-get update || true
-      - apt-get install -y curl
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-      - apt-get install -y nodejs
+      - apt-get update
+      - apt-get install -y npm
     init:
-      # Volvemos a la raíz para instalar y compilar la web antes de entrar a Android
-      - cd .. && npm install
-      - cd .. && npm run build
-      - cd .. && npx cap sync android
+      - cd ..
+      - npm install
+      - npm run build
+      - npx cap sync android
     gradle:
       - yes
 
