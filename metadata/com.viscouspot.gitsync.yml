@@ -15,7 +15,7 @@ Repo: https://github.com/ViscousPot/GitSync.git
 Builds:
   - versionName: 1.8.55
     versionCode: 18551
-    commit: 1bcbeb559f97d4ede47cd15ec05f664e9d0a3cc8
+    commit: a398867f173b8531ac4cf1f8ea92777f926c0b31
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -58,6 +58,7 @@ Builds:
         lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - rm -rf rust/target
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
     scandelete:
@@ -69,7 +70,12 @@ Builds:
       - pushd $repo/GitSync
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export CARGO_ENCODED_RUSTFLAGS=$(printf '%s\x1f%s\x1f%s' "--remap-path-prefix=$HOME/.cargo/registry/src=/cargo/registry/src"
+        "--remap-path-prefix=$repo/GitSync=." "-Ccodegen-units=1")
+      - export SOURCE_DATE_EPOCH=$(git -C $repo/GitSync log -1 --pretty=%ct)
       - flutter_rust_bridge_codegen generate
+      - git checkout HEAD -- rust/src/frb_generated.rs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
@@ -77,7 +83,7 @@ Builds:
 
   - versionName: 1.8.55
     versionCode: 18552
-    commit: 1bcbeb559f97d4ede47cd15ec05f664e9d0a3cc8
+    commit: a398867f173b8531ac4cf1f8ea92777f926c0b31
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -120,6 +126,7 @@ Builds:
         lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - rm -rf rust/target
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
     scandelete:
@@ -131,7 +138,12 @@ Builds:
       - pushd $repo/GitSync
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export CARGO_ENCODED_RUSTFLAGS=$(printf '%s\x1f%s\x1f%s' "--remap-path-prefix=$HOME/.cargo/registry/src=/cargo/registry/src"
+        "--remap-path-prefix=$repo/GitSync=." "-Ccodegen-units=1")
+      - export SOURCE_DATE_EPOCH=$(git -C $repo/GitSync log -1 --pretty=%ct)
       - flutter_rust_bridge_codegen generate
+      - git checkout HEAD -- rust/src/frb_generated.rs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
@@ -139,7 +151,7 @@ Builds:
 
   - versionName: 1.8.55
     versionCode: 18553
-    commit: 1bcbeb559f97d4ede47cd15ec05f664e9d0a3cc8
+    commit: a398867f173b8531ac4cf1f8ea92777f926c0b31
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -182,6 +194,7 @@ Builds:
         lib/constant/secrets.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - rm -rf rust/target
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
     scandelete:
@@ -193,7 +206,12 @@ Builds:
       - pushd $repo/GitSync
       - export PATH="$HOME/.cargo/bin:$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export CARGO_ENCODED_RUSTFLAGS=$(printf '%s\x1f%s\x1f%s' "--remap-path-prefix=$HOME/.cargo/registry/src=/cargo/registry/src"
+        "--remap-path-prefix=$repo/GitSync=." "-Ccodegen-units=1")
+      - export SOURCE_DATE_EPOCH=$(git -C $repo/GitSync log -1 --pretty=%ct)
       - flutter_rust_bridge_codegen generate
+      - git checkout HEAD -- rust/src/frb_generated.rs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
       - popd
       - mv $repo/GitSync com.viscouspot.gitsync
