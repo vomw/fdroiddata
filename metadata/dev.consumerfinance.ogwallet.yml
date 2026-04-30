@@ -1,0 +1,37 @@
+Categories:
+  - Finance Manager
+  - Money
+  - Wallet
+License: GPL-3.0-only
+AuthorName: techlord991
+SourceCode: https://github.com/consumerfinance/ogwallet
+IssueTracker: https://github.com/consumerfinance/ogwallet/issues
+Translation: https://hosted.weblate.org/engage/og-wallet
+Changelog: https://github.com/consumerfinance/ogwallet/releases
+Donate: https://patreon.com/OgWallet
+
+AutoName: OG Wallet
+
+RepoType: git
+Repo: https://github.com/consumerfinance/ogwallet
+Binaries: 
+  https://github.com/consumerfinance/ogwallet/releases/download/%v/og-wallet-%v-universal.apk
+
+Builds:
+  - versionName: v0.5.2
+    versionCode: 3
+    commit: 5fbcdbd9688457da4fc409704737bb92ac0a5cd0
+    subdir: composeApp
+    gradle:
+      - yes
+    rm:
+      - iosApp
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+AllowedAPKSigningKeys: 91dd63e8fcd6033576b46d48c75fa983735c8953cf3973e1a70153e5bc24e0d9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: gradle/libs.versions.toml|versionCode\s=\s"(\d+)"|.|versionName\s=s\"(.*)"
+CurrentVersion: v0.5.2
+CurrentVersionCode: 3
