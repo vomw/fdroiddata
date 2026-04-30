@@ -34,6 +34,7 @@ Builds:
       - rm -rf modules/play-store-updates
       - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund
       - node scripts/fdroid_patch_android_jvm_targets.js
+      - test ! -f modules/notification-open-intents/android/build.gradle || perl -0pi -e 's/^android \{\n/android {\n  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }\n  kotlinOptions { jvmTarget = JavaVersion.VERSION_17.toString() }\n/m' modules/notification-open-intents/android/build.gradle
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -69,6 +70,7 @@ Builds:
       - rm -rf modules/play-store-updates
       - npm ci --workspaces=false --legacy-peer-deps --no-audit --no-fund
       - node scripts/fdroid_patch_android_jvm_targets.js
+      - test ! -f modules/notification-open-intents/android/build.gradle || perl -0pi -e 's/^android \{\n/android {\n  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }\n  kotlinOptions { jvmTarget = JavaVersion.VERSION_17.toString() }\n/m' modules/notification-open-intents/android/build.gradle
     scanignore:
       - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/@react-native-async-storage/async-storage/android/build.gradle
