@@ -1,0 +1,58 @@
+Categories:
+  - Finance Manager
+License: MIT
+AuthorName: DevOpen Ltd.
+AuthorEmail: info@devopen.io
+WebSite: https://subzilla.devopen.io/
+SourceCode: https://github.com/DevOpen-io/SubZilla
+IssueTracker: https://github.com/DevOpen-io/SubZilla/issues
+
+AutoName: SubZilla
+
+RepoType: git
+Repo: https://github.com/DevOpen-io/SubZilla.git
+Binaries: https://github.com/DevOpen-io/SubZilla/releases/download/%v%2B%c/app-release.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 70
+    commit: 1e934ae4757b6e70c51b238825ea8ad592fba66d
+    sudo:
+      - mkdir -p /home/runner/work/SubZilla
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - sed -i -e '/jvmToolchain/s/17/21/' android/app/build.gradle.kts
+      - export repo=/home/runner/work/SubZilla/SubZilla
+      - cd ..
+      - mv io.devopen.subzilla $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export FLUTTER_VERSION=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout $FLUTTER_VERSION
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - popd
+      - mv $repo io.devopen.subzilla
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/SubZilla/SubZilla
+      - cd ..
+      - mv io.devopen.subzilla $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo io.devopen.subzilla
+
+AllowedAPKSigningKeys: 8f1bc5bd22510a6e89ac0e92c9946d1723f90abf0bca911745a2d102775816df
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 70
