@@ -1,0 +1,40 @@
+Categories:
+  - Science & Education
+  - Security
+License: GPL-3.0-only
+AuthorName: Association TUTODECODE
+AuthorWebSite: https://www.tutodecode.org
+SourceCode: https://github.com/TUTODECODE-OFFICIAL/TUTODECODE-APP
+IssueTracker: https://github.com/TUTODECODE-OFFICIAL/TUTODECODE-APP/issues
+
+AutoName: TUTODECODE
+Description: TUTODECODE est une plateforme d'apprentissage technique et de cybersécurité
+  conçue pour fonctionner sans internet. Inclut Ghost AI (IA locale) et des simulateurs.
+
+RepoType: git
+Repo: https://github.com/TUTODECODE-OFFICIAL/TUTODECODE-APP
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 3
+    commit: v1.0.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y curl git unzip xz-utils libglu1-mesa
+    gradle:
+      - yes
+    output: ../build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.4
+    prebuild:
+      - export PATH="$PATH:$$flutter$$/bin"
+      - flutter config --no-analytics
+      - flutter pub get
+      - sed -i "/flutter_native_splash/d" ../android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version\s*:\s*[0-9.]+\+(\d+)|pubspec.yaml|version\s*:\s*([0-9.]+)
+CurrentVersion: 1.0.3
+CurrentVersionCode: 3
