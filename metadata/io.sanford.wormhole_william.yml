@@ -1,0 +1,55 @@
+Categories:
+  - File Transfer
+  - Internet
+License: MIT
+AuthorName: Peter Sanford
+AuthorEmail: contact@wormholewilliam.com
+AuthorWebSite: https://petersdanceparty.com
+WebSite: https://wormholewilliam.com
+SourceCode: https://github.com/psanford/wormhole-william-mobile
+IssueTracker: https://github.com/psanford/wormhole-william-mobile/issues
+Changelog: https://github.com/psanford/wormhole-william-mobile/releases
+
+AutoName: Wormhole William
+
+RepoType: git
+Repo: https://github.com/psanford/wormhole-william-mobile
+Binaries: 
+  https://github.com/psanford/wormhole-william-mobile/releases/download/v%v/wormhole-william.release.apk
+
+Builds:
+  - versionName: 2.1.0
+    versionCode: 21
+    commit: 3c27948e36f14ec7470b8b401940a7cc563285a7
+    sudo:
+      - apt-get update
+      - apt-get install -y nix-setup-systemd nix
+      - chown -R vagrant /nix
+      - mkdir -p /home/psanford
+      - chown -R vagrant /home/psanford
+    output: wormhole-william-unsigned-aligned.apk
+    prebuild:
+      - mkdir -p ~/.config/nix
+      - echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+      - sed -i -e '/--ks/,+3d' Makefile
+      - sed -i -e 's/\.\/gradlew/gradle/' Makefile
+      - sed -i -e "s/-ldflags='/-ldflags='-buildid= /" Makefile
+      - sed -i -e "s/bind -v/bind -v -trimpath/" Makefile
+    build:
+      - export repo=/home/psanford/projects
+      - mkdir -p $repo
+      - cd ..
+      - mv io.sanford.wormhole_william $repo/wormhole-william-mobile
+      - pushd $repo/wormhole-william-mobile
+      - nix develop -c make init
+      - nix develop -c make release
+      - popd
+      - mv $repo/wormhole-william-mobile io.sanford.wormhole_william
+
+AllowedAPKSigningKeys: 4fbddd75065073634bd53d266fc43e7c616e40f4a448bbda2faf60d765eb3a0e
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: android/app/build.gradle.kts|versionCode\s=\s(\d+)||v([\d.]+)
+CurrentVersion: 2.1.0
+CurrentVersionCode: 21
