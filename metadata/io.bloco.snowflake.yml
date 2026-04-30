@@ -21,9 +21,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
-    prebuild: sed -i -e 's/include(.*)/include("armeabi-v7a")/' -e 's/isUniversalApk
-      = true/isUniversalApk = false/' build.gradle.kts
+    prebuild: sed -i -e 's/include(.*)/include("armeabi-v7a")/' -e '/isUniversalApk/s/true/false/'
+      build.gradle.kts
 
   - versionName: '1.2'
     versionCode: 12
@@ -31,9 +30,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-    prebuild: sed -i -e 's/include(.*)/include("arm64-v8a")/' -e 's/isUniversalApk
-      = true/isUniversalApk = false/' build.gradle.kts
+    prebuild: sed -i -e 's/include(.*)/include("arm64-v8a")/' -e '/isUniversalApk/s/true/false/'
+      build.gradle.kts
 
   - versionName: '1.2'
     versionCode: 13
@@ -41,9 +39,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-x86-release-unsigned.apk
-    prebuild: sed -i -e 's/include(.*)/include("x86")/' -e 's/isUniversalApk = true/isUniversalApk
-      = false/' build.gradle.kts
+    prebuild: sed -i -e 's/include(.*)/include("x86")/' -e '/isUniversalApk/s/true/false/'
+      build.gradle.kts
 
   - versionName: '1.2'
     versionCode: 14
@@ -51,9 +48,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-x86_64-release-unsigned.apk
-    prebuild: sed -i -e 's/include(.*)/include("x86_64")/' -e 's/isUniversalApk =
-      true/isUniversalApk = false/' build.gradle.kts
+    prebuild: sed -i -e 's/include(.*)/include("x86_64")/' -e '/isUniversalApk/s/true/false/'
+      build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -62,6 +58,5 @@ VercodeOperation:
   - 2 + %c
   - 3 + %c
   - 4 + %c
-UpdateCheckData: app/build.gradle.kts|versionCode\s=\s(\d+)|.|versionName\s=\s"(.*)"
 CurrentVersion: '1.2'
-CurrentVersionCode: 10
+CurrentVersionCode: 14
