@@ -28,15 +28,20 @@ Builds:
       - snap
     prebuild:
       - sed -i -e '/org.gradle.java.home/d' android/gradle.properties
-      - sed -i -e '/in_app_review/d' pubspec.yaml
+      - sed -i -e '/^[[:space:]]*in_app_review:/d' pubspec.yaml
       - sed -i -e '/in_app_review/,/version:/d' pubspec.lock
-      - sed -i -e '/import.*in_app_review.dart/d' -e 's/InAppReview/dynamic/g' -e
-        's/dynamic.instance/null/g' -e 's/await inAppReview.isAvailable()/false/g'
-        lib/features/home/home_screen.dart
+      - sed -i -e '/import.*in_app_review.dart/d' lib/features/home/home_screen.dart
+      - sed -i -e 's/InAppReview/dynamic/g' lib/features/home/home_screen.dart
+      - sed -i -e 's/dynamic.instance/null/g' lib/features/home/home_screen.dart
+      - sed -i -e 's/await inAppReview.isAvailable()/false/g' lib/features/home/home_screen.dart
       - mkdir -p lib/core/utils
-      - echo "import 'package:flutter/material.dart'; import 'package:hdict/features/settings/settings_provider.dart';
-        class ReviewHelper { static Future<void> maybeRequestReview(BuildContext context,
-        SettingsProvider settings) async {} }" > lib/core/utils/review_helper.dart
+      - echo "import 'package:flutter/material.dart';" > lib/core/utils/review_helper.dart
+      - echo "import 'package:hdict/features/settings/settings_provider.dart';" >>
+        lib/core/utils/review_helper.dart
+      - echo "class ReviewHelper {" >> lib/core/utils/review_helper.dart
+      - echo "  static Future<void> maybeRequestReview(BuildContext context, SettingsProvider
+        settings) async {}" >> lib/core/utils/review_helper.dart
+      - echo "}" >> lib/core/utils/review_helper.dart
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -49,5 +54,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.5.16
-CurrentVersionCode: 40
+CurrentVersion: 1.5.17
+CurrentVersionCode: 41
