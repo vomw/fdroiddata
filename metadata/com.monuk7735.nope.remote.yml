@@ -2,6 +2,7 @@ AntiFeatures:
   NonFreeNet:
     en-US: Rely on cdn.jsdelivr.net for irdb data.
 Categories:
+  - Remote Controller
   - System
 License: GPL-3.0-only
 AuthorName: Monu Kumar
@@ -15,7 +16,8 @@ AutoName: Nope Remote
 
 RepoType: git
 Repo: https://github.com/monuk7735/nope-remote.git
-Binaries: https://github.com/monuk7735/nope-remote/releases/download/v%v/NopeRemote-v%v.apk
+Binaries: 
+  https://github.com/monuk7735/nope-remote/releases/download/v%v/NopeRemote-v%v.apk
 
 Builds:
   - versionName: '1.1'
@@ -70,9 +72,22 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: '2.2'
+    versionCode: 22
+    commit: 9ce9ea8b6b80e69bd55c81e92adf2d39aaaeb5fa
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 1099818177f54a4901b9c44884ecc0dcd135e631a7cdea0094e8059f1b0d016e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.1'
-CurrentVersionCode: 21
+CurrentVersion: '2.2'
+CurrentVersionCode: 22
