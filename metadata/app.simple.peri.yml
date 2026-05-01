@@ -1243,7 +1243,9 @@ Builds:
     gradle:
       - prod
     binary: https://github.com/Hamza417/Peristyle/releases/download/%v/app-prod-release.apk
-    prebuild: sed -i -e '/signingConfigs/,+1d' build.gradle
+    prebuild:
+      - sed -i -e '/signingConfigs/,+1d' build.gradle
+      - sed -i -e '/foojay/d' ../settings.gradle
     postbuild:
       - curl -Lo upstream.apk 
         https://github.com/Hamza417/Peristyle/releases/download/$$VERSION$$/app-prod-release.apk
