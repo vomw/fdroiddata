@@ -1,0 +1,68 @@
+Categories:
+  - Local Media Player
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Siar
+AuthorEmail: support@amphi.site
+AuthorWebSite: https://github.com/siar1234
+WebSite: https://amphi.site
+SourceCode: https://github.com/amphi2024/music
+IssueTracker: https://github.com/amphi2024/music/issues
+
+AutoName: Music
+
+RepoType: git
+Repo: https://github.com/amphi2024/music.git
+
+Builds:
+  - versionName: 2.1.0
+    versionCode: 4
+    commit: dd2fe3877f078b90489b765b2aa3063f037dd57e
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/amphi2024/music/releases/download/v%v/Music-%v-Android.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+      - test
+      - snap
+      - scripts
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.music /tmp/build/amphi-music
+      - pushd /tmp/build/amphi-music/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+      - flutter precache
+      - popd
+      - mv /tmp/build/amphi-music com.amphi.music
+    scandelete:
+      - .pub-cache
+    build:
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.music /tmp/build/amphi-music
+      - pushd /tmp/build/amphi-music/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter build apk
+      - popd
+      - mv /tmp/build/amphi-music com.amphi.music
+
+AllowedAPKSigningKeys: a179c8625d0f82fd81b7945d935ddc4fd6e3fcca9041cc6416237f236510f8bc
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[\d.]+
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.1.0
+CurrentVersionCode: 4
