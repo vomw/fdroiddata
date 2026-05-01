@@ -108,11 +108,26 @@ Builds:
       $$OUT$$ 
       'assets/composeResources/githubstore.composeapp.generated.resources/drawable/compose-multiplatform.xml'
 
+  - versionName: 1.8.0
+    versionCode: 15
+    commit: df630a076c136eda58075762f167322c1b0367eb
+    subdir: composeApp
+    gradle:
+      - yes
+    binary: 
+      https://github.com/OpenHub-Store/GitHub-Store/releases/download/%v/GitHub-Store-%v.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 
+      'assets/composeResources/githubstore.composeapp.generated.resources/drawable/compose-multiplatform.xml'
+
 AllowedAPKSigningKeys: b7f28e198e48c193b038c65d92ddf7bc077b0db59ebc9b250a6dac48c11803ca
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle/libs.versions.toml|projectVersionCode = "(\d+)"|.|projectVersionName
   = "(.*)"
-CurrentVersion: 1.7.0
-CurrentVersionCode: 14
+CurrentVersion: 1.8.0
+CurrentVersionCode: 15
