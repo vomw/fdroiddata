@@ -1,0 +1,71 @@
+Categories:
+  - Gallery
+  - Graphics
+License: GPL-3.0-or-later
+AuthorName: Siar
+AuthorEmail: support@amphi.site
+AuthorWebSite: https://github.com/siar1234
+WebSite: https://amphi.site
+SourceCode: https://github.com/amphi2024/photos
+IssueTracker: https://github.com/amphi2024/photos/issues
+
+AutoName: Photos
+
+RepoType: git
+Repo: https://github.com/amphi2024/photos.git
+
+Builds:
+  - versionName: 2.1.0
+    versionCode: 5
+    commit: 59d03abe7e5df725bb4a10930cf213fe2e120d4c
+    sudo:
+      - mkdir -p /tmp/build
+      - chown vagrant /tmp/build
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/amphi2024/photos/releases/download/v%v/Photos-%v-Android.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+      - test
+      - snap
+      - scripts
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.photos /tmp/build/amphi-photos
+      - pushd /tmp/build/amphi-photos/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+      - flutter precache
+      - popd
+      - mv /tmp/build/amphi-photos com.amphi.photos
+    scandelete:
+      - .pub-cache
+    build:
+      - mkdir -p /tmp/build
+      - cd ..
+      - mv com.amphi.photos /tmp/build/amphi-photos
+      - pushd /tmp/build/amphi-photos/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter build apk
+      - popd
+      - mv /tmp/build/amphi-photos com.amphi.photos
+
+AllowedAPKSigningKeys: ff05efe24da56df976f7a7972c4ab412e77071b5e9077029f2b0dfbb77df11a6
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[\d.]+
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.1.0
+CurrentVersionCode: 5
