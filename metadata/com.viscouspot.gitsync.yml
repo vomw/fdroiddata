@@ -12,6 +12,37 @@ AutoName: GitSync
 RepoType: git
 Repo: https://github.com/ViscousPot/GitSync.git
 
+MaintainerNotes: |
+  Reproducibility notes for this build:
+
+  cargo-expand 1.0.121 is installed because flutter_rust_bridge_codegen
+  calls `cargo expand` during codegen to expand Rust macros. The version
+  is pinned to match upstream CI.
+
+  `rm -rf rust/target` in prebuild is required because `cargo expand`
+  compiles the Rust crate into rust/target before the build section
+  exports the reproducibility rustflags (--remap-path-prefix and
+  -Ccodegen-units=1). Leaving those artifacts in place lets cargo's
+  incremental cache reuse them when `flutter build apk` runs, so the
+  final librust_lib_GitSync.so ends up non-reproducible.
+
+  Each ABI is built as its own metadata entry, with a single
+  --target-platform passed to `flutter build apk --split-per-abi`.
+  Upstream CI does the same. Building all ABIs in one invocation
+  changes the Gradle task graph and the resulting .so bytes.
+
+  The `mv` calls between $repo/GitSync and com.viscouspot.gitsync place
+  the source tree at /home/runner/work/GitSync/GitSync, which is the
+  absolute path upstream CI uses. CARGO_ENCODED_RUSTFLAGS applies
+  --remap-path-prefix against that exact path, so the layout has to
+  match for the substitution to take effect.
+
+  lib/constant/secrets.dart is generated in prebuild from public OAuth
+  client identifiers. The two GitHub `clientSecret` values look
+  sensitive but GitHub treats client secrets for installed-app OAuth
+  flows as public; the same values appear in the upstream source repo's
+  CI.
+
 Builds:
   - versionName: 1.8.55
     versionCode: 18551
