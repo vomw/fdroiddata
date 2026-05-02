@@ -23,14 +23,15 @@ Builds:
     init: cp -r . /home/runner/work/slow_mail/slow_mail
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@db50e20168db8fee486b9abf32fc912de3bc5b6a
+      - flutter@stable
     prebuild:
       - export SOURCE_DATE_EPOCH=1776113449
+      - export FLUTTER_VERSION=$(cat flutter_version)
       - export repo=/home/runner/work/slow_mail/slow_mail
       - cd ..
       - mv com.theripper.slowmail $repo
       - pushd $repo
-      - version=db50e20168db8fee486b9abf32fc912de3bc5b6a
+      - version=$FLUTTER_VERSION
       - '[[ $version ]]'
       - git -C $$flutter$$ reset --hard $version
       - export PUB_CACHE=$(pwd)/.pub-cache
