@@ -14,9 +14,9 @@ Binaries:
   https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/motivational-app-direct-v%v+%c.apk
 
 Builds:
-  - versionName: 2.0.6
-    versionCode: 20006
-    commit: 757ce47798ec1cba68b8915f0ab6f3e2ce951c32
+  - versionName: 2.0.7
+    versionCode: 20007
+    commit: f76cdf4cf35470ddd9ca0f8b83224633f2a1d465
     output: build/app/outputs/flutter-apk/app-direct-release.apk
     srclibs:
       - flutter@stable
@@ -30,6 +30,7 @@ Builds:
       - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -37,16 +38,14 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor direct --build-name
-        2.0.6 --build-number 20006 --dart-define=DISTRIBUTION_CHANNEL=direct 
-        --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --build-name 2.0.7
+        --build-number 20007 --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
         --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
 
-AllowedAPKSigningKeys: 
-  410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
+AllowedAPKSigningKeys: 410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.6
-CurrentVersionCode: 20006
+CurrentVersion: 2.0.7
+CurrentVersionCode: 20007
