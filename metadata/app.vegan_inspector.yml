@@ -1,0 +1,60 @@
+Categories:
+  - Internet
+  - Sports & Health
+License: GPLv3
+AuthorName: aikhae
+AuthorEmail: mail@vegan-inspector.app
+WebSite: https://vegan-inspector.app/
+SourceCode: https://codeberg.org/Vegan-Inspector/app
+IssueTracker: https://codeberg.org/Vegan-Inspector/app/issues
+
+AutoName: Vegan Inspector
+
+RepoType: git
+Repo: https://codeberg.org/Vegan-Inspector/app
+Binaries: 
+  https://codeberg.org/Vegan-Inspector/app/releases/download/v%v/vegan-inspector%v.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 2292e5e5cbb48ec0391bbae1b6cb52afcc42352f
+    sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/vegan-inspector
+      - mkdir -p $repo
+      - cd ..
+      - mv app.vegan_inspector $repo/vegan-inspector
+      - pushd $repo/vegan-inspector
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv $repo/vegan-inspector app.vegan_inspector
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/vegan-inspector
+      - cd ..
+      - mv app.vegan_inspector $repo/vegan-inspector
+      - pushd $repo/vegan-inspector
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+      - popd
+      - mv $repo/vegan-inspector app.vegan_inspector
+
+AllowedAPKSigningKeys: bf2703e94ac4982472ffd15f232a89692c877fee7aa795a1f91bafc7b24ff090
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
