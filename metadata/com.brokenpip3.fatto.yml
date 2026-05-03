@@ -1,0 +1,53 @@
+Categories:
+  - Task
+  - Time
+  - Writing
+License: GPL-3.0-only
+AuthorName: brokenpip3
+AuthorEmail: brokenpip3@gmail.com
+AuthorWebSite: https://www.brokenpip3.com
+SourceCode: https://github.com/brokenpip3/fatto
+IssueTracker: https://github.com/brokenpip3/fatto/issues
+Changelog: https://github.com/brokenpip3/fatto/releases
+
+AutoName: Fatto
+
+RepoType: git
+Repo: https://github.com/brokenpip3/fatto.git
+
+Builds:
+  - versionName: 0.6.4
+    versionCode: 13
+    commit: v0.6.4
+    subdir: android
+    sudo: apt-get install -y gcc libc6-dev
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rustup@1.28.2
+    build:
+      - export CARGO_HOME=$HOME/.cargo
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target aarch64-linux-android
+        --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - cargo install --locked cargo-ndk
+      - cd ../rust/taskchampion-android
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t arm64-v8a -t x86_64 -o ../../android/app/src/main/jniLibs build
+        --release
+      - cargo build --release
+      - cargo run --bin uniffi-bindgen generate --library target/release/libtaskchampion_android.so
+        --language kotlin --no-format --out-dir ../../android/app/src/main/uniffi
+      - cd ../../android
+    ndk: r26b
+
+AllowedAPKSigningKeys: 61be3c725348a5cdf027e9a122d8319d1ebdae0d39c8224f436a8b9ff0475434
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: android/version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.+)
+CurrentVersion: 0.6.4
+CurrentVersionCode: 13
