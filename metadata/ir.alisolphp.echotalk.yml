@@ -1,6 +1,6 @@
 Categories:
-  - Education
-License: GPL-3.0
+  - Science & Education
+License: GPL-3.0-or-later
 AuthorName: Ali Sol
 AuthorEmail: alisolphp@gmail.com
 WebSite: https://echotalk.ir/EchoTalk/
@@ -12,7 +12,23 @@ Repo: https://github.com/alisolphp/echotalk-twa
 
 Binaries: https://echotalk.ir/s3/EchoTalk/EchoTalk.apk
 
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
+
+AllowedAPKSigningKeys:
+  - 47:DF:61:9F:8F:03:83:E3:56:FA:4A:45:4C:5E:04:2C:19:CA:50:A6:DB:7C:5A:D3:08:5E:47:79:C9:7C:CC:E6
+
+UpdateCheckData: Tags
+
 Builds:
   - versionName: '1.0'
     versionCode: 1
-    commit: v1.0
+    commit: main
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y sdkmanager
+      - yes | sdkmanager --licenses
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0"
+    gradle:
+      - yes
