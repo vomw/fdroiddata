@@ -38,29 +38,10 @@ Builds:
       - node_modules/expo-sqlite/web/wa-sqlite/
       - node_modules/expo-sqlite/ios/
     scandelete:
-      - node_modules/@biomejs/cli-linux-x64/
-      - node_modules/hermes-compiler/hermesc/osx-bin/
-      - node_modules/hermes-compiler/hermesc/win64-bin/
-      - node_modules/fb-dotslash/bin/
-      - node_modules/expo/template.tgz
-      - node_modules/**/prebuilds/
-      - node_modules/**/local-maven-repo/
-      - node_modules/@expo/dom-webview/local-maven-repo/
+      - node_modules
     build:
-      - cd android
-      - set -euo pipefail
-      - export NODE_ENV=production
-      - mkdir -p "$HOME/jdk-17" "$HOME/.gradle"
-      - test -x "$HOME/jdk-17/bin/java" || 
-        JDK17_URL="https://api.adoptium.net/v3/binary/latest/17/ga/linux/x64/jdk/hotspot/normal/"
-      - test -x "$HOME/jdk-17/bin/java" || JDK17_URL="${JDK17_URL}eclipse"
-      - test -x "$HOME/jdk-17/bin/java" || (curl -fsSL --retry 3 -o "$HOME/jdk17.tgz"
-        "$JDK17_URL" && tar -xzf "$HOME/jdk17.tgz" -C "$HOME/jdk-17" --strip-components=1)
-      - echo "org.gradle.java.installations.auto-detect=true" >> "$HOME/.gradle/gradle.properties"
-      - echo "org.gradle.java.installations.auto-download=false" >> "$HOME/.gradle/gradle.properties"
-      - echo "org.gradle.java.installations.paths=$HOME/jdk-17" >> "$HOME/.gradle/gradle.properties"
-      - echo "react.internal.disableJavaVersionAlignment=true" >> gradle.properties
-      - $HOME/gradlew-fdroid/gradlew-fdroid :app:assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+      - cd android/app
+      - gradle assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
