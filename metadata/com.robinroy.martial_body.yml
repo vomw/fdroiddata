@@ -13,12 +13,15 @@ Repo: https://github.com/BloodBlinker/martial-body
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0
+    commit: 037f201392499b36881bbb9f2206bff9725bdf17
     subdir: martial_body
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     build: $$flutter$$/bin/flutter build apk --release
