@@ -1,0 +1,42 @@
+Categories:
+  - Internet
+  - Science & Education
+License: MIT
+AuthorName: Nous Research
+WebSite: https://nousresearch.com/
+SourceCode: https://github.com/adybag14-cyber/hermes-agent
+IssueTracker: https://github.com/adybag14-cyber/hermes-agent/issues
+Changelog: https://github.com/adybag14-cyber/hermes-agent/releases
+
+Name: Hermes Agent
+AutoName: Hermes
+
+RepoType: git
+Repo: https://github.com/adybag14-cyber/hermes-agent.git
+Binaries: 
+  https://github.com/adybag14-cyber/hermes-agent/releases/download/v%v/hermes-agent-android-v%v-universal.apk
+
+Builds:
+  - versionName: 0.13.12
+    versionCode: 131290
+    commit: 5514691f0820b53c767ea8a4fcc6aa95f2bb4682
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip
+    gradle:
+      - yes
+    rm:
+      - build
+    prebuild: sed -i -e 's/System.getenv("HERMES_RELEASE_TAG").orEmpty().trim()/"v$$VERSION$$"/'
+      build.gradle.kts
+
+AllowedAPKSigningKeys: dfe2d23befba2eebd96bb5737be109de66b08fdb26bfc2b8c84114df6421bdaf
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v0\.13\.\d+$
+VercodeOperation:
+  - 130000 + %c * 100 + 90
+UpdateCheckData: '|^v0\.13\.(\d+)$||^v(.*)$'
+CurrentVersion: 0.13.12
+CurrentVersionCode: 131290
