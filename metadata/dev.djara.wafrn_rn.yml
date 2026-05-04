@@ -3450,7 +3450,11 @@ Builds:
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
-      - apt-get install -y npm ninja-build bzip2 xz-utils
+      - apt-get install -y ninja-build bzip2 xz-utils
+      - echo "deb https://deb.debian.org/debian forky ma
+in" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
       - npm install -g corepack
     init:
       - cd ../..
