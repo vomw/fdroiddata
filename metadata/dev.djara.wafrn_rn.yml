@@ -3501,7 +3501,6 @@ Builds:
     gradleprops:
       - reactNativeArchitectures=arm64-v8a
 
-
   - versionName: 1.13.0
     versionCode: 10130001
     commit: 6d5696e170a2d5659d43e56fb60d9eb584c86adc
@@ -3520,13 +3519,12 @@ Builds:
       - pnpm uninstall expo-notifications expo-dev-client
     gradle:
       - yes
-    binary: 
-      https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     srclibs:
       - react-native-skia@v2.0.0
     rm:
       - ios
-      - node_modules/@shopify/react-native-skia/libs
+      - node_modules/@shopify/react-native-skia/libs/android
+      - node_modules/@shopify/react-native-skia/libs/apple
     prebuild:
       - cd ../..
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
@@ -3539,11 +3537,15 @@ Builds:
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/react-native/ReactAndroid/build.gradle.kts
+    binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     scanignore:
+      - android/build.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-pager-view/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/@react-native-community/netinfo/android/build.gradle
       - node_modules/react-native-keyboard-controller/android/build.gradle
@@ -3564,7 +3566,6 @@ Builds:
     gradleprops:
       - reactNativeArchitectures=armeabi-v7a
 
-
   - versionName: 1.13.0
     versionCode: 10130002
     commit: 6d5696e170a2d5659d43e56fb60d9eb584c86adc
@@ -3583,12 +3584,12 @@ Builds:
       - pnpm uninstall expo-notifications expo-dev-client
     gradle:
       - yes
-    binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
     srclibs:
       - react-native-skia@v2.0.0
     rm:
       - ios
-      - node_modules/@shopify/react-native-skia/libs
+      - node_modules/@shopify/react-native-skia/libs/android
+      - node_modules/@shopify/react-native-skia/libs/apple
     prebuild:
       - cd ../..
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
@@ -3601,11 +3602,15 @@ Builds:
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/react-native/ReactAndroid/build.gradle.kts
+    binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
     scanignore:
+      - android/build.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-pager-view/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/@react-native-community/netinfo/android/build.gradle
       - node_modules/react-native-keyboard-controller/android/build.gradle
@@ -3626,6 +3631,7 @@ Builds:
     gradleprops:
       - reactNativeArchitectures=arm64-v8a
 
+Binaries: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
 AllowedAPKSigningKeys: 091ad944843e180c4322ede202a733094cdc07dd1acd51523fe813eae904f487
 
 AutoUpdateMode: Version
