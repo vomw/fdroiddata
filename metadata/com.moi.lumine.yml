@@ -27,11 +27,11 @@ Builds:
       - go@go1.24.3
     prebuild:
       - export ANDROID_API_LEVEL=$(sed -E -n "s/.*ANDROID_API_LEVEL.*'(.*)'.*/\1/p"
-        .github/workflows/android-release.yml)
+        ../../.github/workflows/android-release.yml)
       - export ANDROID_BUILD_TOOLS=$(sed -E -n "s/.*ANDROID_BUILD_TOOLS.*'(.*)'.*/\1/p"
-        .github/workflows/android-release.yml)
+        ../../.github/workflows/android-release.yml)
       - export ANDROID_NDK_VERSION=$(sed -E -n "s/.*ANDROID_NDK_VERSION.*'(.*)'.*/\1/p"
-        .github/workflows/android-release.yml)
+        ../../.github/workflows/android-release.yml)
       - sdkmanager "platform-tools" "platforms;android-${ANDROID_API_LEVEL}" "build-tools;${ANDROID_BUILD_TOOLS}"
         "ndk;${ANDROID_NDK_VERSION}"
       - git -C $$go$$ checkout -f go$(sed -n -E 's/^go (.*)/\1/p' ../../go.mod)
