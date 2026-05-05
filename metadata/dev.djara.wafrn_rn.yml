@@ -3511,6 +3511,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm ninja-build bzip2 xz-utils
       - npm install -g corepack
+      - mkdir -p /opt/java
+      - wget -qO- 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz'
+        | tar xz -C /opt/java
     init:
       - cd ../..
       - corepack enable
@@ -3534,10 +3537,6 @@ Builds:
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
-      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/react-native/ReactAndroid/build.gradle.kts
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -3550,6 +3549,10 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - export JAVA_HOME=/opt/java/jdk-17.0.19+10
+      - export PATH=$JAVA_HOME/bin:$PATH
+      - echo 'org.gradle.java.installations.paths=/opt/java/jdk-17.0.19+10' >>
+        ../../android/gradle.properties
       - pushd $$react-native-skia$$
       - corepack enable
       - yarn
@@ -3574,6 +3577,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm ninja-build bzip2 xz-utils
       - npm install -g corepack
+      - mkdir -p /opt/java
+      - wget -qO- 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz'
+        | tar xz -C /opt/java
     init:
       - cd ../..
       - corepack enable
@@ -3596,10 +3602,6 @@ Builds:
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
-      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/react-native/ReactAndroid/build.gradle.kts
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -3612,6 +3614,10 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - export JAVA_HOME=/opt/java/jdk-17.0.19+10
+      - export PATH=$JAVA_HOME/bin:$PATH
+      - echo 'org.gradle.java.installations.paths=/opt/java/jdk-17.0.19+10' >>
+        ../../android/gradle.properties
       - pushd $$react-native-skia$$
       - corepack enable
       - yarn
