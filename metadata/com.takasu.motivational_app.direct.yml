@@ -1,0 +1,51 @@
+Categories:
+  - Games
+License: GPL-3.0-only
+AuthorName: Giovanni Drago
+SourceCode: https://github.com/GiovanniDrago/motivationalApp
+IssueTracker: https://github.com/GiovanniDrago/motivationalApp/issues
+Changelog: https://github.com/GiovanniDrago/motivationalApp/releases
+
+AutoName: Motivational App
+
+RepoType: git
+Repo: https://github.com/GiovanniDrago/motivationalApp.git
+Binaries: 
+  https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/motivational-app-direct-v%v+%c.apk
+
+Builds:
+  - versionName: 2.0.9
+    versionCode: 20009
+    commit: 04dfd54d9d79a6a1892915f572710e06b90506fc
+    output: build/app/outputs/flutter-apk/app-direct-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --build-name 2.0.9
+        --build-number 20009 --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+        --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+
+AllowedAPKSigningKeys: 410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.9
+CurrentVersionCode: 20009
