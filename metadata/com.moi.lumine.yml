@@ -14,10 +14,8 @@ RepoType: git
 Repo: https://github.com/UjuiUjuMandan/lumine-for-android
 
 Builds:
-  - versionName: '0.1.3'
+  - versionName: 0.1.3
     versionCode: 131
-    gradleprops:
-      - ABI_FILTER=arm64-v8a
     commit: 011d4654da092e8fd31f35bc51f0d4623f00c5b1
     subdir: android/app
     sudo:
@@ -25,6 +23,8 @@ Builds:
       - apt-get install -y golang-go
     gradle:
       - yes
+    binary: 
+      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-arm64-v8a-release.apk
     srclibs:
       - go@go1.24.3
     prebuild:
@@ -51,14 +51,14 @@ Builds:
       - mkdir -p android/app/libs
       - export GOMOBILE_ANDROID_API=$(sed -E -n "s/.*GOMOBILE_ANDROID_API.*'(.*)'.*/\1/p"
         .github/workflows/android-release.yml)
-      - gomobile bind -target "android/arm64" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
-        ./mobile
+      - gomobile bind -target "android/arm64" -androidapi $GOMOBILE_ANDROID_API -o
+        android/app/libs/LumineCore.aar ./mobile
       - popd
-
-  - versionName: '0.1.3'
-    versionCode: 132
     gradleprops:
-      - ABI_FILTER=armeabi-v7a
+      - ABI_FILTER=arm64-v8a
+
+  - versionName: 0.1.3
+    versionCode: 132
     commit: 011d4654da092e8fd31f35bc51f0d4623f00c5b1
     subdir: android/app
     sudo:
@@ -66,6 +66,8 @@ Builds:
       - apt-get install -y golang-go
     gradle:
       - yes
+    binary: 
+      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-armeabi-v7a-release.apk
     srclibs:
       - go@go1.24.3
     prebuild:
@@ -95,11 +97,11 @@ Builds:
       - gomobile bind -target "android/arm" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
         ./mobile
       - popd
-
-  - versionName: '0.1.3'
-    versionCode: 133
     gradleprops:
-      - ABI_FILTER=x86
+      - ABI_FILTER=armeabi-v7a
+
+  - versionName: 0.1.3
+    versionCode: 133
     commit: 011d4654da092e8fd31f35bc51f0d4623f00c5b1
     subdir: android/app
     sudo:
@@ -107,6 +109,8 @@ Builds:
       - apt-get install -y golang-go
     gradle:
       - yes
+    binary: 
+      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-x86-release.apk
     srclibs:
       - go@go1.24.3
     prebuild:
@@ -136,11 +140,11 @@ Builds:
       - gomobile bind -target "android/386" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
         ./mobile
       - popd
-
-  - versionName: '0.1.3'
-    versionCode: 134
     gradleprops:
-      - ABI_FILTER=x86_64
+      - ABI_FILTER=x86
+
+  - versionName: 0.1.3
+    versionCode: 134
     commit: 011d4654da092e8fd31f35bc51f0d4623f00c5b1
     subdir: android/app
     sudo:
@@ -148,6 +152,8 @@ Builds:
       - apt-get install -y golang-go
     gradle:
       - yes
+    binary: 
+      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-x86_64-release.apk
     srclibs:
       - go@go1.24.3
     prebuild:
@@ -174,11 +180,20 @@ Builds:
       - mkdir -p android/app/libs
       - export GOMOBILE_ANDROID_API=$(sed -E -n "s/.*GOMOBILE_ANDROID_API.*'(.*)'.*/\1/p"
         .github/workflows/android-release.yml)
-      - gomobile bind -target "android/amd64" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
-        ./mobile
+      - gomobile bind -target "android/amd64" -androidapi $GOMOBILE_ANDROID_API -o
+        android/app/libs/LumineCore.aar ./mobile
       - popd
+    gradleprops:
+      - ABI_FILTER=x86_64
+
+AllowedAPKSigningKeys: 8420d07c43a9a16a21527a66ee569c227e0c1415b59719132b8454012df6290a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '0.1.3'
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: 0.1.3
 CurrentVersionCode: 134
