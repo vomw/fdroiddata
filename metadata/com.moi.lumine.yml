@@ -25,7 +25,16 @@ Builds:
       - yes
     srclibs:
       - go@go1.24.3
-    prebuild: git -C $$go$$ checkout -f go$(sed -n -E 's/^go (.*)/\1/p' ../../go.mod)
+    prebuild:
+      - export ANDROID_API_LEVEL=$(sed -E -n "s/.*ANDROID_API_LEVEL.*'(.*)'.*/\1/p"
+        .github/workflows/android-release.yml)
+      - export ANDROID_BUILD_TOOLS=$(sed -E -n "s/.*ANDROID_BUILD_TOOLS.*'(.*)'.*/\1/p"
+        .github/workflows/android-release.yml)
+      - export ANDROID_NDK_VERSION=$(sed -E -n "s/.*ANDROID_NDK_VERSION.*'(.*)'.*/\1/p"
+        .github/workflows/android-release.yml)
+      - sdkmanager "platform-tools" "platforms;android-${ANDROID_API_LEVEL}" "build-tools;${ANDROID_BUILD_TOOLS}"
+        "ndk;${ANDROID_NDK_VERSION}"
+      - git -C $$go$$ checkout -f go$(sed -n -E 's/^go (.*)/\1/p' ../../go.mod)
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -43,7 +52,6 @@ Builds:
       - gomobile bind -target=android -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
         ./mobile
       - popd
-    ndk: 30.0.14904198
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
