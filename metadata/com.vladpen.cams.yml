@@ -417,7 +417,30 @@ Builds:
       - yes
     prebuild: sed -i -e "s/include.*/include 'arm64-v8a'/" build.gradle
 
+  - versionName: 2.4.4
+    versionCode: 1010132
+    commit: d481eb41f31a835f85927968f8cb0e4c132fc066
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e "s/include.*/include 'arm64-v8a'/" build.gradle
+      - sed -i -e 's/8.13.0/8.11.1/' ../build.gradle
+
+  - versionName: '2.5'
+    versionCode: 1010133
+    commit: 22af31aff7569053357cefb511b82d93ea09a6b4
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e "s/include.*/include 'arm64-v8a'/" build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.4.3
-CurrentVersionCode: 1010131
+CurrentVersion: '2.5'
+CurrentVersionCode: 1010133

@@ -980,15 +980,6 @@ Builds:
       - yes
     prebuild: sed -i -e '/android {/a lint {abortOnError false}' build.gradle
 
-  - versionName: 6.1.1
-    versionCode: 180
-    disable: https://github.com/thuryn/your-local-weather/issues/205
-    commit: ee090d2783c76ed41a29c32523a6c6dee4f644d1
-    subdir: app
-    gradle:
-      - yes
-    prebuild: sed -i -e '/android {/a lint {abortOnError false}' build.gradle
-
   - versionName: 6.1.2
     versionCode: 181
     commit: 66b951662d12fc54a9324753b197167729d84904
@@ -999,10 +990,75 @@ Builds:
       - sed -i -e '/android {/a lint {abortOnError false}' build.gradle
       - sed -i -e 's/8.12.1/8.11.1/' ../build.gradle
 
+  - versionName: 6.2.0
+    versionCode: 182
+    commit: 9977236d80f822e7a0a772709cde213a4804b07b
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/android {/a lint {abortOnError false}' build.gradle
+
+  - versionName: 6.2.1
+    versionCode: 183
+    commit: e700cffc9b2c85c67a15de5c855b039e94c0fd97
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/android {/a lint {abortOnError false}' build.gradle
+
+  - versionName: 6.3.0
+    versionCode: 185
+    commit: 36d90b5b1592d52d60f72c8557c3eeae2f3a574b
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - yourlocalweather-wearos
+    prebuild:
+      - sed -i -e '/wearos/d' ../settings.gradle
+      - sed -i -e '/wearable/d' build.gradle
+      - sed -i -e '/gms/d' -e '/void sendUpdate2Wearables/,/^    }/d' -e '/sendUpdate2Wearables/d'
+        src/main/java/org/thosp/yourlocalweather/service/UpdateWeatherService.java
+
+  - versionName: 6.3.5
+    versionCode: 189
+    commit: 75c01279967424ba470a22e2df1bcd002ffa91cd
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - yourlocalweather-wearos
+    prebuild:
+      - sed -i -e '/wearos/d' -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/wearable/d' build.gradle
+      - sed -i -e '/gms/d' -e '/void sendUpdate2Wearables/,/^    }/d' -e '/sendUpdate2Wearables/d'
+        src/main/java/org/thosp/yourlocalweather/service/UpdateWeatherService.java
+
+  - versionName: 6.3.8
+    versionCode: 192
+    commit: e092aea20de86ef499bea59933afa6cc14187a17
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - wearos
+      - app/src/main/java/org/thosp/yourlocalweather/WearosActivity.kt
+    prebuild:
+      - sed -i -e '/wearos/d' -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/wearable/d' -e '/wear-remote-interactions/d' build.gradle
+      - sed -i -e '/WearosActivity/,/<activity/d' src/main/AndroidManifest.xml
+      - cd src/main/java/org/thosp/yourlocalweather
+      - sed -i -e '/gms/d' -e '/void sendUpdate2Wearables/,/^    }/d' -e '/sendUpdate2Wearables/d'
+        service/UpdateWeatherService.java
+      - sed -i -e '/nav_wearos/,/break/d' BaseActivity.java
+      - sed -i -e '/void showWearOsBanner/,/^    }/d' -e '/void checkWearables/,/^    }/d'
+        -e '/checkWearables/d' -e '/gms/d' MainActivity.java
+
 MaintainerNotes: NonFreeNet for OWM; also uses Mozilla location service (libre or
   not?)
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 6.1.2
-CurrentVersionCode: 181
+UpdateCheckData: app/build.gradle|versionCode = (\d+)|.|versionName = "(.+)"
+CurrentVersion: 6.3.8
+CurrentVersionCode: 192

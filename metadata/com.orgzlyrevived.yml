@@ -13,7 +13,8 @@ AutoName: Orgzly Revived
 
 RepoType: git
 Repo: https://github.com/orgzly-revived/orgzly-android-revived.git
-Binaries: https://github.com/orgzly-revived/orgzly-android-revived/releases/download/v%v/orgzly-revived-fdroid-%v.apk
+Binaries: 
+  https://github.com/orgzly-revived/orgzly-android-revived/releases/download/v%v/orgzly-revived-fdroid-%v.apk
 
 Builds:
   - versionName: 1.8.12
@@ -399,9 +400,84 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 1.13.1
+    versionCode: 266
+    commit: b55a0230f41202686bfa278844e8dc2e71a4d70f
+    subdir: app
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    ndk: 26.3.11579264
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.14.0
+    versionCode: 268
+    commit: 1097b592ff70e00d99f250d3c254e2185940c149
+    subdir: app
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    ndk: 26.3.11579264
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.15.0
+    versionCode: 270
+    commit: 9d7612e1da24345b099e0139e97626221f0942e6
+    subdir: app
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    ndk: 26.3.11579264
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.16.0
+    versionCode: 272
+    commit: c27c94b0c845f661964fc28528b17df7e5be76f5
+    subdir: app
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    ndk: 26.3.11579264
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.18.0
+    versionCode: 276
+    commit: c21c58568c1a054ccc6a6fc85bcf7f1db9862392
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    ndk: r26d
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 6fc9c2e22d07d25ce77e2e963455053c38b8318a1a2491b3ed95d50cba85493d
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9\.]+$
-CurrentVersion: 1.12.1
-CurrentVersionCode: 263
+CurrentVersion: 1.18.0
+CurrentVersionCode: 276

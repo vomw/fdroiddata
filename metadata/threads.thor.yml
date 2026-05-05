@@ -756,7 +756,39 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 1.8.9
+    versionCode: 189
+    commit: 8ba4e57de2cc5fd22c8a12ee4e948603bc6544a9
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 1.9.0
+    versionCode: 190
+    commit: a4231618c5b5929b28a6425026b2c60654a2f5d9
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.13.0/8.11.1/' ../gradle/libs.versions.toml
+
+  - versionName: 2.0.0
+    versionCode: 200
+    commit: 16c0823443c9b8afe71e4d6662c9bcb5489de353
+    subdir: app
+    gradle:
+      - yes
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.8.8
-CurrentVersionCode: 188
+CurrentVersion: 2.0.0
+CurrentVersionCode: 200

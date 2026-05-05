@@ -1473,20 +1473,6 @@ Builds:
     scandelete:
       - build-plugin/build
 
-  - versionName: '8.0'
-    versionCode: 39009
-    disable: Wrong metadata provided in repository
-    commit: K9MAIL_8_0
-    subdir: app-k9mail
-    gradle:
-      - yes
-    rm:
-      - feature/funding/googleplay
-    prebuild: sed -i -e '/maven\.mozilla\.org\/maven2/d ; /glean/d ; /app-thunderbird/d
-      ; /googleplay/d' ../settings.gradle.kts
-    scandelete:
-      - build-plugin/build
-
   - versionName: 8.0b5
     versionCode: 39010
     commit: K9MAIL_8_0b5
@@ -1654,6 +1640,142 @@ Builds:
     scandelete:
       - build-plugin
 
+  - versionName: '12.1'
+    versionCode: 39028
+    commit: 09a5a2e340ddddb804eda269f26d24383d4b08f0
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '13.0'
+    versionCode: 39029
+    commit: 7221737cf0554b33b35c2a60519700d49945e127
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '14.0'
+    versionCode: 39030
+    commit: 84df9f77d5f4097c4d4ef6eeb9469214fbf4e36f
+    subdir: app-k9mail
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '15.0'
+    versionCode: 39031
+    commit: 2a4eedc490722867667d7121bb19ad9bfa7fd26a
+    subdir: app-k9mail
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-thunderbird/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '16.0'
+    versionCode: 39032
+    commit: 46ebabdfa6a805859f11e69326261899aad2c403
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-thunderbird/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '16.1'
+    versionCode: 39033
+    commit: 5a4c083c4a8fc34a90d8add4ff3a75bfeb3f4f86
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-thunderbird/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '17.0'
+    versionCode: 39034
+    commit: 377ddeaf4f44913e0180bf7fce85cf6686a09918
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-thunderbird/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+    scandelete:
+      - build-plugin
+
+  - versionName: '18.0'
+    versionCode: 39035
+    commit: 23016c71d2f075700a0e258b9fe374bd06d8257b
+    subdir: app-k9mail
+    gradle:
+      - foss
+    rm:
+      - app-thunderbird
+      - feature/funding/googleplay
+    prebuild:
+      - sed -i -e 's|maven.mozilla.org/maven2|jitpack.io|' -e '/glean/d' -e '/googleplay/d'
+        -e '/:app-thunderbird/d' -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/feature.funding.googleplay/feature.funding.link/' build.gradle.kts
+
 MaintainerNotes: |-
   Use output instead of subdir to make gradlew-fdroid correctly determine the gradle version to be used.
   It doesn't work when using subdir because we are two levels deep into the directory structure.
@@ -1661,5 +1783,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '11.1'
-CurrentVersionCode: 39026
+CurrentVersion: '18.0'
+CurrentVersionCode: 39035

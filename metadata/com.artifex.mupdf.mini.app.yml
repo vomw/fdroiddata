@@ -4,7 +4,7 @@ Categories:
 License: AGPL-3.0-or-later
 AuthorName: Artifex Software LLC
 WebSite: https://mupdf.com/
-SourceCode: https://cgit.ghostscript.com/cgi-bin/cgit.cgi/mupdf-android-viewer-mini.git
+SourceCode: https://github.com/ArtifexSoftware/mupdf-android-viewer-mini
 IssueTracker: https://bugs.ghostscript.com/
 
 AutoName: MuPDF mini
@@ -36,7 +36,7 @@ Description: |-
   the document.
 
 RepoType: git
-Repo: https://cgit.ghostscript.com/cgi-bin/cgit.cgi/mupdf-android-viewer-mini.git
+Repo: https://github.com/ArtifexSoftware/mupdf-android-viewer-mini.git
 
 Builds:
   - versionName: 1.13.0
@@ -50,8 +50,8 @@ Builds:
       - sed -i -e '/maven.ghostscript.com/d' ../build.gradle
       - sed -i -e 's/enable true/enable false/' build.gradle
       - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
-      - "sed -i -e \"/Uncomment/a\\\t\tndk.abiFilters 'armeabi-v7a', 'arm64-v8a',\
-        \ 'x86'\" ../jni/build.gradle"
+      - "sed -i -e \"/Uncomment/a\\\t\tndk.abiFilters 'armeabi-v7a', 'arm64-v8a',
+        'x86'\" ../jni/build.gradle"
       - make -C ../jni/libmupdf generate
     scandelete:
       - jni/libmupdf/thirdparty
@@ -70,8 +70,8 @@ Builds:
       - sed -i -e '/MAVEN_REPO/,+2d' ../build.gradle
       - sed -i -e 's/enable true/enable false/' build.gradle
       - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
-      - "sed -i -e \"/Uncomment/a\\\t\tndk.abiFilters 'armeabi-v7a', 'arm64-v8a',\
-        \ 'x86'\" ../jni/build.gradle"
+      - "sed -i -e \"/Uncomment/a\\\t\tndk.abiFilters 'armeabi-v7a', 'arm64-v8a',
+        'x86'\" ../jni/build.gradle"
       - make -C ../jni/libmupdf generate
     scandelete:
       - jni/libmupdf/thirdparty
@@ -805,6 +805,200 @@ Builds:
     build: make -C ../jni/libmupdf generate
     ndk: r28c
 
+  - versionName: 1.26.7a
+    versionCode: 166
+    commit: 3b237470a9f56a7f3e21030960884e86f1ee303d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.26.8a
+    versionCode: 167
+    commit: 37d9c1995d5c5d03a39d1bcea6e1371245bf1e27
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.26.9a
+    versionCode: 168
+    commit: a9458d980f4788d09f1b24d6086b28ab87f5a879
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.26.10a
+    versionCode: 169
+    commit: 363329fe16eeab2c58ef07306625125ba4d19ffd
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.26.11a
+    versionCode: 170
+    commit: b4de00048418243c708d72b05927fa696414e745
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.26.12a
+    versionCode: 171
+    commit: 431bfd3faea5d812d8af13a7f30d0416e6516ace
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.27.0a
+    versionCode: 200
+    commit: 3c24e859b1bf5ddce1d8450e44710e23fa65fc2d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+      - jni/libmupdf/resources/hyphen
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
+  - versionName: 1.27.1a
+    versionCode: 210
+    commit: 8528c28360def87a0ef5c43ad9ef7f94ec7e4c6e
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make pkg-config
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/maven.ghostscript.com/d' -e '/user.home/d' -e '/url.*MAVEN_REPO/d'
+        ../build.gradle ../*/build.gradle
+      - sed -i -e 's/enable true/enable false/' -e '/android {/a ndkVersion "28.2.13676358"'
+        build.gradle
+      - sed -i -e "s/'-j4'/'-j`nproc`'/" ../jni/build.gradle
+      - echo -e 'ABI_FILTERS=armeabi-v7a,arm64-v8a,x86\norg.gradle.jvmargs=-Xmx4g'
+        >> ../gradle.properties
+    scandelete:
+      - jni/libmupdf/thirdparty
+      - jni/libmupdf/platform/wasm
+      - jni/libmupdf/resources/hyphen
+    build: make -C ../jni/libmupdf generate
+    ndk: r28c
+
 MaintainerNotes: |-
   Upstream builds separate APKs for all target architectures supported by NDK
   (7 as of r16). We build universal APK with armeabi-v7a, arm64-v8a and x86
@@ -812,5 +1006,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.26.5a
-CurrentVersionCode: 164
+CurrentVersion: 1.27.1a
+CurrentVersionCode: 210

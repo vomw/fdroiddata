@@ -883,20 +883,6 @@ Builds:
       - yes
     prebuild: echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
 
-  - versionName: 3.5.1
-    versionCode: 351
-    disable: https://gitlab.com/lp2p/odin/-/issues/37
-    commit: 9631bbc5c921dffe28060ce453391eef85e54650
-    subdir: app
-    sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-      - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
-    gradle:
-      - yes
-    prebuild: echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
-
   - versionName: 3.5.2
     versionCode: 352
     commit: 1000d3eb30cd5778cb21a4afc833f3ae17482d30
@@ -936,7 +922,42 @@ Builds:
       - yes
     prebuild: echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
 
+  - versionName: 3.5.8
+    versionCode: 358
+    commit: 8bf167d4c869ac0e64d63a8185ab0a2ffd727159
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
+
+  - versionName: 3.6.0
+    versionCode: 360
+    commit: 8c3fdf0c91ebd4914ab16d43ce86d69d712f0ba9
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild:
+      - echo -e "\norg.gradle.jvmargs=-Xmx4096m" >> ../gradle.properties
+      - sed -i -e 's/8.13.0/8.11.1/' ../gradle/libs.versions.toml
+
+  - versionName: 4.0.0
+    versionCode: 400
+    commit: c088e814a151b34380345922a59bdb1b54fac59e
+    subdir: app
+    gradle:
+      - yes
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 3.5.7
-CurrentVersionCode: 357
+CurrentVersion: 4.0.0
+CurrentVersionCode: 400

@@ -484,7 +484,33 @@ Builds:
     preassemble:
       - bundleData
 
+  - versionName: 1.0.0
+    versionCode: 55
+    commit: 28805a42a77b4069f4f96efb1c9d8cc2e169f625
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfig /d' -e '/isEnable/d' build.gradle.kts
+    preassemble:
+      - bundleData
+
+  - versionName: 1.1.0
+    versionCode: 56
+    commit: 4e281cba2e62c030b6324abc940056fa8a3876e2
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/signingConfig /d' -e '/isEnable/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    build: gradle bundleData
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.9.2
-CurrentVersionCode: 54
+CurrentVersion: 1.1.0
+CurrentVersionCode: 56

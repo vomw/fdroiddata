@@ -2,9 +2,9 @@ AntiFeatures:
   NonFreeNet:
     en-US: Uses the Yahoo finance API for stock information
 Categories:
-  - Sports & Health
+  - Money
 License: MIT
-AuthorName: Brandon Presley
+AuthorName: Brandon Dick
 AuthorEmail: brandon@codesail.nz
 SourceCode: https://github.com/brandonp2412/MarketMonk
 IssueTracker: https://github.com/brandonp2412/MarketMonk/issues
@@ -25,7 +25,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -66,7 +67,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -107,7 +109,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -148,7 +151,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -189,7 +193,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -230,7 +235,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -271,7 +277,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-x86_64-release.apk
     rm:
       - ios
       - linux
@@ -312,7 +319,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-armeabi-v7a-release.apk
     rm:
       - ios
       - linux
@@ -353,7 +361,8 @@ Builds:
       - mkdir -p /home/brandon
       - chown vagrant -R /home/brandon
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/%v/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -384,6 +393,270 @@ Builds:
       - mv /home/brandon/market_monk com.codesail.market_monk
     ndk: r27
 
+  - versionName: 1.0.38
+    versionCode: 391
+    commit: d25ff4ff085409500e6f44fee9f7aec28c8ffd52
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-x86_64-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
+  - versionName: 1.0.38
+    versionCode: 392
+    commit: d25ff4ff085409500e6f44fee9f7aec28c8ffd52
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
+  - versionName: 1.0.38
+    versionCode: 393
+    commit: d25ff4ff085409500e6f44fee9f7aec28c8ffd52
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
+  - versionName: 1.0.40
+    versionCode: 411
+    commit: 8591bc4791f1c110deea470f5be890a4fd9e6c9d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-x86_64-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
+  - versionName: 1.0.40
+    versionCode: 412
+    commit: 8591bc4791f1c110deea470f5be890a4fd9e6c9d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
+  - versionName: 1.0.40
+    versionCode: 413
+    commit: 8591bc4791f1c110deea470f5be890a4fd9e6c9d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - mkdir -p /home/runner/work/MarketMonk
+      - chown vagrant -R /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/MarketMonk/releases/download/v%v/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sdkmanager 'cmake;3.18.1'
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get
+      - popd
+      - mv $repo com.codesail.market_monk
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/MarketMonk/MarketMonk
+      - mv com.codesail.market_monk $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo com.codesail.market_monk
+    ndk: r27
+
 AllowedAPKSigningKeys: 011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
 
 AutoUpdateMode: Version
@@ -393,5 +666,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.32
-CurrentVersionCode: 333
+CurrentVersion: 1.0.40
+CurrentVersionCode: 413

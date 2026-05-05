@@ -35,8 +35,10 @@ Builds:
       - sed -i 's@\(android.library.reference.1=\).*@\1$$AnySoftKeyboard-API$$@' project.properties
       - rm -rf libs/armeabi*/ libs/x86/ libs/mips/ ant/ keyboard_keystore StoreStuff/
         res/raw/words_1.dict
-      - wget https://softkeyboard.googlecode.com/svn-history/r544/trunk/project/dict_creation/makedict_Linux
-      - wget https://github.com/AnySoftKeyboard/AnySoftKeyboardTools/blob/HEAD/makedict/makedict.jar?raw=true
+      - wget 
+        https://softkeyboard.googlecode.com/svn-history/r544/trunk/project/dict_creation/makedict_Linux
+      - wget 
+        https://github.com/AnySoftKeyboard/AnySoftKeyboardTools/blob/HEAD/makedict/makedict.jar?raw=true
         -O makedict.jar
       - chmod +x makedict_Linux
       - ./makedict_Linux dict/words.xml
@@ -480,10 +482,26 @@ Builds:
       - withAutoVersioning
       - forceVersionBuildCount=8461
 
+  - versionName: 1.13.8175
+    versionCode: 8175
+    commit: 8c1db51c8f23d1923d0eb05f70f1bb41d614fb6d
+    subdir: ime/app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/navigation.dynamic.features.fragment/d' build.gradle
+    scanignore:
+      - addons/languages/*/pack/dictionary/*.gz
+    scandelete:
+      - '*.class'
+    ndk: r29
+    gradleprops:
+      - withAutoVersioning
+      - forceVersionBuildCount=10582
+
 MaintainerNotes: '* Prior to 1.9.2629, generates english dictionary binary (src/main/res/raw/words_*.dict)
   from source files (under `english_dictionary` folder. Mostly AOSP word-list)'
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.12.7138
-CurrentVersionCode: 7138
+CurrentVersion: 1.13.8175
+CurrentVersionCode: 8175

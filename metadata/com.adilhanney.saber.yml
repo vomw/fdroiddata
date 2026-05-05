@@ -9792,6 +9792,3051 @@ Builds:
         --target-platform="android-x64"
     ndk: r27
 
+  - versionName: 0.26.7
+    versionCode: 260701
+    commit: fb2d33c36e535478e357d8f0fecb424c9de153c2
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{path_provider_android,shared_preferences_android,url_launcher_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - truncate -s 0 .pub-cache/hosted/pub.dev/quill_native_bridge_linux-*/assets/xclip
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - sed -i "/^  String get _toolchain/ s/=>.*/=> '1.89.0';/" 
+        .pub-cache/hosted/pub.dev/{super,irondash}_*/cargokit/build_tool/lib/src/builder.dart
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.89.0 --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 0.26.7
+    versionCode: 260702
+    commit: fb2d33c36e535478e357d8f0fecb424c9de153c2
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{path_provider_android,shared_preferences_android,url_launcher_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - truncate -s 0 .pub-cache/hosted/pub.dev/quill_native_bridge_linux-*/assets/xclip
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - sed -i "/^  String get _toolchain/ s/=>.*/=> '1.89.0';/" 
+        .pub-cache/hosted/pub.dev/{super,irondash}_*/cargokit/build_tool/lib/src/builder.dart
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.89.0 --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 0.26.7
+    versionCode: 260703
+    commit: fb2d33c36e535478e357d8f0fecb424c9de153c2
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{path_provider_android,shared_preferences_android,url_launcher_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - truncate -s 0 .pub-cache/hosted/pub.dev/quill_native_bridge_linux-*/assets/xclip
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - sed -i "/^  String get _toolchain/ s/=>.*/=> '1.89.0';/" 
+        .pub-cache/hosted/pub.dev/{super,irondash}_*/cargokit/build_tool/lib/src/builder.dart
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.89.0 --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 0.26.11
+    versionCode: 261101
+    commit: 7520ff30eba6539cefcc3112041a5c147598abbc
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 0.26.11
+    versionCode: 261102
+    commit: 7520ff30eba6539cefcc3112041a5c147598abbc
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 0.26.11
+    versionCode: 261103
+    commit: 7520ff30eba6539cefcc3112041a5c147598abbc
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 0.26.12
+    versionCode: 261201
+    commit: ad783ed91ea37cb7dd921498ccbeaa34f4abdfa8
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 0.26.12
+    versionCode: 261202
+    commit: ad783ed91ea37cb7dd921498ccbeaa34f4abdfa8
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 0.26.12
+    versionCode: 261203
+    commit: ad783ed91ea37cb7dd921498ccbeaa34f4abdfa8
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.27.0
+    versionCode: 1270001
+    commit: c77836e10c2deeb94bf890a93df033f5a61d4998
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.27.0
+    versionCode: 1270002
+    commit: c77836e10c2deeb94bf890a93df033f5a61d4998
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.27.0
+    versionCode: 1270003
+    commit: c77836e10c2deeb94bf890a93df033f5a61d4998
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.27.1
+    versionCode: 1270101
+    commit: af8673dfc3d1fa4fd1efcc2785e84280c5696fa4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.27.1
+    versionCode: 1270102
+    commit: af8673dfc3d1fa4fd1efcc2785e84280c5696fa4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.27.1
+    versionCode: 1270103
+    commit: af8673dfc3d1fa4fd1efcc2785e84280c5696fa4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.27.2
+    versionCode: 1270201
+    commit: e9c0cc475b1342175515aea87e7fe8eb7fa959bb
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.27.2
+    versionCode: 1270202
+    commit: e9c0cc475b1342175515aea87e7fe8eb7fa959bb
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.27.2
+    versionCode: 1270203
+    commit: e9c0cc475b1342175515aea87e7fe8eb7fa959bb
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.28.0
+    versionCode: 1280001
+    commit: fa03349ee9da73fac41c613503f94a283875df42
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.28.0
+    versionCode: 1280002
+    commit: fa03349ee9da73fac41c613503f94a283875df42
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.28.0
+    versionCode: 1280003
+    commit: fa03349ee9da73fac41c613503f94a283875df42
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{flutter_plugin_android_lifecycle,path_provider_android,share_plus,shared_preferences_android,url_launcher_android}-*/android/build.gradle
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.28.1
+    versionCode: 1280101
+    commit: 014e3a8729d40c91deb01af2dc014070f187d26e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.28.1
+    versionCode: 1280102
+    commit: 014e3a8729d40c91deb01af2dc014070f187d26e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.28.1
+    versionCode: 1280103
+    commit: 014e3a8729d40c91deb01af2dc014070f187d26e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.28.2
+    versionCode: 1280201
+    commit: b0b28221918a1072abc53a7a3ced4f191d30d805
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.28.2
+    versionCode: 1280202
+    commit: b0b28221918a1072abc53a7a3ced4f191d30d805
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.28.2
+    versionCode: 1280203
+    commit: b0b28221918a1072abc53a7a3ced4f191d30d805
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.0
+    versionCode: 1290001
+    commit: c99c73ca94c92cfd31b92c59f0a4789a60156690
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.0
+    versionCode: 1290002
+    commit: c99c73ca94c92cfd31b92c59f0a4789a60156690
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.0
+    versionCode: 1290003
+    commit: c99c73ca94c92cfd31b92c59f0a4789a60156690
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.1
+    versionCode: 1290101
+    commit: 8e5d44dbede2948695663971a288c5a17defd35e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.1
+    versionCode: 1290102
+    commit: 8e5d44dbede2948695663971a288c5a17defd35e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.1
+    versionCode: 1290103
+    commit: 8e5d44dbede2948695663971a288c5a17defd35e
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.2
+    versionCode: 1290201
+    commit: a092537af6ab7b467534a404594b0535142e149d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.2
+    versionCode: 1290202
+    commit: a092537af6ab7b467534a404594b0535142e149d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.2
+    versionCode: 1290203
+    commit: a092537af6ab7b467534a404594b0535142e149d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.3
+    versionCode: 1290301
+    commit: e052bb89e94f9c6b49db5842ddaa74c9f5e916ce
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.3
+    versionCode: 1290302
+    commit: e052bb89e94f9c6b49db5842ddaa74c9f5e916ce
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.3
+    versionCode: 1290303
+    commit: e052bb89e94f9c6b49db5842ddaa74c9f5e916ce
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.4
+    versionCode: 1290401
+    commit: fbe6f359a6cdcb3afedae80ccf9d7fc0b82c9130
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.4
+    versionCode: 1290402
+    commit: fbe6f359a6cdcb3afedae80ccf9d7fc0b82c9130
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.4
+    versionCode: 1290403
+    commit: fbe6f359a6cdcb3afedae80ccf9d7fc0b82c9130
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/remove_non_android_dependencies.sh
+      - ./patches/remove_proprietary_dependencies.sh
+      - ./patches/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/remove_dev_dependencies.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.29.5
+    versionCode: 1290501
+    commit: 7e912ac68098307fa32f5475a3c1a3eb3b6b87fa
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.29.5
+    versionCode: 1290502
+    commit: 7e912ac68098307fa32f5475a3c1a3eb3b6b87fa
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.29.5
+    versionCode: 1290503
+    commit: 7e912ac68098307fa32f5475a3c1a3eb3b6b87fa
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.30.0
+    versionCode: 1300001
+    commit: 0680cd1c813ad85d5961d2960d29305c8a1827ab
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.30.0
+    versionCode: 1300002
+    commit: 0680cd1c813ad85d5961d2960d29305c8a1827ab
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.30.0
+    versionCode: 1300003
+    commit: 0680cd1c813ad85d5961d2960d29305c8a1827ab
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - ./patches/pre/remove_request_install_packages_permission.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.31.0
+    versionCode: 1310001
+    commit: 3676fc79328a0faaf54ea361cbc3d8ebc76c2d79
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.31.0
+    versionCode: 1310002
+    commit: 3676fc79328a0faaf54ea361cbc3d8ebc76c2d79
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.31.0
+    versionCode: 1310003
+    commit: 3676fc79328a0faaf54ea361cbc3d8ebc76c2d79
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.31.1
+    versionCode: 1310101
+    commit: fb0730c75853ce24fae478bd3e5fe1c6dcaf1af4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target armv7-linux-androideabi
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.31.1
+    versionCode: 1310102
+    commit: fb0730c75853ce24fae478bd3e5fe1c6dcaf1af4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.31.1
+    versionCode: 1310103
+    commit: fb0730c75853ce24fae478bd3e5fe1c6dcaf1af4
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - rustup@1.28.2
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $(grep 'channel =' rust-toolchain.toml
+        | cut -d '"' -f2) --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.32.0
+    versionCode: 1320001
+    commit: 872c6fb8ac9cca300bea0a3f95311cd5fb56e8dd
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add armv7-linux-androideabi
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.32.0
+    versionCode: 1320002
+    commit: 872c6fb8ac9cca300bea0a3f95311cd5fb56e8dd
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add aarch64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.32.0
+    versionCode: 1320003
+    commit: 872c6fb8ac9cca300bea0a3f95311cd5fb56e8dd
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add x86_64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.33.0
+    versionCode: 1330001
+    commit: 4b9103e29d90e8cfa7f67164b36249553705c035
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add armv7-linux-androideabi
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.33.0
+    versionCode: 1330002
+    commit: 4b9103e29d90e8cfa7f67164b36249553705c035
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add aarch64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.33.0
+    versionCode: 1330003
+    commit: 4b9103e29d90e8cfa7f67164b36249553705c035
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add x86_64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.33.1
+    versionCode: 1330101
+    commit: 30d16da7604ecd5b3a330bac0409c241e2304a72
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add armv7-linux-androideabi
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.33.1
+    versionCode: 1330102
+    commit: 30d16da7604ecd5b3a330bac0409c241e2304a72
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add aarch64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.33.1
+    versionCode: 1330103
+    commit: 30d16da7604ecd5b3a330bac0409c241e2304a72
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add x86_64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
+  - versionName: 1.33.2
+    versionCode: 1330201
+    commit: 119e3bde7dcd95ce6108030d741f062be5fd0613
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add armv7-linux-androideabi
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.33.2
+    versionCode: 1330202
+    commit: 119e3bde7dcd95ce6108030d741f062be5fd0613
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add aarch64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.33.2
+    versionCode: 1330203
+    commit: 119e3bde7dcd95ce6108030d741f062be5fd0613
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - .github
+      - assets_raw
+      - flatpak
+      - installers
+      - ios
+      - linux
+      - macos
+      - packages/onyxsdk_pen
+      - snap
+      - windows
+    prebuild:
+      - ./patches/pre/remove_dev_dependencies.sh
+      - ./patches/pre/remove_linux_dependencies.sh
+      - ./patches/pre/remove_proprietary_dependencies.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+      - ./patches/post/patch_rust_versions.sh
+      - PATH="submodules/flutter/bin:$PATH" ./patches/post/remove_wasm_libs.sh
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - rustup default $(grep 'channel =' rust-toolchain.toml | cut -d '"' -f2)
+      - rustup target add x86_64-linux-android
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --split-per-abi --dart-define=FLAVOR="F-Droid"
+        --dart-define=APP_STORE="F-Droid" --dart-define=UPDATE_CHECK="false" --dart-define=OFFLINE_FONTS_ONLY="true"
+        --target-platform="android-x64"
+    ndk: r28c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
@@ -9799,5 +12844,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.26.3
-CurrentVersionCode: 260303
+CurrentVersion: 1.33.2
+CurrentVersionCode: 1330203

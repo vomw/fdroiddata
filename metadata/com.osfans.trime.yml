@@ -564,7 +564,107 @@ Builds:
       - build-logic
     ndk: 25.2.9519653
 
+  - versionName: 3.3.6
+    versionCode: 20250901
+    commit: dd62098a6eea8b229017f45bc453a5016ae7493a
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install automake g++ libtool make python-is-python3
+    gradle:
+      - yes
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i -e 's/runCmd("git config user.name")/"F-Droid"/' ../build-logic/convention/src/main/kotlin/Utils.kt
+      - sed -i -e '/isEnable/s/true/false/' ../build-logic/convention/src/main/kotlin/NativeBaseConventionPlugin.kt
+    scandelete:
+      - app/src/main/jni
+      - build-logic
+    ndk: 28.0.13004108
+
+  - versionName: 3.3.7
+    versionCode: 20251101
+    commit: ac13dd4790523c1a9778cfb70234fe485fd3c526
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install automake g++ libtool make python-is-python3
+    gradle:
+      - yes
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i -e 's/runCmd("git config user.name")/"F-Droid"/' ../build-logic/convention/src/main/kotlin/Utils.kt
+      - sed -i -e '/isEnable/s/true/false/' ../build-logic/convention/src/main/kotlin/NativeBaseConventionPlugin.kt
+    scandelete:
+      - app/src/main/jni
+      - build-logic
+    ndk: 28.0.13004108
+
+  - versionName: 3.3.8
+    versionCode: 20260101
+    commit: f3f5c9234c90e3a6b4701198c24331afe8da74b3
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install automake g++ libtool make python-is-python3
+    gradle:
+      - yes
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i -e 's/runCmd("git config user.name".*)/"F-Droid"/' ../build-logic/convention/src/main/kotlin/ProjectExtensions.kt
+      - sed -i -e '/isEnable/s/true/false/' ../build-logic/convention/src/main/kotlin/NativeBaseConventionPlugin.kt
+      - cd ..
+      - git apply --directory=app/src/main/jni/librime-lua-deps patches/lua.patch
+    scandelete:
+      - app/src/main/jni
+      - build-logic
+    ndk: r28
+
+  - versionName: 3.3.9
+    versionCode: 20260301
+    commit: 6a10567e27e86c1b9d38f864be94b36c2d9fae30
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install automake g++ libtool make python-is-python3
+    gradle:
+      - yes
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i -e 's/runCmd("git config user.name".*)/"F-Droid"/' ../build-logic/convention/src/main/kotlin/ProjectExtensions.kt
+      - sed -i -e '/isEnable/s/true/false/' ../build-logic/convention/src/main/kotlin/NativeBaseConventionPlugin.kt
+      - cd ..
+      - git apply --directory=app/src/main/jni/librime-lua-deps patches/lua.patch
+    scandelete:
+      - app/src/main/jni
+      - build-logic
+    ndk: r28
+
+  - versionName: 3.3.10
+    versionCode: 20260501
+    commit: 11440ffceb618b68deeddf4bdf7497b082cb87ae
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get -y install automake g++ libtool make python-is-python3
+    gradle:
+      - yes
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i -e 's/runCmd("git config user.name".*)/"F-Droid"/' ../build-logic/convention/src/main/kotlin/ProjectExtensions.kt
+      - sed -i -e '/isEnable/s/true/false/' ../build-logic/convention/src/main/kotlin/NativeBaseConventionPlugin.kt
+      - cd ..
+      - git apply --directory=app/src/main/jni/librime-lua-deps patches/lua.patch
+    scandelete:
+      - app/src/main/jni
+    ndk: r28
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: 3.3.5
-CurrentVersionCode: 20250701
+CurrentVersion: 3.3.10
+CurrentVersionCode: 20260501

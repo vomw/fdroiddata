@@ -6,6 +6,7 @@ WebSite: https://www.wesnoth.org
 SourceCode: https://github.com/wesnoth/wesnoth
 IssueTracker: https://github.com/wesnoth/wesnoth/issues
 Translation: https://wiki.wesnoth.org/WesnothTranslations
+Changelog: https://github.com/wesnoth/wesnoth/blob/HEAD/changelog.md
 Liberapay: Wesnoth
 
 AutoName: The Battle for Wesnoth
@@ -118,10 +119,434 @@ Builds:
         > ~/tmp/build.log
     ndk: r26d
 
+  - versionName: 1.19.16+dev
+    versionCode: 1191601001
+    commit: 974697748efe3e8a4ab1570f173c06023ddf24f2
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.16+dev
+    versionCode: 1191601002
+    commit: 974697748efe3e8a4ab1570f173c06023ddf24f2
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.17
+    versionCode: 1191700001
+    commit: 1ae3f350db22994667a48dbd634ea496b4992948
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.17
+    versionCode: 1191700002
+    commit: 1ae3f350db22994667a48dbd634ea496b4992948
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.18
+    versionCode: 1191800001
+    commit: 9f0ce839cde296ce06fd419c8c80252787e4d06d
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.18
+    versionCode: 1191800002
+    commit: 9f0ce839cde296ce06fd419c8c80252787e4d06d
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.19
+    versionCode: 1191900001
+    commit: 152846b0e69b1a356890dc2d07019609691f967a
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.19
+    versionCode: 1191900002
+    commit: 152846b0e69b1a356890dc2d07019609691f967a
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf pkg-config automake make cmake scons gcc libc-dev
+        xz-utils lbzip2 wget ninja-build gperf pipx
+      - PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install meson==1.8.2
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.20
+    versionCode: 1192000001
+    commit: f6a88e64f30b09bac96d3aa9f08813b00a2925ee
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.20
+    versionCode: 1192000002
+    commit: f6a88e64f30b09bac96d3aa9f08813b00a2925ee
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.21
+    versionCode: 1192100001
+    commit: f2e79b852db663fa3365b0eb72476dc7a1eb7ce3
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.21
+    versionCode: 1192100002
+    commit: f2e79b852db663fa3365b0eb72476dc7a1eb7ce3
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.22
+    versionCode: 1192200001
+    commit: d73a00bd3548b2d80b70cfe2ad17ea6a27ef6734
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.22
+    versionCode: 1192200002
+    commit: d73a00bd3548b2d80b70cfe2ad17ea6a27ef6734
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.23
+    versionCode: 1192300001
+    commit: 43cec34d1ebb480783f6ac3436140ad6ee9a4c9c
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "armeabi-v7a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='armeabi-v7a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
+  - versionName: 1.19.23
+    versionCode: 1192300002
+    commit: 43cec34d1ebb480783f6ac3436140ad6ee9a4c9c
+    subdir: packaging/android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky meson
+      - apt-get install -y autoconf pkg-config automake make cmake scons g++ libc-dev
+        xz-utils lbzip2 wget ninja-build gperf
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/include .*/include "arm64-v8a"/' build.gradle
+      - sed -i -e 's/wget/wget -q/' ../build-android-dependencies/build-android-deps.sh
+      - echo F-Droid > ../../../data/dist
+    scandelete:
+      - data/test/scenarios/cve_tests/bytecode.bin
+      - utils/mp-server
+    build:
+      - cd ..
+      - PREFIXDIR=$(pwd)/dependencies/prefix BUILDDIR_PREFIX=$(pwd)/dependencies ANDROID_NDK_ROOT=$$NDK$$
+        ANDROID_HOME=$$SDK$$ ARCHS='arm64-v8a' gradle buildCppDepends buildCppSource
+        > ~/tmp/build.log
+    ndk: r26d
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v?\d+\.\d*[13579]\.\d+(\.\d+)?$
 VercodeOperation:
   - 1000 * %c + 1
   - 1000 * %c + 2
-CurrentVersion: 1.19.15
-CurrentVersionCode: 11915002
+CurrentVersion: 1.19.23
+CurrentVersionCode: 1192300002
