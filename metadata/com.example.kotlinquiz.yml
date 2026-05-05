@@ -28,7 +28,9 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e 's/-Djava.io.tmpdir=.*/-Dfile.encoding=UTF-8/' ../gradle.properties
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
