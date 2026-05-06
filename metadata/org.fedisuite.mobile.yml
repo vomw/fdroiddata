@@ -28,13 +28,8 @@ Builds:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - npm install
-      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-      - sed -i 
-        's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g'
+      - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i
-        's/lintOptions{/compileOptions { sourceCompatibility JavaVersion.VERSION_21; targetCompatibility JavaVersion.VERSION_21 }\n    lintOptions{/'
-        node_modules/react-native-safe-area-context/android/build.gradle
       - npx expo prebuild --platform android --clean
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
