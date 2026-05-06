@@ -24,7 +24,7 @@ Builds:
     prebuild:
       - sed -i '/org.gradle.java.home/d' ../gradle.properties
       - cd ../..
-      - sed -i -e '/"expo":\ /a "autolinking":{"android":{"buildFromSource":[".*"]}},'
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - npm install
       - sed -i '/jvmToolchain/s/17/21/g' 
@@ -36,14 +36,13 @@ Builds:
       - sed -i 
         's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - npx expo prebuild
+      - npx expo prebuild --platform android --clean
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
-      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
 
