@@ -1,0 +1,36 @@
+Categories:
+  - Games
+License: AGPL-3.0-only
+AuthorName: Sidhant
+AuthorWebSite: https://sidhant947.github.io
+SourceCode: https://github.com/sidhant947/puzzle
+IssueTracker: https://github.com/sidhant947/puzzle/issues
+
+AutoName: Puzzle Suite
+
+RepoType: git
+Repo: https://github.com/sidhant947/puzzle.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: aced2117f3a560f98dac8b4fd648bc3f5fe37ceb
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - git -C $$flutter$$ checkout -f $(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p"
+        .metadata)
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s+.*\+([0-9]+)|pubspec.yaml|version:\s+([0-9.]+)
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
