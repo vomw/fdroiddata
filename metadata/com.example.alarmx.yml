@@ -1,0 +1,42 @@
+Categories:
+  - System
+  - Time
+License: MIT
+SourceCode: https://github.com/bonyvah/AlarmX
+IssueTracker: https://github.com/bonyvah/AlarmX/issues
+Changelog: https://github.com/bonyvah/AlarmX/releases
+
+Summary: Alarm app with cognitive challenges
+Description: |-
+  AlarmX is a mobile alarm application that requires users to complete cognitive 
+  challenges (e.g., arithmetic problems) to dismiss alarms.
+  
+  The app allows users to create and manage alarms, customize difficulty levels, 
+  and configure preferences such as snooze behavior and sound settings.
+
+AutoName: AlarmX
+
+RepoType: git
+Repo: https://github.com/bonyvah/AlarmX
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 0446d002bb6b68455c0edcb6b1e33b69600da150
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - android.lintOptions.checkReleaseBuilds=false
+      - android.lintOptions.abortOnError=false
+    prebuild:
+      - sed -i 's/gradle-9.1.0-bin.zip/gradle-8.10-bin.zip/' ../gradle/wrapper/gradle-wrapper.properties
+      - sed -i 's/a17ddd85a26b6a7f5ddb71ff8b05fc5104c0202c6e64782429790c933686c806/5b9c5eb3f9fc2c94abaea57d90bd78747ca117ddbbf96c859d3741181a12bf2a/' ../gradle/wrapper/gradle-wrapper.properties
+      - sed -i 's/compileSdk = 36/compileSdk = 35/' build.gradle.kts
+      - sed -i 's/targetSdk = 36/targetSdk = 35/' build.gradle.kts
+      - sed -i "/compileSdk = 35/a \    lint { checkReleaseBuilds = false; abortOnError = false }" build.gradle.kts
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
