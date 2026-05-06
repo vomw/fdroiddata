@@ -3,21 +3,40 @@ Categories:
   - Note
   - Bookmark
 License: MIT
-WebSite: https://github.com/jydv402/memno
 SourceCode: https://github.com/jydv402/memno
 IssueTracker: https://github.com/jydv402/memno/issues
+
 AutoName: Memno
-RepoType: git
-Repo: https://github.com/jydv402/memno
+
 Builds:
-  - versionName: 1.3.2
+  - versionName: '1.3.2'
     versionCode: 11
     commit: 1.3.2+11
     srclibs:
       - flutter@stable
-    prebuild: $$flutter$$ pub get
-    build: $$flutter$$ build apk --release --flavor withoutOTA --dart-define=UPDATE_LOGIC=withoutOTA
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - $$flutter$$
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor withoutOTA --dart-define=UPDATE_LOGIC=withoutOTA
+      - mv build/app/outputs/flutter-apk/app-withoutota-release.apk build/app/outputs/flutter-apk/memno-release.apk
+    output: build/app/outputs/flutter-apk/memno-release.apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.3.2
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.3.2'
 CurrentVersionCode: 11
