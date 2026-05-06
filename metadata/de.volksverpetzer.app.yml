@@ -26,20 +26,20 @@ Repo: https://github.com/Volksverpetzer/vvp_app.git
 Builds:
   - versionName: 2.1.10
     versionCode: 2026050501
-    commit: 720e86971b7995db3278d632bce36faaa98f2f18
+    commit: cea07474a69ff9017c43352e6ce9dbcc364f142e
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
       - npm install -g pnpm@10.33.3
-    output: android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    output: android/app/build/outputs/apk/release/*.apk
     prebuild:
       - pnpm install --frozen-lockfile
       - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - pnpm prepare:fdroid
-      - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --no-install
+      - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --clean
       - sed -i 's/versionCode [0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
@@ -55,7 +55,7 @@ Builds:
       - node_modules
     build:
       - cd android
-      - NODE_ENV=production gradle assembleRelease
+      - BUILD_FOSS_ONLY=true gradle assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v?\d+\.\d+\.\d+(-.*)?$
