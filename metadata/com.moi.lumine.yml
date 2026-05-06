@@ -14,9 +14,60 @@ RepoType: git
 Repo: https://github.com/SniShaper/lumine-for-android
 
 Builds:
-  - versionName: 0.1.4
-    versionCode: 141
-    commit: 2ae7489a9f0c80271dd6ebbf4f04d75c6a8e69a9
+  - versionName: 0.1.5
+    versionCode: 151
+    commit: 34c691acfaf0f78233bdee20f6270b802b69dffa
+    subdir: android/app
+    sudo:
+      - mkdir -p /home/runner/work/lumine-for-android
+      - chown -R vagrant /home/runner
+      - apt-get update
+      - apt-get install -y golang-go
+    gradle:
+      - yes
+    binary: 
+      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-armeabi-v7a-release.apk
+    srclibs:
+      - go@go1.24.3
+    prebuild:
+      - export ANDROID_API_LEVEL=$(sed -E -n "s/.*ANDROID_API_LEVEL.*'(.*)'.*/\1/p"
+        ../../.github/workflows/android-release.yml)
+      - export ANDROID_BUILD_TOOLS=$(sed -E -n "s/.*ANDROID_BUILD_TOOLS.*'(.*)'.*/\1/p"
+        ../../.github/workflows/android-release.yml)
+      - export ANDROID_NDK_VERSION=$(sed -E -n "s/.*ANDROID_NDK_VERSION.*'(.*)'.*/\1/p"
+        ../../.github/workflows/android-release.yml)
+      - sdkmanager "platform-tools" "platforms;android-${ANDROID_API_LEVEL}" "build-tools;${ANDROID_BUILD_TOOLS}"
+        "ndk;${ANDROID_NDK_VERSION}"
+      - git -C $$go$$ checkout -f go$(sed -n -E 's/^go (.*)/\1/p' ../../go.mod)
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd ../../
+      - export GOFLAGS=-mod=mod
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - go mod download
+      - mkdir -p android/app/libs
+      - export GOMOBILE_ANDROID_API=$(sed -E -n "s/.*GOMOBILE_ANDROID_API.*'(.*)'.*/\1/p"
+        .github/workflows/android-release.yml)
+      - export repo=/home/runner/work/lumine-for-android/lumine-for-android
+      - cd ..
+      - mv com.moi.lumine $repo
+      - pushd $repo
+      - gomobile bind -target "android/arm" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
+        -ldflags="-s -w -buildid=" -trimpath ./mobile
+      - popd
+      - mv $repo com.moi.lumine
+      - popd
+    gradleprops:
+      - ABI_FILTER=armeabi-v7a
+
+  - versionName: 0.1.5
+    versionCode: 152
+    commit: 34c691acfaf0f78233bdee20f6270b802b69dffa
     subdir: android/app
     sudo:
       - mkdir -p /home/runner/work/lumine-for-android
@@ -65,60 +116,9 @@ Builds:
     gradleprops:
       - ABI_FILTER=arm64-v8a
 
-  - versionName: 0.1.4
-    versionCode: 142
-    commit: 2ae7489a9f0c80271dd6ebbf4f04d75c6a8e69a9
-    subdir: android/app
-    sudo:
-      - mkdir -p /home/runner/work/lumine-for-android
-      - chown -R vagrant /home/runner
-      - apt-get update
-      - apt-get install -y golang-go
-    gradle:
-      - yes
-    binary: 
-      https://github.com/SniShaper/lumine-for-android/releases/download/v%v/lumine-v%v-app-armeabi-v7a-release.apk
-    srclibs:
-      - go@go1.24.3
-    prebuild:
-      - export ANDROID_API_LEVEL=$(sed -E -n "s/.*ANDROID_API_LEVEL.*'(.*)'.*/\1/p"
-        ../../.github/workflows/android-release.yml)
-      - export ANDROID_BUILD_TOOLS=$(sed -E -n "s/.*ANDROID_BUILD_TOOLS.*'(.*)'.*/\1/p"
-        ../../.github/workflows/android-release.yml)
-      - export ANDROID_NDK_VERSION=$(sed -E -n "s/.*ANDROID_NDK_VERSION.*'(.*)'.*/\1/p"
-        ../../.github/workflows/android-release.yml)
-      - sdkmanager "platform-tools" "platforms;android-${ANDROID_API_LEVEL}" "build-tools;${ANDROID_BUILD_TOOLS}"
-        "ndk;${ANDROID_NDK_VERSION}"
-      - git -C $$go$$ checkout -f go$(sed -n -E 's/^go (.*)/\1/p' ../../go.mod)
-    build:
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOPATH=$$go$$
-      - export PATH="$GOPATH/bin:$PATH"
-      - pushd ../../
-      - export GOFLAGS=-mod=mod
-      - go install golang.org/x/mobile/cmd/gomobile@latest
-      - gomobile init
-      - go mod download
-      - mkdir -p android/app/libs
-      - export GOMOBILE_ANDROID_API=$(sed -E -n "s/.*GOMOBILE_ANDROID_API.*'(.*)'.*/\1/p"
-        .github/workflows/android-release.yml)
-      - export repo=/home/runner/work/lumine-for-android/lumine-for-android
-      - cd ..
-      - mv com.moi.lumine $repo
-      - pushd $repo
-      - gomobile bind -target "android/arm" -androidapi $GOMOBILE_ANDROID_API -o
-        android/app/libs/LumineCore.aar -ldflags="-s -w -buildid=" -trimpath ./mobile
-      - popd
-      - mv $repo com.moi.lumine
-      - popd
-    gradleprops:
-      - ABI_FILTER=armeabi-v7a
-
-  - versionName: 0.1.4
-    versionCode: 143
-    commit: 2ae7489a9f0c80271dd6ebbf4f04d75c6a8e69a9
+  - versionName: 0.1.5
+    versionCode: 153
+    commit: 34c691acfaf0f78233bdee20f6270b802b69dffa
     subdir: android/app
     sudo:
       - mkdir -p /home/runner/work/lumine-for-android
@@ -159,17 +159,17 @@ Builds:
       - cd ..
       - mv com.moi.lumine $repo
       - pushd $repo
-      - gomobile bind -target "android/386" -androidapi $GOMOBILE_ANDROID_API -o
-        android/app/libs/LumineCore.aar -ldflags="-s -w -buildid=" -trimpath ./mobile
+      - gomobile bind -target "android/386" -androidapi $GOMOBILE_ANDROID_API -o android/app/libs/LumineCore.aar
+        -ldflags="-s -w -buildid=" -trimpath ./mobile
       - popd
       - mv $repo com.moi.lumine
       - popd
     gradleprops:
       - ABI_FILTER=x86
 
-  - versionName: 0.1.4
-    versionCode: 144
-    commit: 2ae7489a9f0c80271dd6ebbf4f04d75c6a8e69a9
+  - versionName: 0.1.5
+    versionCode: 154
+    commit: 34c691acfaf0f78233bdee20f6270b802b69dffa
     subdir: android/app
     sudo:
       - mkdir -p /home/runner/work/lumine-for-android
@@ -227,5 +227,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
   - 10 * %c + 4
-CurrentVersion: 0.1.4
-CurrentVersionCode: 144
+CurrentVersion: 0.1.5
+CurrentVersionCode: 154
