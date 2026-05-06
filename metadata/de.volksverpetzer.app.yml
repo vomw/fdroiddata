@@ -42,6 +42,10 @@ Builds:
       - BUILD_FOSS_ONLY=true npx expo prebuild --platform android --clean
       - sed -i 's/versionCode [0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
       - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+        -e '/getInstallReferrerAsync/apromise.resolve("")' 
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
     scanignore:
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
