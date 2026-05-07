@@ -25,14 +25,18 @@ Builds:
       - web
       - windows
     prebuild:
-      - git -C $$flutter$$ checkout -f stable
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/main.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
-      - .pub-cache
+      - .flutter/bin/cache
     scandelete:
       - .vs
+      - .flutter
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor withoutOTA --dart-define=UPDATE_LOGIC=withoutOTA
