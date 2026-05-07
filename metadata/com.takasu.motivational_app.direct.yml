@@ -10,14 +10,13 @@ AutoName: Motivational App
 
 RepoType: git
 Repo: https://github.com/GiovanniDrago/motivationalApp.git
-Binaries: 
-  https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/motivational-app-direct-v%v+%c.apk
 
 Builds:
-  - versionName: 2.0.9
-    versionCode: 20009
-    commit: 04dfd54d9d79a6a1892915f572710e06b90506fc
-    output: build/app/outputs/flutter-apk/app-direct-release.apk
+  - versionName: 2.0.10
+    versionCode: 200101
+    commit: f2b26e4e1a1762876a57eb65c3fdcd099894c37d
+    output: build/app/outputs/flutter-apk/app-direct-armeabi-v7a-release.apk
+    binary: https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/app-direct-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -38,14 +37,79 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor direct --build-name 2.0.9
-        --build-number 20009 --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --split-per-abi
+        --target-platform=android-arm --build-name 2.0.10 --build-number 20010
+        --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+        --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+
+  - versionName: 2.0.10
+    versionCode: 200102
+    commit: f2b26e4e1a1762876a57eb65c3fdcd099894c37d
+    output: build/app/outputs/flutter-apk/app-direct-arm64-v8a-release.apk
+    binary: https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/app-direct-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --split-per-abi
+        --target-platform=android-arm64 --build-name 2.0.10 --build-number 20010
+        --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
+        --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
+
+  - versionName: 2.0.10
+    versionCode: 200103
+    commit: f2b26e4e1a1762876a57eb65c3fdcd099894c37d
+    output: build/app/outputs/flutter-apk/app-direct-x86_64-release.apk
+    binary: https://github.com/GiovanniDrago/motivationalApp/releases/download/v%v/app-direct-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/android-release-build.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor direct --split-per-abi
+        --target-platform=android-x64 --build-name 2.0.10 --build-number 20010
+        --dart-define=DISTRIBUTION_CHANNEL=direct --dart-define=ABOUT_URL=https://github.com/GiovanniDrago/motivationalApp
         --dart-define=DONATION_URL=https://buymeacoffee.com/_takasu_
 
 AllowedAPKSigningKeys: 410e1066bdb3e97eb266feda014c525ae35cbbca581ba397e875640da73fa0b4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.9
-CurrentVersionCode: 20009
+CurrentVersion: 2.0.10
+CurrentVersionCode: 20010
