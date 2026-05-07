@@ -27,6 +27,13 @@ Builds:
     prebuild:
       - git -C $$flutter$$ checkout -f 3.41.9
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub remove ota_update
+      - cp lib/home_wo_ota.dart lib/home.dart
+      - cp lib/components/settings_page_wo_ota.dart lib/components/settings_page.dart
+      - rm lib/functionality/check_update.dart
+      - rm lib/components/update_bottom_sheet.dart
+      - rm lib/home_wo_ota.dart
+      - rm lib/components/settings_page_wo_ota.dart
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
