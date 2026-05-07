@@ -12,6 +12,7 @@ AutoName: Arabic Lexicons
 
 RepoType: git
 Repo: https://github.com/wizsk/arabic_lexicons.git
+Binaries: https://github.com/wizsk/arabic_lexicons_fdroid_rel/releases/download/v%v/app-armeabi-v7a-release.apk
 
 Builds:
   - versionName: 2.5.3
@@ -27,16 +28,26 @@ Builds:
       - web
       - windows
     prebuild:
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
       - unzip -o assets/data/db.sqlite.zip -d assets/data/
       - rm assets/data/db.sqlite.zip
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm" --dart-define=APP_STORE="F-Droid"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm" --dart-define=APP_STORE="F-Droid" --dart-define=APP_VERSION="$$VERSION$$"
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
 
   - versionName: 2.5.3
     versionCode: 205032
@@ -85,6 +96,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64" --dart-define=APP_STORE="F-Droid"
+
+
+AllowedAPKSigningKeys: 324fc0e3f874d505e7130846cd2c8b03de78a0ec22e0362c11324bada54c3c77
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
