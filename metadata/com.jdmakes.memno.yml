@@ -25,18 +25,12 @@ Builds:
       - web
       - windows
     prebuild:
-      # - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/main.yml)
-      # - '[[ $flutterVersion ]]'
-      # - git -C $$flutter$$ checkout -f $flutterVersion
       - git -C $$flutter$$ checkout -f 3.41.9
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - $$flutter$$/bin/cache
     scandelete:
       - .vs
-      - $$flutter$$
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
