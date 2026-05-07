@@ -12,13 +12,13 @@ AutoName: Hermes
 
 RepoType: git
 Repo: https://github.com/adybag14-cyber/hermes-agent.git
-Binaries: 
+Binaries:
   https://github.com/adybag14-cyber/hermes-agent/releases/download/v%v/hermes-agent-android-v%v-universal.apk
 
 Builds:
-  - versionName: 0.13.35
-    versionCode: 133590
-    commit: 96e800e5ba7f1ca3864a77137e43e9163d464c82
+  - versionName: 0.13.36
+    versionCode: 133690
+    commit: 1ab970b5273d67a472eafe3550e29c22be181f26
     subdir: android/app
     sudo:
       - apt-get update
@@ -27,13 +27,16 @@ Builds:
       - yes
     rm:
       - build
-    prebuild: sed -i -e 's/System.getenv("HERMES_RELEASE_TAG").orEmpty().trim()/"v$$VERSION$$"/'
+    prebuild: sed -i -e
+      's/System.getenv("HERMES_RELEASE_TAG").orEmpty().trim()/"v$$VERSION$$"/'
       build.gradle.kts
 
-AllowedAPKSigningKeys: dfe2d23befba2eebd96bb5737be109de66b08fdb26bfc2b8c84114df6421bdaf
+AllowedAPKSigningKeys:
+  dfe2d23befba2eebd96bb5737be109de66b08fdb26bfc2b8c84114df6421bdaf
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: fdroid/com.nousresearch.hermesagent.version|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 0.13.35
-CurrentVersionCode: 133590
+UpdateCheckData:
+  fdroid/com.nousresearch.hermesagent.version|versionCode=(\d+)|.|versionName=(.*)
+CurrentVersion: 0.13.36
+CurrentVersionCode: 133690
