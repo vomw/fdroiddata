@@ -1,0 +1,51 @@
+Categories:
+  - Security
+  - System
+License: Apache-2.0
+AuthorName: Patrice Haltaya
+AuthorEmail: contact@files-tech.com
+WebSite: https://www.files-tech.com/pass-tech.php
+SourceCode: https://github.com/gitubpatrice/pass_tech
+IssueTracker: https://github.com/gitubpatrice/pass_tech/issues
+Changelog: https://github.com/gitubpatrice/pass_tech/releases
+
+AutoName: Pass Tech
+Description: |-
+    Pass Tech est un gestionnaire de mots de passe 100 % local pour Android.
+    Aucun cloud, aucun compte, aucun serveur, aucun tracker, aucune publicité.
+
+    '''Sécurité crypto v4''' :
+    * Argon2id (m=19 MiB, t=2, p=1 — OWASP 2024)
+    * AES-256-GCM avec AAD anti-downgrade
+    * KEK Keystore-bound (StrongBox/TEE)
+    * HKDF-SHA256 + Random.secure
+    * Brute-force lockout exponentiel (1, 2, 4, 8, 16 minutes)
+
+    '''Confidentialité radicale''' :
+    * Anti-phishing par domaine (vérification AccessibilityService minimal)
+    * Coffre leurre anti-coercition (déni plausible avec timing aligné)
+    * Mode panique : destruction immédiate de la KEK Keystore
+    * Camouflage launcher (déguisement icône en Calculatrice)
+    * Héritage post-inactivité (dead-man's switch)
+    * FLAG_SECURE actif (anti-screenshot)
+    * Permission INTERNET utilisée uniquement pour vérifier les mises à jour
+      via l'API GitHub Releases (anonyme).
+
+    '''Open source''' Apache 2.0 — code intégral disponible.
+
+RepoType: git
+Repo: https://github.com/gitubpatrice/pass_tech.git
+
+Builds:
+  - versionName: 2.2.0
+    versionCode: 13
+    commit: v2.2.0
+    subdir: android/app
+    gradle:
+      - yes
+    output: build/app/outputs/flutter-apk/app-release.apk
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]
+CurrentVersion: 2.2.0
+CurrentVersionCode: 13
