@@ -25,5 +25,10 @@ AllowedAPKSigningKeys: 3c1814b1499c7c7996110835995d4112a39449f8da824333ea77aa734
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+\.\d+$
+# Mirror app/build.gradle.kts -> buildSrc/Version.kt formula:
+#   versionName "yyyy.MM.dd.run" -> vercode (yy*10000 + MM*100 + dd) * 100 + run%100.
+# Needed because gradle derives vercode at runtime via git describe.
+VercodeOperation:
+  - \'(int(%v.split(".")[0]) % 100 * 10000 + int(%v.split(".")[1]) * 100 + int(%v.split(".")[2])) * 100 + int(%v.split(".")[3]) % 100\'
 CurrentVersion: 2026.05.08.43
 CurrentVersionCode: 26050843
