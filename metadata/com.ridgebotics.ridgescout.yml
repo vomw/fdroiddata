@@ -1,0 +1,49 @@
+Categories:
+  - Science & Education
+  - Writing
+License: MIT
+AuthorName: Ridgebotics
+AuthorEmail: ridgebotics@gmail.com
+AuthorWebSite: https://www.ridebotics.com
+SourceCode: https://github.com/team4388/RidgeScout
+IssueTracker: https://github.com/team4388/RidgeScout/issues
+Changelog: https://github.com/team4388/RidgeScout/releases
+
+AutoName: RidgeScout
+
+RepoType: git
+Repo: https://github.com/team4388/RidgeScout.git
+Binaries: https://github.com/Team4388/RidgeScout/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: '1.4'
+    versionCode: 11
+    commit: 534207ebb1648c2d35d81a2c13be7279ab5fd7f3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: '3.1'
+    versionCode: 15
+    commit: 76a1b1ff7058c047e4b949c489e87e7851ce460a
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 6103bcb5e2cac688f1454cf5e64c9227885cb8534b726655ce394c45ad17791d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '3.1'
+CurrentVersionCode: 15
