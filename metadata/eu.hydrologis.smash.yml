@@ -8,13 +8,15 @@ WebSite: https://www.geopaparazzi.org/smash/index.html
 SourceCode: https://github.com/geopaparazzi/smash
 IssueTracker: https://github.com/geopaparazzi/smash/issues
 Translation: https://hosted.weblate.org/engage/smash/
-Donate: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=84U4N2DVQ74S6&lc=IT&item_name=JGrass%20BeeGIS%20Geopaparazzi%20Donations&item_number=jgrassdonations&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate: 
+  https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=84U4N2DVQ74S6&lc=IT&item_name=JGrass%20BeeGIS%20Geopaparazzi%20Donations&item_number=jgrassdonations&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 
 AutoName: SMASH
 
 RepoType: git
 Repo: https://github.com/geopaparazzi/smash.git
-Binaries: https://github.com/geopaparazzi/smash/releases/download/version_%v%2B%c_fdroid/smash_%v+%c_fdroid.apk
+Binaries: 
+  https://github.com/geopaparazzi/smash/releases/download/version_%v%2B%c_fdroid/smash_%v+%c_fdroid.apk
 
 Builds:
   - versionName: 1.8.1
@@ -579,10 +581,122 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 1.10.5
+    versionCode: 82
+    commit: 5fde5f2c180f0b69fb25c06549664cf02e030baa
+    submodules: true
+    sudo:
+      - mkdir -p /home/hydrologis/
+      - chown vagrant /home/hydrologis/
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - ios
+      - macos
+      - linux
+      - .vscode
+      - .gradle
+    prebuild:
+      - export repo=/home/hydrologis/development/SMASH/smash
+      - mkdir -p /home/hydrologis/development/SMASH/
+      - cd ..
+      - mv eu.hydrologis.smash $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+      - sed -i -e '/shrinkResources/d' -e '/minifyEnabled/d' android/app/build.gradle
+      - cd .pub-cache/git/background_locator*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/kotlin/yukams/app/background_locator_2
+      - sed -i -e '/gms/d' -e '/fun getAccuracy/,/^}/d' -e 's/getAccuracy//' IsolateHolderExtension.kt
+      - sed -i -e 's/GoogleLocationProviderClient/AndroidLocationProviderClient/'
+        IsolateHolderService.kt
+      - sed -i -e '/getLocationMapFromLocation.*LocationResult/,/^        }/d' -e
+        '/gms/d' provider/LocationParserUtil.kt
+      - rm provider/GoogleLocationProviderClient.kt
+      - popd
+      - mv $repo eu.hydrologis.smash
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/hydrologis/development/SMASH/smash
+      - cd ..
+      - mv eu.hydrologis.smash $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --no-tree-shake-icons
+      - popd
+      - mv $repo eu.hydrologis.smash
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.11.0
+    versionCode: 83
+    commit: 0aa4ad84255ac964e509f8844b6383e2325254e1
+    submodules: true
+    sudo:
+      - mkdir -p /home/hydrologis/
+      - chown vagrant /home/hydrologis/
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - ios
+      - macos
+      - linux
+      - .vscode
+      - .gradle
+    prebuild:
+      - export repo=/home/hydrologis/development/SMASH/smash
+      - mkdir -p /home/hydrologis/development/SMASH/
+      - cd ..
+      - mv eu.hydrologis.smash $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+      - sed -i -e '/shrinkResources/d' -e '/minifyEnabled/d' android/app/build.gradle
+      - cd .pub-cache/git/background_locator*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/kotlin/yukams/app/background_locator_2
+      - sed -i -e '/gms/d' -e '/fun getAccuracy/,/^}/d' -e 's/getAccuracy//' IsolateHolderExtension.kt
+      - sed -i -e 's/GoogleLocationProviderClient/AndroidLocationProviderClient/'
+        IsolateHolderService.kt
+      - sed -i -e '/getLocationMapFromLocation.*LocationResult/,/^        }/d' -e
+        '/gms/d' provider/LocationParserUtil.kt
+      - rm provider/GoogleLocationProviderClient.kt
+      - popd
+      - mv $repo eu.hydrologis.smash
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/hydrologis/development/SMASH/smash
+      - cd ..
+      - mv eu.hydrologis.smash $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --no-tree-shake-icons
+      - popd
+      - mv $repo eu.hydrologis.smash
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 81c62401816220961839db486631058102e7bd3362d757443ab2477d52781d8a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags version_[\d.]+\+\d+_fdroid
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.10.4
-CurrentVersionCode: 81
+CurrentVersion: 1.11.0
+CurrentVersionCode: 83
