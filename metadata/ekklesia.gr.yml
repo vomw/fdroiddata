@@ -1,3 +1,6 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: HLR phone verification uses a commercial API.
 Categories:
   - Connectivity
 License: MIT
@@ -7,10 +10,6 @@ IssueTracker: https://github.com/NeaBouli/pnyx/issues
 
 AutoName: ekklesia
 
-AntiFeatures:
-  NonFreeNet:
-    en-US: HLR phone verification uses a commercial API.
-
 RepoType: git
 Repo: https://github.com/NeaBouli/pnyx
 
@@ -19,20 +18,19 @@ Builds:
     versionCode: 6
     commit: ccaf8e5a99abc73323f4999ad5e4173342685d4b
     timeout: 20000
-    subdir: apps/mobile/android/app
     sudo:
       - apt-get update
-      - apt-get install -y npm nodejs
-    init:
-      - cd ../../../..
-      - npm ci --ignore-scripts
+      - apt-get install -y npm
+    output: apps/mobile/android/app/build/outputs/apk/directRelease/app-direct-release-unsigned.apk
+    prebuild:
       - cd apps/mobile
       - npm ci --ignore-scripts
       - npx expo prebuild --clean --platform android
-    gradle:
-      - direct
     scandelete:
       - apps/mobile/node_modules
+    build:
+      - cd apps/mobile/android
+      - gradle assembleDirectRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
