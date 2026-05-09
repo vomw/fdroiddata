@@ -1,28 +1,41 @@
 Categories:
   - Productivity
   - Time
-License: GPLv3
-WebSite: https://github.com/Benji377/Timety
+License: GPL-3.0-only
+AuthorName: Benji377
+AuthorWebSite: https://github.com/Benji377
 SourceCode: https://github.com/Benji377/Timety
 IssueTracker: https://github.com/Benji377/Timety/issues
-Changelog: https://github.com/Benji377/Timety/releases
+Donate: https://github.com/sponsors/Benji377
 
 AutoName: Timety
-Summary: Offline-first productivity, focus, and habit tracking.
-Description: |-
-  Timety is a comprehensive, offline-first productivity and time-management application. 
-  It seamlessly integrates Task Management, Focus Sessions, and Habit Tracking into one gamified experience.
+RepoType: git
+Repo: https://github.com/Benji377/Timety.git
 
 Builds:
   - versionName: '1.1.0'
     versionCode: 4
     commit: v1.1.0
-    flutter: yes
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - windows
+      - linux
+      - web
     build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
       - flutter pub get
       - dart run build_runner build --delete-conflicting-outputs
       - flutter build apk --release
 
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.1.0'
+CurrentVersionCode: 4
