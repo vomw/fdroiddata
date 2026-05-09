@@ -15,25 +15,29 @@ RepoType: git
 Repo: https://github.com/Benji377/Timety.git
 
 Builds:
-  - versionName: 1.1.1
-    versionCode: 5
-    commit: v1.1.1
+  - versionName: 1.1.2
+    versionCode: 6
+    commit: 5f7814e17bde513a149f4db8d0d7e85c3a5ce73c
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
       - web
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - "[[ $flutterVersion ]]"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
-      - flutter config --no-analytics
-      - flutter pub get
-      - dart run build_runner build --delete-conflicting-outputs
-      - flutter build apk --release
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.1.1
-CurrentVersionCode: 5
+CurrentVersion: 1.1.2
+CurrentVersionCode: 6
