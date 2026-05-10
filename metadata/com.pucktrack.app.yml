@@ -1,6 +1,7 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Requires internet access to fetch live data from the NHL Stats API (api-web.nhle.com).
+    en-US: Requires internet access to fetch live data from the NHL Stats API 
+      (api-web.nhle.com).
 Categories:
   - Sports & Health
 License: MIT
@@ -26,7 +27,9 @@ Builds:
       - apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: cd .. && sh tools/fdroid-prebuild.sh
+    prebuild: cd .. && npm install --ignore-scripts && find 
+      node_modules/@react-native/gradle-plugin -name build.gradle.kts -exec sed 
+      -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin
       - node_modules/expo-linear-gradient/local-maven-repo
