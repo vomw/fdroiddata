@@ -1,0 +1,43 @@
+Categories:
+- Music & Audio
+License: MIT
+AuthorName: Bartłomiej Jakub Kwiatek
+WebSite: https://github.com/Flower7C3/tune-tangler
+SourceCode: https://github.com/Flower7C3/tune-tangler
+IssueTracker: https://github.com/Flower7C3/tune-tangler/issues
+RepoType: git
+Repo: https://github.com/Flower7C3/tune-tangler
+Builds:
+- versionName: 1.7.0
+  versionCode: 4
+  commit: 23a58daa81c8519726afc3542207fc8b7b9955a5
+  subdir: .
+  sudo:
+  - apt-get update || apt-get update
+  - apt-get install -y openjdk-17-jdk-headless curl ca-certificates
+  init:
+  - export FLUTTER_VERSION=3.41.9
+  - curl -fsSL -o /tmp/flutter-sdk.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+  - tar -C "$HOME" -xf /tmp/flutter-sdk.tar.xz
+  - export PATH="$HOME/flutter/bin:$PATH"
+  - flutter config --no-analytics
+  - flutter precache --android
+  - flutter --version
+  prebuild:
+  - export PATH="$HOME/flutter/bin:$PATH"
+  - flutter pub get
+  build:
+  - export PATH="$HOME/flutter/bin:$PATH"
+  - flutter build apk --release
+  output: build/app/outputs/flutter-apk/app-release-unsigned.apk
+MaintainerNotes: 'MIT. Sonic (Apache 2.0) w android/app/src/main/java/sonic/.
+
+  Build: Flutter z kanału stable (wersja z workflow / zmiennej FDROID_FLUTTER_VERSION).
+
+  Listings (Summary/Description/screenshots): Fastlane layout w repo aplikacji
+
+  (fastlane/metadata/android/) — nie duplikuj ich w tym pliku YAML.
+
+  '
+ArchivePolicy: 6 versions
+UpdateCheckMode: Tags
