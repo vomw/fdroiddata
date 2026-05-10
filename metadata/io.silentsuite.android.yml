@@ -14,15 +14,17 @@ AutoName: SilentSuite
 
 RepoType: git
 Repo: https://github.com/silent-suite/silentsuite.git
-Binaries:
-  https://github.com/silent-suite/silentsuite/releases/download/v%v/silentsuite-android-v%v.apk
+Binaries: https://github.com/silent-suite/silentsuite/releases/download/v%v/silentsuite-android-v%v.apk
 
 Builds:
   - versionName: 0.1.3-beta
     versionCode: 2
     commit: 970388d0c5cded9b87a9c0dcb6a1bc21cd186f37
     subdir: android/app
-    init: sed -i -e 's/maven() {/maven {/' ../build.gradle
+    init:
+      - sed -i -e 's/maven() {/maven {/' ../build.gradle
+      - printf "\nsubprojects {\n    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach
+        {\n        kotlinOptions.jvmTarget = '17'\n    }\n}\n" >> ../build.gradle
     gradle:
       - yes
 
