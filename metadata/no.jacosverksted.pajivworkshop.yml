@@ -24,19 +24,26 @@ Builds:
     subdir: .
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.7
+      - flutter@stable
     rm:
       - ios
       - macos
       - linux
       - windows
       - web
-    build:
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.41.7
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.0
 CurrentVersionCode: 5
