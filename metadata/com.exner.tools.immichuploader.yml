@@ -11,7 +11,8 @@ AutoName: ImmichUploader
 
 RepoType: git
 Repo: https://codeberg.org/jexner/ImmichUploader.git
-Binaries: https://www.jan-exner.de/software/android/immichuploader/Immich_Uploader_release_%v_%c.apk
+Binaries: 
+  https://www.jan-exner.de/software/android/immichuploader/Immich_Uploader_release_%v_%c.apk
 
 Builds:
   - versionName: 1.1.1
@@ -25,9 +26,89 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'META-INF/services/*'
 
+  - versionName: 2.0.0
+    versionCode: 5
+    commit: 8f625108faca58f7cc17574481e716a1ba340afd
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.0.1
+    versionCode: 6
+    commit: 06dcb8ceb20c173245a5a3fdb57ef6707c745b92
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.0.2
+    versionCode: 7
+    commit: 8471fb5de50705e8854dc0b4186ceaa2df5bea6b
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.0.3
+    versionCode: 8
+    commit: d967b40284456d67b0b8d17f52ee170223875159
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.0.4
+    versionCode: 9
+    commit: 5b485d03bb3b89bca626accc4da19e4b2bef67a7
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.0.5
+    versionCode: 10
+    commit: 13b3f90bb8e3f61289c702cbad9ce3ca0885d7da
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.0.6
+    versionCode: 11
+    commit: bfe43e9baff9173b3d2dc2f7881ebada8c2b1586
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.1.0
+    versionCode: 12
+    commit: 192923351169715f73beef62bf74074529073ea3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.1.1
+    versionCode: 13
+    commit: 933b86199005bac657625c57ade44a5d9da619e6
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.1.2
+    versionCode: 14
+    commit: c4e2453c20c5be33c5d60b1fe21598b7465777ee
+    subdir: app
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: 07a89b9b74e8d980673671912166ace204c2f73523cd631b933cb4f77ac4a2cf
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.1.1
-CurrentVersionCode: 4
+CurrentVersion: 2.1.2
+CurrentVersionCode: 14

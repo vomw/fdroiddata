@@ -11,7 +11,8 @@ Donate: https://greenart7c3.com/
 
 RepoType: git
 Repo: https://github.com/greenart7c3/Citrine.git
-Binaries: https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-fdroid-universal-v%v.apk
+Binaries: 
+  https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-fdroid-universal-v%v.apk
 
 Builds:
   - versionName: 0.4.1
@@ -20,7 +21,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    binary: https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
+    binary: 
+      https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
     prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
 
   - versionName: 0.4.3
@@ -29,7 +31,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    binary: https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
+    binary: 
+      https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
     prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
 
   - versionName: 0.4.4
@@ -38,7 +41,8 @@ Builds:
     subdir: app
     gradle:
       - yes
-    binary: https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
+    binary: 
+      https://github.com/greenart7c3/Citrine/releases/download/v%v/citrine-universal-v%v.apk
     prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
 
   - versionName: 0.5.0
@@ -193,9 +197,54 @@ Builds:
       - yes
     prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
 
+  - versionName: 1.0.0
+    versionCode: 52
+    commit: 9a9af4d621ed46de124e52964b65abb1c7114c1d
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
+
+  - versionName: 1.0.1
+    versionCode: 53
+    commit: e1f58049fb657c25720a0febe8178e4b7f3ded30
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
+
+  - versionName: 1.0.2
+    versionCode: 54
+    commit: 1f37a58f488c8718d485e57d1e7007609586f522
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/isEnable = true/d' build.gradle.kts
+
+  - versionName: 2.0.0
+    versionCode: 57
+    commit: 0d75899d1be2af9364c0bd185a3e1c0993d09b21
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/isEnable = true/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    ndk: r28c
+
 AllowedAPKSigningKeys: da2f6c5a75edc14a535a4397a9daef45b93e03e12082524fe5bae867aeacc3e4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ((?!pre).)*$
-CurrentVersion: 0.9.0
-CurrentVersionCode: 51
+CurrentVersion: 2.0.0
+CurrentVersionCode: 57

@@ -5,6 +5,7 @@ import re
 import sys
 from pathlib import Path
 
+import markdown_it
 import ruamel.yaml
 from fdroidserver import common, metadata, update
 
@@ -26,21 +27,43 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
         reports.append(
             {
                 "description": "Fastlane/Triple-T is not found",
-                "fingerprint": "fastlane not found",
+                "fingerprint": f"{app.id} fastlane not found",
                 "severity": "critical",
             }
         )
         return reports
 
     localized = app["localized"]
-    if not localized.get("en-US") or not localized["en-US"].get("summary"):
+    if (
+        not localized.get("en-US")
+        or not localized["en-US"].get("summary")
+        or not localized["en-US"].get("description")
+    ):
         reports.append(
             {
                 "description": "Fastlane/Triple-T for en-US not found or incomplete",
-                "fingerprint": "fastlane en-US not found",
+                "fingerprint": f"{app.id} fastlane en-US not found",
                 "severity": "critical",
             }
         )
+
+    # Don't escape html so that we can compare the output with the original text
+    markdown_it.renderer.escapeHtml = lambda x: x
+    md = (
+        markdown_it.MarkdownIt("commonmark")
+        .disable("list")  # The markdown list can also be used as plain text list
+        .disable("code")  # The markdown code can also be used as plain text indent
+        .disable("normalize")
+        .disable("escape")
+        .disable("entity")
+        .disable("newline")
+    )
+
+    def normalize_html(text: str) -> str:
+        text = re.sub(r"\s+$", "", text, flags=re.M)
+        text = re.sub(r"^\s+", "", text, flags=re.M)
+        return text.replace("<p>", "").replace("</p>", "").replace("\n", "")
+
     for locale, v in localized.items():
         if not BCP47_LOCALE_TAG_PATTERN.fullmatch(locale):
             for replace in (("_", "-"), ("-r", "-"), ("_r", "-")):
@@ -48,7 +71,7 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
                     reports.append(
                         {
                             "description": f"Fastlane/Triple-T has invalid locale {locale}, maybe a typo of {locale.replace(*replace)}",
-                            "fingerprint": f"fastlane invalid locale {locale}",
+                            "fingerprint": f"{app.id} fastlane invalid locale {locale}",
                             "severity": "major",
                         }
                     )
@@ -57,7 +80,7 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
                 reports.append(
                     {
                         "description": f"Fastlane/Triple-T has invalid locale {locale}",
-                        "fingerprint": f"fastlane invalid locale {locale}",
+                        "fingerprint": f"{app.id} fastlane invalid locale {locale}",
                         "severity": "major",
                     }
                 )
@@ -67,12 +90,12 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
                 reports.append(
                     {
                         "description": f"Fastlane/Triple-T {file} in {locale} should be shorter than {limit - 1} characters",
-                        "fingerprint": f"fastlane {locale} {file} exceed",
+                        "fingerprint": f"{app.id} fastlane {locale} {file} exceed",
                         "severity": "minor",
                     }
                 )
 
-        items = list(v.keys())
+        items = [f"{k} ({v[k][:80]})" for k in v.keys()]
         if (repo_dir := Path("repo") / app.id / locale).is_dir():
             for child in repo_dir.iterdir():
                 if child.is_file():
@@ -83,10 +106,21 @@ def check_fastlane(app: metadata.App) -> list[dict[str, str]]:
         reports.append(
             {
                 "description": f"Fastlane/Triple-T in {locale}: {', '.join(items)}",
-                "fingerprint": f"fastlane {locale} found",
+                "fingerprint": f"{app.id} fastlane {locale} found",
                 "severity": "info",
             }
         )
+
+        if v.get("description") and normalize_html(v["description"]) != normalize_html(
+            md.render(v["description"])
+        ):
+            reports.append(
+                {
+                    "description": f"Fastlane/Triple-T in {locale} uses Markdown in description",
+                    "fingerprint": f"{app.id} fastlane {locale} markdown",
+                    "severity": "minor",
+                }
+            )
 
     return reports
 
@@ -105,6 +139,9 @@ def main():
         if app.RepoType == "srclib":
             # fastlane in srclibs is not supported
             print(f"RepoType of {appid} is srclib, skip", file=sys.stderr)
+            continue
+        elif not app.RepoType:
+            # Disabled, NoSourceSince, archived, etc
             continue
         else:
             build_dir = Path("build") / appid
