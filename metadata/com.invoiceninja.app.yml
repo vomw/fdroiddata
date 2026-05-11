@@ -2384,9 +2384,6 @@ Builds:
   - versionName: 5.0.191
     versionCode: 191
     commit: 3b0a546936d65d552909fb94954e637abf13b118
-    sudo:
-      - apt-get update
-      - apt-get install -y unzip zip
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -2415,7 +2412,8 @@ Builds:
         pubspec.yaml
       - sed -i -e '/^  google_sign_in/,/version:/d' -e '/^  in_app_review/,/version:/d'
         -e '/^  in_app_purchase/,/version:/d' pubspec.lock
-      - sed -i -e '/signingConfig =/d' -e '/ndkVersion/apackagingOptions{jniLibs{useLegacyPackaging true}}' android/app/build.gradle.kts
+      - sed -i -e '/signingConfig =/d' -e '/ndkVersion/a packagingOptions { jniLibs
+        { useLegacyPackaging = true } }' android/app/build.gradle.kts
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
