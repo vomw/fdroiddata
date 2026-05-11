@@ -15,9 +15,9 @@ RepoType: git
 Repo: https://codeberg.org/tom79/Holos-App.git
 
 Builds:
-  - versionName: 1.5.4
-    versionCode: 33
-    commit: 6902a0b17a38f5bcf62318d52497360855b1ccdb
+  - versionName: 1.5.5
+    versionCode: 34
+    commit: 071e4ca69ec05b73f0d67a5183f67de0d3c182b4
     timeout: 36000
     sudo:
       - apt-get update
@@ -46,6 +46,8 @@ Builds:
         -e '/getInstallReferrerAsync/,/^    }$/d' 
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - APP_VARIANT=production npx expo prebuild --platform android --clean
+      - sed -i -e 's/ android:extractNativeLibs="[^"]*"//' -e 's/<application/<application
+        android:extractNativeLibs="true"/' android/app/src/main/AndroidManifest.xml
       - rm -rf nodejs-assets/nodejs-project/node_modules/sql.js/dist
       - rm -rf 
         android/app/src/main/assets/nodejs-assets/nodejs-project/node_modules/sql.js/dist
@@ -99,5 +101,5 @@ MaintainerNotes: Binary scanner detects `com/google/firebase` classes from fireb
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+(-rc-\d+)?$
 UpdateCheckData: app.json|"versionCode":\s(\d+)|.|"version":\s"([^"]+)"
-CurrentVersion: 1.5.4
-CurrentVersionCode: 33
+CurrentVersion: 1.5.5
+CurrentVersionCode: 34
