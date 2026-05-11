@@ -3521,7 +3521,7 @@ Builds:
       - corepack enable
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
-    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned-aligned.apk
     binary: 
       https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     rm:
@@ -3530,6 +3530,7 @@ Builds:
       - cd ../..
       - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
     scanignore:
+      - android/gradle/wrapper/gradle-wrapper.jar
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/react-native-safe-area-context/android/build.gradle
@@ -3542,9 +3543,9 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - cd ../..
-      - export ORG_GRADLE_PROJECT_reactNativeArchitectures=armeabi-v7a
-      - bash ./scripts/android_build.sh prod-foss
+      - gradle app:assembleRelease -PreactNativeArchitectures=armeabi-v7a
+      - cd build/outputs/apk/release
+      - zipalign -v -p 4 app-armeabi-v7a-release-unsigned.apk app-armeabi-v7a-release-unsigned-aligned.apk  
 
   - versionName: 1.13.3
     versionCode: 10130032
@@ -3566,7 +3567,7 @@ Builds:
       - corepack enable
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
-    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned-aligned.apk
     binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
     rm:
       - ios
@@ -3574,6 +3575,7 @@ Builds:
       - cd ../..
       - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
     scanignore:
+      - android/gradle/wrapper/gradle-wrapper.jar
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/react-native-safe-area-context/android/build.gradle
@@ -3586,9 +3588,9 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - cd ../..
-      - export ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a
-      - bash ./scripts/android_build.sh prod-foss
+      - gradle app:assembleRelease -PreactNativeArchitectures=arm64-v8a
+      - cd build/outputs/apk/release
+      - zipalign -v -p 4 app-arm64-v8a-release-unsigned.apk app-arm64-v8a-release-unsigned-aligned.apk  
 
 AllowedAPKSigningKeys: 091ad944843e180c4322ede202a733094cdc07dd1acd51523fe813eae904f487
 
