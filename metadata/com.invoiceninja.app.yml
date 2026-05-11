@@ -2390,7 +2390,6 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
-      - reproducible-apk-tools@v0.3.1
     rm:
       - ios
       - linux
@@ -2416,7 +2415,7 @@ Builds:
         pubspec.yaml
       - sed -i -e '/^  google_sign_in/,/version:/d' -e '/^  in_app_review/,/version:/d'
         -e '/^  in_app_purchase/,/version:/d' pubspec.lock
-      - sed -i -e '/signingConfig =/d' android/app/build.gradle.kts
+      - sed -i -e '/signingConfig =/d' -e '/ndkVersion/apackagingOptions{jniLibs{useLegacyPackaging true}}' android/app/build.gradle.kts
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -2426,13 +2425,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
     ndk: r20
-    postbuild:
-      - mkdir unpack
-      - cd unpack
-      - unzip -q $$OUT$$
-      - rm $$OUT$$
-      - zip -r repacked.apk .
-      - $$reproducible-apk-tools$$/zipalign.py --replace --page-size 16 repacked.apk $$OUT$$
 
 MaintainerNotes: server soft uses Elastic-2.0 license which is approved neither by
   OSI nor FSF, see https://invoiceninja.github.io/docs/legal/license/
