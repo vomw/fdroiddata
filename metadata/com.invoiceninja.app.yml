@@ -2390,6 +2390,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
+      - reproducible-apk-tools@0.3.0
     rm:
       - ios
       - linux
@@ -2430,7 +2431,8 @@ Builds:
       - cd unpack
       - unzip -q $$OUT$$
       - rm $$OUT$$
-      - zip -r $$OUT$$ .
+      - zip -r repacked.apk .
+      - $$reproducible-apk-tools$$/zipalign.py --replace --page-size 16 repacked.apk $$OUT$$
 
 MaintainerNotes: server soft uses Elastic-2.0 license which is approved neither by
   OSI nor FSF, see https://invoiceninja.github.io/docs/legal/license/
