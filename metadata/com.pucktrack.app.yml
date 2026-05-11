@@ -23,13 +23,12 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - apt-get install -y openjdk-17-jdk-headless
       - apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: cd .. && npm install --ignore-scripts && find node_modules/@react-native/gradle-plugin
-      -name build.gradle.kts -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
-      {} +
+    prebuild: cd .. && npm install --ignore-scripts && find . -type f \( -name build.gradle
+      -o -name build.gradle.kts \) -exec sed -i -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+      -e 's/JavaLanguageVersion.of(17)/JavaLanguageVersion.of(21)/g' {} +
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin
       - node_modules/expo-linear-gradient/local-maven-repo
