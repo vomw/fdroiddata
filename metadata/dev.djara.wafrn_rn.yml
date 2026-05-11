@@ -3507,6 +3507,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
+      - apt-get install -y zipalign
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
       - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
         | sha256sum -c -
@@ -3520,10 +3521,10 @@ Builds:
       - cd ../..
       - corepack enable
       - pnpm install --frozen-lockfile
-      - pnpm rebuild lightningcss 
+      - pnpm rebuild lightningcss
       - pnpm uninstall expo-notifications expo-dev-client
     output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned-aligned.apk
-    binary: 
+    binary:  
       https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     rm:
       - ios
@@ -3554,6 +3555,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
+      - apt-get install -y zipalign
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
       - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
         | sha256sum -c -
