@@ -10,61 +10,41 @@ IssueTracker: https://github.com/gitubpatrice/notes_tech/issues
 Changelog: https://github.com/gitubpatrice/notes_tech/releases
 
 AutoName: Notes Tech
-Description: |-
-    Notes Tech est une application Android de notes Markdown chiffrées avec
-    coffres par dossier, recherche sémantique et IA on-device — 100 % locale,
-    zéro permission Internet.
-
-    '''Confidentialité radicale''' :
-    * Permission INTERNET retirée du manifest (tools:node="remove" sur 7
-      permissions transitives) — l'application est techniquement incapable
-      d'envoyer des données.
-    * Aucun tracker, aucune télémétrie, aucun crash reporter tiers.
-    * Vérifiable via aapt dump permissions.
-
-    '''Coffres par dossier''' :
-    * Mode passphrase : Argon2id (m=64 MiB, t=3) + AES-256-GCM + AAD bindée
-      au folder_id pour le wrap KEK et au note_id pour le contenu.
-    * Mode PIN : Keystore-bound (StrongBox/TEE) + Argon2id allégé +
-      auto-wipe après 5 tentatives ratées.
-    * HMAC verifier en temps constant.
-
-    '''Mode panique''' (séquence ordonnée déterministe) :
-    1. FLAG_SECURE forcé
-    2. Annulation dictée vocale
-    3. Verrouillage de tous les coffres ouverts (zeroize folder_kek RAM)
-    4. Suppression des clés Keystore PIN
-    5. Destruction de la KEK SQLCipher (point de non-retour)
-    6. Wipe du header DB (16 Mo)
-    7. Désinstallation des modèles IA
-    8. Nettoyage prefs et tmp
-
-    '''IA on-device (modèles importés par l'utilisateur)''' :
-    * Q&A Gemma 3 1B int4 (Google, ~554 Mo) — RAG sémantique sur top-K
-    * Dictée Whisper (ggerganov/whisper.cpp, MIT)
-    * Recherche sémantique MiniLM-L6-v2 (bundlé, MIT, ~22 Mo)
-
-    '''DB''' SQLCipher AES-256 avec KEK Keystore-bound CSPRNG 32 octets.
-
-    '''Apache 2.0''' — code intégral sur GitHub.
-
-    '''Note F-Droid''' : les modèles Gemma et Whisper ne sont PAS bundlés ;
-    l'utilisateur les importe lui-même via SAF (Storage Access Framework)
-    depuis Kaggle/HuggingFace. Compatible F-Droid.
 
 RepoType: git
 Repo: https://github.com/gitubpatrice/notes_tech.git
 
 Builds:
-  - versionName: 0.9.12
-    versionCode: 29
-    commit: v0.9.12
-    subdir: android/app
-    gradle:
-      - yes
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.0.6
+    versionCode: 36
+    commit: v1.0.6
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags ^v[0-9]
-CurrentVersion: 0.9.12
-CurrentVersionCode: 29
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.6
+CurrentVersionCode: 36
