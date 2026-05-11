@@ -20,16 +20,13 @@ Builds:
     versionCode: 2
     commit: c03d2f06d4e02cb9dc91195a6e3055f94e4516ec
     sudo:
-      - mkdir -p /home/runner/
-      - chown vagrant /home/runner/
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.38.9
+      - mkdir -p /workspace/Vegan-Inspector/
+      - chown vagrant /workspace/Vegan-Inspector/
     prebuild:
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*'?([0-9.]+)'?/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]] || exit 1'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/vegan-inspector
+      - export repo=/workspace/Vegan-Inspector/app/work/vegan-inspector
       - mkdir -p $repo
       - cd ..
       - mv app.vegan_inspector $repo/vegan-inspector
@@ -42,7 +39,7 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/vegan-inspector
+      - export repo=/workspace/Vegan-Inspector/app/work/vegan-inspector
       - export ANDROID_NDK_HOME=/opt/android-sdk/ndk/28.2.13676358
       - cd ..
       - mv app.vegan_inspector $repo/vegan-inspector
@@ -51,7 +48,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk
       - popd
       - mv $repo/vegan-inspector app.vegan_inspector
-
 AllowedAPKSigningKeys: bf2703e94ac4982472ffd15f232a89692c877fee7aa795a1f91bafc7b24ff090
 
 AutoUpdateMode: Version
