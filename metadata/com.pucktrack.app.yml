@@ -26,9 +26,17 @@ Builds:
       - apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: cd .. && npm install --ignore-scripts && find . -type f \( -name build.gradle
-      -o -name build.gradle.kts \) -exec sed -i -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
-      -e 's/JavaLanguageVersion.of(17)/JavaLanguageVersion.of(21)/g' {} +
+    prebuild: cd .. && npm install --ignore-scripts && find . -type f \( -name build.gradle -o -name build.gradle.kts \) -exec sed -i \
+      -e 's/jvmToolchain(17)/jvmToolchain(21)/g' \
+      -e 's/JavaLanguageVersion.of(17)/JavaLanguageVersion.of(21)/g' \
+      -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' \
+      -e 's/VERSION_17/VERSION_21/g' \
+      -e 's/languageVersion.set(JavaLanguageVersion.of(17))/languageVersion.set(JavaLanguageVersion.of(21))/g' \
+      -e 's/languageVersion = JavaLanguageVersion.of(17)/languageVersion = JavaLanguageVersion.of(21)/g' \
+      -e 's/jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)/g' \
+      -e 's/JvmTarget.JVM_17/JvmTarget.JVM_21/g' \
+      -e 's/jvmTarget = "17"/jvmTarget = "21"/g' \
+      -e 's/targetCompatibility = JavaVersion.VERSION_17/targetCompatibility = JavaVersion.VERSION_21/g' {} +
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin
       - node_modules/expo-linear-gradient/local-maven-repo
