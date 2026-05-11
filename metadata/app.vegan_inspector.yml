@@ -22,6 +22,9 @@ Builds:
     sudo:
       - mkdir -p /workspace/Vegan-Inspector/
       - chown vagrant /workspace/Vegan-Inspector/
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.38.9
     prebuild:
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*'?([0-9.]+)'?/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]] || exit 1'
@@ -48,6 +51,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk
       - popd
       - mv $repo/vegan-inspector app.vegan_inspector
+
 AllowedAPKSigningKeys: bf2703e94ac4982472ffd15f232a89692c877fee7aa795a1f91bafc7b24ff090
 
 AutoUpdateMode: Version
