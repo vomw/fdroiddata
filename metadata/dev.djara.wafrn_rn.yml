@@ -3519,11 +3519,9 @@ Builds:
     init:
       - cd ../..
       - corepack enable
-      - pnpm install
-      - pnpm install lightningcss --save-dev
-      - pnpm uninstall expo-notifications expo-dev-client
-    gradle:
-      - yes
+      - pnpm install --frozen-lockfile
+      - pnpm rebuild lightningcss
+    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
     binary: 
       https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     rm:
@@ -3543,17 +3541,17 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    build: export NODE_ENV=production
-    ndk: r27b
-    gradleprops:
-      - reactNativeArchitectures=armeabi-v7a
+    build:
+      - cd ../..
+      - export ORG_GRADLE_PROJECT_reactNativeArchitectures=armeabi-v7a
+      - bash ./scripts/android_build.sh prod-foss
 
   - versionName: 1.13.3
     versionCode: 10130032
     commit: 32ba8ffcf9912ddb3c9a784b1cb5204ac62e4d75
     subdir: android/app
     sudo:
-      - apt-get update -y
+      - apt-get update
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
       - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
         | sha256sum -c -
@@ -3566,11 +3564,9 @@ Builds:
     init:
       - cd ../..
       - corepack enable
-      - pnpm install
-      - pnpm install lightningcss --save-dev
-      - pnpm uninstall expo-notifications expo-dev-client
-    gradle:
-      - yes
+      - pnpm install --frozen-lockfile
+      - pnpm rebuild lightningcss
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
     rm:
       - ios
@@ -3589,10 +3585,10 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    build: export NODE_ENV=production
-    ndk: r27b
-    gradleprops:
-      - reactNativeArchitectures=arm64-v8a
+    build:
+      - cd ../..
+      - export ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a
+      - bash ./scripts/android_build.sh prod-foss
 
 AllowedAPKSigningKeys: 091ad944843e180c4322ede202a733094cdc07dd1acd51523fe813eae904f487
 
