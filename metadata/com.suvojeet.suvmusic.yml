@@ -27,8 +27,12 @@ Builds:
         }|mavenCentral()|g' ../settings.gradle.kts
       - sed -i '/libs.androidx.core.performance.play.services/d' build.gradle.kts
       - sed -i '/libs.androidx.core.google.shortcuts/d' build.gradle.kts
+    # media3-datasource-cronet is flagged by SUSS as it normally pulls
+    # play-services-cronet (non-free); we exclude that transitive dep and
+    # use FLOSS org.chromium.net:cronet-embedded instead.
     scanignore:
       - app/NewPipeExtractor/extractor/build.gradle.kts
+      - app/build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
