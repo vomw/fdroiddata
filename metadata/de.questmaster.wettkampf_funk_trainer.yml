@@ -69,7 +69,23 @@ Builds:
       - cargo install cargo-ndk --version "^3" --locked
     ndk: 26.1.10909125
 
+  - versionName: 2.5.1
+    versionCode: 46
+    commit: 4c925a9a49863d8daac297413c127afc65789b2a
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - rustup default 1.94.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: r26b
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.5'
-CurrentVersionCode: 45
+CurrentVersion: 2.5.1
+CurrentVersionCode: 46
