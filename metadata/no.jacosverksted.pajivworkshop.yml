@@ -1,6 +1,10 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: The app loads manual pages and offline packages from a fixed self-hosted
+      content server.
 Categories:
-  - Reading
   - Navigation
+  - Reading
 License: MIT
 AuthorName: JacosVerksted
 WebSite: https://jacosverksted.no
@@ -10,18 +14,13 @@ Donate: https://buymeacoffee.com/jacosverksted
 
 AutoName: PajIV Workshop
 
-AntiFeatures:
-  TetheredNet:
-    en-US: The app loads manual pages and offline packages from a fixed self-hosted content server.
-
 RepoType: git
 Repo: https://github.com/JacosVerksted/PajIVWorkshop.git
 
 Builds:
   - versionName: 1.0.0
     versionCode: 5
-    commit: v1.0.0
-    subdir: .
+    commit: adb2bddbef97617864235547c9404a50af0b40b8
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -32,7 +31,9 @@ Builds:
       - windows
       - web
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.41.7
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
