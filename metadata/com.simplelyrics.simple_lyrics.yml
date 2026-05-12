@@ -1,31 +1,39 @@
 Categories:
   - Multimedia
 License: GPL-3.0-only
-WebSite: https://github.com/AFcoder10/Simple-Lyrics
 SourceCode: https://github.com/AFcoder10/Simple-Lyrics
 IssueTracker: https://github.com/AFcoder10/Simple-Lyrics/issues
 
-Summary: A minimalist and high-performance lyrics viewer
-Description: |-
-    A minimalist and high-performance lyrics viewer that integrates 
-    seamlessly with your Android media playback.
+AutoName: Simple Lyrics
 
 RepoType: git
-Repo: https://github.com/AFcoder10/Simple-Lyrics
+Repo: https://github.com/AFcoder10/Simple-Lyrics.git
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.19.0
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    gradle:
-      - yes
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1
