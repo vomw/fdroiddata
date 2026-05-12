@@ -12,18 +12,17 @@ Repo: https://github.com/JSearra/ScrambledNet-Webapp.git
 Builds:
   - versionName: '1.0'
     versionCode: 1
-    commit: ea33674e9313a3d7add2dba51c02cb6d7db144f0
+    commit: 6f738a9d15024227ce206253c65c2763de421256
     subdir: android/app
     sudo:
       - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.21.1/node-v22.21.1-linux-x64.tar.gz
-      - echo "219a152ea859861d75adea578bdec3dce8143853c13c5187f40c40e77b0143b2 node.tar.gz"
-        | sha256sum -c -
+      - echo "219a152ea859861d75adea578bdec3dce8143853c13c5187f40c40e77b0143b2 node.tar.gz" | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     gradle:
       - yes
     prebuild:
       - cd ../..
-      - npm install --build-from-source
+      - npm install
       - npm run build
       - npx cap sync android
     scanignore:
