@@ -18,6 +18,7 @@
           "AI Chat",
           "App Manager",
           "App Store & Updater",
+          "Battery",
           "Bookmark",
           "Browser",
           "Calculator",
@@ -27,6 +28,7 @@
           "Connectivity",
           "Contact",
           "Development",
+          "Diet",
           "DNS & Hosts",
           "Draw",
           "Ebook Reader",
@@ -35,11 +37,13 @@
           "File Transfer",
           "Firewall",
           "Finance Manager",
+          "Flashlight",
           "Forum",
           "Gallery",
           "Games",
           "Graphics",
           "Habit Tracker",
+          "Health Manager",
           "Icon Pack",
           "Internet",
           "Inventory",
@@ -61,19 +65,25 @@
           "Phone & SMS",
           "Podcast",
           "Public Transport",
+          "Radio",
           "Reading",
           "Recipe Manager",
+          "Remote Access",
+          "Remote Controller",
           "Religion",
           "Science & Education",
           "Security",
+          "Schedule",
           "Shopping List",
           "Social Network",
           "Sports & Health",
           "System",
           "Task",
           "Text Editor",
+          "Text to Speech",
           "Theming",
           "Time",
+          "Time Tracker",
           "Translation & Dictionary",
           "Unit Convertor",
           "Voice & Video Chat",
@@ -367,15 +377,13 @@
       "type": "string",
       "enum": [
         "git",
-        "svn",
         "git-svn",
         "hg",
-        "bzr",
         "srclib"
       ]
     },
     "Repo": {
-      "description": "The repository location. Usually a git: or svn: URL, for example.",
+      "description": "The repository location. Usually a https:// URL, for example.",
       "type": "string"
     },
     "Binaries": {
@@ -788,6 +796,39 @@
       }
     },
     {
+      "anyOf": [
+        {
+          "required": [
+            "Binaries"
+          ]
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "required": [
+                  "binary"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "not": {
+                  "required": [
+                    "binary"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "if": {
         "properties": {
           "UpdateCheckMode": {
@@ -910,7 +951,6 @@
               "NonFreeDep",
               "NonFreeNet",
               "NoSourceSince",
-              "NSFW",
               "TetheredNet",
               "Tracking"
             ]
@@ -921,7 +961,7 @@
         {
           "type": "object",
           "patternProperties": {
-            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|NSFW|TetheredNet|Tracking)$": {
+            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|TetheredNet|Tracking)$": {
               "$ref": "#/definitions/localized_string"
             }
           },
