@@ -539,15 +539,23 @@ check apk:
 
         # binary scanner
         fdroid scanner --verbose --exit-code $file 2>&1 | tee result || {
-          export EXITVALUE=1;
-          for class in $(sed -n "s/.*DEBUG: Problem: found class '\(.*\)'/\1/p" result); do
-            printf "\x1b[31mERROR Found $class in $file\x1b[0m\n";
-            generate_report $appid $location "Found class $class" "class" "$file $class" "critical" >> codequality.json;
-          done
-          grep 'Dependency metadata' result && {
-            printf "\x1b[31mERROR Found extra signing block 'Dependency metadata' in $file\x1b[0m\n";
-            generate_report $appid $location "Found Dependency metadata" "signing_block" "$file Dependency metadata" "minor" >> codequality.json;
-          };
+          class_problems=$(sed -n "s/.*DEBUG: Problem: found class '\(.*\)'/\1/p" result);
+          if [ -n "$class_problems" ]; then
+            export EXITVALUE=1;
+            for class in $class_problems; do
+              printf "\x1b[31mERROR Found $class in $file\x1b[0m\n";
+              generate_report $appid $location "Found class $class" "class" "$file $class" "critical" >> codequality.json;
+            done
+          fi
+          if grep -q 'Dependency metadata' result; then
+            if [ -n "$class_problems" ]; then
+              printf "\x1b[31mERROR Found extra signing block 'Dependency metadata' in $file\x1b[0m\n";
+              generate_report $appid $location "Found Dependency metadata" "signing_block" "$file Dependency metadata" "minor" >> codequality.json;
+            else
+              printf "\x1b[33mWARNING Ignoring extra signing block 'Dependency metadata' in $file\x1b[0m\n";
+              generate_report $appid $location "Found Dependency metadata" "signing_block" "$file Dependency metadata" "info" >> codequality.json;
+            fi
+          fi
         };
 
         # manifest
