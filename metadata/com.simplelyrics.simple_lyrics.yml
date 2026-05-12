@@ -1,0 +1,31 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+WebSite: https://github.com/AFcoder10/Simple-Lyrics
+SourceCode: https://github.com/AFcoder10/Simple-Lyrics
+IssueTracker: https://github.com/AFcoder10/Simple-Lyrics/issues
+
+RepoType: git
+Repo: https://github.com/AFcoder10/Simple-Lyrics
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: .
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y wget unzip
+    prepare:
+      - wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.0-stable.tar.xz
+      - tar xf flutter_linux_3.19.0-stable.tar.xz
+      - export PATH="$PATH:$PWD/flutter/bin"
+      - flutter doctor
+      - flutter pub get
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
