@@ -27,12 +27,11 @@ Builds:
     init:
       - bun install --frozen-lockfile
       - bun -e 'const fs=require("fs"); const p=require("./package.json"); const exclude=["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface","@sentry/react-native","sentry-react-native","expo-updates","expo-updates-interface","expo-eas-client"]; for (const name of ["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface"]) { delete p.dependencies?.[name]; delete p.devDependencies?.[name]; } p.expo ??= {}; p.expo.autolinking ??= {}; p.expo.autolinking.exclude=exclude; p.expo.autolinking.android ??= {}; p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json", JSON.stringify(p,null,2)+"\n");'
-      - python3 -c 'from pathlib import Path; p=Path("app.config.ts"); s=p.read_text().replace("reactCompiler"+chr(58)+" true,", "reactCompiler"+chr(58)+" false,"); p.write_text(s)'
+      - sed -i -e '/reactCompiler/s/true/false/' app.config.ts
     output: android/app/build/outputs/apk/release/*release*.apk
     prebuild:
       - EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun x expo prebuild --platform android --clean --no-install
       - chmod -R u=rwX,go=rX android
-      - export ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$; echo "sdk.dir=$$SDK$$" > android/local.properties
     scanignore:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
