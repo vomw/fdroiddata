@@ -11,45 +11,34 @@ SourceCode: https://github.com/toprakpt1/Focusbudy
 IssueTracker: https://github.com/toprakpt1/Focusbudy/issues
 Changelog: https://github.com/toprakpt1/Focusbudy/releases
 
-Summary: Privacy-first Pomodoro companion
-
-Description: |
-  FocusBuddy is a privacy-first, open-source Pomodoro timer for Android.
-
-  Features:
-  - Pomodoro timer with customizable focus and break durations
-  - Cute animal companions that cheer you on
-  - XP and level progression system
-  - Daily streak tracking
-  - Productivity heatmap visualization
-  - Multiple themes including Warm Pastel, Dark, and Paper
-  - Optional notifications for completed sessions
-  - Fully offline
-  - No ads
-  - No trackers
-  - No subscriptions
-  - English and Turkish localization
-
 RepoType: git
 Repo: https://github.com/toprakpt1/Focusbudy
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: efcbe8c8cb7849e842225b26de4f1bd1a5f07294
+    subdir: android/app
 
     sudo:
       - apt-get update
       - apt-get install -y npm
 
     init:
+      - cd ../..
       - npm ci
 
     prebuild:
+      - cd ../..
       - npx expo prebuild --platform android
 
     gradle:
       - yes
+
+    scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
 
     scandelete:
       - node_modules
@@ -58,3 +47,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
