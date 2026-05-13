@@ -26,9 +26,9 @@ Builds:
       - apt-get install -y openjdk-21-jdk-headless
     gradle:
       - yes
-    prebuild: cd .. && npm install --ignore-scripts && mkdir -p ~/.gradle/init.d &&
-      echo 'allprojects{afterEvaluate{def 
-      k=extensions.findByName("kotlin");if(k){k.jvmToolchain(21);if(extensions.findByName("android"))tasks.withType(JavaCompile){it.sourceCompatibility=21;it.targetCompatibility=21}}}}'
+    prebuild: cd .. && npm install --ignore-scripts && mkdir -p ~/.gradle/init.d
+      && echo 'allprojects{afterEvaluate{def 
+      k=extensions.findByName("kotlin");if(k!=null)k.jvmToolchain(21);tasks.withType(JavaCompile).configureEach{it.sourceCompatibility="21";it.targetCompatibility="21"}}}'
       > ~/.gradle/init.d/fix.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin
