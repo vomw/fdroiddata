@@ -12,7 +12,7 @@ Repo: https://github.com/MirageFoundation/mirage-mobile-app.git
 Builds:
   - versionName: 1.0.13
     versionCode: 1013
-    commit: 74def030241be346e6fd4dbb0ce7b0b9f0563d04
+    commit: 32b3b1fbf41c812c95c5528c3f5d8cd546f710c3
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
       - echo "deb http://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
@@ -26,12 +26,18 @@ Builds:
       - install -m 0755 bun-linux-x64/bun /usr/local/bin/bun
     init:
       - bun install --frozen-lockfile
-      - bun -e 'const fs=require("fs"); const p=require("./package.json"); const exclude=["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface","@sentry/react-native","sentry-react-native","expo-updates","expo-updates-interface","expo-eas-client"]; for (const name of ["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface"]) { delete p.dependencies?.[name]; delete p.devDependencies?.[name]; } p.expo ??= {}; p.expo.autolinking ??= {}; p.expo.autolinking.exclude=exclude; p.expo.autolinking.android ??= {}; p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json", JSON.stringify(p,null,2)+"\n");'
+      - bun -e 'const fs=require("fs"); const p=require("./package.json"); const 
+        exclude=["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface","@sentry/react-native","sentry-react-native","expo-updates","expo-updates-interface","expo-eas-client","expo-notifications"];
+        for (const name of 
+        ["expo-dev-client","expo-dev-launcher","expo-dev-menu","expo-dev-menu-interface"])
+        { delete p.dependencies?.[name]; delete p.devDependencies?.[name]; } p.expo
+        ??= {}; p.expo.autolinking ??= {}; p.expo.autolinking.exclude=exclude; p.expo.autolinking.android
+        ??= {}; p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",
+        JSON.stringify(p,null,2)+"\n");'
       - sed -i -e '/reactCompiler/s/true/false/' app.config.ts
     output: android/app/build/outputs/apk/release/*release*.apk
-    prebuild:
-      - EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun x expo prebuild --platform android --clean --no-install
-      - chmod -R u=rwX,go=rX android
+    prebuild: EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun
+      x expo prebuild --platform android --clean --no-install
     scanignore:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -47,22 +53,27 @@ Builds:
       - node_modules/react-native-haptic-feedback/android/build.gradle
       - node_modules/react-native-keyboard-controller/android/build.gradle
       - node_modules/react-native-pager-view/android/build.gradle
-      - node_modules/react-native-passkeys/android/build.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
-      - node_modules/react-native-vision-camera/android/build.gradle
       - node_modules/react-native-webview/android/build.gradle
     scandelete:
       - node_modules/
       - dist-test/
     build:
       - cd android
-      - printf '\norg.gradle.daemon=false\norg.gradle.workers.max=1\norg.gradle.vfs.watch=false\nkotlin.compiler.execution.strategy=in-process\norg.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8\n' >> gradle.properties
+      - printf 
+        '\norg.gradle.daemon=false\norg.gradle.workers.max=1\norg.gradle.vfs.watch=false\nkotlin.compiler.execution.strategy=in-process\norg.gradle.jvmargs=-Xmx2048m
+        -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8\n' >> gradle.properties
       - sed -i -e '/signingConfig /d' app/build.gradle
-      - EXPO_PUBLIC_FDROID=true NODE_ENV=production NODE_OPTIONS=--max-old-space-size=1024 ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 gradle :app:assembleRelease --no-daemon --max-workers=1 -Dorg.gradle.vfs.watch=false -x lintVitalRelease -x lintVitalAnalyzeRelease -x generateReleaseLintVitalReportModel -x lintVitalReportRelease
+      - EXPO_PUBLIC_FDROID=true NODE_ENV=production NODE_OPTIONS=--max-old-space-size=1024
+        ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+        gradle :app:assembleRelease --no-daemon --max-workers=1 -Dorg.gradle.vfs.watch=false
+        -x lintVitalRelease -x lintVitalAnalyzeRelease -x generateReleaseLintVitalReportModel
+        -x lintVitalReportRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: app.config.ts|versionCode:\s(\d+)|.|version:\s"([\d.]+)"
 CurrentVersion: 1.0.13
 CurrentVersionCode: 1013
