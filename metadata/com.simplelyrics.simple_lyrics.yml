@@ -12,7 +12,7 @@ Repo: https://github.com/AFcoder10/Simple-Lyrics.git
 Builds:
   - versionName: 1.0.3
     versionCode: 4
-    commit: 514adb0e7c43692228a854f1385e3a599cb46c40
+    commit: 75906f0d1967dc3dd534f8ef43c6fe98731902c7
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -20,17 +20,8 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*f-droid-flutter:\s*(.*)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      # F-Droid: remove Play Core dependency lines from Flutter tooling scripts; format varies by version.
-      - |
-        for file in \
-          "$$flutter$$/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy" \
-          "$$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/flutter.gradle.kts"; do
-          if [ -f "$file" ]; then
-            sed -i -E -e '/(com\.google\.android\.play|play-core)/d' "$file"
-          else
-            echo "Skipping $file (not present in this Flutter version)"
-          fi
-        done
+      - for file in "$$flutter$$/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy" "$$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/flutter.gradle.kts"; do
+          if [ -f "$file" ]; then sed -i -E -e '/(com\.google\.android\.play|play-core)/d' "$file"; else echo "Skipping $file (not present in this Flutter version)"; fi; done
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
