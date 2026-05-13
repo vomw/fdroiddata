@@ -1,0 +1,46 @@
+Categories:
+  - Launcher
+License: GPL-3.0-only
+AuthorName: Milki Labs
+SourceCode: https://github.com/milkiLabs/launcher
+IssueTracker: https://github.com/milkiLabs/launcher/issues
+
+AutoName: Milki Launcher
+Summary: Android launcher with multi-source search
+Description: |-
+  Milki Launcher is a custom Android home screen replacement built from scratch with Kotlin and Jetpack Compose. It focuses on a clean interface, and powerful search capabilities.
+
+  <b>Multi-Mode Search</b>: Search apps, contacts, files, the web, and YouTube from a single search bar. Use prefixes: no prefix for apps, "s " for web, "c " for contacts.
+
+  <b>Smart Home Screen</b>: Place apps, shortcuts, folders, and widgets anywhere on a customizable grid.
+
+  <b>File Search</b>: Find documents on your device.
+
+  <b>Widget & Folder Support</b>: Full home screen widget management and app folder organization.
+
+  <b>Backup & Restore</b>: Export your home screen layout and settings.
+
+  <b>Privacy</b>: No analytics, no tracking, no network access. All data stays on your device.
+
+RepoType: git
+Repo: https://github.com/milkiLabs/launcher.git
+
+Builds:
+  - versionName: "1.0"
+    versionCode: 1
+    commit: 9351b0155858804b60392f37dfa0ca47d0ca4995
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    prebuild: sed -i '/ndkVersion/d' build.gradle.kts
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: fdb9f8c5140ea3c0f680b010e91e1208cf23492cfc8f45d914e5eb0e2bcab7b5
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: "1.0"
+CurrentVersionCode: 1
