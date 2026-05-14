@@ -6,13 +6,13 @@ License: GPL-3.0-or-later
 AuthorName: Toprak Talha Karcılar
 AuthorEmail: toprakpt1@protonmail.com
 
-WebSite: https://github.com/toprakpt1/Focusbudy
-SourceCode: https://github.com/toprakpt1/Focusbudy
-IssueTracker: https://github.com/toprakpt1/Focusbudy/issues
-Changelog: https://github.com/toprakpt1/Focusbudy/releases
+WebSite: https://github.com/toprakpt1/focusbuddy
+SourceCode: https://github.com/toprakpt1/focusbuddy
+IssueTracker: https://github.com/toprakpt1/focusbuddy/issues
+Changelog: https://github.com/toprakpt1/focusbuddy/releases
 
 RepoType: git
-Repo: https://github.com/toprakpt1/Focusbudy
+Repo: https://github.com/toprakpt1/focusbuddy
 
 Builds:
   - versionName: 1.0.0
@@ -30,10 +30,20 @@ Builds:
 
     prebuild:
       - cd ../..
-      - npx expo prebuild --platform android
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - npx expo prebuild -p android --clean
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
 
     gradle:
       - yes
+
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
 
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
@@ -42,8 +52,6 @@ Builds:
 
     scandelete:
       - node_modules
-      - .expo
-      - android/.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
