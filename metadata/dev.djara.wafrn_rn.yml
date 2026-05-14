@@ -3501,13 +3501,12 @@ Builds:
     gradleprops:
       - reactNativeArchitectures=arm64-v8a
 
-  - versionName: 1.13.3
-    versionCode: 10130031
-    commit: 32ba8ffcf9912ddb3c9a784b1cb5204ac62e4d75
+  - versionName: 1.13.5
+    versionCode: 10130051
+    commit: b5e9afe6fb47b89cf23a1e580dbd9db2d6ec74b7
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y zipalign
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
       - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
         | sha256sum -c -
@@ -3522,17 +3521,11 @@ Builds:
       - corepack enable
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
-      - pnpm remove expo-notifications
-      - pnpm remove expo-dev-client
-      - NODE_ENV=production npx expo prebuild
-    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned-aligned.apk
-    binary:  
-      https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
+      - pnpm remove expo-notifications expo-dev-client
+    gradle: yes
+    binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
     rm:
       - ios
-    prebuild:
-      - cd ../..
-      - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -3545,19 +3538,22 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    build:
-      - cd ..
-      - gradle app:assembleRelease -PreactNativeArchitectures=armeabi-v7a
-      - cd app/build/outputs/apk/release
-      - zipalign -v -p 4 app-armeabi-v7a-release-unsigned.apk app-armeabi-v7a-release-unsigned-aligned.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - cd build/outputs/apk/release
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+    gradleprops:
+      - reactNativeArchitectures=armeabi-v7a
 
-  - versionName: 1.13.3
-    versionCode: 10130032
-    commit: 32ba8ffcf9912ddb3c9a784b1cb5204ac62e4d75
+  - versionName: 1.13.5
+    versionCode: 10130052
+    commit: b5e9afe6fb47b89cf23a1e580dbd9db2d6ec74b7
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y zipalign
       - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
       - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
         | sha256sum -c -
@@ -3572,16 +3568,11 @@ Builds:
       - corepack enable
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
-      - pnpm remove expo-notifications
-      - pnpm remove expo-dev-client
-      - NODE_ENV=production npx expo prebuild
-    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned-aligned.apk
+      - pnpm remove expo-notifications expo-dev-client
+    gradle: yes
     binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
     rm:
       - ios
-    prebuild:
-      - cd ../..
-      - sed -i -e 's/"buildFromSource".*/"buildFromSource":\[".*"\]/' package.json
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -3594,11 +3585,15 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    build:
-      - cd ..
-      - gradle app:assembleRelease -PreactNativeArchitectures=arm64-v8a
-      - cd app/build/outputs/apk/release
-      - zipalign -v -p 4 app-arm64-v8a-release-unsigned.apk app-arm64-v8a-release-unsigned-aligned.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - cd build/outputs/apk/release
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+    gradleprops:
+      - reactNativeArchitectures=arm64-v8a
 
 AllowedAPKSigningKeys: 091ad944843e180c4322ede202a733094cdc07dd1acd51523fe813eae904f487
 
@@ -3607,5 +3602,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - 10 * %c + 1
   - 10 * %c + 2
-CurrentVersion: 1.13.3
-CurrentVersionCode: 10130032
+CurrentVersion: 1.13.5
+CurrentVersionCode: 10130052
