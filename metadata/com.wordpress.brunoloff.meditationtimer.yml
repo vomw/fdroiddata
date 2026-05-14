@@ -1,0 +1,35 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-only
+AuthorName: Bruno Loff
+SourceCode: https://github.com/bloff/meditation-timer
+IssueTracker: https://github.com/bloff/meditation-timer/issues
+Changelog: https://github.com/bloff/meditation-timer/releases
+
+AutoName: Meditation Timer
+
+RepoType: git
+Repo: https://github.com/bloff/meditation-timer.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: a514009e33407213eb381bb2c8deb8471b28cf23
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.9
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
