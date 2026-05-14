@@ -8,17 +8,6 @@ Changelog: https://github.com/ueen/antpod/releases
 WebSite: https://antpod.eu
 
 AutoName: AntPod
-Description: |-
-    The anthill for your podcasts — every episode carried home to the hill
-    tirelessly. A nimble scout hatched from the spirit of the grand old AntennaPod.
-
-    Browse and subscribe to any podcast via the PodcastIndex catalogue. Your episode
-    feed spans all subscriptions and can be filtered by podcast, downloaded, or
-    played status. Audio keeps playing in the background with lock screen and
-    notification controls. Save episodes for offline listening, discover trending
-    and recommended shows, and enjoy full Material You theming on Android 12+.
-
-    No ads. No tracking. No accounts. Just podcasts.
 
 RepoType: git
 Repo: https://github.com/ueen/antpod
@@ -26,16 +15,34 @@ Repo: https://github.com/ueen/antpod
 Builds:
   - versionName: 0.8.4
     versionCode: 3
-    commit: v0.8.4
-    subdir: .
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
-    init: flutter pub get
-    build: flutter build apk --release
-    output: build/app/outputs/flutter-apk/app-release.apk
+    commit: 68d07f18b1ef7e474bdad29fb401abe94d920196
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.41.8
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    output: build/app/outputs/flutter-apk/app-release-arm64-v8a.apk
     ndk: 27.0.12077973
+
+AllowedAPKSigningKeys: 5809c3253dda0ff5a72b78305f06d7678505098caf74da7e4340107df3d9030f
+
+Binaries: https://github.com/ueen/antpod/releases/download/v{v}/app-release.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.8.4
+CurrentVersionCode: 3
