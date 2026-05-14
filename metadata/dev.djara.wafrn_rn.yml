@@ -3522,8 +3522,12 @@ Builds:
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
       - pnpm remove expo-notifications expo-dev-client
-    gradle: yes
-    binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
+    gradle:
+      - yes
+    binary: 
+      https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-armeabi-v7a-foss.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     rm:
       - ios
     scanignore:
@@ -3538,15 +3542,13 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
+    gradleprops:
+      - reactNativeArchitectures=armeabi-v7a
     postbuild:
       - cd build/outputs/apk/release
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
-    gradleprops:
-      - reactNativeArchitectures=armeabi-v7a
 
   - versionName: 1.13.5
     versionCode: 10130052
@@ -3569,8 +3571,11 @@ Builds:
       - pnpm install --frozen-lockfile
       - pnpm rebuild lightningcss
       - pnpm remove expo-notifications expo-dev-client
-    gradle: yes
+    gradle:
+      - yes
     binary: https://codeberg.org/wafrn/wafrn-rn/releases/download/v%v/app-arm64-v8a-foss.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     rm:
       - ios
     scanignore:
@@ -3585,15 +3590,13 @@ Builds:
       - node_modules/react-native-keyboard-controller/android/build.gradle
     scandelete:
       - node_modules
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
+    gradleprops:
+      - reactNativeArchitectures=arm64-v8a
     postbuild:
       - cd build/outputs/apk/release
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
-    gradleprops:
-      - reactNativeArchitectures=arm64-v8a
 
 AllowedAPKSigningKeys: 091ad944843e180c4322ede202a733094cdc07dd1acd51523fe813eae904f487
 
