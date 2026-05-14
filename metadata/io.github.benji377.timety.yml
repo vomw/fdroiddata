@@ -46,22 +46,22 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/Timety
+      - export repo=/home/runner/work/Timety/Timety
       - cd ..
-      - mv io.github.benji377.timety $repo/Timety
-      - pushd $repo/Timety
+      - mv io.github.benji377.timety $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
         --split-debug-info=build/symbols
       - popd
-      - mv $repo/Timety io.github.benji377.timety
+      - mv $repo io.github.benji377.timety
 
   - versionName: 1.2.3
     versionCode: 122
     commit: fa3097086ba15753790678bc2038349901974ae9
     sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
+      - mkdir -p /home/runner/work/Timety
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/Benji377/Timety/releases/download/v%v/timety-v%v-arm64-v8a.apk
@@ -70,11 +70,10 @@ Builds:
     rm:
       - web
     prebuild:
-      - export repo=/home/runner/work/Timety
-      - mkdir -p $repo
+      - export repo=/home/runner/work/Timety/Timety
       - cd ..
-      - mv io.github.benji377.timety $repo/Timety
-      - pushd $repo/Timety
+      - mv io.github.benji377.timety $repo
+      - pushd $repo
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -84,26 +83,26 @@ Builds:
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
-      - mv $repo/Timety io.github.benji377.timety
+      - mv $repo io.github.benji377.timety
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/Timety
+      - export repo=/home/runner/work/Timety/Timety
       - cd ..
-      - mv io.github.benji377.timety $repo/Timety
-      - pushd $repo/Timety
+      - mv io.github.benji377.timety $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
         --split-debug-info=build/symbols
       - popd
-      - mv $repo/Timety io.github.benji377.timety
+      - mv $repo io.github.benji377.timety
 
   - versionName: 1.2.3
     versionCode: 123
     commit: fa3097086ba15753790678bc2038349901974ae9
     sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
+      - mkdir -p /home/runner/work/Timety
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/Benji377/Timety/releases/download/v%v/timety-v%v-x86_64.apk
     srclibs:
@@ -111,11 +110,10 @@ Builds:
     rm:
       - web
     prebuild:
-      - export repo=/home/runner/work/Timety
-      - mkdir -p $repo
+      - export repo=/home/runner/work/Timety/Timety
       - cd ..
-      - mv io.github.benji377.timety $repo/Timety
-      - pushd $repo/Timety
+      - mv io.github.benji377.timety $repo
+      - pushd $repo
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -125,19 +123,19 @@ Builds:
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
-      - mv $repo/Timety io.github.benji377.timety
+      - mv $repo io.github.benji377.timety
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/Timety
+      - export repo=/home/runner/work/Timety/Timety
       - cd ..
-      - mv io.github.benji377.timety $repo/Timety
-      - pushd $repo/Timety
+      - mv io.github.benji377.timety $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
         --split-debug-info=build/symbols
       - popd
-      - mv $repo/Timety io.github.benji377.timety
+      - mv $repo io.github.benji377.timety
 
 AllowedAPKSigningKeys: a12e4cf83cbbdf2c4a33edf58c4866ba3763d7d4e83a40f35126e5bea41a5526
 
