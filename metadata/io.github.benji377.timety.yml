@@ -39,6 +39,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo io.github.benji377.timety
     scandelete:
@@ -49,8 +51,6 @@ Builds:
       - mv io.github.benji377.timety $repo/Timety
       - pushd $repo/Timety
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
         --split-debug-info=build/symbols
       - popd
@@ -81,6 +81,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo/Timety io.github.benji377.timety
     scandelete:
@@ -91,8 +93,6 @@ Builds:
       - mv io.github.benji377.timety $repo/Timety
       - pushd $repo/Timety
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
         --split-debug-info=build/symbols
       - popd
@@ -122,6 +122,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
       - mv $repo/Timety io.github.benji377.timety
     scandelete:
@@ -132,8 +134,6 @@ Builds:
       - mv io.github.benji377.timety $repo/Timety
       - pushd $repo/Timety
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
         --split-debug-info=build/symbols
       - popd
