@@ -3,7 +3,6 @@ Categories:
 
 License: GPL-3.0-only
 
-WebSite: https://github.com/resurrectdev1/grove
 SourceCode: https://github.com/resurrectdev1/grove
 IssueTracker: https://github.com/resurrectdev1/grove/issues
 
@@ -11,15 +10,6 @@ RepoType: git
 Repo: https://github.com/resurrectdev1/grove
 
 AutoName: Grove
-Summary: Habit tracker
-Description: |-
-  Grove is a minimalist habit tracker that visualizes your consistency
-  as a growing forest. Track habits, maintain streaks, and watch your
-  grove grow over time.
-
-  No accounts, no ads, no tracking; all data stays on your device.
-
-RequiresRoot: false
 
 Builds:
   - versionName: 0.5.4
@@ -30,6 +20,7 @@ Builds:
       - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     srclibs:
       - flutter@stable
+    output: build/app/outputs/flutter-apk/app-release.apk
     prebuild:
       - export HOME=/home/vagrant
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -41,10 +32,9 @@ Builds:
       - export HOME=/home/vagrant
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
-    output: build/app/outputs/flutter-apk/app-release.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: pubspec.yaml|version:\s(.+)\+|.|version:\s.+\+(\d+)
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.5.4
 CurrentVersionCode: 2
