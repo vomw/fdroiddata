@@ -16,9 +16,9 @@ Binaries:
   https://github.com/jiacai2050/flauth/releases/download/v%v/flauth-android-arm64-v8a-v%v.apk
 
 Builds:
-  - versionName: 1.1.0
-    versionCode: 2002
-    commit: a1f4b2ca7e5b9239280e16ae181af070fe009010
+  - versionName: 1.0.0
+    versionCode: 2001
+    commit: 979f69e489430da468776e61ecc7f16e53dad1fc
     sudo:
       - mkdir -p /home/runner/work/flauth
       - chown -R vagrant /home/runner/
@@ -32,7 +32,7 @@ Builds:
       - windows
       - test
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:[[:space:]]*"(.*)"/\1/p' .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:[[:space:]]*"(.*)"/\1/p' .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/flauth/flauth
@@ -56,10 +56,10 @@ Builds:
       - popd
       - mv $repo net.liujiacai.flauth
     ndk: r28c
-
-  - versionName: 1.0.0
-    versionCode: 2001
-    commit: 979f69e489430da468776e61ecc7f16e53dad1fc
+    
+  - versionName: 1.1.0
+    versionCode: 2002
+    commit: a1f4b2ca7e5b9239280e16ae181af070fe009010
     sudo:
       - mkdir -p /home/runner/work/flauth
       - chown -R vagrant /home/runner/
@@ -73,7 +73,7 @@ Builds:
       - windows
       - test
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*flutter-version:[[:space:]]*"(.*)"/\1/p' .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:[[:space:]]*"(.*)"/\1/p' .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/flauth/flauth
