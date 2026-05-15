@@ -59,7 +59,7 @@ Builds:
 
   - versionName: 1.1.0
     versionCode: 2002
-    commit: a1f4b2ca7e5b9239280e16ae181af070fe009010
+    commit: baa96e348fdd8da23e3715cf5dd2ac0dea35a052
     sudo:
       - mkdir -p /home/runner/work/flauth
       - chown -R vagrant /home/runner/
@@ -83,6 +83,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo net.liujiacai.flauth
     scandelete:
