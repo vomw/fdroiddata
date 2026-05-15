@@ -6,6 +6,8 @@ SourceCode: https://github.com/bloff/meditation-timer
 IssueTracker: https://github.com/bloff/meditation-timer/issues
 Changelog: https://github.com/bloff/meditation-timer/releases
 
+AutoName: Meditation Timer
+
 RepoType: git
 Repo: https://github.com/bloff/meditation-timer.git
 
@@ -16,6 +18,12 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
@@ -23,6 +31,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
     scandelete:
       - .pub-cache
     build:
@@ -31,6 +41,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-UpdateCheckData: 'pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.1
 CurrentVersionCode: 2
