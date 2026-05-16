@@ -1,17 +1,13 @@
 Categories:
   - System
   - Graphics
-License: GPL-3.0-or-later 
+License: GPL-3.0-or-later
 WebSite: https://gitlab.com/gnzalobnites-group/daily-wallpapers
 SourceCode: https://gitlab.com/gnzalobnites-group/daily-wallpapers
 IssueTracker: https://gitlab.com/gnzalobnites-group/daily-wallpapers/-/issues
 
 Summary: Cambia fondos de pantalla diariamente de forma automática
-Description: |-
-  Una aplicación ligera y de código abierto diseñada para renovar el aspecto de tu dispositivo
-  dispositivo todos los días. Permite automatizar el cambio de fondos de pantalla
-  utilizando fuentes personalizadas o locales, respetando la privacidad del usuario y
-  sin rastreadores ocultos.
+Description: Una aplicación ligera y de código abierto diseñada para renovar el aspecto de tu dispositivo todos los días. Permite automatizar el cambio de fondos de pantalla utilizando fuentes personalizadas o locales, respetando la privacidad del usuario y sin rastreadores ocultos.
 
 RepoType: git
 Repo: https://gitlab.com/gnzalobnites-group/daily-wallpapers.git
@@ -23,7 +19,9 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: sed -i '/com.google.android.play:app-update/d' build.gradle
+    prebuild:
+      - sed -i '/com.google.android.play:app-update/d' build.gradle
+      - sed -i 's/signingConfig signingConfigs.release/\/\/ signingConfig signingConfigs.release/g' build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
