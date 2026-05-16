@@ -18,7 +18,12 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-21-jdk-headless
+      - apt-get install -y nodejs npm wget apt-transport-https gnupg
+      - mkdir -p /etc/apt/keyrings
+      - wget -O /etc/apt/keyrings/adoptium.asc https://packages.adoptium.net/artifactory/api/gpg/key/public
+      - echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb trixie main" > /etc/apt/sources.list.d/adoptium.list
+      - apt-get update
+      - apt-get install -y temurin-17-jdk
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
