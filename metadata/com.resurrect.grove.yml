@@ -20,7 +20,8 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export FLUTTER_ROOT=$$flutter$$
+      - export FLUTTER_VERSION=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout $FLUTTER_VERSION
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
