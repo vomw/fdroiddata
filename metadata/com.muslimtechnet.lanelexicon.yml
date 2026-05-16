@@ -7,7 +7,7 @@ SourceCode: https://github.com/GibreelAbdullah/LaneLexicon
 IssueTracker: https://github.com/GibreelAbdullah/LaneLexicon/issues
 
 Name: Lane's Lexicon
-AutoName: lanelexicon
+AutoName: Lane's Lexicon
 
 RepoType: git
 Repo: https://github.com/GibreelAbdullah/LaneLexicon.git
@@ -38,8 +38,33 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - ./flutter/bin/flutter build apk
 
+  - versionName: 3.0.0
+    versionCode: 30000
+    commit: 8c28c6d6de5eb9326832f03535f5c31ed8baa405
+    submodules: true
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter config --no-analytics
+      - ./flutter/bin/flutter packages pub get
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutter/bin/flutter build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.4.2
-CurrentVersionCode: 19
+CurrentVersion: 3.0.0
+CurrentVersionCode: 30000
