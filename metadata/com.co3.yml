@@ -1,0 +1,117 @@
+Categories:
+  - Reading
+License: MIT OR GPL-2.0-or-later OR GPL-3.0-or-later
+WebSite: https://github.com/tbvns/CO3
+SourceCode: https://github.com/tbvns/CO3
+IssueTracker: https://github.com/tbvns/CO3/issues
+Changelog: https://github.com/tbvns/CO3/releases
+
+AutoName: CO3
+Summary: Free reader for Archive of Our Own (AO3)
+Description: |-
+  CO3 is a free reader app for Archive of Our Own (AO3). Other AO3 apps often
+  charge money for basic features – CO3 gives you a better reading experience
+  with:
+
+  * Custom library – save your favourite works in one place
+  * Category management – organise your stories your way
+  * History with filters – find works you've read by date
+  * Completely free – no subscriptions, no ads, ever
+
+  Additional features already implemented:
+  * Update notifications for new chapters
+  * Bookmarks
+  * View and read comments
+  * User profile pages
+  * Download works to read offline
+
+  Planned:
+  * Statistics screen
+
+  > **Caution:** The app is still in development; many buttons do nothing yet.
+  > Please report issues on GitHub or join the Discord (see app for link).
+
+RepoType: git
+Repo: https://github.com/tbvns/CO3.git
+
+Builds:
+  - versionName: B0.0.4
+    versionCode: 4
+    commit: B0.0.4
+    subdir: android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      # Define missing variables for Gradle (fixes unknown maven repo errors)
+      - echo "notifeeDir=../node_modules/@notifee/react-native" >> gradle.properties
+      - echo "reactNativeRootDir=../node_modules/react-native" >> gradle.properties
+      - echo "reactNativePath=../node_modules/react-native" >> gradle.properties
+      - echo "mavenRepo.url=https://repo.maven.apache.org/maven2" >> gradle.properties
+      # Then normal install and bundle
+      - npm install
+      - npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+    scanignore:
+      # Notifee pre‑built AAR directory and its build.gradle (unknown local maven repo)
+      - node_modules/@notifee/react-native/android/libs
+      - node_modules/@notifee/react-native/android/build.gradle
+      # async-storage build.gradle (dynamic maven repo path via resolveModulePath)
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      # cookies build.gradle (references react-native/android and jsc-android local repos)
+      - node_modules/@react-native-cookies/cookies/android/build.gradle
+      # picker build.gradle (references local react-native/android repo)
+      - node_modules/@react-native-picker/picker/android/build.gradle
+      # React Native Gradle Plugin build outputs (whole dirs)
+      - node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build
+      - node_modules/@react-native/gradle-plugin/shared/build
+      - node_modules/@react-native/gradle-plugin/settings-plugin/build
+      # react-native publish.gradle (references mavenTempLocalUrl)
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      # Expo local Maven repos (each version subdir, but listing parent dir is enough)
+      - node_modules/expo/node_modules/expo-asset/local-maven-repo
+      - node_modules/expo/node_modules/expo-file-system/local-maven-repo
+      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
+      - node_modules/expo-font/local-maven-repo
+      # Expo template archive
+      - node_modules/expo/template.tgz
+      # expo-modules-core gradle plugin (references mavenLocal().url)
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      # expo-modules-autolinking gradle (references ${mavenRepo.url} property)
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      # React Native language pack binaries (each language subdir)
+      - node_modules/react-native/React/I18n/strings
+      # Hermes binaries directories (allowed exception)
+      - node_modules/react-native/sdks/hermesc/win64-bin
+      - node_modules/react-native/sdks/hermesc/osx-bin
+      - node_modules/react-native/sdks/hermesc/linux64-bin
+      # Vector icon fonts directories
+      - node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts
+      - node_modules/react-native-vector-icons/Fonts
+      - node_modules/expo/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts
+      # react-native-vector-icons build.gradle (references local react-native/android repo)
+      - node_modules/react-native-vector-icons/android/build.gradle
+      # React Native background fetch: iOS xcframework binaries and android local repo
+      - node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.xcframework
+      - node_modules/react-native-background-fetch/android/libs
+      # react-native-background-fetch build.gradle (references ./libs local maven repo)
+      - node_modules/react-native-background-fetch/android/build.gradle
+      # react-native-linear-gradient build.gradle (references local react-native/android and jsc-android repos)
+      - node_modules/react-native-linear-gradient/android/build.gradle
+      # react-native-reanimated build.gradle (references $reactNativeRootDir/android and jsc-android)
+      - node_modules/react-native-reanimated/android/build.gradle
+      # react-native-safe-area-context build.gradle (references local react-native/android repo)
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      # react-native-screens build.gradle (references ${reactNativeRootDir}/android)
+      - node_modules/react-native-screens/android/build.gradle
+      # SQLite storage pre‑built libs and build intermediates
+      - node_modules/react-native-sqlite-storage/platforms/android-native/libs
+      - node_modules/react-native-sqlite-storage/src/android-native/build
+      - node_modules/react-native-sqlite-storage/src/android/build
+      # react-native-svg build.gradle (references local react-native/android repo)
+      - node_modules/react-native-svg/android/build.gradle
+      # react-native-system-navigation-bar build.gradle (references local react-native/android repo)
+      - node_modules/react-native-system-navigation-bar/android/build.gradle
+      # react-native-webview build.gradle (references ${reactNativePath}/android)
+      - node_modules/react-native-webview/android/build.gradle
+      # react-native-calendars vendored safe-area-context (references local react-native/android repo)
+      - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
