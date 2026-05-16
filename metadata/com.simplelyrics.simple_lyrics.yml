@@ -20,7 +20,8 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*f-droid-flutter:\s*(.*)/\1/p" ../../pubspec.yaml | head -n 1)
+      - |
+        flutterVersion=$(awk -F'f-droid-flutter:' '/f-droid-flutter/ { gsub(/^[ \t]+|[ \t]+$/,"",$2); print $2; exit }' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -35,6 +36,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
+    vercodeOperation: "%c * 10 + 1"
 
   - versionName: 1.0.8
     versionCode: 92
@@ -46,7 +48,8 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*f-droid-flutter:\s*(.*)/\1/p" ../../pubspec.yaml | head -n 1)
+      - |
+        flutterVersion=$(awk -F'f-droid-flutter:' '/f-droid-flutter/ { gsub(/^[ \t]+|[ \t]+$/,"",$2); print $2; exit }' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -61,6 +64,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
+    vercodeOperation: "%c * 10 + 2"
 
   - versionName: 1.0.8
     versionCode: 93
@@ -72,7 +76,8 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*f-droid-flutter:\s*(.*)/\1/p" ../../pubspec.yaml | head -n 1)
+      - |
+        flutterVersion=$(awk -F'f-droid-flutter:' '/f-droid-flutter/ { gsub(/^[ \t]+|[ \t]+$/,"",$2); print $2; exit }' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -87,8 +92,10 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
+    vercodeOperation: "%c * 10 + 3"
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.8
-CurrentVersionCode: 93
+CurrentVersionCode: 9
