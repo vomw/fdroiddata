@@ -20,7 +20,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - 'flutterVersion=$(sed -n -E "s/.*f-droid-flutter:[[:space:]]*(.*)/\1/p" ../../pubspec.yaml | head -n 1)'
+      - flutterVersion=$(awk '/f-droid-flutter:/{print $3;exit}' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -31,7 +31,7 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
-      - .pub-cache
+      - android/app/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
@@ -46,7 +46,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - 'flutterVersion=$(sed -n -E "s/.*f-droid-flutter:[[:space:]]*(.*)/\1/p" ../../pubspec.yaml | head -n 1)'
+      - flutterVersion=$(awk '/f-droid-flutter:/{print $3;exit}' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -57,7 +57,7 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
-      - .pub-cache
+      - android/app/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
@@ -72,7 +72,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - 'flutterVersion=$(sed -n -E "s/.*f-droid-flutter:[[:space:]]*(.*)/\1/p" ../../pubspec.yaml | head -n 1)'
+      - flutterVersion=$(awk '/f-droid-flutter:/{print $3;exit}' ../../pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - D=$$flutter$$/packages/flutter_tools/gradle/src/main
@@ -83,7 +83,7 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scanignore:
-      - .pub-cache
+      - android/app/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi
