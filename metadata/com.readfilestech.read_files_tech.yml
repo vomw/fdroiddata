@@ -1,0 +1,54 @@
+Categories:
+  - Reading
+  - System
+License: Apache-2.0
+AuthorName: Patrice Haltaya
+AuthorEmail: contact@files-tech.com
+WebSite: https://www.files-tech.com/read-files-tech.php
+SourceCode: https://github.com/gitubpatrice/READ-FILES-TECH
+IssueTracker: https://github.com/gitubpatrice/READ-FILES-TECH/issues
+Changelog: https://github.com/gitubpatrice/READ-FILES-TECH/releases
+
+AutoName: Read Files Tech
+
+RepoType: git
+Repo: https://github.com/gitubpatrice/READ-FILES-TECH.git
+
+Binaries: https://github.com/gitubpatrice/READ-FILES-TECH/releases/download/v%v/app-%a-release.apk
+
+Builds:
+  - versionName: 2.13.1
+    versionCode: 21301
+    commit: 272a94cc69a304827587cfab7cfee418086a9ecb
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+
+AllowedAPKSigningKeys: 3359c588bffbc20f7f835c32f759139b5e77c3d319ef7b3c411c767bea138229
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.13.1
+CurrentVersionCode: 21301
