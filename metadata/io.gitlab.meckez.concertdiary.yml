@@ -14,20 +14,20 @@ Repo: https://gitlab.com/meckez/concert-diary.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: a805f9e9eeb54ca59444dab0972138a3c9a1864a
+    commit: v1.0.0
     subdir: app
     gradle:
       - yes
     prebuild: |
       echo "$FDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
-      export KEYSTORE_PATH="$PWD/release.keystore"
+      export KEYSTORE_PATH="release.keystore"
       export KEYSTORE_PASSWORD="$FDROID_KEYSTORE_PASSWORD"
-      export KEY_ALIAS="$FDROID_KEY_ALIAS"
+      export KEY_ALIAS="key0"
       export KEY_PASSWORD="$FDROID_KEY_PASSWORD"
     scandelete:
       - app/release.keystore
     rm:
-      - app/release.keystore
+      - release.keystore
 
 AllowedAPKSigningKeys:
   - b738e2e9f64b843f62f8ef1b82604b6de16030f9cc49e736d4b61f404aefd67d
