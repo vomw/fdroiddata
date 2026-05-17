@@ -1,0 +1,38 @@
+Categories:
+  - Money
+License: GPL-3.0-only
+AuthorName: Oysterclaim
+WebSite: https://oysterclaim.com
+SourceCode: https://github.com/Oysterclaim/oysterclaim
+IssueTracker: https://github.com/Oysterclaim/oysterclaim/issues
+Changelog: https://github.com/Oysterclaim/oysterclaim/releases
+
+AutoName: OysterClaim F-Droid
+
+RepoType: git
+Repo: https://github.com/Oysterclaim/oysterclaim
+
+AntiFeatures:
+  - NonFreeNet
+
+Builds:
+  - versionName: 1.0.5
+    versionCode: 33
+    commit: e6f126883ba37a14a31378b768ddae9c7788c101
+    subdir: apps/mobile/android
+    submodules: false
+    prebuild: |
+      export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
+      export OYSTER_POSTINSTALL_MODE=fdroid
+      cd ../.. && npm ci
+      cd apps/mobile/android
+    build: ./gradlew :app:assembleFdroidRelease -PclaimlyUnsignedRelease=true --no-daemon
+
+MaintainerNotes: |-
+  React Native / Expo. Store text and screenshots: fastlane/metadata/android/en-US/.
+  Committed android/ tree; fdroid flavor id com.oysterclaim.app.fdroid.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags git https://github.com/Oysterclaim/oysterclaim
+CurrentVersion: 1.0.5
+CurrentVersionCode: 33
