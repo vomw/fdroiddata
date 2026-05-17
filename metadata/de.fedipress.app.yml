@@ -29,10 +29,6 @@ Description: |-
 RepoType: git
 Repo: https://codeberg.org/janfkennedy/FediPress
 
-Scanner:
-  DisabledAlgorithms:
-    - binary
-
 Builds:
   - versionName: '1.0'
     versionCode: 1
@@ -41,11 +37,12 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    prebuild:
+prebuild:
       - cd ..
       - npm install
       - npm run build
       - npx cap sync android
+      - rm -rf node_modules
       - cd android
     gradle:
       - yes
