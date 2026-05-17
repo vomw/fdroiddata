@@ -1,0 +1,52 @@
+Categories:
+  - Internet
+  - News
+
+License: GPL-3.0-only
+
+WebSite: https://fedipress.de
+SourceCode: https://codeberg.org/janfkennedy/FediPress
+IssueTracker: https://codeberg.org/janfkennedy/FediPress/issues
+
+Summary: Nachrichten aus dem offenen Web
+Description: |-
+  FediPress aggregiert Nachrichtenartikel aus dem Fediverse (Mastodon) und
+  präsentiert sie als übersichtlicher Newsreader — ähnlich wie Flipboard,
+  aber dezentral, offen und ohne Tracking.
+
+  Kein Algorithmus, kein Tracking, keine Werbung. Mit oder ohne
+  Mastodon-Account nutzbar. GPL-3.0-lizenziert.
+
+  Features:
+  * Artikel aus dem Fediverse nach Kategorien
+  * Deutsch & Englisch
+  * Lokale Nachrichten
+  * In-App-Benachrichtigungen
+  * Kommentare lesen, liken und antworten
+  * Dark/Light Mode
+  * DSGVO-konform
+
+RepoType: git
+Repo: https://codeberg.org/janfkennedy/FediPress
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    prebuild:
+      - cd ..
+      - npm install
+      - npm run build
+      - npx cap sync android
+      - cd android
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
