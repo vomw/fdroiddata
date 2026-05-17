@@ -1,0 +1,39 @@
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Internet
+  - Money
+License: MIT
+WebSite: https://webiartisan.prigent.tech
+SourceCode: https://gitlab.com/SuperT0f/webiartisan-flutter-app
+IssueTracker: https://gitlab.com/SuperT0f/webiartisan-flutter-app/-/issues
+
+AutoName: WebIArtisan
+
+RepoType: git
+Repo: https://gitlab.com/SuperT0f/webiartisan-flutter-app.git
+
+Builds:
+  - versionName: 2.0.0
+    versionCode: 53
+    commit: fbf235d7f43de1423a1c4f8f11e2ba37fb8d9bca
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.6
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - rm -rf $PUB_CACHE || true
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
+        --build-number=$$VERCODE$$
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9].*
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.0
+CurrentVersionCode: 53
