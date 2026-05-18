@@ -12,7 +12,7 @@ Repo: https://github.com/MirageFoundation/mirage-mobile-app.git
 Builds:
   - versionName: 1.0.13
     versionCode: 1013
-    commit: 287bf94736a4f188d18d6b52db65219d813a2208
+    commit: 1b867c67bbefba2a8252990132e06f327f2e753d
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -55,10 +55,9 @@ Builds:
       - cd android
       - sed -i -e '/signingConfig /d' app/build.gradle
       - EXPO_PUBLIC_FDROID=true NODE_ENV=production NODE_OPTIONS=--max-old-space-size=1024
-        ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-        gradle :app:assembleRelease --no-daemon --max-workers=1 -Dorg.gradle.vfs.watch=false
-        -x lintVitalRelease -x lintVitalAnalyzeRelease -x generateReleaseLintVitalReportModel
-        -x lintVitalReportRelease
+        ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ gradle :app:assembleRelease
+        --no-daemon --max-workers=1 -Dorg.gradle.vfs.watch=false -x lintVitalRelease
+        -x lintVitalAnalyzeRelease -x generateReleaseLintVitalReportModel -x lintVitalReportRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
