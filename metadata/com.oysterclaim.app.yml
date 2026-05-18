@@ -20,12 +20,33 @@ Builds:
     versionCode: 33
     commit: e6f126883ba37a14a31378b768ddae9c7788c101
     subdir: apps/mobile/android
-    prebuild: |
-      export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
-      export OYSTER_POSTINSTALL_MODE=fdroid
-      cd ../.. && npm ci
-      cd apps/mobile/android
-    build: ./gradlew :app:assembleFdroidRelease -PclaimlyUnsignedRelease=true --no-daemon
+    sudo:
+      - apt-get update
+      - apt-get install -y curl ca-certificates openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - curl -fsSL -o node.tar.gz https://nodejs.org/dist/v20.19.0/node-v20.19.0-linux-x64.tar.gz
+      - echo "8a4dbcdd8bccef3132d21e8543940557e55dcf44f00f0a99ba8a062f4552e722 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    prebuild:
+      - cd ../..
+      - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
+      - export OYSTER_POSTINSTALL_MODE=fdroid
+      - npm ci
+      - find node_modules/@react-native/gradle-plugin -name 'build.gradle.kts' -exec
+        sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' {} +
+      - sed -i -e 's/VERSION_17/VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - cd apps/mobile/android
+    gradle:
+      - yes
+    scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+    scandelete:
+      - node_modules
+    build:
+      - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
+      - ./gradlew :app:assembleFdroidRelease -PclaimlyUnsignedRelease=true --no-daemon
 
 MaintainerNotes: |-
   React Native / Expo. Store text and screenshots: fastlane/metadata/android/en-US/.
