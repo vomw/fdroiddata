@@ -1,0 +1,43 @@
+Categories:
+  - Finance Manager
+License: MIT
+AuthorName: Ziegfrid Gualberto
+AuthorEmail: ziegfrid.gualberto@gmail.com
+WebSite: https://github.com/zgualberto/fcl-finance-app
+SourceCode: https://github.com/zgualberto/fcl-finance-app
+IssueTracker: https://github.com/zgualberto/fcl-finance-app/issues
+Changelog: https://github.com/zgualberto/fcl-finance-app/releases
+
+AutoName: FCL Finance App
+
+RepoType: git
+Repo: https://github.com/zgualberto/fcl-finance-app
+
+Builds:
+  - versionName: 1.10.2
+    versionCode: 1
+    commit: 9666eca8a26c20d360e5329b7d56cc1bed03cfbe
+    subdir: src-capacitor/android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - npm install yarn @quasar/cli -g
+    init:
+      - cd ../..
+      - yarn install
+      - cd ..
+      - yarn install
+      - yarn build
+      - yarn cap:sync:android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules
+      - src-capacitor/node_modules
+    ndk: r21e
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.10.2
+CurrentVersionCode: 1
