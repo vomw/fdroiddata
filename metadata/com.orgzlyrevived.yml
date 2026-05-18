@@ -488,14 +488,14 @@ Builds:
       - fdroid
     srclibs:
       - reproducible-apk-tools@v0.3.0
-    ndk: r26d
+    ndk: 27.0.12077973
     postbuild:
       - curl -Lo upstream.apk 
         https://github.com/orgzly-revived/orgzly-android-revived/releases/download/v$$VERSION$$/orgzly-revived-fdroid-$$VERSION$$.apk
       - unzip -q upstream.apk -d apk
       - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
       - rm -rf apk upstream.apk
-      - for i in {1..10}; do mv $$OUT$$ unaligned.apk; $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner --replace unaligned.apk $$OUT$$ ; unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash && break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean assembleFossRelease; done
+      - for i in {1..10}; do mv $$OUT$$ unaligned.apk; $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner --replace unaligned.apk $$OUT$$ ; unzip -q $$OUT$$ -d apk; sha256sum -c - <<< $hash && break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean assembleFdroidRelease; done
 
 AllowedAPKSigningKeys: 6fc9c2e22d07d25ce77e2e963455053c38b8318a1a2491b3ed95d50cba85493d
 
