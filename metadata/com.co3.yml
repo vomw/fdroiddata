@@ -14,13 +14,6 @@ RepoType: git
 Repo: https://github.com/tbvns/CO3.git
 
 Builds:
-  # versionCode scheme: base(5) * 10 + abiOffset
-  #   universal   = 50  (offset 0)
-  #   armeabi-v7a = 51  (offset 1)
-  #   arm64-v8a   = 52  (offset 2)
-  #   x86         = 53  (offset 3)
-  #   x86_64      = 54  (offset 4)
-
   - versionName: B0.0.5
     versionCode: 50
     commit: 99936a070958efea05bb0773c35bfda39fca8aa3
@@ -31,7 +24,6 @@ Builds:
     init:
       - cd ../..
       - npm install
-    build: BUILD_ABI=universal ./gradlew assembleRelease
     output: build/outputs/apk/release/app-release.apk
     prebuild:
       - cd ../..
@@ -61,6 +53,7 @@ Builds:
       - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - node_modules
+    build: BUILD_ABI=universal ./gradlew assembleRelease
 
   - versionName: B0.0.5
     versionCode: 51
@@ -72,7 +65,6 @@ Builds:
     init:
       - cd ../..
       - npm install
-    build: BUILD_ABI=armeabi-v7a ./gradlew assembleRelease
     output: build/outputs/apk/release/app-armeabi-v7a-release.apk
     prebuild:
       - cd ../..
@@ -102,6 +94,7 @@ Builds:
       - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - node_modules
+    build: BUILD_ABI=armeabi-v7a ./gradlew assembleRelease
 
   - versionName: B0.0.5
     versionCode: 52
@@ -113,7 +106,6 @@ Builds:
     init:
       - cd ../..
       - npm install
-    build: BUILD_ABI=arm64-v8a ./gradlew assembleRelease
     output: build/outputs/apk/release/app-arm64-v8a-release.apk
     prebuild:
       - cd ../..
@@ -143,6 +135,7 @@ Builds:
       - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - node_modules
+    build: BUILD_ABI=arm64-v8a ./gradlew assembleRelease
 
   - versionName: B0.0.5
     versionCode: 53
@@ -154,7 +147,6 @@ Builds:
     init:
       - cd ../..
       - npm install
-    build: BUILD_ABI=x86 ./gradlew assembleRelease
     output: build/outputs/apk/release/app-x86-release.apk
     prebuild:
       - cd ../..
@@ -184,6 +176,7 @@ Builds:
       - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - node_modules
+    build: BUILD_ABI=x86 ./gradlew assembleRelease
 
   - versionName: B0.0.5
     versionCode: 54
@@ -195,7 +188,6 @@ Builds:
     init:
       - cd ../..
       - npm install
-    build: BUILD_ABI=x86_64 ./gradlew assembleRelease
     output: build/outputs/apk/release/app-x86_64-release.apk
     prebuild:
       - cd ../..
@@ -225,6 +217,7 @@ Builds:
       - node_modules/react-native-calendars/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - node_modules
+    build: BUILD_ABI=x86_64 ./gradlew assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
