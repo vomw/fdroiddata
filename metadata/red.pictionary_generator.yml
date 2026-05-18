@@ -11,9 +11,9 @@ RepoType: git
 Repo: https://gitlab.com/ari-donnenfeld/pictionary-generator.git
 
 Builds:
-  - versionName: '1.1.2'
-    versionCode: 6
-    commit: v1.0
+  - versionName: 1.1.4
+    versionCode: 8
+    commit: a867a6a
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -28,19 +28,16 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter config --no-analytics
-      - .flutter/bin/flutter pub get
-    scanignore:
-      - .flutter/bin/cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
     scandelete:
-      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: '1.1.2'
-CurrentVersionCode: 6
+CurrentVersion: 1.1.4
+CurrentVersionCode: 8
