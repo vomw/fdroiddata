@@ -15,18 +15,18 @@ Builds:
   - versionName: B0.0.5
     versionCode: 5
     commit: 79e4fbf2a15ce282f9b7a71661e841e0719249b7
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm gradle
     init:
-      - cd ..
+      - cd ../..
       - npm install
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ..
+      - cd ../..
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
         node_modules/react-native-notify-kit/android/build.gradle
