@@ -10,13 +10,14 @@ RepoType: git
 Repo: https://github.com/resurrectdev1/grove
 
 Builds:
-  - versionName: 0.5.4
+  - versionName: 0.5.5
     versionCode: 31
-    commit: v0.5.4.3
+    commit: v0.5.5
     sudo:
       - apt-get update
       - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -31,13 +32,14 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
 
-  - versionName: 0.5.4
+  - versionName: 0.5.5
     versionCode: 32
-    commit: v0.5.4.3
+    commit: v0.5.5
     sudo:
       - apt-get update
       - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -52,13 +54,14 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
-  - versionName: 0.5.4
+  - versionName: 0.5.5
     versionCode: 33
-    commit: v0.5.4.3
+    commit: v0.5.5
     sudo:
       - apt-get update
       - apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -73,6 +76,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
+AllowedAPKSigningKeys: 95a245c1fe96a028a37d0cf5ef3afebb765795712dc22e9d6c30bffee5fa80bd
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
@@ -80,5 +85,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.5.4
+CurrentVersion: 0.5.5
 CurrentVersionCode: 33
