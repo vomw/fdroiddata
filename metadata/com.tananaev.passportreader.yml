@@ -105,8 +105,11 @@ Builds:
     subdir: app
     gradle:
       - regular
-    prebuild: sed -i -e '/google-services/d' -e '/firebase-crashlytics/d' -e '/firebase.crashlytics/d'
-      build.gradle ../build.gradle
+    prebuild:
+      - sed -i -e '/google-services/d' -e '/firebase-crashlytics/d' -e '/firebase.crashlytics/d'
+        build.gradle.kts ../build.gradle.kts
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) { minorApiLevel
+        = 0 } }/' build.gradle.kts
     scanignore:
       - app/src/main/assets/masterList
     ndk: r23b
