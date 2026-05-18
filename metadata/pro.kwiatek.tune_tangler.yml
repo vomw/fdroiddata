@@ -10,18 +10,21 @@ RepoType: git
 Repo: https://github.com/Flower7C3/tune-tangler.git
 
 Builds:
-  - versionName: 1.7.3
-    versionCode: 5
-    commit: e9e4f95d1007d857232954fad708541c6a478721
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.7.4
+    versionCode: 61
+    commit: 0459b1b9c6a6f5af5beb3550942bde183577530b
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
-      - flutter@3.41.9
+      - flutter@stable
     rm:
       - ios
       - linux
       - macos
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E 's/^flutter_sdk_version:\s*([0-9.]+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - echo "flutter.sdk=$$flutter$$" >> android/local.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -31,18 +34,73 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+  - versionName: 1.7.4
+    versionCode: 62
+    commit: 0459b1b9c6a6f5af5beb3550942bde183577530b
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^flutter_sdk_version:\s*([0-9.]+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - echo "flutter.sdk=$$flutter$$" >> android/local.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter precache --android
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+  - versionName: 1.7.4
+    versionCode: 63
+    commit: 0459b1b9c6a6f5af5beb3550942bde183577530b
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^flutter_sdk_version:\s*([0-9.]+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - echo "flutter.sdk=$$flutter$$" >> android/local.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter precache --android
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
 MaintainerNotes: |
   MIT. Sonic (Apache 2.0) in android/app/src/main/java/sonic/.
 
-  Build: Flutter srclib (from .metadata at the release commit, or oldest stable Flutter whose Dart SDK satisfies pubspec environment.sdk).
+  Build: Flutter srclib @stable, checkout `flutter_sdk_version` from pubspec.yaml; per-ABI APKs
+  (--split-per-abi) with versionCode = pubspec build * 10 + {1,2,3} (see android/app/build.gradle).
 
   Listings (Summary/Description/screenshots): Fastlane layout in the app repo
   (fastlane/metadata/android/) — do not duplicate those keys in this YAML.
-
 ArchivePolicy: 6
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.7.3
-CurrentVersionCode: 5
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.7.4
+CurrentVersionCode: 63
