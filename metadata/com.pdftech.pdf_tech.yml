@@ -1,0 +1,50 @@
+Categories:
+  - Reading
+  - Writing
+License: Apache-2.0
+AuthorName: Patrice Haltaya
+AuthorEmail: contact@files-tech.com
+WebSite: https://www.files-tech.com/pdf-tech.php
+SourceCode: https://github.com/gitubpatrice/PDF-TECH
+IssueTracker: https://github.com/gitubpatrice/PDF-TECH/issues
+Changelog: https://github.com/gitubpatrice/PDF-TECH/releases
+
+AutoName: PDF Tech
+
+RepoType: git
+Repo: https://github.com/gitubpatrice/PDF-TECH.git
+
+Binaries: https://github.com/gitubpatrice/PDF-TECH/releases/download/v%v/pdf_tech-v%v.apk
+
+Builds:
+  - versionName: 1.12.4
+    versionCode: 11204
+    commit: 1aa31794056540e404500477abb90a95b73d2c8c
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AllowedAPKSigningKeys: 7d2c119973830ac791011a740ca736ac1b59009a3e7599cecf7d21c82dd2a4f4
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.12.4
+CurrentVersionCode: 11204
