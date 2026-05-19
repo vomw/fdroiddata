@@ -14,14 +14,17 @@ Builds:
     versionCode: 31
     commit: v0.5.5
     sudo:
-      - mkdir -p /home/runner/work/grove
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/annresurrect
+      - chown -R vagrant /home/annresurrect
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-armeabi-v7a-release.apk
+    binary:
+      https://github.com/resurrectdev1/grove/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
+      - reproducible-apk-tools@v0.3.0
       - flutter@3.41.2
     prebuild:
-      - export repo=/home/runner/work/grove/grove
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -33,7 +36,7 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/grove/grove
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -41,20 +44,27 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
       - popd
       - mv $repo com.resurrect.grove
-    ndk: r27
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
  
   - versionName: 0.5.5
     versionCode: 32
     commit: v0.5.5
     sudo:
-      - mkdir -p /home/runner/work/grove
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/annresurrect
+      - chown -R vagrant /home/annresurrect
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-arm64-v8a-release.apk
+    binary:
+      https://github.com/resurrectdev1/grove/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
+      - reproducible-apk-tools@v0.3.0
       - flutter@3.41.2
     prebuild:
-      - export repo=/home/runner/work/grove/grove
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -66,7 +76,7 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/grove/grove
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -74,20 +84,27 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo com.resurrect.grove
-    ndk: r27
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
  
   - versionName: 0.5.5
     versionCode: 33
     commit: v0.5.5
     sudo:
-      - mkdir -p /home/runner/work/grove
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/annresurrect
+      - chown -R vagrant /home/annresurrect
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/resurrectdev1/grove/releases/download/v%v/app-x86_64-release.apk
+    binary:
+      https://github.com/resurrectdev1/grove/releases/download/v%v/app-x86_64-release.apk
     srclibs:
+      - reproducible-apk-tools@v0.3.0
       - flutter@3.41.2
     prebuild:
-      - export repo=/home/runner/work/grove/grove
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -99,7 +116,7 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/grove/grove
+      - export repo=/home/annresurrect/grove
       - cd ..
       - mv com.resurrect.grove $repo
       - pushd $repo
@@ -107,7 +124,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
       - popd
       - mv $repo com.resurrect.grove
-    ndk: r27
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
  
 AllowedAPKSigningKeys: 95a245c1fe96a028a37d0cf5ef3afebb765795712dc22e9d6c30bffee5fa80bd
  
