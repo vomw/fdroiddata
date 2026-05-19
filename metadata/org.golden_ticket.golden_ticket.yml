@@ -14,8 +14,8 @@ AutoName: Golden Ticket
 
 RepoType: git
 Repo: https://gitlab.com/number-smithy/golden-ticket.git
-Binaries: 
-  https://gitlab.com/number-smithy/golden-ticket/-/releases/v%v+%c-fdroid-r1/downloads/org.golden_ticket.golden_ticket_%c-signed.apk
+Binaries:
+  https://gitlab.com/api/v4/projects/76416601/packages/generic/fdroid-releases/v%v+%c-fdroid-r1/org.golden_ticket.golden_ticket_%c-signed.apk
 
 Builds:
   - versionName: 4.4.11
@@ -41,30 +41,19 @@ Builds:
   - versionName: 4.9.5
     versionCode: 29
     commit: 9506e17299f303a7ea615f6763ee98e471381e41
-    output: build/app/outputs/flutter-apk/app-release.apk
-    binary: 
+    binary:
       https://gitlab.com/number-smithy/golden-ticket/-/releases/v4.9.5+29-fdroid-r1/downloads/org.golden_ticket.golden_ticket_29-signed.apk
-    srclibs:
-      - flutter@stable
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/^\s*fdroid_flutter:\s*(.*)$/\1/p" pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - cp lib/src/golden_ticket/dev_config.dart.template lib/src/golden_ticket/dev_config.dart
-      - sed -i '/org.gradle.java.home/d' android/gradle.properties
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    scandelete:
-      - .pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --dart-define=PLAY_STORE_BUILD=false
+
+  - versionName: 4.9.6
+    versionCode: 31
+    commit: 32d521caba29dd9b8099e4e45262bf248776d0a5
+    binary:
+      https://gitlab.com/api/v4/projects/76416601/packages/generic/fdroid-releases/v4.9.6+31-fdroid-r1/org.golden_ticket.golden_ticket_31-signed.apk
 
 AllowedAPKSigningKeys: bf56dc721b303b66bd3339f15f5a456ed4d076c7f1edd1b24f8e26e331c12436
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+\+\d+-fdroid-r1$
 UpdateCheckData: '|\+(\d+)-fdroid-r1$||^v([\d.]+)\+'
-CurrentVersion: 4.9.5
-CurrentVersionCode: 29
+CurrentVersion: 4.9.6
+CurrentVersionCode: 31
