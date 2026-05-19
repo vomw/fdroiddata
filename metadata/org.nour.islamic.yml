@@ -1,0 +1,64 @@
+Categories:
+  - Religion
+License: GPL-3.0-or-later
+AuthorName: WALNOR
+SourceCode: https://codeberg.org/WALNOR/Noor_app_prayers_and_more
+IssueTracker: https://codeberg.org/WALNOR/Noor_app_prayers_and_more/issues
+
+Name: Nour نور
+Summary: Prayer times, Quran, Azkar & Hijri calendar — 100% offline, no tracking
+Description: |-
+  Nour is a free, open-source Islamic app built with privacy at its core.
+  No internet connection required after installation. No analytics, no tracking,
+  no ads, no account needed. All data stays on your device.
+
+  Features
+
+  * Mizwala (Prayer times) — A unique sundial clock displaying the five daily
+    prayer times. Supports 16 calculation methods (UOIF, Muslim World League, Egypt,
+    Mecca, Turkey, Algeria, Morocco and more). Live Qibla compass. Prayer reminders.
+
+  * Quran — Complete Quran in Uthmani script (ScheherazadeNew font) with all
+    114 surahs and ayah markers.
+
+  * Azkar — Comprehensive collection from Hisn al-Muslim: morning & evening
+    adhkar, post-prayer adhkar and more. Counter for each dhikr.
+
+  * Hijri Calendar — Monthly Hijri calendar with Islamic occasions (Ramadan,
+    Eid al-Fitr, Eid al-Adha, Mawlid an-Nabi...). Monthly prayer timetable.
+
+  Privacy
+
+  * 100% offline — no network connection needed after install
+  * No analytics, no tracking, no ads
+  * No account required
+  * All data on your device only
+  * Fonts and Quran data bundled — nothing downloaded at runtime
+
+RepoType: git
+Repo: https://codeberg.org/WALNOR/Noor_app_prayers_and_more.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y wget unzip
+    gradle:
+      - yes
+    prebuild:
+      - wget -q https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.32.0-stable.tar.xz
+        -O /tmp/flutter.tar.xz
+      - tar xf /tmp/flutter.tar.xz -C /opt
+      - export PATH="$PATH:/opt/flutter/bin"
+      - flutter pub get
+    build:
+      - export PATH="$PATH:/opt/flutter/bin"
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
