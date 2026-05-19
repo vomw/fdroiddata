@@ -23,11 +23,11 @@ Builds:
     init:
       - npm ci
 
-    # 1. F-Droid'e Ant değil, Gradle projesi olduğunu söylüyoruz:
+   
     gradle:
       - yes
 
-    # 2. Üretilen APK'nın nerede olacağını açıkça gösteriyoruz:
+   
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
 
     srclibs:
@@ -43,15 +43,12 @@ Builds:
       - echo "task assembleRelease {}" > build.gradle
       - touch settings.gradle
       - echo 'allprojects { tasks.configureEach { t -> if (t.class.name.contains("KotlinCompile")) { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check" } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check") } catch (Exception ex) {} } } } }' > init.gradle
-      # YENİ ADIM: F-Droid tarayıcısının bozacağı tüm Gradle dosyalarını tarayıcıdan saklamak için kopyalıyoruz
       - find node_modules -type f -name "build.gradle" -exec cp {} {}.bak \;
       - find node_modules -type f -name "build.gradle.kts" -exec cp {} {}.bak \;
 
     build:
-      # YENİ ADIM: Tarayıcı işini bitirdikten sonra dosyaları orijinal (bozulmamış) halleriyle geri yüklüyoruz
       - find node_modules -type f -name "build.gradle.bak" -exec sh -c 'mv "$0" "${0%.bak}"' {} \;
       - find node_modules -type f -name "build.gradle.kts.bak" -exec sh -c 'mv "$0" "${0%.bak}"' {} \;
-      # Şimdi güvenle derleyebiliriz
       - cd android && gradle assembleRelease --init-script ../init.gradle
 
     scanignore:
