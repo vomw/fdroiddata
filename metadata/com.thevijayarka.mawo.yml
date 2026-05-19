@@ -1,0 +1,44 @@
+Categories:
+  - Sports & Health
+
+License: MIT
+
+WebSite: https://themawo.netlify.app
+SourceCode: https://github.com/thevijayarka/MAWO-Fixed
+IssueTracker: https://github.com/thevijayarka/MAWO-Fixed/issues
+
+Summary: Your Habits, Alive. A habit tracker built on neuroscience.
+Description: |-
+  MAWO (My Adaptive Wellness Organizer) is a free, open-source habit tracker
+  designed around the science of behavior change. It adapts to how you actually
+  live — not how you wish you did.
+
+  Features:
+  * Adaptive habit tracking built on the MAWO framework
+  * Smart notifications that work with your schedule
+  * Import and export your data
+  * Select specific days for each habit
+  * Fully offline — no internet required
+  * No ads, no analytics, no Firebase
+
+RepoType: git
+Repo: https://github.com/thevijayarka/MAWO-Fixed
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android
+    gradle:
+      - yes
+    prebuild: sed -i 's/def flutterVersionCode = .*/def flutterVersionCode = "1"/' app/build.gradle &&
+      sed -i 's/def flutterVersionName = .*/def flutterVersionName = "1.0"/' app/build.gradle
+    srclibs:
+      - flutter@3.24.0
+    build: export PATH=$$flutter$$/bin:$PATH && flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
