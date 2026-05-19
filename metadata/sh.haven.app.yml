@@ -978,12 +978,13 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y -t trixie make binutils gawk libc-dev rustup golang-go
-        nasm yasm cmake xz-utils bzip2 perl pkg-config autoconf automake libtool libtool-bin
+      - apt-get install -y make binutils gawk libc-dev rustup golang-go nasm yasm
+        cmake xz-utils bzip2 perl pkg-config autoconf automake libtool libtool-bin
         libltdl-dev meson ninja-build libexpat1-dev libffi-dev python3 bison g++ xutils-dev
         python3-xcbgen gcc-aarch64-linux-gnu libc6-dev-arm64-cross
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
       - apt-get install -y -t forky libwayland-dev
     gradle:
       - arm64
