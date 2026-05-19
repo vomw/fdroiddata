@@ -16,7 +16,7 @@ Binaries: https://github.com/ueen/antpod/releases/download/v%v/antpod-%v-arm64.a
 Builds:
   - versionName: 0.9.6
     versionCode: 14
-    commit: 29b1309c21a4b98382a6924edb14565197d8f51d
+    commit: 2097aa6178882ca3b8c5853e250431804ca2c8de
     init: sed -i -e '/signingConfig =/,+2d' android/app/build.gradle.kts
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
@@ -24,9 +24,10 @@ Builds:
     rm:
       - ios
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.41.8
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo "flutter.sdk=$$flutter$$" >> android/local.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scandelete:
