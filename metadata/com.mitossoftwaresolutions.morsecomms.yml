@@ -1,0 +1,43 @@
+Categories:
+  - Science & Education
+License: MIT
+AuthorName: Mitos Software Solutions
+SourceCode: https://github.com/mitos-software-solutions/morse_comms
+IssueTracker: https://github.com/mitos-software-solutions/morse_comms/issues
+
+AutoName: Morse Comms
+
+RepoType: git
+Repo: https://github.com/mitos-software-solutions/morse_comms
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 5
+    commit: 77b528983e7bf479c49f79bf7946319975140a74
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/test.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.3
+CurrentVersionCode: 5
