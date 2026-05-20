@@ -1,0 +1,43 @@
+Categories:
+  - Education
+
+License: MIT
+
+WebSite: https://github.com/RUTEdu-Team/RUTEdu
+SourceCode: https://github.com/RUTEdu-Team/RUTEdu
+IssueTracker: https://github.com/RUTEdu-Team/RUTEdu/issues
+
+AutoName: RUTEdu
+
+Summary: Interactive education app — chemistry, math, geography
+Description: |
+  RUTEdu is an interactive educational app for high school students.
+  Features include:
+
+  * Interactive periodic table of elements
+  * Chemistry quizzes with automatic question generator
+  * Chemical equation balancing
+  * Geography quiz with map
+  * Local multiplayer mode (WiFi)
+  * Progress tracking
+
+RepoType: git
+Repo: https://github.com/RUTEdu-Team/RUTEdu
+
+Builds:
+  - versionName: '0.4'
+    versionCode: 10000
+    commit: v0.4
+    subdir: composeApp
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk
+    gradle:
+      - release
+    prebuild: sed -i 's/versionCode = .*/versionCode = $$VERCODE$$/' build.gradle.kts &&
+      sed -i 's/versionName = .*/versionName = "$$VERSION$$"/' build.gradle.kts
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+(\.[0-9]+)?$
+CurrentVersion: '0.4'
+CurrentVersionCode: 10000
