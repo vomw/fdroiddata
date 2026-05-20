@@ -40,7 +40,7 @@ Repo: https://codeberg.org/WALNOR/Noor_app_prayers_and_more.git
 Builds:
   - versionName: v1.0.1
     versionCode: 2
-    commit: v1.0.1
+    commit: 4ee9256590251a978df159582ff5d94e79150341
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.0
@@ -57,11 +57,6 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i 's/compileSdk flutter\.compileSdkVersion/compileSdk 36/' {} \;
-      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i 's/minSdkVersion flutter\.minSdkVersion/minSdkVersion 24/' {} \;
-      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i '/com\.google\.android\.gms/d' {} \;
-      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i '/play-services-location/d' {} \;
-      - find .pub-cache -name "build.gradle" -path "*package_info_plus-9.0.1*" -exec sed -i 's/compileSdk = flutter\.compileSdkVersion/compileSdk = 36/' {} \;
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
