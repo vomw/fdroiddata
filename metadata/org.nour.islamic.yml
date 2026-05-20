@@ -14,17 +14,21 @@ Description: |-
   **Features**
 
   * **Mizwala (Prayer times)** — A unique sundial clock displaying the five daily
-    prayer times. Supports 16 calculation methods (UOIF, Muslim World League, Egypt,
-    Mecca, Turkey, Algeria, Morocco and more). Live Qibla compass. Prayer reminders.
+    prayer times with real sun/moon positions. Supports 16 calculation methods
+    (UOIF, Muslim World League, Egypt, Mecca, Turkey, Algeria, Morocco and more).
+    Live Qibla compass. Prayer reminders. Post-prayer dhikr card with counter.
+    Real lunar phase displayed on the dial.
 
   * **Quran** — Complete Quran in Uthmani script (ScheherazadeNew font) with all
-    114 surahs and ayah markers.
+    114 surahs and ayah markers. Bookmarks and resume-reading feature.
 
   * **Azkar** — Comprehensive collection from Hisn al-Muslim: morning & evening
-    adhkar, post-prayer adhkar and more. Counter for each dhikr.
+    adhkar, post-prayer adhkar and more. Counter for each dhikr. Standalone Tasbih
+    screen (33/99/100 targets). Daily morning & evening adhkar notifications.
 
   * **Hijri Calendar** — Monthly Hijri calendar with Islamic occasions (Ramadan,
     Eid al-Fitr, Eid al-Adha, Mawlid an-Nabi...). Monthly prayer timetable.
+    Monthly prayer statistics with per-prayer completion bars.
 
   **Privacy**
 
@@ -60,7 +64,29 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
+  - versionName: v1.0.3
+    versionCode: 4
+    commit: 5397e0d496dcb408f6c2aa46d27befb26fd7ff19
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    rm:
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
+      - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --no-pub
+    ndk: 28.2.13676358
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: v1.0.2
-CurrentVersionCode: 3
+CurrentVersion: v1.0.3
+CurrentVersionCode: 4
