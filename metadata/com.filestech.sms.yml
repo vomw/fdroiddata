@@ -14,15 +14,18 @@ AutoName: SMS Tech
 RepoType: git
 Repo: https://github.com/gitubpatrice/SMS-TECH.git
 
-# Reproducible build pinned to the upstream-signed GitHub release APKs.
-# F-Droid will build from source at the exact commit hash below and verify the
-# resulting APK byte-for-byte against the GitHub asset referenced in Binaries.
-Binaries: https://github.com/gitubpatrice/SMS-TECH/releases/download/v%v/app-%a-release.apk
+AntiFeatures:
+  - NonFreeDep
+  # SMS Tech depends on com.google.mlkit:text-recognition for the OCR
+  # feature on incoming MMS image attachments (e.g. receipts auto-extracted).
+  # ML Kit is a Google proprietary library, hence NonFreeDep. Migration to
+  # ONNX Runtime + PaddleOCR text-recognition model (Apache 2.0) is planned
+  # for SMS Tech v1.7.x — at which point this AntiFeature will be removed.
 
 Builds:
-  - versionName: 1.3.6
-    versionCode: 36
-    commit: af32bf7657b0157cc8b176e2f4f64085314d02fe
+  - versionName: 1.6.2
+    versionCode: 55
+    commit: 83f2bd002b22cd7205449a7e086d48a283a2545b
     subdir: app
     gradle:
       - yes
@@ -33,14 +36,8 @@ Builds:
       - sed -i -e '/signingConfigs/,/}\s*$/d' build.gradle.kts
       - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
 
-# SHA-256 fingerprint of the upstream APK signing certificate. F-Droid uses this
-# to verify that the reproducible build it produces matches the same signing key
-# as the GitHub release — guaranteeing identical signature across both
-# distribution channels (users can update freely between GH and F-Droid).
-AllowedAPKSigningKeys: b09a951114908885aefe6144ac980975dd8bd889beb9e61676a5c2c8966c687d
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: 'app/build.gradle.kts|versionName\s*=\s*"(.*?)"|.|versionCode\s*=\s*(\d+)'
-CurrentVersion: 1.3.6
-CurrentVersionCode: 36
+CurrentVersion: 1.6.2
+CurrentVersionCode: 55
