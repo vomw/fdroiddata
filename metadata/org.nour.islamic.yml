@@ -57,9 +57,11 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - sed -i 's/compileSdk flutter\.compileSdkVersion/compileSdk 36/' .pub-cache/hosted/pub.dev/geolocator_android-5.0.2/android/build.gradle
-      - sed -i 's/minSdkVersion flutter\.minSdkVersion/minSdkVersion 24/' .pub-cache/hosted/pub.dev/geolocator_android-5.0.2/android/build.gradle
-      - sed -i 's/compileSdk = flutter\.compileSdkVersion/compileSdk = 36/' .pub-cache/hosted/pub.dev/package_info_plus-9.0.1/android/build.gradle
+      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i 's/compileSdk flutter\.compileSdkVersion/compileSdk 36/' {} \;
+      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i 's/minSdkVersion flutter\.minSdkVersion/minSdkVersion 24/' {} \;
+      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i '/com\.google\.android\.gms/d' {} \;
+      - find .pub-cache -name "build.gradle" -path "*geolocator_android-5.0.2*" -exec sed -i '/play-services-location/d' {} \;
+      - find .pub-cache -name "build.gradle" -path "*package_info_plus-9.0.1*" -exec sed -i 's/compileSdk = flutter\.compileSdkVersion/compileSdk = 36/' {} \;
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
