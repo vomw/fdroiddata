@@ -90,10 +90,6 @@ Builds:
     versionCode: 237
     commit: ac83b73970945e8c410066357f0af206cdc478de
     subdir: mobile
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless
-      - update-java-alternatives -a
     gradle:
       - fdroid
     output: build/outputs/apk/fdroid/release/mobile-fdroid-release*.apk
@@ -107,7 +103,6 @@ Builds:
         -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
       - printf '%s\n' 'org.gradle.caching=false' 'org.gradle.parallel=false' 'org.gradle.workers.max=1'
         'org.gradle.configureondemand=false' >> ../gradle.properties
-    build: gradle clean assembleFdroidRelease
     ndk: 28.0.12916984
     gradleprops:
       - fdroid
