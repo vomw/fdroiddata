@@ -38,9 +38,9 @@ RepoType: git
 Repo: https://codeberg.org/WALNOR/Noor_app_prayers_and_more.git
 
 Builds:
-  - versionName: v1.0.1
-    versionCode: 1
-    commit: 7b1cad45a4ee92adcd53c508f67e5dbb360fc8ae
+  - versionName: v1.0.2
+    versionCode: 3
+    commit: 6b59bd3629a8e2498c9e1dafb625f8eac2163e39
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.0
@@ -57,21 +57,10 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - rm -rf $PUB_CACHE/hosted/pub.dev/geolocator_android-5.0.2
-      - rm -rf $PUB_CACHE/hosted/pub.dev/package_info_plus-9.0.1
-      - $$flutter$$/bin/flutter pub get
-      - GEO=$PUB_CACHE/hosted/pub.dev/geolocator_android-5.0.2/android/build.gradle
-      - sed -i '/com.android.tools.build:gradle:8.0.2/d' $GEO
-      - sed -i 's/flutter\.compileSdkVersion/36/g' $GEO
-      - sed -i 's/flutter\.minSdkVersion/24/g' $GEO
-      - PKG=$PUB_CACHE/hosted/pub.dev/package_info_plus-9.0.1/android/build.gradle
-      - sed -i '/com.android.tools.build:gradle:8.12.1/d' $PKG
-      - sed -i 's/flutter\.compileSdkVersion/36/g' $PKG
-      - echo org.gradle.stacktrace=all >> android/gradle.properties
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: v1.0.1
-CurrentVersionCode: 1
+CurrentVersion: v1.0.2
+CurrentVersionCode: 3
