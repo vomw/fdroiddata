@@ -58,12 +58,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
       - p=$PUB_CACHE/hosted/pub.dev
-      - f=$p/geolocator_android-5.0.2/android/build.gradle
-      - sed -i 's/flutter\.compileSdkVersion/36/g' "$f"
-      - sed -i 's/flutter\.minSdkVersion/24/g' "$f"
-      - sed -i '/play-services-location/d' "$f"
-      - g=$p/package_info_plus-9.0.1/android/build.gradle
-      - sed -i 's/flutter\.compileSdkVersion/36/g' "$g"
+      - sed -i 's/flutter\.compileSdkVersion/36/g' "$p"/geolocator_android-*/android/build.gradle || true
+      - sed -i 's/flutter\.minSdkVersion/24/g' "$p"/geolocator_android-*/android/build.gradle || true
+      - sed -i 's/flutter\.compileSdkVersion/36/g' "$p"/package_info_plus-*/android/build.gradle || true
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
