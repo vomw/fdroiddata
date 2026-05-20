@@ -94,6 +94,7 @@ Builds:
       - fdroid
     srclibs:
       - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle
     postbuild:
       - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-pg-map-id $$OUT$$
         '381d455'
