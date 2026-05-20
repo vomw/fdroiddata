@@ -14,13 +14,11 @@ AutoName: Pass Tech
 RepoType: git
 Repo: https://github.com/gitubpatrice/pass_tech.git
 
-Binaries: https://github.com/gitubpatrice/pass_tech/releases/download/v%v/app-%a-release.apk
-
 Builds:
   - versionName: 2.5.0
     versionCode: 33
     commit: e0436b3e01f1a1a26de4630a5256658e7ed61072
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -39,16 +37,10 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-
-AllowedAPKSigningKeys: 733cf8b4ffb0ce052ca92604872f781aa29effd38c36cb710faf94d6b3c35794
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-VercodeOperation:
-  - '%c * 10 + 1'
-  - '%c * 10 + 2'
-  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.5.0
 CurrentVersionCode: 33
