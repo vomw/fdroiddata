@@ -47,6 +47,7 @@ Builds:
       - mv io.github.wizsk.arabic_lexicons /tmp/build
       - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
         --dart-define=APP_STORE="F-Droid" --dart-define=APP_VERSION="$$VERSION$$"
       - popd
@@ -73,6 +74,7 @@ Builds:
       - unzip -o assets/data/db/db.sqlite.zip -d assets/data/db/
       - rm assets/data/db/db.sqlite.zip
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
@@ -111,6 +113,7 @@ Builds:
       - unzip -o assets/data/db/db.sqlite.zip -d assets/data/db/
       - rm assets/data/db/db.sqlite.zip
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
