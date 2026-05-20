@@ -93,7 +93,11 @@ Builds:
       - apt-get install -y npm
     gradle:
       - yes
+    rm:
+      - ios
     prebuild:
+      - sed -i -e '/java.home/d' ../gradle.properties
+      - sed -i -e '/JavaLanguageVersion\|JavaVersion/s/17/21/' ../build.gradle
       - pushd ../..
       - npm install --build-from-source
       - mkdir -p app/images/backgrounds
