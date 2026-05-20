@@ -92,27 +92,11 @@ Builds:
     subdir: mobile
     gradle:
       - fdroid
-    output: build/outputs/apk/fdroid/release/mobile-fdroid-release*.apk
     srclibs:
       - reproducible-apk-tools@v0.3.0
-    prebuild:
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/' ../build.gradle
-      - perl -ni -e 'print unless /firebase|crashlytics|com\.google\.gms/ && !/\.contains\(/
-        && !/ENABLE_CRASHLYTICS/' build.gradle
-      - if [ -d src/main/assets ]; then find src/main/assets -type f \( -name '*.json'
-        -o -name '*.properties' \) -exec perl -0777 -pi -e 's/\r\n/\n/g' {} +; fi
-      - printf '%s\n' 'org.gradle.caching=false' 'org.gradle.parallel=false' 'org.gradle.workers.max=1'
-        'org.gradle.configureondemand=false' >> ../gradle.properties
-    ndk: 28.0.12916984
-    gradleprops:
-      - fdroid
     postbuild:
-      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 sort-baseline $$OUT$$
-        --apk
       - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-pg-map-id $$OUT$$
         '381d455'
-      - $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines $$OUT$$
-        --from-crlf 'META-INF/services/*'
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
