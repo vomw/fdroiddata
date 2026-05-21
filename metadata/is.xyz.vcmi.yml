@@ -1580,7 +1580,7 @@ Builds:
       - sdkmanager "platforms;android-35"
       - pipx install $$conan$$
       - export PATH="$HOME/.local/bin:$PATH"
-      - conan profile detect
+      - 'conan profile detect || true'
       - sed -i -e 's/versionCode.*$/versionCode $$VERCODE$$/' -e 's/signingConfig
         = signingConfigs.*//g' android/vcmi-app/build.gradle
       - '[ "$GRADLE_USER_HOME" ] || GRADLE_USER_HOME=~/.gradle'
@@ -1600,9 +1600,9 @@ Builds:
         --only-matching "$ndkPackage/\\w+#$hexRegex:$hexRegex")
       - ndkPath="$(conan cache path "$ndkPackageRevision")/bin"
       - mkdir -p "$ANDROID_HOME/ndk"
-      - ln -s "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
+      - ln -fs "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
         | cut -d ' ' -f 3)"
-      - ln -s $(which gradle) android/gradlew
+      - ln -fs $(which gradle) android/gradlew
       - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS=
       - cmake --build --preset android-conan-ninja-release
 
