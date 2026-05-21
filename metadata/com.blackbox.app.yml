@@ -6,24 +6,6 @@ IssueTracker: https://github.com/alpha-1-design/BLACKBOX/issues
 Changelog: https://github.com/alpha-1-design/BLACKBOX/releases
 
 AutoName: BLACKBOX
-Description: |-
-  BLACKBOX is an offline, security-first hub for developers and
-  creators. Featuring an encrypted secrets manager, private journal,
-  2FA authenticator, and comprehensive privacy tools, BLACKBOX
-  ensures 100% on-device processing and zero cloud exposure.
-
-  Core features:
-  * Secrets Manager: API keys, tokens, passwords — AES-256-GCM
-  * Encrypted Journal: timestamped, categorized entries
-  * TOTP Authenticator: RFC 6238 2FA with live countdown
-  * Privacy Toolkit: tracker stripping, fingerprint analysis,
-    URL scanner, permission audit
-  * Calculator decoy mode triggered by alternate PIN
-  * Biometric unlock via Android BiometricPrompt
-  * Self-destruct after 5 failed PIN attempts
-  * Encrypted clipboard with 30s auto-clear
-  * Screen dim overlay for public spaces
-  * FLAG_SECURE blocks screenshots and screen recording
 
 RepoType: git
 Repo: https://github.com/alpha-1-design/BLACKBOX
@@ -38,8 +20,9 @@ Builds:
       - apt-get install -y nodejs npm
     init: cd .. && npm install && npx cap sync android && rm -rf ../node_modules/clipboardy/fallbacks
       ../node_modules/@capacitor/cli/assets
-    prebuild: ln -sf app/src/main/AndroidManifest.xml AndroidManifest.xml && sed -i
-      's/com.android.tools.build:gradle:8.1.4/com.android.tools.build:gradle:8.5.2/' build.gradle
+    prebuild: ln -sf app/src/main/AndroidManifest.xml AndroidManifest.xml && echo
+      'target=android-34' > project.properties && sed -i 's/com.android.tools.build:gradle:8.1.4/com.android.tools.build:gradle:8.5.2/'
+      build.gradle
     build: gradle assembleRelease
 
 AutoUpdateMode: Version
