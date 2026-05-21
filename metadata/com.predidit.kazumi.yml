@@ -3149,6 +3149,79 @@ Builds:
       - mv $repo/Kazumi com.predidit.kazumi
     ndk: r27c
 
+  - versionName: 2.2.9
+    versionCode: 202092
+    commit: ab45813aed7b4da953ffb53274470d9de7613150
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make automake pkg-config libtool
+        nasm python3-jsonschema wget python3-jinja2 zip meson
+      - mkdir -p /home/runner/ /__w/libmpv-android-video-build
+      - chown vagrant /home/runner/ /__w/libmpv-android-video-build
+      - mkdir -p /usr/local/lib/android/sdk/ndk/
+      - chown vagrant /usr/local/lib/android/sdk/ndk/
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - export repo=/home/runner/work/Kazumi
+      - mkdir -p $repo
+      - cd ..
+      - mv com.predidit.kazumi $repo/Kazumi
+      - pushd $repo/Kazumi
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - fastlane/.flutter/bin/flutter config --no-analytics
+      - fastlane/.flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - export file=$(ls 
+        .pub-cache/git/media-kit-*/libs/android/media_kit_libs_android_video/android/build.gradle)
+      - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
+      - cd fastlane/.libmpv-android-video-build/buildscripts
+      - sed -i -e '/download-sdk/d' download.sh
+      - sed -i -e '/git reset --hard/d' patch.sh
+      - sed -i -e 's/archs=(armv7l arm64 x86 x86_64)/archs=(arm64)/' build.sh
+      - sed -i -e 's/sudo rm -r/echo/g' -e '/media-kit-android-helper/a sed -i -e
+        "/defaultConfig {/a ndk { abiFilters \\"arm64-v8a\\"}" android/build.gradle'
+        bundle_default.sh
+      - sed -i -e 's/sudo//g' -e 's|./gradlew|gradle|g' *.sh
+      - popd
+      - mv $repo/Kazumi com.predidit.kazumi
+    scanignore:
+      - fastlane/.flutter/bin/cache
+    scandelete:
+      - fastlane/.flutter
+      - .pub-cache
+    build:
+      - sdkmanager 'ndk;27.2.12479018'
+      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018
+      - export ANDROID_NDK=$ANDROID_NDK_HOME
+      - cp -R $$SDK$$/ndk/27.2.12479018 $ANDROID_NDK_HOME
+      - export libmpv=/__w/libmpv-android-video-build/libmpv-android-video-build
+      - mv fastlane/.libmpv-android-video-build $libmpv
+      - pushd $libmpv/buildscripts
+      - mkdir sdk
+      - ln -s $$SDK$$ ./sdk/android-sdk-linux
+      - bash bundle_default.sh
+      - popd
+      - export repo=/home/runner/work/Kazumi
+      - cd ..
+      - mv com.predidit.kazumi $repo/Kazumi
+      - pushd $repo/Kazumi
+      - mkdir -p build/media_kit_libs_android_video/output
+      - cp $libmpv/buildscripts/*.jar build/media_kit_libs_android_video/output
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - fastlane/.flutter/bin/flutter build apk --release --split-per-abi --dart-define=DANDANAPI_APPID=kazumi-hh47hcih6xfodp50
+        --dart-define=DANDANAPI_KEY=EKlABDVRMb8g5OkCH78SL14riZU4zmkR8TvRmu3GORIeJcdQ
+        --dart-define=KAZUMI_APPID=qb998n8g3u --dart-define=KAZUMI_KEY=4y2waS6A6yb4uw7Dhd9pmdTzvrF7YUsg
+      - popd
+      - mv $repo/Kazumi com.predidit.kazumi
+
 AllowedAPKSigningKeys: f4633dcf19ca0ccac7e730c57124a7acca57ce52b87913f9620d6bb718551d98
 
 MaintainerNotes: check apk pipeline fails as key is Debug
@@ -3158,5 +3231,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - 10 * %c + 2
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.1.1
-CurrentVersionCode: 201012
+CurrentVersion: 2.2.9
+CurrentVersionCode: 202092
