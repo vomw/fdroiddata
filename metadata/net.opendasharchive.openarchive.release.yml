@@ -50,7 +50,9 @@ Builds:
     subdir: app
     gradle:
       - fdroid
-    prebuild: sed -i -e '/JavaVersion/s/17/21/g' build.gradle.kts
+    prebuild:
+      - sed -i -e '/JavaVersion/s/17/21/g' build.gradle.kts ../analytics/build.gradle.kts
+      - sed -i -e '/google-services/d' -e '/crashlytics/d' ../build.gradle.kts
 
 MaintainerNotes: |
   Binaries are here:
