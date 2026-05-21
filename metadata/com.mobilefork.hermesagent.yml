@@ -1,0 +1,54 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional online features connect to remote model catalogs and
+      user-configured remote AI providers such as OpenAI, OpenRouter, Google
+      Gemini, Anthropic, Hugging Face, Qwen, Z.AI, or Corr3xt.
+Categories:
+  - AI Chat
+License: MIT
+AuthorName: MobileFork
+WebSite: https://github.com/adybag14-cyber/hermes-agent
+SourceCode: https://github.com/adybag14-cyber/hermes-agent
+IssueTracker: https://github.com/adybag14-cyber/hermes-agent/issues
+Changelog: https://github.com/adybag14-cyber/hermes-agent/blob/v0.13.113/fastlane/metadata/android/en-US/changelogs/141390.txt
+
+Name: Hermes Agent Fork
+AutoName: Hermes Agent Fork
+Summary: Independent fork for local AI chat and device workflows
+Description: |-
+  Hermes Agent Fork is an independent community fork of Hermes Agent for Android.
+  It is not official Nous Research or Teknium software, and it is not affiliated
+  with or endorsed by Nous Research.
+
+  This fork keeps the app identity explicit in the Android package name, app
+  title, settings disclosure, and top app banner. In-app status badges show both
+  ALPHA and FORK so users can see that they are running fork software.
+
+  Features include local-first Android AI chat workflows, optional device tools,
+  provider configuration, and optional connections to user-selected remote AI
+  services.
+
+RepoType: git
+Repo: https://github.com/adybag14-cyber/hermes-agent.git
+
+Builds:
+  - versionName: 0.13.113
+    versionCode: 141390
+    commit: 7993123096afb279300395541d15c50f7c92e255
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/System.getenv("HERMES_RELEASE_TAG").orEmpty().trim()/"v$$VERSION$$"/'
+        build.gradle.kts
+      - sed -i -e 's/version = "3.13"/version = "3.11"/' build.gradle.kts
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData:
+  fdroid/com.mobilefork.hermesagent.version|versionCode=(\d+)|.|versionName=(.*)
+CurrentVersion: 0.13.113
+CurrentVersionCode: 141390
