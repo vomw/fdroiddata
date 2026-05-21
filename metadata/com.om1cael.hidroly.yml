@@ -461,10 +461,11 @@ Builds:
   - versionName: 2.0.4
     versionCode: 142
     commit: 29b483dd619f39575bc53fee9bfab6dacf0e3e96
-    submodules: true
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
     binary: 
       https://github.com/om1cael/hidroly/releases/download/v%v/app-armeabi-v7a-fdroid-release.apk
+    srclibs:
+      - flutter@stable
     rm:
       - ios
       - macos
@@ -472,12 +473,15 @@ Builds:
       - windows
       - web
     prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ..
       - mv com.om1cael.hidroly /tmp/build
       - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter config --no-analytics
-      - ./flutter/bin/flutter pub get
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
       - popd
       - mv /tmp/build com.om1cael.hidroly
     scanignore:
@@ -490,7 +494,7 @@ Builds:
       - mv com.om1cael.hidroly /tmp/build
       - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter build apk --target-platform=android-arm --split-per-abi
+      - $$flutter$$/bin/flutter build apk --target-platform=android-arm --split-per-abi
         --flavor fdroid
       - popd
       - mv /tmp/build com.om1cael.hidroly
@@ -498,10 +502,11 @@ Builds:
   - versionName: 2.0.4
     versionCode: 143
     commit: 29b483dd619f39575bc53fee9bfab6dacf0e3e96
-    submodules: true
     output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
     binary: 
       https://github.com/om1cael/hidroly/releases/download/v%v/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - flutter@stable
     rm:
       - ios
       - macos
@@ -509,12 +514,15 @@ Builds:
       - windows
       - web
     prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ..
       - mv com.om1cael.hidroly /tmp/build
       - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter config --no-analytics
-      - ./flutter/bin/flutter pub get
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
       - popd
       - mv /tmp/build com.om1cael.hidroly
     scanignore:
@@ -527,7 +535,7 @@ Builds:
       - mv com.om1cael.hidroly /tmp/build
       - pushd /tmp/build/
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter build apk --target-platform=android-arm64 --split-per-abi
+      - $$flutter$$/bin/flutter build apk --target-platform=android-arm64 --split-per-abi
         --flavor fdroid
       - popd
       - mv /tmp/build com.om1cael.hidroly
