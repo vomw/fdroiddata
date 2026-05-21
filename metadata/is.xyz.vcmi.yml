@@ -1524,7 +1524,7 @@ Builds:
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y build-essential cmake curl ninja-build perl pipx libc6-dev-i386
+      - apt-get install -y build-essential cmake curl ninja-build perl pipx
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     output: 
@@ -1545,7 +1545,7 @@ Builds:
       - osx
     build:
       - export PATH="$HOME/.local/bin:$PATH"
-      - export CONAN_OPTIONS="--options ffmpeg/*:shared=True"
+      - export CONAN_OPTIONS="--options ffmpeg/*:shared=True --options &:lua_lib=None"
       - dependencies/build.sh android-armv7 2>~/tmp/conan_output.txt
       - conan install . --output-folder=conan-generated --build=never --profile=dependencies/conan_profiles/android-32-ndk
         --profile=dependencies/conan_profiles/base/android-system $CONAN_OPTIONS
@@ -1558,7 +1558,7 @@ Builds:
       - ln -s "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
         | cut -d ' ' -f 3)"
       - ln -s $(which gradle) android/gradlew
-      - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS=
+      - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS= -D ENABLE_ERM=OFF -D ENABLE_LUA=OFF
       - cmake --build --preset android-conan-ninja-release
 
   - versionName: 1.7.4
