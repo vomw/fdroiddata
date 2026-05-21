@@ -1517,51 +1517,6 @@ Builds:
     ndk: r25c
 
   - versionName: 1.7.4
-    versionCode: 17400
-    commit: 9949b089a45338e00a62debe6f613c31cfd07ebe
-    timeout: 30000
-    submodules: true
-    sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y build-essential cmake curl ninja-build perl pipx
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    output: 
-      out/build/android-conan-ninja-release/android-build/vcmi-app/build/outputs/apk/release/*.apk
-    srclibs:
-      - conan@2.28.1
-    prebuild:
-      - sdkmanager "platforms;android-35"
-      - pipx install $$conan$$
-      - export PATH="$HOME/.local/bin:$PATH"
-      - conan profile detect
-      - sed -i -e 's/versionCode.*$/versionCode $$VERCODE$$/' -e 's/signingConfig
-        = signingConfigs.*//g' android/vcmi-app/build.gradle
-      - '[ "$GRADLE_USER_HOME" ] || GRADLE_USER_HOME=~/.gradle'
-      - mkdir -p "$GRADLE_USER_HOME"
-      - echo "android.bundle.enableUncompressedNativeLibs=true" > "$GRADLE_USER_HOME/gradle.properties"
-    scandelete:
-      - osx
-    build:
-      - export PATH="$HOME/.local/bin:$PATH"
-      - export CONAN_OPTIONS="--options ffmpeg/*:shared=True --options \\&:lua_lib=None"
-      - dependencies/build.sh android-armv7 2>~/tmp/conan_output.txt
-      - conan install . --output-folder=conan-generated --build=never --profile=dependencies/conan_profiles/android-32-ndk
-        --profile=dependencies/conan_profiles/base/android-system $CONAN_OPTIONS
-      - ndkPackage='android-ndk'
-      - hexRegex='[[:xdigit:]]+'
-      - ndkPackageRevision=$(conan list --format=compact "$ndkPackage/*:*" | egrep
-        --only-matching "$ndkPackage/\\w+#$hexRegex:$hexRegex")
-      - ndkPath="$(conan cache path "$ndkPackageRevision")/bin"
-      - mkdir -p "$ANDROID_HOME/ndk"
-      - ln -s "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
-        | cut -d ' ' -f 3)"
-      - ln -s $(which gradle) android/gradlew
-      - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS= -D ENABLE_ERM=OFF -D ENABLE_LUA=OFF
-      - cmake --build --preset android-conan-ninja-release
-
-  - versionName: 1.7.4
     versionCode: 17401
     commit: 9949b089a45338e00a62debe6f613c31cfd07ebe
     timeout: 30000
