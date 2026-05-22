@@ -130,7 +130,51 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
+  - versionName: v1.0.6
+    versionCode: 7
+    commit: 42435d6779f7f0a0abc392d37e36d94207adf6cb
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    rm:
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
+      - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --no-pub
+    ndk: 28.2.13676358
+
+  - versionName: v1.1.0
+    versionCode: 8
+    commit: ca0b7816d39c74f6127118a057ea3d56d0257b22
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    rm:
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
+      - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --no-pub
+    ndk: 28.2.13676358
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: v1.0.5
-CurrentVersionCode: 6
+CurrentVersion: v1.1.0
+CurrentVersionCode: 8
