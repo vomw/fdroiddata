@@ -1468,63 +1468,14 @@ Builds:
       - cmake --build build
     ndk: r25c
 
-  - versionName: 1.5.4
-    versionCode: 15401
-    disable: see https://github.com/vcmi/vcmi/pull/3817
-    commit: 286a70c007cc8ec1c0b36eb157d6b2b89b7f1dda
-    timeout: 30000
-    subdir: android/vcmi-app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y ninja-build pipx xz-utils unzip g++ make libssl-dev
-      - apt-get install -y cmake -t bookworm-backports
-    gradle:
-      - yes
-    srclibs:
-      - conan@1.60.1
-    prebuild:
-      - pipx install $$conan$$
-      - cd ../..
-      - export CONAN_USER_HOME="$(pwd)"
-      - export CONAN_USER_HOME_SHORT="$(pwd)"
-      - export PATH="${HOME}/.local/bin:$PATH"
-      - mkdir .conan
-      - pushd .conan
-      - curl -Lo aarch64-v8a.txz 
-        https://github.com/vcmi/vcmi-dependencies/releases/download/android-1.1/aarch64-v8a.txz
-      - sha256sum -c <<< 'ea8d97b4ec714bbc19fe216e8a47f26ee23faeffceabc2c93adc6d4023eaa1ee  aarch64-v8a.txz'
-      - tar -xf aarch64-v8a.txz
-      - rm aarch64-v8a.txz
-      - popd
-      - conan profile new default --detect
-      - conan info . --profile:build=default --profile:host=CI/conan/android-64
-      - sed -i -e 's/versionCode.*$/versionCode $$VERCODE$$/' android/vcmi-app/build.gradle
-    scandelete:
-      - .conan
-      - osx
-    build:
-      - cd ../..
-      - export GENERATE_ONLY_BUILT_CONFIG=1
-      - export CONAN_USER_HOME="$(pwd)"
-      - export CONAN_USER_HOME_SHORT="$(pwd)"
-      - export PATH="${HOME}/.local/bin:$PATH"
-      - conan install . --install-folder=conan-generated --build --profile:build=default
-        --profile:host=CI/conan/android-64 -s compiler.cppstd=11 -c tools.android:ndk_path=$$NDK$$
-      - mkdir build
-      - cmake -S . -B build -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_TOOLCHAIN_FILE=conan-generated/conan_toolchain.cmake
-      - cmake --build build
-    ndk: r25c
-
   - versionName: 1.7.4
     versionCode: 17401
     commit: 9949b089a45338e00a62debe6f613c31cfd07ebe
-    timeout: 30000
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y build-essential cmake curl ninja-build perl pipx
+      - apt-get install -y make g++ libc-dev cmake ninja-build pipx
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     output: 
@@ -1535,7 +1486,7 @@ Builds:
       - sdkmanager "platforms;android-35"
       - pipx install $$conan$$
       - export PATH="$HOME/.local/bin:$PATH"
-      - conan profile detect
+      - conan profile detect || true
       - sed -i -e 's/versionCode.*$/versionCode $$VERCODE$$/' -e 's/signingConfig
         = signingConfigs.*//g' android/vcmi-app/build.gradle
       - '[ "$GRADLE_USER_HOME" ] || GRADLE_USER_HOME=~/.gradle'
@@ -1554,8 +1505,8 @@ Builds:
       - ndkPackageRevision=$(conan list --format=compact "$ndkPackage/*:*" | egrep
         --only-matching "$ndkPackage/\\w+#$hexRegex:$hexRegex")
       - ndkPath="$(conan cache path "$ndkPackageRevision")/bin"
-      - mkdir -p "$ANDROID_HOME/ndk"
-      - ln -s "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
+      - mkdir -p "$$SDK$$/ndk"
+      - ln -s "$ndkPath" "$$SDK$$/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
         | cut -d ' ' -f 3)"
       - ln -s $(which gradle) android/gradlew
       - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS=
@@ -1564,12 +1515,11 @@ Builds:
   - versionName: 1.7.4
     versionCode: 17402
     commit: 9949b089a45338e00a62debe6f613c31cfd07ebe
-    timeout: 30000
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y build-essential cmake curl ninja-build perl pipx
+      - apt-get install -y make g++ libc-dev cmake ninja-build pipx
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     output: 
@@ -1580,7 +1530,7 @@ Builds:
       - sdkmanager "platforms;android-35"
       - pipx install $$conan$$
       - export PATH="$HOME/.local/bin:$PATH"
-      - 'conan profile detect || true'
+      - conan profile detect || true
       - sed -i -e 's/versionCode.*$/versionCode $$VERCODE$$/' -e 's/signingConfig
         = signingConfigs.*//g' android/vcmi-app/build.gradle
       - '[ "$GRADLE_USER_HOME" ] || GRADLE_USER_HOME=~/.gradle'
@@ -1599,8 +1549,8 @@ Builds:
       - ndkPackageRevision=$(conan list --format=compact "$ndkPackage/*:*" | egrep
         --only-matching "$ndkPackage/\\w+#$hexRegex:$hexRegex")
       - ndkPath="$(conan cache path "$ndkPackageRevision")/bin"
-      - mkdir -p "$ANDROID_HOME/ndk"
-      - ln -fs "$ndkPath" "$ANDROID_HOME/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
+      - mkdir -p "$$SDK$$/ndk"
+      - ln -fs "$ndkPath" "$$SDK$$/ndk/$(fgrep 'Pkg.Revision' "$ndkPath/source.properties"
         | cut -d ' ' -f 3)"
       - ln -fs $(which gradle) android/gradlew
       - cmake --preset android-conan-ninja-release -D ANDROIDDEPLOYQT_OPTIONS=
@@ -1671,5 +1621,5 @@ UpdateCheckMode: None
 VercodeOperation:
   - 10 * %c
   - 10 * %c + 1
-CurrentVersion: 1.7.3
-CurrentVersionCode: 17301
+CurrentVersion: 1.7.4
+CurrentVersionCode: 17402
