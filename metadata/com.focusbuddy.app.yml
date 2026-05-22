@@ -15,6 +15,7 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: 5378cf633e63a46d4fb0a1dcc5e69ae56a55a618
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -37,14 +38,12 @@ Builds:
         node_modules/expo-notifications/android
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - echo "task assembleRelease {}" > build.gradle
-      - touch settings.gradle
       - echo 'allprojects { tasks.configureEach { t -> if 
         (t.class.name.contains("KotlinCompile")) { try { 
         t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check" } 
         catch (Exception e) { try { 
         t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check") 
-        } catch (Exception ex) {} } } } }' > init.gradle
+        } catch (Exception ex) {} } } } }' > ../init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -56,7 +55,7 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
     scandelete:
       - node_modules
-    build: gradle -p android assembleRelease --init-script $PWD/init.gradle
+    build: gradle assembleRelease --init-script ../../init.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
