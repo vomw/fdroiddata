@@ -42,20 +42,9 @@ Builds:
       - linux
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter config --no-analytics
-      - .flutter/bin/flutter pub get
-    scanignore:
-      - .flutter/bin/cache
-    scandelete:
-      - .flutter
-      - .pub-cache
+        - flutter pub get
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
 AutoUpdateMode: None
 UpdateCheckMode: None
