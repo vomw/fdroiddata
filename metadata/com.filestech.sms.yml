@@ -106,8 +106,21 @@ Builds:
       - sed -i -e '/signingConfigs/,/}\s*$/d' build.gradle.kts
       - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
 
+  - versionName: 1.13.1
+    versionCode: 72
+    commit: 32823aef6dc42e1b957e83e5e72354ec6167ff5f
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/lint-baseline.xml
+    prebuild:
+      - sed -i -e '/keystoreProps = Properties/,/}/d' build.gradle.kts
+      - sed -i -e '/signingConfigs/,/}\s*$/d' build.gradle.kts
+      - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: 'app/build.gradle.kts|versionName\s*=\s*"(.*?)"|.|versionCode\s*=\s*(\d+)'
-CurrentVersion: 1.13.0
-CurrentVersionCode: 70
+CurrentVersion: 1.13.1
+CurrentVersionCode: 72
