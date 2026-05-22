@@ -1,0 +1,33 @@
+Categories:
+  - Internet
+  - Reading
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/yendacoder/cookie
+IssueTracker: https://github.com/yendacoder/cookie/issues
+
+AutoName: Cookie
+Description: Client application for the Discuit social platform.
+
+RepoType: git
+Repo: https://github.com/yendacoder/cookie
+
+Builds:
+  - versionName: 2.0.0
+    versionCode: 200000
+    commit: 17e24f3fbb82f9fcc7ce37f29d2f5449cd362429
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.6
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
