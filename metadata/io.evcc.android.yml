@@ -76,10 +76,48 @@ Builds:
       - sed -i -e '/signingConfig /d' build.gradle
       - gradle assembleRelease
 
+  - versionName: 1.3.0
+    versionCode: 38
+    commit: dca750a3932b46f35241298893908203045a999f
+    sudo:
+      - apt-get update
+      - apt-get install npm
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    init:
+      - npm remove expo-dev-client
+      - npm ci --include=dev
+
+    output: android/app/build/outputs/apk/release/*.apk
+    prebuild:
+      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
+        package.json
+      - npx expo prebuild --platform android --clean
+    scanignore:
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - android/build.gradle
+      - node_modules/react-native-launch-arguments/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-keyboard-controller/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/react-native-edge-to-edge/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - cd android/app
+      - sed -i -e '/signingConfig /d' build.gradle
+      - gradle assembleRelease
+
 AllowedAPKSigningKeys: 39ba4e56e35e30d9fc2fec2b70c9d4b3a76879d3cc44f8abbe76320aefcb7a20
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
 UpdateCheckData: app.config.ts|versionCode:\s(\d+)|.|version:\s"([\d.]+)"
-CurrentVersion: 1.0.4
-CurrentVersionCode: 29
+CurrentVersion: 1.3.0
+CurrentVersionCode: 38
