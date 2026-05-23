@@ -1,0 +1,55 @@
+Categories:
+  - Multimedia
+License: Apache-2.0
+AuthorName: Jordan Matelsky
+AuthorEmail: coppelia@matelsky.com
+AuthorWebSite: https://jordan.matelsky.com
+WebSite: https://blog.jordan.matelsky.com/coppelia/
+SourceCode: https://github.com/j6k4m8/coppelia
+IssueTracker: https://github.com/j6k4m8/coppelia/issues
+Changelog: https://github.com/j6k4m8/coppelia/releases
+
+AutoName: Coppelia
+Summary: Beautiful, native Jellyfin music player
+Description: |-
+  Coppelia is a native, cross-platform music player for Jellyfin libraries.
+  It focuses on fast library browsing, offline playback, and a polished UI.
+
+  Features include:
+    * Album, artist, genre, playlist, and track browsing
+    * Queue management and repeat controls
+    * Favorites and offline pinning
+    * Download manager and offline mode
+    * Smart Lists that update automatically
+
+RepoType: git
+Repo: https://github.com/j6k4m8/coppelia.git
+
+Builds:
+  - versionName: 0.0.13
+    versionCode: 13
+    commit: 7a7dbbc79e018a66e7a873ca876c1d074e973b03
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    rm:
+      - docs
+      - ios
+      - linux
+      - macos
+      - website
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.0.13
+CurrentVersionCode: 13
