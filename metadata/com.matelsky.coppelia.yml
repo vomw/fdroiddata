@@ -15,9 +15,9 @@ RepoType: git
 Repo: https://github.com/j6k4m8/coppelia.git
 
 Builds:
-  - versionName: 0.0.14
-    versionCode: 14
-    commit: 49a10ce08c38fe621e5887cccf155d80113d70f9
+  - versionName: 0.0.15
+    versionCode: 15
+    commit: 3ed68147e3a4fa3ce56346731d65a2e2ba56152e
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -28,9 +28,9 @@ Builds:
       - macos
       - website
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -43,5 +43,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.0.14
-CurrentVersionCode: 14
+CurrentVersion: 0.0.15
+CurrentVersionCode: 15
