@@ -28,7 +28,7 @@ Builds:
       - macos
       - website
     prebuild:
-      - 'flutterVersion=$(sed -n -E "s/.*flutter-version: ''(.*)''/\\1/p" .github/workflows/release.yml)'
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -42,6 +42,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: 'pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.0.14
 CurrentVersionCode: 14
