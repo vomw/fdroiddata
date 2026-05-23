@@ -1,9 +1,10 @@
 Categories:
   - Navigation
 License: Apache-2.0
+AuthorName: Pieter Fiers
+AuthorWebSite: https://pfiers.net/
 SourceCode: https://github.com/ubipo/osmfocus
 IssueTracker: https://github.com/ubipo/osmfocus/issues
-Donate: https://pfiers.net/donate
 
 AutoName: OSMfocus Reborn
 
@@ -136,7 +137,26 @@ Builds:
       - fdroid
     prebuild: sed -i -e '/kotlinx/d' -e '/r8-releases/d' ../build.gradle.kts
 
+  - versionName: 1.8.9-fdroid
+    versionCode: 1008009
+    commit: 4a91fb0a0d10c621a773e1a578c0795412a97163
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e 's/androidVersion.name/"$$VERSION$$"/' -e 's/androidVersion.code/$$VERCODE$$/'
+      build.gradle.kts
+
+  - versionName: 1.9.0-fdroid
+    versionCode: 1009000
+    commit: af94cd49f70aa7259a14507c44fc697589b1f530
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e 's/androidVersion.name/"$$VERSION$$"/' -e 's/androidVersion.code/$$VERCODE$$/'
+      build.gradle.kts
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 1.6.0-fdroid
-CurrentVersionCode: 160
+UpdateCheckMode: Tags ^fdroid/v[0-9]+\.[0-9]+\.[0-9]+-fdroid\+[0-9]+$
+UpdateCheckData: '|\+(\d+)||v([\d.]+-fdroid)'
+CurrentVersion: 1.9.0-fdroid
+CurrentVersionCode: 1009000
