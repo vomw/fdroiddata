@@ -1,0 +1,276 @@
+Categories:
+  - Phone & SMS
+  - Security
+License: GPL-3.0-only
+AuthorName: StealthX / Vendetta Labs
+AuthorWebSite: https://stealthx.tech
+WebSite: https://stealthx.tech
+SourceCode: https://github.com/NeaBouli/stealth
+IssueTracker: https://github.com/NeaBouli/stealth/issues
+
+AutoName: SecureCall
+
+RepoType: git
+Repo: https://github.com/NeaBouli/stealth.git
+
+Builds:
+  - versionName: 1.0.24
+    versionCode: 45001
+    commit: 67efccac721af1237edafa77fc032a056302dfe2
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.24
+    versionCode: 45002
+    commit: 67efccac721af1237edafa77fc032a056302dfe2
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-armeabi-v7a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add armv7-linux-androideabi
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t armeabi-v7a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.24
+    versionCode: 45003
+    commit: 67efccac721af1237edafa77fc032a056302dfe2
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-x86_64-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t x86_64 -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.27
+    versionCode: 48001
+    commit: e5563d74f4080ba3719b11df2b3ccba9b1c3b0f6
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.27
+    versionCode: 48002
+    commit: e5563d74f4080ba3719b11df2b3ccba9b1c3b0f6
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-armeabi-v7a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add armv7-linux-androideabi
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t armeabi-v7a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.27
+    versionCode: 48003
+    commit: e5563d74f4080ba3719b11df2b3ccba9b1c3b0f6
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-x86_64-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t x86_64 -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.28
+    versionCode: 50001
+    commit: 97ea77f91ba1e814ca26f6344111091eaa027e7b
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t arm64-v8a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.28
+    versionCode: 50002
+    commit: 97ea77f91ba1e814ca26f6344111091eaa027e7b
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-armeabi-v7a-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add armv7-linux-androideabi
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t armeabi-v7a -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+  - versionName: 1.0.28
+    versionCode: 50003
+    commit: 97ea77f91ba1e814ca26f6344111091eaa027e7b
+    subdir: client_android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/app-fdroid-x86_64-release-unsigned.apk
+    prebuild:
+      - echo "org.gradle.jvmargs=-Xmx2048m" > ../gradle.properties
+      - echo "android.useAndroidX=true" >> ../gradle.properties
+      - echo "android.enableJetifier=true" >> ../gradle.properties
+      - echo "android.enableGlobalSynthetics=true" >> ../gradle.properties
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - rustup default 1.82.0
+      - rustup target add x86_64-linux-android
+      - cargo install cargo-ndk@3.4.0 --locked
+      - cd ../../core_crypto && cargo ndk -t x86_64 -o ../client_android/app/src/main/jniLibs
+        build --release
+    scanignore:
+      - client_android/build.gradle
+    scandelete:
+      - client_android/app/src/main/jniLibs/
+      - core_crypto/target/
+    ndk: 27.0.12077973
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 1000 + 1'
+  - '%c * 1000 + 2'
+  - '%c * 1000 + 3'
+CurrentVersion: 1.0.28
+CurrentVersionCode: 50003
