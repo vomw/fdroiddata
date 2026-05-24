@@ -1,0 +1,45 @@
+Categories:
+  - Internet
+  - Reading
+License: AGPL-3.0-or-later
+AuthorName: drzst
+AuthorEmail: zst@k7a.me
+SourceCode: https://github.com/yendacoder/cookie
+IssueTracker: https://github.com/yendacoder/cookie/issues
+
+AutoName: Cookie
+
+RepoType: git
+Repo: https://github.com/yendacoder/cookie
+
+Builds:
+  - versionName: 2.0.4
+    versionCode: 200040
+    commit: 3b936c85a6c261bc5e0bfea0ade02f0cfd778157
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.6
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '?([^']*)'?/\1/p" .github/workflows/release.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.4
+CurrentVersionCode: 200040
