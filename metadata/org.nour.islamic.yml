@@ -123,7 +123,7 @@ Builds:
 
   - versionName: v1.1.0
     versionCode: 8
-    commit: ca7d3f46195e06de960c6c7872ec9a90ba040b31c
+    commit: a20de43092a46ddb755c3fc3680691c09fb32c52
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
@@ -131,9 +131,6 @@ Builds:
       - windows
       - android/quran_audio_pack
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - sed -i '/com\.android\.asset-pack/d' android/settings.gradle.kts
