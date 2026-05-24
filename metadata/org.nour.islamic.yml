@@ -6,37 +6,6 @@ SourceCode: https://codeberg.org/WALNOR/Noor_app_prayers_and_more
 IssueTracker: https://codeberg.org/WALNOR/Noor_app_prayers_and_more/issues
 
 Name: Nour نور
-Description: |-
-  Nour is a free, open-source Islamic app built with privacy at its core.
-  No internet connection required after installation. No analytics, no tracking,
-  no ads, no account needed. All data stays on your device.
-
-  **Features**
-
-  * **Mizwala (Prayer times)** — A unique sundial clock displaying the five daily
-    prayer times with real sun/moon positions. Supports 16 calculation methods
-    (UOIF, Muslim World League, Egypt, Mecca, Turkey, Algeria, Morocco and more).
-    Live Qibla compass. Prayer reminders. Post-prayer dhikr card with counter.
-    Real lunar phase displayed on the dial.
-
-  * **Quran** — Complete Quran in Uthmani script (ScheherazadeNew font) with all
-    114 surahs and ayah markers. Bookmarks and resume-reading feature.
-
-  * **Azkar** — Comprehensive collection from Hisn al-Muslim: morning & evening
-    adhkar, post-prayer adhkar and more. Counter for each dhikr. Standalone Tasbih
-    screen (33/99/100 targets). Daily morning & evening adhkar notifications.
-
-  * **Hijri Calendar** — Monthly Hijri calendar with Islamic occasions (Ramadan,
-    Eid al-Fitr, Eid al-Adha, Mawlid an-Nabi...). Monthly prayer timetable.
-    Monthly prayer statistics with per-prayer completion bars.
-
-  **Privacy**
-
-  * 100% offline — no network connection needed after install
-  * No analytics, no tracking, no ads
-  * No account required
-  * All data on your device only
-  * Fonts and Quran data bundled — nothing downloaded at runtime
 
 RepoType: git
 Repo: https://codeberg.org/WALNOR/Noor_app_prayers_and_more.git
@@ -154,13 +123,16 @@ Builds:
 
   - versionName: v1.1.0
     versionCode: 8
-    commit: a20de43092a46ddb755c3fc3680691c09fb32c52
+    commit: ca7d3f46195e06de960c6c7872ec9a90ba040b31c
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
     rm:
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
