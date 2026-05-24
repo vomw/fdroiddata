@@ -129,12 +129,15 @@ Builds:
       - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
     rm:
       - windows
+      - android/quran_audio_pack
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i '/com\.android\.asset-pack/d' android/settings.gradle.kts
+      - sed -i '/quran_audio_pack/d' android/settings.gradle.kts
       - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
       - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
       - $$flutter$$/bin/flutter pub get
@@ -146,7 +149,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --no-pub
     ndk: 28.2.13676358
 
-AutoUpdateMode: Version +%v
-UpdateCheckMode: Tags
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: v1.1.0
 CurrentVersionCode: 8
