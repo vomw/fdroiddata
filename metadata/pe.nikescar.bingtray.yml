@@ -1,0 +1,53 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: wallpaper images are downloaded from bing.com.
+Categories:
+  - Wallpaper
+License: Apache-2.0
+SourceCode: https://github.com/nikescar/bingtray
+IssueTracker: https://github.com/nikescar/bingtray/issues
+
+AutoName: Bingtray
+
+RepoType: git
+Repo: https://github.com/nikescar/bingtray.git
+
+Builds:
+  - versionName: 0.0.16
+    versionCode: 16
+    commit: c725df19ae486bd999773ef3a443a0b6a48884a3
+    subdir: mobile
+    sudo:
+      - apt-get update
+      - apt-get install -y make gcc libc-dev pkg-config libunwind-dev clang llvm
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - sed -i -e '/if (System.getenv("ANDROID_SPLIT_BUILD")/,/^    }/d' app/build.gradle
+      - sed -i '/APPLICATION_VERSION_CODE/s/def appVersionCode.*/def appVersionCode
+        = "$$VERCODE$$"/' app/build.gradle
+      - sed -i '/APPLICATION_VERSION_NAME/s/def appVersionName.*/def appVersionName
+        = "$$VERSION$$"/' app/build.gradle
+      - sed -i -e '/maven {}/d' settings.gradle
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.90.0 --target aarch64-linux-android
+        armv7-linux-androideabi i686-linux-android x86_64-linux-android
+    scanignore:
+      - mobile/Cargo.toml
+      - Cargo.toml
+    build:
+      - source "$HOME/.cargo/env"
+      - cargo install cargo-ndk --locked
+      - cargo ndk -t armeabi-v7a -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t arm64-v8a -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t x86 -o app/src/main/jniLibs/ build --release --lib
+      - cargo ndk -t x86_64 -o app/src/main/jniLibs/ build --release --lib
+    ndk: 28.2.13676358
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: Cargo.toml|versioncode\s*=\s*"(\d+)"|.|version\s*=\s*"([\d.]+)"
+CurrentVersion: 0.0.16
+CurrentVersionCode: 16
