@@ -1,0 +1,35 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: UWR Planer
+WebSite: https://uwr-plan.de
+SourceCode: https://git.pabr.de/uwr/uwr_plan_app
+IssueTracker: https://git.pabr.de/uwr/uwr_plan_app/-/issues
+
+RepoType: git
+Repo: https://git.pabr.de/uwr/uwr_plan_app.git
+
+Builds:
+  - versionName: 1.0.5
+    versionCode: 10005
+    commit: v1.0.5
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils
+      - curl -Lo /opt/flutter.tar.xz 
+        https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.41.1-stable.tar.xz
+      - tar xf /opt/flutter.tar.xz -C /opt
+      - rm /opt/flutter.tar.xz
+      - chown -R vagrant:vagrant /opt/flutter
+    output: build/app/outputs/flutter-apk/app-foss-release.apk
+    build:
+      - export PATH="$PATH:/opt/flutter/bin"
+      - git config --global --add safe.directory /opt/flutter
+      - flutter config --no-analytics
+      - flutter pub get
+      - flutter build apk --flavor foss --release
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.5
+CurrentVersionCode: 10005
