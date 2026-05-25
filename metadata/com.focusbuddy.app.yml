@@ -19,6 +19,8 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init: npm ci
+    gradle:
+      - yes
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
@@ -35,6 +37,7 @@ Builds:
         { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check"
         } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check")
         } catch (Exception ex) {} } } } }' > init.gradle
+    build: gradle -p android assembleRelease --init-script init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -46,9 +49,6 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
     scandelete:
       - node_modules
-    build:
-      - cd android
-      - gradle assembleRelease --init-script ../init.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
