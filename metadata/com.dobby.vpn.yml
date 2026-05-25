@@ -1702,9 +1702,9 @@ Builds:
       - :outline:build
       - :outline:copyOutlineAar
 
-  - versionName: 1.2.48
-    versionCode: 1002048
-    commit: db2363de9a854ad11b413b5b52838822e5be54b4
+  - versionName: 1.2.50
+    versionCode: 1002050
+    commit: fd5b457ae10751de7b304aa126922e38b6602d28
     subdir: kmp_module/app
     submodules: true
     sudo:
@@ -1716,7 +1716,6 @@ Builds:
       - go@go1.25.1
     rm:
       - swift_module
-    prebuild: sed -i -e '/languageVersion/s/17/21/' build.gradle.kts
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -1730,11 +1729,12 @@ Builds:
       - pushd go_module
       - go mod tidy
       - go mod download
-      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0" "platform-tools" "ndk;27.0.11718014"
+      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0" "ndk;27.0.11718014"
       - export ANDROID_SDK_ROOT="$$SDK$$"
       - export ANDROID_NDK_HOME="$$SDK$$/ndk/27.0.11718014"
       - export PATH="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
-      - export DEBUG_PREFIX_FLAGS="-fdebug-prefix-map=$ANDROID_SDK_ROOT=/android-sdk -fdebug-prefix-map=$ANDROID_NDK_HOME=/android-ndk"
+      - export DEBUG_PREFIX_FLAGS="-fdebug-prefix-map=$ANDROID_SDK_ROOT=/android-sdk
+        -fdebug-prefix-map=$ANDROID_NDK_HOME=/android-ndk"
       - export CC=aarch64-linux-android21-clang
       - export CXX=aarch64-linux-android21-clang++
       - export CGO_ENABLED=1
@@ -1749,12 +1749,13 @@ Builds:
       - cp go_module/libbackend.h kmp_module/backend/src/main/cpp/include/arm64-v8a/libbackend.h
       - cp go_module/libbackend.so kmp_module/backend/src/main/jniLibs/arm64-v8a/libbackend.so
       - cd kmp_module
-      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/" 
+      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/"
         gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
       - printf 
-        "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n" 
+        "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n"
         >> gradle.properties
+      - printf "\ngoBinaryPath=$$go$$/bin/go\n" >> gradle.properties
       - printf "\ndisableSentry=true\n" >> gradle.properties
     preassemble:
       - :backend:build
@@ -1765,5 +1766,5 @@ AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: 
   https://github.com/DobbyVPN/DobbyVPN/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=([\d.]+)
-CurrentVersion: 1.2.7
-CurrentVersionCode: 1002007
+CurrentVersion: 1.2.50
+CurrentVersionCode: 1002050
