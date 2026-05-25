@@ -24,6 +24,11 @@ Builds:
     srclibs:
       - rustup@1.28.2
       - reproducible-apk-tools@v0.3.0
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+      - apt-get update
+      - apt-get install -y gcc libc-dev
     prebuild:
       - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - export BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p' .github/workflows/release.yml)
