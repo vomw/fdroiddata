@@ -1710,13 +1710,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y golang-go zip
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     srclibs:
       - go@go1.25.1
     rm:
       - swift_module
-    prebuild: sed -i -e '/languageVersion/s/17/21/' build.gradle.kts
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -1751,15 +1754,18 @@ Builds:
       - mkdir -p kmp_module/backend/src/main/jniLibs/arm64-v8a
       - cp go_module/libbackend.h kmp_module/backend/src/main/cpp/include/arm64-v8a/libbackend.h
       - cp go_module/libbackend.so kmp_module/backend/src/main/jniLibs/arm64-v8a/libbackend.so
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export PATH="$JAVA_HOME/bin:$PATH"
       - cd kmp_module
       - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/"
         gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
-      - printf 
+      - printf
         "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n"
         >> gradle.properties
-      - printf "\ngoBinaryPath=$$go$$/bin/go\n" >> gradle.properties
       - printf "\ndisableSentry=true\n" >> gradle.properties
+      - printf "\nandroid.suppressUnsupportedCompileSdk=35\n" >> gradle.properties
+      - printf "\nkotlin.native.ignoreDisabledTargets=true\n" >> gradle.properties
     preassemble:
       - :backend:build
 
