@@ -1,5 +1,5 @@
 Categories:
-  - Navigation
+  - Public Transport
 License: MIT
 AuthorName: SphericalKat
 AuthorEmail: me@kat.bio
@@ -12,107 +12,6 @@ RepoType: git
 Repo: https://git.sr.ht/~sphericalkat/rush-hour
 
 Builds:
-  - versionName: 0.12.0
-    versionCode: 12001
-    commit: c23ca3a442cf6e4303bb06b324fd483c22119f72
-    subdir: mobile/android/app
-    sudo:
-      - sysctl fs.inotify.max_user_watches=524288
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - apt-get update
-      - apt-get install -y -t forky npm
-    init:
-      - cd ../..
-      - npm ci
-    gradle:
-      - fdroid
-    output: build/outputs/apk/fdroid/release/app-fdroid-armeabi-v7a-release-unsigned.apk
-    prebuild:
-      - cd ../..
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications","expo-location"]}}},'
-        package.json
-      - find node_modules modules -type f \( -name '*.gradle' -o -name '*.gradle.kts'
-        -o -name '*.kt' \) -exec sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g'
-        -e 's/jvmToolchain(17)/jvmToolchain(21)/g' -e 's/jvmTarget = "17"/jvmTarget
-        = "21"/g' -e "s/jvmTarget = '17'/jvmTarget = '21'/g" -e 's/safeExtGet("javaVersion",
-        17)/safeExtGet("javaVersion", 21)/g' -e 's/jvmTarget = "${javaVersion}"/jvmTarget
-        = "21"/g' {} +
-      - echo "EXPO_PUBLIC_DISTRIBUTION=fdroid" >> ../../.env
-      - npx expo prebuild --platform android --no-install
-      - sed -i 
-        's/foojay-resolver-convention").version("0.5.0")/foojay-resolver-convention").version("1.0.0")/'
-        node_modules/@react-native/gradle-plugin/settings.gradle.kts
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/import com.android.installreferrer/d' -e '/AsyncFunction.*getInstallReferrerAsync/,/^    }/d'
-        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - sed -i -e 's/versionCode [0-9][0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
-      - printf 
-        "android.lintOptions.checkReleaseBuilds=false\norg.gradle.jvmargs=-Xmx8g\norg.gradle.parallel=true\norg.gradle.caching=true\n"
-        >> android/gradle.properties
-    scanignore:
-      - mobile/node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - mobile/node_modules/react-native-safe-area-context/android/build.gradle
-      - mobile/node_modules/react-native-screens/android/build.gradle
-      - mobile/node_modules/react-native-legal/android/build.gradle
-      - mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - mobile/node_modules/@pchmn/expo-material3-theme/android/build.gradle
-    scandelete:
-      - mobile/node_modules
-    gradleprops:
-      - reactNativeArchitectures=armeabi-v7a
-
-  - versionName: 0.12.0
-    versionCode: 12002
-    commit: c23ca3a442cf6e4303bb06b324fd483c22119f72
-    subdir: mobile/android/app
-    sudo:
-      - sysctl fs.inotify.max_user_watches=524288
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - apt-get update
-      - apt-get install -y -t forky npm
-    init:
-      - cd ../..
-      - npm ci
-    gradle:
-      - fdroid
-    output: build/outputs/apk/fdroid/release/app-fdroid-arm64-v8a-release-unsigned.apk
-    prebuild:
-      - cd ../..
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications","expo-location"]}}},'
-        package.json
-      - find node_modules modules -type f \( -name '*.gradle' -o -name '*.gradle.kts'
-        -o -name '*.kt' \) -exec sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g'
-        -e 's/jvmToolchain(17)/jvmToolchain(21)/g' -e 's/jvmTarget = "17"/jvmTarget
-        = "21"/g' -e "s/jvmTarget = '17'/jvmTarget = '21'/g" -e 's/safeExtGet("javaVersion",
-        17)/safeExtGet("javaVersion", 21)/g' -e 's/jvmTarget = "${javaVersion}"/jvmTarget
-        = "21"/g' {} +
-      - echo "EXPO_PUBLIC_DISTRIBUTION=fdroid" >> ../../.env
-      - npx expo prebuild --platform android --no-install
-      - sed -i 
-        's/foojay-resolver-convention").version("0.5.0")/foojay-resolver-convention").version("1.0.0")/'
-        node_modules/@react-native/gradle-plugin/settings.gradle.kts
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/import com.android.installreferrer/d' -e '/AsyncFunction.*getInstallReferrerAsync/,/^    }/d'
-        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - sed -i -e 's/versionCode [0-9][0-9]*/versionCode $$VERCODE$$/' android/app/build.gradle
-      - printf 
-        "android.lintOptions.checkReleaseBuilds=false\norg.gradle.jvmargs=-Xmx8g\norg.gradle.parallel=true\norg.gradle.caching=true\n"
-        >> android/gradle.properties
-    scanignore:
-      - mobile/node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - mobile/node_modules/react-native-safe-area-context/android/build.gradle
-      - mobile/node_modules/react-native-screens/android/build.gradle
-      - mobile/node_modules/react-native-legal/android/build.gradle
-      - mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - mobile/node_modules/@pchmn/expo-material3-theme/android/build.gradle
-    scandelete:
-      - mobile/node_modules
-    gradleprops:
-      - reactNativeArchitectures=arm64-v8a
 
   - versionName: 0.13.0
     versionCode: 13001
