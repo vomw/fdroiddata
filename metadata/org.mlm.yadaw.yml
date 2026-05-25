@@ -20,19 +20,18 @@ Builds:
   - versionName: 0.8.3
     versionCode: 16779267
     commit: 7c78edaa62d5ddbe608d858b859f585b29771140
-    output: target/release/apk/yadaw.apk
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
       - apt-get update
       - apt-get install -y gcc libc-dev
+    output: target/release/apk/yadaw.apk
     srclibs:
       - rustup@1.28.2
       - reproducible-apk-tools@v0.3.0
     prebuild:
-      - export IFILE=".github/workflows/release.yml"
-      - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' "$IFILE" | head -1)
-      - export BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p' "$IFILE" | head -1)
+      - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' .github/workflows/release.yml)
+      - export BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$BUILD_TOOLS"
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
       - $$rustup$$/rustup-init.sh -y --default-toolchain $RUST_VERSION --target aarch64-linux-android
