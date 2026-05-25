@@ -36,8 +36,7 @@ Builds:
       - echo 'allprojects { tasks.configureEach { t -> if (t.class.name.contains("KotlinCompile"))
         { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check"
         } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check")
-        } catch (Exception ex) {} } } } }' > init.gradle
-    build: gradle -p android assembleRelease --init-script init.gradle
+        } catch (Exception ex) {} } } } }' > android/init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -49,6 +48,7 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
     scandelete:
       - node_modules
+    build: gradle -p android assembleRelease --init-script init.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
