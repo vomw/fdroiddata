@@ -25,8 +25,8 @@ Builds:
     prebuild:
       - cd apps/mobile
       - npm ci
-      - python3 -c "import 
-        json;p=json.load(open('app.json'));e=p.setdefault('expo',{});a=e.setdefault('autolinking',{});a['android']={'buildFromSource':['.*']};json.dump(p,open('app.json','w'),indent=2)"
+      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
+        app.json
       - npx expo prebuild --clean --platform android
       - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
       - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
@@ -57,8 +57,8 @@ Builds:
     prebuild:
       - cd apps/mobile
       - npm ci
-      - python3 -c "import 
-        json;p=json.load(open('app.json'));e=p.setdefault('expo',{});a=e.setdefault('autolinking',{});a['android']={'buildFromSource':['.*']};json.dump(p,open('app.json','w'),indent=2)"
+      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
+        app.json
       - npx expo prebuild --clean --platform android
       - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
       - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
