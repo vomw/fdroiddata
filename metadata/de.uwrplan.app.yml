@@ -25,20 +25,19 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p'
+        .gitlab-ci.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - .flutter/bin/cache
     scandelete:
-      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm"
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi
+        --target-platform="android-arm"
 
   - versionName: 1.0.6
     versionCode: 100062
@@ -53,20 +52,19 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p'
+        .gitlab-ci.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - .flutter/bin/cache
     scandelete:
-      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm64"
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi
+        --target-platform="android-arm64"
 
   - versionName: 1.0.6
     versionCode: 100063
@@ -81,20 +79,19 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p'
+        .gitlab-ci.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - .flutter/bin/cache
     scandelete:
-      - .flutter
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-x64"
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi
+        --target-platform="android-x64"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
