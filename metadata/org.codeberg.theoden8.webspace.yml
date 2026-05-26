@@ -354,13 +354,12 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export CARGO_HOME="$HOME/.cargo"
       - rustVersion=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
       - '[[ $rustVersion ]]'
       - cargoNdkVersion=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p' .github/workflows/build-and-test.yml)
       - '[[ $cargoNdkVersion ]]'
       - rustup default "$rustVersion"
-      - rustup target aarch64-linux-android
+      - rustup target add aarch64-linux-android
       - cargo install --locked "cargo-ndk@$cargoNdkVersion"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-and-test.yml)
       - '[[ $flutterVersion ]]'
@@ -385,13 +384,12 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export CARGO_HOME="$HOME/.cargo"
       - rustVersion=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
       - '[[ $rustVersion ]]'
       - cargoNdkVersion=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p' .github/workflows/build-and-test.yml)
       - '[[ $cargoNdkVersion ]]'
       - rustup default "$rustVersion"
-      - rustup target x86_64-linux-android
+      - rustup target add x86_64-linux-android
       - cargo install --locked "cargo-ndk@$cargoNdkVersion"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-and-test.yml)
       - '[[ $flutterVersion ]]'
