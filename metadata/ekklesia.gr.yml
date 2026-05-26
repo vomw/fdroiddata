@@ -1,2 +1,82 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: HLR phone verification uses a commercial API.
+Categories:
+  - Connectivity
+License: MIT
+WebSite: https://ekklesia.gr
+SourceCode: https://github.com/NeaBouli/pnyx
+IssueTracker: https://github.com/NeaBouli/pnyx/issues
 
+AutoName: ekklesia
 
+RepoType: git
+Repo: https://github.com/NeaBouli/pnyx
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 6
+    commit: ccaf8e5a99abc73323f4999ad5e4173342685d4b
+    timeout: 20000
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    output: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+    prebuild:
+      - cd apps/mobile
+      - npm ci
+      - python3 -c "import json;p=json.load(open('app.json'));e=p.setdefault('expo',{});a=e.setdefault('autolinking',{});a['android']={'buildFromSource':['.*']};json.dump(p,open('app.json','w'),indent=2)"
+      - npx expo prebuild --clean --platform android
+      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
+      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
+      - echo "org.gradle.java.installations.auto-download=true" >> android/gradle.properties
+      - mkdir -p ~/.gradle
+      - echo "org.gradle.java.installations.auto-download=true" >> ~/.gradle/gradle.properties
+    scanignore:
+      - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - apps/mobile/node_modules/@react-native-picker/picker/android/build.gradle
+      - apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - apps/mobile/node_modules/react-native-screens/android/build.gradle
+      - apps/mobile/node_modules/react-native/ReactAndroid/publish.gradle
+    scandelete:
+      - apps/mobile/node_modules
+    build:
+      - cd apps/mobile/android
+      - gradle -Porg.gradle.java.installations.auto-download=true :app:assembleRelease
+
+  - versionName: 1.0.1
+    versionCode: 28
+    commit: fa6366f65c9a1e396f3cc6ffad474b6afa3ffd56
+    timeout: 20000
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    output: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+    prebuild:
+      - cd apps/mobile
+      - npm ci
+      - python3 -c "import json;p=json.load(open('app.json'));e=p.setdefault('expo',{});a=e.setdefault('autolinking',{});a['android']={'buildFromSource':['.*']};json.dump(p,open('app.json','w'),indent=2)"
+      - npx expo prebuild --clean --platform android
+      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
+      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
+      - echo "org.gradle.java.installations.auto-download=true" >> android/gradle.properties
+      - mkdir -p ~/.gradle
+      - echo "org.gradle.java.installations.auto-download=true" >> ~/.gradle/gradle.properties
+    scanignore:
+      - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - apps/mobile/node_modules/@react-native-picker/picker/android/build.gradle
+      - apps/mobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - apps/mobile/node_modules/react-native-screens/android/build.gradle
+      - apps/mobile/node_modules/react-native/ReactAndroid/publish.gradle
+    scandelete:
+      - apps/mobile/node_modules
+    build:
+      - cd apps/mobile/android
+      - gradle -Porg.gradle.java.installations.auto-download=true :app:assembleRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.1
+CurrentVersionCode: 28
