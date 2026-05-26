@@ -15,62 +15,86 @@ Builds:
   - versionName: 1.0.6
     versionCode: 100061
     commit: 6b423235f8a55c07debacd45ce30bb3c9d2234f6
-    sudo:
-      - apt-get update
-      - apt-get install -y curl xz-utils
-      - curl -Lo /opt/flutter.tar.xz 
-        https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.41.1-stable.tar.xz
-      - tar xf /opt/flutter.tar.xz -C /opt
-      - rm /opt/flutter.tar.xz
-      - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-foss-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export PATH="$PATH:/opt/flutter/bin"
-      - export GIT_CONFIG_GLOBAL=/tmp/flutter-gitconfig
-      - git config --global --add safe.directory /opt/flutter
-      - flutter config --no-analytics
-      - flutter pub get
-      - flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm"
 
   - versionName: 1.0.6
     versionCode: 100062
     commit: 6b423235f8a55c07debacd45ce30bb3c9d2234f6
-    sudo:
-      - apt-get update
-      - apt-get install -y curl xz-utils
-      - curl -Lo /opt/flutter.tar.xz 
-        https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.41.1-stable.tar.xz
-      - tar xf /opt/flutter.tar.xz -C /opt
-      - rm /opt/flutter.tar.xz
-      - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-arm64-v8a-foss-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export PATH="$PATH:/opt/flutter/bin"
-      - export GIT_CONFIG_GLOBAL=/tmp/flutter-gitconfig
-      - git config --global --add safe.directory /opt/flutter
-      - flutter config --no-analytics
-      - flutter pub get
-      - flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm64"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-arm64"
 
   - versionName: 1.0.6
     versionCode: 100063
     commit: 6b423235f8a55c07debacd45ce30bb3c9d2234f6
-    sudo:
-      - apt-get update
-      - apt-get install -y curl xz-utils
-      - curl -Lo /opt/flutter.tar.xz 
-        https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.41.1-stable.tar.xz
-      - tar xf /opt/flutter.tar.xz -C /opt
-      - rm /opt/flutter.tar.xz
-      - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-x86_64-foss-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's|.*image:\s*ghcr\.io/cirruslabs/flutter:(\S+).*|\1|p' .gitlab-ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export PATH="$PATH:/opt/flutter/bin"
-      - export GIT_CONFIG_GLOBAL=/tmp/flutter-gitconfig
-      - git config --global --add safe.directory /opt/flutter
-      - flutter config --no-analytics
-      - flutter pub get
-      - flutter build apk --flavor foss --release --split-per-abi --target-platform="android-x64"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor foss --release --split-per-abi --target-platform="android-x64"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
