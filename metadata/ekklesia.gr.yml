@@ -25,6 +25,7 @@ Builds:
     prebuild:
       - cd apps/mobile
       - npm ci
+      - 'node -e "const p=require(\"./package.json\");p.expo=p.expo||{};p.expo.autolinking=p.expo.autolinking||{};p.expo.autolinking.android={buildFromSource:[\".*\"]};require(\"fs\").writeFileSync(\"package.json\",JSON.stringify(p,null,2))"'
       - npx expo prebuild --clean --platform android
       - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
       - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
@@ -55,6 +56,7 @@ Builds:
     prebuild:
       - cd apps/mobile
       - npm ci
+      - 'node -e "const p=require(\"./package.json\");p.expo=p.expo||{};p.expo.autolinking=p.expo.autolinking||{};p.expo.autolinking.android={buildFromSource:[\".*\"]};require(\"fs\").writeFileSync(\"package.json\",JSON.stringify(p,null,2))"'
       - npx expo prebuild --clean --platform android
       - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
       - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
@@ -78,4 +80,3 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.0.1
 CurrentVersionCode: 28
-
