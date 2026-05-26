@@ -329,9 +329,8 @@ Builds:
       - '[[ $rustVersion ]]'
       - cargoNdkVersion=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p' .github/workflows/build-and-test.yml)
       - '[[ $cargoNdkVersion ]]'
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain "$rustVersion"
-        --target armv7-linux-androideabi
-      - . "$CARGO_HOME/env"
+      - rustup default "$rustVersion"
+      - rustup target armv7-linux-androideabi
       - cargo install --locked "cargo-ndk@$cargoNdkVersion"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-and-test.yml)
       - '[[ $flutterVersion ]]'
@@ -342,8 +341,6 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export CARGO_HOME="$HOME/.cargo"
-      - . "$CARGO_HOME/env"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --split-per-abi --target-platform="android-arm"
     ndk: 28.2.13676358
@@ -363,9 +360,8 @@ Builds:
       - '[[ $rustVersion ]]'
       - cargoNdkVersion=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p' .github/workflows/build-and-test.yml)
       - '[[ $cargoNdkVersion ]]'
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain "$rustVersion"
-        --target aarch64-linux-android
-      - . "$CARGO_HOME/env"
+      - rustup default "$rustVersion"
+      - rustup target aarch64-linux-android
       - cargo install --locked "cargo-ndk@$cargoNdkVersion"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-and-test.yml)
       - '[[ $flutterVersion ]]'
@@ -376,8 +372,6 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export CARGO_HOME="$HOME/.cargo"
-      - . "$CARGO_HOME/env"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --split-per-abi --target-platform="android-arm64"
     ndk: 28.2.13676358
@@ -397,9 +391,8 @@ Builds:
       - '[[ $rustVersion ]]'
       - cargoNdkVersion=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p' .github/workflows/build-and-test.yml)
       - '[[ $cargoNdkVersion ]]'
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain "$rustVersion"
-        --target x86_64-linux-android
-      - . "$CARGO_HOME/env"
+      - rustup default "$rustVersion"
+      - rustup target x86_64-linux-android
       - cargo install --locked "cargo-ndk@$cargoNdkVersion"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-and-test.yml)
       - '[[ $flutterVersion ]]'
@@ -410,8 +403,6 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export CARGO_HOME="$HOME/.cargo"
-      - . "$CARGO_HOME/env"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid --split-per-abi --target-platform="android-x64"
     ndk: 28.2.13676358
