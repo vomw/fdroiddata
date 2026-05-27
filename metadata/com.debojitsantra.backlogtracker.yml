@@ -20,7 +20,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    init: cd ../.. && npm install
+    init: cd ../.. && npm install && npm run build
     gradle:
       - yes
     srclibs:
@@ -31,8 +31,12 @@ Builds:
       - source $HOME/.cargo/env
       - export NDK_HOME=$$NDK$$
       - export PATH=$PATH:$CARGO_HOME/bin
-      - cd ../.. && npm run build
       - cd src-tauri/gen/android && ./gradlew assembleRelease
+    scandelete:
+      - node_modules/tsx/node_modules/esbuild/bin
+      - node_modules/tsx/node_modules/@esbuild/linux-x64/bin
+      - node_modules/esbuild/bin
+      - node_modules/@esbuild/linux-x64/bin
     ndk: r26b
 
 AutoUpdateMode: Version
