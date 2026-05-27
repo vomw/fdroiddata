@@ -17,12 +17,12 @@ Builds:
   - versionName: 1.0.1
     versionCode: 28
     commit: fa6366f65c9a1e396f3cc6ffad474b6afa3ffd56
+    timeout: 20000
     subdir: apps/mobile/android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
-    gradle:
-      - yes
+    output: build/outputs/apk/release/app-release.apk
     prebuild:
       - cd ../..
       - npm ci
@@ -31,6 +31,9 @@ Builds:
       - npx expo prebuild --clean --platform android
       - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
       - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
+      - echo "org.gradle.java.installations.auto-download=true" >> android/gradle.properties
+      - mkdir -p ~/.gradle
+      - echo "org.gradle.java.installations.auto-download=true" >> ~/.gradle/gradle.properties
     scanignore:
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
@@ -40,6 +43,7 @@ Builds:
       - apps/mobile/node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - apps/mobile/node_modules
+    build: gradle -Porg.gradle.java.installations.auto-download=true :app:assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
