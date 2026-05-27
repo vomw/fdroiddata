@@ -80,10 +80,10 @@ Builds:
     versionCode: 40
     commit: 331468903845fe69c47aaf48aca65af5b8aa1eb4
     sudo:
-      - apt-get update
-      - apt-get install npm
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
+      - apt-get install -y -t forky npm
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     init: npm ci --include=dev
