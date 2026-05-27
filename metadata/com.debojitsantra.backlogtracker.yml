@@ -1,0 +1,41 @@
+Categories:
+  - Office
+  - Education
+License: Apache-2.0
+AuthorName: Debojit Santra
+AuthorEmail: debojitsantra48@gmail.com
+SourceCode: https://github.com/debojitsantra/BacklogTracker-Android
+IssueTracker: https://github.com/debojitsantra/BacklogTracker-Android/issues
+
+AutoName: Backlog Tracker
+
+RepoType: git
+Repo: https://github.com/debojitsantra/BacklogTracker-Android.git
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 1
+    commit: v1.0.2
+    subdir: src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - npm install -g @tauri-apps/cli
+      - cd ../.. && npm install
+    srclib:
+      - rustup:
+          targets:
+            - aarch64-linux-android
+            - armv7-linux-androideabi
+    build:
+      - export NDK_HOME=$$NDK$$
+      - export PATH=$PATH:$CARGO_HOME/bin
+      - cd ../.. && npm run build
+      - cd src-tauri/gen/android && ./gradlew assembleRelease
+    ndk: r26b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.2
+CurrentVersionCode: 1
