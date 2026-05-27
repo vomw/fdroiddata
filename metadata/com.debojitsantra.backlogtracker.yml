@@ -20,7 +20,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm build-essential
-    init: source $HOME/.cargo/env 2>/dev/null || true && cd ../../.. && npm install && npm run build && npx tauri android init
+    init: cd ../../.. && npm install && npm run build
     srclibs:
       - rustup@1.27.1
     scandelete:
@@ -31,6 +31,8 @@ Builds:
     build:
       - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target armv7-linux-androideabi
         aarch64-linux-android
+      - source $HOME/.cargo/env && export NDK_HOME=$$NDK$$ && cd ../.. && npx tauri
+        android init
       - source $HOME/.cargo/env && export NDK_HOME=$$NDK$$ && gradle assembleRelease
     ndk: r26b
 
