@@ -21,7 +21,9 @@ Builds:
       - yes
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y ca-certificates curl gnupg
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
     prebuild:
       - cd .. && npm install && npm run build && npx cap sync android
     scandelete:
