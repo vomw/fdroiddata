@@ -31,8 +31,11 @@ Builds:
         node_modules/expo-notifications/android
       - sed -i -e '/reactCompiler/s/true/false/' app.config.ts
     output: android/app/build/outputs/apk/release/*release*.apk
-    prebuild: EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun
-      x expo prebuild --platform android --clean --no-install
+    prebuild:
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun x expo
+        prebuild --platform android --clean --no-install
     scanignore:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
