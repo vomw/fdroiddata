@@ -17,10 +17,12 @@ Builds:
     versionCode: 1
     commit: v1.0.2
     subdir: src-tauri/gen/android
+    gradle:
+      - yes
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm build-essential
-    init: cd ../../.. && npm install && npm run build
+    prebuild: cd ../.. && npm install && npm run build
     srclibs:
       - rustup@1.27.1
     scandelete:
@@ -31,9 +33,7 @@ Builds:
     build:
       - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target armv7-linux-androideabi
         aarch64-linux-android
-      - source $HOME/.cargo/env && export NDK_HOME=$$NDK$$ && cd ../.. && npx tauri
-        android init
-      - source $HOME/.cargo/env && export NDK_HOME=$$NDK$$ && gradle assembleRelease
+      - source $HOME/.cargo/env && export NDK_HOME=$$NDK$$ && $$gradle$$ assembleRelease
     ndk: r26b
 
 AutoUpdateMode: Version
