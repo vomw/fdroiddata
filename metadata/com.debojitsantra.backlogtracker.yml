@@ -28,7 +28,7 @@ Builds:
       - node_modules/esbuild/bin
       - node_modules/@esbuild/linux-x64/bin
     prebuild:
-      - cd ../../.. && npm install && npm run build
+      - cd ../../.. && npm install && npm run build && sed -i 's/"beforeBuildCommand":.*/"beforeBuildCommand": ""/' src-tauri/tauri.conf.json
     build:
       - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target armv7-linux-androideabi
         aarch64-linux-android i686-linux-android x86_64-linux-android
