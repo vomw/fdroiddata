@@ -28,9 +28,10 @@ Builds:
     subdir: frontend/android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
-    prebuild:
-      - cd .. && npm ci && npm run build && npx cap copy android
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    prebuild: cd .. && npm ci && npm run build && npx cap copy android
     gradle:
       - release
 
