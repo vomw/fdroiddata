@@ -1,0 +1,42 @@
+AntiFeatures: []
+
+Categories:
+  - Navigation
+
+License: MIT
+
+AuthorName: Nandini
+WebSite: https://github.com/satvika1115/TravelMate
+SourceCode: https://github.com/satvika1115/TravelMate
+IssueTracker: https://github.com/satvika1115/TravelMate/issues
+
+AutoName: TravelMate
+
+Description: |-
+  Multimodal public transit route planner for Hyderabad, India.
+  Plan journeys across RTC Buses, Hyderabad Metro, and MMTS suburban trains.
+
+  Features offline routing, bilingual English/Telugu UI, GPS location, and
+  accessibility support. All routing is computed on-device using GTFS data —
+  no account or internet connection required for route planning.
+
+RepoType: git
+Repo: https://github.com/satvika1115/TravelMate.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0
+    subdir: frontend/android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    prebuild:
+      - cd $$SRC$$/frontend && npm ci && npm run build && npx cap copy android
+    gradle:
+      - release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
