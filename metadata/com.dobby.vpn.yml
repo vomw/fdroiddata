@@ -1768,8 +1768,8 @@ Builds:
     preassemble:
       - :backend:build
 
-  - versionName: 1.2.52
-    versionCode: 1002052
+  - versionName: 1.2.53
+    versionCode: 1002053
     commit: 744d38de272152e14f5cb91d77fe05d72ca2958a
     subdir: kmp_module/app
     submodules: true
@@ -1796,18 +1796,23 @@ Builds:
       - cd ../..
       - pushd go_module
       - go mod download
-      - go install golang.org/x/mobile/cmd/gomobile@$(go list -m -f '{{.Version}}' golang.org/x/mobile)
+      - go install golang.org/x/mobile/cmd/gomobile@$(go list -m -f '{{.Version}}' 
+        golang.org/x/mobile)
       - popd
-      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0" "ndk;27.2.12479018"
+      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0" 
+        "ndk;27.2.12479018"
       - export ANDROID_SDK_ROOT="$$SDK$$"
       - export ANDROID_HOME="$$SDK$$"
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - export PATH="$JAVA_HOME/bin:$GOPATH/bin:$PATH"
       - gomobile init
       - cd kmp_module
-      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/" gradle.properties
+      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/" 
+        gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
-      - printf "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n" >> gradle.properties
+      - printf 
+        "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n"
+        >> gradle.properties
       - printf "\nandroid.suppressUnsupportedCompileSdk=35\n" >> gradle.properties
       - printf "\nkotlin.native.ignoreDisabledTargets=true\n" >> gradle.properties
     preassemble:
@@ -1819,5 +1824,5 @@ AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: 
   https://github.com/DobbyVPN/DobbyVPN/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=([\d.]+)
-CurrentVersion: 1.2.52
-CurrentVersionCode: 1002052
+CurrentVersion: 1.2.53
+CurrentVersionCode: 1002053
