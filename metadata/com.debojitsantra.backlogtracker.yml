@@ -20,22 +20,22 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    init: cd ../.. && npm install && npm run build
+    init: cd ../../.. && npm install && npm run build
     gradle:
       - yes
     srclibs:
       - rustup@1.27.1
-    build:
-      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target armv7-linux-androideabi
-        aarch64-linux-android
-      - source $HOME/.cargo/env
-      - export NDK_HOME=$$NDK$$
-      - cd src-tauri/gen/android && ./gradlew assembleRelease
     scandelete:
       - node_modules/tsx/node_modules/esbuild/bin
       - node_modules/tsx/node_modules/@esbuild/linux-x64/bin
       - node_modules/esbuild/bin
       - node_modules/@esbuild/linux-x64/bin
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target armv7-linux-androideabi
+        aarch64-linux-android
+      - source $HOME/.cargo/env
+      - export NDK_HOME=$$NDK$$
+      - ./gradlew assembleRelease
     ndk: r26b
 
 AutoUpdateMode: Version
