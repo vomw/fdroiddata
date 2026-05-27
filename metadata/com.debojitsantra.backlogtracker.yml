@@ -20,9 +20,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm build-essential
-    init: cd ../../.. && npm install && npm run build
-    gradle:
-      - yes
+    init: cd ../../.. && npm install && npm run build && npx tauri android sync
     srclibs:
       - rustup@1.27.1
     scandelete:
@@ -35,7 +33,7 @@ Builds:
         aarch64-linux-android
       - source $HOME/.cargo/env
       - export NDK_HOME=$$NDK$$
-      - cd ../../.. && npx tauri android build --apk --config '{"build":{"beforeBuildCommand":""}}'
+      - gradle assembleRelease
     ndk: r26b
 
 AutoUpdateMode: Version
