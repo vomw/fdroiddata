@@ -1,7 +1,7 @@
 Categories:
   - Time
 License: GPL-3.0-or-later
-AuthorName: Toprak Talha Karcılar
+AuthorName: Toprak Talha Karcilar
 AuthorEmail: toprakpt1@protonmail.com
 WebSite: https://github.com/toprakpt1/focusbuddy
 SourceCode: https://github.com/toprakpt1/focusbuddy
@@ -29,11 +29,11 @@ Builds:
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
         node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - find node_modules -type f \( -name '*.gradle' -o -name '*.gradle.kts' \)
-        | xargs sed -i '/com\.google\.firebase/d'
+      - npx expo prebuild -p android --clean
+      - sed -i -e '/firebase/d' 
+        node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src 
         node_modules/expo-notifications/android
-      - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - echo 'allprojects { tasks.configureEach { t -> if 
         (t.class.name.contains("KotlinCompile")) { try { 
@@ -56,5 +56,4 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+UpdateCheckData: app.json|"versionCode":\s*(\d+)|.|"version":\s*"([^"]+)"
