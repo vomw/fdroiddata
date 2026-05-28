@@ -41,8 +41,9 @@ Builds:
   - versionName: 3.0.0
     versionCode: 30000
     commit: 9480023707c49cf962eeaea1431c093c511f2c62
-    submodules: true
     output: build/app/outputs/apk/release/app-release-unsigned.apk
+    scrlibs:
+      - flutter@3.41.9
     rm:
       - ios
       - linux
@@ -52,16 +53,13 @@ Builds:
       - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter config --no-analytics
-      - ./flutter/bin/flutter packages pub get
-    scanignore:
-      - flutter/bin/cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
     scandelete:
       - .pub-cache
-      - flutter
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - ./flutter/bin/flutter build apk
+      - $$flutter$$/bin/flutter build apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
