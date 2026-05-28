@@ -1,0 +1,43 @@
+Categories:
+  - Internet
+  - Multimedia
+License: MIT
+AuthorName: TV Viewer App
+AuthorEmail: tvviewerapp@proton.me
+SourceCode: https://github.com/tv-viewer-app/tv_viewer
+IssueTracker: https://github.com/tv-viewer-app/tv_viewer/issues
+
+AutoName: TV Viewer
+
+RepoType: git
+Repo: https://github.com/tv-viewer-app/tv_viewer.git
+
+Builds:
+  - versionName: 2.20.10
+    versionCode: 118
+    commit: 1960d8fddd4ca8ed94c97e755afe0b9e3814f516
+    subdir: flutter_app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - flutter_app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: flutter_app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.20.10
+CurrentVersionCode: 118
