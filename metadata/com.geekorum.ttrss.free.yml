@@ -83,9 +83,10 @@ Builds:
       - sed -i -e '/firebase/d' -e '/gms/d' ../build.gradle.kts
       - sed -i -e '/firebase/d' -e '/android.play/d' -e '/android.gms/d' -e '/google-services/d'
         -e '/CrashlyticsPlugin/,+4d' -e '/apply {/,/^}/d' build.gradle.kts
-      - git reset --soft HEAD+1
+      - export buildcommit=$(git rev-parse HEAD)
+      - git checkout $(git rev-list --children --all | sed -n -E "s/$buildcommit (.*)/\1/p")
       - export hgtag=$(sed -n -E 's/(.*) $$VERSION$$/\1/p' ../.hgtags)
-      - git reset --hard HEAD
+      - git checkout $buildcommit
       - '[[ $hgtag ]]'
       - sed -i -e "s/hg:\${getHgSha1(projectDir)}/hg:$hgtag/" ../buildSrc/src/main/kotlin/RepositoryChangeset.kt
       - sed -i -e 's/$versionCode/$$VERCODE$$/' ../buildSrc/src/main/kotlin/RepositoryChangeset.kt
