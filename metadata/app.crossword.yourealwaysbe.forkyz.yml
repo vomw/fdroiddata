@@ -2,7 +2,7 @@ AntiFeatures:
   NonFreeNet:
     en-US: Connects to theguardian.com to obtain puzzles.
 Categories:
-  - Games
+  - Word Game
 License: GPL-3.0-only
 SourceCode: https://gitlab.com/Hague/forkyz
 IssueTracker: https://gitlab.com/Hague/forkyz/-/issues
@@ -943,10 +943,76 @@ Builds:
     scanignore:
       - gfx/*.opacity
 
+  - versionName: '78'
+    versionCode: 7800000
+    commit: 621dbdf4c8f5b10c55a20e4233429a24f314d638
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+    scanignore:
+      - gfx/*.opacity
+
+  - versionName: '79'
+    versionCode: 7900000
+    commit: 7f5de6a8caaf25615f1114d0afea834fe1b3104b
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+    scanignore:
+      - gfx/*.opacity
+
+  - versionName: '80'
+    versionCode: 8000000
+    commit: b3a209025a095f00ee53b4d4866525f8561f7bef
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+      - composeApp/src/jvmTest/resources/test.puz
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
+  - versionName: '81'
+    versionCode: 8100000
+    commit: 632fda61df5f3f97c6c64653bb99158dcdfed310
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+      - composeApp/src/jvmTest/resources/test.puz
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e 's/-Xmx1536m/-Xmx4096m/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
+  - versionName: '82'
+    versionCode: 8200000
+    commit: b500cb249f77afcb6054038b726d90fdc26cd74d
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+      - composeApp/src/jvmTest/resources/test.puz
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e 's/-Xmx1536m/-Xmx4096m/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
   - 100000 * %c
-UpdateCheckData: app/build.gradle.kts|appVersion = (\d+)|.|appVersion = (\d+)
-CurrentVersion: '77'
-CurrentVersionCode: 7700000
+UpdateCheckData: gradle.properties|appVersion=(\d+)|.|appVersion=(\d+)
+CurrentVersion: '82'
+CurrentVersionCode: 8200000

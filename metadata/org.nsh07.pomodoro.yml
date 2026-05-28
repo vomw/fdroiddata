@@ -1,5 +1,6 @@
 Categories:
   - Time
+  - Timer
 License: GPL-3.0-only
 AuthorName: Nishant Mishra
 SourceCode: https://github.com/nsh07/Tomato
@@ -153,9 +154,26 @@ Builds:
     gradle:
       - foss
 
+  - versionName: 1.8.4
+    versionCode: 28
+    commit: 7ff442401be89090b07092ce825c2b36c4c72ae7
+    subdir: androidApp
+    gradle:
+      - foss
+
+  - versionName: 1.8.5
+    versionCode: 34
+    commit: 8f4abe89922088597d71de01ce289b3886a2cbf6
+    subdir: androidApp
+    gradle:
+      - foss
+    rm:
+      - gradle/gradle-daemon-jvm.properties
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
 AllowedAPKSigningKeys: 07bef30581baee8f45ec93e47ee68ef20874e50ef5709c78b2ee67ac86be4c3d
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags .*[0-9]$
-CurrentVersion: 1.8.3
-CurrentVersionCode: 27
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 1.8.5
+CurrentVersionCode: 34

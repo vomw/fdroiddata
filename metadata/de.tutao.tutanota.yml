@@ -5495,7 +5495,705 @@ Builds:
       - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
     ndk: r28c
 
+  - versionName: 327.260210.0
+    versionCode: 396594
+    commit: 1afd94ad6eff3144452c2eed6f603dd1beea556d
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    srclibs:
+      - rustup@1.27.1
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.84.1 --target 
+        aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+      - source $HOME/.cargo/env
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" -e "s|\"cargo\"|\"$(which cargo)\"|" tuta-sdk/android/sdk/build.gradle.kts
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" app-android/tutashared/build.gradle.kts
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android; ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs
+        ANDROID_NDK_VERSION=$(basename $$NDK$$) bash build-sqlcipher-android.sh; popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 328.260224.0
+    versionCode: 396600
+    commit: fc3acb20471c58a08c02e00cab969d31d2244b0b
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    srclibs:
+      - rustup@1.27.1
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.84.1 --target 
+        aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+      - source $HOME/.cargo/env
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" -e "s|\"cargo\"|\"$(which cargo)\"|" tuta-sdk/android/sdk/build.gradle.kts
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" app-android/tutashared/build.gradle.kts
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android; ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs
+        ANDROID_NDK_VERSION=$(basename $$NDK$$) bash build-sqlcipher-android.sh; popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 332.260303.0
+    versionCode: 396603
+    commit: 65e434568e8d4dfea96205c18a472289555f915f
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    srclibs:
+      - rustup@1.27.1
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.84.1 --target 
+        aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+      - source $HOME/.cargo/env
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" -e "s|\"cargo\"|\"$(which cargo)\"|" tuta-sdk/android/sdk/build.gradle.kts
+      - sed -i -e "/cargo {/a cargoCommand = \"$(which cargo)\"\nrustcCommand = \"$(which
+        rustc)\"" app-android/tutashared/build.gradle.kts
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android; ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs
+        ANDROID_NDK_VERSION=$(basename $$NDK$$) bash build-sqlcipher-android.sh; popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 335.260310.0
+    versionCode: 396605
+    commit: af80d33dc054d18207497fa35edf718cbc8fe337
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android; ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs
+        ANDROID_NDK_VERSION=$(basename $$NDK$$) bash build-sqlcipher-android.sh; popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 336.260316.0
+    versionCode: 396607
+    commit: b017c068ef95b9c418a4b78def0680836ee09a05
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 338.260318.0
+    versionCode: 396611
+    commit: 2f8c4f796619d8c634d352fab417c38aa012e678
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 340.260326.1
+    versionCode: 396616
+    commit: abeb157496d2e3fe13d7c16d12a463447a2f2c2e
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+      - sysctl fs.inotify.max_user_watches=524288 || true
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 341.260417.0
+    versionCode: 396626
+    commit: 8e082bda32e5982a6e57089d92ffe6c29e6805e9
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 345.260421.2
+    versionCode: 396629
+    commit: 4e6cf11c7101caae539694d362a16173ffbb39a6
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - target
+      - app-android/libs
+      - packages
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 345.260424.1
+    versionCode: 396632
+    commit: 04c5db2d811a4e715c90560a17f429d381854a19
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 346.260428.0
+    versionCode: 396634
+    commit: f4c99ad1ee1c16ca92c25bc273795a9a9614d8ed
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 348.260505.1
+    versionCode: 396642
+    commit: f46acdd4a4b801189af27359ec22f9a5163f4c97
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 348.260506.0
+    versionCode: 396643
+    commit: 503e2a182ce8baa51eff9d2f7f748d8a009f8409
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 348.260508.0
+    versionCode: 396644
+    commit: 791054cc6b3b01e0e7eeba9c05b243e1ea738758
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 348.260518.0
+    versionCode: 396646
+    commit: 66e6fe7b09c9b35685aeae9146ad4481ccedcb1e
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
+  - versionName: 348.260519.0
+    versionCode: 396647
+    commit: 255e40ce73108fbc5a1c5d4c7da616a26edf199d
+    subdir: app-android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y g++ make emscripten tclsh rustup
+      - npm install -g npm@10.0.0
+    gradle:
+      - fdroid
+    rm:
+      - app-ios
+    prebuild:
+      - cd ../..
+      - node buildSrc/fixFdroidDeps.js
+      - rustup default 1.84.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - npm install
+      - npm run build-packages
+      - rm -rf packages/node-mimimi/dist/*.node
+      - mkdir -p build/app-android
+      - node buildSrc/prepareMobileBuild.js --app mail
+    scandelete:
+      - node_modules
+      - src/mimimi/node_modules
+      - app-android/libs
+    build:
+      - cd ../..
+      - set -o allexport; . libs/sqlcipher-android/android-sqlcipher-ver; set +o allexport
+      - pushd libs/sqlcipher-android
+      - ANDROID_SQLCIPHER_OUTPUT_DIR=../../app-android/libs ANDROID_NDK_VERSION=$(basename
+        $$NDK$$) bash build-sqlcipher-android.sh
+      - popd
+      - mv app-android/libs/sqlcipher-android-${SQLCIPHER_ANDROID_VERSION}-release.aar
+        app-android/libs/sqlcipher-android.aar
+      - node --max-old-space-size=4096 webapp prod --app mail --mobile-build
+    ndk: r28c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags tutanota-fdroid-release-*
-CurrentVersion: 325.260127.0
-CurrentVersionCode: 396587
+CurrentVersion: 348.260519.0
+CurrentVersionCode: 396647

@@ -148,8 +148,42 @@ Builds:
         url "https://jitpack.io" }' ../build.gradle
       - sed -i -e 's/android:versionName=\"/android:versionName=\"$$VERSION$$/' src/main/AndroidManifest.xml
 
+  - versionName: 1.7.1
+    versionCode: 39461
+    commit: ca444557afdd113618dde73e96d98b28dec7d3ec
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/*.aar
+      - package.json
+    prebuild:
+      - sed -i -e '/firebase/d' -e '/gms/d' build.gradle ../build.gradle
+      - sed -i -e '/dependencies {/a implementation "com.github.flyve-mdm:android-inventory-library:5d28aee9bc@aar"'
+        build.gradle
+      - sed -i -e 's|maven.fabric.io/public|jitpack.io|' -e '/repositories {/a maven{
+        url "https://jitpack.io" }' ../build.gradle
+      - sed -i -e 's/android:versionName=\"/android:versionName=\"$$VERSION$$/' src/main/AndroidManifest.xml
+
+  - versionName: 1.7.1
+    versionCode: 39465
+    commit: b55f4247088a2971f2f9f1479440b7f840d98900
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/*.aar
+      - package.json
+    prebuild:
+      - sed -i -e '/firebase/d' -e '/gms/d' build.gradle ../build.gradle
+      - sed -i -e '/dependencies {/a implementation "com.github.flyve-mdm:android-inventory-library:5d28aee9bc@aar"'
+        build.gradle
+      - sed -i -e 's|maven.fabric.io/public|jitpack.io|' -e '/repositories {/a maven{
+        url "https://jitpack.io" }' ../build.gradle
+      - sed -i -e 's/android:versionName=\"/android:versionName=\"$$VERSION$$/' src/main/AndroidManifest.xml
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/src/main/AndroidManifest.xml|android:versionCode="(\d+)"||
-CurrentVersion: 1.7.0
-CurrentVersionCode: 39439
+CurrentVersion: 1.7.1
+CurrentVersionCode: 39465

@@ -154,10 +154,197 @@ Builds:
         28
     ndk: r27d
 
+  - versionName: 0.5.1
+    versionCode: 501
+    commit: bae9bc3f7768a476656ce4eed740099205356e70
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential pkg-config libssl-dev cmake nasm libclang-dev
+        make
+    gradle:
+      - yes
+    srclibs:
+      - rustup@1.28.2
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $RUST_VERSION --target aarch64-linux-android
+        --target armv7-linux-androideabi --target x86_64-linux-android
+      - source $HOME/.cargo/env
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 0.5.4
+    versionCode: 504
+    commit: 5cf4b908ac4ca14d74e9544f5e37153ec4c7bf32
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 0.5.5
+    versionCode: 505
+    commit: 164452f77aaac26774c1efc756df1a58fb980561
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 0.5.7
+    versionCode: 507
+    commit: 9413cccc5364c6fcae0a0d282bab2361ab400763
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 0.5.8
+    versionCode: 508
+    commit: af210e170c137b1ce65e4d77a146cbbbc63ed12b
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 0.5.9
+    versionCode: 509
+    commit: fdb6cef12b751d4876d9d500c5a373a060e41489
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 1.0.1
+    versionCode: 10001
+    commit: fa586beef8e0971f89a25463c54b1231d960c4f2
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
+  - versionName: 1.0.2
+    versionCode: 10002
+    commit: a2dcfefc40410eaf511ecbf68d071370fb028587
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev pkg-config libssl-dev cmake nasm libclang-dev
+        make rustup
+    gradle:
+      - yes
+    build:
+      - export RUST_VERSION=$(sed -n 's/channel = "\(.*\)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk@4.1.2
+      - cd ../..
+      - export RUSTFLAGS="--remap-path-prefix $(pwd)=/c --remap-path-prefix $HOME/.cargo=/cargo
+        -C link-arg=-Wl,--build-id=none"
+      - cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi -t x86_64-linux-android
+        -o android/app/src/main/jniLibs build --release --lib --features mobile --platform
+        28
+    ndk: r27d
+
 AllowedAPKSigningKeys: 6679a06eec4933fe2933f5be32db3b3e716d42e93c7f230358e779587bab1ac0
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: Cargo.toml|version_code = (\d+)|.|version = "([\d.]+)"
-CurrentVersion: 0.4.9
-CurrentVersionCode: 409
+CurrentVersion: 1.0.2
+CurrentVersionCode: 10002
