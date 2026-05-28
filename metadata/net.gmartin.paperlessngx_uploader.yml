@@ -12,9 +12,9 @@ RepoType: git
 Repo: https://github.com/gmag11/Paperless_ngx_uploader
 
 Builds:
-  - versionName: 1.8.3
-    versionCode: 241
-    commit: 60dfd82547ebad2679aeea7d3225b2b8f75e5589
+  - versionName: 1.8.2
+    versionCode: 231
+    commit: 3368014314bbf155e404260bdc5e7d41cd3bcb1a
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -51,9 +51,9 @@ Builds:
       - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
     ndk: 27.0.12077973
 
-  - versionName: 1.8.3
-    versionCode: 242
-    commit: 60dfd82547ebad2679aeea7d3225b2b8f75e5589
+  - versionName: 1.8.2
+    versionCode: 232
+    commit: 3368014314bbf155e404260bdc5e7d41cd3bcb1a
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -90,9 +90,9 @@ Builds:
       - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
     ndk: 27.0.12077973
 
-  - versionName: 1.8.3
-    versionCode: 243
-    commit: 60dfd82547ebad2679aeea7d3225b2b8f75e5589
+  - versionName: 1.8.2
+    versionCode: 233
+    commit: 3368014314bbf155e404260bdc5e7d41cd3bcb1a
     sudo:
       - mkdir -p /home/runner
       - chown vagrant /home/runner
@@ -113,6 +113,126 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    scanignore:
+      - .pub-cache
+      - AppIcons.zip
+    build:
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    ndk: 27.0.12077973
+
+  - versionName: 1.8.3
+    versionCode: 241
+    commit: 505e0c1ef2485c3b2c21a46ee537ac404e9aa354
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/gmag11/Paperless_ngx_uploader/releases/download/%v/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-release-apks.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - mkdir -p $repo
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    scanignore:
+      - .pub-cache
+      - AppIcons.zip
+    build:
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    ndk: 27.0.12077973
+
+  - versionName: 1.8.3
+    versionCode: 242
+    commit: 505e0c1ef2485c3b2c21a46ee537ac404e9aa354
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/gmag11/Paperless_ngx_uploader/releases/download/%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-release-apks.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - mkdir -p $repo
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    scanignore:
+      - .pub-cache
+      - AppIcons.zip
+    build:
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
+    ndk: 27.0.12077973
+
+  - versionName: 1.8.3
+    versionCode: 243
+    commit: 505e0c1ef2485c3b2c21a46ee537ac404e9aa354
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/gmag11/Paperless_ngx_uploader/releases/download/%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build-release-apks.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Paperless_ngx_uploader
+      - mkdir -p $repo
+      - cd ..
+      - mv net.gmartin.paperlessngx_uploader $repo/Paperless_ngx_uploader
+      - pushd $repo/Paperless_ngx_uploader
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo/Paperless_ngx_uploader net.gmartin.paperlessngx_uploader
     scanignore:
