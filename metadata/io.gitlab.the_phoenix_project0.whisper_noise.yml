@@ -1,0 +1,44 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: the-phoenix-project0
+WebSite: https://gitlab.com/the-phoenix-project0/whisper-noise
+SourceCode: https://gitlab.com/the-phoenix-project0/whisper-noise
+IssueTracker: https://gitlab.com/the-phoenix-project0/whisper-noise/-/issues
+
+AutoName: Whisper Noise
+
+Summary: A calming white noise generator for better sleep and focus
+RepoType: git
+Repo: https://gitlab.com/the-phoenix-project0/whisper-noise.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - find .pub-cache -name "example" -type d -exec rm -rf {} +
+      - find .pub-cache -name "examples" -type d -exec rm -rf {} +
+      - find .pub-cache -name "test" -type d -exec rm -rf {} +
+      - find .pub-cache -name "tests" -type d -exec rm -rf {} +
+      - find .pub-cache -name "_out" -type d -exec rm -rf {} +
+      - find .pub-cache -type f -name "*.bin" -delete
+      - find .pub-cache -type f -name "*.zip" -delete
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
