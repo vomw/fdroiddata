@@ -17,33 +17,24 @@ Builds:
     versionCode: 1
     commit: v1.0.0
     subdir: android
-
     sudo:
       - apt-get update
       - apt-get install -y ca-certificates curl gnupg
       - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
       - apt-get install -y nodejs
-
     gradle:
       - yes
-
     prebuild: cd .. && npm ci && npm run build && npx cap sync android
-
     scandelete:
       - node_modules/tsx/node_modules/esbuild/bin
       - node_modules/tsx/node_modules/@esbuild/linux-x64/bin
       - node_modules/esbuild/bin
       - node_modules/@esbuild/linux-x64/bin
-
       - node_modules/@trapezedev/gradle-parse/capacitor-gradle-parse.jar
       - node_modules/@trapezedev/gradle-parse/lib/groovy-3.0.9.jar
       - node_modules/@trapezedev/gradle-parse/lib/json-20210307.jar
-
       - node_modules/sharp/vendor
-      - node_modules/sharp/build/Release/sharp-linux-x64.node
-
       - node_modules/@capacitor/cli/assets
-
       - node_modules/@capacitor/assets/node_modules/@capacitor/cli/assets
 
 AutoUpdateMode: Version
