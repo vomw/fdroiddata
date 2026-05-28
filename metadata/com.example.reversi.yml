@@ -1,0 +1,35 @@
+Categories:
+  - Games
+License: MIT
+AuthorName: Nazmul Haque Nihal
+AuthorEmail: nazmulhaquegreen@gmail.com
+SourceCode: https://github.com/nazmul-haque-nihal/Reversi-Android-APK
+IssueTracker: https://github.com/nazmul-haque-nihal/Reversi-Android-APK/issues
+
+AutoName: Reversi Pro
+
+RepoType: git
+Repo: https://github.com/nazmul-haque-nihal/Reversi-Android-APK.git
+Binaries: 
+  https://github.com/nazmul-haque-nihal/Reversi-Android-APK/releases/download/v%v/app-release-v%v.apk
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 4
+    commit: 686e5a3521a928b6567b1b49430d0a3b1645fd54
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: fc8c6637fc3917ae82c2db4fb861f097f3b322cd91c862b21c7c7fa2e3582328
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4
