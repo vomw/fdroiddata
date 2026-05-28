@@ -83,9 +83,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y -t forky npm
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+      - \. "$HOME/.nvm/nvm.sh"
+      - nvm install 20.19.4
+      - node -v
+      - npm -v
     init: npm ci --include=dev
     output: android/app/build/outputs/apk/release/*.apk
     prebuild:
