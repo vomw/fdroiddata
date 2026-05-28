@@ -1788,11 +1788,12 @@ Builds:
       - swift_module
     build:
       - pushd $$go$$/src
-      - ./make.bash
+      - GOROOT_FINAL=/opt/hostedtoolcache/go/1.25.1/x64 ./make.bash
       - popd
       - export GOROOT=$$go$$
       - export GOPATH="$HOME/go"
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - go env GOROOT GOVERSION
       - cd ../..
       - pushd go_module
       - go mod download
