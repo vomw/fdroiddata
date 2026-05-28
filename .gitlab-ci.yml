@@ -843,3 +843,21 @@ PUBLISH:
     - fdroid gpgsign --verbose
     - fdroid signindex --verbose
     - rsync --stats repo/* $serverwebroot/
+
+debug_list_artifacts:
+  image: openjdk:11
+  stage: build
+  before_script:
+    - apt-get update -y && apt-get install -y wget unzip git
+    - git clone https://github.com/leverbursche/meine-gleitzeit.git src_repo
+    - cd src_repo/MeineGleitzeitApp1
+    - chmod +x ./gradlew || true
+  script:
+    - ./gradlew clean assembleRelease --no-daemon || true
+    - echo "=== APKs ==="
+    - find . -type f -name "*.apk" -print || true
+    - echo "=== AABs ==="
+    - find . -type f -name "*.aab" -print || true
+  only:
+    - merge_requests
+    - main
