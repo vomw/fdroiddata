@@ -1,60 +1,57 @@
 Categories:
-
-- Multimedia
-  License: MPL-2.0
-  AuthorName: TheZupZup
-  SourceCode: https://github.com/TheZupZup/Linthra
-  IssueTracker: https://github.com/TheZupZup/Linthra/issues
-  Changelog: https://github.com/TheZupZup/Linthra/releases
+  - Multimedia
+License: MPL-2.0
+AuthorName: TheZupZup
+SourceCode: https://github.com/TheZupZup/Linthra
+IssueTracker: https://github.com/TheZupZup/Linthra/issues
+Changelog: https://github.com/TheZupZup/Linthra/releases
 
 Name: Linthra
 Summary: Local-first music player for your own self-hosted library
 
 Description: |-
-Linthra is an open-source Android music player for people who keep their music
-on their own devices or self-hosted servers. It plays local files, and it
-streams from self-hosted music servers such as Jellyfin and Navidrome/Subsonic
-— you bring your own server and sign in with your own account.
+  Linthra is an open-source Android music player for people who keep their music
+  on their own devices or self-hosted servers. It plays local files, and it
+  streams from self-hosted music servers such as Jellyfin and Navidrome/Subsonic
+  — you bring your own server and sign in with your own account.
 
-Linthra is an unofficial community client. It is not affiliated with Jellyfin,
-Navidrome, or Subsonic.
+  Linthra is an unofficial community client. It is not affiliated with Jellyfin,
+  Navidrome, or Subsonic.
 
-The app focuses on local-first music playback and privacy. It has no ads, no
-tracking, no analytics, and no crash-reporting SDK. There is no Linthra account
-to create. Streaming is the default, and downloads only happen when you ask for
-them. When you sign in to a server, your password is used once to get a session
-token and then dropped; the token is stored encrypted and never logged.
+  The app focuses on local-first music playback and privacy. It has no ads, no
+  tracking, no analytics, and no crash-reporting SDK. There is no Linthra account
+  to create. Streaming is the default, and downloads only happen when you ask for
+  them. When you sign in to a server, your password is used once to get a session
+  token and then dropped; the token is stored encrypted and never logged.
 
-Linthra is still early alpha. It is usable for testing on a real device, but it
-is not production-stable yet and still has rough edges.
+  Linthra is still early alpha. It is usable for testing on a real device, but it
+  is not production-stable yet and still has rough edges.
 
 RepoType: git
 Repo: https://github.com/TheZupZup/Linthra.git
 
 Builds:
-
-- versionName: 0.1.0-alpha.29
-  versionCode: 100029
-  commit: v0.1.0-alpha.29
-  sudo:
-
-  - apt-get update
-  - apt-get install -y git curl unzip xz-utils
-  - git clone --branch 3.27.4 --depth 1 https://github.com/flutter/flutter /opt/flutter
-  - chown -R vagrant:vagrant /opt/flutter
+  - versionName: 0.1.0-alpha.29
+    versionCode: 100029
+    commit: v0.1.0-alpha.29
+    sudo:
+      - apt-get update
+      - apt-get install -y git curl unzip xz-utils
+      - git clone --branch 3.27.4 --depth 1 https://github.com/flutter/flutter /opt/flutter
+      - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-release.apk
-    build: |
-    export PATH="/opt/flutter/bin:$PATH"
-    git config --global --add safe.directory /opt/flutter
-    flutter config --no-analytics
-    flutter pub get
-    tag="$(git describe --tags --exact-match HEAD)"
-    eval "$(dart run tool/version_from_tag.dart "$tag")"
-    flutter build apk --release 
-    --build-name="$LINTHRA_VERSION_NAME" 
-    --build-number="$LINTHRA_VERSION_CODE"
+    build: |-
+      export PATH="/opt/flutter/bin:$PATH"
+      git config --global --add safe.directory /opt/flutter
+      flutter config --no-analytics
+      flutter pub get
+      tag="$(git describe --tags --exact-match HEAD)"
+      eval "$(dart run tool/version_from_tag.dart "$tag")"
+      flutter build apk --release \
+        --build-name="$LINTHRA_VERSION_NAME" \
+        --build-number="$LINTHRA_VERSION_CODE"
 
 AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags ^v[0-9]+.[0-9]+.[0-9]+(-(alpha|beta|rc).[0-9]+)?$
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$
 CurrentVersion: 0.1.0-alpha.29
 CurrentVersionCode: 100029
