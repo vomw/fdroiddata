@@ -8,7 +8,6 @@ Changelog: https://github.com/TheZupZup/Linthra/releases
 
 Name: Linthra
 Summary: Local-first music player for your own self-hosted library
-
 Description: |-
   Linthra is an open-source Android music player for people who keep their music
   on their own devices or self-hosted servers. It plays local files, and it
@@ -40,16 +39,11 @@ Builds:
       - git clone --branch 3.27.4 --depth 1 https://github.com/flutter/flutter /opt/flutter
       - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-release.apk
-    build: |-
-      export PATH="/opt/flutter/bin:$PATH"
-      git config --global --add safe.directory /opt/flutter
-      flutter config --no-analytics
-      flutter pub get
-      tag="$(git describe --tags --exact-match HEAD)"
-      eval "$(dart run tool/version_from_tag.dart "$tag")"
-      flutter build apk --release \
-        --build-name="$LINTHRA_VERSION_NAME" \
-        --build-number="$LINTHRA_VERSION_CODE"
+    build: "export PATH=\"/opt/flutter/bin:$PATH\"\ngit config --global --add safe.directory
+      /opt/flutter\nflutter config --no-analytics\nflutter pub get\ntag=\"$(git describe
+      --tags --exact-match HEAD)\"\neval \"$(dart run tool/version_from_tag.dart \"\
+      $tag\")\"\nflutter build apk --release \\\n  --build-name=\"$LINTHRA_VERSION_NAME\"\
+      \ \\\n  --build-number=\"$LINTHRA_VERSION_CODE\""
 
 AutoUpdateMode: None
 UpdateCheckMode: None
