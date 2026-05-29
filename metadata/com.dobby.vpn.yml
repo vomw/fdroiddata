@@ -1779,7 +1779,8 @@ Builds:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
     gradle:
       - yes
     srclibs:
@@ -1788,7 +1789,7 @@ Builds:
       - swift_module
     build:
       - pushd $$go$$/src
-      - ./make.bash
+      - GOROOT_FINAL=/opt/hostedtoolcache/go/1.25.1/x64 ./make.bash
       - popd
       - export GOROOT=$$go$$
       - export GOPATH="$HOME/go"
@@ -1811,6 +1812,7 @@ Builds:
       - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/" gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
       - printf "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n" >> gradle.properties
+      - printf "\ngomobileExecutable=$GOPATH/bin/gomobile\n" >> gradle.properties
       - printf "\nandroid.suppressUnsupportedCompileSdk=35\n" >> gradle.properties
       - printf "\nkotlin.native.ignoreDisabledTargets=true\n" >> gradle.properties
     preassemble:
