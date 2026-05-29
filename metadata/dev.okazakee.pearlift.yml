@@ -10,9 +10,9 @@ RepoType: git
 Repo: https://github.com/Okazakee/PearLift
 
 Builds:
-  - versionName: 1.0.5
-    versionCode: 601
-    commit: 7d68e59d9ca8b73b9a5d303c18de89db2375faa0
+  - versionName: 1.0.6
+    versionCode: 701
+    commit: 9dc6a883164015f5cb1f3580bfae0fd863b7d563
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
@@ -22,9 +22,7 @@ Builds:
     prebuild:
       - bun install --frozen-lockfile
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
-      - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i -e '/JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' node_modules/react-native-notify-kit/android/build.gradle
+      - sed -i -e '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -36,12 +34,11 @@ Builds:
       - node_modules
     build:
       - cd android/app
-      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=armeabi-v7a
-        -PreactNativeArchitectures=armeabi-v7a
+      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=armeabi-v7a -PreactNativeArchitectures=armeabi-v7a -Preact.internal.disableJavaVersionAlignment=true
 
-  - versionName: 1.0.5
-    versionCode: 602
-    commit: 7d68e59d9ca8b73b9a5d303c18de89db2375faa0
+  - versionName: 1.0.6
+    versionCode: 702
+    commit: 9dc6a883164015f5cb1f3580bfae0fd863b7d563
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
@@ -51,9 +48,7 @@ Builds:
     prebuild:
       - bun install --frozen-lockfile
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
-      - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i -e '/JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' node_modules/react-native-notify-kit/android/build.gradle
+      - sed -i -e '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -65,8 +60,7 @@ Builds:
       - node_modules
     build:
       - cd android/app
-      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
-        -PreactNativeArchitectures=arm64-v8a
+      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a -PreactNativeArchitectures=arm64-v8a -Preact.internal.disableJavaVersionAlignment=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -74,5 +68,5 @@ VercodeOperation:
   - 100 * %c + 1
   - 100 * %c + 2
 UpdateCheckData: fdroid-version.txt|versionCode=([0-9]+)|.|versionName=([0-9.]+)
-CurrentVersion: 1.0.5
-CurrentVersionCode: 602
+CurrentVersion: 1.0.6
+CurrentVersionCode: 702
