@@ -59,13 +59,14 @@ Builds:
     prebuild:
       - sed -i -e 's|workingDir|environment("CARGO_HOME","/home/runner/.cargo");workingDir|'
         ../shared/build.gradle.kts
+      - sed -i -e '/cargoNdkExtraArgs/a\    cargoBin.set("/home/runner/.cargo/bin/cargo")'
+        ../shared/build.gradle.kts
       - sed -i -e '/foojay/d' ../settings.gradle.kts
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
       - rustup target add i686-linux-android
-      - source $CARGO_HOME/env
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         ../.github/workflows/release-android.yml)
       - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
@@ -90,13 +91,14 @@ Builds:
     prebuild:
       - sed -i -e 's|workingDir|environment("CARGO_HOME","/home/runner/.cargo");workingDir|'
         ../shared/build.gradle.kts
+      - sed -i -e '/cargoNdkExtraArgs/a\    cargoBin.set("/home/runner/.cargo/bin/cargo")'
+        ../shared/build.gradle.kts
       - sed -i -e '/foojay/d' ../settings.gradle.kts
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
       - rustup target add x86_64-linux-android
-      - source $CARGO_HOME/env
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         ../.github/workflows/release-android.yml)
       - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
@@ -122,13 +124,14 @@ Builds:
     prebuild:
       - sed -i -e 's|workingDir|environment("CARGO_HOME","/home/runner/.cargo");workingDir|'
         ../shared/build.gradle.kts
+      - sed -i -e '/cargoNdkExtraArgs/a\    cargoBin.set("/home/runner/.cargo/bin/cargo")'
+        ../shared/build.gradle.kts
       - sed -i -e '/foojay/d' ../settings.gradle.kts
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
       - rustup target add armv7-linux-androideabi
-      - source $CARGO_HOME/env
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         ../.github/workflows/release-android.yml)
       - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
@@ -154,13 +157,14 @@ Builds:
     prebuild:
       - sed -i -e 's|workingDir|environment("CARGO_HOME","/home/runner/.cargo");workingDir|'
         ../shared/build.gradle.kts
+      - sed -i -e '/cargoNdkExtraArgs/a\    cargoBin.set("/home/runner/.cargo/bin/cargo")'
+        ../shared/build.gradle.kts
       - sed -i -e '/foojay/d' ../settings.gradle.kts
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android
-      - source $CARGO_HOME/env
       - export CARGO_NDK_VERSION=$(sed -E -n 's/.*CARGO_NDK_VERSION.*"(.*)".*/\1/p'
         ../.github/workflows/release-android.yml)
       - cargo install cargo-ndk@$CARGO_NDK_VERSION --locked
