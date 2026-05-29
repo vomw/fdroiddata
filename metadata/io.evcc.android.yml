@@ -11,7 +11,6 @@ Donate: https://docs.evcc.io/en/docs/sponsorship
 
 RepoType: git
 Repo: https://github.com/evcc-io/app.git
-Binaries: https://github.com/evcc-io/app/releases/download/%v/evcc-%v.apk
 
 Builds:
   - versionName: 1.0.3
@@ -80,14 +79,12 @@ Builds:
     versionCode: 40
     commit: 331468903845fe69c47aaf48aca65af5b8aa1eb4
     sudo:
+      - apt-get update
+      - apt-get install npm
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v20.19.4/node-v20.19.4-linux-x64.tar.gz
-      - echo "d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560 node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     init: npm ci --include=dev
     output: android/app/build/outputs/apk/release/*.apk
     prebuild:
@@ -112,8 +109,6 @@ Builds:
       - cd android/app
       - sed -i -e '/signingConfig /d' build.gradle
       - gradle assembleRelease
-
-AllowedAPKSigningKeys: 39ba4e56e35e30d9fc2fec2b70c9d4b3a76879d3cc44f8abbe76320aefcb7a20
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
