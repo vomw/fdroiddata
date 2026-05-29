@@ -22,7 +22,8 @@ Builds:
     prebuild:
       - bun install --frozen-lockfile
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
-      - sed -i -e '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -34,7 +35,8 @@ Builds:
       - node_modules
     build:
       - cd android/app
-      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=armeabi-v7a -PreactNativeArchitectures=armeabi-v7a -Preact.internal.disableJavaVersionAlignment=true
+      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=armeabi-v7a
+        -PreactNativeArchitectures=armeabi-v7a
 
   - versionName: 1.0.6
     versionCode: 702
@@ -48,7 +50,8 @@ Builds:
     prebuild:
       - bun install --frozen-lockfile
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
-      - sed -i -e '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -60,7 +63,8 @@ Builds:
       - node_modules
     build:
       - cd android/app
-      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a -PreactNativeArchitectures=arm64-v8a -Preact.internal.disableJavaVersionAlignment=true
+      - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
+        -PreactNativeArchitectures=arm64-v8a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
