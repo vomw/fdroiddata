@@ -10,7 +10,6 @@ RepoType: git
 Repo: https://github.com/Okazakee/PearLift
 
 Builds:
-
   - versionName: 1.0.6
     versionCode: 702
     commit: 28cc464eeb55997073da1cf127b5c148e90b78f2
@@ -26,7 +25,10 @@ Builds:
       - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/jvmTarget/s/17/21/' node_modules/react-native-notify-kit/android/build.gradle
-      - "[ -f node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so ] || (npm pack react-native-bare-kit@0.13.3 --pack-destination /tmp && tar -xzf /tmp/react-native-bare-kit-0.13.3.tgz -C /tmp && cp /tmp/package/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/)"
+      - '[ -f node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so
+        ] || (npm pack react-native-bare-kit@0.13.3 --pack-destination /tmp && tar
+        -xzf /tmp/react-native-bare-kit-0.13.3.tgz -C /tmp && cp /tmp/package/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so
+        node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/)'
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -42,7 +44,6 @@ Builds:
       - node_modules/fb-dotslash
       - node_modules/hermes-compiler/hermesc/osx-bin
       - node_modules/hermes-compiler/hermesc/win64-bin
-    scandelete: []
     build:
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -Pandroid.enableR8=false -PpearliftFdroidAbi=arm64-v8a
