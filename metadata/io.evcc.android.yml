@@ -86,12 +86,13 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     init:
-      - npm remove expo-dev-client
-      - npm ci --include=dev
+      - npm remove expo-camera
+      - npm ci
     output: android/app/build/outputs/apk/release/*.apk
     prebuild:
-      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
-        package.json
+      - sed -i '/^\s*\[$/{ N; /\n\s*"expo-camera"/{ :loop; N; /\],$/!b loop; d } }' app.config.ts
+      - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},' package.json
+      - touch fdroid-build
       - npx expo prebuild --platform android --clean
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
