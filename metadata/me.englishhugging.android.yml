@@ -15,10 +15,18 @@ Builds:
     commit: ed2c74b749bd1cc9d6f96b9e3677bda42b5734ce
     prebuild: |-
       cat > core/build.gradle <<'EOF'
-      plugins { id 'java-library' }
-      dependencies { api 'com.google.code.gson:gson:2.11.0' testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3' }
-      tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 17 }
-      test { useJUnitPlatform(); workingDir = rootProject.projectDir }
+      plugins {
+          id 'java-library'
+      }
+
+      dependencies {
+          api 'com.google.code.gson:gson:2.11.0'
+      }
+
+      tasks.withType(JavaCompile).configureEach {
+          options.encoding = 'UTF-8'
+          options.release = 17
+      }
       EOF
     gradle:
       - yes
