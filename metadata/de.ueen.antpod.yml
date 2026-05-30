@@ -16,7 +16,7 @@ Binaries: https://github.com/ueen/antpod/releases/download/v%v/antpod-%v-arm64.a
 Builds:
   - versionName: 0.9.7
     versionCode: 17
-    commit: 629a5f2c4b18d3527b16e9accd539e4a45be44c6
+    commit: 7510cd937acf3d34ff802a5c7e91b9877080ed7e
     sudo:
       - mkdir -p /home/runner/work/antpod
       - chown -R vagrant /home/runner
@@ -52,11 +52,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
       - popd
       - mv $repo de.ueen.antpod
+    ndk: 27.0.12077973
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
-    ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 5809c3253dda0ff5a72b78305f06d7678505098caf74da7e4340107df3d9030f
 
