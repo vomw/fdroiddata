@@ -85,7 +85,9 @@ Builds:
       - apt-get update
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    init: npm ci --include=dev
+    init:
+      - npm remove expo-dev-client
+      - npm ci --include=dev
     output: android/app/build/outputs/apk/release/*.apk
     prebuild:
       - sed -i -e '/"expo":\ {/a "autolinking":{"android":{"buildFromSource":[".*"]}},'
