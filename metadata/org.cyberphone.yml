@@ -1,0 +1,51 @@
+Categories:
+  - Messaging
+  - Phone & SMS
+  - Security
+  - Wallet
+License: AGPL-3.0-only
+AuthorName: Ariadne Coil
+WebSite: https://github.com/ariadne-coil/Cyber-Phone
+SourceCode: https://github.com/ariadne-coil/Cyber-Phone
+IssueTracker: https://github.com/ariadne-coil/Cyber-Phone/issues
+Changelog: https://github.com/ariadne-coil/Cyber-Phone/releases
+
+AutoName: Cyber Phone
+Description: |
+  Cyber Phone is a privacy-focused replacement for stock phone and SMS apps.
+
+  It combines dialer, SMS/MMS, optional mesh messaging/calling, and optional
+  Bitcoin wallet features in one app without analytics SDKs.
+
+  Network-backed behavior is feature-gated and user-controlled.
+
+RepoType: git
+Repo: https://github.com/ariadne-coil/Cyber-Phone.git
+
+Builds:
+  - versionName: 0.6.1
+    versionCode: 34
+    commit: 1f45f4c3960420071353752e905576de875c1a22
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup binaryen nodejs clang
+    init:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default 1.94.1
+      - rustup target add wasm32-unknown-unknown
+      - cargo install --locked wasm-bindgen-cli --version 0.2.100
+    gradle:
+      - yes
+    rm:
+      - releases
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - rm -rf ../third_party/fedimint-web/db/migrations
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
+CurrentVersion: 0.6.1
+CurrentVersionCode: 34
