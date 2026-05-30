@@ -1,0 +1,56 @@
+Categories:
+  - System
+License: GPL-3.0-only
+AuthorName: monsiu
+AuthorWebSite: https://monsiu.github.io/
+WebSite: https://github.com/monsiu/Custom-RR
+SourceCode: https://github.com/monsiu/Custom-RR
+IssueTracker: https://github.com/monsiu/Custom-RR/issues
+Changelog: https://github.com/monsiu/Custom-RR/blob/HEAD/CHANGELOG.md
+
+AutoName: Custom RR
+
+RepoType: git
+Repo: https://github.com/monsiu/Custom-RR.git
+
+Builds:
+  - versionName: 0.2.1
+    versionCode: 4
+    commit: v0.2.1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
+
+MaintainerNotes: |-
+  Flutter app. Built with the F-Droid flutter srclib pinned to the upstream
+  Flutter git tag 3.44.0.
+
+  The --dart-define=FDROID_BUILD=true flag compiles out the app's self-update
+  machinery (see lib/util/build_flags.dart): no GitHub release polling, no
+  in-app APK download/install path, and no "Check for updates" UI. The
+  GitHub-release variant keeps it; the F-Droid variant does not, so there is
+  no UpdateCheck anti-feature and no APK side-loading.
+
+  Signing: android/app/build.gradle falls back to debug signing when
+  android/key.properties is absent (it is not committed), so the build
+  produces an APK that F-Droid signs with its own key.
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 0.2.1
+CurrentVersionCode: 4
