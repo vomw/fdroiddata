@@ -1,0 +1,30 @@
+Categories:
+  - Sports & Health
+  - Weather
+License: AGPL-3.0-only
+SourceCode: https://github.com/flydecision/flydecision
+IssueTracker: https://github.com/flydecision/flydecision/issues
+
+RepoType: git
+Repo: https://github.com/flydecision/flydecision.git
+
+Builds:
+  - versionName: '2.2.1'
+    versionCode: 34
+    commit: v2.2.1
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ..
+      - npm install
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+CurrentVersion: '2.2.1'
+CurrentVersionCode: 34
