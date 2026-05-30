@@ -1,0 +1,67 @@
+Categories:
+  - Internet
+  - Messaging
+License: GPL-3.0-or-later
+AuthorName: AndroidIRCX
+AuthorEmail: contact@androidircx.com
+WebSite: https://androidircx.com
+SourceCode: https://gitlab.com/androidircx/AndroidIRCx
+IssueTracker: https://gitlab.com/androidircx/AndroidIRCx/-/issues
+Changelog: https://gitlab.com/androidircx/AndroidIRCx/-/releases
+Donate: https://github.com/sponsors/AndroidIRCX
+
+AutoName: AndroidIRCX
+
+RepoType: git
+Repo: https://gitlab.com/androidircx/AndroidIRCx.git
+
+Builds:
+  - versionName: 1.9.61
+    versionCode: 109
+    commit: 5f9b8354eeff9638fcd86548544ae2a12349f5b9
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y ccache yarnpkg
+    gradle:
+      - yes
+    prebuild:
+      - cd ..
+      - corepack prepare yarn@1.22.22 --activate
+      - corepack yarn install --frozen-lockfile --network-timeout 300000 --non-interactive
+        --ignore-engines --silent
+      - node node_modules/@react-native-community/cli/build/bin.js config > android/fdroid-autolinking.json
+      - node -e "const fs=require('fs');const p='android/fdroid-autolinking.json';const
+        j=JSON.parse(fs.readFileSync(p,'utf8'));for(const dep of Object.values(j.dependencies||{})){const
+        a=dep.platforms&&dep.platforms.android;const root=dep.root;if(!a||!root)continue;const
+        cand=root+'/android';if(fs.existsSync(cand+'/build.gradle')||fs.existsSync(cand+'/build.gradle.kts'))a.sourceDir=cand;}fs.writeFileSync(p,JSON.stringify(j));"
+      - test -s android/fdroid-autolinking.json
+      - find node_modules \( -path "*/android/build.gradle" -o -path "*/android/build.gradle.kts"
+        \) -print0 | xargs -0 grep -l "com.facebook.react:react-native:" | xargs -r
+        sed -i "s/com.facebook.react:react-native:/com.facebook.react:react-android:/g"
+      - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
+      - grep -RIl 'jvmToolchain(17)' node_modules/@react-native/gradle-plugin | xargs
+        sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g'
+      - sed -i '/autolinkLibrariesFromCommand/c\ ex.autolinkLibrariesFromConfigFile(file("fdroid-autolinking.json"))'
+        android/settings.gradle
+      - sed -i '/transifex.env/d;/dotenv.gradle/d' android/app/build.gradle
+      - sed -i '/def transifexPullScript/,/preBuild.dependsOn("transifexPull")/d'
+        android/app/build.gradle
+      - "sed -i '/apply plugin: \"com.facebook.react\"/a project.ext.set(\"hermesEnabled\"\
+        , \"true\")' android/app/build.gradle"
+      - sed -i 's/hermesEnabled.toBoolean()/true/g' android/app/build.gradle
+    scanignore:
+      - android/settings.gradle
+      - android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - export GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4096m
+        -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC'
+      - gradle --no-daemon -Pandroid.useAndroidX=true assembleRelease -PreactNativeArchitectures=arm64-v8a
+        --no-configuration-cache --stacktrace
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 1.9.61
+CurrentVersionCode: 109
