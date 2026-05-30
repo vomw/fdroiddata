@@ -51,6 +51,12 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
       - popd
       - mv $repo de.ueen.antpod
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 5809c3253dda0ff5a72b78305f06d7678505098caf74da7e4340107df3d9030f
