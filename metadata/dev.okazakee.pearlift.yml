@@ -21,20 +21,6 @@ Builds:
     output: android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
     prebuild:
       - bun install --frozen-lockfile
-      - find node_modules -type d \( -name armeabi-v7a -o -name x86 -o -name x86_64
-        \) -not -path '*/xcframework/*' -exec rm -rf {} + 2>/dev/null || true
-      - find node_modules -type d -name '*.xcframework' -exec rm -rf {} + 2>/dev/null
-        || true
-      - rm -rf node_modules/expo-sqlite/ios node_modules/expo-sqlite/web node_modules/react-native-bare-kit/ios
-        2>/dev/null || true
-      - rm -rf node_modules/@biomejs node_modules/fb-dotslash node_modules/hermes-compiler/hermesc/osx-bin
-        node_modules/hermes-compiler/hermesc/win64-bin 2>/dev/null || true
-      - rm -rf node_modules/@expo/expo-modules-macros-plugin/apple node_modules/expo/template.tgz
-        2>/dev/null || true
-      - find node_modules/@msgpackr-extract -type d \( -name 'darwin-*' -o -name 'win32-*'
-        -o -name 'linux-arm*' \) -exec rm -rf {} + 2>/dev/null || true
-      - find node_modules/react-native/sdks -type f \( -name '*.podspec' -o -name
-        '*.sh' \) -delete 2>/dev/null || true
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
       - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
@@ -52,22 +38,21 @@ Builds:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-*/local-maven-repo
       - node_modules/expo-*/prebuilds
+      - node_modules/expo/template.tgz
       - node_modules/expo-sqlite/android
-      - node_modules/@expo/*/local-maven-repo
-      - node_modules/react-native-bare-kit/android
-      - node_modules/react-native/React/I18n
-      - node_modules/react-native/ReactAndroid/publish.gradle
-    scandelete:
       - node_modules/expo-sqlite/web
       - node_modules/expo-sqlite/ios
-      - node_modules/react-native-bare-kit/ios
+      - node_modules/@expo/*/local-maven-repo
+      - node_modules/@expo/expo-modules-macros-plugin
       - node_modules/@biomejs
       - node_modules/@msgpackr-extract
       - node_modules/fb-dotslash
       - node_modules/hermes-compiler/hermesc/osx-bin
       - node_modules/hermes-compiler/hermesc/win64-bin
-      - node_modules/@expo/expo-modules-macros-plugin
-      - node_modules/expo/template.tgz
+      - node_modules/react-native/React/I18n
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-bare-kit/android
+      - node_modules/react-native-bare-kit/ios
     build:
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
