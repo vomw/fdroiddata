@@ -26,20 +26,23 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - sed -i -e '1a
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications"]}}},'
         package.json
-      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json"); d=json.loads(p.read_text());
-        e=d["expo"]; e["plugins"]=[x for x in e.get("plugins", []) if not (x=="expo-notifications"
-        or (isinstance(x, list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra",
-        {})["buildFlavor"]="fdroid"; e["extra"]["distributionChannel"]="fdroid"; p.write_text(json.dumps(d,
-        ensure_ascii=False, indent=2)+"\n")'
-      - sed -i -e '/expo-notifications/d' package.json
-      - rm -rf node_modules/expo-notifications
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json");
+        d=json.loads(p.read_text()); e=d["expo"]; e["plugins"]=[x for x in
+        e.get("plugins", []) if not (x=="expo-notifications" or (isinstance(x,
+        list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra",
+        {})["buildFlavor"]="fdroid"; e["extra"]["distributionChannel"]="fdroid";
+        p.write_text(json.dumps(d, ensure_ascii=False, indent=2)+"\n")'
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/'
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild --clean --platform android
-      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
-      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
+      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/'
+        android/gradle.properties
+      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/'
+        android/gradle.properties
     scanignore:
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
