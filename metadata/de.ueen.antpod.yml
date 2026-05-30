@@ -24,6 +24,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
+      - reproducible-apk-tools@v0.3.0
     rm:
       - ios
     prebuild:
@@ -51,8 +52,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
       - popd
       - mv $repo de.ueen.antpod
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
