@@ -23,17 +23,26 @@ Builds:
       - apt-get install -y npm
     gradle:
       - yes
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     prebuild:
       - cd ../..
       - npm ci
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - sed -i -e '1a 
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
         package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '/firebase/d' 
+        node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src 
+        node_modules/expo-notifications/android
       - npx expo prebuild --clean --platform android
-      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
-      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
-      - echo "org.gradle.java.installations.auto-download=true" >> android/gradle.properties
-      - mkdir -p ~/.gradle
-      - echo "org.gradle.java.installations.auto-download=true" >> ~/.gradle/gradle.properties
+      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' 
+        android/gradle.properties
+      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' 
+        android/gradle.properties
     scanignore:
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
