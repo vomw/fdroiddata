@@ -1,8 +1,6 @@
 Categories:
   - Multimedia
-
 License: GPL-3.0-only
-
 AuthorName: Guy Steiff
 SourceCode: https://github.com/Guy-Steiff/SponsorCut
 IssueTracker: https://github.com/Guy-Steiff/SponsorCut/issues
@@ -20,25 +18,22 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y autoconf automake libtool pkg-config nasm cmake
-        gcc gperf texinfo yasm bison autogen wget autopoint meson ninja-build
-        ragel groff
+      - apt-get install -y autoconf automake libtool pkg-config nasm cmake gcc gperf
+        texinfo yasm bison autogen wget autopoint meson ninja-build ragel groff
+    gradle:
+      - yes
     prebuild:
-      - git clone --no-checkout https://github.com/InfinityLoop1308/ffmpeg-kit.git ../ffmpeg-kit-src
+      - git clone --no-checkout https://github.com/InfinityLoop1308/ffmpeg-kit.git
+        ../ffmpeg-kit-src
       - git -C ../ffmpeg-kit-src checkout efd648489598efdc65e2e2f06ae69e065e257077
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - cd ../ffmpeg-kit-src && ./android.sh --lts
-        --enable-android-media-codec
-        --enable-android-zlib
-        --disable-arm-v7a
-        --disable-arm-v7a-neon
-        --disable-x86
-      - cp ../ffmpeg-kit-src/prebuilt/bundle-android-aar-lts/ffmpeg-kit/ffmpeg-kit.aar libs/ffmpeg-kit.aar
+      - cd ../ffmpeg-kit-src && ./android.sh --lts --enable-android-media-codec --enable-android-zlib
+        --disable-arm-v7a --disable-arm-v7a-neon --disable-x86
+      - cp ../ffmpeg-kit-src/prebuilt/bundle-android-aar-lts/ffmpeg-kit/ffmpeg-kit.aar
+        libs/ffmpeg-kit.aar
     scanignore:
       - app/libs
-    gradle:
-      - yes
 
 AllowedAPKSigningKeys: 71a5664ef1c0fc06303bbc948400c6daf1fc69ee7a519babdd88a8d8dcfa0ccd
 
