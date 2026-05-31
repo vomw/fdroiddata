@@ -78,7 +78,18 @@ Builds:
     gradle:
       - fdroid
 
+  - versionName: 2.5.0-fdroid
+    versionCode: 48
+    commit: d513c41a811892a06b5bd36496e81defd2c46bff
+    subdir: android
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/12585416/,+4d' ../build.gradle.kts
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) { minorApiLevel
+        = 0 } }/' build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.4.4-fdroid
-CurrentVersionCode: 45
+CurrentVersion: 2.5.0-fdroid
+CurrentVersionCode: 48
