@@ -25,7 +25,8 @@ Builds:
       - rm -rf node_modules/hermes-compiler/hermesc/osx-bin node_modules/hermes-compiler/hermesc/win64-bin
       - rm -rf node_modules/@expo/expo-modules-macros-plugin/apple node_modules/expo/template.tgz
       - rm -rf node_modules/expo-sqlite/ios node_modules/expo-sqlite/web node_modules/react-native-bare-kit/ios
-      - find node_modules -type d -name prebuilds -exec rm -rf {} + 2>/dev/null || true
+      - find node_modules -type d -path '*/prebuilds/output' -exec rm -rf {} +
+        2>/dev/null || true
       - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
       - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
