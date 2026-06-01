@@ -29,8 +29,9 @@ Builds:
       - reproducible-apk-tools@v0.3.0
     prebuild:
       - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' .github/workflows/release.yml)
-      - export BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p' .github/workflows/release.yml)
-      - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$BUILD_TOOLS"
+      - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p'
+        .github/workflows/release.yml)
+      - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS"
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
       - $$rustup$$/rustup-init.sh -y --default-toolchain $RUST_VERSION --target aarch64-linux-android
       - source "$HOME/.cargo/env"
