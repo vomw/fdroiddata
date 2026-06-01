@@ -39,8 +39,10 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - cd .. && npm ci
+      - cd .. && npm ci --omit=dev
       - npm run prepare:fdroid
+      - find node_modules -mindepth 1 -maxdepth 1 ! -name '@capacitor' -exec rm -rf {} +
+      - find node_modules/@capacitor -mindepth 1 -maxdepth 1 ! -name android -exec rm -rf {} +
     gradle:
       - fdroid
 
