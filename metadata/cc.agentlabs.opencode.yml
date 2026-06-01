@@ -1,0 +1,63 @@
+Categories:
+  - Development
+License: MIT
+AuthorName: VIBE TECHNOLOGIES, LLC
+AuthorEmail: support@vibebrowser.app
+WebSite: https://agentlabs.cc/opencode
+SourceCode: https://github.com/dzianisv/opencode-mobile
+IssueTracker: https://github.com/dzianisv/opencode-mobile/issues
+Changelog: https://github.com/dzianisv/opencode-mobile/releases
+
+AutoName: OpenCode Mobile
+Summary: Drive your self-hosted AI coding agent from your phone
+Description: |-
+    OpenCode Mobile is a free, open-source (MIT) client for the opencode AI coding
+    agent (sst/opencode). Connect to your self-hosted opencode server and drive
+    AI-powered coding sessions from your phone — no proprietary backend, no
+    mandatory accounts, no tracking by default.
+
+    Features:
+
+    * Multiple connection types — local network, secure tunnels (Cloudflare, ngrok),
+      or any self-hosted opencode instance
+    * Biometric unlock — fingerprint / PIN to keep your sessions private
+    * Real-time streaming chat — watch your AI agent think and respond live
+    * File diff viewer — see exactly what code changes the agent proposes
+    * Multi-session management — start, resume, and switch between coding sessions
+    * Tool call approval — review and approve agent actions before they run
+
+    The app requires your own opencode server. Your AI traffic goes directly to your
+    backend (Claude, GPT, Gemini, local models — your choice). Crash reporting via
+    Sentry is opt-in with default OFF.
+
+AntiFeatures:
+  NonFreeNet:
+    en-US: >-
+      The app connects to a user-self-hosted opencode server which may in turn
+      connect to proprietary AI services (OpenAI API, Anthropic API, Google Gemini).
+      The app itself is fully open source and does not require any specific provider.
+
+RepoType: git
+Repo: https://github.com/dzianisv/opencode-mobile
+
+Builds:
+  - versionName: 0.4.2
+    versionCode: 4
+    commit: v0.4.2
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - cd .. && npm install --legacy-peer-deps
+      - cd .. && npx expo prebuild --platform android --non-interactive
+    gradle:
+      - release
+    ndk: 26.1.10909125
+
+AllowedAPKSigningKeys: 0c259d94e0ffea5d6319614b229d4b6bdc22de1f56e38e76948398d2df6aa099
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.4.2
+CurrentVersionCode: 4
