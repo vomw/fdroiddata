@@ -13,7 +13,7 @@ Repo: https://git.pabr.de/apps/unofficial_checkmk_monitoring.git
 Builds:
   - versionName: 1.1.1
     versionCode: 211
-    commit: d6d9e52261f0d7a261172ac31e61129498bb6379
+    commit: 6ef54d36f87752f0fbe2eb8e5a2e77675ea65325
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-armeabi-v7a-release-v%v.apk
@@ -21,6 +21,7 @@ Builds:
       - flutter@3.44.0
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=1
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scandelete:
@@ -34,7 +35,7 @@ Builds:
 
   - versionName: 1.1.1
     versionCode: 212
-    commit: d6d9e52261f0d7a261172ac31e61129498bb6379
+    commit: 6ef54d36f87752f0fbe2eb8e5a2e77675ea65325
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-arm64-v8a-release-v%v.apk
@@ -49,13 +50,14 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=1
       - echo "fdroidBuild=true" >> local.properties
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
     ndk: r28c
 
   - versionName: 1.1.1
     versionCode: 213
-    commit: d6d9e52261f0d7a261172ac31e61129498bb6379
+    commit: 6ef54d36f87752f0fbe2eb8e5a2e77675ea65325
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-x86_64-release-v%v.apk
@@ -70,6 +72,7 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=1
       - echo "fdroidBuild=true" >> local.properties
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
     ndk: r28c
