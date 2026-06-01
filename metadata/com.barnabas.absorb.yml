@@ -5,27 +5,20 @@ AuthorName: Nathan Poulson
 SourceCode: https://github.com/pounat/absorb
 IssueTracker: https://github.com/pounat/absorb/issues
 
-AutoName: Absorb
-Description: |-
-  An open-source client for Audiobookshelf servers. Stream and download your
-  audiobooks and podcasts, with chapter navigation, sleep timer, equalizer,
-  Android Auto, and home-screen widgets.
-
-  This F-Droid build has no Google Play Services, so Chromecast and the Wear OS
-  companion login are not available here. Everything else works normally.
-
 RepoType: git
 Repo: https://github.com/pounat/absorb.git
 
 Builds:
   - versionName: 1.8.92
     versionCode: 160
-    commit: v1.8.92
+    commit: b8d54b8b6f69d3a774bf179987ef373488a457ba
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.44.0
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - mv lib/services/chromecast_service_stub.dart lib/services/chromecast_service.dart
       - mv lib/widgets/chromecast_button_stub.dart lib/widgets/chromecast_button.dart
       - sed -i '/flutter_chrome_cast:/d' pubspec.yaml
