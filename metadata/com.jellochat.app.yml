@@ -14,13 +14,13 @@ Repo: https://github.com/JelloDog-Applications/JelloChat-electron.git
 Builds:
   - versionName: 1.1.3
     versionCode: 3
-    commit: v1.1.3
-    subdir: android
+    commit: 6a3a50c6e9ed6f115e76ddf51e0e2ba3044146c0
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
-      - cd .. && npm ci --omit=dev
+      - cd ../.. && npm ci --omit=dev
       - npm run prepare:fdroid
       - find node_modules -mindepth 1 -maxdepth 1 ! -name '@capacitor' -exec rm -rf
         {} +
@@ -28,7 +28,6 @@ Builds:
         rm -rf {} +
     gradle:
       - fdroid
-    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
