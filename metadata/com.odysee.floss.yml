@@ -75,11 +75,13 @@ Builds:
     subdir: app
     gradle:
       - foss
-    prebuild: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
-    scandelete:
-      - app/src/play
-      - app/src/apk
-      - app/src/playAndApk
+    prebuild:
+      - sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - sed -i -E '/foojay-resolver/d' ../settings.gradle.kts
+      - sed -i -E '/libs\.plugins\.(google\.services|firebase\.crashlytics)/d' ../build.gradle.kts build.gradle.kts
+      - sed -i -E '/(play|apk)Implementation.*(firebase|play\.services\.cast)/d' build.gradle.kts
+      - sed -i -E '/\/\/.*(firebase|google-services|crashlytics)/Id' build.gradle.kts
+      - rm -rf src/play src/apk src/playAndApk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
