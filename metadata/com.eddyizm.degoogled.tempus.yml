@@ -25,14 +25,13 @@ Builds:
       - apt-get update
       - apt-get install -y make ninja-build cmake nasm
       - update-alternatives --auto java
-    prebuild:
-      - sed -i '/id "org.gradle.toolchains.foojay-resolver"/d' ../settings.gradle
     gradle:
       - degoogled
     output: build/outputs/apk/degoogled/release/*armeabi-v7a*.apk
     srclibs:
       - media-moneytoo@1.9.2
       - FFmpeg@release/6.0
+    prebuild: sed -i '/id "org.gradle.toolchains.foojay-resolver"/d' ../settings.gradle
     scandelete:
       - libs/
     build:
@@ -43,11 +42,13 @@ Builds:
       - pushd "${FFMPEG_EXT_PATH}/jni"
       - ln -s "$$FFmpeg$$" ffmpeg
       - cd "${FFMPEG_EXT_PATH}/jni"
-      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" "${ENABLED_DECODERS[@]}"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
       - cd "$$media-moneytoo$$"
       - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar
       - popd
-      - cp $$media-moneytoo$$/libraries/decoder_ffmpeg/buildout/outputs/aar/*.aar ../libs/
+      - cp $$media-moneytoo$$/libraries/decoder_ffmpeg/buildout/outputs/aar/*.aar
+        ../libs/
     ndk: 26.1.10909125
     gradleprops:
       - abiFilter=armeabi-v7a
