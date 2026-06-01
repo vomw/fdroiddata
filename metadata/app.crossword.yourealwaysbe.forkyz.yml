@@ -2,7 +2,7 @@ AntiFeatures:
   NonFreeNet:
     en-US: Connects to theguardian.com to obtain puzzles.
 Categories:
-  - Games
+  - Word Game
 License: GPL-3.0-only
 SourceCode: https://gitlab.com/Hague/forkyz
 IssueTracker: https://gitlab.com/Hague/forkyz/-/issues
@@ -979,10 +979,55 @@ Builds:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
       - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
 
+  - versionName: '81'
+    versionCode: 8100000
+    commit: 632fda61df5f3f97c6c64653bb99158dcdfed310
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+      - composeApp/src/jvmTest/resources/test.puz
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e 's/-Xmx1536m/-Xmx4096m/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
+  - versionName: '82'
+    versionCode: 8200000
+    commit: b500cb249f77afcb6054038b726d90fdc26cd74d
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - puzlib/src/test
+      - composeApp/src/jvmTest/resources/test.puz
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e 's/-Xmx1536m/-Xmx4096m/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
+  - versionName: '83'
+    versionCode: 8300000
+    commit: ea3abfbc5fc0f41da610b6ecb3fdd824ec888a72
+    subdir: androidApp
+    gradle:
+      - yes
+    rm:
+      - composeApp/src/jvmTest/resources/test.puz
+      - composeApp/src/jvmTest/resources/hello.zip
+      - gfx/*.opacity
+    prebuild:
+      - sed -i -e 's/-Xmx1536m/-Xmx4096m/' ../gradle.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/VERSION_17/VERSION_21/' ../*/build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
   - 100000 * %c
 UpdateCheckData: gradle.properties|appVersion=(\d+)|.|appVersion=(\d+)
-CurrentVersion: '80'
-CurrentVersionCode: 8000000
+CurrentVersion: '83'
+CurrentVersionCode: 8300000
