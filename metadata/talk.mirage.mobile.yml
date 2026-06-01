@@ -34,6 +34,8 @@ Builds:
     prebuild:
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '/jvmTarget/s/17/21/'
+        node_modules/@react-native-community/datetimepicker/android/build.gradle
       - EXPO_NO_GIT_STATUS=1 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_FDROID=true bun x expo
         prebuild --platform android --clean --no-install
     scanignore:
