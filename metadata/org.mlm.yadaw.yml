@@ -23,6 +23,8 @@ Builds:
       - apt-get update
       - apt-get install -y gcc libc-dev rustup
     output: target/release/apk/yadaw.apk
+    rm:
+      - third_party/android/termux/
     prebuild:
       - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p'
@@ -35,11 +37,8 @@ Builds:
         .github/workflows/release.yml)
       - cargo install --git https://github.com/mlm-games/cargo-rapk.git --tag v$CARGO_RAPK_TAG
         cargo-rapk --locked
-    rm:
-      - third_party/android/termux/
-    build:
-      - cargo rapk build --release --deterministic --unsigned --target aarch64-linux-android
-        --no-default-features --features android,clap-host --lib
+    build: cargo rapk build --release --deterministic --unsigned --target aarch64-linux-android
+      --no-default-features --features android,clap-host --lib
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: 4aed2f691df64a7b0fea25a6b8c80183c6dc520e049dac0178defa1d6472228f
