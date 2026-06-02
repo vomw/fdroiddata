@@ -10,9 +10,9 @@ RepoType: git
 Repo: https://github.com/Okazakee/PearLift
 
 Builds:
-  - versionName: 1.0.7
-    versionCode: 802
-    commit: 44b908cfa977de0cb9dfef7fc0723a530088bd4a
+  - versionName: 1.0.8
+    versionCode: 902
+    commit: 601eddead39cbd8554e3c0d9c402faf909d9402e
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
@@ -42,12 +42,12 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/expo-*/local-maven-repo
-      - node_modules/@expo/*/local-maven-repo
       - node_modules/expo-sqlite/android
       - node_modules/react-native-bare-kit/android
       - node_modules/react-native/React/I18n
       - node_modules/react-native/ReactAndroid/publish.gradle
+    scandelete:
+      - node_modules
     build:
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
@@ -58,5 +58,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - 100 * %c + 2
 UpdateCheckData: fdroid-version.txt|versionCode=([0-9]+)|.|versionName=([0-9.]+)
-CurrentVersion: 1.0.7
-CurrentVersionCode: 802
+CurrentVersion: 1.0.8
+CurrentVersionCode: 902
