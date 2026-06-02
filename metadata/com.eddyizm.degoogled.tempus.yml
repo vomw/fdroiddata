@@ -23,8 +23,8 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y make ninja-build cmake nasm
-      - update-alternatives --auto java
+      - apt-get install -y make ninja-build cmake nasm openjdk-17-jdk
+      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
     gradle:
       - degoogled
     output: build/outputs/apk/degoogled/release/*arm64-v8a*.apk
@@ -35,6 +35,7 @@ Builds:
     scandelete:
       - libs/
     build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
       - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
       - export ANDROID_ABI=24
