@@ -20,8 +20,12 @@ Builds:
       - apt-get install -y dosfstools mtools
     srclibs:
       - Ventoy@v1.1.10
-    prebuild:
-      - cd .. && VENTOY_SRC=$$Ventoy$$ bash scripts/build-ventoy-disk-img.sh
+    prebuild: mv $$Ventoy$$ ..
+    scandelete:
+      - Ventoy
+    build:
+      - cd ..
+      - VENTOY_SRC=Ventoy bash scripts/build-ventoy-disk-img.sh
     gradle:
       - yes
 
