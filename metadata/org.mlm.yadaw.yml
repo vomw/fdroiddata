@@ -29,7 +29,6 @@ Builds:
         .github/workflows/release.yml | head -1)
       - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS"
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
-      - source "$HOME/.cargo/env"
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android
       - export CARGO_RAPK_TAG=$(sed -E -n 's/.*CARGO_RAPK_VERSION.*"([^"]+)".*/\1/p'
@@ -39,7 +38,6 @@ Builds:
     rm:
       - third_party/android/termux/
     build:
-      - source "$HOME/.cargo/env"
       - cargo rapk build --release --deterministic --unsigned --target aarch64-linux-android
         --no-default-features --features android,clap-host --lib
     ndk: 28.2.13676358
