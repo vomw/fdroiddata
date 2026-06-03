@@ -22,25 +22,21 @@ Builds:
     submodules: true
     ndk: r25c
     output: app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rustup@1.28.0
     prebuild:
-      - mkdir -p app/libs
-      - cd ../../libsignal-src/java
       - echo "sdk.dir=$ANDROID_HOME" > local.properties
       - echo "ndk.dir=$$NDK$$" >> local.properties
-      - ./gradlew assembleRelease -x test
-      - cp android/build/outputs/aar/*-release.aar ../../apps/android/app/libs/
-      - cp client/build/libs/*.jar ../../apps/android/app/libs/
-      - rm -rf target android/build client/build
-      - cd ../../apps/android
+      - echo "sdk.dir=$ANDROID_HOME" > ../../libsignal-src/java/local.properties
+      - echo "ndk.dir=$$NDK$$" >> ../../libsignal-src/java/local.properties
+      - patch -p1 -d ../../libsignal-src < libsignal.patch
+      - $$rustup$$/rustup-init.sh -y
+      - export PATH=$HOME/.cargo/bin:$PATH
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     gradle:
       - yes
     gradleprops:
       - fdroid=true
-    scanignore:
-      - apps/android/app/libs/libsignal-android-release.aar
-      - apps/android/app/libs/libsignal-client-0.39.2.jar
-      - libsignal-src/java/android/src/main/jniLibs
-      - libsignal-src/java/shared/resources
     scandelete:
       - backend
       - libsignal-src/rust/attest/fuzz/seeds/dcap/cds2_test
