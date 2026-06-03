@@ -20,14 +20,13 @@ Builds:
     subdir: android-app/android/app
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-21-jdk
-    gradle:
-      - yes
-    build:
-      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - apt-get install -y nodejs npm
+    prebuild:
       - cd ../../
       - npm ci
       - npx --package=@capacitor/cli cap sync
+    gradle:
+      - yes
 
 AllowedAPKSigningKeys: c9812e0591a0182fff8323dd045557b8d1bcc33f8e3fcd255567828608b76c58
 
