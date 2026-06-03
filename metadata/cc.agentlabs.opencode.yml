@@ -21,7 +21,7 @@ Repo: https://github.com/dzianisv/opencode-mobile
 Builds:
   - versionName: 0.4.3
     versionCode: 5
-    commit: 87d7777bf47ed39f332b24e1c154f5cd82c413cc
+    commit: c46f273ecda0269ba2dc165053096e63d2bf5160
     subdir: android
     sudo:
       - apt-get update
@@ -55,6 +55,8 @@ Builds:
         ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/model/RemoteNotificationContent.kt
       - rm -f ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/RemoteMessageSerializer.java
       - rm -f ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/model/triggers/FirebaseNotificationTrigger.kt
+      - sed -i '/installreferrer/d' ../node_modules/expo-application/android/build.gradle
+      - cp ../fdroid/expo-application-patches/ApplicationModule.kt ../node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
     scanignore:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
