@@ -16,15 +16,15 @@ Binaries:
 Builds:
   - versionName: 1.0.7
     versionCode: 7
-    commit: 138f63e325801876cbc46d2744d379461b699a9e
+    commit: c488fda0a40b3f36199f1a726120063098ccba4a
     subdir: android-app/android/app
-    java: openjdk-21
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y nodejs npm openjdk-21-jdk
     gradle:
       - yes
     build:
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - cd ../../
       - npm ci
       - npx --package=@capacitor/cli cap sync
