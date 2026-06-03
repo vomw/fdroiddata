@@ -25,6 +25,8 @@ Builds:
     prebuild:
       - patch -p1 -d ../../../libsignal-src < ../libsignal.patch
       - rustup default 1.94.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - 'TOOLCHAIN=$(grep channel ../../../libsignal-src/rust/rust-toolchain.toml | sed ''s/.*"\(.*\)".*/\1/'') && rustup toolchain install "$TOOLCHAIN" && rustup target add --toolchain "$TOOLCHAIN" aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android'
     scandelete:
       - backend
       - libsignal-src/rust/attest/fuzz/seeds/dcap/cds2_test
