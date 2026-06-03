@@ -35,37 +35,17 @@ Builds:
       - find ../node_modules/@react-native/gradle-plugin -name '*.kts' -exec sed -i
         's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/kotlin.jvmToolchain(17)/kotlin.jvmToolchain(21)/g' ../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g' 
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g'
         ../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - printf '\nkotlin.jvm.target.validation.mode=warning\n' >> gradle.properties
       - sed -i '/firebase-messaging/d' ../node_modules/expo-notifications/android/build.gradle
-      - cp 
-        ../fdroid/expo-notifications-patches/service/interfaces/FirebaseMessagingDelegate.kt
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/interfaces/FirebaseMessagingDelegate.kt
-      - cp 
-        ../fdroid/expo-notifications-patches/service/delegates/FirebaseMessagingDelegate.kt
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/FirebaseMessagingDelegate.kt
-      - cp ../fdroid/expo-notifications-patches/service/ExpoFirebaseMessagingService.kt
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/ExpoFirebaseMessagingService.kt
-      - cp ../fdroid/expo-notifications-patches/tokens/PushTokenModule.kt 
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/tokens/PushTokenModule.kt
-      - cp ../fdroid/expo-notifications-patches/notifications/debug/DebugLogging.kt
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/debug/DebugLogging.kt
-      - cp 
-        ../fdroid/expo-notifications-patches/notifications/interfaces/NotificationListener.java
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/interfaces/NotificationListener.java
-      - cp ../fdroid/expo-notifications-patches/notifications/NotificationSerializer.java
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/NotificationSerializer.java
-      - cp 
-        ../fdroid/expo-notifications-patches/notifications/model/RemoteNotificationContent.kt
-        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/model/RemoteNotificationContent.kt
-      - rm -f 
+      - cp -a ../fdroid/expo-notifications-patches/. ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/
+      - rm -f
         ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/RemoteMessageSerializer.java
-      - rm -f 
+      - rm -f
         ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/model/triggers/FirebaseNotificationTrigger.kt
       - sed -i '/installreferrer/d' ../node_modules/expo-application/android/build.gradle
-      - cp ../fdroid/expo-application-patches/ApplicationModule.kt 
-        ../node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
+      - cp -a ../fdroid/expo-application-patches/. ../node_modules/expo-application/android/src/main/java/expo/modules/application/
     scanignore:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -75,26 +55,7 @@ Builds:
       - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/react-native/sdks/hermesc/linux64-bin
     scandelete:
-      - node_modules/expo-application/local-maven-repo
-      - node_modules/expo-clipboard/local-maven-repo
-      - node_modules/expo-crypto/local-maven-repo
-      - node_modules/expo-device/local-maven-repo
-      - node_modules/expo-image-loader/local-maven-repo
-      - node_modules/expo-image-manipulator/local-maven-repo
-      - node_modules/expo-image-picker/local-maven-repo
-      - node_modules/expo-linking/local-maven-repo
-      - node_modules/expo-local-authentication/local-maven-repo
-      - node_modules/expo-notifications/local-maven-repo
-      - node_modules/expo-secure-store/local-maven-repo
-      - node_modules/expo/node_modules/expo-asset/local-maven-repo
-      - node_modules/expo/node_modules/expo-file-system/local-maven-repo
-      - node_modules/expo/node_modules/expo-font/local-maven-repo
-      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
-      - node_modules/@sentry/cli-linux-x64
-      - node_modules/expo/template.tgz
-      - node_modules/react-native/React/I18n/strings
-      - node_modules/react-native/sdks/hermesc/osx-bin
-      - node_modules/react-native/sdks/hermesc/win64-bin
+      - node_modules
     ndk: 27.1.12297006
 
 AllowedAPKSigningKeys: 0c259d94e0ffea5d6319614b229d4b6bdc22de1f56e38e76948398d2df6aa099
