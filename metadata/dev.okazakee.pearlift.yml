@@ -31,10 +31,6 @@ Builds:
       - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/jvmTarget/s/17/21/' node_modules/react-native-notify-kit/android/build.gradle
-      - '[ -f node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so
-        ] || (npm pack react-native-bare-kit@0.13.3 --pack-destination /tmp && tar
-        -xzf /tmp/react-native-bare-kit-0.13.3.tgz -C /tmp && cp /tmp/package/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so
-        node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/)'
       - bunx expo prebuild -p android --clean
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -42,12 +38,16 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/react-native-bare-kit/android
       - node_modules/react-native/React/I18n
       - node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - node_modules
     build:
+      - npm pack react-native-bare-kit@0.13.3 --pack-destination /tmp && tar
+        -xzf /tmp/react-native-bare-kit-0.13.3.tgz -C /tmp && cp
+        /tmp/package/android/libs/bare-kit/jni/arm64-v8a/libbare-kit.so
+        node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/
+        && rm -rf /tmp/package /tmp/react-native-bare-kit-0.13.3.tgz
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
         -PreactNativeArchitectures=arm64-v8a -Dorg.gradle.jvmargs='-Xmx2048m -XX:MaxMetaspaceSize=1024m'
