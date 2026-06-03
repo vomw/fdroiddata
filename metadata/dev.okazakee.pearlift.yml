@@ -9,11 +9,6 @@ IssueTracker: https://github.com/Okazakee/PearLift/issues
 RepoType: git
 Repo: https://github.com/Okazakee/PearLift
 
-srclibs:
-  - barekit:
-      repo: https://github.com/holepunchto/bare-kit
-      version: v2.1.2
-
 Builds:
   - versionName: 1.0.8
     versionCode: 902
@@ -51,10 +46,12 @@ Builds:
       - node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - node_modules
+    srclibs:
+      - bare-kit@v2.1.2
     build:
-      - cd $$barekit$$ && npm install
+      - cd $$bare-kit$$ && npm install
       - mkdir -p /tmp/bare-kit-build
-      - /opt/cmake-4.0.1-linux-x86_64/bin/cmake -S $$barekit$$ -B
+      - /opt/cmake-4.0.1-linux-x86_64/bin/cmake -S $$bare-kit$$ -B
         /tmp/bare-kit-build
         -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake
         -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=28
@@ -66,7 +63,7 @@ Builds:
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
         -PreactNativeArchitectures=arm64-v8a -Dorg.gradle.jvmargs='-Xmx2048m -XX:MaxMetaspaceSize=1024m'
-      - rm -rf /tmp/bare-kit-build $$barekit$$/node_modules
+      - rm -rf /tmp/bare-kit-build $$bare-kit$$/node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
