@@ -31,7 +31,8 @@ Builds:
       - sed -i '/apply from.*sentry.gradle/d' app/build.gradle
       - find ../node_modules/@react-native/gradle-plugin -name '*.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/kotlin.jvmToolchain(17)/kotlin.jvmToolchain(21)/g' ../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - printf '\nreact.internal.disableJavaVersionAlignment=true\nkotlin.jvm.target.validation.mode=warning\n' >> gradle.properties
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g' ../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - printf '\nkotlin.jvm.target.validation.mode=warning\n' >> gradle.properties
     scandelete:
       - node_modules/expo-application/local-maven-repo
       - node_modules/expo-clipboard/local-maven-repo
