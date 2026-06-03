@@ -32,9 +32,7 @@ Builds:
       - find ../node_modules/@react-native/gradle-plugin -name '*.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/kotlin.jvmToolchain(17)/kotlin.jvmToolchain(21)/g' ../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g' ../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - printf '
-kotlin.jvm.target.validation.mode=warning
-' >> gradle.properties
+      - printf '\nkotlin.jvm.target.validation.mode=warning\n' >> gradle.properties
       - sed -i '/firebase-messaging/d' ../node_modules/expo-notifications/android/build.gradle
       - cp ../fdroid/expo-notifications-patches/service/interfaces/FirebaseMessagingDelegate.kt ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/interfaces/FirebaseMessagingDelegate.kt
       - cp ../fdroid/expo-notifications-patches/service/delegates/FirebaseMessagingDelegate.kt ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/FirebaseMessagingDelegate.kt
