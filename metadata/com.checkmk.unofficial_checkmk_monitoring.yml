@@ -13,17 +13,20 @@ Repo: https://git.pabr.de/apps/unofficial_checkmk_monitoring.git
 Builds:
   - versionName: 1.1.1
     versionCode: 211
-    commit: 530c50e29a4331b6d35f02afdc372330ce4913ac
+    commit: 12d3ef79cdc11c031caeef963bbd521346a8643d
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-armeabi-v7a-release-v%v.apk
     srclibs:
-      - flutter@3.44.0
+      - flutter@stable
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export SOURCE_DATE_EPOCH=1
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s*"([^"]+)".*/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
@@ -35,17 +38,20 @@ Builds:
 
   - versionName: 1.1.1
     versionCode: 212
-    commit: 530c50e29a4331b6d35f02afdc372330ce4913ac
+    commit: 12d3ef79cdc11c031caeef963bbd521346a8643d
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-arm64-v8a-release-v%v.apk
     srclibs:
-      - flutter@3.44.0
+      - flutter@stable
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export SOURCE_DATE_EPOCH=1
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s*"([^"]+)".*/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
@@ -57,17 +63,20 @@ Builds:
 
   - versionName: 1.1.1
     versionCode: 213
-    commit: 530c50e29a4331b6d35f02afdc372330ce4913ac
+    commit: 12d3ef79cdc11c031caeef963bbd521346a8643d
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://git.pabr.de/apps/unofficial_checkmk_monitoring/-/releases/v%v/downloads/app-x86_64-release-v%v.apk
     srclibs:
-      - flutter@3.44.0
+      - flutter@stable
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export SOURCE_DATE_EPOCH=1
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s*"([^"]+)".*/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
