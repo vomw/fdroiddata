@@ -1734,7 +1734,9 @@ Builds:
       - mkdir -p $HOME/.gradle
       - echo org.gradle.jvmargs=-Xmx9g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError
         > $HOME/.gradle/gradle.properties
-      - sed -i -e '/local-maven/d' ../settings.gradle.kts
+      - sed -i -e 's|${rootProject.projectDir}/app/libs/local-maven|https://jitpack.io|'
+        ../settings.gradle.kts
+      - sdkmanager 'cmake;4.1.2'
     scandelete:
       - app/src/androidTest/assets
 
