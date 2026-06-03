@@ -16,24 +16,13 @@ Builds:
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y -t forky npm make
+      - apt-get install -y -t forky npm make cmake
       - npm -g install bun@1.3.12
-      - curl -fsSL 
-        https://github.com/Kitware/CMake/releases/download/v4.0.1/cmake-4.0.1-linux-x86_64.tar.gz
-        -o /tmp/cmake.tar.gz
-      - tar -xzf /tmp/cmake.tar.gz -C /opt && rm /tmp/cmake.tar.gz
     output: android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
     srclibs:
       - bare-kit@v2.1.2
     prebuild:
       - bun install --frozen-lockfile
-      - rm -rf node_modules/@biomejs node_modules/fb-dotslash node_modules/@msgpackr-extract
-      - rm -rf node_modules/hermes-compiler/hermesc/osx-bin node_modules/hermes-compiler/hermesc/win64-bin
-      - rm -rf node_modules/@expo/expo-modules-macros-plugin/apple node_modules/expo/template.tgz
-      - rm -rf node_modules/expo-sqlite/ios node_modules/expo-sqlite/web node_modules/react-native-bare-kit/ios
-      - find node_modules -type d -path '*/prebuilds/output' -exec rm -rf {} + 2>/dev/null
-        || true
-      - rm -rf node_modules/pearlift-rest-timer-fgs/node_modules
       - sed -i -e '/JavaVersion\|jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/jvmTarget/s/17/21/' node_modules/react-native-notify-kit/android/build.gradle
@@ -44,24 +33,14 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/react-native/React/I18n
-      - node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - node_modules
     build:
-      - (cd $$bare-kit$$ && npm install)
-      - mkdir -p /tmp/bare-kit-build
-      - /opt/cmake-4.0.1-linux-x86_64/bin/cmake -S $$bare-kit$$ -B /tmp/bare-kit-build
-        -DCMAKE_TOOLCHAIN_FILE=$$NDK$$/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a
-        -DANDROID_PLATFORM=28 -DCMAKE_BUILD_TYPE=Release
-      - /opt/cmake-4.0.1-linux-x86_64/bin/cmake --build /tmp/bare-kit-build --target
-        bare_kit -j`nproc`
-      - mkdir -p node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a
-      - cp /tmp/bare-kit-build/android/libbare-kit.so node_modules/react-native-bare-kit/android/libs/bare-kit/jni/arm64-v8a/
+      - bash scripts/build-bare-kit.sh $$bare-kit$$ $$NDK$$
       - cd android
       - gradle assembleRelease -PpearliftAbiSplits=true -PpearliftFdroidAbi=arm64-v8a
         -PreactNativeArchitectures=arm64-v8a -Dorg.gradle.jvmargs='-Xmx2048m -XX:MaxMetaspaceSize=1024m'
-      - rm -rf /tmp/bare-kit-build $$bare-kit$$/node_modules
+      - rm -rf $$bare-kit$$/node_modules
     ndk: 27.1.12297006
 
 AutoUpdateMode: Version
