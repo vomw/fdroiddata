@@ -35,14 +35,15 @@ Builds:
       - find ../node_modules/@react-native/gradle-plugin -name '*.kts' -exec sed -i
         's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
       - sed -i 's/kotlin.jvmToolchain(17)/kotlin.jvmToolchain(21)/g' ../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g'
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g;s/VERSION_17/VERSION_21/g' 
         ../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - printf '\nkotlin.jvm.target.validation.mode=warning\n' >> gradle.properties
       - sed -i '/firebase-messaging/d' ../node_modules/expo-notifications/android/build.gradle
-      - cp -a ../fdroid/expo-notifications-patches/. ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/
-      - rm -f
+      - cp -a ../fdroid/expo-notifications-patches/. 
+        ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/
+      - rm -f 
         ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/RemoteMessageSerializer.java
-      - rm -f
+      - rm -f 
         ../node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/model/triggers/FirebaseNotificationTrigger.kt
       - sed -i '/installreferrer/d' ../node_modules/expo-application/android/build.gradle
       - cp -a ../fdroid/expo-application-patches/. ../node_modules/expo-application/android/src/main/java/expo/modules/application/
