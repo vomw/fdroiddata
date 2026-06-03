@@ -21,12 +21,49 @@ Repo: https://github.com/dzianisv/opencode-mobile
 Builds:
   - versionName: 0.4.3
     versionCode: 5
-    commit: 6339d5f453dca98c49d86d98d9b86b45e138132c
+    commit: b7b3f2fc273768b473f9aae1013995737663df84
     subdir: android
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
     init: npm install --legacy-peer-deps
+    prebuild:
+      - sed -i 's/hermesEnabled=true/hermesEnabled=false/' gradle.properties
+      - sed -i '/apply from.*sentry.gradle/d' app/build.gradle
+    scandelete:
+      - node_modules/expo-application/local-maven-repo
+      - node_modules/expo-asset/local-maven-repo
+      - node_modules/expo-clipboard/local-maven-repo
+      - node_modules/expo-crypto/local-maven-repo
+      - node_modules/expo-device/local-maven-repo
+      - node_modules/expo-image-loader/local-maven-repo
+      - node_modules/expo-image-manipulator/local-maven-repo
+      - node_modules/expo-image-picker/local-maven-repo
+      - node_modules/expo-keep-awake/local-maven-repo
+      - node_modules/expo-linking/local-maven-repo
+      - node_modules/expo-local-authentication/local-maven-repo
+      - node_modules/expo-notifications/local-maven-repo
+      - node_modules/expo-secure-store/local-maven-repo
+      - node_modules/expo/node_modules/expo-asset/local-maven-repo
+      - node_modules/expo/node_modules/expo-file-system/local-maven-repo
+      - node_modules/expo/node_modules/expo-font/local-maven-repo
+      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
+      - node_modules/@sentry/cli-linux-x64
+      - node_modules/@sentry/cli-linux-arm
+      - node_modules/@sentry/cli-linux-arm64
+      - node_modules/@sentry/cli-linux-i686
+      - node_modules/expo/template.tgz
+      - node_modules/react-native/React/I18n/strings
+      - node_modules/react-native/sdks/hermesc
+    scanignore:
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/expo-notifications/android/build.gradle
+      - node_modules/expo-application/android/build.gradle
     gradle:
       - release
     ndk: 27.1.12297006
