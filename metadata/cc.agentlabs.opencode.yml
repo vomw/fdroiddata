@@ -25,12 +25,14 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm openjdk-17-jdk
-      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - apt-get install -y nodejs npm
     init: npm install --legacy-peer-deps
     prebuild:
       - sed -i 's/hermesEnabled=true/hermesEnabled=false/' gradle.properties
       - sed -i '/apply from.*sentry.gradle/d' app/build.gradle
+      - find ../node_modules/@react-native/gradle-plugin -name '*.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' ../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' ../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scandelete:
       - node_modules/expo-application/local-maven-repo
       - node_modules/expo-clipboard/local-maven-repo
