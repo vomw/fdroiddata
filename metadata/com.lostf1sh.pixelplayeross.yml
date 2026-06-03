@@ -18,28 +18,17 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-java-alternatives --set java-1.21.0-openjdk-amd64
     output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - foojay=org.gradle.toolchains.foojay-resolver-convention
       - sed -i "/$foojay/d" settings.gradle.kts
       - sed -i "s/ -XX:+ParallelRefParsingEnabled//" gradle.properties
-    build:
-      - gradle_version=9.5.1
-      - gradle_zip=/tmp/gradle-${gradle_version}-bin.zip
-      - gradle_url=https://services.gradle.org/distributions/gradle-${gradle_version}-bin.zip
-      - gradle_sha=bafc141b619ad6350fd975fc903156dd5c151998cc8b058e8c1044ab5f7b031f
-      - curl --fail --location --retry 3 --output "$gradle_zip" "$gradle_url"
-      - printf "%s  %s\n" "$gradle_sha" "$gradle_zip" | sha256sum -c -
-      - rm -rf "/tmp/gradle-${gradle_version}"
-      - unzip -q "$gradle_zip" -d /tmp
-      - java_home=/usr/lib/jvm/java-21-openjdk-amd64
-      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
-      - if [ -d "$java_home" ]; then export JAVA_HOME="$java_home"; fi
-      - export PATH="$JAVA_HOME/bin:$PATH"
-      - gradle_bin=/tmp/gradle-${gradle_version}/bin/gradle
-      - no_splits=-Ppixelplayer.enableAbiSplits=false
-      - no_signing=-Ppixelplayer.disableReleaseSigning=true
-      - $gradle_bin :app:assembleRelease $no_splits $no_signing
+    gradle:
+      - yes
+    gradleprops:
+      - pixelplayer.enableAbiSplits=false
+      - pixelplayer.disableReleaseSigning=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
