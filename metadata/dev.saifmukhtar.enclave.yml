@@ -23,11 +23,8 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - echo "sdk.dir=$ANDROID_HOME" > ../local.properties
-      - echo "ndk.dir=$$NDK$$" >> ../local.properties
-      - echo "sdk.dir=$ANDROID_HOME" > ../../../libsignal-src/java/local.properties
-      - echo "ndk.dir=$$NDK$$" >> ../../../libsignal-src/java/local.properties
       - patch -p1 -d ../../../libsignal-src < ../libsignal.patch
+      - rustup default 1.94.1
       - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
         x86_64-linux-android
     scandelete:
