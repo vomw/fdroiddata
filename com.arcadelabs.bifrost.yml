@@ -1,0 +1,41 @@
+Categories:
+  - System
+  - Games
+License: GPL-3.0-only
+AuthorName: GopikChenth
+SourceCode: https://github.com/GopikChenth/Bifrost
+IssueTracker: https://github.com/GopikChenth/Bifrost/issues
+
+AutoName: Bifrost
+
+RepoType: git
+Repo: https://github.com/GopikChenth/Bifrost.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - windows
+      - linux
+      - macos
+      - web
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
