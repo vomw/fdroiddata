@@ -220,8 +220,23 @@ Builds:
       - sed -i -E '/\/\/.*(firebase|google-services|crashlytics)/Id' build.gradle.kts
       - rm -rf src/play src/apk src/playAndApk
 
+  - versionName: 0.1.4-foss
+    versionCode: 130
+    commit: a5797fc1217eec30c0d86b757d1945374c7a642d
+    subdir: app
+    gradle:
+      - foss
+    prebuild:
+      - sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - sed -i -E '/foojay-resolver/d' ../settings.gradle.kts
+      - sed -i -E '/libs\.plugins\.(google\.services|firebase\.crashlytics)/d' ../build.gradle.kts
+      - sed -i -E '/libs\.plugins\.(google\.services|firebase\.crashlytics)/d' build.gradle.kts
+      - sed -i -E '/(play|apk)Implementation.*(firebase|play\.services\.cast)/d' build.gradle.kts
+      - sed -i -E '/\/\/.*(firebase|google-services|crashlytics)/Id' build.gradle.kts
+      - rm -rf src/play src/apk src/playAndApk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/build.gradle.kts|versionCode = (\d+)|.|versionName = "([\d.]+)"
-CurrentVersion: 0.1.3-foss
-CurrentVersionCode: 129
+CurrentVersion: 0.1.4-foss
+CurrentVersionCode: 130
