@@ -15,7 +15,7 @@ Repo: https://github.com/monsiu/Custom-RR.git
 
 Builds:
   - versionName: 0.2.1
-    versionCode: 41
+    versionCode: 1004
     commit: 3d25d62c52cc7f74e862e12d0338ec3925dfe880
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
@@ -40,8 +40,8 @@ Builds:
         --release --dart-define=FDROID_BUILD=true
 
   - versionName: 0.2.1
-    versionCode: 42
-    commit: v0.2.1
+    versionCode: 2004
+    commit: 3d25d62c52cc7f74e862e12d0338ec3925dfe880
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -65,8 +65,83 @@ Builds:
         --release --dart-define=FDROID_BUILD=true
 
   - versionName: 0.2.1
-    versionCode: 43
-    commit: v0.2.1
+    versionCode: 3004
+    commit: 3d25d62c52cc7f74e862e12d0338ec3925dfe880
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-x64
+        --release --dart-define=FDROID_BUILD=true
+
+  - versionName: 0.2.2
+    versionCode: 1005
+    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm
+        --release --dart-define=FDROID_BUILD=true
+
+  - versionName: 0.2.2
+    versionCode: 2005
+    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm64
+        --release --dart-define=FDROID_BUILD=true
+
+  - versionName: 0.2.2
+    versionCode: 3005
+    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -96,9 +171,10 @@ MaintainerNotes: |-
 
   ABI split: the app ships one APK per ABI (flutter build apk --split-per-abi).
   android/app/build.gradle assigns each split a distinct versionCode using the
-  scheme base * 10 + abiCode (armeabi-v7a +1, arm64-v8a +2, x86_64 +3), which
-  matches the VercodeOperation below. The base versionCode is kept in sync with
-  pubspec.yaml.
+  scheme abiCode * 1000 + base (armeabi-v7a -> 1xxx, arm64-v8a -> 2xxx,
+  x86_64 -> 3xxx), which matches the VercodeOperation below. The base
+  versionCode comes from pubspec.yaml's +N build number (4 for 0.2.1, 5 for
+  0.2.2), so the embedded codes are 1004/2004/3004 and 1005/2005/3005.
 
   The --dart-define=FDROID_BUILD=true flag compiles out the app's self-update
   machinery (see lib/util/build_flags.dart): no GitHub release polling, no
@@ -113,9 +189,9 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 VercodeOperation:
-  - 10 * %c + 1
-  - 10 * %c + 2
-  - 10 * %c + 3
+  - 1000 + %c
+  - 2000 + %c
+  - 3000 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.2.1
-CurrentVersionCode: 43
+CurrentVersion: 0.2.2
+CurrentVersionCode: 3005
