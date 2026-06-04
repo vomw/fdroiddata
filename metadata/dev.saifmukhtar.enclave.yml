@@ -2,40 +2,44 @@ Categories:
   - Internet
   - Security
 License: AGPL-3.0-only
-AutoName: Enclave
+WebSite: https://enclave.saifmukhtar.dev
 SourceCode: https://github.com/saifmukhtar/enclave
 IssueTracker: https://github.com/saifmukhtar/enclave/issues
-WebSite: https://enclave.saifmukhtar.dev
+
+AutoName: Enclave
 
 RepoType: git
 Repo: https://github.com/saifmukhtar/enclave.git
 
 Builds:
-  - versionName: '3.0.0'
+  - versionName: 3.0.0
     versionCode: 4
     commit: a15e69a7ea72419ad58f5f57e948398e78960cf9
     subdir: apps/android/app
     submodules: true
-    ndk: r25c
     sudo:
       - apt-get update
-      - apt-get install -y rustup clang libclang-dev cmake make protobuf-compiler git
-    prebuild:
-      - echo "sdk.dir=$ANDROID_HOME" > ../local.properties
-      - echo "ndk.dir=$$NDK$$" >> ../local.properties
-      - echo "sdk.dir=$ANDROID_HOME" > ../../../libsignal-src/java/local.properties
-      - echo "ndk.dir=$$NDK$$" >> ../../../libsignal-src/java/local.properties
-      - patch -p1 -d ../../../libsignal-src < ../libsignal.patch
-      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - apt-get install -y rustup clang libclang-dev cmake make 
+        protobuf-compiler
     gradle:
       - yes
-    gradleprops:
-      - fdroid=true
+    prebuild:
+      - patch -p1 -d ../../../libsignal-src < ../libsignal.patch
+      - rustup default 1.94.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi 
+        i686-linux-android x86_64-linux-android
+      - TOOLCHAIN=$(grep channel ../../../libsignal-src/rust/rust-toolchain.toml
+        | sed 's/.*"\(.*\)".*/\1/') && rustup toolchain install "$TOOLCHAIN" && 
+        rustup target add --toolchain "$TOOLCHAIN" aarch64-linux-android 
+        armv7-linux-androideabi i686-linux-android x86_64-linux-android
     scandelete:
       - backend
       - libsignal-src/rust/attest/fuzz/seeds/dcap/cds2_test
+    ndk: r25c
+    gradleprops:
+      - fdroid=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.0.0'
+CurrentVersion: 3.0.0
 CurrentVersionCode: 4
