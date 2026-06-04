@@ -1,0 +1,38 @@
+Categories:
+  - Games
+License: MIT
+AuthorName: Vitor Diorio
+AuthorWebSite: https://github.com/vdiorio
+SourceCode: https://github.com/vdiorio/EdhCounterRefactor
+IssueTracker: https://github.com/vdiorio/EdhCounterRefactor/issues
+
+AutoName: EdhCounter
+
+RepoType: git
+Repo: https://github.com/vdiorio/EdhCounterRefactor.git
+
+Builds:
+  - versionName: 1.0.20
+    versionCode: 20
+    commit: 9a4ef4d35b4d113873b7fee08d6a33f17aac9dbd
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+      - npx patch-package
+    gradle:
+      - yes
+    scanignore:
+      - node_modules/jsc-android/dist
+      - node_modules/react-native/sdks/hermesc
+      - node_modules/react-native-reanimated/android/build.gradle
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.20
+CurrentVersionCode: 20
