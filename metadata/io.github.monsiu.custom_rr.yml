@@ -3,7 +3,6 @@ Categories:
 License: GPL-3.0-only
 AuthorName: monsiu
 AuthorWebSite: https://monsiu.github.io/
-WebSite: https://github.com/monsiu/Custom-RR
 SourceCode: https://github.com/monsiu/Custom-RR
 IssueTracker: https://github.com/monsiu/Custom-RR/issues
 Changelog: https://github.com/monsiu/Custom-RR/blob/HEAD/CHANGELOG.md
@@ -14,9 +13,9 @@ RepoType: git
 Repo: https://github.com/monsiu/Custom-RR.git
 
 Builds:
-  - versionName: 0.2.2
-    versionCode: 1005
-    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
+  - versionName: 0.2.3
+    versionCode: 6001
+    commit: 33afa5c5ecc078ec6c0933210f84abc7bafaee15
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -39,9 +38,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm
         --release --dart-define=FDROID_BUILD=true
 
-  - versionName: 0.2.2
-    versionCode: 2005
-    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
+  - versionName: 0.2.3
+    versionCode: 6002
+    commit: 33afa5c5ecc078ec6c0933210f84abc7bafaee15
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -64,9 +63,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm64
         --release --dart-define=FDROID_BUILD=true
 
-  - versionName: 0.2.2
-    versionCode: 3005
-    commit: c7f8060ef6494f4ad8737f25fa392cb13e19b3b3
+  - versionName: 0.2.3
+    versionCode: 6003
+    commit: 33afa5c5ecc078ec6c0933210f84abc7bafaee15
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -96,10 +95,11 @@ MaintainerNotes: |-
 
   ABI split: the app ships one APK per ABI (flutter build apk --split-per-abi).
   android/app/build.gradle assigns each split a distinct versionCode using the
-  scheme abiCode * 1000 + base (armeabi-v7a -> 1xxx, arm64-v8a -> 2xxx,
-  x86_64 -> 3xxx), which matches the VercodeOperation below. The base
-  versionCode comes from pubspec.yaml's +N build number (5 for 0.2.2), so the
-  embedded codes are 1005/2005/3005.
+  stock Flutter scheme base * 1000 + abiCode, which keeps the ABI in the
+  low-order digits (armeabi-v7a -> x001, arm64-v8a -> x002, x86_64 -> x003) and
+  matches the VercodeOperation below. The base versionCode comes from
+  pubspec.yaml's +N build number (6 for 0.2.3), so the embedded codes are
+  6001/6002/6003.
 
   The --dart-define=FDROID_BUILD=true flag compiles out the app's self-update
   machinery (see lib/util/build_flags.dart): no GitHub release polling, no
@@ -114,9 +114,9 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 VercodeOperation:
-  - 1000 + %c
-  - 2000 + %c
-  - 3000 + %c
+  - 1000 * %c + 1
+  - 1000 * %c + 2
+  - 1000 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.2.2
-CurrentVersionCode: 3005
+CurrentVersion: 0.2.3
+CurrentVersionCode: 6003
