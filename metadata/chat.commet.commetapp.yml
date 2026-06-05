@@ -1,0 +1,97 @@
+Categories:
+  - Internet
+  - Messaging
+  - Phone & SMS
+License: AGPL-3.0-only
+AuthorName: Airyz
+AuthorWebSite: https://airyz.xyz/
+WebSite: https://commet.chat/
+SourceCode: https://github.com/commetchat/commet
+IssueTracker: https://github.com/commetchat/commet/issues
+Translation: https://hosted.weblate.org/projects/commetchat/commet/
+
+AutoName: Commet
+
+RepoType: git
+Repo: https://github.com/commetchat/commet.git
+
+Builds:
+  - versionName: 0.4.1
+    versionCode: 824
+    commit: c2ee370d18c822673b24b6579842a01b971b1584
+    subdir: commet
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build libmpv-dev mpv ffmpeg libmimalloc-dev cmake
+        clang rustup
+      - mkdir -p /home/runner/work
+      - chmod -R 777 /home/runner
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.1
+    rm:
+      - commet/ios
+      - commet/linux
+      - commet/macos
+      - commet/test_driver
+      - commet/unit_test
+      - commet/integration_test
+      - commet/web
+      - commet/windows
+    prebuild:
+      - flutterVersion="3.41.1"
+      - rust_version="1.93.1"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ../..
+      - mv chat.commet.commetapp /home/runner/work/commet
+      - pushd /home/runner/work/commet/commet
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - PATH=$$flutter$$/bin:$PATH dart run scripts/codegen.dart
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - sed -i -e "s/'stable'/'$rust_version'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+      - popd
+      - mv /home/runner/work/commet chat.commet.commetapp
+      - rustup default $rust_version
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+    scandelete:
+      - commet/.pub-cache
+    build:
+      - mv $HOME/.rustup /home/runner/.rustup
+      - HOME_TMP=$HOME
+      - export HOME=/home/runner
+      - cd ../..
+      - mv chat.commet.commetapp /home/runner/work/commet
+      - pushd /home/runner/work/commet/commet
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - COMPILER_DIR=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin
+      - export PATH=$COMPILER_DIR:$PATH
+      - export CC_aarch64_linux_android=$COMPILER_DIR/aarch64-linux-android21-clang
+      - export AR_aarch64_linux_android=$COMPILER_DIR/llvm-ar
+      - export 
+        CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$COMPILER_DIR/aarch64-linux-android21-clang
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_AR=$COMPILER_DIR/llvm-ar
+      - export LD_LIBRARY_PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/lib64
+      - export 
+        BINDGEN_EXTRA_CLANG_ARGS=--sysroot=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+      - export GIT_HASH=$(git rev-parse HEAD)
+      - export TAG=$(git describe --tags --exact-match HEAD)
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export TIME_MILLISECONDS=$(git --no-pager log -1 --format=%at)000
+      - $$flutter$$/bin/flutter build apk --release --dart-define BUILD_MODE=release
+        --dart-define PLATFORM=android --dart-define BUILD_DETAIL=fdroid --dart-define
+        GIT_HASH=$GIT_HASH --dart-define VERSION_TAG=$TAG --dart-define BUILD_DATE=$TIME_MILLISECONDS
+      - popd
+      - mv /home/runner/work/commet chat.commet.commetapp
+      - export HOME=$HOME_TMP
+      - mv /home/runner/.rustup $HOME/.rustup
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+(\+hotfix\.\d+)?$
+UpdateCheckData: commet/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.4.1
+CurrentVersionCode: 824
