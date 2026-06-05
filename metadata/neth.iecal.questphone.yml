@@ -1,0 +1,40 @@
+Categories:
+  - Launcher
+  - System
+License: MIT
+AuthorName: Nethical
+AuthorEmail: aguptaq88@gmail.com
+WebSite: https://questphone.app
+SourceCode: https://github.com/QuestPhone/questphone
+IssueTracker: https://github.com/QuestPhone/questphone/issues
+
+AutoName: QuestPhone
+
+RepoType: git
+Repo: https://github.com/QuestPhone/questphone.git
+Binaries: https://github.com/QuestPhone/questphone/releases/download/%v/universal.apk
+
+Builds:
+  - versionName: 2.7.1-fdroid
+    versionCode: 32
+    commit: 8ed31ace7cd5d408a017080101af1927d77f8411
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake make git
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/isEnable/d' build.gradle.kts
+      - sed -i 's|commandLine("bash", "build.sh")|commandLine("./build.sh")|g' ../ai/build.gradle.kts
+      - echo -e 'SUPABASE_URL=https://hplszhlnchhfwngbojnc.supabase.co\nSUPABASE_API_KEY=sb_publishable_zzdik6KGZp6yP9ZGvuqkkA_Qfxy3MLz' >> local.properties
+    scanignore:
+      - app/src/main/res/raw
+
+AllowedAPKSigningKeys: c35601755756ecd887cf3f154d45a5b87c8dd19b6a044d411a7739e2b88c2de9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.7.1-fdroid
+CurrentVersionCode: 32
