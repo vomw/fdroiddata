@@ -15,10 +15,16 @@ Repo: https://github.com/saiinc/MySensorAirData.git
 Builds:
   - versionName: 1.2.3
     versionCode: 2
-    commit: 8b773f4a27a67a80ca7ed266fe8fc0255bcbd789
+    commit: 202babf654617c8916b706e4869cd7c75be0c77b
     gradle:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
+    prebuild:
+      - sed -i '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d'
+        build.gradle.kts
+      - perl -0pi -e 's/\n\ntasks\.configureEach \{.*?\n\}//s' app/build.gradle.kts
+      - sed -i '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d;/google-services/d'
+        app/build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
