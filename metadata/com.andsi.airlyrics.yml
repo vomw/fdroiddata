@@ -1,15 +1,16 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Online lyrics search uses third-party proprietary lyrics services. 
+      Local lyrics import works without these services.
 Categories:
   - Multimedia
 License: MIT
 AuthorName: AndSi
-Name: AirLyrics
 SourceCode: https://github.com/AirLyrics/AirLyrics
 IssueTracker: https://github.com/AirLyrics/AirLyrics/issues
 Changelog: https://github.com/AirLyrics/AirLyrics/releases
 
-AntiFeatures:
-  NonFreeNet:
-    en-US: Online lyrics search uses third-party proprietary lyrics services. Local lyrics import works without these services.
+Name: AirLyrics
 
 RepoType: git
 Repo: https://github.com/AirLyrics/AirLyrics
@@ -17,19 +18,20 @@ Repo: https://github.com/AirLyrics/AirLyrics
 Builds:
   - versionName: 1.0.3
     versionCode: 4
-    commit: f3faf901c182c201a5fe73d8dd56421d90673967
-    subdir: app
+    commit: 34cbd728ee05ea1c84933e60f8858427472052ff
     timeout: 20000
-    ndk: 26.3.11579264
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends curl ca-certificates clang make perl pkg-config rustup
-    prebuild:
+    init:
+      - rustup toolchain install 1.88.0
       - rustup default 1.88.0
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
     gradle:
       - yes
+    ndk: 26.3.11579264
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
