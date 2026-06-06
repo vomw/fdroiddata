@@ -1768,8 +1768,8 @@ Builds:
     preassemble:
       - :backend:build
 
-  - versionName: 1.2.70
-    versionCode: 1002070
+  - versionName: 1.2.71
+    versionCode: 1002071
     commit: e63af36dc68585f8520d01ce3083d27003588caf
     subdir: kmp_module/app
     submodules: true
@@ -1804,19 +1804,24 @@ Builds:
       - go mod download
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260520154334-0e4426e1883d
       - popd
-      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0" "ndk;27.3.13750724"
+      - sdkmanager "platforms;android-35" "platforms;android-36" "build-tools;36.0.0"
+        "ndk;27.3.13750724"
       - export ANDROID_SDK_ROOT="$$SDK$$"
       - export ANDROID_HOME="$$SDK$$"
       - export ANDROID_NDK_HOME="$$SDK$$/ndk/27.3.13750724"
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - export PATH="$JAVA_HOME/bin:$GOROOT/bin:$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$GOPATH/bin:$PATH"
+      - export 
+        PATH="$JAVA_HOME/bin:$GOROOT/bin:$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$GOPATH/bin:$PATH"
       - which go
       - go env GOROOT GOVERSION GOFLAGS
       - gomobile init
       - cd kmp_module
-      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/" gradle.properties
+      - sed -i -e "s/^versionCode=.*/versionCode=$$VERCODE$$/" -e "s/^versionName=.*/versionName=$$VERSION$$/"
+        gradle.properties
       - export COMMIT=$(git rev-parse HEAD)
-      - printf "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n" >> gradle.properties
+      - printf 
+        "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n"
+        >> gradle.properties
       - printf "\ngomobileExecutable=$GOPATH/bin/gomobile\n" >> gradle.properties
       - printf "\ngomobileGoRoot=$GOROOT\n" >> gradle.properties
       - printf "\ngomobileAndroidSdkRoot=$ANDROID_SDK_ROOT\n" >> gradle.properties
@@ -1830,6 +1835,7 @@ AllowedAPKSigningKeys: c3f0414a74012060d7c6aa3a3d9dac0aa13c1bd23b7512eefd860fb86
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
-UpdateCheckData: https://github.com/DobbyVPN/DobbyVPN/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=([\d.]+)
-CurrentVersion: 1.2.70
-CurrentVersionCode: 1002070
+UpdateCheckData: 
+  https://github.com/DobbyVPN/DobbyVPN/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=([\d.]+)
+CurrentVersion: 1.2.71
+CurrentVersionCode: 1002071
