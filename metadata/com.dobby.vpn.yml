@@ -1768,9 +1768,9 @@ Builds:
     preassemble:
       - :backend:build
 
-  - versionName: 1.2.69
-    versionCode: 1002069
-    commit: 7c58f52835c7e21099f9d38c2d8399ad98ccf6e2
+  - versionName: 1.2.70
+    versionCode: 1002070
+    commit: e63af36dc68585f8520d01ce3083d27003588caf
     subdir: kmp_module/app
     submodules: true
     sudo:
@@ -1794,7 +1794,7 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH="$HOME/go"
       - export GO111MODULE=on
-      - export GOFLAGS="-buildvcs=false"
+      - export GOFLAGS="-trimpath -buildvcs=false"
       - export SOURCE_DATE_EPOCH=0
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - go env GOROOT GOVERSION GOFLAGS
@@ -1818,6 +1818,9 @@ Builds:
       - export COMMIT=$(git rev-parse HEAD)
       - printf "\nprojectRepositoryCommit=$COMMIT\nprojectRepositoryCommitLink=https://github.com/DobbyVPN/DobbyVPN/tree/$COMMIT\n" >> gradle.properties
       - printf "\ngomobileExecutable=$GOPATH/bin/gomobile\n" >> gradle.properties
+      - printf "\ngomobileGoRoot=$GOROOT\n" >> gradle.properties
+      - printf "\ngomobileAndroidSdkRoot=$ANDROID_SDK_ROOT\n" >> gradle.properties
+      - printf "\ngomobileAndroidNdkHome=$ANDROID_NDK_HOME\n" >> gradle.properties
       - printf "\nandroid.suppressUnsupportedCompileSdk=35\n" >> gradle.properties
       - printf "\nkotlin.native.ignoreDisabledTargets=true\n" >> gradle.properties
     preassemble:
@@ -1828,5 +1831,5 @@ AllowedAPKSigningKeys: c3f0414a74012060d7c6aa3a3d9dac0aa13c1bd23b7512eefd860fb86
 AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: https://github.com/DobbyVPN/DobbyVPN/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=([\d.]+)
-CurrentVersion: 1.2.69
-CurrentVersionCode: 1002069
+CurrentVersion: 1.2.70
+CurrentVersionCode: 1002070
