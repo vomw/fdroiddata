@@ -14,7 +14,7 @@ Repo: https://github.com/manisanameetei7-ux/myhisapkitap.git
 Builds:
   - versionName: 1.0.2
     versionCode: 3
-    commit: v1.0.2
+    commit: 3e03a164dce6a638158c5686e50c4e958c350ec6
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -25,6 +25,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
