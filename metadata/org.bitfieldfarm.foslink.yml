@@ -1,0 +1,51 @@
+Categories:
+  - Internet
+License: AGPL-3.0-or-later
+AuthorName: BitfieldFarm
+SourceCode: https://codeberg.org/BitfieldFarm/foslink-app
+IssueTracker: https://codeberg.org/BitfieldFarm/foslink-app/issues
+
+Name: fOSlink
+AutoName: foslink
+Description: |-
+  fOSlink is a mobile client for farmOS, the open-source farm management platform.
+
+  Connects directly to your own farmOS instance using PKCE OAuth2 - no intermediate
+  server or third-party service required. Your data goes straight between your phone
+  and your farm.
+
+  Features:
+
+  * Direct connection to any farmOS instance
+  * Secure login via PKCE OAuth2
+  * Activity logging - register work sessions with asset, category and flags
+  * Observation logging - record field observations
+  * Maintenance logging - track maintenance work on equipment
+  * Grain module - seeding and fertilization logs
+  * Todo - cross-module view of all pending logs
+  * Module system - enable/disable modules per device
+
+  Built with SvelteKit and Capacitor. No Google Play Services or Firebase.
+
+RepoType: git
+Repo: https://codeberg.org/BitfieldFarm/foslink-app
+
+Builds:
+  - versionName: 1.0.17
+    versionCode: 1017
+    commit: befa18337582768d8a48f3c27fb5e966158cc46d
+    subdir: android
+    sudo: curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install
+      -y nodejs
+    init: cd .. && npm ci && npm run build && npx cap sync android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild: sed -i 's/versionCode [0-9]*/versionCode $$VERCODE$$/' app/build.gradle
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.17
+CurrentVersionCode: 1017
