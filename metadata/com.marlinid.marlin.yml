@@ -21,28 +21,11 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
-    # Modeled on org.jitsi.meet (a React Native app already built by F-Droid's
-    # infra), which proves `fdroid build --on-server` *does* have network access
-    # for `curl`/`npm install` during `init` — not the hermetic no-network build
-    # I'd assumed going in. Their pattern: fetch a pinned Node.js binary with a
-    # checksum, then `npm install`.
-    #
-    # UNLIKE Jitsi (whose `android/` is checked into their bare-RN repo), this is
-    # an Expo CNG project — `android/` doesn't exist in the source tree and is
-    # generated on demand by `npx expo prebuild`. A first attempt using the usual
-    # declarative `subdir: android` + `gradle: yes` failed immediately with
-    # "Missing subdir build/com.marlinid.marlin/android" — fdroidserver resolves
-    # (chdirs into) `subdir` *before* running `init`, so it can never see a
-    # directory that `init` itself is supposed to create.
-    #
-    # Fix: skip `subdir`/`gradle` declaration entirely and run a fully manual
-    # build instead — `init` generates `android/`, `build` compiles it, `output`
-    # tells fdroidserver where the resulting APK glob lands (evaluated from the
-    # project root since no `subdir` is set).
-    #
-    # Node 22.22.3 (current v22 "Jod" LTS as of this writing) — matches this
-    # project's "Node.js v22+" requirement. Bump the version + checksum here
-    # (from nodejs.org/dist/<version>/SHASUMS256.txt) whenever that moves.
+    # Manual build: this is an Expo CNG project — `android/` is generated on
+    # demand by `npx expo prebuild` (in `init`), not checked into the repo, so
+    # the usual declarative `subdir`/`gradle` can't be used (fdroidserver
+    # resolves `subdir` before `init` runs, so it can never see a directory
+    # `init` is supposed to create).
     sudo:
       - apt-get update
       - apt-get install -y curl xz-utils
