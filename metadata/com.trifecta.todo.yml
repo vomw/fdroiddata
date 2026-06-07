@@ -4,7 +4,7 @@ License: GPL-3.0-or-later
 AuthorName: Archixonline
 WebSite: https://gitlab.com/archixonline1/Archixonline-project
 SourceCode: https://gitlab.com/archixonline1/Archixonline-project
-IssueTracker: https://gitlab.com/archixonline1/Archixonline-project/issues
+IssueTracker: https://gitlab.com/archixonline1/Archixonline-project/-/issues
 
 AutoName: Trifecta ToDo
 Summary: Cross-platform task manager with widgets and optional LAN sync
@@ -20,7 +20,7 @@ RepoType: git
 Repo: https://gitlab.com/archixonline1/Archixonline-project.git
 
 Builds:
-  - versionName: '0.9.2'
+  - versionName: 0.9.2
     versionCode: 1
     commit: v0.9.2
     output: build/app/outputs/flutter-apk/app-release.apk
@@ -40,9 +40,11 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
       - apkDir=build/app/outputs/flutter-apk
-      - if [ -f "$apkDir/app-release-unsigned.apk" ]; then cp -f "$apkDir/app-release-unsigned.apk" "$apkDir/app-release.apk"; fi
+      - if [ -f "$apkDir/app-release-unsigned.apk" ]; then cp -f "$apkDir/app-release-unsigned.apk"
+        "$apkDir/app-release.apk"; fi
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s*([0-9.]+\+[0-9]+)
 CurrentVersion: 0.9.2
 CurrentVersionCode: 1
