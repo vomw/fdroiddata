@@ -35,12 +35,6 @@ Builds:
       - ./scripts/fdroid-reproducible-prebuild.sh
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
-      - node_modules/expo-asset/local-maven-repo
-      - node_modules/expo-crypto/local-maven-repo
-      - node_modules/expo-secure-store/local-maven-repo
-      - node_modules/expo-file-system/local-maven-repo
-      - node_modules/expo/node_modules/expo-font/local-maven-repo
-      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -49,18 +43,11 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
       - node_modules/react-native-webview/android/build.gradle
-      - node_modules/react-native/ReactAndroid/publish.gradle
-      - .tmp
-      - .expo-web-test
-      - scripts/android/runtime-jar-patches
     scandelete:
       - node_modules
-    build: export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
     gradleprops:
       - claimlyUnsignedRelease=true
       - reactNativeArchitectures=armeabi-v7a,arm64-v8a
-      - org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8
-      - org.gradle.caching=false
 
 MaintainerNotes: |-
   React Native / Expo SDK 54. Committed apps/mobile/android/ (no expo prebuild on builders).
@@ -68,7 +55,7 @@ MaintainerNotes: |-
   Play Store uses com.anonymous.claimlynative (play flavor). Kotlin namespace remains
   com.anonymous.claimlynative. Reproducible builds: scripts/fdroid-reproducible-prebuild.sh
   (npm ci, SOURCE_DATE_EPOCH, JDK 21 sed, pinned ABIs, applicationId rewrite),
-  dependenciesInfo disabled, org.gradle.caching=false. See fdroid/REPRODUCIBLE_BUILDS.md.
+  dependenciesInfo disabled. See fdroid/REPRODUCIBLE_BUILDS.md.
   Store text (summary/description/screenshots): fastlane/metadata/android/en-US/ on release tag.
   fdroiddata holds build recipe only.
 
