@@ -1,4 +1,4 @@
-﻿AntiFeatures:
+AntiFeatures:
   - NonFreeNet
 Categories:
   - Money
@@ -11,7 +11,6 @@ Changelog: https://github.com/Oysterclaim/oysterclaim/releases
 Donate: https://oysterclaim.com/support
 
 AutoName: OysterClaim
-Summary: Class action settlements - browse, file, track payouts
 Description: |
   OysterClaim helps you browse open class action settlements (U.S. and Canada),
   queue claims, and open official administrator filing pages with your details
@@ -36,9 +35,9 @@ Builds:
       - apt-get update
       - apt-get install -y curl ca-certificates openjdk-21-jdk-headless
       - update-alternatives --auto java
-      - curl -fsSL -o node.tar.gz
+      - curl -fsSL -o node.tar.gz 
         https://nodejs.org/dist/v20.19.4/node-v20.19.4-linux-x64.tar.gz
-      - echo "d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560
+      - echo "d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560 
         node.tar.gz" | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
     gradle:
@@ -50,19 +49,19 @@ Builds:
       - export OYSTER_POSTINSTALL_MODE=fdroid
       - export NODE_OPTIONS=--max-old-space-size=4096
       - npm ci
-      - find node_modules/@react-native/gradle-plugin -name 'build.gradle.kts'
+      - find node_modules/@react-native/gradle-plugin -name 'build.gradle.kts' 
         -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' {} +
-      - sed -i -e 's/VERSION_17/VERSION_21/g' -e
-        's/jvmToolchain(17)/jvmToolchain(21)/g'
+      - sed -i -e 's/VERSION_17/VERSION_21/g' -e 
+        's/jvmToolchain(17)/jvmToolchain(21)/g' 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i
+      - sed -i 
         's/reactNativeArchitectures=.*/reactNativeArchitectures=armeabi-v7a,arm64-v8a/'
         apps/mobile/android/gradle.properties
-      - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g
+      - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g 
         -XX:MaxMetaspaceSize=1024m/' apps/mobile/android/gradle.properties
-      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/'
+      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/' 
         apps/mobile/android/gradle.properties
-      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId
+      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId 
         "com.oysterclaim.app"/' apps/mobile/android/app/build.gradle
       - cd apps/mobile/android
     scanignore:
@@ -91,7 +90,7 @@ Builds:
     gradleprops:
       - claimlyUnsignedRelease=true
       - reactNativeArchitectures=armeabi-v7a,arm64-v8a
-      - org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m
+      - org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m 
         -Dfile.encoding=UTF-8
       - org.gradle.caching=false
 
@@ -106,6 +105,7 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-UpdateCheckData: apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+UpdateCheckData: 
+  apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
 CurrentVersion: 1.0.7
 CurrentVersionCode: 96
