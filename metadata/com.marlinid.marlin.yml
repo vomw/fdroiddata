@@ -33,9 +33,14 @@ Builds:
     # and at build time (bundling the JS), and fdroidserver purges `sudo` before
     # `init` runs — so it's fetched and extracted to /usr/local here, while
     # still root, rather than in `init`.
+    #
+    # The build image only ships JDK 21, but @react-native/gradle-plugin's
+    # settings-plugin needs a JDK 17 toolchain to compile, and Gradle toolchain
+    # auto-provisioning is disabled — so install JDK 17 alongside; Gradle's
+    # auto-*detection* finds it under /usr/lib/jvm without downloading anything.
     sudo:
       - apt-get update
-      - apt-get install -y curl xz-utils
+      - apt-get install -y curl xz-utils openjdk-17-jdk-headless
       - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
       - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  /tmp/node.tar.xz" | sha256sum -c -
       - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local
