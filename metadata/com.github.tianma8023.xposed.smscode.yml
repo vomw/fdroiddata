@@ -1,0 +1,37 @@
+Categories:
+  - Phone & SMS
+  - System
+License: GPL-3.0-only
+SourceCode: https://github.com/magisk317/XposedSmsCode
+IssueTracker: https://github.com/magisk317/XposedSmsCode/issues
+Changelog: https://github.com/magisk317/XposedSmsCode/releases
+
+AutoName: XposedSmsCode
+
+RequiresRoot: true
+
+RepoType: git
+Repo: https://github.com/magisk317/XposedSmsCode.git
+
+Builds:
+  - versionName: 3.1.9-beta
+    versionCode: 101
+    commit: 27b5478776dcfb7e4dfb7ca11fdf77b4c4d7dbd7
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i 's/^javaBytecode = "25"/javaBytecode = "21"/' ../gradle/libs.versions.toml
+
+  - versionName: 3.2.6
+    versionCode: 111
+    commit: c57e9d56a2b0c9a59cbcbac8736abb845b56e685
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i 's/^javaBytecode = "25"/javaBytecode = "21"/' ../gradle/libs.versions.toml
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+(-beta(\.\d+)?)?$
+UpdateCheckData: gradle/libs.versions.toml|versionCode = "(\d+)"|.|versionName = "([^"]+)"
+CurrentVersion: 3.2.6
+CurrentVersionCode: 111
