@@ -20,35 +20,78 @@ Repo: https://github.com/fwille/marlin.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0-fdroid
-    subdir: android
-    gradle:
-      - yes
-    # `android/` is normally generated on demand by `npx expo prebuild` (Expo's
-    # CNG), so `v1.0.0-fdroid` is a dedicated tag with it committed — the usual
-    # declarative subdir/gradle build needs that directory to exist up front.
-    #
-    # Node must be on PATH system-wide: the RN/Expo Gradle plugin shells out to
-    # `node`/`npm` both at Gradle-configuration time (resolving its own plugins)
-    # and at build time (bundling the JS), and fdroidserver purges `sudo` before
-    # `init` runs — so it's fetched and extracted to /usr/local here, while
-    # still root, rather than in `init`.
-    #
-    # The build image only ships JDK 21, but @react-native/gradle-plugin's
-    # settings-plugin needs a JDK 17 toolchain to compile, and Gradle toolchain
-    # auto-provisioning is disabled — so install JDK 17 alongside; Gradle's
-    # auto-*detection* finds it under /usr/lib/jvm without downloading anything.
+    commit: 29e99e4b6e4709560ffb79a760a4d04e6a9cc8ce
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     sudo:
       - apt-get update
-      - apt-get install -y curl xz-utils openjdk-17-jdk-headless
+      - apt-get install -y curl xz-utils
       - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
       - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  /tmp/node.tar.xz" | sha256sum -c -
       - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local
       - rm /tmp/node.tar.xz
     init:
-      - cd .. && npm ci
+      - npm ci
+    # The build image only ships JDK 21 (Debian trixie dropped JDK 17), but
+    # @react-native/gradle-plugin hardcodes a JDK 17 toolchain to compile
+    # itself — retarget it to 21 with sed before Gradle touches it. Also
+    # strip `signingConfig` so the release build comes out unsigned, ready
+    # for F-Droid to sign with its own repo key.
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - npx expo prebuild --platform android
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+    scanignore:
+      - modules/native-location/android/build.gradle
+      - node_modules/@expo/dom-webview/android/build.gradle
+      - node_modules/@expo/log-box/android/build.gradle
+      - node_modules/@expo/ui/android/build.gradle
+      - node_modules/@react-native-masked-view/masked-view/android/build.gradle
+      - node_modules/expo/android/build.gradle
+      - node_modules/expo-asset/android/build.gradle
+      - node_modules/expo-clipboard/android/build.gradle
+      - node_modules/expo-constants/android/build.gradle
+      - node_modules/expo-dev-client/android/build.gradle
+      - node_modules/expo-dev-launcher/android/build.gradle
+      - node_modules/expo-dev-menu/android/build.gradle
+      - node_modules/expo-dev-menu-interface/android/build.gradle
+      - node_modules/expo-device/android/build.gradle
+      - node_modules/expo-document-picker/android/build.gradle
+      - node_modules/expo-file-system/android/build.gradle
+      - node_modules/expo-font/android/build.gradle
+      - node_modules/expo-image/android/build.gradle
+      - node_modules/expo-image-loader/android/build.gradle
+      - node_modules/expo-image-manipulator/android/build.gradle
+      - node_modules/expo-image-picker/android/build.gradle
+      - node_modules/expo-json-utils/android/build.gradle
+      - node_modules/expo-keep-awake/android/build.gradle
+      - node_modules/expo-linking/android/build.gradle
+      - node_modules/expo-location/android/build.gradle
+      - node_modules/expo-manifests/android/build.gradle
+      - node_modules/expo-modules-core/android/build.gradle
+      - node_modules/expo-router/android/build.gradle
+      - node_modules/expo-secure-store/android/build.gradle
+      - node_modules/expo-sharing/android/build.gradle
+      - node_modules/expo-splash-screen/android/build.gradle
+      - node_modules/expo-sqlite/android/build.gradle
+      - node_modules/expo-status-bar/android/build.gradle
+      - node_modules/expo-system-ui/android/build.gradle
+      - node_modules/expo-updates-interface/android/build.gradle
+      - node_modules/expo-web-browser/android/build.gradle
+      - node_modules/react-native-gesture-handler/android/build.gradle
+      - node_modules/react-native-reanimated/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/react-native-worklets/android/build.gradle
     scandelete:
       - node_modules
+    build:
+      - cd android/app
+      - gradle assembleRelease
+    ndk: 27.1.12297006
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
