@@ -1,0 +1,112 @@
+Categories:
+  - Radio
+License: AGPL-3.0-only
+AuthorName: Matyáš Caras
+AuthorEmail: matyas@caras.wtf
+SourceCode: https://codeberg.org/hernik/waveyradio.git
+IssueTracker: https://codeberg.org/hernik/waveyradio/issues
+Changelog: https://codeberg.org/hernik/waveyradio/src/branch/moab/CHANGELOG.md
+Liberapay: hernikplays
+
+AutoName: waveyradio
+
+RepoType: git
+Repo: https://codeberg.org/hernik/waveyradio.git
+
+Builds:
+  - versionName: 0.1.0-a2
+    versionCode: 31
+    commit: 23fcb351dad7a03c9bcc52d689f5db79047416db
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s"(.*)"/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - rm -rf android/**/*.license
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - dart run build_runner build -d
+      - flutter build apk --release --split-per-abi --target-platform="android-arm"
+
+  - versionName: 0.1.0-a2
+    versionCode: 32
+    commit: 23fcb351dad7a03c9bcc52d689f5db79047416db
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s"(.*)"/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - rm -rf android/**/*.license
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - dart run build_runner build -d
+      - flutter build apk --release --split-per-abi --target-platform="android-arm64"
+
+  - versionName: 0.1.0-a2
+    versionCode: 33
+    commit: 23fcb351dad7a03c9bcc52d689f5db79047416db
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":\s"(.*)"/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - rm -rf android/**/*.license
+      - flutter config --no-analytics
+      - flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - dart run build_runner build -d
+      - flutter build apk --release --split-per-abi --target-platform="android-x64"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.0-a2
+CurrentVersionCode: 33
