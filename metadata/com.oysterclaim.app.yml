@@ -44,16 +44,8 @@ Builds:
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     prebuild:
       - cd ../../..
-      - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
-      - export OYSTER_POSTINSTALL_MODE=fdroid
-      - export NODE_OPTIONS=--max-old-space-size=4096
-      - npm ci
-      - find node_modules/@react-native/gradle-plugin -name 'build.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' {} +
-      - sed -i -e 's/VERSION_17/VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i 's/reactNativeArchitectures=.*/reactNativeArchitectures=armeabi-v7a,arm64-v8a/' apps/mobile/android/gradle.properties
-      - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m/' apps/mobile/android/gradle.properties
-      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/' apps/mobile/android/gradle.properties
-      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/' apps/mobile/android/app/build.gradle
+      - chmod +x scripts/fdroid-reproducible-prebuild.sh
+      - ./scripts/fdroid-reproducible-prebuild.sh
       - cd apps/mobile/android
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
@@ -88,8 +80,10 @@ MaintainerNotes: |-
   React Native / Expo SDK 54. Committed apps/mobile/android/ (no expo prebuild on builders).
   prebuild rewrites fdroid applicationId to com.oysterclaim.app to match this metadata id.
   Play Store uses com.anonymous.claimlynative (play flavor). Kotlin namespace remains
-  com.anonymous.claimlynative. Reproducible builds: npm ci + pinned Node 20.19.4,
-  pinned ABIs, dependenciesInfo disabled, org.gradle.caching=false. Store text:
+  com.anonymous.claimlynative. Reproducible builds: scripts/fdroid-reproducible-prebuild.sh
+  (npm ci, SOURCE_DATE_EPOCH, JDK 21 sed, pinned ABIs, applicationId rewrite),
+  dependenciesInfo disabled, org.gradle.caching=false. See fdroid/REPRODUCIBLE_BUILDS.md.
+  Store text:
   fastlane/metadata/android/en-US/; screenshots in fdroid/store-assets/en-US/ via
   scripts/prepare-fdroiddata-mr.py.
 
