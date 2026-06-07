@@ -25,10 +25,16 @@ Builds:
     rm:
       - ios
     prebuild:
-      - rm -f android/gradle.properties
-    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m" > android/gradle.properties
+      - echo "android.useAndroidX=true" >> android/gradle.properties
+      - echo "android.enableJetifier=true" >> android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
 AutoUpdateMode: Version
