@@ -25,14 +25,18 @@ Builds:
     # demand by `npx expo prebuild` (in `init`), not checked into the repo, so
     # the usual declarative `subdir`/`gradle` can't be used (fdroidserver
     # resolves `subdir` before `init` runs, so it can never see a directory
-    # `init` is supposed to create).
+    # `init` is supposed to create). fdroidserver also locks root and purges
+    # `sudo` between the `sudo` and `init` phases, so `init`/`build` run
+    # unprivileged — Node is extracted into the project dir (not /usr/local,
+    # which isn't writable) and prefixed onto PATH for this step only.
     sudo:
       - apt-get update
       - apt-get install -y curl xz-utils
     init:
       - curl -Lo node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
       - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  node.tar.xz" | sha256sum -c -
-      - tar xJf node.tar.xz --strip-components=1 -C /usr/local
+      - mkdir node && tar xJf node.tar.xz --strip-components=1 -C node
+      - export PATH="$PWD/node/bin:$PATH"
       - npm ci
       - npx expo prebuild --platform android --no-install
     build:
@@ -41,6 +45,8 @@ Builds:
     scandelete:
       - node_modules
       - android
+      - node
+      - node.tar.xz
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
