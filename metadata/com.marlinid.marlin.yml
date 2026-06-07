@@ -1,0 +1,61 @@
+Categories:
+  - Science & Education
+License: MIT
+AuthorName: Fiona Wille
+AuthorEmail: marlinid.app@gmail.com
+SourceCode: https://github.com/fwille/marlin
+IssueTracker: https://github.com/fwille/marlin/issues
+
+AutoName: Marlin
+Description: |-
+    Marlin is a marine species identification and life-list app for fish and
+    marine life. Spot something while diving or beachcombing, look it up against
+    iNaturalist's observation data, and log it to your personal life list with a
+    photo, notes, and a pinned location. No account, no tracking, no ads —
+    everything stays on your device with optional Android Auto Backup.
+
+RepoType: git
+Repo: https://github.com/fwille/marlin.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0  # TODO: tag this commit before submitting the recipe
+    # Modeled on org.jitsi.meet (a React Native app already built by F-Droid's
+    # infra), which proves `fdroid build --on-server` *does* have network access
+    # for `curl`/`npm install` during `init` — not the hermetic no-network build
+    # I'd assumed going in. Their pattern: fetch a pinned Node.js binary with a
+    # checksum, `npm install`, then a normal Gradle build, with `scandelete` to
+    # drop `node_modules` from the build report afterward.
+    #
+    # The one thing Jitsi's recipe *doesn't* need that ours does: their `android/`
+    # is checked into the RN repo (bare workflow), ours is generated on demand by
+    # Expo's CNG. So `npx expo prebuild` has to run inside `init` — *before*
+    # F-Droid resolves `subdir` — to produce `android/` first. That ordering is
+    # the one thing to verify with a real `fdroid build --on-server` test run
+    # (or ask in the F-Droid forums) before submitting the MR; everything else
+    # below follows precedent directly.
+    #
+    # Node 22.22.3 (current v22 "Jod" LTS as of this writing) — matches this
+    # project's "Node.js v22+" requirement (see CLAUDE.md). Bump the version +
+    # checksum here (from nodejs.org/dist/<version>/SHASUMS256.txt) whenever the
+    # project's Node requirement moves.
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils
+    init:
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
+      - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  node.tar.xz" | sha256sum -c -
+      - tar xJf node.tar.xz --strip-components=1 -C /usr/local
+      - npm ci
+      - npx expo prebuild --platform android --no-install
+    subdir: android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
