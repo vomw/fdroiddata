@@ -20,26 +20,29 @@ Repo: https://github.com/fwille/marlin.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0  # TODO: tag this commit before submitting the recipe
+    commit: v1.0.0
     # Modeled on org.jitsi.meet (a React Native app already built by F-Droid's
     # infra), which proves `fdroid build --on-server` *does* have network access
     # for `curl`/`npm install` during `init` — not the hermetic no-network build
     # I'd assumed going in. Their pattern: fetch a pinned Node.js binary with a
-    # checksum, `npm install`, then a normal Gradle build, with `scandelete` to
-    # drop `node_modules` from the build report afterward.
+    # checksum, then `npm install`.
     #
-    # The one thing Jitsi's recipe *doesn't* need that ours does: their `android/`
-    # is checked into the RN repo (bare workflow), ours is generated on demand by
-    # Expo's CNG. So `npx expo prebuild` has to run inside `init` — *before*
-    # F-Droid resolves `subdir` — to produce `android/` first. That ordering is
-    # the one thing to verify with a real `fdroid build --on-server` test run
-    # (or ask in the F-Droid forums) before submitting the MR; everything else
-    # below follows precedent directly.
+    # UNLIKE Jitsi (whose `android/` is checked into their bare-RN repo), this is
+    # an Expo CNG project — `android/` doesn't exist in the source tree and is
+    # generated on demand by `npx expo prebuild`. A first attempt using the usual
+    # declarative `subdir: android` + `gradle: yes` failed immediately with
+    # "Missing subdir build/com.marlinid.marlin/android" — fdroidserver resolves
+    # (chdirs into) `subdir` *before* running `init`, so it can never see a
+    # directory that `init` itself is supposed to create.
+    #
+    # Fix: skip `subdir`/`gradle` declaration entirely and run a fully manual
+    # build instead — `init` generates `android/`, `build` compiles it, `output`
+    # tells fdroidserver where the resulting APK glob lands (evaluated from the
+    # project root since no `subdir` is set).
     #
     # Node 22.22.3 (current v22 "Jod" LTS as of this writing) — matches this
-    # project's "Node.js v22+" requirement (see CLAUDE.md). Bump the version +
-    # checksum here (from nodejs.org/dist/<version>/SHASUMS256.txt) whenever the
-    # project's Node requirement moves.
+    # project's "Node.js v22+" requirement. Bump the version + checksum here
+    # (from nodejs.org/dist/<version>/SHASUMS256.txt) whenever that moves.
     sudo:
       - apt-get update
       - apt-get install -y curl xz-utils
@@ -49,11 +52,12 @@ Builds:
       - tar xJf node.tar.xz --strip-components=1 -C /usr/local
       - npm ci
       - npx expo prebuild --platform android --no-install
-    subdir: android
-    gradle:
-      - yes
+    build:
+      - cd android && ./gradlew assembleRelease
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     scandelete:
       - node_modules
+      - android
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
