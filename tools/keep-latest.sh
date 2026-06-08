@@ -17,7 +17,7 @@ failed_builds=$(jq -r '.failedBuilds' <<< $current_build)
 success_builds=$(jq -r '.successfulBuildIds' <<< $current_build)
 
 for file in $changed_files; do
-  [[ $(dirname "$file") != metadata ]] || grep -q "AutoUpdateMode: None" $file && continue
+  grep -q "AutoUpdateMode: None" $file && continue
   if [[ $file == *.yml && $(dirname "$file") == "metadata" ]]; then
     appid=$(basename $file .yml)
     diff=$(git diff "$last_commit" HEAD -- "$file")
