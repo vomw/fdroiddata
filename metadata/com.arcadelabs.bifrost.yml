@@ -24,10 +24,12 @@ Builds:
       - web
     prebuild:
       - rm -rf android/app/src/main/jniLibs
-      - sed -i -e '/google_sign_in/d' -e '/extension_google_sign_in_as_googleapis_auth/d' pubspec.yaml
+      - sed -i -e '/google_sign_in/d' -e '/extension_google_sign_in_as_googleapis_auth/d'
+        pubspec.yaml
       - cp lib/Services/google_drive_sync_service_foss.dart lib/Services/google_drive_sync_service.dart
-      - sed -i -e '/com.google.gms.google-services/d' android/app/build.gradle.kts android/settings.gradle.kts
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - sed -i -e '/com.google.gms.google-services/d' android/app/build.gradle.kts
+        android/settings.gradle.kts
+      - flutterVersion=$(grep "flutter-version:" .github/workflows/release.yml | cut -d "'" -f 2)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
