@@ -1147,6 +1147,9 @@ Builds:
     prebuild:
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
+      - export oldVercode=$(sed -n -E 's/version:[^\+]*\+([0-9]+)/\1/p' pubspec.yaml)
+      - export vercode=$((100 * $oldVercode))
+      - sed -i -E "s/(version:[^\+]*\+)[0-9]+/\1$vercode/" pubspec.yaml
       - git -C $$flutter$$ checkout -f $flutterVersion
       - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -1190,6 +1193,9 @@ Builds:
     prebuild:
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
+      - export oldVercode=$(sed -n -E 's/version:[^\+]*\+([0-9]+)/\1/p' pubspec.yaml)
+      - export vercode=$((100 * $oldVercode + 2))
+      - sed -i -E "s/(version:[^\+]*\+)[0-9]+/\1$vercode/" pubspec.yaml
       - git -C $$flutter$$ checkout -f $flutterVersion
       - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -1234,6 +1240,9 @@ Builds:
     prebuild:
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
+      - export oldVercode=$(sed -n -E 's/version:[^\+]*\+([0-9]+)/\1/p' pubspec.yaml)
+      - export vercode=$((100 * $oldVercode + 3))
+      - sed -i -E "s/(version:[^\+]*\+)[0-9]+/\1$vercode/" pubspec.yaml
       - git -C $$flutter$$ checkout -f $flutterVersion
       - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -1278,6 +1287,9 @@ Builds:
     prebuild:
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
+      - export oldVercode=$(sed -n -E 's/version:[^\+]*\+([0-9]+)/\1/p' pubspec.yaml)
+      - export vercode=$((100 * $oldVercode + 4))
+      - sed -i -E "s/(version:[^\+]*\+)[0-9]+/\1$vercode/" pubspec.yaml
       - git -C $$flutter$$ checkout -f $flutterVersion
       - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
