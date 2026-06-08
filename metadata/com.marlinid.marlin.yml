@@ -12,7 +12,7 @@ Description: |-
     marine life. Spot something while diving or beachcombing, look it up against
     iNaturalist's observation data, and log it to your personal life list with a
     photo, notes, and a pinned location. No account, no tracking, no ads —
-    everything stays on your device with optional Android Auto Backup.
+    everything stays on your device, with manual export/import for backup.
 
 RepoType: git
 Repo: https://github.com/fwille/marlin.git
@@ -20,7 +20,7 @@ Repo: https://github.com/fwille/marlin.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 29e99e4b6e4709560ffb79a760a4d04e6a9cc8ce
+    commit: 04fb4517c9b8fef4a2acef1ff2f03e8397263917
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     sudo:
       - apt-get update
@@ -38,6 +38,7 @@ Builds:
     # for F-Droid to sign with its own repo key.
     prebuild:
       - sdkmanager 'cmake;3.22.1'
+      - sed -i -e '/"android":\ {/a "buildFromSource":[".*"],' package.json
       - npx expo prebuild --platform android
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
