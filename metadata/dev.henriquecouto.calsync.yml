@@ -1,0 +1,55 @@
+Categories:
+  - Calendar & Agenda
+License: MIT
+AuthorName: Henrique Couto
+AuthorEmail: email+fdroid@henriquecouto.dev
+SourceCode: https://github.com/henriquecouto/calendar-sync
+IssueTracker: https://github.com/henriquecouto/calendar-sync/issues
+
+AutoName: CalSync
+Description: |-
+  Calendar Sync automatically copies events from one local calendar to another on your device. When an event appears in your source calendar, a corresponding event is created in your target calendar using a name you choose.
+
+  Perfect for sharing availability across personal and work calendars, or keeping multiple calendars in sync without manual entry.
+
+  Features:
+  - Select any local device calendar as source or target
+  - Customize the synced event name (e.g., "Busy")
+  - Original event title is preserved in the description
+  - Sync runs automatically in the background at your chosen interval
+  - Changes to already-synced events are detected and propagated
+  - Deletions in the source calendar are mirrored to the target
+
+  No account required. All data stays on your device.
+
+RepoType: git
+Repo: https://github.com/henriquecouto/calendar-sync.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0+1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.1
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+[+]?\d*$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
