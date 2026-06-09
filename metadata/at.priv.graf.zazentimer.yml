@@ -8,27 +8,20 @@ SourceCode: https://github.com/georgernstgraf/zazentimer
 IssueTracker: https://github.com/georgernstgraf/zazentimer/issues
 Changelog: https://github.com/georgernstgraf/zazentimer/releases
 
-Name: Zazen Meditation Timer
-AutoName: Zazen Timer
-Description: A meditation timer for Zazen practice with support for configurable sessions,
-  timed intervals (sections), custom bell sounds for transitions, and per-session
-  bell volume configuration.
-
 RepoType: git
 Repo: https://github.com/georgernstgraf/zazentimer.git
 
 Builds:
   - versionName: 3.0.7
     versionCode: 3000700
-    commit: 35afc03cecd9c069604be70dfcb9d9867cf1b2ad
+    commit: d0192dddb821be01f2466985db0971943cc30ede
+    subdir: app
     gradle:
       - yes
-    prebuild: sed -i '/com.google.android.play.privacy-policy-url/d' app/src/main/AndroidManifest.xml
-    gradleprops:
-      - versionCode=3000700
-      - versionName=3.0.7
+    prebuild: sed -i '/com.google.android.play.privacy-policy-url/d' src/main/AndroidManifest.xml
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app/build.gradle.kts|versionCode\s*=\s*(\d+)|.|versionName\s*=\s*"(.+)"
 CurrentVersion: 3.0.7
 CurrentVersionCode: 3000700
