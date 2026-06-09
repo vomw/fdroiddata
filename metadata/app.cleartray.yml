@@ -13,16 +13,21 @@ Repo: https://github.com/roman10/trayzero.git
 
 Builds:
   - versionName: 1.0.2
-    versionCode: 34
+    versionCode: 341
     commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
     submodules: true
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     rm:
       - ios
     prebuild:
       - bash tool/foss/strip.sh
       - sed -i 's/includeInApk = !project.hasProperty("fdroid")/includeInApk = false/'
         android/app/build.gradle.kts
+      - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
+      - echo 'android.applicationVariants.configureEach { val v = this; v.outputs.forEach
+        { o -> val c = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)[o.filters.find
+        { it.filterType == "ABI" }?.identifier]; if (c != null) (o as com.android.build.gradle.internal.api.ApkVariantOutputImpl).versionCodeOverride
+        = v.versionCode * 10 + c } }' >> android/app/build.gradle.kts
       - export PUB_CACHE=$(pwd)/.pub-cache
       - submodules/flutter/bin/flutter config --no-analytics
       - submodules/flutter/bin/flutter pub get
@@ -33,10 +38,70 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - submodules/flutter/bin/flutter build apk --release
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 1.0.2
+    versionCode: 342
+    commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+    prebuild:
+      - bash tool/foss/strip.sh
+      - sed -i 's/includeInApk = !project.hasProperty("fdroid")/includeInApk = false/'
+        android/app/build.gradle.kts
+      - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
+      - echo 'android.applicationVariants.configureEach { val v = this; v.outputs.forEach
+        { o -> val c = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)[o.filters.find
+        { it.filterType == "ABI" }?.identifier]; if (c != null) (o as com.android.build.gradle.internal.api.ApkVariantOutputImpl).versionCodeOverride
+        = v.versionCode * 10 + c } }' >> android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 1.0.2
+    versionCode: 343
+    commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+    prebuild:
+      - bash tool/foss/strip.sh
+      - sed -i 's/includeInApk = !project.hasProperty("fdroid")/includeInApk = false/'
+        android/app/build.gradle.kts
+      - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
+      - echo 'android.applicationVariants.configureEach { val v = this; v.outputs.forEach
+        { o -> val c = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)[o.filters.find
+        { it.filterType == "ABI" }?.identifier]; if (c != null) (o as com.android.build.gradle.internal.api.ApkVariantOutputImpl).versionCodeOverride
+        = v.versionCode * 10 + c } }' >> android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.2
-CurrentVersionCode: 34
+CurrentVersionCode: 343
