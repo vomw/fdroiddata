@@ -15,7 +15,10 @@ Builds:
   - versionName: 1.7.0
     versionCode: 12
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
+    submodules: true
     sudo:
+      - mkdir -p /upstream/path/example
+      - chown -R vagrant /upstream/path
       - apt-get update
       - apt-get install -y openjdk-21-jdk-headless
       - update-alternatives --auto java
@@ -24,17 +27,34 @@ Builds:
       - flutter@3.44.0
     rm:
       - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/upstream/path/example/example
+      - cd ..
+      - mv example.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i '/org.gradle.java.home/d' android/gradle.properties
-      - echo "org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64" >> android/gradle.properties
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo example.app
+    scanignore:
+      - .flutter/bin/cache
     scandelete:
+      - .flutter
       - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk
+      - export repo=/upstream/path/example/example
+      - cd ..
+      - mv example.app $repo
+      - pushd $repo
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - mv $repo example.app
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
