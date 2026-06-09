@@ -15,7 +15,6 @@ Builds:
   - versionName: 1.7.0
     versionCode: 12
     commit: V1.7.0
-    submodules: true
     sudo:
       - mkdir -p /upstream/path/example
       - chown -R vagrant /upstream/path
@@ -53,6 +52,7 @@ Builds:
       - cd ..
       - mv example.app $repo
       - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - mv $repo example.app
 
