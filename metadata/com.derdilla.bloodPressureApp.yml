@@ -1170,50 +1170,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --obfuscate --split-debug-info=./build/debug-info
 
   - versionName: 1.8.14
-    versionCode: 4056
-    commit: 938f878403ee2670d8cc763685c8d961ddbcfba9
-    subdir: app
-    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - app/ios
-      - app/linux
-      - app/macos
-      - app/web
-      - app/windows
-      - app/test
-      - health_data_store/test
-      - settings_annotation/test
-      - docs
-      - tools
-    prebuild:
-      - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - pushd ../health_data_store
-      - $$flutter$$/bin/dart run build_runner build
-      - $$flutter$$/bin/dart pub get
-      - popd
-      - pushd ../settings_builder
-      - $$flutter$$/bin/flutter pub get
-      - popd
-      - pushd ../settings_annotation
-      - $$flutter$$/bin/flutter pub get
-      - popd
-      - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/dart run build_runner build
-    scandelete:
-      - app/.pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --obfuscate --split-debug-info=./build/debug-info
-        --split-per-abi --target-platform="android-x64"
-
-  - versionName: 1.8.14
     versionCode: 1056
     commit: 938f878403ee2670d8cc763685c8d961ddbcfba9
     subdir: app
@@ -1301,13 +1257,57 @@ Builds:
       - $$flutter$$/bin/flutter build apk --flavor fdroid --release --obfuscate --split-debug-info=./build/debug-info
         --split-per-abi --target-platform="android-arm64"
 
+  - versionName: 1.8.14
+    versionCode: 4056
+    commit: 938f878403ee2670d8cc763685c8d961ddbcfba9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+      - app/test
+      - health_data_store/test
+      - settings_annotation/test
+      - docs
+      - tools
+    prebuild:
+      - export flutterVersion=$(sed -n -E "s/.*flutter:\s*'(.*)'/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i -e 's/-Xmx1536M/-Xmx4096M/' android/gradle.properties
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - pushd ../health_data_store
+      - $$flutter$$/bin/dart run build_runner build
+      - $$flutter$$/bin/dart pub get
+      - popd
+      - pushd ../settings_builder
+      - $$flutter$$/bin/flutter pub get
+      - popd
+      - pushd ../settings_annotation
+      - $$flutter$$/bin/flutter pub get
+      - popd
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/dart run build_runner build
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --obfuscate --split-debug-info=./build/debug-info
+        --split-per-abi --target-platform="android-x64"
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
   - 0 + %c
-  - 4000 + %c
   - 1000 + %c
   - 2000 + %c
+  - 4000 + %c
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.8.14
 CurrentVersionCode: 4056
