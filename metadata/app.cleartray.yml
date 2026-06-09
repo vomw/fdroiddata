@@ -13,10 +13,10 @@ Repo: https://github.com/roman10/trayzero.git
 
 Builds:
   - versionName: 1.0.2
-    versionCode: 34
+    versionCode: 1034
     commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
     submodules: true
-    output: build/app/outputs/flutter-apk/app-*-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     rm:
       - ios
     prebuild:
@@ -31,7 +31,52 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - submodules/flutter/bin/flutter build apk --release --split-per-abi
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi 
+        --target-platform=android-arm
+
+  - versionName: 1.0.2
+    versionCode: 2034
+    commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+    prebuild:
+      - bash tool/foss/strip.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi 
+        --target-platform=android-arm64
+
+  - versionName: 1.0.2
+    versionCode: 4034
+    commit: ac48e83ce52233a8aedb5f225fd8090b8a27bdc5
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+    prebuild:
+      - bash tool/foss/strip.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --split-per-abi 
+        --target-platform=android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -41,4 +86,4 @@ VercodeOperation:
   - '%c + 4000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.2
-CurrentVersionCode: 34
+CurrentVersionCode: 4034
