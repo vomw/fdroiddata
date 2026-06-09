@@ -18,9 +18,9 @@ Binaries: https://github.com/Etregin/OPNsense_Manager/releases/download/V1.7.0/O
 
 Builds:
   - versionName: 1.7.0
-    versionCode: 12
+    versionCode: 121
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -30,29 +30,67 @@ Builds:
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - |
-        cat > /tmp/abi_code.gradle << 'EOFABI'
-        import com.android.build.gradle.internal.api.ApkVariantOutputImpl
-
-        val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
-        android.applicationVariants.configureEach {
-            val variant = this
-            variant.outputs.forEach { output ->
-                val abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]
-                if (abiVersionCode != null) {
-                    (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
-                }
-            }
-        }
-
-        EOFABI
-      - sed -i '/^flutter {$/r /tmp/abi_code.gradle' android/app/build.gradle.kts
-      - sed -i '/^flutter {$/G' android/app/build.gradle.kts
+      - sed -i '/^flutter {$/i\import com.android.build.gradle.internal.api.ApkVariantOutputImpl\nval
+        abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)\nandroid.applicationVariants.configureEach
+        {\n    val variant = this\n    variant.outputs.forEach { output ->\n        val
+        abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]\n        if
+        (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
+        = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\n' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-arm
+
+  - versionName: 1.7.0
+    versionCode: 122
+    commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i '/org.gradle.java.home/d' android/gradle.properties
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i '/^flutter {$/i\import com.android.build.gradle.internal.api.ApkVariantOutputImpl\nval
+        abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)\nandroid.applicationVariants.configureEach
+        {\n    val variant = this\n    variant.outputs.forEach { output ->\n        val
+        abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]\n        if
+        (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
+        = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\n' android/app/build.gradle.kts
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-arm64
+
+  - versionName: 1.7.0
+    versionCode: 123
+    commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i '/org.gradle.java.home/d' android/gradle.properties
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i '/^flutter {$/i\import com.android.build.gradle.internal.api.ApkVariantOutputImpl\nval
+        abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)\nandroid.applicationVariants.configureEach
+        {\n    val variant = this\n    variant.outputs.forEach { output ->\n        val
+        abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]\n        if
+        (abiVersionCode != null) {\n            (output as ApkVariantOutputImpl).versionCodeOverride
+        = variant.versionCode * 10 + abiVersionCode\n        }\n    }\n}\n' android/app/build.gradle.kts
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -62,4 +100,4 @@ VercodeOperation:
   - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.7.0
-CurrentVersionCode: 12
+CurrentVersionCode: 123
