@@ -25,12 +25,27 @@ Builds:
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i '1i import com.android.build.gradle.internal.api.ApkVariantOutputImpl\nandroid.applicationVariants.configureEach { val v = this; v.outputs.forEach { o -> if (o instanceof ApkVariantOutputImpl) { val abi = o.filters.find { it.filterType == "ABI" }?.identifier; val codes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3); if (abi != null && codes.containsKey(abi)) { o.versionCodeOverride = v.versionCode * 10 + codes[abi]!! } } } }' android/app/build.gradle.kts
+      - sed -i '1a import com.android.build.gradle.internal.api.ApkVariantOutputImpl'
+        android/app/build.gradle.kts
+      - echo 'val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64"
+        to 3)' > /tmp/abi_code.txt
+      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_code.txt
+      - echo '    val variant = this' >> /tmp/abi_code.txt
+      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_code.txt
+      - echo '        val abiVersionCode = abiCodes[output.filters.find { it.filterType
+        == "ABI" }?.identifier]' >> /tmp/abi_code.txt
+      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_code.txt
+      - echo '            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode
+        * 10 + abiVersionCode' >> /tmp/abi_code.txt
+      - echo '        }' >> /tmp/abi_code.txt
+      - echo '    }' >> /tmp/abi_code.txt
+      - echo '}' >> /tmp/abi_code.txt
+      - sed -i '/^flutter {$/e cat /tmp/abi_code.txt' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --split-per-abi
 
 AllowedAPKSigningKeys: ca889bba23ca5c486a642ce077bcc5764ebf7194ef9e3cf99fd70c3eecf6a4b2
 
