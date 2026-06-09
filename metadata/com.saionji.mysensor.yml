@@ -11,7 +11,8 @@ AutoName: My Sensor
 
 RepoType: git
 Repo: https://github.com/saiinc/MySensorAirData.git
-Binaries: https://github.com/saiinc/MySensorAirData/releases/download/v%v/mysensor-v%v-fdroid.apk
+Binaries: 
+  https://github.com/saiinc/MySensorAirData/releases/download/v%v/mysensor-v%v-fdroid.apk
 
 Builds:
   - versionName: 1.2.3
@@ -21,10 +22,12 @@ Builds:
     gradle:
       - fdroid
     prebuild:
-      - sed -i '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d'
+      - sed -i
+        '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d'
         ../build.gradle.kts
       - sed -i '/tasks\.configureEach/,/^}/d' build.gradle.kts
-      - sed -i '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d;/google-services/d'
+      - sed -i 
+        '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d;/google-services/d'
         build.gradle.kts
 
 AllowedAPKSigningKeys: f27d49a33f7b39eae3f25eb3262c5d551c34fcb3e22206526231e6456d298179
