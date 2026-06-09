@@ -11,14 +11,15 @@ AutoName: OPNsense Manager
 RepoType: git
 Repo: https://github.com/Etregin/OPNsense_Manager
 
+AllowedAPKSigningKeys:
+  - ca889bba23ca5c486a642ce077bcc5764ebf7194ef9e3cf99fd70c3eecf6a4b2
+
+Binaries: https://github.com/Etregin/OPNsense_Manager/releases/download/V1.7.0/OPNsense_Manager_V%v.apk
+
 Builds:
   - versionName: 1.7.0
     versionCode: 12
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless
-      - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -27,24 +28,26 @@ Builds:
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
-      - echo "org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64" >> android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - |
-        sed -i '/^flutter {$/i\
-        import com.android.build.gradle.internal.api.ApkVariantOutputImpl\
-        \
-        val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)\
-        android.applicationVariants.configureEach {\
-            val variant = this\
-            variant.outputs.forEach { output ->\
-                val abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]\
-                if (abiVersionCode != null) {\
-                    (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode\
-                }\
-            }\
-        }\
-        ' android/app/build.gradle.kts
+        cat > /tmp/abi_code.gradle << 'EOFABI'
+        import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+
+        val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
+        android.applicationVariants.configureEach {
+            val variant = this
+            variant.outputs.forEach { output ->
+                val abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]
+                if (abiVersionCode != null) {
+                    (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+                }
+            }
+        }
+
+        EOFABI
+      - sed -i '/^flutter {$/r /tmp/abi_code.gradle' android/app/build.gradle.kts
+      - sed -i '/^flutter {$/G' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
