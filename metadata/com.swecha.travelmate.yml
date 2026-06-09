@@ -3,20 +3,41 @@
   - Science
 License: GPL-3.0-only
 AuthorName: Swecha
+AuthorEmail: tryaxistech@gmail.com
+AuthorWebSite: https://swecha.org
 SourceCode: https://gitlab.com/neelapunandini03/travelmate
 IssueTracker: https://gitlab.com/neelapunandini03/travelmate/-/issues
+
 AutoName: TravelMate
+
 RepoType: git
 Repo: https://gitlab.com/neelapunandini03/travelmate.git
+
 Builds:
   - versionName: 0.9.0-beta
     versionCode: 1
-    commit: HEAD
+    commit: 3c95db96e
     subdir: frontend/android
-    gradle:
-      - release
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ../../ && npm install && npm run build && npx cap sync android
+      - cd ../../
+      - npm install
+      - npm run build
+      - npx cap sync android
+    build:
+      - cd frontend/android
+      - gradle assembleRelease
+    scanignore:
+      - node_modules
+    scandelete:
+      - node_modules
+
+MaintainerNotes: Capacitor hybrid app (React/Vite wrapped in Android).
+  All routing runs on-device using bundled GTFS data.
+
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
 CurrentVersion: 0.9.0-beta
