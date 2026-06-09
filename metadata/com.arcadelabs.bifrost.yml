@@ -22,8 +22,8 @@ Builds:
       - windows
       - linux
       - web
-      - android/app/src/main/jniLibs
     prebuild:
+      - rm -rf android/app/src/main/jniLibs
       - sed -i -e '/google_sign_in/d' -e '/extension_google_sign_in_as_googleapis_auth/d'
         pubspec.yaml
       - cp lib/Services/google_drive_sync_service_foss.dart lib/Services/google_drive_sync_service.dart
@@ -35,7 +35,7 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
     build:
