@@ -92,8 +92,6 @@ Builds:
     scandelete:
       - thirdparty/llama.cpp/examples/gguf-hash/deps
     postbuild:
-      - $$reproducible-apk-tools$$/inplace-fix.py fix-newlines "$$OUT$$" 'assets/agora.svg'
-        'assets/agora_transparent_large.svg' 'assets/agora_transparent.svg'
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
