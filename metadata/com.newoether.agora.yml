@@ -80,9 +80,27 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 1.2.0
+    versionCode: 13
+    commit: bd60fee7b4ac0706ca0ce6a43d3b22578c5ea247
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    scandelete:
+      - thirdparty/llama.cpp/examples/gguf-hash/deps
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py fix-newlines "$$OUT$$" 'assets/agora.svg'
+        'assets/agora_transparent_large.svg' 'assets/agora_transparent.svg'
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 5de26f263163c220c06c23d6a82fc034d55591ec4d3ff0bad8b9dc9b7be1aa29
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.1.1
-CurrentVersionCode: 12
+CurrentVersion: 1.2.0
+CurrentVersionCode: 13
