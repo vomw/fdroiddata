@@ -23,7 +23,7 @@ Builds:
       - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.44.0
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -36,14 +36,15 @@ Builds:
       - mv com.dt.opnsense_manager $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - ln -s $$flutter$$ .flutter
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
       - popd
       - mv $repo com.dt.opnsense_manager
     scanignore:
-      - $$flutter$$/bin/cache
+      - .flutter/bin/cache
     scandelete:
-      - $$flutter$$
+      - .flutter
       - .pub-cache
     build:
       - export repo=/upstream/path/example/example
@@ -51,7 +52,7 @@ Builds:
       - mv com.dt.opnsense_manager $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo com.dt.opnsense_manager
 
