@@ -30,21 +30,22 @@ Builds:
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - echo 'import com.android.build.gradle.internal.api.ApkVariantOutputImpl' > /tmp/abi_inject.txt
+      - sed -i '1a import com.android.build.gradle.internal.api.ApkVariantOutputImpl'
+        android/app/build.gradle.kts
       - echo 'val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to
-        3)' >> /tmp/abi_inject.txt
-      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_inject.txt
-      - echo '    val variant = this' >> /tmp/abi_inject.txt
-      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_inject.txt
+        3)' > /tmp/abi_code.txt
+      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_code.txt
+      - echo '    val variant = this' >> /tmp/abi_code.txt
+      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_code.txt
       - echo '        val abiVersionCode = abiCodes[output.filters.find { it.filterType
-        == "ABI" }?.identifier]' >> /tmp/abi_inject.txt
-      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_inject.txt
+        == "ABI" }?.identifier]' >> /tmp/abi_code.txt
+      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_code.txt
       - echo '            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode
-        * 10 + abiVersionCode' >> /tmp/abi_inject.txt
-      - echo '        }' >> /tmp/abi_inject.txt
-      - echo '    }' >> /tmp/abi_inject.txt
-      - echo '}' >> /tmp/abi_inject.txt
-      - sed -i '/^flutter {$/e cat /tmp/abi_inject.txt' android/app/build.gradle.kts
+        * 10 + abiVersionCode' >> /tmp/abi_code.txt
+      - echo '        }' >> /tmp/abi_code.txt
+      - echo '    }' >> /tmp/abi_code.txt
+      - echo '}' >> /tmp/abi_code.txt
+      - sed -i '/^flutter {$/e cat /tmp/abi_code.txt' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
@@ -64,21 +65,22 @@ Builds:
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - echo 'import com.android.build.gradle.internal.api.ApkVariantOutputImpl' > /tmp/abi_inject.txt
+      - sed -i '1a import com.android.build.gradle.internal.api.ApkVariantOutputImpl'
+        android/app/build.gradle.kts
       - echo 'val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to
-        3)' >> /tmp/abi_inject.txt
-      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_inject.txt
-      - echo '    val variant = this' >> /tmp/abi_inject.txt
-      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_inject.txt
+        3)' > /tmp/abi_code.txt
+      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_code.txt
+      - echo '    val variant = this' >> /tmp/abi_code.txt
+      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_code.txt
       - echo '        val abiVersionCode = abiCodes[output.filters.find { it.filterType
-        == "ABI" }?.identifier]' >> /tmp/abi_inject.txt
-      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_inject.txt
+        == "ABI" }?.identifier]' >> /tmp/abi_code.txt
+      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_code.txt
       - echo '            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode
-        * 10 + abiVersionCode' >> /tmp/abi_inject.txt
-      - echo '        }' >> /tmp/abi_inject.txt
-      - echo '    }' >> /tmp/abi_inject.txt
-      - echo '}' >> /tmp/abi_inject.txt
-      - sed -i '/^flutter {$/e cat /tmp/abi_inject.txt' android/app/build.gradle.kts
+        * 10 + abiVersionCode' >> /tmp/abi_code.txt
+      - echo '        }' >> /tmp/abi_code.txt
+      - echo '    }' >> /tmp/abi_code.txt
+      - echo '}' >> /tmp/abi_code.txt
+      - sed -i '/^flutter {$/e cat /tmp/abi_code.txt' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
@@ -98,21 +100,22 @@ Builds:
       - sed -i '/org.gradle.java.home/d' android/gradle.properties
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - echo 'import com.android.build.gradle.internal.api.ApkVariantOutputImpl' > /tmp/abi_inject.txt
+      - sed -i '1a import com.android.build.gradle.internal.api.ApkVariantOutputImpl'
+        android/app/build.gradle.kts
       - echo 'val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to
-        3)' >> /tmp/abi_inject.txt
-      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_inject.txt
-      - echo '    val variant = this' >> /tmp/abi_inject.txt
-      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_inject.txt
+        3)' > /tmp/abi_code.txt
+      - echo 'android.applicationVariants.configureEach {' >> /tmp/abi_code.txt
+      - echo '    val variant = this' >> /tmp/abi_code.txt
+      - echo '    variant.outputs.forEach { output ->' >> /tmp/abi_code.txt
       - echo '        val abiVersionCode = abiCodes[output.filters.find { it.filterType
-        == "ABI" }?.identifier]' >> /tmp/abi_inject.txt
-      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_inject.txt
+        == "ABI" }?.identifier]' >> /tmp/abi_code.txt
+      - echo '        if (abiVersionCode != null) {' >> /tmp/abi_code.txt
       - echo '            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode
-        * 10 + abiVersionCode' >> /tmp/abi_inject.txt
-      - echo '        }' >> /tmp/abi_inject.txt
-      - echo '    }' >> /tmp/abi_inject.txt
-      - echo '}' >> /tmp/abi_inject.txt
-      - sed -i '/^flutter {$/e cat /tmp/abi_inject.txt' android/app/build.gradle.kts
+        * 10 + abiVersionCode' >> /tmp/abi_code.txt
+      - echo '        }' >> /tmp/abi_code.txt
+      - echo '    }' >> /tmp/abi_code.txt
+      - echo '}' >> /tmp/abi_code.txt
+      - sed -i '/^flutter {$/e cat /tmp/abi_code.txt' android/app/build.gradle.kts
     scandelete:
       - .pub-cache
     build:
