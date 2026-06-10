@@ -15,16 +15,17 @@ Builds:
     versionCode: 1
     commit: v1.0.0
     subdir: app
-    srclibs:
-      - XposedBridge@v82
     gradle:
       - yes
+    srclibs:
+      - XposedBridge@v82
     prebuild:
       - sed -i 's/9.4.1/8.7/' ../gradle/wrapper/gradle-wrapper.properties
       - sed -i "s/gradle:9.2.1/gradle:8.4.0/" ../build.gradle
-      - sed -i "/maven { url 'https:\/\/api.xposed.info\/' }/d" ../build.gradle
-      - mkdir libs
-      - cp $$XposedBridge$$/app/build/api/api.jar libs/xposed-api.jar
+      - sed -i "/api.xposed.info/d" ../build.gradle
+      - pushd $$XposedBridge$$ && sed -i 's/1.5.0/3.3.3/' build.gradle && sed -i 's/2.10/4.10.1/'
+        gradle/wrapper/gradle-wrapper.properties && gradle :app:generateAPI && popd
+      - mkdir libs && cp $$XposedBridge$$/app/build/api/api.jar libs/xposed-api.jar
       - sed -i "s/'de.robv.android.xposed:api:82'/files('libs\/xposed-api.jar')/" build.gradle
 
 AutoUpdateMode: Version
