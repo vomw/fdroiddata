@@ -13,7 +13,7 @@ Repo: https://github.com/Etregin/OPNsense_Manager
 
 Builds:
   - versionName: 1.7.0
-    versionCode: 121
+    versionCode: 1012
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
@@ -34,10 +34,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-arm
-        --build-number=$(( $$VERCODE$$ / 10 ))
 
   - versionName: 1.7.0
-    versionCode: 122
+    versionCode: 2012
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
@@ -58,10 +57,9 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-arm64
-        --build-number=$(( $$VERCODE$$ / 10 ))
 
   - versionName: 1.7.0
-    versionCode: 123
+    versionCode: 4012
     commit: 5eba00b1f4660a67dfa45c01df59deeef1746d7b
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
@@ -82,16 +80,15 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform android-x64
-        --build-number=$(( $$VERCODE$$ / 10 ))
 
 AllowedAPKSigningKeys: ca889bba23ca5c486a642ce077bcc5764ebf7194ef9e3cf99fd70c3eecf6a4b2
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c * 10 + 1'
-  - '%c * 10 + 2'
-  - '%c * 10 + 3'
+  - '1 * 1000 + %c'
+  - '2 * 1000 + %c'
+  - '4 * 1000 + %c'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.7.0
-CurrentVersionCode: 123
+CurrentVersionCode: 4012
