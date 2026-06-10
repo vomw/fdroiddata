@@ -72,18 +72,19 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y rustup gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.6
     prebuild:
       - rustup default 1.94.1
-      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
     build:
       - export PUB_CACHE=$$flutter$$/pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release
-    srclibs:
-      - flutter@3.41.6
-    output: build/app/outputs/flutter-apk/app-release.apk
     ndk: r28c
 
 
