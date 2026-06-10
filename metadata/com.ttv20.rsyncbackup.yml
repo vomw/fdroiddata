@@ -1,0 +1,60 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional Tailscale use connects to Tailscale coordination services. LAN-only
+      backup does not require Tailscale.
+Categories:
+  - Connectivity
+  - System
+License: GPL-3.0-or-later
+AuthorName: ttv20
+SourceCode: https://codeberg.org/ttv20/PocketBackup
+IssueTracker: https://codeberg.org/ttv20/PocketBackup/issues
+Changelog: https://codeberg.org/ttv20/PocketBackup/releases
+
+Name: Pocket Backup
+
+RepoType: git
+Repo: https://codeberg.org/ttv20/PocketBackup.git
+
+Builds:
+  - versionName: 1.0-beta
+    versionCode: 9
+    commit: a5939c2428af3c55d87c16ecdfd67680049742e8
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get install -y --no-install-recommends autoconf automake bison build-essential
+        ca-certificates cmake curl file flex gawk gettext git golang-go jq libtool
+        lzip meson ninja-build patch perl pkg-config python3 python3-pip ruby rsync
+        texinfo unzip wget xz-utils zstd
+      - mkdir -p /data
+      - chown vagrant:vagrant /data
+    gradle:
+      - fdroid
+    prebuild: ../scripts/fdroid-scan-source.sh
+    scandelete:
+      - app/src/sideload
+    build:
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export NDK=$$NDK$$
+      - printf '\npocketsync.versionName=$$VERSION$$\npocketsync.versionCode=$$VERCODE$$\n'
+        >> ../gradle.properties
+      - export GOTOOLCHAIN=auto
+      - export FDROID_NATIVE_TOOLCHAIN_MODE=copy
+      - ../scripts/build-fdroid-native-termux.sh --termux-mode host
+    ndk: 29.0.14206865
+
+MaintainerNotes: |-
+  The fdroidRelease build generates native rsync/OpenSSH/zstd assets from the
+  pinned Termux package recipes in native/fdroid-native-sources.lock, then
+  builds the Android tsnet helper from native/tsnet-helper/go.mod and go.sum.
+  app/src/sideload contains upstream sideload-release prebuilts and is removed
+  from this build before scanning.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0-beta
+CurrentVersionCode: 9
