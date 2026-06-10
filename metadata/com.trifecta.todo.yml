@@ -1,8 +1,8 @@
 Categories:
-  - Time
+  - Task
 License: GPL-3.0-or-later
 AuthorName: Archixonline
-WebSite: https://gitlab.com/archixonline1/Archixonline-project
+WebSite: https://archix.online
 SourceCode: https://gitlab.com/archixonline1/Archixonline-project
 IssueTracker: https://gitlab.com/archixonline1/Archixonline-project/-/issues
 
@@ -15,7 +15,7 @@ Builds:
   - versionName: 0.9.2
     versionCode: 1
     commit: 8a81fab214a1d48e299651a25f90ee517b9c9e4f
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.44.1
     rm:
@@ -23,18 +23,59 @@ Builds:
       - windows
     prebuild:
       - . $$flutter$$/bin/internal/shared.sh
-      - echo "flutter.sdk=$$flutter$$" > android/local.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
-      - apkDir=build/app/outputs/flutter-apk
-      - if [ -f "$apkDir/app-release-unsigned.apk" ]; then cp -f "$apkDir/app-release-unsigned.apk"
-        "$apkDir/app-release.apk"; fi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+
+  - versionName: 0.9.2
+    versionCode: 1
+    commit: 8a81fab214a1d48e299651a25f90ee517b9c9e4f
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.44.1
+    rm:
+      - linux
+      - windows
+    prebuild:
+      - . $$flutter$$/bin/internal/shared.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+
+  - versionName: 0.9.2
+    versionCode: 1
+    commit: 8a81fab214a1d48e299651a25f90ee517b9c9e4f
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.44.1
+    rm:
+      - linux
+      - windows
+    prebuild:
+      - . $$flutter$$/bin/internal/shared.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+
+VercodeOperation:
+  - '%V * 10 + 1'
+  - '%V * 10 + 2'
+  - '%V * 10 + 3'
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
