@@ -1,0 +1,41 @@
+Categories:
+  - Graphics
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: Oleg Koretsky
+AuthorEmail: oleg@radiokot.com.ua
+AuthorWebSite: https://radiokot.com.ua
+WebSite: https://radiokot.com.ua/p/press-cut
+SourceCode: https://github.com/Radiokot/press-cut-app
+IssueTracker: https://github.com/Radiokot/press-cut-app/issues
+Changelog: https://github.com/Radiokot/press-cut-app/blob/HEAD/CHANGELOG.md
+Donate: https://radiokot.com.ua/tip
+Bitcoin: bc1qx7nja8gaykyd4encua90wnz8rygt572ddgnzmg
+
+AutoName: Press-Cut
+
+RepoType: git
+Repo: https://github.com/Radiokot/press-cut-app.git
+Binaries: 
+  https://github.com/Radiokot/press-cut-app/releases/download/%v(%c)/ua.com.radiokot.camerapp-%v.apk
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 6
+    commit: 01873e48fb0c9063a400094380ee66f2349b0e00
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: a27fe2f4dcfa43702aac0b1c9e2ecee98897641a047fd3190d7c700211e29a7f
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 5
