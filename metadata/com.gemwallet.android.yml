@@ -1,0 +1,51 @@
+Categories:
+  - Money
+License: GPL-3.0-only
+WebSite: https://gemwallet.com
+SourceCode: https://github.com/gemwalletcom/wallet
+IssueTracker: https://github.com/gemwalletcom/wallet/issues
+
+AutoName: Gem Wallet
+
+RepoType: git
+Repo: https://github.com/gemwalletcom/wallet.git
+
+Builds:
+  - versionName: '2.83'
+    versionCode: 782
+    commit: 5a8d6e1fd0231e2bd08d9d6fe8ec5b27bc37d7c2
+    timeout: 10800
+    subdir: android
+    sudo: apt-get install -y build-essential just
+    init: NDK_PATH="$$NDK$$" reproducible/fdroid/init.sh
+    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
+    rm:
+      - android/flavors/fcm
+      - android/flavors/google-review
+      - core/gemstone/android/settings.gradle.kts
+      - core/gemstone/tests/android/GemTest
+    build: "export NDK_PATH=\"$$NDK$$\"\nsource reproducible/fdroid/env.sh\ntouch
+      local.properties\nsed -i '/namespace = \"com.gemwallet.gemstone\"/a\\    ndkVersion
+      = \"28.1.13356709\"' gemstone/build.gradle.kts\ncat >> build.gradle.kts <<'EOF'\n
+      subprojects {\n    configurations.configureEach {\n        exclude(group = \"\
+      com.google.firebase\")\n        exclude(group = \"com.google.android.gms\")\n\
+      \    }\n}\nEOF\ncat >> app/proguard-rules.pro <<'EOF'\n-dontwarn com.google.firebase.**\n
+      -dontwarn com.google.android.gms.**\nEOF\nreown_dir=\"$PWD/fdroid-maven/com/reown/android-core/1.6.13\"\
+      \nmkdir -p \"$reown_dir\"\ncurl -L -sS --fail --retry 3 -o \"$reown_dir/android-core-1.6.13.aar\"\
+      \ https://repo1.maven.org/maven2/com/reown/android-core/1.6.13/android-core-1.6.13.aar\n
+      curl -L -sS --fail --retry 3 -o \"$reown_dir/android-core-1.6.13.pom\" https://repo1.maven.org/maven2/com/reown/android-core/1.6.13/android-core-1.6.13.pom\n\
+      reown_aar=\"$reown_dir/android-core-1.6.13.aar\"\ntmp_reown=$(mktemp -d)\nmkdir
+      -p \"$tmp_reown/aar\" \"$tmp_reown/jar\"\n(cd \"$tmp_reown/aar\" && jar xf \"\
+      $reown_aar\")\n(cd \"$tmp_reown/jar\" && jar xf \"$tmp_reown/aar/classes.jar\"\
+      \ && rm -f com/reown/android/push/notifications/PushMessagingService*.class
+      && jar cf \"$tmp_reown/classes.jar\" .)\ncp \"$tmp_reown/classes.jar\" \"$tmp_reown/aar/classes.jar\"\
+      \n(cd \"$tmp_reown/aar\" && jar cf \"$reown_aar\" .)\nsed -i '/allprojects {/,/dependencyLocking/
+      s|        google()|        maven { url = uri(rootProject.file(\"fdroid-maven\"\
+      )) }\\n        google()|' build.gradle.kts\nrm -rf \"$tmp_reown\" \"$HOME/.gradle/caches/transforms-\"\
+      *\ngradle --no-daemon --console plain --no-configuration-cache :app:assembleFdroidRelease"
+    ndk: 28.1.13356709
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: '2.83'
+CurrentVersionCode: 782
