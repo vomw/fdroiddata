@@ -2,7 +2,7 @@ Categories:
   - Internet
   - Remote Access
 License: Apache-2.0
-AuthorName: ConnectBot
+AuthorName: Kenny Root
 AuthorEmail: developers@connectbot.org
 WebSite: http://connectbot.org
 SourceCode: https://github.com/connectbot/connectbot
@@ -10,13 +10,6 @@ IssueTracker: https://github.com/connectbot/connectbot/issues
 Changelog: https://github.com/connectbot/connectbot/blob/HEAD/CHANGELOG.md
 
 AutoName: ConnectBot
-Description: |-
-  An SSH and telnet client, and terminal emulator for local shell. Supports
-  multiple sessions, including running them concurrently.
-
-  https://f-droid.org/packages/org.pocketworkstation.pckeyboard, https://f-droid.org/packages/com.anysoftkeyboard.languagepack.SSH
-  and the Android PC-keyboard-layout in Android 4.1 are well suited to terminal
-  work.
 
 RepoType: git
 Repo: https://github.com/connectbot/connectbot.git
@@ -230,7 +223,70 @@ Builds:
       - sed -i -e '/uri(MAVEN_REPO_CACHE/d' -e '/buildCache {/,/^}/d' ../settings.gradle.kts
     ndk: r27
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.9.13-oss
-CurrentVersionCode: 10913000
+  - versionName: 1.10.0-oss
+    versionCode: 11000000
+    commit: 7e5b5cc7dfd0f4660cb3a8d56de778710ab88f5a
+    subdir: app
+    gradle:
+      - oss
+    prebuild:
+      - sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d' build.gradle.kts
+      - sed -i -e '/uri(MAVEN_REPO_CACHE/d' -e '/buildCache {/,/^}/d' ../settings.gradle.kts
+    ndk: r28c
+
+  - versionName: 1.10.3-oss
+    versionCode: 11003000
+    commit: ea43daa361a22c2906900045edb3273f908230fd
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d'
+      build.gradle.kts
+    ndk: r28c
+
+  - versionName: 1.10.5-oss
+    versionCode: 11005000
+    commit: 74c518ff9094a19935ff7e1e2917c4aad4d6b96e
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d'
+      build.gradle.kts
+    ndk: r28c
+
+  - versionName: 1.10.7-oss
+    versionCode: 11007000
+    commit: b0eeb236886a358c73cd46a8640f668ec7ece643
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d'
+      build.gradle.kts
+    ndk: r28c
+
+  - versionName: 1.10.8-oss
+    versionCode: 11008000
+    commit: 990a07895b2a2dae6d0389d871fae98679c9460c
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d'
+      build.gradle.kts
+    ndk: r28c
+
+  - versionName: 1.10.9-oss
+    versionCode: 11009000
+    commit: 21ce6f47cf16785bf2314b4ea931900164c179c1
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e 's/gitTag.rawTagName/"$$VERSION$$"/' -e '/versionNameSuffix/d'
+      build.gradle.kts
+    ndk: r28c
+
+AutoUpdateMode: Version +-oss v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: 
+  https://github.com/connectbot/connectbot/releases/latest/download/version-info.txt|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d\.]+)
+CurrentVersion: 1.10.9
+CurrentVersionCode: 11009000
