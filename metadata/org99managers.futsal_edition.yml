@@ -14,19 +14,17 @@ AutoName: 99Managers Futsal Edition
 
 RepoType: git
 Repo: https://codeberg.org/dulvui/99managers-futsal-edition.git
-Binaries: 
-  https://codeberg.org/dulvui/99managers-futsal-edition/releases/download/%v/99managers-futsal-edition-fdroid.apk
 
 Builds:
-  - versionName: v0.7.4
-    versionCode: 3
-    commit: 6162d2c325258ebcf2b82fd1c8236c3ffc222f45
+  - versionName: v0.7.9
+    versionCode: 8
+    commit: 8672fc72fcffa68d2219ee0c5d8dcd68a555eaa2
     sudo:
       - apt-get update
       - apt-get install -y pkgconf scons g++
     output: game/99managers-futsal-edition.apk
     srclibs:
-      - Godot@4.6.2-stable
+      - Godot@35e80b3a8822a9df9be390814b62f44c0a9c69e8
     build:
       - export REPO=$PWD
       - pushd $$Godot$$
@@ -34,17 +32,15 @@ Builds:
       - export ANDROID_HOME=$$SDK$$
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - python3 misc/scripts/install_swappy_android.py
-      - scons -j `nproc` platform=linuxbsd target=editor optimize=speed
-      - scons -j `nproc` target=template_release profile=$REPO/scons_profile.py build_profile=$REPO/game/optimized_profile.build
+      - scons -j `nproc` platform=linuxbsd target=editor
+      - scons -j `nproc` target=template_release profile=$REPO/scons_profile.py
       - popd
-      - mv $$Godot$$/bin/android_release.apk ./game/android_release_template.apk
+      - mv $$Godot$$/bin/android_release.apk ./game/android_release.apk
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --path game --export-release
         "Android F-Droid" 99managers-futsal-edition.apk
-    ndk: 28.1.13356709
-
-AllowedAPKSigningKeys: fb0febc96059f6d76f077d774f0134f7903d66a55e8ff1fe185c49c5ffe12b7f
+    ndk: 29.0.14206865
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: v0.7.4
-CurrentVersionCode: 3
+CurrentVersion: v0.7.9
+CurrentVersionCode: 8
