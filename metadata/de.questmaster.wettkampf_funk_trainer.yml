@@ -12,6 +12,27 @@ RepoType: git
 Repo: https://gitlab.com/questmaster97/wettkampf_funk_trainer.git
 
 Builds:
+  - versionName: 2.1.1
+    versionCode: 36
+    commit: 9e05d19abe68cec9763cff0083d9cda788d0039c
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: '2.2'
+    versionCode: 37
+    commit: 4646d1a0690c6bcbc58485e90f965c1bf805bbfa
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 2.2.1
+    versionCode: 38
+    commit: a26ca566a16b41270bf7b3c8af9f8957011cfcce
+    subdir: app
+    gradle:
+      - yes
+
   - versionName: '2.3'
     versionCode: 41
     commit: edaa63a57db6fddbb03976c820566fdf9a02ebb1
@@ -74,16 +95,22 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.6
+    rm:
+      - ios
+      - windows
     prebuild:
+      - export PUB_CACHE=$$flutter$$/pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - rustup default 1.94.1
       - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
         x86_64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
     build:
       - export PUB_CACHE=$$flutter$$/pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="arm64-v8a"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="armeabi-v7a"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="x86_64"
     ndk: r28c
 
 AutoUpdateMode: Version
