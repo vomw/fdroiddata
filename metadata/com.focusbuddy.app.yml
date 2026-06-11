@@ -13,30 +13,31 @@ Repo: https://github.com/toprakpt1/focusbuddy
 Builds:
   - versionName: 1.0.0
     versionCode: 1001
-    commit: 3f0a1cccc6c277d3bd6c0031ddcbc0a773a53a67
+    commit: 90fd0c7eda79f25bcb5e862c4de0ac9c08eb5606
     sudo:
       - apt-get update
       - apt-get install -y npm
     init: npm ci
-    output: android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
-    srclibs:
-      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    output: 
+      android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
     prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - sed -i -e '1a 
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
         package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild -p android --clean
-      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture = true/'
-        android/app/build.gradle
+      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def 
+        enableSeparateBuildPerCPUArchitecture = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
       - echo 'reactNativeArchitectures=armeabi-v7a' >> android/gradle.properties
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - echo 'allprojects { tasks.configureEach { t -> if (t.class.name.contains("KotlinCompile"))
-        { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check"
-        } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check")
+      - echo 'allprojects { tasks.configureEach { t -> if 
+        (t.class.name.contains("KotlinCompile")) { try { 
+        t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check" } 
+        catch (Exception e) { try { 
+        t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check") 
         } catch (Exception ex) {} } } } }' > android/init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
@@ -53,32 +54,31 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 1002
-    commit: 3f0a1cccc6c277d3bd6c0031ddcbc0a773a53a67
+    commit: 90fd0c7eda79f25bcb5e862c4de0ac9c08eb5606
     sudo:
       - apt-get update
       - apt-get install -y npm
     init: npm ci
-    output: android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-    srclibs:
-      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    output: 
+      android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - sed -i -e '1a 
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
         package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild -p android --clean
-      - >-
-        sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture = true/'
-        -e 's/"arm64-v8a": 3/"arm64-v8a": 2/'
-        android/app/build.gradle
+      - "sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
+        = true/' -e 's/\"arm64-v8a\": 3/\"arm64-v8a\": 2/' android/app/build.gradle"
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
       - echo 'reactNativeArchitectures=arm64-v8a' >> android/gradle.properties
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - echo 'allprojects { tasks.configureEach { t -> if (t.class.name.contains("KotlinCompile"))
-        { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check"
-        } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check")
+      - echo 'allprojects { tasks.configureEach { t -> if 
+        (t.class.name.contains("KotlinCompile")) { try { 
+        t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check" } 
+        catch (Exception e) { try { 
+        t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check") 
         } catch (Exception ex) {} } } } }' > android/init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
@@ -95,32 +95,31 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 1003
-    commit: 3f0a1cccc6c277d3bd6c0031ddcbc0a773a53a67
+    commit: 90fd0c7eda79f25bcb5e862c4de0ac9c08eb5606
     sudo:
       - apt-get update
       - apt-get install -y npm
     init: npm ci
-    output: android/app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
-    srclibs:
-      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    output: 
+      android/app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
     prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - sed -i -e '1a 
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
         package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild -p android --clean
-      - >-
-        sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture = true/'
-        -e 's/"x86_64": 4/"x86_64": 3/'
-        android/app/build.gradle
+      - "sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
+        = true/' -e 's/\"x86_64\": 4/\"x86_64\": 3/' android/app/build.gradle"
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
       - echo 'reactNativeArchitectures=x86_64' >> android/gradle.properties
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - echo 'allprojects { tasks.configureEach { t -> if (t.class.name.contains("KotlinCompile"))
-        { try { t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check"
-        } catch (Exception e) { try { t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check")
+      - echo 'allprojects { tasks.configureEach { t -> if 
+        (t.class.name.contains("KotlinCompile")) { try { 
+        t.kotlinOptions.freeCompilerArgs += "-Xskip-metadata-version-check" } 
+        catch (Exception e) { try { 
+        t.compilerOptions.freeCompilerArgs.add("-Xskip-metadata-version-check") 
         } catch (Exception ex) {} } } } }' > android/init.gradle
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
@@ -135,8 +134,10 @@ Builds:
       - node_modules
     build: gradle -p android assembleRelease --init-script init.gradle
 
-MaintainerNotes: Binary scanner detects `com/google/firebase` classes from firebase-stub
-  srclib.
+MaintainerNotes: Firebase and expo-notifications have been removed. Local 
+  notifications use a custom native Android module (NotificationScheduler) via 
+  Expo config plugin. No network permissions or Firebase dependencies in the 
+  APK.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
