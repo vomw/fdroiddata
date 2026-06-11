@@ -6568,7 +6568,7 @@ Builds:
       - server
       - web
     prebuild:
-      - sed -i -e "s/'stable'/'1.94.1'/" {../../packages/rust,rust_builder}/cargokit/build_tool/lib/src/builder.dart
+      - sed -i "/^  String get _toolchain/ s/=>.*/=> '1.94.1';/" {../../packages/rust,rust_builder}/cargokit/build_tool/lib/src/builder.dart
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:\ "(.*)"/\1/p' ../../../.github/workflows/photos-build.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
