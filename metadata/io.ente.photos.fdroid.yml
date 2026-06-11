@@ -6591,6 +6591,8 @@ Builds:
         $PUB_CACHE/{git/media-kit-*/libs/android/media_kit_libs_android_video,hosted/pub.dev/media_kit_libs_android_video-*}/android/build.gradle)
       - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
       - cd $$media-kit-libmpv-android-video-build-preddit$$/buildscripts
+      - sed -i -e 's/archs=(armv7l arm64 x86 x86_64)/archs=(armv7l arm64)/' build.sh
+      - sed -i -e '/x86/d' bundle_default.sh
       - sed -i -e '/download-sdk/d' download.sh
       - sed -i -e '/git reset --hard/d' patch.sh
       - sed -i -e 's/sudo rm -r/echo/g' bundle_default.sh
