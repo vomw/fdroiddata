@@ -1,0 +1,40 @@
+Categories:
+  - System
+License: GPL-3.0-or-later
+AuthorName: Shiham Abdul Rahman
+AuthorWebSite: https://shihaam.me
+SourceCode: https://git.shihaam.dev/shihaam/ISODroid
+IssueTracker: https://git.shihaam.dev/shihaam/ISODroid/issues
+Changelog: https://git.shihaam.dev/shihaam/ISODroid/src/branch/main/CHANGELOG.md
+
+AutoName: ISO Droid
+
+RequiresRoot: true
+
+RepoType: git
+Repo: https://git.shihaam.dev/shihaam/ISODroid.git
+
+Builds:
+  - versionName: '1.7'
+    versionCode: 7
+    commit: e9dfbce049956128c448449ebb324f0aaf69eacf
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - isodrive@2e9f28bd90dd57f4f72d2d21cb080e390336233a
+    build:
+      - export TOOLCHAIN="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin"
+      - export SRCS="$$isodrive$$/src/util.cpp $$isodrive$$/src/configfsisomanager.cpp
+        $$isodrive$$/src/androidusbisomanager.cpp $$isodrive$$/src/main.cpp"
+      - export CFLAGS="-I$$isodrive$$/src/include -static-libstdc++ -Os -s"
+      - $TOOLCHAIN/aarch64-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/arm64-v8a/isodrive
+      - $TOOLCHAIN/armv7a-linux-androideabi26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/armeabi-v7a/isodrive
+      - $TOOLCHAIN/x86_64-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/x86_64/isodrive
+      - $TOOLCHAIN/i686-linux-android26-clang++ $CFLAGS $SRCS -o src/main/assets/bin/x86/isodrive
+    ndk: r26d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.7'
+CurrentVersionCode: 7
