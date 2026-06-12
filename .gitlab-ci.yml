@@ -172,6 +172,12 @@ fdroid rewritemeta:
   needs: []
   image: debian:trixie-slim
   rules: *app_verification_rules
+  artifacts:
+    name: "${CI_PROJECT_PATH}_${CI_JOB_STAGE}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}"
+    paths:
+      - tmp/
+    when: always
+    expire_in: 1 week
   before_script:
     - *install_fdroid_server_deb
     - export fdroidserver=$PWD/fdroidserver
@@ -187,6 +193,8 @@ fdroid rewritemeta:
               git diff --name-only;
               printf "\nThese are the formatting issues:\n";
               printf "$(git --no-pager diff --color=always --ws-error-highlight=all | sed -e 's/\r/^M/' -e 's/%/%%/g')";
+              mkdir -p tmp
+              for f in $(git diff --name-only); do cp $f tmp; done
               exit 1
           }
       fi
@@ -435,9 +443,20 @@ fdroid build:
           popd;
           vercode=${build#*:};
           location=$(($(grep -n "^    versionCode:\ $vercode$" metadata/$appid.yml | cut -f1 -d:) - 1));
-          for file in "${appid}_${vercode}.apk" "binaries/${appid}_${vercode}.binary.apk"; do
+          for file in "${appid}_${vercode}.apk"; do
             if [[ -e "$CI_PROJECT_DIR/tmp/$file" ]]; then
-              echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Built APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$file'","check_name":"built_apk","fingerprint":"'$file'","severity":"info"}]' > "$CODEQUALITY_DIR/${file#*/}.json";
+              binary="binaries/${appid}_${vercode}.binary.apk"
+              signed="signed/${appid}_${vercode}.signed.apk"
+              if [[ -e "$CI_PROJECT_DIR/tmp/$binary" ]]; then
+                echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Reproducible build APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$binary'","check_name":"built_apk","fingerprint":"'$binary'","severity":"info"}]' > "$CODEQUALITY_DIR/${binary#*/}.json";
+              else
+                mkdir -p "$CI_PROJECT_DIR/tmp/signed"
+                KEYSTORE=$(mktemp -d)/keystore.jks
+                PASS=111111
+                echo -e "$PASS\n$PASS\ny\ny\ny\ny\ny\ny\ny" | keytool -genkey -keyalg RSA -keystore $KEYSTORE -keysize 2048 2> /dev/null
+                echo $PASS | apksigner sign --ks $KEYSTORE --in "$CI_PROJECT_DIR/tmp/$file" --out "$CI_PROJECT_DIR/tmp/$signed"
+                echo '[{"location":{"path":"metadata/'$appid'.yml","lines":{"begin":'$location'}},"description":"Signed APK: '$CI_PROJECT_URL'/-/jobs/'$CI_JOB_ID'/artifacts/raw/tmp/'$signed'","check_name":"built_apk","fingerprint":"'$signed'","severity":"info"}]' > "$CODEQUALITY_DIR/${signed#*/}.json";
+              fi
             fi
           done;
           rm -rf $home_vagrant/build || true;
@@ -487,7 +506,7 @@ check apk:
   before_script:
     - ls tmp/*.apk 2> /dev/null || exit 0
     - apt-get update
-    - apt-get install -qy --no-install-recommends fdroidserver curl
+    - apt-get install -qy --no-install-recommends fdroidserver curl unzip zip
     - export fdroidserver=$PWD/fdroidserver
     - *install_fdroid_server
     - sdkmanager "build-tools;36.0.0"
@@ -553,6 +572,40 @@ check apk:
             severity="info"
           fi
           generate_report $appid $location "Signing Key: $dn" "signing_key" "$file Signing Key" $severity >> codequality.json;
+        fi
+
+        # size and abi
+        size=$(ls -lh $apk | tr -s ' ' | cut -d ' ' -f 5);
+        tempd=$(mktemp -d);
+        unzip -q $apk -d $tempd;
+        if [[ -e $tempd/lib/ ]]; then
+          abis=$(ls "$tempd/lib/");
+            if [[ $(ls $tempd/lib/ | wc -l) -gt 1 ]]; then
+              abilist="";
+              filehashlist="";
+              filenamelist="";
+              for abi in $abis; do
+                cp -R $tempd extracted;
+                for other in $abis; do
+                  if [ $other != $abi ]; then
+                      rm -rf extracted/lib/$other;
+                  fi
+                done
+                zip -rq $abi.apk extracted;
+                abilist+="$abi ($(ls -lh $abi.apk | tr -s ' ' | cut -d ' ' -f 5)) ";
+                filehashlist+="$(ls $tempd/lib/$abi | sort | md5sum)\n"
+                filenamelist+="$abi ($(ls -m $tempd/lib/$abi)) "
+                rm -rf extracted $abi.apk
+              done
+              generate_report $appid $location "APK ABI and size: $abilist, $size" "abi_size" "$file ABI and size" "info" >> codequality.json;
+              if [[ $(echo -e $filehashlist | uniq | wc -l) != 2 ]]; then
+                generate_report $appid $location "APK has different libs in different ABI: $filenamelist" "abi_diff" "$file ABI diff" "major" >> codequality.json;
+              fi
+            else
+              generate_report $appid $location "APK ABI and size: $abis, $size" "abi_size" "$file ABI and size" "info" >> codequality.json;
+            fi
+        else
+          generate_report $appid $location "APK ABI and size: No native lib, $size" "abi_size" "$file ABI and size" "info" >> codequality.json;
         fi
       done
     - sed -i -e '$s/,$/]/' codequality.json
