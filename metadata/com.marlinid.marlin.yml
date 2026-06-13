@@ -21,12 +21,9 @@ Builds:
     commit: cbb996c3c36aa12e86172c8823ce5e0b8530e43c
     sudo:
       - apt-get update
-      - apt-get install -y curl xz-utils
-      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
-      - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  /tmp/node.tar.xz"
-        | sha256sum -c -
-      - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local
-      - rm /tmp/node.tar.xz
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs
     init: npm ci
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
@@ -65,12 +62,9 @@ Builds:
     commit: cbb996c3c36aa12e86172c8823ce5e0b8530e43c
     sudo:
       - apt-get update
-      - apt-get install -y curl xz-utils
-      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.xz
-      - echo "2e5d13569282d016861fae7c8f935e741693c269101a5bebcf761a5376d1f99f  /tmp/node.tar.xz"
-        | sha256sum -c -
-      - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local
-      - rm /tmp/node.tar.xz
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs
     init: npm ci
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
