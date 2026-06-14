@@ -3,30 +3,27 @@ Categories:
   - File Transfer
   - Internet
   - Messaging
-  # - Voice & Video Chat
+License: GPL-3.0-or-later
 AuthorName: Peer Topeer
 AuthorEmail: quandang@disroot.org
-License: GPL-3.0-or-later
 SourceCode: https://codeberg.org/quandang/global_send
 IssueTracker: https://codeberg.org/quandang/global_send/issues
-Changelog: https://codeberg.org/quandang/global_send/src/branch/main/metadata/en-US/changelogs
-# Translation:
-# Donate:
-# Liberapay:
-# OpenCollective:
+Changelog: 
+  https://codeberg.org/quandang/global_send/src/branch/main/metadata/en-US/changelogs
+
+AutoName: Globalsend
+
 RepoType: git
 Repo: https://codeberg.org/quandang/global_send.git
 
 Builds:
   - versionName: 0.2.0
     versionCode: 11000
-    commit: 12eee5de73d193c8d75ce3541105a6a3de60c482
+    commit: ee0e09d5b029909bfa4f370f3aea9197ee35da2e
     submodules: true
     sudo:
-      - mkdir -p /home/quan
-      - chown -R vagrant /home/quan
       - apt-get update
-      - apt-get install -y gcc libc-dev
+      - apt-get install -y gcc libc-dev rustup
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     rm:
       - ios
@@ -43,20 +40,19 @@ Builds:
       - .pub-cache
       - .flutter
     build:
-      - .rustup/rustup-init.sh -y --default-toolchain stable
-      - $HOME/.cargo/bin/cargo run -p rinf_cli gen
+      - rustup default 1.95.0
+      - cargo run -p rinf_cli gen
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm" --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
 
   - versionName: 0.2.0
     versionCode: 12000
-    commit: 12eee5de73d193c8d75ce3541105a6a3de60c482
+    commit: ee0e09d5b029909bfa4f370f3aea9197ee35da2e
     submodules: true
     sudo:
-      - mkdir -p /home/quan
-      - chown -R vagrant /home/quan
       - apt-get update
-      - apt-get install -y gcc libc-dev
+      - apt-get install -y gcc libc-dev rustup
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     rm:
       - ios
@@ -73,20 +69,19 @@ Builds:
       - .pub-cache
       - .flutter
     build:
-      - .rustup/rustup-init.sh -y --default-toolchain stable
-      - $HOME/.cargo/bin/cargo run -p rinf_cli gen
+      - rustup default 1.95.0
+      - cargo run -p rinf_cli gen
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64" --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
 
   - versionName: 0.2.0
     versionCode: 14000
-    commit: 12eee5de73d193c8d75ce3541105a6a3de60c482
+    commit: ee0e09d5b029909bfa4f370f3aea9197ee35da2e
     submodules: true
     sudo:
-      - mkdir -p /home/quan
-      - chown -R vagrant /home/quan
       - apt-get update
-      - apt-get install -y gcc libc-dev
+      - apt-get install -y gcc libc-dev rustup
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     rm:
       - ios
@@ -103,17 +98,18 @@ Builds:
       - .pub-cache
       - .flutter
     build:
-      - .rustup/rustup-init.sh -y --default-toolchain stable
-      - $HOME/.cargo/bin/cargo run -p rinf_cli gen
+      - rustup default 1.95.0
+      - cargo run -p rinf_cli gen
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64" --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000)) --build-name=$$VERSION$$
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 VercodeOperation:
   - 10000 * %c + 1000
   - 10000 * %c + 2000
   - 10000 * %c + 4000
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.2.0
 CurrentVersionCode: 14000
