@@ -21,25 +21,25 @@ Builds:
     commit: fbaebe7c88c34eddf37960f5a49f0b4ae331a2d0
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends pkg-config cmake make 
-        ninja-build gcc g++ libc6-dev ca-certificates rustup
-      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup rustup toolchain 
-        install 1.89.0 --profile minimal
+      - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
+        gcc g++ libc6-dev ca-certificates rustup
+      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup rustup toolchain install
+        1.89.0 --profile minimal
       - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup rustup default 1.89.0
-      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup rustup target add 
-        aarch64-linux-android x86_64-linux-android
-      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup cargo install --locked
-        --version 4.1.2 cargo-ndk
+      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup rustup target add aarch64-linux-android
+        x86_64-linux-android
+      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup cargo install --locked --version
+        4.1.2 cargo-ndk
       - chmod -R a+rwX /opt/cargo
-      - chmod -R a+rX /opt/rustup
+      - chmod -R a+rwX /opt/rustup
     output: app/build/outputs/apk/release/app-release.apk
     prebuild:
       - KEEP_SHA="$(tr -d '[:space:]' < keep.version)"
       - rm -rf keep
       - git clone https://github.com/privkeyio/keep.git keep
       - git -C keep checkout "$KEEP_SHA"
-      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup cargo fetch --locked 
-        --manifest-path keep/Cargo.toml
+      - env CARGO_HOME=/opt/cargo RUSTUP_HOME=/opt/rustup cargo fetch --locked --manifest-path
+        keep/Cargo.toml
     build:
       - export CARGO_HOME=/opt/cargo
       - export RUSTUP_HOME=/opt/rustup
@@ -50,8 +50,7 @@ Builds:
       - gradle assembleRelease
     ndk: r29
 
-AllowedAPKSigningKeys: 
-  3eb0e6f6f4e0962ebd717f84eea47428b73087b686c956633d6a9fcc4c854f50
+AllowedAPKSigningKeys: 3eb0e6f6f4e0962ebd717f84eea47428b73087b686c956633d6a9fcc4c854f50
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
