@@ -26,21 +26,23 @@ Builds:
       - linux
       - windows
     prebuild:
+      - original_dir=$(pwd)
       - flutterVersion=$(cat fastlane/metadata/android/flutter-version.txt)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || mkdir -p /tmp/build/com.trifecta.todo'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp -R . /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || mkdir -p /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp -R . /tmp/build/com.trifecta.todo'
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter config --no-analytics && $$flutter$$/bin/flutter
         pub get --enforce-lockfile
     build:
+      - original_dir=$(pwd)
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
-      - mkdir -p build/app/outputs/flutter-apk
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-        build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || rm -rf /tmp/build/com.trifecta.todo'
+      - mkdir -p $original_dir/build/app/outputs/flutter-apk
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+        $original_dir/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || rm -rf /tmp/build/com.trifecta.todo'
 
   - versionName: 0.9.2
     versionCode: 12
@@ -52,21 +54,23 @@ Builds:
       - linux
       - windows
     prebuild:
+      - original_dir=$(pwd)
       - flutterVersion=$(cat fastlane/metadata/android/flutter-version.txt)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || mkdir -p /tmp/build/com.trifecta.todo'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp -R . /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || mkdir -p /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp -R . /tmp/build/com.trifecta.todo'
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter config --no-analytics && $$flutter$$/bin/flutter
         pub get --enforce-lockfile
     build:
+      - original_dir=$(pwd)
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-      - mkdir -p build/app/outputs/flutter-apk
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-        build/app/outputs/flutter-apk/app-arm64-v8a-release.apk'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || rm -rf /tmp/build/com.trifecta.todo'
+      - mkdir -p $original_dir/build/app/outputs/flutter-apk
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+        $original_dir/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || rm -rf /tmp/build/com.trifecta.todo'
 
   - versionName: 0.9.2
     versionCode: 13
@@ -78,21 +82,23 @@ Builds:
       - linux
       - windows
     prebuild:
+      - original_dir=$(pwd)
       - flutterVersion=$(cat fastlane/metadata/android/flutter-version.txt)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || mkdir -p /tmp/build/com.trifecta.todo'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp -R . /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || mkdir -p /tmp/build/com.trifecta.todo'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp -R . /tmp/build/com.trifecta.todo'
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter config --no-analytics && $$flutter$$/bin/flutter
         pub get --enforce-lockfile
     build:
+      - original_dir=$(pwd)
       - cd /tmp/build/com.trifecta.todo && export PUB_CACHE=/tmp/build/com.trifecta.todo/.pub-cache
         && $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
-      - mkdir -p build/app/outputs/flutter-apk
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-x86_64-release.apk
-        build/app/outputs/flutter-apk/app-x86_64-release.apk'
-      - '[ "/tmp/build/com.trifecta.todo" = "$(pwd)" ] || rm -rf /tmp/build/com.trifecta.todo'
+      - mkdir -p $original_dir/build/app/outputs/flutter-apk
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || cp /tmp/build/com.trifecta.todo/build/app/outputs/flutter-apk/app-x86_64-release.apk
+        $original_dir/build/app/outputs/flutter-apk/app-x86_64-release.apk'
+      - '[ "/tmp/build/com.trifecta.todo" = "$original_dir" ] || rm -rf /tmp/build/com.trifecta.todo'
 
 AllowedAPKSigningKeys: ccbd6760f8a82bbacad472399b472ccf4238df4570304ca14692ad49727eace2
 
