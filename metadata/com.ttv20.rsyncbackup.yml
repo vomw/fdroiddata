@@ -23,18 +23,30 @@ Builds:
     timeout: 7200
     subdir: app
     sudo:
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
       - apt-get install -y --no-install-recommends autoconf automake bison build-essential
-        ca-certificates cmake curl file flex gawk gettext git golang-go jq libtool
-        lzip meson ninja-build patch perl pkg-config python3 python3-pip ruby rsync
+        ca-certificates cmake curl file flex gawk gettext git jq libtool lzip
+        meson ninja-build patch perl pkg-config python3 python3-pip ruby rsync
         texinfo unzip wget xz-utils zstd
+      - apt-get install -y -t forky --no-install-recommends golang-go
       - mkdir -p /data
       - chown vagrant:vagrant /data
     gradle:
       - fdroid
+    srclibs:
+      - go@go1.26.4
     prebuild: ../scripts/fdroid-scan-source.sh
     scandelete:
       - app/src/sideload
     build:
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOTOOLCHAIN=local
       - export ANDROID_HOME=$$SDK$$
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_HOME=$$NDK$$
@@ -42,7 +54,6 @@ Builds:
       - export NDK=$$NDK$$
       - printf '\npocketsync.versionName=$$VERSION$$\npocketsync.versionCode=$$VERCODE$$\n'
         >> ../gradle.properties
-      - export GOTOOLCHAIN=go1.26.4
       - export FDROID_NATIVE_TOOLCHAIN_MODE=copy
       - ../scripts/build-fdroid-native-termux.sh --termux-mode host
     ndk: 29.0.14206865
@@ -51,8 +62,9 @@ MaintainerNotes: |-
   No prebuilt native binaries are shipped. The fdroidRelease build compiles
   rsync, OpenSSH and zstd from upstream source via the pinned Termux package
   recipes in native/fdroid-native-sources.lock (each recipe carries the source
-  URL and SHA-256 checksum), then builds the Android tsnet helper from source in
-  native/tsnet-helper (pinned by go.mod / go.sum, GOTOOLCHAIN pinned to go1.26.4).
+  URL and SHA-256 checksum), then builds Go 1.26.4 from fdroiddata srclib and
+  uses it to build the Android tsnet helper from source in native/tsnet-helper
+  (pinned by go.mod / go.sum, GOTOOLCHAIN=local).
   prebuild runs scripts/fdroid-scan-source.sh, which fails the build if any ELF
   binary or native library remains in the source sets. scandelete removes the
   upstream app/src/sideload prebuilts before scanning.
@@ -60,8 +72,8 @@ MaintainerNotes: |-
   The native stack is built with --termux-mode host (no Docker/FUSE inside the
   build VM); this needs network during build to git-clone termux-packages at the
   pinned commit. The sudo apt packages are the Termux host-build dependencies
-  plus the Go toolchain, kept to what the buildserver base image does not already
-  provide.
+  plus the bootstrap Go toolchain, kept to what the buildserver base image does
+  not already provide.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
