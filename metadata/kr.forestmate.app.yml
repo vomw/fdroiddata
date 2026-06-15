@@ -1,1 +1,48 @@
-metadata/kr.forestmate.app.yml
+AntiFeatures:
+  NonFreeNet:
+    en-US: "Uses the hosted ForestMate web/API service at forestmate.onrender.com
+      by\ndefault. The web client and server are source-available and can be\nself-hosted."
+Categories:
+  - Navigation
+  - Sports & Health
+License: Apache-2.0
+AuthorName: ForestMate contributors
+WebSite: https://forestmate.onrender.com/home.html
+SourceCode: https://github.com/spcx0701/forest-mate
+IssueTracker: https://github.com/spcx0701/forest-mate/issues
+Changelog: https://github.com/spcx0701/forest-mate/releases
+
+AutoName: ForestMate
+Summary: Hiking safety companion using forest public data
+Description: |-
+  ForestMate is a hiking safety companion built around forest public data.
+  It combines a trail safety index, route recommendations, risk alerts,
+  offline fallback data, one-tap SOS flows, and a public-sector dashboard.
+
+  The Android app is a Trusted Web Activity wrapper for the published
+  ForestMate web app. The web client and FastAPI server source are in the
+  upstream repository and can be self-hosted.
+
+  The Android build does not include advertising SDKs, Firebase, Crashlytics,
+  Google Play Services, or proprietary tracking libraries.
+
+RepoType: git
+Repo: https://github.com/spcx0701/forest-mate.git
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 4
+    commit: c604f155a1299f8a516fa52e7ae1980d6c8ed7ad
+    subdir: packaging/android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    scandelete:
+      - packaging/ios/package.json
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^android-v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: 
+  packaging/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4
