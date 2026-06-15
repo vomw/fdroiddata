@@ -17,9 +17,9 @@ RepoType: git
 Repo: https://codeberg.org/ttv20/PocketBackup.git
 
 Builds:
-  - versionName: 1.0-beta
-    versionCode: 9
-    commit: a5939c2428af3c55d87c16ecdfd67680049742e8
+  - versionName: 1.0.0-beta.1
+    versionCode: 10
+    commit: 569331ee8b1731f86b69af3d9354fc5a4f7147bb
     timeout: 7200
     subdir: app
     sudo:
@@ -47,8 +47,6 @@ Builds:
       - export GOPATH="$HOME/go"
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - printf '\npocketsync.versionName=$$VERSION$$\npocketsync.versionCode=$$VERCODE$$\n'
-        >> ../gradle.properties
       - export FDROID_NATIVE_TOOLCHAIN_MODE=copy
       - ../scripts/build-fdroid-native-termux.sh --termux-mode host
     ndk: 29.0.14206865
@@ -59,7 +57,7 @@ MaintainerNotes: |-
   recipes in native/fdroid-native-sources.lock (each recipe carries the source
   URL and SHA-256 checksum), then builds Go 1.26.4 from fdroiddata srclib and
   uses it to build the Android tsnet helper from source in native/tsnet-helper
-  (pinned by go.mod / go.sum, GOTOOLCHAIN=local).
+  (pinned by go.mod / go.sum) using the srclib Go toolchain on PATH.
   prebuild runs scripts/fdroid-scan-source.sh, which fails the build if any ELF
   binary or native library remains in the source sets. scandelete removes the
   upstream app/src/sideload prebuilts before scanning.
@@ -70,7 +68,8 @@ MaintainerNotes: |-
   plus the bootstrap Go toolchain, kept to what the buildserver base image does
   not already provide.
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0-beta
-CurrentVersionCode: 9
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[1-9][0-9]*\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$
+UpdateCheckData: gradle.properties|pocketbackup\.versionCode=(\d+)|.|pocketbackup\.versionName=(.+)
+CurrentVersion: 1.0.0-beta.1
+CurrentVersionCode: 10
