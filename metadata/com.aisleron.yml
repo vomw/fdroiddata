@@ -1,5 +1,4 @@
 Categories:
-  - Money
   - Shopping List
 License: AGPL-3.0-or-later
 AuthorName: aisleron.com
@@ -113,9 +112,41 @@ Builds:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
       - sed -i -e '/JavaLanguageVersion/d' build.gradle.kts
 
-  - versionName: 2026.2.0
-    versionCode: 19
-    commit: e9ed2a5ca3cbf91dda9693546f4c65efa16ef5d0
+  - versionName: 2026.3.0
+    versionCode: 20
+    commit: 408f32a731c4e39baa0888366fc1b99ca47072b3
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' -e '/gradle.taskGraph.whenReady/,/^}/d'
+        build.gradle.kts
+
+  - versionName: 2026.4.0
+    versionCode: 21
+    commit: 12bb6cb6bbacae011f42b234433fa41256a1b248
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' -e '/gradle.taskGraph.whenReady/,/^}/d'
+        build.gradle.kts
+
+  - versionName: 2026.4.1
+    versionCode: 22
+    commit: fb329405c2e2e6ba2d9fe9954892e938d6e9eccc
     subdir: app
     sudo:
       - export CPUS_MAX=4
@@ -133,5 +164,5 @@ AllowedAPKSigningKeys: e1a1725f32b302c6c69aeebd25c5e50741821af7bfec0ae18adfca287
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2026.2.0
-CurrentVersionCode: 19
+CurrentVersion: 2026.4.1
+CurrentVersionCode: 22
