@@ -7,10 +7,11 @@ Builds:
     sudo:
       - apt-get update
 	  # For llvm build use clang instead
-      - apt-get install -y pkgconf scons g++
+      - apt-get install -y pkgconf scons g++ strip-nondeterminism
     output: output.apk
     srclibs:
 	  # Set the Godot version here
+      # Must be exact version for reproducible builds
       - Godot@4.6-stable
     build:
 	  # Build Godot
@@ -26,4 +27,7 @@ Builds:
 	  # Use your preset name here.
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release
         "Android Release" output.apk
+      # Remove zip metadata, if reproducible build
+      - strip-nondeterminism -t zip output.apk
+	# Use r29b for Godot 4.6.3 or later
     ndk: r28b
