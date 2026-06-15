@@ -23,7 +23,7 @@ Builds:
     commit: 299e071b9ef83af567a63e22fd262c427cc6e473
     sudo:
       - apt-get update
-      - apt-get install -y pkgconf scons g++
+      - apt-get install -y pkgconf scons g++ strip-nondeterminism
     output: game/99managers-futsal-edition.apk
     srclibs:
       - Godot@35e80b3a8822a9df9be390814b62f44c0a9c69e8
@@ -42,6 +42,7 @@ Builds:
       - mv $$Godot$$/bin/android_release.apk ./game/android_release.apk
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --path game --export-release
         "Android F-Droid" 99managers-futsal-edition.apk
+      - strip-nondeterminism -t zip 99managers-futsal-edition.apk
     ndk: 29.0.14206865
 
 AllowedAPKSigningKeys: fb0febc96059f6d76f077d774f0134f7903d66a55e8ff1fe185c49c5ffe12b7f
