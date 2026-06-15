@@ -1,0 +1,43 @@
+Categories:
+  - Reading
+License: GPL-3.0-only
+SourceCode: https://github.com/Swappppy/Openshelf
+IssueTracker: https://github.com/Swappppy/Openshelf/issues
+Translation: https://hosted.weblate.org/projects/openshelf/
+
+AutoName: Openshelf
+Summary: Personal library manager and book tracker
+Description: |-
+  Openshelf is a free, open-source personal library manager.
+  It functions as a comprehensive reading tracker and book archival tool.
+  Everything stays on your device—no account required.
+
+  Features:
+  * Dynamic views (List/Grid).
+  * Trackable reading states.
+  * Powerful search and advanced filtering.
+  * Manage categories, imprints, and collections.
+  * Hybrid scanner (Barcode and ISBN via OCR).
+  * Detailed statistics and customizable widgets.
+
+RepoType: git
+Repo: https://github.com/Swappppy/Openshelf
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    output: ../../build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - pushd ../..
+      - $$flutter$$ pub get
+      - popd
+    build: $$flutter$$ build apk --release --target-platform android-arm64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
