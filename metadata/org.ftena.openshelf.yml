@@ -7,6 +7,19 @@ Translation: https://hosted.weblate.org/projects/openshelf/
 
 AutoName: Openshelf
 Summary: Personal library manager and book tracker
+Description: |-
+  Openshelf is a free, open-source personal library manager.
+  It functions as a comprehensive reading tracker and book archival tool.
+  Everything stays on your device—no account required.
+
+  Features:
+  * Dynamic views (List/Grid).
+  * Trackable reading states.
+  * Powerful search and advanced filtering.
+  * Manage categories, imprints, and collections.
+  * Hybrid scanner (Barcode and ISBN via OCR).
+  * Detailed statistics and customizable widgets.
+
 RepoType: git
 Repo: https://github.com/Swappppy/Openshelf
 
@@ -19,12 +32,10 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export PATH=$$flutter$$/bin:$$PATH
-      - cd ../..
-      - flutter pub get
-    build:
-      - export PATH=$$flutter$$/bin:$$PATH
-      - flutter build apk --release --target-platform android-arm64
+      - pushd ../..
+      - $$flutter$$/bin/flutter pub get
+      - popd
+    build: $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
