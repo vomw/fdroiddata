@@ -1,0 +1,290 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: Jop Knaapen
+AuthorEmail: support@jknaapen.nl
+WebSite: https://donutware.github.io/Fladder/
+SourceCode: https://github.com/DonutWare/Fladder
+IssueTracker: https://github.com/DonutWare/Fladder/issues
+Translation: https://hosted.weblate.org/engage/fladder/
+Changelog: https://github.com/DonutWare/Fladder/releases
+Donate: https://buymeacoffee.com/jopknaapen
+
+AutoName: Fladder
+
+RepoType: git
+Repo: https://github.com/DonutWare/Fladder
+
+Builds:
+  - versionName: 0.10.3
+    versionCode: 4630
+    commit: 4a6dde8dc5b2fdaf484759722fe93efc388bc16f
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make automake pkg-config libtool
+        nasm python3-jsonschema wget meson python3-jinja2 zip
+    output: build/app/outputs/flutter-apk/app-x86_64-production-release.apk
+    binary: 
+      https://github.com/DonutWare/Fladder/releases/download/v%v/Fladder-Android-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+      - media-kit-libmpv-android-video-build@v1.1.8
+      - media-kit-donutware@34bde583caa800bf2beb06ec6287c943eda24296
+      - media-kit-android-helper@42054e5d479f39ccbb0ae604862e2bcaf59b74c2
+      - mpv@78d43740f52db817d98bcf24fb30a76ab6fa13ff
+      - libplacebo@v6.292.0
+      - fftools-ffi@10070acb2c090edda86dba431f6c281145ceb221
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+      - flatpak
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - flutterVersion=$(sed -n -E "s/.*\"flutter\":\s*\"(.*)\"/\1/p" .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - export file=$(find .pub-cache -path '*/libs/android/media_kit_libs_android_video/android/build.gradle'
+        | head -n 1)
+      - '[[ $file ]]'
+      - export tag=$(sed -n -E 's|.*download/(v[0-9.]+)/.*|\1|p' $file | head -n 1)
+      - '[[ $tag == "v1.1.8" ]] || exit 1'
+      - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
+      - cd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p deps
+      - pushd deps
+      - cp -r $$mpv$$ mpv
+      - cp -r $$libplacebo$$ libplacebo
+      - cp -r $$media-kit-donutware$$ media_kit
+      - cp -r $$media-kit-android-helper$$ media-kit-android-helper
+      - cp -r $$fftools-ffi$$ fftools_ffi
+      - popd
+      - sed -i -e '/download-sdk/d' download.sh
+      - sed -i -e '/git reset --hard/d' patch.sh
+      - sed -i -e 's/archs=(armv7l arm64 x86 x86_64)/archs=(x86_64)/' build.sh
+      - sed -i -e 's/sudo rm -r/echo/g' -e '/flutter create/a sed -i -e
+        "/defaultConfig {/a ndk { abiFilters \\"x86_64\\"}" android/build.gradle' -e
+        's|app/build/outputs/apk/release/app-release.apk|app/build/outputs/apk/release/app-release-unsigned.apk|'
+        bundle_default.sh
+      - sed -i -e 's/sudo//g' -e 's|./gradlew|gradle|g' *.sh
+      - sed -i -e '/llvm-strip --strip-all/d' -e 's/rm scripts\/ffmpeg.sh/rm -f scripts\/ffmpeg.sh/'
+        bundle_default.sh
+    scanignore:
+      - android/settings.gradle
+    scandelete:
+      - .pub-cache
+    build:
+      - pushd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p sdk
+      - ln -s $$SDK$$ ./sdk/android-sdk-linux
+      - PATH=$$flutter$$/bin/:$PATH bash bundle_default.sh
+      - popd
+      - mkdir -p build/media_kit_libs_android_video/output
+      - cp 
+        $$media-kit-libmpv-android-video-build$$/buildscripts/deps/media-kit-android-helper/app/build/outputs/apk/release/default-x86_64.jar
+        build/media_kit_libs_android_video/output
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number=$(($$VERCODE$$ % 1000))
+        --flavor production --target-platform android-x64
+    ndk: r25c
+
+  - versionName: 0.10.3
+    versionCode: 1630
+    commit: 4a6dde8dc5b2fdaf484759722fe93efc388bc16f
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make automake pkg-config libtool
+        nasm python3-jsonschema wget meson python3-jinja2 zip
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk
+    binary: 
+      https://github.com/DonutWare/Fladder/releases/download/v%v/Fladder-Android-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+      - media-kit-libmpv-android-video-build@v1.1.8
+      - media-kit-donutware@34bde583caa800bf2beb06ec6287c943eda24296
+      - media-kit-android-helper@42054e5d479f39ccbb0ae604862e2bcaf59b74c2
+      - mpv@78d43740f52db817d98bcf24fb30a76ab6fa13ff
+      - libplacebo@v6.292.0
+      - fftools-ffi@10070acb2c090edda86dba431f6c281145ceb221
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+      - flatpak
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - flutterVersion=$(sed -n -E "s/.*\"flutter\":\s*\"(.*)\"/\1/p" .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - export file=$(find .pub-cache -path '*/libs/android/media_kit_libs_android_video/android/build.gradle'
+        | head -n 1)
+      - '[[ $file ]]'
+      - export tag=$(sed -n -E 's|.*download/(v[0-9.]+)/.*|\1|p' $file | head -n 1)
+      - '[[ $tag == "v1.1.8" ]] || exit 1'
+      - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
+      - cd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p deps
+      - pushd deps
+      - cp -r $$mpv$$ mpv
+      - cp -r $$libplacebo$$ libplacebo
+      - cp -r $$media-kit-donutware$$ media_kit
+      - cp -r $$media-kit-android-helper$$ media-kit-android-helper
+      - cp -r $$fftools-ffi$$ fftools_ffi
+      - popd
+      - sed -i -e '/download-sdk/d' download.sh
+      - sed -i -e '/git reset --hard/d' patch.sh
+      - sed -i -e 's/archs=(armv7l arm64 x86 x86_64)/archs=(armv7l)/' build.sh
+      - sed -i -e 's/sudo rm -r/echo/g' -e '/flutter create/a sed -i -e
+        "/defaultConfig {/a ndk { abiFilters \\"armeabi-v7a\\"}" android/build.gradle' -e
+        's|app/build/outputs/apk/release/app-release.apk|app/build/outputs/apk/release/app-release-unsigned.apk|'
+        bundle_default.sh
+      - sed -i -e 's/sudo//g' -e 's|./gradlew|gradle|g' *.sh
+      - sed -i -e '/llvm-strip --strip-all/d' -e 's/rm scripts\/ffmpeg.sh/rm -f scripts\/ffmpeg.sh/'
+        bundle_default.sh
+    scanignore:
+      - android/settings.gradle
+    scandelete:
+      - .pub-cache
+    build:
+      - pushd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p sdk
+      - ln -s $$SDK$$ ./sdk/android-sdk-linux
+      - PATH=$$flutter$$/bin/:$PATH bash bundle_default.sh
+      - popd
+      - mkdir -p build/media_kit_libs_android_video/output
+      - cp 
+        $$media-kit-libmpv-android-video-build$$/buildscripts/deps/media-kit-android-helper/app/build/outputs/apk/release/default-armeabi-v7a.jar
+        build/media_kit_libs_android_video/output
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number=$(($$VERCODE$$ % 1000))
+        --flavor production --target-platform android-arm
+    ndk: r25c
+
+  - versionName: 0.10.3
+    versionCode: 2630
+    commit: 4a6dde8dc5b2fdaf484759722fe93efc388bc16f
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc-multilib libc-dev make automake pkg-config libtool
+        nasm python3-jsonschema wget meson python3-jinja2 zip
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk
+    binary: 
+      https://github.com/DonutWare/Fladder/releases/download/v%v/Fladder-Android-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+      - media-kit-libmpv-android-video-build@v1.1.8
+      - media-kit-donutware@34bde583caa800bf2beb06ec6287c943eda24296
+      - media-kit-android-helper@42054e5d479f39ccbb0ae604862e2bcaf59b74c2
+      - mpv@78d43740f52db817d98bcf24fb30a76ab6fa13ff
+      - libplacebo@v6.292.0
+      - fftools-ffi@10070acb2c090edda86dba431f6c281145ceb221
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+      - flatpak
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - flutterVersion=$(sed -n -E "s/.*\"flutter\":\s*\"(.*)\"/\1/p" .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - export file=$(find .pub-cache -path '*/libs/android/media_kit_libs_android_video/android/build.gradle'
+        | head -n 1)
+      - '[[ $file ]]'
+      - export tag=$(sed -n -E 's|.*download/(v[0-9.]+)/.*|\1|p' $file | head -n 1)
+      - '[[ $tag == "v1.1.8" ]] || exit 1'
+      - sed -i -e '/downloadDependencies/,/dependsOn/d' $file
+      - cd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p deps
+      - pushd deps
+      - cp -r $$mpv$$ mpv
+      - cp -r $$libplacebo$$ libplacebo
+      - cp -r $$media-kit-donutware$$ media_kit
+      - cp -r $$media-kit-android-helper$$ media-kit-android-helper
+      - cp -r $$fftools-ffi$$ fftools_ffi
+      - popd
+      - sed -i -e '/download-sdk/d' download.sh
+      - sed -i -e '/git reset --hard/d' patch.sh
+      - sed -i -e 's/archs=(armv7l arm64 x86 x86_64)/archs=(arm64)/' build.sh
+      - sed -i -e 's/sudo rm -r/echo/g' -e '/flutter create/a sed -i -e
+        "/defaultConfig {/a ndk { abiFilters \\"arm64-v8a\\"}" android/build.gradle' -e
+        's|app/build/outputs/apk/release/app-release.apk|app/build/outputs/apk/release/app-release-unsigned.apk|'
+        bundle_default.sh
+      - sed -i -e 's/sudo//g' -e 's|./gradlew|gradle|g' *.sh
+      - sed -i -e '/llvm-strip --strip-all/d' -e 's/rm scripts\/ffmpeg.sh/rm -f scripts\/ffmpeg.sh/'
+        bundle_default.sh
+    scanignore:
+      - android/settings.gradle
+    scandelete:
+      - .pub-cache
+    build:
+      - pushd $$media-kit-libmpv-android-video-build$$/buildscripts
+      - mkdir -p sdk
+      - ln -s $$SDK$$ ./sdk/android-sdk-linux
+      - PATH=$$flutter$$/bin/:$PATH bash bundle_default.sh
+      - popd
+      - mkdir -p build/media_kit_libs_android_video/output
+      - cp 
+        $$media-kit-libmpv-android-video-build$$/buildscripts/deps/media-kit-android-helper/app/build/outputs/apk/release/default-arm64-v8a.jar
+        build/media_kit_libs_android_video/output
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number=$(($$VERCODE$$ % 1000))
+        --flavor production --target-platform android-arm64
+    ndk: r25c
+
+AllowedAPKSigningKeys: 31a66181923631b8fec1103bc66c5d0718182623e3a18696ad5ce117d055c301
+
+MaintainerNotes: |-
+  Flutter version is pinned via .fvmrc in the repo root (currently 3.35.7).
+  The prebuild step reads this file and checks out the correct Flutter version
+  from the srclib before running pub get.
+
+  media_kit packages are git dependencies from
+  https://github.com/DonutWare/media-kit.git and are pinned via pubspec.lock to
+  commit 34bde583caa800bf2beb06ec6287c943eda24296.
+
+  media_kit_libs_android_video's Gradle task that downloads prebuilt JARs is
+  removed in prebuild, and replacement JARs are built locally from source using
+  media-kit/libmpv-android-video-build at v1.1.8.
+
+  The libmpv build scripts are seeded with srclib copies of mpv, libplacebo,
+  fftools_ffi, media-kit-android-helper, and DonutWare/media-kit to avoid
+  relying on non-reproducible floating refs for these components.
+
+  The repo contains a flatpak/shared-modules git submodule which is unrelated
+  to the Android build; it is removed via the rm: list and submodules: true is
+  intentionally not set.
+
+  The production flavor is required for release builds.
+
+  Upstream release workflows pass --build-number=${{ github.run_number }}. For
+  v0.10.3 this value is 630. Split APK outputs use ABI-specific Android
+  versionCode overrides, resulting in x86_64=4630, armeabi-v7a=1630,
+  arm64-v8a=2630.
+
+  Upstream now publishes split Android APK artifacts. Metadata matches them
+  one-to-one with per-ABI binary URLs:
+  Fladder-Android-%v-x86_64.apk,
+  Fladder-Android-%v-armeabi-v7a.apk,
+  Fladder-Android-%v-arm64-v8a.apk.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.10.3
+CurrentVersionCode: 2630
