@@ -12,6 +12,7 @@ IssueTracker: https://codeberg.org/ttv20/PocketBackup/issues
 Changelog: https://codeberg.org/ttv20/PocketBackup/releases
 
 Name: Pocket Backup
+AutoName: Pocket Backup
 
 RepoType: git
 Repo: https://codeberg.org/ttv20/PocketBackup.git
@@ -26,14 +27,15 @@ Builds:
       - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y --no-install-recommends autoconf automake bison build-essential
-        cmake file flex gawk gettext git jq libtool lzip meson
-        ninja-build patch perl pkg-config python3-pip ruby rsync texinfo unzip
-        wget xz-utils zstd
+        cmake file flex gawk gettext git jq libtool lzip meson ninja-build patch perl
+        pkg-config python3-pip ruby rsync texinfo unzip wget xz-utils zstd
       - apt-get install -y -t forky --no-install-recommends golang-go
       - mkdir -p /data
       - chown vagrant:vagrant /data
     gradle:
       - fdroid
+    gradleprops:
+      - pocketbackup.officialDiagnostics=true
     srclibs:
       - go@go1.26.4
     prebuild: ../scripts/fdroid-scan-source.sh
@@ -70,6 +72,7 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[1-9][0-9]*\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$
-UpdateCheckData: gradle.properties|pocketbackup\.versionCode=(\d+)|.|pocketbackup\.versionName=(.+)
+UpdateCheckData: 
+  gradle.properties|pocketbackup\.versionCode=(\d+)|.|pocketbackup\.versionName=(.+)
 CurrentVersion: 1.0.0-beta.1
 CurrentVersionCode: 10
