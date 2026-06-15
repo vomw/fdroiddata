@@ -96,28 +96,6 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
-  - versionName: 1.3.3
-    versionCode: 21
-    commit: 448a576f9cd3e0111c98f6b4515711bcfaa45d76
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y make
-    gradle:
-      - fdroid
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
-    scandelete:
-      - thirdparty/llama.cpp/examples/gguf-hash/deps
-      - site
-    build: bash ../build-proot.sh
-    ndk: r28c
-    postbuild:
-      - mv $$OUT$$ unaligned.apk
-      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
-        --replace unaligned.apk $$OUT$$
-
   - versionName: 1.3.4
     versionCode: 22
     commit: bc969febcf2887d59d30ef83b49d3156fa87eed1
