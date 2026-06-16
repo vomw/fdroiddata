@@ -1,8 +1,8 @@
 Categories:
   - Navigation
   - Public Transport
-License: AGPL-3.0-only
-AuthorName: Swecha
+License: AGPL-3.0-or-later
+AuthorName: Satvika Kalla & Neelapu Nandini (Swecha Internship)
 AuthorEmail: tryaxistech@gmail.com
 WebSite: https://swecha.org
 SourceCode: https://gitlab.com/neelapunandini03/travelmate
@@ -21,15 +21,9 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
-    prebuild:
-      - cd ../../
-      - npm install
-      - npm run build
-      - npx cap sync android
-    build:
-      - cd frontend/android
-      - gradle assembleRelease
+    prebuild: cd .. && npm install && npm run build && npx cap sync android
+    gradle:
+      - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
