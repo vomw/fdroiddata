@@ -25,9 +25,22 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 3.1.2
+    versionCode: 3102
+    disable: fails to repro
+    commit: dc50ec9f9b1970497f0dca68ba3475e19a542727
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: 349d41f22f721c6faaf8dd70be387ff296effd33156baabcae79b3d068aff7e6
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 2.0.1
-CurrentVersionCode: 2001
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 3.1.2
+CurrentVersionCode: 3102

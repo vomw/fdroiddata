@@ -15,7 +15,8 @@ Bitcoin: bc1q5flmuh5f3canqza07cfekjn64p2aqvd2w7pnn3
 
 RepoType: git
 Repo: https://github.com/FossifyOrg/Launcher.git
-Binaries: https://github.com/FossifyOrg/Launcher/releases/download/%v/launcher-%c-foss-release.apk
+Binaries: 
+  https://github.com/FossifyOrg/Launcher/releases/download/%v/launcher-%c-foss-release.apk
 
 Builds:
   - versionName: 1.0.0
@@ -81,10 +82,67 @@ Builds:
     gradle:
       - foss
 
+  - versionName: 1.5.0
+    versionCode: 11
+    commit: 65307abd46227a95bd8a66e8f1c44133daf00fc5
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.6.0
+    versionCode: 12
+    commit: 4e2366833d05cfcb4a7c6a6511b873a67e96aefd
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.7.0
+    versionCode: 13
+    commit: f18f65d634be136f9d5083a92bb41e657b65fb79
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: 1.8.0
+    versionCode: 14
+    commit: 5f24d81608f7f0e3b2cdea9148e766204fb40667
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
+  - versionName: 1.9.0
+    versionCode: 15
+    commit: d53c75650b9305ba776c30f4be742cbd04e66eb0
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
+  - versionName: 1.10.0
+    versionCode: 16
+    commit: 2191e6401681065fcbc1ffdb85e951764e9b1269
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
 AllowedAPKSigningKeys: affdb124d3f4720c2f98dbca9eacba0514fba4306e20a2786c861c3c0d6ff292
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
-CurrentVersion: 1.4.0
-CurrentVersionCode: 10
+CurrentVersion: 1.10.0
+CurrentVersionCode: 16

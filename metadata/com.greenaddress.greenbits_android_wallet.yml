@@ -1,5 +1,4 @@
 Categories:
-  - Money
   - Wallet
 License: GPL-3.0-only
 AuthorName: GreenAddress IT Ltd
@@ -7,52 +6,10 @@ AuthorEmail: info@greenaddress.it
 WebSite: https://greenaddress.it/
 SourceCode: https://github.com/blockstream/green_android
 IssueTracker: https://github.com/blockstream/green_android/issues
-Translation: https://www.transifex.com/blockstream/blockstream-green/
+Translation: https://explore.transifex.com/blockstream/blockstream-green/
 Changelog: https://github.com/blockstream/green_android/releases
 
 AutoName: Green
-Description: |-
-  The Blockstream app (formerly Green) is a simple and secure Bitcoin wallet that makes it easy to get started sending and receiving Bitcoin and Liquid-based assets such as Liquid Bitcoin (L-BTC) and Tether’s USDt.
-
-  Built by Blockstream, one of the most security-focused teams in the Bitcoin industry, the wallet is supported across multiple platforms and is designed for Bitcoin beginners and power users alike.
-
-  EASY SETUP
-  No registration or personal details are required to get started, just write down your recovery phrase and start making Bitcoin transactions right away.
-
-  BUY BITCOIN DIRECTLY TO SELF-CUSTODY
-  No intermediate self custody, buy bitcoin directly into your wallet (additional registration may be required).
-
-  FASTER & CHEAPER BITCOIN TRANSACTIONS
-  Smart fee estimation ensures your Bitcoin payments arrive on time without being charged excessive fees.
-
-  MULTILINGUAL
-  We speak your language. Green includes support for Brazilian Portuguese, Chinese (Simplified), Dutch, English, French, German, Hebrew, Italian, Japanese, Korean, Russian, Spanish, Ukrainian, Vietnamese. And more to come!
-
-  BITCOIN LAYER-2 SUPPORT
-  Send and receive Liquid Bitcoin L-BTC, Tether’s USDt, and any other Liquid-based assets with a Liquid account.
-
-  Bitcoin power users will feel right at home with a wide range of advanced features and industry-firsts:
-
-  FEE CONTROL
-  Fully customizable transaction fees with replace-by-fee support so that you can start low and adjust the fee if necessary. Great for pushing through urgent transactions without overpaying.
-
-  HARDWARE WALLET SUPPORT
-  Integration with Blockstream Jade, Ledger Nano S and X, Trezor One and T (see our help desk for latest compatibility across the various supported platforms).
-
-  TWO-FACTOR THRESHOLDS
-  Require two-factor authentication for large payments only, by setting a two-factor threshold. Total payments up to the threshold can be completed without 2FA.
-
-  WATCH-ONLY WALLETS
-  Keep an eye on your Bitcoin balances while on the go and receive payments from others without needing to grant payment permissions to your device.
-
-  TESTNET SUPPORT
-  Easily make test transactions on Bitcoin testnet until you feel comfortable with how the wallet works.
-
-  PRIVACY
-  No documents, personal information, or KYC required. An email address is needed for wallet recovery purposes only. Connect via Tor at the tap of a button, no other apps needed.
-
-  CONNECT TO YOUR OWN NODE
-  Verify transactions on your own full node with SPV support.
 
 RepoType: git
 Repo: https://github.com/blockstream/green_android.git
@@ -3042,6 +2999,363 @@ Builds:
         ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
     ndk: r26b
 
+  - versionName: 5.1.0
+    versionCode: 22000510
+    commit: 9a180fa4f4923093b49ff31e4cb1ae762edeedb8
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/android-gradle-plugin/s/8.13.0/8.11.1/' ../gradle/libs.versions.toml
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target aarch64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.1.2
+    versionCode: 22000512
+    commit: 13b602b29afebb5fd35c370005a7101faf6efc7c
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target aarch64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.1.3
+    versionCode: 22000513
+    commit: 7a3de0b488244e056c602420bec1d0db6e07da30
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target aarch64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.1.4
+    versionCode: 22000514
+    commit: 673b411851ac52ef0d5e8671413e5e4c1ea74056
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - rustup@1.27.1
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../common/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target aarch64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $rustVersion --target armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - source $HOME/.cargo/env
+      - cd ../gdk
+      - sed -i -e '1a set -x' prepare_gdk_clang.sh
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.2.0
+    versionCode: 22000520
+    commit: aaef6d2b3529951374c16a1cb873845e51221ed8
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils rustup
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../data/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - sed -i -e '/jvm/s/17/21/' ../gradle/libs.versions.toml
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - rustup default $rustVersion
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+      - sed -i -e '1a set -x' -e '/requirements/a pip install setuptools' prepare_gdk_clang.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - cd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.3.0
+    versionCode: 22000521
+    commit: b07568c1d7a85f23572adaf2c9b15ae74943d9a5
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils rustup
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../data/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - sed -i -e '/jvm/s/17/21/' ../gradle/libs.versions.toml
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - rustup default $rustVersion
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+      - sed -i -e '1a set -x' -e '/requirements/a pip install setuptools' prepare_gdk_clang.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - cd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.4.0
+    versionCode: 22000523
+    commit: 07a27956febe72aea122f7b2c9ba2b0097314e68
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils rustup
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../data/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - sed -i -e '/jvm/s/17/21/' ../gradle/libs.versions.toml
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - rustup default $rustVersion
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+      - sed -i -e '1a set -x' -e '/requirements/a pip install setuptools' prepare_gdk_clang.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - cd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
+  - versionName: 5.5.0
+    versionCode: 22000524
+    commit: 577c738e01080c7458a47cb7967c2de4a2952e37
+    subdir: androidApp
+    sudo:
+      - apt-get update
+      - apt-get install -y automake clang cmake jq libffi-dev libtool make pkg-config
+        swig virtualenv xz-utils rustup
+    gradle:
+      - production
+      - FDroid
+    srclibs:
+      - gdk@release_0.74.2
+    rm:
+      - gradle/verification-metadata.xml
+      - gms
+    prebuild:
+      - sed -i -e '/packages.jetbrains.team/d' ../settings.gradle.kts
+      - sed -i -e '/:gms/d' ../settings.gradle.kts build.gradle.kts
+      - sed -i -e '/mvn.breez/d;/zendesk/d;/jetbrains/d;/googleServices/d' ../build.gradle.kts
+      - sed -i -e '/libs.breez.sdk.kmp/d' -e '/jna/s|//||g' ../data/build.gradle.kts
+      - sed -i -e '/signingConfigs {/,+8d' -e '/signingConfigs.getByName/,+3d' -e
+        '/versionNameSuffix/d' -e '/googleServices/d' build.gradle.kts
+      - sed -i -e '/jvm/s/17/21/' ../gradle/libs.versions.toml
+      - cd ../gdk
+      - gdkVersion=$(sed -n -E 's/.*TAGNAME="(.*)"/\1/p' prepare_gdk_clang.sh)
+      - '[[ $gdkVersion ]]'
+      - git -C $$gdk$$ checkout $gdkVersion
+      - mv $$gdk$$ .
+      - rustVersion=$(sed -n -E 's/.*RUST_VERSION=(.*)/\1/p' gdk/docker/android/Dockerfile)
+      - rustup default $rustVersion
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' gdk/tools/builddeps.sh
+      - sed -i -e '1a set -x' -e '/requirements/a pip install setuptools' prepare_gdk_clang.sh
+    scanignore:
+      - gdk/gdk/subprojects/gdk_rust/libgcc/libgcc.a
+    scandelete:
+      - gdk/gdk/subprojects/gdk_rust/gdk_electrum/test_data/store
+    build:
+      - cd ../gdk
+      - JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") PATH=$HOME/.local/bin:$PATH
+        ./prepare_gdk_clang.sh "armeabi-v7a arm64-v8a"
+    ndk: r26b
+
 MaintainerNotes: |-
   Watch prepare_gdk_clang.sh for changes on new builds.
 
@@ -3058,5 +3372,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - 22000000 + %c
 UpdateCheckName: Ignore
-CurrentVersion: 5.0.9
-CurrentVersionCode: 22000509
+CurrentVersion: 5.5.0
+CurrentVersionCode: 22000524

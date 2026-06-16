@@ -1160,7 +1160,8 @@ Builds:
         locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
         GeolocationManager.java
       - popd
-      - sed -i -e "s/'stable'/'1.87.0'/" .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+      - sed -i -e "s/'stable'/'1.87.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
     scandelete:
       - .pub-cache
     build:
@@ -1206,7 +1207,8 @@ Builds:
         locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
         GeolocationManager.java
       - popd
-      - sed -i -e "s/'stable'/'1.88.0'/" .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+      - sed -i -e "s/'stable'/'1.88.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
     scandelete:
       - .pub-cache
     build:
@@ -1252,7 +1254,8 @@ Builds:
         locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
         GeolocationManager.java
       - popd
-      - sed -i -e "s/'stable'/'1.88.0'/" .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+      - sed -i -e "s/'stable'/'1.88.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
     scandelete:
       - .pub-cache
     build:
@@ -1263,8 +1266,281 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release
     ndk: r27
 
+  - versionName: 2.2.0
+    versionCode: 3544
+    commit: eb0e0cddeffbab9ad20363ef7bf1c0d187bee149
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.27.1
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - source .github/workflows/versions.env
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/8.12.1/8.11.1/' .pub-cache/hosted/pub.dev/{device_info_plus,share_plus}-*/android/build.gradle
+      - sed -i -e 's/8.12.3/8.11.1/' .pub-cache/hosted/pub.dev/record_android-*/android/build.gradle
+      - sed -i -e 's/8.13.0/8.11.1/' .pub-cache/hosted/pub.dev/unifiedpush_android-*/android/build.gradle
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.90.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.90.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r27
+
+  - versionName: 2.3.0
+    versionCode: 3545
+    commit: f3bfdf6f0306c36e4a225536ee8b9eb715091a9a
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.27.1
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - source .github/workflows/versions.env
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.90.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.90.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r27
+
+  - versionName: 2.4.0
+    versionCode: 3546
+    commit: fa43658923ebd77c43ed1e77ad96faa43df1c242
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - rustup@1.27.1
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - source .github/workflows/versions.env
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.92.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.92.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android
+      - source $HOME/.cargo/env
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
+  - versionName: 2.5.0
+    versionCode: 3550
+    commit: 63a771507934eb30e97bd8ce1023dbdf2eb79e86
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - FLUTTER_VERSION=$(sed -n -E "s/.*flutter:\ (\S*).*/\1/p" .tool_versions.yaml)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.92.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - rustup default 1.92.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
+  - versionName: 2.5.1
+    versionCode: 3551
+    commit: a3fc1bff01796e90de8a84db2607e29e9b6b4991
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - FLUTTER_VERSION=$(sed -n -E "s/.*flutter:\ (\S*).*/\1/p" .tool_versions.yaml)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.92.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - rustup default 1.92.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
+  - versionName: 2.6.0
+    versionCode: 3553
+    commit: ef99d7ae7b9069113ecc8aefd90073586665ebe4
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - FLUTTER_VERSION=$(sed -n -E "s/.*flutter:\ (\S*).*/\1/p" .tool_versions.yaml)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - sdkmanager 'cmake;3.18.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e '/core-google-shortcuts/d' .pub-cache/hosted/pub.dev/flutter_shortcuts_new-*/android/build.gradle
+      - pushd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+      - popd
+      - sed -i -e "s/'stable'/'1.92.0'/" 
+        .pub-cache/hosted/pub.dev/flutter_vodozemac-*/cargokit/build_tool/lib/src/builder.dart
+    scandelete:
+      - .pub-cache
+    build:
+      - rustup default 1.92.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+.\d+.\d+
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.1.1
-CurrentVersionCode: 3543
+CurrentVersion: 2.6.0
+CurrentVersionCode: 3553

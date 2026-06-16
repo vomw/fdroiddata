@@ -10,6 +10,7 @@ Categories:
   - Internet
   - VPN & Proxy
 License: GPL-3.0-only
+AuthorName: Proton
 AuthorEmail: support@protonvpn.com
 WebSite: https://protonvpn.com/
 SourceCode: https://github.com/ProtonVPN/android-app
@@ -3118,8 +3119,580 @@ Builds:
     gradleprops:
       - buildUniversalApk
 
+  - versionName: 5.13.22.0
+    versionCode: 605132200
+    commit: 66faa4a1b78915871f0d3e7a3586276837545427
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.13.61.0
+    versionCode: 605136100
+    commit: bb99f475dd7227ed8059edef3f65d1b7df9eeff2
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.2.0
+    versionCode: 605140200
+    commit: 2e2156b931de4f238d29a1434635261519b594b1
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.2.1
+    versionCode: 605140201
+    commit: 4b635c431654b99c34b6c1feb88537cc6b8ee73d
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.44.0
+    versionCode: 605144400
+    commit: 4758d31871694f2eb84b4287aee95c82c2252e76
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.55.0
+    versionCode: 605145500
+    commit: 2a0768095c62e92d7bd5b7e4e134b185f9408716
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.65.0
+    versionCode: 605146500
+    commit: 6c1a79fb47f629f57c1ff96b2d41029c8a9aa1ca
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/gradle-build-cache/d' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.14.76.0
+    versionCode: 605147600
+    commit: 9e97f18b4928fc110a50fe3b5d5b755613f78273
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.15.5.2
+    versionCode: 605150502
+    commit: aaa3fc7715b0bd2f0b6d73d83cc7c6358022d52b
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.15.9.4
+    versionCode: 605150904
+    commit: ca690960e804fb1500324521b82db8ee70a6a06d
+    timeout: 7200
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends make libgmp-dev autoconf automake
+        libtool pkg-config autogen gettext libssl-dev libsqlite3-dev libpam0g-dev
+        libldap2-dev gperf bison bzip2 flex swig cmake
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    rm:
+      - openvpn/src/main/cpp/mbedtls/tests
+      - openvpn/src/main/cpp/openvpn3/test/unittests
+      - openvpn/src/main/cpp/mbedtls/programs/fuzz/corpuses/*
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sdkmanager 'cmake;3.18.1'
+    scandelete:
+      - openvpn/src/main/cpp/lz4/tests
+    build:
+      - pushd ../openvpn
+      - gradle assembleRelease
+      - rm -fr build/intermediates build/kotlin build/tmp .cxx
+      - popd
+    ndk: r28b
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.15.70.0
+    versionCode: 605157000
+    commit: 04d0154d1dc97a8c005732ac276dc65e24774476
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.16.31.0
+    versionCode: 605163100
+    commit: c99f8fada63bfbc9225c24a4e19cecbc7b8cfb54
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.16.83.0
+    versionCode: 605168300
+    commit: f5720844b68c29c9a8e1b5d471d0c4003a577698
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    scandelete:
+      - build-logic
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.16.88.0
+    versionCode: 605168800
+    commit: 5a3f38c586f5dfca00fb6edf83886843c7a89ee3
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    scandelete:
+      - build-logic
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.17.14.0
+    versionCode: 605171400
+    commit: 99879a05f04319bfc67d3276dd4bf98589fa23eb
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    scandelete:
+      - build-logic
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.17.21.0
+    versionCode: 605172100
+    commit: 525f3ce5183c67eabca07234c04bb537587d8cfd
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    scandelete:
+      - build-logic
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.17.72.0
+    versionCode: 605177200
+    commit: bcbdeaf4ef6954eeaac48019ec3b8be9fadda648
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.18.1.0
+    versionCode: 605180100
+    commit: 69171b740074304d8618b4f31a27fe89cc08b566
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.18.18.0
+    versionCode: 605181800
+    commit: 334f480545d55134501d16f6837c68186245c65d
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.18.28.1
+    versionCode: 605182801
+    commit: 4820b92f7709bfce62b93c4390b3b096e4059fd4
+    subdir: app
+    gradle:
+      - prod
+      - vanilla
+      - openSource
+    output: build/outputs/apk/productionVanillaOpenSource/release/*.apk
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e '/uri(mavenCachePkgUrl)/d' -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/MAVEN_CACHE_PKG_URL/,+2d' {..,.}/build.gradle
+      - sed -i -e 's/ignoredFlavors = \["openSource"/ignoredFlavors = \["productionVanillaOpenSource"/'
+        build.gradle
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.18.46.0
+    versionCode: 605184600
+    commit: 19d2eaff631047c878e01eb304cc9cfe9807b945
+    subdir: app
+    gradle:
+      - production
+      - vanilla
+      - openSource
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/ignoredFlavors/s/openSource/productionVanillaOpenSource/' build.gradle
+    scandelete:
+      - ci
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.18.75.0
+    versionCode: 605187500
+    commit: 37eb8c6b7a25015ec779c2be80121219cd1b4bbc
+    subdir: app
+    gradle:
+      - production
+      - vanilla
+      - openSource
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e 's/java.net.URI/uri/' ../settings.gradle.kts
+      - sed -i -e '/ignoredFlavors/s/openSource/productionVanillaOpenSource/' build.gradle
+    scandelete:
+      - ci
+    gradleprops:
+      - buildUniversalApk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: metadata/version_fdroid.txt|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 5.12.80.0
-CurrentVersionCode: 605128000
+CurrentVersion: 5.18.75.0
+CurrentVersionCode: 605187500

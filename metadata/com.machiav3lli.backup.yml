@@ -35,13 +35,17 @@ Builds:
       - rustup target add x86_64-linux-android
       - mkdir oab-utils/.cargo
       - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-      - echo -e "[target.armv7-linux-androideabi]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi29-clang\"\n"
+      - echo -e "[target.armv7-linux-androideabi]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.aarch64-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang\"\n"
+      - echo -e "[target.aarch64-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.i686-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android29-clang\"\n"
+      - echo -e "[target.i686-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.x86_64-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android29-clang\"\n"
+      - echo -e "[target.x86_64-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
     ndk: r21b
 
@@ -345,7 +349,39 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 8.3.14
+    versionCode: 8327
+    commit: 60fde4e21fa71fdc71961a06947d46e966e1024c
+    gradle:
+      - yes
+
+  - versionName: 8.3.15
+    versionCode: 8328
+    commit: a02445d365ad7391f74a93d5d1f8ccedf0304710
+    gradle:
+      - yes
+
+  - versionName: 8.3.16
+    versionCode: 8329
+    commit: da373260bd8f750cd7c36d5531e33c9b3bcf441e
+    gradle:
+      - yes
+
+  - versionName: 8.3.17
+    versionCode: 8330
+    commit: 129b3fbe588690ebe5b0fdb17a65233a20251c74
+    gradle:
+      - yes
+    prebuild: sed -i -e '/gradle.toolchains/d' build.gradle.kts
+
+  - versionName: 8.3.18
+    versionCode: 8331
+    commit: b27516fcef24a3b48061517b89530c7400e6e5f1
+    gradle:
+      - yes
+    prebuild: sed -i -e '/gradle.toolchains/d' build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
-CurrentVersion: 8.3.12
-CurrentVersionCode: 8325
+CurrentVersion: 8.3.18
+CurrentVersionCode: 8331

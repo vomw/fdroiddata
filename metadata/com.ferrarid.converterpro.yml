@@ -9,7 +9,8 @@ AuthorName: Damiano Ferrari
 AuthorEmail: damianoferrari1998@gmail.com
 SourceCode: https://github.com/ferraridamiano/ConverterNOW
 IssueTracker: https://github.com/ferraridamiano/ConverterNOW/issues
-Translation: https://github.com/ferraridamiano/ConverterNOW/blob/master/CONTRIBUTING.md#translating-the-app
+Translation: 
+  https://github.com/ferraridamiano/ConverterNOW/blob/master/CONTRIBUTING.md#translating-the-app
 Changelog: https://github.com/ferraridamiano/ConverterNOW/releases
 Donate: https://www.paypal.com/paypalme/DemApps
 
@@ -456,8 +457,62 @@ Builds:
       - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
       - flutter build apk
 
+  - versionName: 4.5.0
+    versionCode: 51
+    commit: 9e446b7ceca2edeb306adee9fcb5f9fcd7b715ca
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.2
+    rm:
+      - .github
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter config --no-analytics
+      - flutter doctor --verbose
+      - dart pub global activate melos
+      - dart pub global activate vector_graphics_compiler
+      - melos bootstrap
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter build apk
+
+  - versionName: 4.6.0
+    versionCode: 52
+    commit: 4347387c537d71b97c1d487b422ab3d5e2836d10
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.2
+    rm:
+      - .github
+      - linux
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/signingConfig /d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter config --no-analytics
+      - flutter doctor --verbose
+      - dart pub global activate melos
+      - dart pub global activate vector_graphics_compiler
+      - melos bootstrap
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
+      - flutter build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v.*$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 4.4.0
-CurrentVersionCode: 50
+CurrentVersion: 4.6.0
+CurrentVersionCode: 52

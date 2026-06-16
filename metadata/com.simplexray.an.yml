@@ -11,7 +11,8 @@ AutoName: SimpleXray
 
 RepoType: git
 Repo: https://github.com/lhear/SimpleXray
-Binaries: https://github.com/lhear/SimpleXray/releases/download/v%v/simplexray-universal.apk
+Binaries: 
+  https://github.com/lhear/SimpleXray/releases/download/v%v/simplexray-universal.apk
 
 Builds:
   - versionName: 1.6.2
@@ -35,8 +36,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -48,12 +51,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -81,8 +86,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -94,12 +101,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -127,8 +136,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -140,12 +151,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -173,8 +186,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -186,12 +201,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -219,8 +236,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -232,12 +251,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -265,8 +286,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -278,12 +301,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -311,8 +336,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -324,12 +351,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -357,8 +386,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -370,12 +401,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -403,8 +436,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -416,12 +451,14 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -449,8 +486,10 @@ Builds:
       - git -C $$go$$ checkout -f go$GO_VERSION
     build:
       - source ../version.properties
-      - curl -Lo src/main/assets/geoip.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
-      - curl -Lo src/main/assets/geosite.dat https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
       - sdkmanager "ndk;$NDK_VERSION"
       - pushd $$go$$/src
       - ./make.bash
@@ -462,12 +501,560 @@ Builds:
       - COMMID=$(git rev-parse HEAD | cut -c 1-7)
       - export GOOS=android CGO_ENABLED=1
       - export GOARCH=arm64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/arm64-v8a/libxray.so
       - export GOARCH=amd64
-      - export CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.6
+    versionCode: 28
+    commit: 3c22520d2ac6420b831b3c4babc9508f7edef90f
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.8
+    versionCode: 30
+    commit: 040b13b3a855ee9ccc8b0e7916873f69d4f037f2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.9
+    versionCode: 31
+    commit: ba380eb903044aed4ff9c12d0724dcb4d4db93fd
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.10
+    versionCode: 32
+    commit: 0edb48e4599dde90bf38f479255b3f64e94f0da7
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.11
+    versionCode: 33
+    commit: 9ec15eef6e3a33d65866868239a3a2f6df4b7481
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -t bookworm-backports -y golang-go
+      - apt-get install -y gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.12
+    versionCode: 34
+    commit: 8535ffec7a712e23f0cdf779f9de5e89475c6afd
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.13
+    versionCode: 35
+    commit: df130e71eba59f5cbdf2f4b0a0f9739307318a94
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.14
+    versionCode: 36
+    commit: 0d402ca69f98cdc9b1038866e7fcd64044baaede
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.15
+    versionCode: 37
+    commit: aae1838847de5aeab05becc47c321439b7d7c3b9
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.16
+    versionCode: 38
+    commit: f13c3279505d896ea913f107344f580b850ee2e0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/x86_64/libxray.so
+      - popd
+      - mv $$Xray-core$$/jniLibs src/main/
+
+  - versionName: 1.10.17
+    versionCode: 39
+    commit: 53208cbc2ff07847885f24adb7fe0089b144d147
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev make
+    gradle:
+      - yes
+    srclibs:
+      - Xray-core@v25.6.8
+      - go@go1.24.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - source ../version.properties
+      - git -C $$Xray-core$$ checkout -f $XRAY_CORE_VERSION
+      - git -C $$go$$ checkout -f go$GO_VERSION
+      - sed -i -e '/bootgo/s/1.24.6/1.24.4/' $$go$$/src/make.*
+      - sed -i -e '/minBootstrap/s/1.24.6/1.24.4/' $$go$$/src/cmd/dist/buildtool.go
+    build:
+      - source ../version.properties
+      - curl -Lo src/main/assets/geoip.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOIP_VERSION/geoip.dat
+      - curl -Lo src/main/assets/geosite.dat 
+        https://github.com/lhear/v2ray-rules-dat/releases/download/$GEOSITE_VERSION/geosite.dat
+      - sdkmanager "ndk;$NDK_VERSION"
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOPATH=$$go$$
+      - export PATH="$GOPATH/bin:$PATH"
+      - pushd $$Xray-core$$
+      - mkdir -p jniLibs/{arm64-v8a,x86_64}
+      - COMMID=$(git rev-parse HEAD | cut -c 1-7)
+      - export GOOS=android CGO_ENABLED=1
+      - export GOARCH=arm64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang
+      - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
+        -s -w -buildid=" -v ./main
+      - mv xray jniLibs/arm64-v8a/libxray.so
+      - export GOARCH=amd64
+      - export 
+        CC=$$SDK$$/ndk/$NDK_VERSION/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang
       - go build -o xray -trimpath -buildvcs=false -ldflags="-X github.com/xtls/xray-core/core.build=${COMMID}
         -s -w -buildid=" -v ./main
       - mv xray jniLibs/x86_64/libxray.so
@@ -479,5 +1066,5 @@ AllowedAPKSigningKeys: 7b78dbf42ed7346f51c705569072d6cc5821e54872186177eb3f4b245
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: version.properties|APP_VERSION_CODE=(\d+)|.|APP_VERSION_NAME=([\d.]+)
-CurrentVersion: 1.10.5
-CurrentVersionCode: 27
+CurrentVersion: 1.10.17
+CurrentVersionCode: 39

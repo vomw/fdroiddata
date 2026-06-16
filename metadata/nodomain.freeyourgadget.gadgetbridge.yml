@@ -3,6 +3,8 @@ Categories:
   - Navigation
   - System
 License: AGPL-3.0-only
+AuthorName: Freeyourgadget
+AuthorWebSite: https://codeberg.org/Freeyourgadget
 WebSite: https://gadgetbridge.org/
 SourceCode: https://codeberg.org/Freeyourgadget/Gadgetbridge
 IssueTracker: https://codeberg.org/Freeyourgadget/Gadgetbridge/issues
@@ -2054,31 +2056,6 @@ Builds:
       - cd ../external
       - ./build_fossil_hr_gbapps.sh
 
-  - versionName: 0.86.0
-    versionCode: 239
-    disable: Fossil/Skagen Hybrids - NPE during connection setup
-    commit: 0dd1abdb13185246b0729d214fdd8039d4b02622
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-      - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
-    gradle:
-      - mainline
-    rm:
-      - external/jerryscript/tools/babel/package.json
-    scandelete:
-      - app/src/main/assets/fossil_hr
-      - external/fossil-hr-gbapps/watchface/build/files/icons
-      - external/fossil-hr-gbapps/navigationApp/build/files/icons
-    build:
-      - cd ../external
-      - ./build_fossil_hr_gbapps.sh
-
   - versionName: 0.86.1
     versionCode: 240
     commit: 7104a6966ec372dbf7cc8c0a9da63666bb23d0be
@@ -2127,7 +2104,222 @@ Builds:
       - cd ../external
       - ./build_fossil_hr_gbapps.sh
 
-AutoUpdateMode: Version
+  - versionName: 0.87.1
+    versionCode: 242
+    commit: 478b482750a8205a920395248925c2adddd626ea
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.88.0
+    versionCode: 243
+    commit: f765c70971169f7ee6e20a4235fc7d78954d08ab
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.89.0
+    versionCode: 244
+    commit: 14aadfe0a0a0fc1a06222b6059fa8b348222ec6d
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.89.1
+    versionCode: 245
+    commit: c5af1c46562308307384a58901bd3fdbc0c4af19
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.90.0
+    versionCode: 246
+    commit: e6f8a2087d31a6b4c21554901e99114efe766cc0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.91.0
+    versionCode: 247
+    commit: 25b39b6d7c2290c9e8c5eb5f348f495c120e9704
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 0.91.1
+    versionCode: 248
+    commit: 028fb0ef4698697a7faee35603db928aaae8cebd
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake gcc gcc-multilib make python3-crc32c
+    gradle:
+      - mainline
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - external/jerryscript/tools/babel/package.json
+    scanignore:
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icLock
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/icHome
+      - external/fossil-hr-gbapps/navigationApp/build/files/icons/!preview
+    scandelete:
+      - app/src/main/assets/fossil_hr
+      - external/fossil-hr-gbapps/watchface/build/files/icons
+    build:
+      - cd ../external
+      - ./build_fossil_hr_gbapps.sh
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys:
+  - 01cce9316fcb77ea02c6dea81fde9f3176469202c0cea0514c0e03cb969bc7be
+  - a2c2222dbefbb55158dab7fd7cd6da83a009e3ae1bc1e371c1f865c5455652f0
+
+AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 0.87.0
-CurrentVersionCode: 241
+CurrentVersion: 0.91.1
+CurrentVersionCode: 248

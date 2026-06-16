@@ -9,7 +9,8 @@ AutoName: PocketTRacker
 
 RepoType: git
 Repo: https://gitlab.com/Dacid99/pockettracker.git
-Binaries: https://gitlab.com/Dacid99/pockettracker/-/releases/v%v/downloads/app-release.apk
+Binaries: 
+  https://gitlab.com/Dacid99/pockettracker/-/releases/v%v/downloads/app-release.apk
 
 Builds:
   - versionName: 1.1.0
@@ -208,9 +209,77 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 2.5.4
+    versionCode: 25
+    commit: d2d67c633e86cf3f61560ae0cb49fc638d8c218d
+    subdir: app
+    sudo:
+      - export CPUS_MAX=8
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.5.5
+    versionCode: 26
+    commit: 87bcd72f70fa544e7a69817db68c7bfccc6b4c33
+    subdir: app
+    sudo:
+      - export CPUS_MAX=8
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.5.6
+    versionCode: 27
+    commit: 8848e5de71bbac388efc40ddde86462a3e5e79b0
+    subdir: app
+    sudo:
+      - export CPUS_MAX=8
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.5.7
+    versionCode: 28
+    commit: 30601993dcd87b43a3f55041241dd9dee903b1e5
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - export CPUS_MAX=8
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+  - versionName: 2.5.8
+    versionCode: 29
+    commit: 13249bbe296735145c88839bbba89e91c1fad31f
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - export CPUS_MAX=8
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: 4c6f4fba1821ab6fb1c638a07b47abeb31660f5451a6cf2077cb9d036c5ea174
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.5.2
-CurrentVersionCode: 23
+CurrentVersion: 2.5.8
+CurrentVersionCode: 29

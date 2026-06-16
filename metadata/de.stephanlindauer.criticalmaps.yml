@@ -12,7 +12,7 @@ License: Apache-2.0
 WebSite: https://criticalmaps.net
 SourceCode: https://github.com/CriticalMaps/criticalmaps-android
 IssueTracker: https://github.com/CriticalMaps/criticalmaps-android/issues
-Translation: https://www.transifex.com/criticalmaps/criticalmaps/
+Translation: https://explore.transifex.com/criticalmaps/criticalmaps/
 
 AutoName: Critical Maps
 Description: |-
@@ -47,7 +47,8 @@ Builds:
       - android/android-support-v4.jar
       - sl4j/slf4j-android-1.6.1-RC1.jar
     prebuild:
-      - echo -e 'java.source=1.7\njava.target=1.7' >> ant.properties &&sed -i 's/<groupId>android<\/groupId>/<groupId>com.google.android<\/groupId><version>4.1.1.4<\/version>/g'
+      - echo -e 'java.source=1.7\njava.target=1.7' >> ant.properties &&sed -i 
+        's/<groupId>android<\/groupId>/<groupId>com.google.android<\/groupId><version>4.1.1.4<\/version>/g'
         $$osmdroid$$/pom.xml
       - cp -r $$AndroidAsyncHttp$$/src/main/java/com src/ &&sed -i -e '/BuildConfig/,+3d'
         src/com/loopj/android/http/Base64.java
@@ -291,6 +292,50 @@ Builds:
       - yes
     prebuild: sed -i -e 's/maven { .*bintray.com.* }/jcenter()/' ../build.gradle
 
+  - versionName: 2.9.1
+    versionCode: 49
+    commit: c3938a6d96f252982a2d8277323152904f2538c3
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/maven { .*bintray.com.* }/jcenter()/' ../build.gradle
+
+  - versionName: 2.9.2
+    versionCode: 50
+    commit: 6fb4e38ffca9545a95a232537e4941de739646b9
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/maven { .*bintray.com.* }/jcenter()/' ../build.gradle
+
+  - versionName: 3.0.0
+    versionCode: 101
+    commit: bbd94093d45eda29aed104fb38e8672589687168
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 3.1.0
+    versionCode: 102
+    commit: c8f0d7dd9288801ab545e73fe555579c82d95d55
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 3.1.1
+    versionCode: 103
+    commit: 94534b9cb9bbd45497e85c525aaf8080db5dbb49
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 3.1.2
+    versionCode: 104
+    commit: 5bd3884c46a44a6812c25003f35cf5c3c38412e0
+    subdir: app
+    gradle:
+      - yes
+
 MaintainerNotes: |-
   Upstream prefers custom Maven repos to JCenter due to security concerns, see
   https://gitlab.com/fdroid/fdroiddata/issues/1627. We can't afford the luxury
@@ -298,5 +343,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.9.0
-CurrentVersionCode: 48
+CurrentVersion: 3.1.2
+CurrentVersionCode: 104

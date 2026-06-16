@@ -1,6 +1,7 @@
 Categories:
   - Connectivity
   - Internet
+  - Remote Access
 License: Apache-2.0
 WebSite: https://www.freerdp.com/
 SourceCode: https://github.com/FreeRDP/FreeRDP
@@ -258,7 +259,8 @@ Builds:
       - sdkmanager 'cmake;3.22.1'
     build:
       - cd ../../../..
-      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 's/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/'
+      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 
+        's/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/'
         scripts/android-build-release.conf
       - scripts/android-build-freerdp.sh --conf scripts/android-build-release.conf
     ndk: 27.2.12479018
@@ -285,7 +287,8 @@ Builds:
       - sdkmanager 'cmake;3.22.1'
     build:
       - cd ../../../..
-      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 's/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/'
+      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 
+        's/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/'
         scripts/android-build-release.conf
       - scripts/android-build-freerdp.sh --conf scripts/android-build-release.conf
     ndk: 27.2.12479018
@@ -313,12 +316,103 @@ Builds:
       - sdkmanager 'cmake;3.31.6'
     build:
       - cd ../../../..
-      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e "s/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/"
+      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 
+        "s/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/"
         scripts/android-build-release.conf
       - scripts/android-build-freerdp.sh --conf scripts/android-build-release.conf
     ndk: 29.0.13113456
 
+  - versionName: 3.18.0
+    versionCode: 3018000
+    commit: 11ed2c65fe1f50f8714e51be5bcb2655cd8ba31f
+    subdir: client/Android/Studio/aFreeRDP
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential file libncurses5 make nasm pkg-config
+    gradle:
+      - yes
+    rm:
+      - client/Mac
+      - client/Wayland
+      - client/Windows
+      - client/X11
+      - client/iOS
+    prebuild:
+      - sed -i -e "/hasProperty('RELEASE/,+2d" -e '/println/d' ../build.gradle
+      - sed -i -e 's/versionCode =.*/versionCode = $$VERCODE$$/' -e 's/versionName
+        =.*/versionName = "$$VERSION$$"/' build.gradle
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../../../..
+      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 
+        "s/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/"
+        scripts/android-build-release.conf
+      - scripts/android-build-freerdp.sh --conf scripts/android-build-release.conf
+    ndk: 29.0.13113456
+
+  - versionName: 3.20.0
+    versionCode: 3020000
+    commit: b8e790a02ede8dd64ff7177fb9027d1844e66bb6
+    subdir: client/Android/Studio/aFreeRDP
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential file libncurses5 make nasm pkg-config
+    gradle:
+      - yes
+    rm:
+      - client/Mac
+      - client/Wayland
+      - client/Windows
+      - client/X11
+      - client/iOS
+    prebuild:
+      - sed -i -e "/hasProperty('RELEASE/,+2d" -e '/println/d' ../build.gradle
+      - sed -i -e 's/versionCode =.*/versionCode = $$VERCODE$$/' -e 's/versionName
+        =.*/versionName = "$$VERSION$$"/' build.gradle
+      - sdkmanager 'cmake;3.31.6'
+    build:
+      - cd ../../../..
+      - sed -i -e 's/OPENSSL_TAG=.*/OPENSSL_TAG=OpenSSL_1_1_1w/' -e 
+        "s/OPENSSL_HASH=.*/OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8/"
+        scripts/android-build-release.conf
+      - scripts/android-build-freerdp.sh --conf scripts/android-build-release.conf
+    ndk: 29.0.13113456
+
+  - versionName: 3.26.0
+    versionCode: 3026000
+    commit: 3f6d7cb1f8973cc84c66b258a9a61c4e2b2f30a6
+    subdir: client/Android/Studio/aFreeRDP
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential file libncurses6 make nasm pkg-config
+    patch:
+      - opus-source.diff
+      - tls-seclevel-0.diff
+    gradle:
+      - yes
+    rm:
+      - client/Mac
+      - client/Wayland
+      - client/Windows
+      - client/X11
+      - client/SDL
+      - client/iOS
+      - channels/*/client/test
+      - channels/*/common/test
+      - client/*/test
+      - libfreerdp/*/test
+      - winpr/libwinpr/*/test
+      - server
+      - uwac
+      - rdtk
+    prebuild:
+      - sed -i -e "/hasProperty('RELEASE/,+2d" -e '/println/d' ../build.gradle
+      - sed -i -e 's/versionCode =.*/versionCode = $$VERCODE$$/' -e 's/versionName
+        =.*/versionName = "$$VERSION$$"/' build.gradle
+      - sdkmanager 'cmake;3.31.6'
+    ndk: 29.0.13113456
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 3.17.2
-CurrentVersionCode: 3017002
+CurrentVersion: 3.26.0
+CurrentVersionCode: 3026000

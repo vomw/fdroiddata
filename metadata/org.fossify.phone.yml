@@ -14,7 +14,8 @@ Bitcoin: bc1q5flmuh5f3canqza07cfekjn64p2aqvd2w7pnn3
 
 RepoType: git
 Repo: https://github.com/FossifyOrg/Phone.git
-Binaries: https://github.com/FossifyOrg/Phone/releases/download/%v/phone-%c-foss-release.apk
+Binaries: 
+  https://github.com/FossifyOrg/Phone/releases/download/%v/phone-%c-foss-release.apk
 
 Builds:
   - versionName: 1.0.0
@@ -117,10 +118,62 @@ Builds:
       - yes
     output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
 
+  - versionName: 1.7.2
+    versionCode: 15
+    commit: f868269edd0dcb73b53af55a436f5e742f6cec15
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
+
+  - versionName: 1.7.3
+    versionCode: 16
+    commit: dda289bef1517b01d6d2974c5d8b89b5e0dc3267
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
+
+  - versionName: 1.8.0
+    versionCode: 17
+    commit: 8922727bbf5ca52cec9e5dfcf5c7435ea19bd741
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
+
+  - versionName: 1.9.0
+    versionCode: 18
+    commit: fa46abe7b6f0c265de88ab6221c92709fb896832
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
+
+  - versionName: 1.10.0
+    versionCode: 19
+    commit: 01ae69d6d040ed7e9bfa4c2c9d4f482fc2887b42
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/foss/release/phone-*-foss-release-unsigned.apk
+
+  - versionName: 1.11.1
+    versionCode: 22
+    commit: 7de52a31a4d3cfc53e6cbc298a17ffca4e69141e
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - foss
+
 AllowedAPKSigningKeys: affdb124d3f4720c2f98dbca9eacba0514fba4306e20a2786c861c3c0d6ff292
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
-CurrentVersion: 1.7.1
-CurrentVersionCode: 14
+CurrentVersion: 1.11.1
+CurrentVersionCode: 22
