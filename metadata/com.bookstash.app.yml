@@ -9,26 +9,21 @@ RepoType: git
 Repo: https://github.com/eirthae/bookstash.git
 
 Builds:
-  - versionName: 0.8.26
-    versionCode: 8026
-    commit: 62d95bd14273ebdf8b7d8a35bb78ea782cd34e2e
+  - versionName: 0.8.27
+    versionCode: 8027
+    commit: c5cd47a1fc04d75a1c2d1f2dbf23c1775642251b
     subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
+    gradle:
+      - yes
     prebuild:
       - npm ci
       - npm run build
-      - npx cap add android
-      - npx --yes @capacitor/assets generate --android --assetPath resources --iconBackgroundColor
-        '#6020A0' --iconBackgroundColorDark '#6020A0' --splashBackgroundColor '#6020A0'
-        --splashBackgroundColorDark '#6020A0'
       - npx cap sync android
-      - node scripts/set-version.mjs
-    gradle:
-      - yes
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.8.26
-CurrentVersionCode: 8026
+CurrentVersion: 0.8.27
+CurrentVersionCode: 8027
