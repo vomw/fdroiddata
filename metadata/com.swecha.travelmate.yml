@@ -20,10 +20,12 @@ Builds:
     subdir: frontend/android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
-    prebuild: cd .. && npm install && npm run build && npx cap sync android
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
     gradle:
       - yes
+    prebuild: cd .. && npm install && npm run build && npx cap sync android
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
