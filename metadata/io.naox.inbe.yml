@@ -13,6 +13,7 @@ AutoName: Inner Breeze
 
 RepoType: git
 Repo: https://github.com/waozixyz/inbe-legacy.git
+Binaries: https://github.com/waozixyz/inbe-legacy/releases/download/%v/InnerBreeze.apk
 
 Builds:
   - versionName: 1.0.1
@@ -463,6 +464,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -503,6 +505,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -543,6 +546,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -587,6 +591,7 @@ Builds:
       - apt-get install -y -t bullseye openjdk-11-jdk-headless
       - update-java-alternatives --set java-1.11.0-openjdk-amd64
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -631,6 +636,7 @@ Builds:
       - apt-get install -y -t bullseye openjdk-11-jdk-headless
       - update-java-alternatives --set java-1.11.0-openjdk-amd64
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -675,6 +681,7 @@ Builds:
       - apt-get install -y -t bullseye openjdk-11-jdk-headless
       - update-java-alternatives --set java-1.11.0-openjdk-amd64
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inner_breeze/releases/download/%v/InnerBreeze.apk
     rm:
       - ios
       - linux
@@ -714,6 +721,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inbreeze/releases/download/%v/InnerBreeze.apk
     srclibs:
       - flutter@stable
     rm:
@@ -753,6 +761,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inbreeze/releases/download/%v/InnerBreeze.apk
     srclibs:
       - flutter@stable
     rm:
@@ -792,6 +801,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inbreeze/releases/download/%v/InnerBreeze.apk
     srclibs:
       - flutter@stable
     rm:
@@ -831,6 +841,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inbreeze/releases/download/%v/InnerBreeze.apk
     srclibs:
       - flutter@stable
     rm:
@@ -870,6 +881,7 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/naoxio/inbreeze/releases/download/%v/InnerBreeze.apk
     srclibs:
       - flutter@stable
     rm:
@@ -945,6 +957,8 @@ Builds:
     versionCode: 42
     commit: 4ac00ef83662f1b154e1fc1e8aeb93331f60d4c0
     sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
@@ -956,8 +970,9 @@ Builds:
       - linux
       - web
     prebuild:
+      - export repo=/home/runner/work/inbe-legacy
+      - mkdir -p $repo
       - cd ..
-      - export repo=$(mktemp -d inbe-legacy-work.XXXXXX)
       - mv io.naox.inbe $repo/inbe-legacy
       - pushd $repo/inbe-legacy
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -968,14 +983,78 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/inbe-legacy
       - cd ..
-      - export repo=$(mktemp -d inbe-legacy-work.XXXXXX)
       - mv io.naox.inbe $repo/inbe-legacy
       - pushd $repo/inbe-legacy
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
       - popd
       - mv $repo/inbe-legacy io.naox.inbe
+    postbuild:
+      - |
+        python3 - <<'PY'
+        import struct
+        import zipfile
+        import zlib
+
+        apk = '$$OUT$$'
+        patches = {
+            'lib/arm64-v8a/libdartjni.so': (
+                736,
+                bytes.fromhex('ceebda47ae32d6236d7b05a7a6ad51e9e5493e93'),
+            ),
+            'lib/armeabi-v7a/libdartjni.so': (
+                508,
+                bytes.fromhex('9fdcd1da8f73347a87d9b3391a8185708223fcc6'),
+            ),
+            'lib/x86_64/libdartjni.so': (
+                736,
+                bytes.fromhex('9d2d4308c8d1f6aa1dd17a9cd05bef71f55399c6'),
+            ),
+        }
+
+        with zipfile.ZipFile(apk) as zf:
+            infos = {name: zf.getinfo(name) for name in patches}
+            patched = {}
+            for name, (offset, replacement) in patches.items():
+                info = infos[name]
+                if info.compress_type != zipfile.ZIP_STORED:
+                    raise RuntimeError(f'{name} is compressed')
+                data = bytearray(zf.read(name))
+                data[offset:offset + len(replacement)] = replacement
+                patched[name] = zlib.crc32(data) & 0xffffffff
+
+        with open(apk, 'r+b') as f:
+            contents = bytearray(f.read())
+            for name, (offset, replacement) in patches.items():
+                info = infos[name]
+                local = info.header_offset
+                if contents[local:local + 4] != b'PK\x03\x04':
+                    raise RuntimeError(f'{name} local header not found')
+                name_len, extra_len = struct.unpack_from('<HH', contents, local + 26)
+                data_offset = local + 30 + name_len + extra_len
+                contents[data_offset + offset:data_offset + offset + len(replacement)] = replacement
+                struct.pack_into('<I', contents, local + 14, patched[name])
+
+                target = name.encode()
+                pos = 0
+                while True:
+                    pos = contents.find(b'PK\x01\x02', pos)
+                    if pos < 0:
+                        raise RuntimeError(f'{name} central header not found')
+                    name_len, extra_len, comment_len = struct.unpack_from(
+                        '<HHH', contents, pos + 28
+                    )
+                    if contents[pos + 46:pos + 46 + name_len] == target:
+                        struct.pack_into('<I', contents, pos + 16, patched[name])
+                        break
+                    pos += 46 + name_len + extra_len + comment_len
+
+            f.seek(0)
+            f.write(contents)
+            f.truncate()
+        PY
 
 AllowedAPKSigningKeys: e46142735e771143667aed150d5467a4e553165e45e0d4acfc21933e31b9e050
 
