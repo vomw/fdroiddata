@@ -24,11 +24,10 @@ Builds:
     gradle:
       - fdroid
     prebuild:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile
-        minimal --default-toolchain none
-      - export PATH="$HOME/.cargo/bin:$PATH"
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - cargo install cargo-ndk --locked --version 4.1.2
+      - rustup toolchain install 1.92.0 --profile minimal
+      - rustup target add --toolchain 1.92.0 aarch64-linux-android armv7-linux-androideabi
+        x86_64-linux-android
+      - cargo +1.92.0 install cargo-ndk --locked --version 4.1.2
     build: ANDROID_NDK_HOME="$$NDK$$" PATH="$HOME/.cargo/bin:$PATH" bash ../rust/aster-crypto-ffi/scripts/build_android.sh
     ndk: r27c
 
