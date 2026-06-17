@@ -22638,11 +22638,11 @@ Builds:
       - npm -g install yarn
     init:
       - cd ../..
-      - sed -i -e '/expo-store-review/d' -e '/"expo-image",/d' -e 's/"expo-video-thumbnails"/".*"/' package.json
+      - sed -i -e '/expo-store-review/d' -e '/"expo-image",/d' -e 's/"expo-video-thumbnails"$/".*"/' package.json
       - sed -i -e "/fs.existsSync('dist')/,+2d" scripts/generate-assets.js
       - mkdir -p dist/assets
       - sed -i -e '/mmjstool":\ {/,/^    },/d' package-lock.json
-      - npm install --ignore-scripts --build-from-source
+      - npm install --ignore-scripts
       - ./scripts/postinstall.sh
     gradle:
       - yes
