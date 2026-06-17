@@ -956,8 +956,6 @@ Builds:
     versionCode: 42
     commit: 4ac00ef83662f1b154e1fc1e8aeb93331f60d4c0
     sudo:
-      - mkdir -p /home/runner/
-      - chown vagrant /home/runner/
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
       - apt-get install -y -t trixie openjdk-21-jdk-headless
@@ -969,9 +967,8 @@ Builds:
       - linux
       - web
     prebuild:
-      - export repo=/home/runner/work/inbe-legacy
-      - mkdir -p $repo
       - cd ..
+      - export repo=$(mktemp -d inbe-legacy-work.XXXXXX)
       - mv io.naox.inbe $repo/inbe-legacy
       - pushd $repo/inbe-legacy
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -982,8 +979,8 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/inbe-legacy
       - cd ..
+      - export repo=$(mktemp -d inbe-legacy-work.XXXXXX)
       - mv io.naox.inbe $repo/inbe-legacy
       - pushd $repo/inbe-legacy
       - export PUB_CACHE=$(pwd)/.pub-cache
