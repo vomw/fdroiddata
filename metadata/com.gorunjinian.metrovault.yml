@@ -18,15 +18,13 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y make g++
+      - apt-get install -y make g++ cmake
     gradle:
       - yes
     srclibs:
       - Secp256k1Kmp@v0.23.0
     prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
     build:
-      - sdkmanager "cmake;3.31.5"
-      - export PATH="$ANDROID_HOME/cmake/3.31.5/bin:$PATH"
       - pushd $$Secp256k1Kmp$$
       - ./gradlew :jni:android:publishToMavenLocal
       - popd
