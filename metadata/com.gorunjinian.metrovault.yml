@@ -24,14 +24,14 @@ Builds:
     srclibs:
       - Secp256k1Kmp@v0.23.0
     prebuild:
-      - sdkmanager "cmake;3.31.6"
-      - export PATH="$ANDROID_HOME/cmake/3.31.6/bin:$PATH"
-      - sed -i 's/version = "3.31.5"/version = "3.31.6"/' $$Secp256k1Kmp$$/jni/android/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    build:
+      - sdkmanager "cmake;3.31.5"
+      - export PATH="$ANDROID_HOME/cmake/3.31.5/bin:$PATH"
       - pushd $$Secp256k1Kmp$$
       - ./gradlew :jni:android:publishToMavenLocal
       - popd
       - sed -i 's/mavenCentral()/mavenLocal(); mavenCentral()/' ../settings.gradle.kts
-      - sed -i -e '/foojay/d' ../settings.gradle.kts
     ndk: r28c
 
 AutoUpdateMode: Version
