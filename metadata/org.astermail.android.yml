@@ -24,6 +24,9 @@ Builds:
     gradle:
       - fdroid
     prebuild:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - command -v rustup >/dev/null || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs
+        | sh -s -- -y --profile minimal --default-toolchain 1.92.0
       - rustup toolchain install 1.92.0 --profile minimal
       - rustup target add --toolchain 1.92.0 aarch64-linux-android armv7-linux-androideabi
         x86_64-linux-android
