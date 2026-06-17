@@ -22638,7 +22638,8 @@ Builds:
       - npm -g install yarn
     init:
       - cd ../..
-      - sed -i -e '/expo-store-review/d' -e '/"expo-image",/d' -e 's/"expo-video-thumbnails"$/".*"/' package.json
+      - sed -i -e '/expo-store-review/d' -e '/"expo-image",/d' -e 's/"expo-video-thumbnails"$/".*"/'
+        package.json
       - sed -i -e "/fs.existsSync('dist')/,+2d" scripts/generate-assets.js
       - mkdir -p dist/assets
       - sed -i -e '/mmjstool":\ {/,/^    },/d' package-lock.json
@@ -22661,6 +22662,7 @@ Builds:
       - npx patch-package --error-on-fail
       - sed -i -e '/requestReview/d' app/screens/review_app/index.tsx
       - sed -i -e 's/await isAvailableAsync()/false/' -e '/isAvailableAsync/d' app/utils/reviews.ts
+      - sed -i -e '/replay-stubs/d' node_modules/@sentry/react-native/android/build.gradle
       - sed -i -e '/extension-ima/d' node_modules/react-native-video/android/build.gradle
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
       - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
