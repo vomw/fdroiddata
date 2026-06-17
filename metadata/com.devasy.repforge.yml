@@ -1,8 +1,8 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: "The optional AI Coach and Routine Optimizer features send data to Google's
+    en-US: The optional AI Coach and Routine Optimizer features send data to Google's
       Gemini API. These features are fully disabled unless the user provides their
-      own Gemini API key in Settings → AI Settings."
+      own Gemini API key in Settings → AI Settings.
 Categories:
   - Sports & Health
 License: Apache-2.0
@@ -11,25 +11,37 @@ SourceCode: https://github.com/Devasy/Workout-logger
 IssueTracker: https://github.com/Devasy/Workout-logger/issues
 
 AutoName: RepForge
+
 RepoType: git
 Repo: https://github.com/Devasy/Workout-logger
 
 Builds:
-  - versionName: 2.0.3
-    versionCode: 24
-    commit: v2.0.3
+  - versionName: 2.0.4
+    versionCode: 25
+    commit: v2.0.4
     subdir: workout-logger
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.6
-    build:
+    rm:
+      - workout-logger/ios
+      - workout-logger/linux
+      - workout-logger/macos
+      - workout-logger/web
+      - workout-logger/windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - workout-logger/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-UpdateCheckData:
+UpdateCheckData: 
   workout-logger/pubspec.yaml|version:\s.*\+(\d+)|workout-logger/pubspec.yaml|version:\s([\d.]+)\+
-CurrentVersion: 2.0.3
-CurrentVersionCode: 24
+CurrentVersion: 2.0.4
+CurrentVersionCode: 25
