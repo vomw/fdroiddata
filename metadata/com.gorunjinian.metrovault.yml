@@ -1,0 +1,37 @@
+Categories:
+  - Wallet
+License: GPL-3.0-or-later
+AuthorName: Gorun Jinian
+WebSite: https://gorunjinian.com
+SourceCode: https://github.com/gorunjinian/MetroVault
+IssueTracker: https://github.com/gorunjinian/MetroVault/issues
+
+RepoType: git
+Repo: https://github.com/gorunjinian/MetroVault.git
+
+Builds:
+  - versionName: 3.8.6
+    versionCode: 5
+    commit: v3.8.6
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make g++
+    gradle:
+      - yes
+    srclibs:
+      - Secp256k1Kmp@v0.23.0
+    prebuild:
+      - sdkmanager "cmake;3.31.6"
+      - export PATH="$ANDROID_HOME/cmake/3.31.6/bin:$PATH"
+      - sed -i 's/version = "3.31.5"/version = "3.31.6"/' $$Secp256k1Kmp$$/jni/android/build.gradle.kts
+      - pushd $$Secp256k1Kmp$$
+      - ./gradlew :jni:android:publishToMavenLocal
+      - popd
+      - sed -i 's/mavenCentral()/mavenLocal(); mavenCentral()/' ../settings.gradle.kts
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 3.8.6
+CurrentVersionCode: 5
