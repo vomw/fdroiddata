@@ -13,6 +13,7 @@ AutoName: Inner Breeze
 
 RepoType: git
 Repo: https://github.com/waozixyz/inbe-legacy.git
+Binaries: https://github.com/waozixyz/inbe-legacy/releases/download/%v/InnerBreeze.apk
 
 Builds:
   - versionName: 1.0.1
@@ -977,7 +978,46 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/inbe-legacy io.naox.inbe
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/inbe-legacy
+      - cd ..
+      - mv io.naox.inbe $repo/inbe-legacy
+      - pushd $repo/inbe-legacy
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo/inbe-legacy io.naox.inbe
+
+  - versionName: 1.5.3
+    versionCode: 43
+    commit: b128bc928cd4fc8276034027fb27db5bfb5b6679
+    sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.9
+    rm:
+      - linux
+      - web
+    prebuild:
+      - export repo=/home/runner/work/inbe-legacy
+      - mkdir -p $repo
+      - cd ..
+      - mv io.naox.inbe $repo/inbe-legacy
+      - pushd $repo/inbe-legacy
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - scripts/disable-dartjni-build-id.sh
       - popd
       - mv $repo/inbe-legacy io.naox.inbe
     scandelete:
@@ -997,5 +1037,5 @@ AllowedAPKSigningKeys: e46142735e771143667aed150d5467a4e553165e45e0d4acfc21933e3
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.5.2
-CurrentVersionCode: 42
+CurrentVersion: 1.5.3
+CurrentVersionCode: 43
