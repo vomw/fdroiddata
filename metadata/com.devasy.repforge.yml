@@ -18,65 +18,129 @@ Repo: https://github.com/Devasy/Workout-logger
 Builds:
   - versionName: 2.0.4
     versionCode: 1025
-    commit: v2.0.4
+    commit: ed8be2420595337f69cf550aeb4d77cb1ae943ef
     subdir: workout-logger
+    sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-armeabi-v7a.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
     prebuild:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - 'export FLUTTER_VERSION=$(sed -n -E "s/^  flutter: (.+)/\1/p" pubspec.yaml)'
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
     scandelete:
       - workout-logger/.pub-cache
     build:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
 
   - versionName: 2.0.4
     versionCode: 2025
-    commit: v2.0.4
+    commit: ed8be2420595337f69cf550aeb4d77cb1ae943ef
     subdir: workout-logger
+    sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-arm64-v8a.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
     prebuild:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - 'export FLUTTER_VERSION=$(sed -n -E "s/^  flutter: (.+)/\1/p" pubspec.yaml)'
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
     scandelete:
       - workout-logger/.pub-cache
     build:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
 
   - versionName: 2.0.4
     versionCode: 4025
-    commit: v2.0.4
+    commit: ed8be2420595337f69cf550aeb4d77cb1ae943ef
     subdir: workout-logger
+    sudo:
+      - mkdir -p /home/runner/
+      - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-x86_64.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
     prebuild:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - 'export FLUTTER_VERSION=$(sed -n -E "s/^  flutter: (.+)/\1/p" pubspec.yaml)'
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
     scandelete:
       - workout-logger/.pub-cache
     build:
+      - mkdir -p /home/runner/work/Workout-logger
+      - cd ../..
+      - mv com.devasy.repforge /home/runner/work/Workout-logger/Workout-logger
+      - export HOME=/home/runner
+      - pushd $HOME/work/Workout-logger/Workout-logger/workout-logger
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv /home/runner/work/Workout-logger/Workout-logger com.devasy.repforge
 
 AllowedAPKSigningKeys: 0b40864c67c5d00457f4e56bb51ef19c51df1e465ec01d5f258fcb3b7de15842
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
 UpdateCheckData: 
   workout-logger/pubspec.yaml|version:\s.*\+(\d+)|workout-logger/pubspec.yaml|version:\s([\d.]+)\+
 CurrentVersion: 2.0.4
