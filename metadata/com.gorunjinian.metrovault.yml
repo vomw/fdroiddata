@@ -10,7 +10,8 @@ AutoName: Metro Vault
 
 RepoType: git
 Repo: https://github.com/gorunjinian/MetroVault.git
-Binaries: https://github.com/gorunjinian/MetroVault/releases/download/v%v/MetroVault-%v-release.apk
+Binaries: 
+  https://github.com/gorunjinian/MetroVault/releases/download/v%v/MetroVault-%v-release.apk
 
 Builds:
   - versionName: 3.8.6
@@ -27,7 +28,8 @@ Builds:
     prebuild:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
       - sdkmanager "cmake;3.31.5"
-      - echo 'target_link_options( secp256k1-jni PRIVATE -Wl,--build-id=none )' >> $$Secp256k1Kmp$$/jni/android/src/main/CMakeLists.txt
+      - echo 'target_link_options( secp256k1-jni PRIVATE -Wl,--build-id=none )' >>
+        $$Secp256k1Kmp$$/jni/android/src/main/CMakeLists.txt
       - pushd $$Secp256k1Kmp$$
       - gradle :jni:android:publishToMavenLocal
       - popd
