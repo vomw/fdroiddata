@@ -1,0 +1,49 @@
+Categories:
+  - Multimedia
+  - Reading
+
+License: Apache-2.0
+
+AuthorName: Steven Ondieki
+AuthorEmail: ondiekisteven1@gmail.com
+
+SourceCode: https://gitlab.com/pipeline-youth/song-book/mobile-app
+IssueTracker: https://gitlab.com/pipeline-youth/song-book/mobile-app/-/issues
+
+AutoName: Pipeline Songbook
+
+Summary: Digital songbook for Pipeline Youth Choir
+
+Description: |
+  Pipeline Songbook is a Flutter-based digital songbook app
+  designed for Pipeline Youth Choir.
+
+  Features include:
+   * Fast song search
+   * Favorites
+   * Offline access
+   * Clean reading interface
+   * Audio tracks for practice
+
+RepoType: git
+Repo: https://gitlab.com/pipeline-youth/song-book/mobile-app.git
+
+Builds:
+  - versionName: '1.0.15'
+    versionCode: 15
+    commit: v1.0.15
+    sudo:
+      - apt-get update
+      - apt-get install -y clang cmake ninja-build pkg-config
+    srclibs:
+      - flutter@stable
+    prebuild: $$flutter$$/bin/flutter pub get
+    build:
+      - $$flutter$$/bin/flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+
+CurrentVersion: '1.0.15'
+CurrentVersionCode: 15
