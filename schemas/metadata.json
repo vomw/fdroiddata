@@ -15,31 +15,47 @@
       "items": {
         "type": "string",
         "enum": [
+          "Action Game",
           "AI Chat",
+          "Alarm Clock",
           "App Manager",
           "App Store & Updater",
+          "Battery",
+          "Board Game",
           "Bookmark",
           "Browser",
           "Calculator",
           "Calendar & Agenda",
+          "Camera",
+          "Card Game",
+          "Cast",
+          "Casual Game",
           "Clock",
           "Cloud Storage & File Sync",
           "Connectivity",
           "Contact",
           "Development",
+          "Dice",
+          "Diet",
           "DNS & Hosts",
+          "Download",
           "Draw",
           "Ebook Reader",
+          "Educational Game",
           "Email",
+          "Emulator",
           "File Encryption & Vault",
+          "File Manager",
           "File Transfer",
           "Firewall",
           "Finance Manager",
+          "Flashlight",
           "Forum",
           "Gallery",
-          "Games",
+          "Game Helper",
           "Graphics",
           "Habit Tracker",
+          "Health Manager",
           "Icon Pack",
           "Internet",
           "Inventory",
@@ -47,41 +63,61 @@
           "Launcher",
           "Local Media Player",
           "Location Tracker & Sharer",
+          "Lyrics",
+          "Market & Price",
           "Messaging",
-          "Money",
+          "Meditation",
           "Multimedia",
           "Music Practice Tool",
           "Navigation",
           "Network Analyzer",
           "News",
           "Note",
+          "Notification",
           "Online Media Player",
+          "Party Game",
           "Pass Wallet",
           "Password & 2FA",
           "Phone & SMS",
+          "Platformer Game",
           "Podcast",
           "Public Transport",
+          "Puzzle Game",
+          "Radio",
           "Reading",
           "Recipe Manager",
+          "Recorder",
+          "Remote Access",
+          "Remote Controller",
           "Religion",
+          "Role-Playing Game",
           "Science & Education",
           "Security",
+          "Schedule",
+          "Shooter Game",
           "Shopping List",
           "Social Network",
+          "Sport Game",
           "Sports & Health",
+          "Stopwatch",
+          "Strategy Game",
           "System",
           "Task",
           "Text Editor",
+          "Text to Speech",
           "Theming",
-          "Time",
+          "Time Tracker",
+          "Timer",
           "Translation & Dictionary",
           "Unit Convertor",
+          "Visual Novel",
           "Voice & Video Chat",
           "VPN & Proxy",
           "Wallet",
           "Wallpaper",
           "Weather",
           "Workout",
+          "Word Game",
           "Writing"
         ]
       },
@@ -367,15 +403,13 @@
       "type": "string",
       "enum": [
         "git",
-        "svn",
         "git-svn",
         "hg",
-        "bzr",
         "srclib"
       ]
     },
     "Repo": {
-      "description": "The repository location. Usually a git: or svn: URL, for example.",
+      "description": "The repository location. Usually a https:// URL, for example.",
       "type": "string"
     },
     "Binaries": {
@@ -788,6 +822,39 @@
       }
     },
     {
+      "anyOf": [
+        {
+          "required": [
+            "Binaries"
+          ]
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "required": [
+                  "binary"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "not": {
+                  "required": [
+                    "binary"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "if": {
         "properties": {
           "UpdateCheckMode": {
@@ -910,7 +977,6 @@
               "NonFreeDep",
               "NonFreeNet",
               "NoSourceSince",
-              "NSFW",
               "TetheredNet",
               "Tracking"
             ]
@@ -921,7 +987,7 @@
         {
           "type": "object",
           "patternProperties": {
-            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|NSFW|TetheredNet|Tracking)$": {
+            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|TetheredNet|Tracking)$": {
               "$ref": "#/definitions/localized_string"
             }
           },
