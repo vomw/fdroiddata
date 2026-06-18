@@ -1,0 +1,55 @@
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Multimedia
+  - Security
+  - Writing
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/robomixes/Privora
+IssueTracker: https://github.com/robomixes/Privora/issues
+Changelog: https://github.com/robomixes/Privora/blob/main/CHANGELOG.md
+
+AutoName: Privora
+Description: |-
+  Privora is a private, on-device toolkit for everything that matters:
+  your photos, notes, contacts, password hints, expenses, health,
+  reminders, and an AI assistant — all running entirely on your phone.
+  No cloud, no analytics, no telemetry, no ads.
+
+  See the README and THREAT_MODEL in the source repository for the full
+  feature list and a plain-language description of what Privora protects
+  against and what it does not.
+
+  This is the F-Droid build flavor: pure open source, no in-app purchase
+  code, no closed Pro module. The Play Store flavor (built from the same
+  source under a separate Gradle product flavor) may include closed-source
+  Pro features in the future under a separate commercial license.
+
+RepoType: git
+Repo: https://github.com/robomixes/Privora.git
+
+Builds:
+  - versionName: 2.1.0
+    versionCode: 10
+    commit: v2.1.0
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i '/playstoreImplementation/d' build.gradle.kts
+      - sed -i '/mlkit-translate/d;/kotlinx-coroutines-play-services/d' ../gradle/libs.versions.toml
+      - sed -i 's|url = java.net.URI("https://jitpack.io")|setUrl("https://jitpack.io")|'
+        ../settings.gradle.kts
+    ndk: r27c
+    antifeatures:
+      NonFreeNet:
+        en-US: Two optional user-initiated downloads. (1) AI Assistant enable → ~2.7
+          GB Gemma 4 model from Hugging Face. (2) Per-language OCR → ~5–15 MB .traineddata
+          file per language from the upstream tesseract-ocr tessdata_fast repo on
+          GitHub. Both go through Android DownloadManager and are gated behind explicit
+          Settings actions. All subsequent AI inference and OCR run entirely on-device.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.1.0
+CurrentVersionCode: 10
