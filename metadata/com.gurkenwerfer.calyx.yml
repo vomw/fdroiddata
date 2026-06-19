@@ -1,25 +1,29 @@
 Categories:
   - Science & Education
   - Lifestyle
-
 License: GPL-3.0-or-later
 WebSite: https://github.com/stefexec/calyx
 SourceCode: https://github.com/stefexec/calyx
 IssueTracker: https://github.com/stefexec/calyx/issues
 
 AutoName: Calyx - Grow Tracker
-Summary: Tracks indoor garden environments, plant schedules, and hardware offline.
+
+RepoType: git
+Repo: https://github.com/stefexec/calyx.git
 
 Builds:
   - versionName: '1.2.0'
     versionCode: 2
-    commit: v1.2.0
+    commit: 52592b3f4ccfc72484f87095eea03aa49058bc28
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y npm
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
-    build:
+    prebuild:
       - npm install
+    scandelete:
+      - node_modules
+    build:
       - npm run build
       - npx cap sync android
 
