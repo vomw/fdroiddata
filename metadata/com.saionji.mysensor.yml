@@ -22,13 +22,8 @@ Builds:
     gradle:
       - fdroid
     prebuild:
-      - sed -i 
-        '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d'
-        ../build.gradle.kts
+      - sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
       - sed -i '/tasks\.configureEach/,/^}/d' build.gradle.kts
-      - sed -i 
-        '/com\.google\.gms\.google-services/d;/com\.google\.firebase/d;/Firebase/d;/firebase/d;/Crashlytics/d;/crashlytics/d;/google-services/d'
-        build.gradle.kts
 
 AllowedAPKSigningKeys: f27d49a33f7b39eae3f25eb3262c5d551c34fcb3e22206526231e6456d298179
 
