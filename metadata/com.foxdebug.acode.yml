@@ -1547,28 +1547,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm rustup
-      - npm install -g cordova pnpm@latest
-      # I can put the above in prebuild I think.
-      - export RSPACK_VER=$(grep '"@rspack/core"' $(pwd)/build/com.foxdebug.acode/package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
-      - echo "Detected rspack version from package.json - v${RSPACK_VER}"
-      - cd $(pwd)/build/com.foxdebug.acode/
-      - git clone
-            --depth 1
-            --branch "v${RSPACK_VER}"
-            https://github.com/web-infra-dev/rspack.git
-            vendor/rspack
-      - export RSPACK_COMMIT=$(git -C vendor/rspack rev-parse HEAD)
-      - echo "rspack v${RSPACK_VER} resolved to commit ${RSPACK_COMMIT}"
-      - echo "${RSPACK_COMMIT}" > .rspack-commit
-      - sha256sum vendor/rspack/Cargo.lock | tee /dev/stderr | cut -d' ' -f1 | sed 's/^/Cargo.lock - /'
-      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml |
-            sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
-      - echo "Installing Rust toolchain - ${RUST_VER}"
-      - rustup toolchain install "${RUST_VER}"
-            --profile minimal
-            --no-self-update
-            --target x86_64-unknown-linux-gnu
-      - rustup default "${RUST_VER}"
+      - npm install -g cordova pnpm
     output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
     rm:
       - src/plugins/iap
@@ -1585,13 +1564,22 @@ Builds:
       - sed -i '/return prettier\.format/,/});/c\    return content;' 'hooks/modify-java-files.js'
       - mkdir -p www/css/build www/js/build
       - npm install
-      - export RSPACK_COMMIT=$(cat .rspack-commit)
-      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml |
-            sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
-      - cd vendor/rspack
-      - test "$(git -C vendor/rspack rev-parse HEAD)" = "${RSPACK_COMMIT}" || (echo "ERROR vendor/rspack HEAD no longer matches recorded commit" && exit 1)
+      - export RSPACK_VER=$(grep '"@rspack/core"' package.json sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
+      - git clone --depth 1 --branch "v${RSPACK_VER}" https://github.com/web-infra-dev/rspack.git vendor/rspack
+      - export RSPACK_COMMIT=$(git -C vendor/rspack rev-parse HEAD)
+      - echo "rspack v${RSPACK_VER} → commit ${RSPACK_COMMIT}"
+      - echo "${RSPACK_COMMIT}" > .rspack-commit
+      - sha256sum vendor/rspack/Cargo.lock | tee /dev/stderr | cut -d' ' -f1 | sed 's/^/Cargo.lock: /'
+      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
+      - echo "Installing Rust toolchain → ${RUST_VER}"
+      - rustup toolchain install "${RUST_VER}"
+            --profile minimal
+            --no-self-update
+            --target x86_64-unknown-linux-gnu
+      - rustup default "${RUST_VER}"
+      - mkdir -p .cargo
       - |
-          tee vendor/rspack/.cargo/config.toml <<'CARGOEOF'
+          tee .cargo/config.toml <<'CARGOEOF'
           [source.crates-io]
           replace-with = "vendored-sources"
  
@@ -1603,10 +1591,8 @@ Builds:
             awk '{print $1}' | sed 's/-x86_64.*//')
       - printf '[toolchain]\nchannel = "%s"\ntargets = ["x86_64-unknown-linux-gnu"]\n'
             "${INSTALLED}" > vendor/rspack/rust-toolchain.toml
-      - cd vendor/rspack &&
-            cargo vendor ../../cargo-vendor 2>&1 | tail -5
-      - export CARGO_INCREMENTAL=0
-      - export SOURCE_DATE_EPOCH=$(git -C . log -1 --format=%ct)
+      - pnpm install --frozen-lockfile --dir vendor/rspack
+      - cargo vendor --manifest-path vendor/rspack/Cargo.toml cargo-vendor 2>&1 | tail -5
       - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
       - echo "Building node_binding at SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
       - pnpm run build:cli:release:linux
@@ -1614,9 +1600,21 @@ Builds:
       - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack
     scanignore:
       - vendor/rspack/
+      - cargo-vendor/
     scandelete:
       - node_modules
     build:
+      - export RSPACK_COMMIT=$(cat .rspack-commit)
+      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
+      - test "$(git -C vendor/rspack rev-parse HEAD)" = "${RSPACK_COMMIT}" || (echo "ERROR → vendor/rspack HEAD no longer matches recorded commit" && exit 1)
+      - export CARGO_INCREMENTAL=0
+      - export SOURCE_DATE_EPOCH=$(git -C vendor/rspack log -1 --format=%ct)
+      - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
+      - echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH} RUST_VER=${RUST_VER}"
+      - pnpm run build:cli:release:linux --dir vendor/rspack
+      - file vendor/rspack/packages/rspack-cli/bin/rspack | grep -q 'ELF 64-bit' || (echo "ERROR → rspack CLI is not a valid ELF binary" && exit 1)
+      - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack | tee /dev/stderr | cut -d' ' -f1
+      - echo "rspack build completed"
       - npm run setup
       - node ./utils/config.js prod paid
       # - webpack --progress --mode production
