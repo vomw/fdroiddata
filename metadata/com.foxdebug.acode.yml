@@ -1588,7 +1588,8 @@ Builds:
       - cargo vendor --manifest-path vendor/rspack/Cargo.toml cargo-vendor 2>&1 | tail -5
       - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
       - echo "Building node_binding at SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
-      - pnpm run build:cli:release:linux --dir vendor/rspack
+      - pnpm run --dir vendor/rspack
+      - pnpm run "build:cli:release:linux" --dir vendor/rspack
       - file vendor/rspack/packages/rspack-cli/bin/rspack
       - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack
     scanignore:
