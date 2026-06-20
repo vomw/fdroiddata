@@ -1,0 +1,62 @@
+Categories:
+  - System
+License: GPL-3.0-or-later
+AuthorName: Rufid contributors
+SourceCode: https://github.com/GPLaider/rufid
+IssueTracker: https://github.com/GPLaider/rufid/issues
+Changelog: https://github.com/GPLaider/rufid/releases
+
+AutoName: Rufid
+Summary: Clean Android USB image writer
+Description: |-
+  Rufid writes bootable USB media from Android. It can write local ISO/IMG
+  files, stream direct image URLs, create a packaged FreeDOS LiteUSB drive,
+  inspect USB boot media, verify writes, back up a USB device, and recover a
+  removable USB drive back into a FAT32 or exFAT volume.
+
+  The app has no ads, analytics, billing SDKs, Firebase, or external crash
+  reporting. Error reports are stored locally on the device.
+
+  FreeDOS, UEFI:NTFS, wimlib, and 7-Zip-JBinding payloads are staged by the
+  F-Droid build from pinned upstream source or verified upstream distribution
+  inputs. Payloads are not extracted from opaque APKs.
+
+RepoType: git
+Repo: https://github.com/GPLaider/rufid.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: 62bd336e2dfa4dc48bf316012b0d32cfd317bfe9
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends autoconf automake bc bison clang
+        cmake cpio curl dosfstools file flex g++ gcc git lld llvm make mingw-w64 mtools
+        ninja-build p7zip-full patch perl pkg-config python3 rsync unzip wget zip
+    gradle:
+      - yes
+    rm:
+      - payloads/build
+      - payloads/downloads
+      - payloads/out
+      - payloads/sources
+    build:
+      - export ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-$ANDROID_NDK}"
+      - export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK}"
+      - export ANDROID_SDK_ROOT="$ANDROID_HOME"
+      - export ANDROID_API=24
+      - bash ./scripts/fdroid/stage-source-payloads.sh
+    ndk: r29
+    gradleprops:
+      - rufid.includePayloads=true
+
+MaintainerNotes: |-
+  Payloads must not be extracted from any opaque APK. The build recipe stages
+  FreeDOS LiteUSB from the official FreeDOS 1.4 archive with SHA-256
+  verification, and builds UEFI:NTFS, wimlib, and 7-Zip-JBinding from pinned
+  upstream source repositories documented in the source tree.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
