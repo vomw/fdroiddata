@@ -1564,7 +1564,7 @@ Builds:
       - sed -i '/return prettier\.format/,/});/c\    return content;' 'hooks/modify-java-files.js'
       - mkdir -p www/css/build www/js/build
       - npm install
-      - export RSPACK_VER=$(grep '"@rspack/core"' package.json sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
+      - export RSPACK_VER=$(grep '"@rspack/core"' package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
       - git clone --depth 1 --branch "v${RSPACK_VER}" https://github.com/web-infra-dev/rspack.git vendor/rspack
       - export RSPACK_COMMIT=$(git -C vendor/rspack rev-parse HEAD)
       - echo "rspack v${RSPACK_VER} → commit ${RSPACK_COMMIT}"
