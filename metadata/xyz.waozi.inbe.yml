@@ -111,11 +111,45 @@ Builds:
     gradleprops:
       - fDroidBuild=true
 
-  - versionName: 1.2.5
-    versionCode: 26
-    commit: f64195ec1de88f0133ae64756838e74e96be0924
+  - versionName: 1.2.6
+    versionCode: 27
+    commit: 9181c91a3a0eaa8c3635357e490c9b69011c9bdc
     subdir: droid/app
     submodules: true
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: bash ../../scripts/copy-android-assets.sh
+    scandelete:
+      - vendor/raylib/examples/
+    gradleprops:
+      - fDroidBuild=true
+
+  - versionName: 1.3.3
+    versionCode: 31
+    commit: f12ef05421126492942fca791ebc516cec66de9b
+    subdir: droid/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential jimsh
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: bash ../../scripts/copy-android-assets.sh
+    scandelete:
+      - vendor/raylib/examples/
+    gradleprops:
+      - fDroidBuild=true
+
+  - versionName: 1.4.3
+    versionCode: 38
+    commit: 807aa54166e22b3f3258a29e9adf0a031cc71e66
+    subdir: droid/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential jimsh
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
@@ -129,5 +163,5 @@ AllowedAPKSigningKeys: 47648dc7665db12a97c3077a4892ce29072c756bb31b5c331b8924493
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.2.5
-CurrentVersionCode: 26
+CurrentVersion: 1.4.3
+CurrentVersionCode: 38
