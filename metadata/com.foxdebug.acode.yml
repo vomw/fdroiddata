@@ -1578,14 +1578,7 @@ Builds:
             --target x86_64-unknown-linux-gnu
       - rustup default "${RUST_VER}"
       - mkdir -p .cargo
-      - |
-          tee .cargo/config.toml <<'CARGOEOF'
-          [source.crates-io]
-          replace-with = "vendored-sources"
- 
-          [source.vendored-sources]
-          directory = "cargo-vendor"
-          CARGOEOF
+      - printf '%s\n' '[source.crates-io]' 'replace-with = "vendored-sources"' '[source.vendored-sources]' 'directory = "cargo-vendor"' > .cargo/config.toml
       - rustup override set "${RUST_VER}" --path vendor/rspack
       - export INSTALLED=$(rustup show active-toolchain |
             awk '{print $1}' | sed 's/-x86_64.*//')
