@@ -3,17 +3,17 @@ Categories:
 License: GPL-3.0-only
 AuthorName: M M Arif
 WebSite: https://labnex.app
-SourceCode: https://github.com/labnex/LabNex
-IssueTracker: https://github.com/labnex/LabNex/issues
+SourceCode: https://codeberg.org/labnex/LabNex
+IssueTracker: https://codeberg.org/labnex/LabNex/issues
 Translation: https://crowdin.com/project/labnex
-Changelog: https://github.com/labnex/LabNex/releases
+Changelog: https://codeberg.org/labnex/LabNex/releases
 Donate: https://www.patreon.com/mmarif
 
 AutoName: LabNex
 
 RepoType: git
-Repo: https://github.com/labnex/LabNex.git
-Binaries: https://github.com/labnex/LabNex/releases/download/%v/LabNex-%v.apk
+Repo: https://codeberg.org/labnex/LabNex.git
+Binaries: https://codeberg.org/labnex/LabNex/releases/download/%v/LabNex-%v.apk
 
 Builds:
   - versionName: 1.0.1
@@ -101,7 +101,33 @@ Builds:
 
   - versionName: 8.0.0-rc1
     versionCode: 795
+    disable: old beta
     commit: 06309d998108a855a05f333d1a87f70df088212c
+    subdir: app
+    gradle:
+      - free
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+
+  - versionName: 8.0.0-rc2
+    versionCode: 796
+    disable: old beta
+    commit: 238ac34d7f4b9967d8bf830bbe5c1d3e18faca64
+    subdir: app
+    gradle:
+      - free
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+
+  - versionName: 8.0.0
+    versionCode: 800
+    commit: 50f79875c525e409b5bbb6a53e5bdd8fdd54c04b
+    subdir: app
+    gradle:
+      - free
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+
+  - versionName: 8.0.1
+    versionCode: 801
+    commit: d480d65a2b459e0829ee768419d101630ffbb45a
     subdir: app
     gradle:
       - free
@@ -110,6 +136,6 @@ Builds:
 AllowedAPKSigningKeys: 836735876c497d40c81267342a5961be0a6040f54f6a289bb3c845c39724b405
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 8.0.0-rc1
-CurrentVersionCode: 795
+UpdateCheckMode: Tags ^[\d.]+$
+CurrentVersion: 8.0.1
+CurrentVersionCode: 801
