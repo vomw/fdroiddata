@@ -1585,13 +1585,6 @@ Builds:
       - printf '[toolchain]\nchannel = "%s"\ntargets = ["x86_64-unknown-linux-gnu"]\n'
             "${INSTALLED}" > vendor/rspack/rust-toolchain.toml
       - pnpm install --frozen-lockfile --dir vendor/rspack
-      - cargo vendor --manifest-path vendor/rspack/Cargo.toml cargo-vendor 2>&1 | tail -5
-      - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
-      - echo "Building node_binding at SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
-      - pnpm run --dir vendor/rspack
-      - pnpm run "build:cli:release:linux" --dir vendor/rspack
-      - file vendor/rspack/packages/rspack-cli/bin/rspack
-      - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack
     scanignore:
       - vendor/rspack/
       - cargo-vendor/
@@ -1605,7 +1598,7 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git -C vendor/rspack log -1 --format=%ct)
       - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
       - echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH} RUST_VER=${RUST_VER}"
-      - pnpm run build:cli:release:linux --dir vendor/rspack
+      - pnpm --filter ./vendor/rspack run build:cli:release:linux
       - file vendor/rspack/packages/rspack-cli/bin/rspack | grep -q 'ELF 64-bit' || (echo "ERROR → rspack CLI is not a valid ELF binary" && exit 1)
       - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack | tee /dev/stderr | cut -d' ' -f1
       - echo "rspack build completed"
