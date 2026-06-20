@@ -1548,9 +1548,10 @@ Builds:
       - apt-get update
       - apt-get install -y npm rustup
       - npm install -g cordova pnpm@latest
-      - pwd # as idk what it executes
-      - export RSPACK_VER=$(grep '"@rspack/core"' package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
+      # I can put the above in prebuild I think.
+      - export RSPACK_VER=$(grep '"@rspack/core"' $(pwd)/build/com.foxdebug.acode/package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
       - echo "Detected rspack version from package.json: v${RSPACK_VER}"
+      - cd $(pwd)/build/com.foxdebug.acode/
       - git clone
             --depth 1
             --branch "v${RSPACK_VER}"
