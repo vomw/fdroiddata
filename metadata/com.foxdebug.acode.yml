@@ -1549,6 +1549,8 @@ Builds:
       - apt-get install -y npm rustup build-essential
       - npm install -g cordova pnpm@10.33.0
     output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rspack@v2.0.8
     rm:
       - src/plugins/iap
       - src/plugins/proot
@@ -1565,51 +1567,22 @@ Builds:
       - mkdir -p www/css/build www/js/build
       - npm install
       - export RSPACK_VER=$(grep '"@rspack/core"' package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
-      - git clone --depth 1 --branch "v${RSPACK_VER}" https://github.com/web-infra-dev/rspack.git vendor/rspack
-      - export RSPACK_COMMIT=$(git -C vendor/rspack rev-parse HEAD)
-      - echo "rspack v${RSPACK_VER} → commit ${RSPACK_COMMIT}"
-      - echo "${RSPACK_COMMIT}" > .rspack-commit
-      - sha256sum vendor/rspack/Cargo.lock | tee /dev/stderr | cut -d' ' -f1
-      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
-      - echo "Installing Rust toolchain → ${RUST_VER}"
-      - rustup toolchain install "${RUST_VER}"
-            --profile minimal
-            --no-self-update
-            --target x86_64-unknown-linux-gnu
-            --component rust-src
-      - rustup default "${RUST_VER}"
-      - mkdir -p .cargo
-      - printf '%s\n' '[source.crates-io]' 'replace-with = "vendored-sources"' '[source.vendored-sources]' 'directory = "cargo-vendor"' > .cargo/config.toml
-      - rustup override set "${RUST_VER}" --path vendor/rspack
-      - export INSTALLED=$(rustup show active-toolchain |
-            awk '{print $1}' | sed 's/-x86_64.*//')
-      - printf '[toolchain]\nchannel = "%s"\ntargets = ["x86_64-unknown-linux-gnu"]\n'
-            "${INSTALLED}" > vendor/rspack/rust-toolchain.toml
-      - pnpm install --frozen-lockfile --dir vendor/rspack
-      - pnpm i --ignore-workspace --no-lockfile --dir vendor/rspack/crates/node_binding
-      - cargo vendor --manifest-path vendor/rspack/Cargo.toml --sync $(rustc --print sysroot)/lib/rustlib/src/rust/library/Cargo.toml cargo-vendor 2>&1 | tail -5
-    scanignore:
-      - vendor/rspack/
-      - cargo-vendor/
+      - '[[ $RSPACK_VER ]]'
+      - git -C $$rspack$$ checkout -f v${RSPACK_VER}
+      - export RUST_VER=$(grep 'channel' $$rspack$$/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
+      - rustup toolchain default "${RUST_VER}"
+      - pnpm install --frozen-lockfile --dir $$rspack$$
+      - pnpm i --ignore-workspace --no-lockfile --dir $$rspack$$/crates/node_binding
     scandelete:
       - node_modules
     build:
-      - export RSPACK_COMMIT=$(cat .rspack-commit)
-      - export RUST_VER=$(grep 'channel' vendor/rspack/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
-      - test "$(git -C vendor/rspack rev-parse HEAD)" = "${RSPACK_COMMIT}" || (echo "ERROR → vendor/rspack HEAD no longer matches recorded commit" && exit 1)
-      - export CARGO_INCREMENTAL=0
-      - export SOURCE_DATE_EPOCH=$(git -C vendor/rspack log -1 --format=%ct)
-      - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
-      - echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH} RUST_VER=${RUST_VER}"
-      - cd ./vendor/rspack
+      - pushd $$rspack$$
       - RUST_TARGET=x86_64-unknown-linux-gnu USE_NAPI_CROSS=1 pnpm run build:cli:release
-      - sha256sum packages/rspack-cli/bin/rspack.js | tee /dev/stderr | cut -d' ' -f1
       - packages/rspack-cli/bin/rspack.js --version
-      - echo "rspack build completed"
-      - cd -
+      - popd
       - npm run setup
       - node ./utils/config.js prod paid
-      - vendor/rspack/packages/rspack-cli/bin/rspack.js --mode production
+      - $$rspack$$/packages/rspack-cli/bin/rspack.js --mode production
       - cp ./src/boot.js ./www/build/boot.js
       - cordova build android --release -- --packageType=apk
 
