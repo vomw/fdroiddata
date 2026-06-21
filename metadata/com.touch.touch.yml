@@ -20,7 +20,16 @@ Builds:
     versionCode: 1
     commit: v1.0.0
     output: build/app/outputs/flutter-apk/app-release.apk
-    build: flutter build apk --release
+    sudo: |-
+      apt-get update
+      apt-get install -y curl git unzip xz-utils zip
+      wget -q https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.2-stable.tar.xz
+      tar -xf flutter_linux_3.22.2-stable.tar.xz -C /opt
+      chmod -R 777 /opt/flutter
+      ln -s /opt/flutter/bin/flutter /usr/local/bin/flutter
+    build: |-
+      flutter config --no-analytics
+      flutter build apk --release
 
 CurrentVersion: '1.0.0'
 CurrentVersionCode: 1
