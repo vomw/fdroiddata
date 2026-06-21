@@ -1,0 +1,47 @@
+Categories:
+  - Game Helper
+License: GPL-3.0-or-later
+AuthorName: ins6mniac66
+SourceCode: https://github.com/ins6mniac66-ship-it/storm-atlas
+IssueTracker: https://github.com/ins6mniac66-ship-it/storm-atlas/issues
+
+AutoName: Storm Atlas
+
+RepoType: git
+Repo: https://github.com/ins6mniac66-ship-it/storm-atlas.git
+
+Builds:
+  - versionName: 0.1.3
+    versionCode: 6
+    commit: 4dace13daf61ed58eb8b236164f7738c228972bd
+    sudo:
+      - echo deb http://deb.debian.org/debian bookworm main > /tmp/bookworm.list
+      - mv /tmp/bookworm.list /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y npm
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+    output: android/app/build/outputs/apk/release/app-release.apk
+    prebuild:
+      - npm ci
+      - npx expo prebuild --platform android --no-install
+    scanignore:
+      - android/build.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/jsc-android
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/@expo/vector-icons
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/react-native/sdks/hermesc
+      - node_modules/react-native/React/I18n/strings
+    build:
+      - cd android
+      - gradle assembleRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app.json|"versionCode":\s(\d+)|.|"version":\s"([\d.]+)"
+CurrentVersion: 0.1.3
+CurrentVersionCode: 6
