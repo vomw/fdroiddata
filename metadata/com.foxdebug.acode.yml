@@ -1599,10 +1599,12 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git -C vendor/rspack log -1 --format=%ct)
       - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
       - echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH} RUST_VER=${RUST_VER}"
-      - pnpm --filter ./vendor/rspack run build:cli:release:linux
-      - file vendor/rspack/packages/rspack-cli/bin/rspack | grep -q 'ELF 64-bit' || (echo "ERROR → rspack CLI is not a valid ELF binary" && exit 1)
-      - sha256sum vendor/rspack/packages/rspack-cli/bin/rspack | tee /dev/stderr | cut -d' ' -f1
+      - cd ./vendor/rspack
+      - pnpm run build:cli:release:linux
+      - file packages/rspack-cli/bin/rspack | grep -q 'ELF 64-bit' || (echo "ERROR → rspack CLI is not a valid ELF binary" && exit 1)
+      - sha256sum packages/rspack-cli/bin/rspack | tee /dev/stderr | cut -d' ' -f1
       - echo "rspack build completed"
+      - cd -
       - npm run setup
       - node ./utils/config.js prod paid
       # - webpack --progress --mode production
