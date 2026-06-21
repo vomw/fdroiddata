@@ -1585,6 +1585,7 @@ Builds:
       - printf '[toolchain]\nchannel = "%s"\ntargets = ["x86_64-unknown-linux-gnu"]\n'
             "${INSTALLED}" > vendor/rspack/rust-toolchain.toml
       - pnpm install --frozen-lockfile --dir vendor/rspack
+      - pnpm i --ignore-workspace --no-lockfile --dir vendor/rspack/crates/node_binding
       - cargo vendor --manifest-path vendor/rspack/Cargo.toml cargo-vendor 2>&1 | tail -5
     scanignore:
       - vendor/rspack/
@@ -1600,15 +1601,15 @@ Builds:
       - export RUSTFLAGS="-C debuginfo=0 --remap-path-prefix=$(pwd)=/build"
       - echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH} RUST_VER=${RUST_VER}"
       - cd ./vendor/rspack
-      - pnpm run build:cli:release:linux
-      - file packages/rspack-cli/bin/rspack | grep -q 'ELF 64-bit' || (echo "ERROR → rspack CLI is not a valid ELF binary" && exit 1)
-      - sha256sum packages/rspack-cli/bin/rspack | tee /dev/stderr | cut -d' ' -f1
+      - RUST_TARGET=x86_64-unknown-linux-gnu USE_NAPI_CROSS=1 pnpm run build:cli:release
+      - sha256sum packages/rspack-cli/bin/rspack.js | tee /dev/stderr | cut -d' ' -f1
+      - vendor/rspack/packages/rspack-cli/bin/rspack.js --version
       - echo "rspack build completed"
       - cd -
       - npm run setup
       - node ./utils/config.js prod paid
       # - webpack --progress --mode production
-      - vendor/rspack/packages/rspack-cli/bin/rspack --mode production
+      - vendor/rspack/packages/rspack-cli/bin/rspack.js --mode production
       - cp ./src/boot.js ./www/build/boot.js
       - cordova build android --release -- --packageType=apk
 
