@@ -1587,7 +1587,7 @@ Builds:
             "${INSTALLED}" > vendor/rspack/rust-toolchain.toml
       - pnpm install --frozen-lockfile --dir vendor/rspack
       - pnpm i --ignore-workspace --no-lockfile --dir vendor/rspack/crates/node_binding
-      - cargo vendor --manifest-path vendor/rspack/Cargo.toml cargo-vendor 2>&1 | tail -5
+      - cargo vendor --manifest-path vendor/rspack/Cargo.toml --sync $(rustc --print sysroot)/lib/rustlib/src/rust/library/Cargo.toml cargo-vendor
     scanignore:
       - vendor/rspack/
       - cargo-vendor/
