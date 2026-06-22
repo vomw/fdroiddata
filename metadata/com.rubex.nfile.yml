@@ -26,6 +26,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find .pub-cache -path "*/flutter_avif*/android/src/main/java/com/teknorota/flutter_avif/FlutterAvifPlugin.java" | xargs -I{} sh -c 'echo "// cleared to fix Kotlin redeclaration" > "{}"'
       - popd
       - mv /tmp/build com.rubex.nfile
     scandelete:
