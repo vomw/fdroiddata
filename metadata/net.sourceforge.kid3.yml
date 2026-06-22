@@ -812,10 +812,10 @@ Builds:
     sudo:
       - echo "deb http://deb.debian.org/debian bookworm main" >>/etc/apt/sources.list
       - apt-get update
-      - apt-get install -y 7zip build-essential cmake docbook-xsl make ninja-build
-        python-is-python3 libclang-dev openjdk-17-jdk-headless
-      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-      - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - apt-get install -y 7zip g++ libc-dev cmake docbook-xsl make ninja-build
+        python-is-python3 libclang-dev
     output: 
       android-build/kid3/android/android-build/build/outputs/apk/release/android-build-release-unsigned.apk
     srclibs:
