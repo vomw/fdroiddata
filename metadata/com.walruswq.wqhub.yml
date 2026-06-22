@@ -26,12 +26,12 @@ Builds:
       - macos
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter:\ '(.*)'/\1/p" pubspec.yaml)
+      - flutterVersion=$(sed -n -E "s/.*flutter:\ (.*)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter config --no-analytics
-      - .flutter/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - .flutter/bin/cache
     scandelete:
