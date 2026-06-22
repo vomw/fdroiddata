@@ -1,11 +1,13 @@
 Categories:
-  - Internet
+  - Download
+  - Remote Controller
 License: GPL-3.0-only
 AuthorName: Eric Kok
 AuthorWebSite: https://ekok.nl/
 WebSite: https://www.transdroid.org/
 SourceCode: https://github.com/erickok/transdroid
 IssueTracker: https://github.com/erickok/transdroid/issues
+Translation: https://crowdin.com/project/transdroid
 Changelog: https://github.com/erickok/transdroid/releases
 Donate: https://paypal.me/erickoknl
 
@@ -171,7 +173,31 @@ Builds:
       - full
     prebuild: sed -i -e '/updatecheck_available/s/true/false/' src/*/res/values/bools.xml
 
+  - versionName: 2.5.25
+    versionCode: 245
+    commit: 9ebeac8fe41a6784d3c92193146bef2c55eb2ec7
+    subdir: app
+    gradle:
+      - full
+    rm:
+      - app/libs/org.apache.http.legacy.jar
+    prebuild:
+      - sed -i -e '/updatecheck_available/s/true/false/' src/*/res/values/bools.xml
+      - sed -i -e '/org.apache.http.legacy.jar/d' build.gradle
+
+  - versionName: 2.5.28
+    versionCode: 248
+    commit: 576cc652c81e4ac07d27b58b7f0fa4393bf63e66
+    subdir: app
+    gradle:
+      - full
+    rm:
+      - app/libs/org.apache.http.legacy.jar
+    prebuild:
+      - sed -i -e '/updatecheck_available/s/true/false/' src/*/res/values/bools.xml
+      - sed -i -e '/org.apache.http.legacy.jar/d' build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[\d.]+$
-CurrentVersion: 2.5.24
-CurrentVersionCode: 244
+CurrentVersion: 2.5.28
+CurrentVersionCode: 248

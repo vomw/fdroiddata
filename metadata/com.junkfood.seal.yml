@@ -1,5 +1,8 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Rely on GitHub API to check and download yt-dlp updates
 Categories:
-  - Multimedia
+  - Download
 License: GPL-3.0-only
 AuthorName: junkfood
 SourceCode: https://github.com/JunkFood02/Seal
@@ -1242,6 +1245,114 @@ Builds:
       - noSplits
       - ABI_FILTERS=x86_64
 
+  - versionName: 1.13.0-(F-Droid)
+    versionCode: 11301
+    commit: 5b07b32bead6e26f19fc5c94398404fe5c49a174
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/(keystorePropertiesFile.exists())$/d' build.gradle.kts
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=armeabi-v7a
+
+  - versionName: 1.13.0-(F-Droid)
+    versionCode: 11302
+    commit: 5b07b32bead6e26f19fc5c94398404fe5c49a174
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/(keystorePropertiesFile.exists())$/d' build.gradle.kts
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=arm64-v8a
+
+  - versionName: 1.13.0-(F-Droid)
+    versionCode: 11303
+    commit: 5b07b32bead6e26f19fc5c94398404fe5c49a174
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/(keystorePropertiesFile.exists())$/d' build.gradle.kts
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=x86
+
+  - versionName: 1.13.0-(F-Droid)
+    versionCode: 11304
+    commit: 5b07b32bead6e26f19fc5c94398404fe5c49a174
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/(keystorePropertiesFile.exists())$/d' build.gradle.kts
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=x86_64
+
+  - versionName: 1.13.1-(F-Droid)
+    versionCode: 11311
+    commit: a2d7e5d5819d0aa8b4f5dbb906731da283a28ed1
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/(keystorePropertiesFile.exists())$/d' -e '/jvmToolchain/s/11/17/'
+        build.gradle.kts
+      - sed -i -e '/jvmToolchain/s/8/17/' ../color/build.gradle.kts
+      - sed -i -e '/YT_DLP_AUTO_UPDATE/s/true/false/' src/main/java/com/junkfood/seal/util/PreferenceUtil.kt
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=armeabi-v7a
+
+  - versionName: 1.13.1-(F-Droid)
+    versionCode: 11312
+    commit: a2d7e5d5819d0aa8b4f5dbb906731da283a28ed1
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/(keystorePropertiesFile.exists())$/d' -e '/jvmToolchain/s/11/17/'
+        build.gradle.kts
+      - sed -i -e '/jvmToolchain/s/8/17/' ../color/build.gradle.kts
+      - sed -i -e '/YT_DLP_AUTO_UPDATE/s/true/false/' src/main/java/com/junkfood/seal/util/PreferenceUtil.kt
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=arm64-v8a
+
+  - versionName: 1.13.1-(F-Droid)
+    versionCode: 11313
+    commit: a2d7e5d5819d0aa8b4f5dbb906731da283a28ed1
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/(keystorePropertiesFile.exists())$/d' -e '/jvmToolchain/s/11/17/'
+        build.gradle.kts
+      - sed -i -e '/jvmToolchain/s/8/17/' ../color/build.gradle.kts
+      - sed -i -e '/YT_DLP_AUTO_UPDATE/s/true/false/' src/main/java/com/junkfood/seal/util/PreferenceUtil.kt
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=x86
+
+  - versionName: 1.13.1-(F-Droid)
+    versionCode: 11314
+    commit: a2d7e5d5819d0aa8b4f5dbb906731da283a28ed1
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/(keystorePropertiesFile.exists())$/d' -e '/jvmToolchain/s/11/17/'
+        build.gradle.kts
+      - sed -i -e '/jvmToolchain/s/8/17/' ../color/build.gradle.kts
+      - sed -i -e '/YT_DLP_AUTO_UPDATE/s/true/false/' src/main/java/com/junkfood/seal/util/PreferenceUtil.kt
+    gradleprops:
+      - noSplits
+      - ABI_FILTERS=x86_64
+
 AutoUpdateMode: Version +-(F-Droid) %v
 UpdateCheckMode: Tags ^v[0-9.]+$
 VercodeOperation:
@@ -1250,5 +1361,5 @@ VercodeOperation:
   - 3+%c
   - 4+%c
 UpdateCheckData: app/build.gradle.kts|versionCode\s=\s(\d+)||v(.*)
-CurrentVersion: 1.12.1
-CurrentVersionCode: 11214
+CurrentVersion: 1.13.1
+CurrentVersionCode: 11314

@@ -9,7 +9,8 @@ IssueTracker: https://github.com/ShiftHackZ/Stable-Diffusion-Android/issues
 
 RepoType: git
 Repo: https://github.com/ShiftHackZ/Stable-Diffusion-Android.git
-Binaries: https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases/download/%v/sdai-foss-release-%v.apk
+Binaries: 
+  https://github.com/ShiftHackZ/Stable-Diffusion-Android/releases/download/%v/sdai-foss-release-%v.apk
 
 Builds:
   - versionName: 0.4.10
@@ -162,9 +163,61 @@ Builds:
       - sed -i -e "s/onnxruntimeVersion = 'latest.release'/onnxruntimeVersion = '1.15.1'/"
         ../dependencies.gradle
 
+  - versionName: 0.6.2
+    versionCode: 182
+    commit: 063baa7db7642c206b900c9e282c5235f218ae5f
+    subdir: app
+    gradle:
+      - foss
+    prebuild:
+      - sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle
+      - sed -i -e '/plugins.gradle/d' build.gradle
+      - sed -i -e "s/onnxruntimeVersion = 'latest.release'/onnxruntimeVersion = '1.15.1'/"
+        ../dependencies.gradle
+
+  - versionName: 0.6.3
+    versionCode: 183
+    commit: 989bc0240f1caeb06d1523b9d54e25bc3bbc20e3
+    subdir: app
+    gradle:
+      - foss
+    prebuild:
+      - sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle
+      - sed -i -e '/plugins.gradle/d' build.gradle
+      - sed -i -e "s/onnxruntimeVersion = 'latest.release'/onnxruntimeVersion = '1.15.1'/"
+        ../dependencies.gradle
+
+  - versionName: 0.6.6
+    versionCode: 186
+    commit: a7b827cf3c551152bfaec80abffceab6ae4c80bf
+    subdir: app
+    gradle:
+      - foss
+    scandelete:
+      - build-logic/convention/build
+
+  - versionName: 0.6.7
+    versionCode: 187
+    commit: 295ec2aee20de6354bff43cfd2b350f94c417070
+    subdir: app
+    gradle:
+      - foss
+    scandelete:
+      - build-logic/convention/build
+
+  - versionName: 0.6.8
+    versionCode: 190
+    commit: e900b3a68170c3468e1834008709cb5051666cb1
+    subdir: app
+    gradle:
+      - foss
+    scandelete:
+      - build-logic/convention/build
+
 AllowedAPKSigningKeys: 8974efc853e2d5e93eb29dd809fc57cae7411fcfaca03de3f7c152f441a90064
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.6.1
-CurrentVersionCode: 180
+UpdateCheckData: gradle/libs.versions.toml|versionCode = "(\d+)"|.|versionName = "(.*)"
+CurrentVersion: 0.6.8
+CurrentVersionCode: 190

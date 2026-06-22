@@ -10,7 +10,8 @@ AutoName: Text Tools
 
 RepoType: git
 Repo: https://github.com/corphish/TextTools
-Binaries: https://github.com/corphish/TextTools/releases/download/v%v/app-release-single.apk
+Binaries: 
+  https://github.com/corphish/TextTools/releases/download/v%v/app-release-single.apk
 
 Builds:
   - versionName: 1.1.0.1
@@ -24,9 +25,33 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
       'META-INF/services/*'
 
+  - versionName: 1.4.0
+    versionCode: 15
+    commit: eddd6b3f8036844ff167f8ea2885cd96ddfa33df
+    subdir: app
+    gradle:
+      - singleOption
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*'
+
+  - versionName: 1.5.0
+    versionCode: 16
+    commit: e1edb5683b5ed60b040f5cff30fa281d45134899
+    subdir: app
+    gradle:
+      - singleOption
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*'
+
 AllowedAPKSigningKeys: c38c54ba54fa6718a56a8ee319cf8291329860ba092290743b7defd813fa9de7
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 1.1.0.1
-CurrentVersionCode: 11
+ArchivePolicy: 0
+AutoUpdateMode: None
+UpdateCheckMode: None
+UpdateCheckName: com.corphish.quicktools
+CurrentVersion: 1.5.0
+CurrentVersionCode: 16

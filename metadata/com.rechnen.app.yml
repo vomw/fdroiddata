@@ -1,5 +1,5 @@
 Categories:
-  - Games
+  - Educational Game
 License: GPL-3.0-only
 SourceCode: https://codeberg.org/jonas-l/rechnen-android
 IssueTracker: https://codeberg.org/jonas-l/rechnen-android/issues
@@ -85,7 +85,32 @@ Builds:
     gradle:
       - yes
 
+  - versionName: '3.0'
+    versionCode: 21
+    commit: a176c7c239dee7eb56d161133eed03fa36130134
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: '3.1'
+    versionCode: 22
+    commit: 883cd79652517d629b7f00b06e3bacba6023ba1f
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/8.13.0/8.11.1/' ../build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.1'
-CurrentVersionCode: 20
+CurrentVersion: '3.1'
+CurrentVersionCode: 22

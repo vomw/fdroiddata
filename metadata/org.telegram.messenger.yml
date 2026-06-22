@@ -1,18 +1,33 @@
 AntiFeatures:
   - NonFreeNet
-  - UpstreamNonFree
 Categories:
   - Internet
 License: GPL-2.0-or-later
 WebSite: https://telegram.org
 SourceCode: https://github.com/Telegram-FOSS-Team/Telegram-FOSS
 IssueTracker: https://github.com/Telegram-FOSS-Team/Telegram-FOSS/issues
-Translation: https://www.transifex.com/telegram/telegram/
+Translation: https://explore.transifex.com/telegram/telegram/
 Changelog: https://github.com/Telegram-FOSS-Team/Telegram-FOSS/blob/HEAD/Changelog.md
 Liberapay: Telegram-FOSS
 Bitcoin: 1P8kNcifVAkBWtWmjKY4RvVLy5QwruE2LQ
 
 AutoName: Telegram FOSS
+Description: |-
+  <b>NOTE:</b> Development has stopped. Do switch to a maintained fork: https://search.f-droid.org/?q=telegram
+
+  *Warning:* Creating new accounts in the FOSS version not possible anymore, you have to create an account in the official build and then login to the FOSS.
+
+  Client for the Telegram messaging platform.
+
+  Chat with friends, start group chats and share all kinds of content. All of your messages and conversations are stored in Telegram's cloud.
+
+  The messaging platform is aimed at mobile devices, but desktop and web clients exist as well.
+
+  Several proprietary parts were removed from the original Telegram client, including Google Play Services for the location services, HockeySDK for self-updates and push notifications through Google Cloud Messaging. Location sharing functionality is restored using OpenStreetMap.
+
+  Anti-Feature: Non-Free Network, since the servers run proprietary software.
+
+  The official source code of the app contains binary blobs, so this tracks a fork which builds those from source. Hence, versions might become available with a certain lag.
 
 RepoType: git
 Repo: https://github.com/Telegram-FOSS-Team/Telegram-FOSS.git
@@ -3512,10 +3527,73 @@ Builds:
       - popd
     ndk: 21.4.7075529
 
+  - versionName: 10.12.0
+    versionCode: 47109
+    commit: v10.12.0
+    subdir: TMessagesProj_App
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y cmake golang-go libuv1 make ninja-build yasm
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+    gradle:
+      - afat
+    rm:
+      - TMessagesProj/jni/ffmpeg/tests/ref/fate/sub-microdvd-remux
+    prebuild: echo -e 'APP_ID = 105810\nAPP_HASH = 3e7a52498eec003c5896a330e5d29397'
+      > API_KEYS
+    scandelete:
+      - TMessagesProj/jni
+    build:
+      - export NDK=$$NDK$$
+      - export NINJA_PATH=/usr/bin/ninja
+      - pushd ../TMessagesProj/jni
+      - ./build_libvpx_clang.sh
+      - ./build_ffmpeg_clang.sh
+      - ./patch_ffmpeg.sh
+      - ./patch_boringssl.sh
+      - ./build_boringssl.sh
+      - popd
+    ndk: 21.4.7075529
+
+  - versionName: 10.14.3
+    versionCode: 49279
+    commit: v10.14.3
+    subdir: TMessagesProj_App
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y cmake golang-go libuv1 make ninja-build yasm
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+    gradle:
+      - afat
+    rm:
+      - TMessagesProj/jni/ffmpeg/tests/ref/fate/sub-microdvd-remux
+    prebuild: echo -e 'APP_ID = 105810\nAPP_HASH = 3e7a52498eec003c5896a330e5d29397'
+      > API_KEYS
+    scandelete:
+      - TMessagesProj/jni
+    build:
+      - export NDK=$$NDK$$
+      - export NINJA_PATH=/usr/bin/ninja
+      - pushd ../TMessagesProj/jni
+      - ./build_libvpx_clang.sh
+      - ./build_ffmpeg_clang.sh
+      - ./patch_ffmpeg.sh
+      - ./patch_boringssl.sh
+      - ./build_boringssl.sh
+      - popd
+    ndk: 21.4.7075529
+
 MaintainerNotes: Update check mode not working because of version code calculations
   for different flavours.
 
+ArchivePolicy: 0
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 10.10.1
-CurrentVersionCode: 45839
+CurrentVersion: 10.14.3
+CurrentVersionCode: 49279

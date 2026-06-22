@@ -1,6 +1,8 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: Uses Github/Gitlab for dependency rules DB
 Categories:
+  - App Manager
   - System
 License: Apache-2.0
 AuthorName: lihenggui
@@ -8,7 +10,6 @@ SourceCode: https://github.com/lihenggui/blocker
 IssueTracker: https://github.com/lihenggui/blocker/issues
 Changelog: https://github.com/lihenggui/blocker/releases
 
-Name: blocker
 AutoName: Blocker
 
 RepoType: git
@@ -205,7 +206,95 @@ Builds:
     scandelete:
       - build-logic
 
+  - versionName: 2.0.4373-fdroid
+    versionCode: 4373
+    commit: 9e92011f65e2b328b8fde3f790a827d7721c4013
+    subdir: app-compose
+    gradle:
+      - foss
+    scandelete:
+      - build-logic
+
+  - versionName: 2.0.4803-fdroid
+    versionCode: 4803
+    commit: 0790a45e3b4e04794baadc103672f3c5d4881d20
+    subdir: app-compose
+    submodules: true
+    gradle:
+      - foss
+    scandelete:
+      - build-logic
+
+  - versionName: 2.0.4839-fdroid
+    versionCode: 4839
+    commit: 48532079843170f7e18694496bcec3d421dc6ebd
+    subdir: app-compose
+    submodules: true
+    gradle:
+      - foss
+    scandelete:
+      - build-logic
+
+  - versionName: 2.0.5839
+    versionCode: 5839
+    commit: 8065a06ee22ff993201832db602b5020c1a42ea4
+    subdir: app-compose
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - foss
+    rm:
+      - build-logic/convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt
+    prebuild:
+      - sed -i -e '/signingConfig =/,+9d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/libs.firebase/d' -e '/register("firebase")/,+3d' ../build-logic/convention/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2.0.6279
+    versionCode: 6279
+    commit: 465a78f869df41aa0d6ab4da57b38d5f2904f3eb
+    subdir: app-compose
+    submodules: true
+    gradle:
+      - foss
+    rm:
+      - build-logic/convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt
+    prebuild:
+      - sed -i -e '/signingConfig =/,+9d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/libs.firebase/d' -e '/register("firebase")/,+3d' ../build-logic/convention/build.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' ../core/common/build.gradle.kts
+    scandelete:
+      - build-logic
+
+  - versionName: 2.0.6339
+    versionCode: 6339
+    commit: 52a6b509ca552cfc6d8d298d8780835b85e1cf05
+    subdir: app-compose
+    submodules: true
+    gradle:
+      - foss
+    rm:
+      - build-logic/convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt
+    prebuild:
+      - sed -i -e '/signingConfig =/,+9d' build.gradle.kts
+      - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/libs.firebase/d' -e '/register("firebase")/,+3d' ../build-logic/convention/build.gradle.kts
+      - sed -i -e '/JavaLanguageVersion/d' ../core/common/build.gradle.kts
+    scandelete:
+      - build-logic
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags v[\d.]+-fdroid$
-CurrentVersion: 2.0.4044-fdroid
-CurrentVersionCode: 4044
+UpdateCheckMode: Tags
+UpdateCheckData: '|v2.0.(\d+)||v(.+)'
+CurrentVersion: 2.0.6339
+CurrentVersionCode: 6339
