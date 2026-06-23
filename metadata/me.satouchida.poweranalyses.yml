@@ -1,0 +1,56 @@
+Categories:
+  - Science
+  - Education
+License: GPL-2.0-only
+AuthorName: Rik Huijzer
+SourceCode: https://github.com/satouchida/poweranalyses
+IssueTracker: https://github.com/satouchida/poweranalyses/issues
+Changelog: https://github.com/satouchida/poweranalyses/releases
+
+Summary: Power Analyses for Statistical Design
+Description: |-
+  Open Power Analyses is a tool designed to calculate statistical power and sample size
+  requirements for scientific research and experiment designs. It supports a variety
+  of statistical test families (Exact, F, t, Chi-Square, Z) and calculations including
+  a priori sample size, post-hoc power, compromise analysis, and Monte Carlo empirical simulations.
+
+RepoType: git
+Repo: https://github.com/satouchida/poweranalyses
+
+Builds:
+  - versionName: 0.3.0
+    versionCode: 3
+    commit: v0.3.0
+    subdir: src-tauri/gen/android
+    sudo:
+      - apt-get update && apt-get install -y curl git build-essential pkg-config libssl-dev nodejs npm
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      # 1. Add required targets for Rust toolchain
+      - . $$rustup$$/bashrc
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android wasm32-unknown-emscripten
+      
+      # 2. Install cargo-tauri and just build tools
+      - cargo install tauri-cli --locked --version 2.10.1
+      - cargo install just --locked
+      
+      # 3. Clone and configure Emscripten SDK (needed to compile the Rust WASM math core)
+      - git clone https://github.com/emscripten-core/emsdk.git $$builddir$$/emsdk
+      - cd $$builddir$$/emsdk && ./emsdk install 3.1.53 && ./emsdk activate 3.1.53
+
+    build:
+      - . $$rustup$$/bashrc
+      - source $$builddir$$/emsdk/emsdk_env.sh
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export PATH=$$builddir$$/emsdk:$$builddir$$/emsdk/upstream/emscripten:$$PATH
+      # Run the Tauri Android build
+      - cargo tauri android build --apk
+      
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.3.0
+CurrentVersionCode: 3
+
