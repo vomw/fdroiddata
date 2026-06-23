@@ -26,27 +26,27 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - python3 -c 'import json,pathlib; p=pathlib.Path("package.json");
-        d=json.loads(p.read_text());
+      - python3 -c 'import json,pathlib; p=pathlib.Path("package.json"); 
+        d=json.loads(p.read_text()); 
         d["expo"]={"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications"]}}};
         p.write_text(json.dumps(d, ensure_ascii=False, indent=2)+"\n")'
-      - rm -rf modules/semaphore-react-native/android/src/main/jniLibs
+      - rm -rf modules/semaphore-react-native/android/src/main/jniLibs 
         node_modules/semaphore-react-native/android/src/main/jniLibs
-      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json");
-        d=json.loads(p.read_text()); e=d["expo"]; e["plugins"]=[x for x in
-        e.get("plugins", []) if not (x=="expo-notifications" or (isinstance(x,
-        list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra",
+      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json"); 
+        d=json.loads(p.read_text()); e=d["expo"]; e["plugins"]=[x for x in 
+        e.get("plugins", []) if not (x=="expo-notifications" or (isinstance(x, 
+        list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra", 
         {})["buildFlavor"]="fdroid"; e["extra"]["distributionChannel"]="fdroid";
-        e["extra"]["zkSemaphoreEnabled"]=False; p.write_text(json.dumps(d,
+        e["extra"]["zkSemaphoreEnabled"]=False; p.write_text(json.dumps(d, 
         ensure_ascii=False, indent=2)+"\n")'
-      - python3 -c 'import pathlib;
+      - python3 -c 'import pathlib; 
         paths=list(pathlib.Path("node_modules/@react-native/gradle-plugin").glob("*/build.gradle.kts"))+[pathlib.Path("node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt")];
-        [p.write_text("\n".join((line.replace("17","21") if ("jvmToolchain" in
-        line or "JavaVersion" in line) else line) for line in
+        [p.write_text("\n".join((line.replace("17","21") if ("jvmToolchain" in 
+        line or "JavaVersion" in line) else line) for line in 
         p.read_text().splitlines())+"\n") for p in paths if p.exists()]'
-      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json");
-        d=json.loads(p.read_text()); d["expo"].setdefault("android",
-        {})["jsEngine"]="jsc"; p.write_text(json.dumps(d, ensure_ascii=False,
+      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json"); 
+        d=json.loads(p.read_text()); d["expo"].setdefault("android", 
+        {})["jsEngine"]="jsc"; p.write_text(json.dumps(d, ensure_ascii=False, 
         indent=2)+"\n")'
       - npx expo prebuild --clean --platform android
       - python3 -c 'import pathlib; p=pathlib.Path("android/gradle.properties");
