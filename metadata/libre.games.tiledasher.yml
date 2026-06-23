@@ -1,0 +1,46 @@
+Categories:
+  - Games
+License: GPL-3.0-or-later
+AuthorName: Libre Games
+SourceCode: https://github.com/imvenx/tile-dasher
+IssueTracker: https://github.com/imvenx/tile-dasher/issues
+
+AutoName: Tile Dasher
+
+RepoType: git
+Repo: https://github.com/imvenx/tile-dasher.git
+
+Builds:
+  - versionName: 0.0.1
+    versionCode: 1
+    commit: v0.0.1
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 build-essential scons pkg-config libx11-dev
+        libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev
+        libpulse-dev libudev-dev libxi-dev libxrandr-dev openjdk-17-jdk
+    output: bin/tile-dasher.apk
+    srclibs:
+      - Godot@4.6-stable
+    prebuild:
+      - mkdir -p bin
+    build:
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - pushd $$Godot$$
+      - scons -j `nproc` platform=linuxbsd target=editor
+      - scons -j `nproc` platform=android target=template_release arch=arm64
+      - cd platform/android/java
+      - gradle generateGodotTemplates
+      - popd
+      - mkdir -p ~/.local/share/godot/export_templates/4.6.stable
+      - cp $$Godot$$/bin/android_release.apk ~/.local/share/godot/export_templates/4.6.stable/
+      - cp $$Godot$$/bin/android_debug.apk ~/.local/share/godot/export_templates/4.6.stable/
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android' bin/tile-dasher.apk
+    ndk: 23.2.8568313
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.0.1
+CurrentVersionCode: 1
