@@ -31,6 +31,9 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - python3 tool/patch_fdroid_in_app_update.py "$PUB_CACHE"
+      - python3 tool/strip_dev_flutter_plugins.py
     scandelete:
       - .pub-cache
     build:
@@ -39,15 +42,7 @@ Builds:
       - export CARGO_TARGET_DIR=/tmp/axichat-cargo-target
       - rustup default 1.90.0
       - rustup target add aarch64-linux-android
-      - $$flutter$$/bin/flutter pub get
-      - python3 tool/patch_fdroid_in_app_update.py "$PUB_CACHE"
-      - python3 tool/strip_dev_flutter_plugins.py
-      - find "$PUB_CACHE/hosted/pub.dev" -mindepth 2 -maxdepth 2 \( -name example
-        -o -name test -o -name tests -o -name benchmark -o -name benchmarks -o -name
-        windows -o -name linux -o -name macos -o -name ios -o -name web -o -name extension
-        \) -prune -exec rm -rf {} +
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
-      - rm -rf .dart_tool/build android/.gradle .gradle-user-home
       - $$flutter$$/bin/flutter build apk --flavor production --release --split-per-abi
         --target-platform=android-arm64 --build-number=$(($$VERCODE$$ % 1000)) --dart-define=EMAIL_PUBLIC_TOKEN=axichatpublictoken
         --dart-define=ENABLE_SHOREBIRD=false
