@@ -26,22 +26,32 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications"]}}},'
-        package.json
-      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json"); d=json.loads(p.read_text());
-        e=d["expo"]; e["plugins"]=[x for x in e.get("plugins", []) if not (x=="expo-notifications"
-        or (isinstance(x, list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra",
-        {})["buildFlavor"]="fdroid"; e["extra"]["distributionChannel"]="fdroid"; p.write_text(json.dumps(d,
+      - python3 -c 'import json,pathlib; p=pathlib.Path("package.json");
+        d=json.loads(p.read_text());
+        d["expo"]={"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-notifications"]}}};
+        p.write_text(json.dumps(d, ensure_ascii=False, indent=2)+"\n")'
+      - rm -rf modules/semaphore-react-native/android/src/main/jniLibs
+        node_modules/semaphore-react-native/android/src/main/jniLibs
+      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json");
+        d=json.loads(p.read_text()); e=d["expo"]; e["plugins"]=[x for x in
+        e.get("plugins", []) if not (x=="expo-notifications" or (isinstance(x,
+        list) and x and x[0]=="expo-notifications"))]; e.setdefault("extra",
+        {})["buildFlavor"]="fdroid"; e["extra"]["distributionChannel"]="fdroid";
+        e["extra"]["zkSemaphoreEnabled"]=False; p.write_text(json.dumps(d,
         ensure_ascii=False, indent=2)+"\n")'
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json"); d=json.loads(p.read_text());
-        d["expo"].setdefault("android", {})["jsEngine"]="jsc"; p.write_text(json.dumps(d,
-        ensure_ascii=False, indent=2)+"\n")'
+      - python3 -c 'import pathlib;
+        paths=list(pathlib.Path("node_modules/@react-native/gradle-plugin").glob("*/build.gradle.kts"))+[pathlib.Path("node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt")];
+        [p.write_text("\n".join((line.replace("17","21") if ("jvmToolchain" in
+        line or "JavaVersion" in line) else line) for line in
+        p.read_text().splitlines())+"\n") for p in paths if p.exists()]'
+      - python3 -c 'import json,pathlib; p=pathlib.Path("app.json");
+        d=json.loads(p.read_text()); d["expo"].setdefault("android",
+        {})["jsEngine"]="jsc"; p.write_text(json.dumps(d, ensure_ascii=False,
+        indent=2)+"\n")'
       - npx expo prebuild --clean --platform android
-      - sed -i 's/^newArchEnabled=true/newArchEnabled=false/' android/gradle.properties
-      - sed -i 's/^hermesEnabled=true/hermesEnabled=false/' android/gradle.properties
+      - python3 -c 'import pathlib; p=pathlib.Path("android/gradle.properties");
+        p.write_text("\n".join(line.replace("newArchEnabled=true","newArchEnabled=false").replace("hermesEnabled=true","hermesEnabled=false")
+        for line in p.read_text().splitlines())+"\n")'
     scanignore:
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
