@@ -619,11 +619,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
-    gradle:
-      - yes
     prebuild:
       - cd ../..
       - bash build.sh
+    build:
+        - cd ..
+        - ./gradlew :app:assembleRelease
+    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
     scandelete:
       - node_modules/
       - graphhopper-maps/node_modules/
@@ -637,11 +639,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
-    gradle:
-      - yes
     prebuild:
       - cd ../..
       - bash build.sh
+    build:
+        - cd ..
+        - ./gradlew :app:assembleRelease
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     scandelete:
       - node_modules/
       - graphhopper-maps/node_modules/
