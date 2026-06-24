@@ -1,0 +1,37 @@
+Categories:
+  - Security
+  - Writing
+License: GPL-3.0-or-later
+AuthorName: Rory Standley
+SourceCode: https://github.com/rorystandley/rune
+IssueTracker: https://github.com/rorystandley/rune/issues
+Changelog: https://github.com/rorystandley/rune/releases
+
+AutoName: Rune
+
+RepoType: git
+Repo: https://github.com/rorystandley/rune.git
+Binaries: 
+  https://github.com/rorystandley/rune/releases/download/v%v/rune-android.apk
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.2
+    build: "export SOURCE_DATE_EPOCH=$(git -C \"$(git rev-parse --show-toplevel)\"\
+      \ log -1 --pretty=%ct)\nexport PATH=\"$$flutter$$/bin:$PATH\"\nflutter config
+      --no-analytics --no-cli-animations\n../tool/reproducibility/build_release_apk.sh
+      build/app/outputs/flutter-apk/app-release.apk\n"
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 
+  9713bd2fd4a7a6e677d9638dcebb0a718f434f9c62b954008d8c99fe521378ac
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
