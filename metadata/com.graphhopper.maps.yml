@@ -610,10 +610,56 @@ Builds:
       - node_modules/
       - graphhopper-maps/node_modules/
 
+  - versionName: 3.0.2
+    versionCode: 281
+    commit: 778da26cedb8f04e2c6ed1dd8fe5a90cea0b6b68
+    subdir: android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    init:
+      - cd ../..
+      - cp config.js graphhopper-maps/
+      - cd graphhopper-maps
+      - rm -rf node_modules
+      - npm install
+      - npm run fdroid
+      - mv dist/bundle.*.js dist/bundle.js
+      - cd ..
+      - npm install
+      - npm run build
+      - cp config.js dist/
+      - npx cap sync
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/
+      - graphhopper-maps/node_modules/
+
+  - versionName: 3.0.2
+    versionCode: 282
+    commit: 778da26cedb8f04e2c6ed1dd8fe5a90cea0b6b68
+    subdir: android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - bash build.sh
+    scandelete:
+      - node_modules/
+      - graphhopper-maps/node_modules/
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
 VercodeOperation:
   - '%c * 10 + 1'
   - '%c * 10 + 2'
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 3.0.1
-CurrentVersionCode: 27
+CurrentVersion: 3.0.2
+CurrentVersionCode: 282
