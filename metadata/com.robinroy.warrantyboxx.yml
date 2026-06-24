@@ -16,13 +16,13 @@ Builds:
   - versionName: 1.0.1
     versionCode: 11001
     commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-armeabi-v7a.apk
     srclibs:
       - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/WarrantyBoxx-
-      - chown -R vagrant /home/runner
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
       - '[[ $flutterVersion ]]'
@@ -34,6 +34,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
       - popd
       - mv $repo com.robinroy.warrantyboxx
     scandelete:
@@ -51,13 +53,13 @@ Builds:
   - versionName: 1.0.1
     versionCode: 12001
     commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-arm64-v8a.apk
     srclibs:
       - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/WarrantyBoxx-
-      - chown -R vagrant /home/runner
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
       - '[[ $flutterVersion ]]'
@@ -69,6 +71,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
       - popd
       - mv $repo com.robinroy.warrantyboxx
     scandelete:
@@ -86,13 +90,13 @@ Builds:
   - versionName: 1.0.1
     versionCode: 14001
     commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-x86_64.apk
     srclibs:
       - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/WarrantyBoxx-
-      - chown -R vagrant /home/runner
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
       - '[[ $flutterVersion ]]'
@@ -104,6 +108,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
       - popd
       - mv $repo com.robinroy.warrantyboxx
     scandelete:
