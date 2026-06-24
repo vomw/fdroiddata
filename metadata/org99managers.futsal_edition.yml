@@ -27,6 +27,7 @@ Builds:
     output: game/output.apk
     srclibs:
       - Godot@35e80b3a8822a9df9be390814b62f44c0a9c69e8
+      - reproducible-apk-tools@v0.3.0
     build:
       - export REPO=$PWD
       - pushd $$Godot$$
@@ -42,7 +43,11 @@ Builds:
       - mv $$Godot$$/bin/android_release.apk ./game/android_release.apk
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --path game --export-release
         "Android F-Droid" output.apk
-      - strip-nondeterminism -t zip game/output.apk
+    postbuild:
+      - strip-nondeterminism -t zip $$OUT$$
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
     ndk: 29.0.14206865
 
 AllowedAPKSigningKeys: fb0febc96059f6d76f077d774f0134f7903d66a55e8ff1fe185c49c5ffe12b7f
