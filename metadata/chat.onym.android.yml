@@ -1,0 +1,58 @@
+Categories:
+  - Messaging
+License: MIT
+AuthorName: Rinat Enikeev
+SourceCode: https://github.com/rinat-enikeev/stellar-mls
+IssueTracker: https://github.com/rinat-enikeev/stellar-mls/issues
+
+AutoName: Onym
+
+RepoType: git
+Repo: https://github.com/rinat-enikeev/stellar-mls.git
+Binaries: 
+  https://github.com/rinat-enikeev/stellar-mls/releases/download/v%v/app-fdroid-arm64-v8a-release-%v.apk
+
+Builds:
+  - versionName: 1.10.1
+    versionCode: 47
+    commit: 2e353dfd511e914102b4011f1b6780958c8f8b36
+    subdir: clients/android/StellarChat/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    init:
+      - rustup default 1.94.1
+      - rustup target add --toolchain 1.94.1 aarch64-linux-android
+    gradle:
+      - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - clients/ios
+    scanignore:
+      - clients/android/StellarChat/app/src/main/assets/keyset-v2/
+      - keyset-v1/
+      - keyset-v2/
+      - keyset-democracy-dev/
+    scandelete:
+      - clients/android/StellarChat/app/src/main/jniLibs/
+      - kotlin-mls/src/main/jniLibs/
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export RUSTUP_TOOLCHAIN=1.94.1
+      - pushd ../../../../
+      - ANDROID_NDK_HOME=$$NDK$$ bash scripts/build-android.sh --out-dir kotlin-mls/src/main
+        --abis arm64-v8a
+      - popd
+    ndk: r27c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 40ad4e7826f29b0f434760190258f00cec5b547b5b0fd1b011f23272db90acad
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.10.1
+CurrentVersionCode: 47
