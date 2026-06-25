@@ -2,7 +2,7 @@ Categories:
   - Games
   - Shooter Game
 License: MIT
-WebSite: https://dhagames.itch.io/path-of-sorcerers-demo
+WebSite: https://alcojonante.es/game/path-of-sorcerers/
 SourceCode: https://codeberg.org/dhAlcojor/path-of-sorcerers
 IssueTracker: https://codeberg.org/dhAlcojor/path-of-sorcerers
 
@@ -15,35 +15,30 @@ Builds:
     commit: 1737840a83252f7b1d182615ebe7d5914b048187
     sudo:
       - apt-get update
-      - apt-get install -y pkgconf clang scons imagemagick python3-pip python-is-python3
+      - apt-get install -y pkgconf scons g++ strip-nondeterminism
     output: PathOfSorcerers.apk
     srclibs:
-      - Godot@4.4.1-stable
+      # Set the Godot version here
+      # Must be exact version for reproducible builds
+      - Godot@4.6-stable
     build:
-      - export PATH=~/.local/bin:$PATH
-      - mkdir -p ~/.cache/pip
-      - pip3 install --user --break-system-packages "godot-asset-library-client==0.5.3"
-      - python tools/android-metadata.py
-      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-      - export ANDROID_SDK_ROOT=$$SDK$$
+	  # Build Godot
       - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - scons -j `nproc` platform=linuxbsd target=editor
       - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
-      - cd platform/android/java
-      - gradle generateGodotTemplates
       - popd
-      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
-      - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
-        export_presets.cfg
-      - sed -i -e '/architectures\/x86/s|=.*|=false|' -e '/architectures\/x86_64/s|=.*|=false|'
-        -e '/architectures\/armeabi-v7a/s|=.*|=false|' -e '/architectures\/arm64-v8a/s|=.*|=true|'
-        export_presets.cfg
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
-      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
-      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = "$JAVA_HOME":" $GODOT_CFG
-      - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
-        PathOfSorcerers.apk
+	  # Move the template apk. This path is set by custom_template/release in export_presets.cfg
+      - mv $$Godot$$/bin/android_release.apk android-release.apk
+	  # Use your preset name here.
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release
+        "Android Release" output.apk
+      # Remove zip metadata, if reproducible build
+      - strip-nondeterminism -t zip PathOfSorcerers.apk
+	# Use r29b for Godot 4.6.3 or later
+    ndk: r28b
 
 AutoUpdateMode: None
 UpdateCheckMode: None
