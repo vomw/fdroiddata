@@ -26,6 +26,9 @@ Builds:
       - windows
     prebuild:
       - pushd ../..
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter pub get
       - popd
     build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
