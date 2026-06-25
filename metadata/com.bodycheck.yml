@@ -1,0 +1,41 @@
+Categories:
+  - Health Manager
+  - Sports & Health
+License: GPL-3.0-only
+AuthorName: 7FM
+SourceCode: https://github.com/7FM/bodycheck
+IssueTracker: https://github.com/7FM/bodycheck/issues
+
+AutoName: BodyCheck
+
+RepoType: git
+Repo: https://github.com/7FM/bodycheck.git
+Binaries: https://github.com/7FM/bodycheck/releases/download/v%v/app-foss-release.apk
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 672962318388cd989a6548c00e3591f9c0addd63
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: '1.1'
+    versionCode: 2
+    commit: 2c750e1cffa28da5cac63379ca151328e8d4fd4c
+    subdir: app
+    gradle:
+      - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.1
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: b110cf9d0e27afc502fd28e8237b5c52a61068e0131d6cd7ed76d7153fdbcf97
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.1'
+CurrentVersionCode: 2
