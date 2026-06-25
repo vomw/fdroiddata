@@ -23,14 +23,13 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev
+      - apt-get install -y gcc libc-dev rustup
     gradle:
       - fdroid
     prebuild:
       - export PATH="$HOME/.cargo/bin:$PATH"
-      - command -v rustup >/dev/null || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs
-        | sh -s -- -y --profile minimal --default-toolchain 1.92.0
       - rustup toolchain install 1.92.0 --profile minimal
+      - rustup default 1.92.0
       - rustup target add --toolchain 1.92.0 aarch64-linux-android armv7-linux-androideabi
         x86_64-linux-android
       - cargo +1.92.0 install cargo-ndk --locked --version 4.1.2
