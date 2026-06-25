@@ -1,5 +1,6 @@
 Categories:
   - Reading
+  - Productivity
 License: GPL-3.0-only
 SourceCode: https://github.com/Swappppy/Openshelf
 IssueTracker: https://github.com/Swappppy/Openshelf/issues
@@ -29,11 +30,13 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    scanignore:
+      - .pub-cache/hosted/pub.dev/flutter_tesseract_ocr-*/android/libs/*.aar
+    scandelete:
+      - .pub-cache
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
