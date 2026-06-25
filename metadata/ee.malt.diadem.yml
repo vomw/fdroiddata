@@ -1,0 +1,51 @@
+Categories:
+  - Internet
+  - Navigation
+License: AGPL-3.0-only
+AuthorName: ccev
+SourceCode: https://github.com/ccev/diadem
+IssueTracker: https://github.com/ccev/diadem/issues
+
+AutoName: Diadem
+
+RepoType: git
+Repo: https://github.com/ccev/diadem.git
+
+Builds:
+  - versionName: '0.8'
+    versionCode: 8
+    commit: v0.8
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y ca-certificates curl gnupg
+      - install -d /etc/apt/keyrings
+      - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg
+        --dearmor -o /etc/apt/keyrings/nodesource.gpg
+      - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x
+        nodistro main" > /etc/apt/sources.list.d/nodesource.list
+      - apt-get update
+      - apt-get install -y nodejs
+      - corepack enable
+    init:
+      - pushd ..
+      - pnpm install --frozen-lockfile
+      - popd
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - pushd ..
+      - bash setup.sh
+      - pnpm exec svelte-kit sync
+      - BUILD_TARGET=native VITE_NO_GMS=true pnpm exec vite build
+      - rm -rf node_modules/@capacitor/geolocation node_modules/.pnpm/@capacitor+geolocation@*
+      - pnpm exec cap sync android
+      - popd
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '0.8'
+CurrentVersionCode: 8
