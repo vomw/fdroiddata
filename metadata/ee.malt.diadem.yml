@@ -17,9 +17,10 @@ Builds:
     commit: 21a8d539f4d12366f9ac171369b0dce486c47436
     subdir: android/app
     sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - apt-get update
-      - apt-get install -y nodejs
+      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.23.1/node-v22.23.1-linux-x64.tar.xz
+      - echo "9749e988f437343b7fa832c69ded82a312e41a03116d766797ac14f6f9eee578  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local/
       - corepack enable
     init:
       - pushd ../..
