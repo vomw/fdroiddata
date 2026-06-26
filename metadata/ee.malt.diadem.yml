@@ -14,22 +14,21 @@ Repo: https://github.com/ccev/diadem.git
 Builds:
   - versionName: '0.8'
     versionCode: 8
-    commit: v0.8
-    subdir: android
+    commit: 21a8d539f4d12366f9ac171369b0dce486c47436
+    subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y nodejs
       - corepack enable
     init:
-      - pushd ..
+      - pushd ../..
       - pnpm install --frozen-lockfile
       - popd
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - pushd ..
+      - pushd ../..
       - bash setup.sh
       - pnpm exec svelte-kit sync
       - BUILD_TARGET=native VITE_NO_GMS=true pnpm exec vite build
