@@ -17,13 +17,6 @@ Builds:
     subdir: clients/app
     srclibs:
       - flutter@stable
-    rm:
-      - clients/app/ios
-      - clients/app/linux
-      - clients/app/macos
-      - clients/app/web
-      - clients/app/windows
-    output: build/app/outputs/flutter-apk/app-release.apk
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -36,5 +29,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.0.1'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.1
 CurrentVersionCode: 1
