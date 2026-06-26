@@ -3,7 +3,7 @@ AntiFeatures:
     en-US: Online lyrics search uses third-party proprietary lyrics services. Local
       lyrics import works without these services.
 Categories:
-  - Multimedia
+  - Lyrics
 License: MIT
 AuthorName: AndSi
 SourceCode: https://github.com/AirLyrics/AirLyrics
@@ -20,17 +20,16 @@ Builds:
   - versionName: 1.0.4
     versionCode: 5
     commit: 84abb40ee335cf39f15c4b523519cc561aa092b4
-    timeout: 20000
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y clang make perl pkg-config rustup
+    gradle:
+      - yes
     prebuild:
       - rustup default 1.88.0
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
-    gradle:
-      - yes
     ndk: 26.3.11579264
 
 AutoUpdateMode: Version
