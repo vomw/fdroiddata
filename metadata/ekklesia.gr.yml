@@ -14,9 +14,9 @@ RepoType: git
 Repo: https://github.com/NeaBouli/pnyx
 
 Builds:
-  - versionName: 1.0.21
-    versionCode: 50
-    commit: e38f5e009b84a455db535c790980515fa9d08a78
+  - versionName: 1.0.22
+    versionCode: 51
+    commit: 49b9aea7c506728d6e6f8ca15392d45725b4a181
     subdir: apps/mobile/android/app
     sudo:
       - apt-get update
@@ -26,28 +26,21 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - sed -i '/"private":\ true/i\\  "expo":{"autolinking":{"android":{"buildFromSource":[".*"],
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"],
         "exclude":["expo-notifications"]}}},' package.json
       - rm -rf modules/semaphore-react-native/android/src/main/jniLibs
       - rm -rf node_modules/semaphore-react-native/android/src/main/jniLibs
-      - sed -i "/^[[:space:]]*\\[$/{N;/expo-notifications/{N;N;N;N;d}}" app.json
-      - sed -i "s/\"expo-secure-store\",/\"expo-secure-store\"/" app.json
-      - 'sed -i -e "s/\"buildFlavor\": \"direct\"/\"buildFlavor\": \"fdroid\"/" -e
-        "s/\"distributionChannel\": \"direct\"/\"distributionChannel\": \"fdroid\"/"
-        -e "s/\"zkSemaphoreEnabled\": true/\"zkSemaphoreEnabled\": false/" app.json'
-      - 'sed -i "s/\"jsEngine\": \"hermes\"/\"jsEngine\": \"jsc\"/g" app.json'
-      - cd node_modules/@react-native/gradle-plugin
-      - printf "/jvmToolchain\\|JavaVersion/s/17/21/g\n" > j
-      - find . -name build.gradle.kts -exec sed -i -f j {} +
-      - find . -name JdkConfiguratorUtils.kt -exec sed -i -f j {} +
-      - rm j
-      - cd ../../..
+      - sed -i -e "/^[[:space:]]*\\[$/{N;/expo-notifications/{N;N;N;N;d}}" app.json
+      - sed -i -e 's/"expo-secure-store",/"expo-secure-store"/' app.json
+      - sed -i -e '/buildFlavor/s/direct/fdroid/' -e '/distributionChannel/s/direct/fdroid/'
+        -e '/zkSemaphoreEnabled/s/true/false/' app.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild --clean --platform android
-      - cd android
-      - sed -i s/newArchEnabled=true/newArchEnabled=false/ gradle.properties
-      - sed -i s/hermesEnabled=true/hermesEnabled=false/ gradle.properties
-      - cd ..
+      - sed -i -e '/newArchEnabled/s/true/false/' android/gradle.properties
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
+      - apps/mobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - apps/mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - apps/mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - apps/mobile/node_modules/@react-native-picker/picker/android/build.gradle
@@ -59,5 +52,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.21
-CurrentVersionCode: 50
+CurrentVersion: 1.0.22
+CurrentVersionCode: 51
