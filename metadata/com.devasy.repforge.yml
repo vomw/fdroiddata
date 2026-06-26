@@ -16,11 +16,11 @@ RepoType: git
 Repo: https://github.com/Devasy/Workout-logger
 
 Builds:
-  - versionName: 2.0.4
-    versionCode: 25
-    commit: ed8be2420595337f69cf550aeb4d77cb1ae943ef
+  - versionName: 2.0.6
+    versionCode: 271
+    commit: b5738b601283846ca77df3ede377f85502415850
     subdir: workout-logger
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -34,11 +34,55 @@ Builds:
       - workout-logger/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+
+  - versionName: 2.0.6
+    versionCode: 272
+    commit: b5738b601283846ca77df3ede377f85502415850
+    subdir: workout-logger
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - 'export FLUTTER_VERSION=$(sed -n -E "s/^  flutter: (.+)/\1/p" pubspec.yaml)'
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - workout-logger/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+
+  - versionName: 2.0.6
+    versionCode: 273
+    commit: b5738b601283846ca77df3ede377f85502415850
+    subdir: workout-logger
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - 'export FLUTTER_VERSION=$(sed -n -E "s/^  flutter: (.+)/\1/p" pubspec.yaml)'
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - workout-logger/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
 UpdateCheckData: 
   workout-logger/pubspec.yaml|version:\s.*\+(\d+)|workout-logger/pubspec.yaml|version:\s([\d.]+)\+
-CurrentVersion: 2.0.4
-CurrentVersionCode: 25
+CurrentVersion: 2.0.6
+CurrentVersionCode: 273
