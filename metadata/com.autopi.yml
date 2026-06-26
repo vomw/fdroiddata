@@ -7,31 +7,28 @@ AuthorEmail: amalshaji645@gmail.com
 SourceCode: https://github.com/cryptrr/AutoPie
 IssueTracker: https://github.com/cryptrr/AutoPie/issues
 
-Description: Swiss Army Knife For Android. Automate with Linux Commands and Python
-  on Android without using the Terminal.
-
 RepoType: git
 Repo: https://github.com/cryptrr/AutoPie.git
 
 Builds:
-  - versionName: 0.15.2-beta
-    versionCode: 31
-    commit: ca6a2f6cbc52357abee17c43d5609f4072b033f9
+  - versionName: 0.15.3-beta
+    versionCode: 32
+    commit: bc363d400d9f99203a9b758b048d4a4d6f5a156e
+    subdir: app
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - export TERMUX_REF=401bbe54b8f4e68302b1ff70678015a24628fb1d
       - git config --global user.email fdroid@localhost
       - git config --global user.name F-Droid
-      - bash scripts/prepare-termux-app.sh
-      - bash scripts/prepare-termux-bootstrap.sh
+      - bash ../scripts/prepare-termux-app.sh
+      - bash ../scripts/prepare-termux-bootstrap.sh
     scanignore:
       - app/src/main/assets/bootstrap-aarch64.zip
     scandelete:
       - termux-app/app/src/main/cpp/bootstrap-aarch64.zip
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 0.15.2-beta
-CurrentVersionCode: 31
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+(\.[0-9]+)*-beta$
+CurrentVersion: 0.15.3-beta
+CurrentVersionCode: 32
