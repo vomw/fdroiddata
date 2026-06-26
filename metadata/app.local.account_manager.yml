@@ -1,0 +1,38 @@
+Categories:
+  - Security
+License: GPL-3.0-or-later
+AuthorName: Mike Stanton
+AuthorEmail: mikestanton.contact@gmail.com
+WebSite: https://mikestanton27-proj.github.io/account-manager-legal/
+SourceCode: https://github.com/MikeStanton27-proj/account-manager
+IssueTracker: https://github.com/MikeStanton27-proj/account-manager/issues
+
+AutoName: Account Manager
+
+RepoType: git
+Repo: https://github.com/MikeStanton27-proj/account-manager.git
+
+Builds:
+  - versionName: 1.0.5
+    versionCode: 6
+    commit: 123f2aa6d0302698f8115c0c19dbe9efeb74eb45
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils
+      - curl -L 
+        https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.41.9-stable.tar.xz
+        | tar xJ -C /opt
+      - chown -R vagrant:vagrant /opt/flutter
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - ios/
+    build:
+      - /opt/flutter/bin/flutter config --no-analytics
+      - /opt/flutter/bin/flutter pub get
+      - /opt/flutter/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.5
+CurrentVersionCode: 6
