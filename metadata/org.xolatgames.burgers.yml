@@ -22,10 +22,10 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install clang gettext pkg-config scons -y
+    init: sdkmanager --install "cmdline-tools;latest"
     output: Battle-for-Burgers.apk
     srclibs:
       - Godot@4.6.3-stable
-    init: sdkmanager --install "cmdline-tools;latest" "ndk;28.1.13356709"
     build:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - mv $$Godot$$ godot
@@ -62,7 +62,8 @@ Builds:
       - echo "keystore/release_password=\"burgers\"" >> "${EXPORT_CREDENTIALS}"
       - export ANDROID_NDK_ROOT=$$NDK$$
       - cd godot/
-      - scons -j `nproc` platform=linuxbsd use_llvm=yes unix_global_settings_path=".." profile=fdroid/custom.py
+      - scons -j `nproc` platform=linuxbsd use_llvm=yes unix_global_settings_path=".."
+        profile=fdroid/custom.py
       - scons -j `nproc` use_llvm=yes platform=android target=template_release unix_global_settings_path=".."
         android_arch=arm64v8 profile=fdroid/custom.py
       - pushd platform/android/java/
@@ -73,7 +74,8 @@ Builds:
       - mkdir -p "${EXPORT_TEMPLATES}"
       - echo "4.6.3.stable" > "${EXPORT_TEMPLATES}/version.txt"
       - mv godot/bin/android_release.apk "${EXPORT_TEMPLATES}"
-      - ./godot/bin/godot.linuxbsd.editor.x86_64.llvm -v --path . --export-release Android Battle-for-Burgers.apk
+      - ./godot/bin/godot.linuxbsd.editor.x86_64.llvm --headless -v --path . --export-release
+        Android Battle-for-Burgers.apk
     ndk: 28.1.13356709
 
 AutoUpdateMode: Version
