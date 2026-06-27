@@ -23,13 +23,11 @@ Builds:
       - flutter@stable
     prebuild:
       - git -C $$flutter$$ checkout -f 3.44.2
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=$HOME/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    scanignore:
-      - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=$HOME/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
 AutoUpdateMode: Version
