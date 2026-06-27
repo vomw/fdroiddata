@@ -9,29 +9,30 @@ AuthorEmail: kaiilbbusiness@gmail.com
 WebSite: https://github.com/kaii-lb/LavenderPhotos
 SourceCode: https://github.com/kaii-lb/LavenderPhotos
 IssueTracker: https://github.com/kaii-lb/LavenderPhotos/issues
-Translation:
-  https://hosted.weblate.org/projects/lavender-photos/lavender-photos-app
+Translation: https://hosted.weblate.org/projects/lavender-photos/lavender-photos-app
 
 AutoName: Photos
 
 RepoType: git
 Repo: https://github.com/kaii-lb/LavenderPhotos
-Binaries:
-  https://github.com/kaii-lb/LavenderPhotos/releases/download/%v/photos_signed_release_arm64-v8a.apk
+Binaries: 
+   https://github.com/kaii-lb/LavenderPhotos/releases/download/%v/photos_signed_release_arm64-v8a.apk
 
 Builds:
-  - versionName: v2.0.2
-    versionCode: 202
-    commit: 974e555ed3f04ff218b32cb83651207b51d0ee9d
+  - versionName: v2.0.3
+    versionCode: 203
+    commit: 80fdcfd7f3587a203e2d5a8f4360603b7ffd2444
     subdir: app
+    srclibs:
+          - reproducible-apk-tools@v0.2.7
     gradle:
       - yes
     output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines $$OUT$$ 'META-INF/services/*'
 
-AllowedAPKSigningKeys:
-  b26e8acd20d2bdb51dee0df965aa40bd8643d3f895e825a0cddf51fe275b3ec1
+AllowedAPKSigningKeys: b26e8acd20d2bdb51dee0df965aa40bd8643d3f895e825a0cddf51fe275b3ec1
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: v2.0.2
-CurrentVersionCode: 202
+CurrentVersion: v2.0.3
+CurrentVersionCode: 203
