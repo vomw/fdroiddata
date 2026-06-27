@@ -33,8 +33,8 @@ Builds:
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no"
       - $SCONS target=editor platform=linux
-      - $SCONS target=template_release platform=android arch=arm64 production=yes swappy=no
-        generate_android_binaries=yes generate_apk=yes
+      - $SCONS target=template_release platform=android arch=arm64 production=yes
+        swappy=no generate_android_binaries=yes generate_apk=yes
       - popd
       - mv $$Godot$$/bin/android_release.apk ./android_release.apk
       - chmod +x fdroid/generate_configs.sh
@@ -42,7 +42,8 @@ Builds:
       - export VERSION_CODE=`cat project.godot | grep version_code | sed -e "s/config\/version_code=//"`
       - sed -i -e "s/version\/code=0/version\/code=${VERSION_CODE}/" export_presets.cfg
       - sed -i -e "s/name=\"Android\"/name=\"F-Droid\"/" export_presets.cfg
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release "F-Droid" Battle-for-Burgers.apk
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release "F-Droid"
+        Battle-for-Burgers.apk
     ndk: 28.1.13356709
 
 AutoUpdateMode: Version
