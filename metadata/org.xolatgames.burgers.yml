@@ -48,8 +48,10 @@ Builds:
       - echo "runnable=true" >> "${EXPORT_PRESETS}"
       - echo "[preset.0.options]" >> "${EXPORT_PRESETS}"
       - echo "permissions/internet=true" >> "${EXPORT_PRESETS}"
+      - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - cd godot/
+      - scons -j `nproc` platform=linuxbsd use_llvm=yes unix_global_settings_path=".." profile=fdroid/custom.py
       - scons -j `nproc` use_llvm=yes platform=android target=template_release unix_global_settings_path=".."
         android_arch=arm64v8 profile=fdroid/custom.py
       - pushd platform/android/java/
@@ -59,8 +61,8 @@ Builds:
       - export EXPORT_TEMPLATES=".local/share/godot/export_templates/4.6.3.stable/"
       - mkdir -p "${EXPORT_TEMPLATES}"
       - echo "4.6.3.stable" > "${EXPORT_TEMPLATES}/version.txt"
-      - cp godot/bin/android_release.apk "${EXPORT_TEMPLATES}"
-      - ./godot/bin/godot_server.* -v --path . --export-release Android Battle-for-Burgers.apk
+      - mv godot/bin/android_release.apk "${EXPORT_TEMPLATES}"
+      - ./godot/bin/godot.linuxbsd.editor.x86_64.llvm -v --path . --export-release Android Battle-for-Burgers.apk
     ndk: 28.1.13356709
 
 AutoUpdateMode: Version
