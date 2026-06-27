@@ -38,8 +38,12 @@ Builds:
   - versionName: 1.11.1
     versionCode: 1111
     commit: v1.11.1
+    scandelete:
+      - settings.gradle.kts
     output: app/build/outputs/apk/release/app-release.apk
     build:
+      - git checkout -- settings.gradle.kts
+      - sed -i '/foojay/d' settings.gradle.kts
       - pushd app
       - sed -i -e '/versionCode =/c\        versionCode = 1111' build.gradle.kts
       - sed -i -e '/versionName =/c\        versionName = "1.11.1"' build.gradle.kts
@@ -49,16 +53,20 @@ Builds:
 
 MaintainerNotes: |
   VersionCode is derived from the git tag by stripping dots:
-  v1.11.1 → "1.11.1" → versionCode = 1111.
+  v1.11.1 -> "1.11.1" -> versionCode = 1111.
   When adding a new build entry, run:
     VERSION=$(echo "vX.Y.Z" | sed 's/^v//')
     CODE=$(echo "$VERSION" | tr -d '.' | sed 's/^0*//')
     echo "versionName=$VERSION versionCode=$CODE"
 
-  Then update app/build.gradle.kts via sed in the build step with
-  those values.
+  Then update the sed lines in the build step with those values.
 
-AutoUpdateMode: Version +v%v
+  The foojay-resolver-convention plugin in settings.gradle.kts is
+  banned by F-Droid's scanner. scandelete removes the file before
+  scanning, then git checkout restores it and sed removes the line.
+  This will no longer be needed once the source repo removes it.
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.11.1
 CurrentVersionCode: 1111
