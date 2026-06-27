@@ -20,17 +20,21 @@ Binaries: https://github.com/AirLyrics/AirLyrics/releases/download/v%v/AirLyrics
 Builds:
   - versionName: 1.0.4
     versionCode: 5
-    commit: 84abb40ee335cf39f15c4b523519cc561aa092b4
+    commit: 923692bde7ac654bbbcbfa5f90cb6bf0c7e2e7ca
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y clang make perl pkg-config rustup
+      - install -d -o vagrant -g vagrant /home/sy/.cargo
+      - install -d -o vagrant -g vagrant /mnt/data/andsi/android-floating-lyrics-main/lyrics-core/target
     gradle:
       - yes
     prebuild:
       - rustup default 1.88.0
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
+      - sed -i 's/jvmToolchain(17)/compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) }/' build.gradle.kts
+      - sed -i 's|listOf("cargo", "ndk")|listOf("/usr/bin/env", "CARGO_HOME=/home/sy/.cargo", "CARGO_TARGET_DIR=/mnt/data/andsi/android-floating-lyrics-main/lyrics-core/target", "SOURCE_DATE_EPOCH=1780779667", "cargo", "ndk")|' build.gradle.kts
     ndk: 26.3.11579264
 
 AllowedAPKSigningKeys: c892efad40528eda2064c251699250a907672cbf959bc7a23a7304bbb173f18c
