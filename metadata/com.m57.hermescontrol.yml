@@ -9,8 +9,7 @@ IssueTracker: https://github.com/Hy4ri/hermes-mobile/issues
 Changelog: https://github.com/Hy4ri/hermes-mobile/releases
 
 AutoName: Hermes Mobile
-Summary: Remote control for your Hermes AI agent
-Description: |
+Description: |-
   A native Android companion app for Hermes Agent — the open-source,
   multi-platform AI assistant by Nous Research.
 
@@ -38,9 +37,11 @@ Builds:
   - versionName: 1.11.1
     versionCode: 1111
     commit: v1.11.1
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release.apk
     scandelete:
       - settings.gradle.kts
-    output: app/build/outputs/apk/release/app-release.apk
     build:
       - git checkout -- settings.gradle.kts
       - sed -i '/foojay/d' settings.gradle.kts
@@ -48,10 +49,8 @@ Builds:
       - sed -i -e '/versionCode =/c\        versionCode = 1111' build.gradle.kts
       - sed -i -e '/versionName =/c\        versionName = "1.11.1"' build.gradle.kts
       - popd
-    gradle:
-      - assembleRelease
 
-MaintainerNotes: |
+MaintainerNotes: |-
   VersionCode is derived from the git tag by stripping dots:
   v1.11.1 -> "1.11.1" -> versionCode = 1111.
   When adding a new build entry, run:
@@ -66,7 +65,10 @@ MaintainerNotes: |
   scanning, then git checkout restores it and sed removes the line.
   This will no longer be needed once the source repo removes it.
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
+  Auto-update is disabled because versionCode and versionName are
+  set via -P CLI flags in build.gradle.kts, so F-Droid cannot
+  extract them from source. Each new release must add a build entry.
+
+AutoUpdateMode: None
 CurrentVersion: 1.11.1
 CurrentVersionCode: 1111
