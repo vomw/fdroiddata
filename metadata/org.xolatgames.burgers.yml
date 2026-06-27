@@ -27,44 +27,22 @@ Builds:
     srclibs:
       - Godot@4.6.3-stable
     build:
-      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-      - mv $$Godot$$ godot
-      - keytool -v -genkey -keystore burgers.keystore -storepass burgers -alias burgers
-        -keypass burgers -keyalg RSA -validity 3650 -dname "CN=Unknown, OU=Unknown,
-        O=Unknown, L=Unknown, ST=Unknown, C=Unknown"
-      - mkdir -p .config/godot/
-      - export EDITOR_SETTINGS=".config/godot/editor_settings-4.6.tres"
-      - echo "[gd_resource type=\"EditorSettings\" format=3]" > "${EDITOR_SETTINGS}"
-      - echo "[resource]" >> "${EDITOR_SETTINGS}"
-      - echo "export/android/android_sdk_path = \"$$SDK$$\"" >> "${EDITOR_SETTINGS}"
-      - echo "export/android/java_sdk_path = \"$JAVA_HOME\"" >> "${EDITOR_SETTINGS}"
-      - echo "export/android/debug_keystore = \"burgers.keystore\"" >> "${EDITOR_SETTINGS}"
-      - echo "export/android/debug_keystore_user = \"burgers\"" >> "${EDITOR_SETTINGS}"
-      - echo "export/android/debug_keystore_pass = \"burgers\"" >> "${EDITOR_SETTINGS}"
-      - mkdir .godot
+      - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no"
+      - $SCONS target=editor platform=linux
+      - $SCONS target=template_release platform=android arch=arm64 production=yes swappy=no
+        generate_android_binaries=yes generate_apk=yes
+      - popd
+      - mv $$Godot$$/bin/android_release.apk ./android_release.apk
       - chmod +x fdroid/generate_configs.sh
       - ./fdroid/generate_configs.sh
       - export VERSION_CODE=`cat project.godot | grep version_code | sed -e "s/config\/version_code=//"`
       - sed -i -e "s/version\/code=0/version\/code=${VERSION_CODE}/" export_presets.cfg
-      - export ANDROID_NDK_ROOT=$$NDK$$
-      - cd godot/
-      - scons -j `nproc` platform=linuxbsd use_llvm=yes unix_global_settings_path=".."
-        profile=fdroid/custom.py
-      - scons -j `nproc` use_llvm=yes platform=android target=template_debug unix_global_settings_path=".."
-        android_arch=arm64v8 profile=fdroid/custom.py
-      - scons -j `nproc` use_llvm=yes platform=android target=template_release unix_global_settings_path=".."
-        android_arch=arm64v8 profile=fdroid/custom.py
-      - pushd platform/android/java/
-      - gradle generateGodotTemplates
-      - popd
-      - cd ../
-      - export EXPORT_TEMPLATES="$HOME/.local/share/godot/export_templates/4.6.3.stable/"
-      - mkdir -p "${EXPORT_TEMPLATES}"
-      - echo "4.6.3.stable" > "${EXPORT_TEMPLATES}/version.txt"
-      - mv godot/bin/android_debug.apk "${EXPORT_TEMPLATES}"
-      - mv godot/bin/android_release.apk "${EXPORT_TEMPLATES}"
-      - ./godot/bin/godot.linuxbsd.editor.x86_64.llvm --headless -v --path . --export-release
-        Android Battle-for-Burgers.apk
+      - sed -i -e "s/name=\"Android\"/name=\"F-Droid\"/" export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release "F-Droid" Battle-for-Burgers.apk
     ndk: 28.1.13356709
 
 AutoUpdateMode: Version
