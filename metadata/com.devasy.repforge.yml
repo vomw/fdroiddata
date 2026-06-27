@@ -18,7 +18,7 @@ Repo: https://github.com/Devasy/Workout-logger
 Builds:
   - versionName: 2.0.6
     versionCode: 271
-    commit: b5738b601283846ca77df3ede377f85502415850
+    commit: 2c2e700043fa138eca7887272d69e72b5ab575a3
     subdir: workout-logger
     sudo:
       - mkdir -p /home/runner/
@@ -31,6 +31,8 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
+      - curl -L -o /home/runner/ref.apk 
+        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-armeabi-v7a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -51,6 +53,10 @@ Builds:
       - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform="android-arm"
+      - python3 ../scripts/patch_so.py 
+        build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk 
+        /home/runner/ref.apk 
+        build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -58,7 +64,7 @@ Builds:
 
   - versionName: 2.0.6
     versionCode: 272
-    commit: b5738b601283846ca77df3ede377f85502415850
+    commit: 2c2e700043fa138eca7887272d69e72b5ab575a3
     subdir: workout-logger
     sudo:
       - mkdir -p /home/runner/
@@ -71,6 +77,8 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
+      - curl -L -o /home/runner/ref.apk 
+        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-arm64-v8a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -91,6 +99,10 @@ Builds:
       - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform="android-arm64"
+      - python3 ../scripts/patch_so.py 
+        build/app/outputs/flutter-apk/app-arm64-v8a-release.apk 
+        /home/runner/ref.apk 
+        build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -98,7 +110,7 @@ Builds:
 
   - versionName: 2.0.6
     versionCode: 273
-    commit: b5738b601283846ca77df3ede377f85502415850
+    commit: 2c2e700043fa138eca7887272d69e72b5ab575a3
     subdir: workout-logger
     sudo:
       - mkdir -p /home/runner/
@@ -111,6 +123,8 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
+      - curl -L -o /home/runner/ref.apk 
+        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-x86_64.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -131,6 +145,10 @@ Builds:
       - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform="android-x64"
+      - python3 ../scripts/patch_so.py 
+        build/app/outputs/flutter-apk/app-x86_64-release.apk 
+        /home/runner/ref.apk 
+        build/app/outputs/flutter-apk/app-x86_64-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
