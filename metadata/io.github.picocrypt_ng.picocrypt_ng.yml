@@ -1,0 +1,195 @@
+Categories:
+  - Security
+License: GPL-3.0-only
+AuthorName: Picocrypt-NG
+SourceCode: https://github.com/Picocrypt-NG/Picocrypt-NG
+IssueTracker: https://github.com/Picocrypt-NG/Picocrypt-NG/issues
+Changelog: https://github.com/Picocrypt-NG/Picocrypt-NG/releases
+
+AutoName: Picocrypt-NG
+
+RepoType: git
+Repo: https://github.com/Picocrypt-NG/Picocrypt-NG.git
+
+Builds:
+  - versionName: '2.17'
+    versionCode: 217001
+    commit: 424db6105588e9fe6b929b6731ace4556a12f172
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless golang-go gcc libc-dev make
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    srclibs:
+      - go@go1.26.0
+    rm:
+      - dist/macos/Picocrypt-NG.app.zip
+    prebuild:
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;29.0.14206865"
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' app/build.gradle.kts
+      - sed -i -e 's/include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")/include("armeabi-v7a")/'
+        app/build.gradle.kts
+      - printf '\nPICOCRYPT_VERSION_NAME=2.17\nPICOCRYPT_VERSION_CODE=21700\n' >>
+        gradle.properties
+    build:
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260209203831-923679eb55af
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260209203831-923679eb55af
+      - mkdir -p "$HOME/go/pkg/gomobile"
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/29.0.14206865
+      - ./build-gomobile.sh
+    ndk: 29.0.14206865
+    gradleprops:
+      - PICOCRYPT_KEYSTORE_PATH=/dev/null
+      - PICOCRYPT_KEYSTORE_PASSWORD=fdroid
+      - PICOCRYPT_KEY_ALIAS=fdroid
+      - PICOCRYPT_KEY_PASSWORD=fdroid
+
+  - versionName: '2.17'
+    versionCode: 217002
+    commit: 424db6105588e9fe6b929b6731ace4556a12f172
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless golang-go gcc libc-dev make
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    srclibs:
+      - go@go1.26.0
+    rm:
+      - dist/macos/Picocrypt-NG.app.zip
+    prebuild:
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;29.0.14206865"
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' app/build.gradle.kts
+      - sed -i -e 's/include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")/include("arm64-v8a")/'
+        app/build.gradle.kts
+      - printf '\nPICOCRYPT_VERSION_NAME=2.17\nPICOCRYPT_VERSION_CODE=21700\n' >>
+        gradle.properties
+    build:
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260209203831-923679eb55af
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260209203831-923679eb55af
+      - mkdir -p "$HOME/go/pkg/gomobile"
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/29.0.14206865
+      - ./build-gomobile.sh
+    ndk: 29.0.14206865
+    gradleprops:
+      - PICOCRYPT_KEYSTORE_PATH=/dev/null
+      - PICOCRYPT_KEYSTORE_PASSWORD=fdroid
+      - PICOCRYPT_KEY_ALIAS=fdroid
+      - PICOCRYPT_KEY_PASSWORD=fdroid
+
+  - versionName: '2.17'
+    versionCode: 217003
+    commit: 424db6105588e9fe6b929b6731ace4556a12f172
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless golang-go gcc libc-dev make
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-x86-release-unsigned.apk
+    srclibs:
+      - go@go1.26.0
+    rm:
+      - dist/macos/Picocrypt-NG.app.zip
+    prebuild:
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;29.0.14206865"
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' app/build.gradle.kts
+      - sed -i -e 's/include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")/include("x86")/'
+        app/build.gradle.kts
+      - printf '\nPICOCRYPT_VERSION_NAME=2.17\nPICOCRYPT_VERSION_CODE=21700\n' >>
+        gradle.properties
+    build:
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260209203831-923679eb55af
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260209203831-923679eb55af
+      - mkdir -p "$HOME/go/pkg/gomobile"
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/29.0.14206865
+      - ./build-gomobile.sh
+    ndk: 29.0.14206865
+    gradleprops:
+      - PICOCRYPT_KEYSTORE_PATH=/dev/null
+      - PICOCRYPT_KEYSTORE_PASSWORD=fdroid
+      - PICOCRYPT_KEY_ALIAS=fdroid
+      - PICOCRYPT_KEY_PASSWORD=fdroid
+
+  - versionName: '2.17'
+    versionCode: 217004
+    commit: 424db6105588e9fe6b929b6731ace4556a12f172
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless golang-go gcc libc-dev make
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    srclibs:
+      - go@go1.26.0
+    rm:
+      - dist/macos/Picocrypt-NG.app.zip
+    prebuild:
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;29.0.14206865"
+      - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' app/build.gradle.kts
+      - sed -i -e 's/include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")/include("x86_64")/'
+        app/build.gradle.kts
+      - printf '\nPICOCRYPT_VERSION_NAME=2.17\nPICOCRYPT_VERSION_CODE=21700\n' >>
+        gradle.properties
+    build:
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=/usr/lib/go ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH="$HOME/go"
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260209203831-923679eb55af
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260209203831-923679eb55af
+      - mkdir -p "$HOME/go/pkg/gomobile"
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/29.0.14206865
+      - ./build-gomobile.sh
+    ndk: 29.0.14206865
+    gradleprops:
+      - PICOCRYPT_KEYSTORE_PATH=/dev/null
+      - PICOCRYPT_KEYSTORE_PASSWORD=fdroid
+      - PICOCRYPT_KEY_ALIAS=fdroid
+      - PICOCRYPT_KEY_PASSWORD=fdroid
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: '2.17'
+CurrentVersionCode: 217004
