@@ -1,0 +1,64 @@
+Categories:
+  - System
+  - Connectivity
+
+License: Apache-2.0
+AuthorName: m57
+SourceCode: https://github.com/Hy4ri/hermes-mobile
+IssueTracker: https://github.com/Hy4ri/hermes-mobile/issues
+Changelog: https://github.com/Hy4ri/hermes-mobile/releases
+
+AutoName: Hermes Mobile
+Summary: Remote control for your Hermes AI agent
+Description: |
+  A native Android companion app for Hermes Agent — the open-source,
+  multi-platform AI assistant by Nous Research.
+
+  Manage your Hermes agent directly from your phone over your trusted
+  LAN, without needing to pull out a laptop or switch to another
+  messaging platform.
+
+  Features:
+  • Real-time chat via WebSocket with markdown rendering
+  • Switch between AI models and providers on the fly
+  • Monitor system logs with filtering
+  • Manage profiles and settings
+  • Pull-to-refresh for live updates
+  • Notification support for incoming messages
+  • Material You dynamic theming (Android 12+)
+  • Works entirely on your trusted LAN — no internet required
+
+  All network communication uses cleartext HTTP/WebSocket by design,
+  since the app is intended for trusted local networks only.
+
+RepoType: git
+Repo: https://github.com/Hy4ri/hermes-mobile
+
+Builds:
+  - versionName: 1.11.1
+    versionCode: 1111
+    commit: v1.11.1
+    output: app/build/outputs/apk/release/app-release.apk
+    build:
+      - pushd app
+      - sed -i -e '/versionCode =/c\        versionCode = 1111' build.gradle.kts
+      - sed -i -e '/versionName =/c\        versionName = "1.11.1"' build.gradle.kts
+      - popd
+    gradle:
+      - assembleRelease
+
+MaintainerNotes: |
+  VersionCode is derived from the git tag by stripping dots:
+  v1.11.1 → "1.11.1" → versionCode = 1111.
+  When adding a new build entry, run:
+    VERSION=$(echo "vX.Y.Z" | sed 's/^v//')
+    CODE=$(echo "$VERSION" | tr -d '.' | sed 's/^0*//')
+    echo "versionName=$VERSION versionCode=$CODE"
+
+  Then update app/build.gradle.kts via sed in the build step with
+  those values.
+
+AutoUpdateMode: Version +v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.11.1
+CurrentVersionCode: 1111
