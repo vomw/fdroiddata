@@ -39,9 +39,15 @@ Builds:
       - mv $$Godot$$/bin/android_release.apk ./android_release.apk
       - chmod +x fdroid/generate_configs.sh
       - ./fdroid/generate_configs.sh
+      - export EXPORT_PRESETS="export_presets.cfg"
       - export VERSION_CODE=`cat project.godot | grep version_code | sed -e "s/config\/version_code=//"`
-      - sed -i -e "s/version\/code=0/version\/code=${VERSION_CODE}/" export_presets.cfg
-      - sed -i -e "s/name=\"Android\"/name=\"F-Droid\"/" export_presets.cfg
+      - sed -i -e "s/version\/code=0/version\/code=${VERSION_CODE}/" ${EXPORT_PRESETS}
+      - sed -i -e "s/name=\"Android\"/name=\"F-Droid\"/" ${EXPORT_PRESETS}
+      - sed -i -e "s/custom_template\/debug=\"\"/custom_template\/debug=\"android_release.apk\"/"
+        ${EXPORT_PRESETS}
+      - sed -i -e 
+        "s/custom_template\/release=\"\"/custom_template\/release=\"android_release.apk\"/"
+        ${EXPORT_PRESETS}
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release "F-Droid"
         Battle-for-Burgers.apk
     ndk: 28.1.13356709
