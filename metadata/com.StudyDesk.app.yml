@@ -1,0 +1,51 @@
+# F-Droid metadata for StudyDesk — READY FOR SUBMISSION (2026-06-27).
+# FD-1 Fastlane metadata present (6 locales). FD-2 gradle wrapper SHA present.
+# FD-3 FOSS audit PASS (no GMS). LICENSE MIT in repo root.
+Categories:
+  - Science & Education
+License: MIT
+AuthorName: Emil Hongisto (Limekana)
+SourceCode: https://github.com/Limekana/StudyDesk
+IssueTracker: https://github.com/Limekana/StudyDesk/issues
+
+AutoName: StudyDesk
+Summary: Know what to study next — a decision-eliminating study tracker
+
+Description: |-
+  StudyDesk is a study execution app for students. Enter your courses and
+  deadlines; the Next Up engine ranks what to do right now. Organise courses
+  by school year and period (jakso), review a read-only Period History with
+  per-period GPA, grade on IB and GPA scales, focus with a built-in Pomodoro,
+  and get an optional AI study debrief after a session.
+
+  Warm paper aesthetic. Local-first; optional account-gated cloud sync. No
+  Google Play Services — Google sign-in is a plain web OAuth flow.
+
+  Part of the Limecore Nexus suite.
+
+RepoType: git
+Repo: https://github.com/Limekana/StudyDesk.git
+
+Builds:
+  - versionName: 1.5.1
+    versionCode: 10
+    commit: v1.5.1
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - npm ci
+    prebuild:
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+
+AntiFeatures:
+  - NonFreeNet   # Supabase sync, Google OAuth, AI Edge Function (user-initiated HTTPS)
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.5.1
+CurrentVersionCode: 10
