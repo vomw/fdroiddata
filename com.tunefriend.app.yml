@@ -1,0 +1,38 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: James
+SourceCode: https://github.com/tunefriend/tunefriend
+IssueTracker: https://github.com/tunefriend/tunefriend/issues
+WebSite: https://github.com/tunefriend/tunefriend
+
+AutoName: TuneFriend
+Summary: Stream music from your friend's Subsonic server
+Description: |-
+  TuneFriend lets you stream music from a friend's self-hosted music server.
+
+  Works with Navidrome, Airsonic, Gonic, Ampache, and other Subsonic-compatible servers.
+
+  Features include browsing artists and albums, search, favorites, shuffle play,
+  background playback, and lock screen controls.
+
+RepoType: git
+Repo: https://github.com/tunefriend/tunefriend.git
+
+Builds:
+  - versionName: '2.0'
+    versionCode: 10
+    commit: v2.0
+    subdir: android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/
+      - www/
+    prebuild:
+      - cd .. && npm ci && npm run sync:www && npx cap sync android
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: '2.0'
+CurrentVersionCode: 10
