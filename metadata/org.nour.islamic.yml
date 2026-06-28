@@ -193,10 +193,10 @@ Builds:
 
   - versionName: v1.2.0
     versionCode: 10
-    commit: v1.2.0
+    commit: fb26171a1a4e076034017dd209af2fc443dd95f2
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
+      - flutter@!flutter-version
     rm:
       - windows
       - android/quran_audio_pack
@@ -221,10 +221,10 @@ Builds:
 
   - versionName: v1.2.1
     versionCode: 11
-    commit: v1.2.1
+    commit: ae7ae1d00e21117ae04dbd17e1f2c54660aef91f
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
+      - flutter@!flutter-version
     rm:
       - windows
       - android/quran_audio_pack
@@ -249,10 +249,10 @@ Builds:
 
   - versionName: v1.2.2
     versionCode: 18
-    commit: v1.2.2
+    commit: d3e93f4d8e5e76ed6cba872b93d8acb5e59ea891
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
+      - flutter@!flutter-version
     rm:
       - windows
       - android/quran_audio_pack
@@ -277,10 +277,10 @@ Builds:
 
   - versionName: v1.2.3
     versionCode: 21
-    commit: v1.2.3
+    commit: e129e0df08bc9d761bcb3e420e0a2a5b29d8d7b5
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@559ffa3f75e7402d65a8def9c28389a9b2e6fe42
+      - flutter@!flutter-version
     rm:
       - windows
       - android/quran_audio_pack
@@ -293,6 +293,35 @@ Builds:
       - sed -i '/quran_audio_pack/d' android/settings.gradle.kts
       - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
       - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+      - echo 'android.dependenciesInfo.includeInApk=false' >> android/gradle.properties
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --no-pub --dart-define=AUDIO_MODE=bundled
+    ndk: 28.2.13676358
+
+  - versionName: v1.2.8
+    versionCode: 26
+    commit: 707026abf16ebbd310e465cc547baa52ea5b6816
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@!flutter-version
+    rm:
+      - windows
+      - android/quran_audio_pack
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - cp android/app/build.fdroid.gradle.kts android/app/build.gradle.kts
+      - cp android/fdroid-sources/MainActivity.fdroid.kt android/app/src/main/kotlin/org/nour/islamic/MainActivity.kt
+      - sed -i '/com\.android\.asset-pack/d' android/settings.gradle.kts
+      - sed -i '/quran_audio_pack/d' android/settings.gradle.kts
+      - sed -i 's/version "9\.0\.1"/version "8.7.3"/' android/settings.gradle.kts
+      - sed -i 's/gradle-9\.1\.0-all\.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+      - echo 'android.dependenciesInfo.includeInApk=false' >> android/gradle.properties
       - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
@@ -304,5 +333,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: v1.2.3
-CurrentVersionCode: 21
+CurrentVersion: v1.2.8
+CurrentVersionCode: 26
