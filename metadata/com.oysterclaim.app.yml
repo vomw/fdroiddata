@@ -18,7 +18,7 @@ Repo: https://github.com/Oysterclaim/oysterclaim
 Builds:
   - versionName: 1.0.7
     versionCode: 96
-    commit: 4434b0943f9a55e3f52794e9332769811bc49e9d
+    commit: 343dafb5b13944fa735e7f7bae15474a3e6949d0
     timeout: 10800
     subdir: apps/mobile/android
     sudo:
@@ -42,6 +42,8 @@ Builds:
       - cd ../../..
       - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
       - export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        apps/mobile/package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
@@ -92,14 +94,13 @@ Builds:
 
 MaintainerNotes: |-
   React Native / Expo SDK 54. Follows fdroiddata templates/build-react-native.yml:
-  init runs npm ci; prebuild applies JDK 21 sed, expo-application installreferrer patch,
-  firebase-stub for expo-notifications, ABI pin, and applicationId rewrite inline.
-  buildFromSource is in apps/mobile/package.json. Committed apps/mobile/android/ (no expo prebuild).
+  init runs npm ci; prebuild sed adds expo buildFromSource, JDK 21 sed, expo-application
+  installreferrer patch, firebase-stub for expo-notifications, ABI pin, and applicationId rewrite.
+  Committed apps/mobile/android/ (no expo prebuild).
   Play Store uses com.anonymous.claimlynative (play flavor). See fdroid/REPRODUCIBLE_BUILDS.md.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-UpdateCheckData: 
-  apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+UpdateCheckData: apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
 CurrentVersion: 1.0.7
 CurrentVersionCode: 96
