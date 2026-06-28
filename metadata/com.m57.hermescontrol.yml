@@ -17,7 +17,7 @@ Binaries:
 Builds:
   - versionName: 1.11.4
     versionCode: 1114
-    commit: a091d63
+    commit: a091d6398716eff329a447af47865c86af080b5d
     subdir: app
     gradle:
       - yes
@@ -28,26 +28,8 @@ Builds:
 
 AllowedAPKSigningKeys: b512258d20fd4e65a1ea4f62623bd4f18700c1ce48c302ae0fbb5e31736d192f
 
-MaintainerNotes: |-
-  VersionCode is derived from the git tag by stripping dots:
-  v1.11.4 -> "1.11.4" -> versionCode = 1114.
-  When adding a new build entry, run:
-    VERSION=$(echo "vX.Y.Z" | sed 's/^v//')
-    CODE=$(echo "$VERSION" | tr -d '.' | sed 's/^0*//')
-    echo "versionName=$VERSION versionCode=$CODE"
-
-  Then update the sed lines in the build step with those values.
-
-  The foojay-resolver-convention plugin in settings.gradle.kts is
-  banned by F-Droid's scanner. scandelete removes the file before
-  scanning, then git checkout restores it and sed removes the line.
-  This will no longer be needed once the source repo removes it.
-
-  Auto-update is disabled because versionCode and versionName are
-  set via -P CLI flags in build.gradle.kts, so F-Droid cannot
-  extract them from source. Each new release must add a build entry.
-
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version %v
+UpdateCheckMode: HTTP
+UpdateCheckData: https://github.com/Hy4ri/hermes-mobile/releases/latest/download/version.txt|versionCode=(\d+)|.|versionName=(.+)
 CurrentVersion: 1.11.4
 CurrentVersionCode: 1114
