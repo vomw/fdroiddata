@@ -1,5 +1,6 @@
 Categories:
   - Sports & Health
+  - Workout
 License: MIT
 AuthorName: Laptop Coder
 SourceCode: https://github.com/laptop-coder/push-through
@@ -10,52 +11,123 @@ AutoName: Push Through! Workouts
 RepoType: git
 Repo: https://github.com/laptop-coder/push-through
 
-Builds:
-  - versionName: 0.10.0
-    versionCode: 1000001
-    commit: v0.10.0
-    subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y ninja-build libgtk-3-dev
-    srclibs:
-      - flutter@3.44.3
-    prebuild:
-      - $$flutter$$/bin/flutter pub get
-    build:
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
-      - mv build/app/outputs/flutter-apk/app-release.apk arm64.apk
-    output: arm64.apk
-  - versionName: 0.10.0
-    versionCode: 1000002
-    commit: v0.10.0
-    subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y ninja-build libgtk-3-dev
-    srclibs:
-      - flutter@3.44.3
-    prebuild:
-      - $$flutter$$/bin/flutter pub get
-    build:
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
-      - mv build/app/outputs/flutter-apk/app-release.apk arm.apk
-    output: arm.apk
-  - versionName: 0.10.0
-    versionCode: 1000003
-    commit: v0.10.0
-    subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y ninja-build libgtk-3-dev
-    srclibs:
-      - flutter@3.44.3
-    prebuild:
-      - $$flutter$$/bin/flutter pub get
-    build:
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-x64
-      - mv build/app/outputs/flutter-apk/app-release.apk x64.apk
-    output: x64.apk
 
+Builds:
+  - versionName: '0.10.4'
+    versionCode: 61
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - /home/runner/work/push-through/push-through/app/ios
+      - /home/runner/work/push-through/push-through/app/linux
+      - /home/runner/work/push-through/push-through/app/macos
+      - /home/runner/work/push-through/push-through/app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo push-through
+    scanignore:
+      - .flutter/packages/flutter_tools/gradle/flutter.gradle
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - mv $repo push-through
+  - versionName: '0.10.4'
+    versionCode: 62
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - /home/runner/work/push-through/push-through/app/ios
+      - /home/runner/work/push-through/push-through/app/linux
+      - /home/runner/work/push-through/push-through/app/macos
+      - /home/runner/work/push-through/push-through/app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo push-through
+    scanignore:
+      - .flutter/packages/flutter_tools/gradle/flutter.gradle
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - mv $repo push-through
+  - versionName: '0.10.4'
+    versionCode: 63
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - /home/runner/work/push-through/push-through/app/ios
+      - /home/runner/work/push-through/push-through/app/linux
+      - /home/runner/work/push-through/push-through/app/macos
+      - /home/runner/work/push-through/push-through/app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo push-through
+    scanignore:
+      - .flutter/packages/flutter_tools/gradle/flutter.gradle
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/push-through/push-through/app
+      - cd ..
+      - mv push-through $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - mv $repo push-through
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-AutoUpdateMode: Version v%v
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '0.10.4'
+CurrentVersionCode: 61
