@@ -1,8 +1,3 @@
-AntiFeatures:
-  NonFreeNet:
-    en-US: The optional AI Coach and Routine Optimizer features send data to 
-      Google's Gemini API. These features are fully disabled unless the user 
-      provides their own Gemini API key in Settings → AI Settings.
 Categories:
   - Workout
 License: Apache-2.0
@@ -11,6 +6,9 @@ SourceCode: https://github.com/Devasy/Workout-logger
 IssueTracker: https://github.com/Devasy/Workout-logger/issues
 
 AutoName: RepForge
+
+AntiFeatures:
+  - NonFreeNet
 
 RepoType: git
 Repo: https://github.com/Devasy/Workout-logger
@@ -24,15 +22,13 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: 
-      https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-armeabi-v7a.apk
+    binary: https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-armeabi-v7a.apk
     srclibs:
       - flutter@3.41.6
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-armeabi-v7a.apk
+      - curl -L -o /home/runner/ref.apk https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-armeabi-v7a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -51,12 +47,8 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --target-platform="android-arm"
-      - python3 ../scripts/patch_so.py 
-        build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk 
-        /home/runner/ref.apk 
-        build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk /home/runner/ref.apk build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -70,15 +62,13 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: 
-      https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-arm64-v8a.apk
+    binary: https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-arm64-v8a.apk
     srclibs:
       - flutter@3.41.6
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-arm64-v8a.apk
+      - curl -L -o /home/runner/ref.apk https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-arm64-v8a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -97,12 +87,8 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --target-platform="android-arm64"
-      - python3 ../scripts/patch_so.py 
-        build/app/outputs/flutter-apk/app-arm64-v8a-release.apk 
-        /home/runner/ref.apk 
-        build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-arm64-v8a-release.apk /home/runner/ref.apk build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -116,15 +102,13 @@ Builds:
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: 
-      https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-x86_64.apk
+    binary: https://github.com/Devasy/Workout-logger/releases/download/v%v/repforge-v%v-x86_64.apk
     srclibs:
       - flutter@3.41.6
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-x86_64.apk
+      - curl -L -o /home/runner/ref.apk https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-x86_64.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -143,19 +127,14 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --target-platform="android-x64"
-      - python3 ../scripts/patch_so.py 
-        build/app/outputs/flutter-apk/app-x86_64-release.apk 
-        /home/runner/ref.apk 
-        build/app/outputs/flutter-apk/app-x86_64-release.apk
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-x86_64-release.apk /home/runner/ref.apk build/app/outputs/flutter-apk/app-x86_64-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
     ndk: 28.2.13676358
 
-AllowedAPKSigningKeys: 
-  0b40864c67c5d00457f4e56bb51ef19c51df1e465ec01d5f258fcb3b7de15842
+AllowedAPKSigningKeys: 0b40864c67c5d00457f4e56bb51ef19c51df1e465ec01d5f258fcb3b7de15842
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
@@ -163,7 +142,6 @@ VercodeOperation:
   - 10 * %c + 1
   - 10 * %c + 2
   - 10 * %c + 3
-UpdateCheckData: 
-  workout-logger/pubspec.yaml|version:\s.*\+(\d+)|workout-logger/pubspec.yaml|version:\s([\d.]+)\+
+UpdateCheckData: workout-logger/pubspec.yaml|version:\s.*\+(\d+)|workout-logger/pubspec.yaml|version:\s([\d.]+)\+
 CurrentVersion: 2.0.6
 CurrentVersionCode: 273
