@@ -1,0 +1,45 @@
+Categories:
+  - Development
+  - System
+
+License: MIT
+
+AuthorName: Crypt0Shmipt0
+AuthorWebSite: https://github.com/Crypt0Shmipt0
+
+WebSite: https://github.com/Crypt0Shmipt0/root-aicli
+SourceCode: https://github.com/Crypt0Shmipt0/root-aicli
+IssueTracker: https://github.com/Crypt0Shmipt0/root-aicli/issues
+Changelog: https://github.com/Crypt0Shmipt0/root-aicli/blob/HEAD/CHANGELOG.md
+
+AutoName: Root.AICLI
+
+# Required reading: https://f-droid.org/docs/Build_Metadata_Reference/
+# Builds section: each Versions tag maps to one tagged release.
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: android-app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk python3-pip wget unzip
+      - pip3 install Pillow
+    init:
+      - export ANDROID_HOME=$$SDK$$
+      - export PATH=$$SDK$$/cmdline-tools/latest/bin:$$SDK$$/platform-tools:$$PATH$$
+      - yes | sdkmanager --licenses > /dev/null 2>&1 || true
+      - sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools" > /dev/null 2>&1 || true
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export ANDROID_HOME=$$SDK$$
+      - export PATH=$JAVA_HOME/bin:$$SDK$$/cmdline-tools/latest/bin:$$SDK$$/platform-tools:$$PATH$$
+      - ./build.sh
+    output: build/RootAICLI.apk
+
+# Manual versions — when we tag a new release, append a new Builds entry
+# above and bump AutoUpdateMode below to fetch the new tag.
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
