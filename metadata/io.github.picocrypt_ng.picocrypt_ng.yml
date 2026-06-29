@@ -1,5 +1,5 @@
 Categories:
-  - Security
+  - File Encryption & Vault
 License: GPL-3.0-only
 AuthorName: Picocrypt-NG
 SourceCode: https://github.com/Picocrypt-NG/Picocrypt-NG
@@ -18,7 +18,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y -t trixie golang-go gcc libc-dev make
+      - apt-get install -y golang-go gcc libc-dev make
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     gradle:
@@ -33,7 +33,8 @@ Builds:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' build.gradle.kts
       - sed -i -e 's/include(".*")/include("armeabi-v7a")/' build.gradle.kts
-      - printf '\nPICOCRYPT_VERSION_NAME=2.18\nPICOCRYPT_VERSION_CODE=21800\n' >>
+      - printf '\nPICOCRYPT_VERSION_NAME=%s\nPICOCRYPT_VERSION_CODE=%s\n'
+        "$$VERSION$$" "$(( $$VERCODE$$ / 10 ))" >>
         ../gradle.properties
     build:
       - pushd $$go$$/src
@@ -66,7 +67,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y -t trixie golang-go gcc libc-dev make
+      - apt-get install -y golang-go gcc libc-dev make
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     gradle:
@@ -81,7 +82,8 @@ Builds:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' build.gradle.kts
       - sed -i -e 's/include(".*")/include("arm64-v8a")/' build.gradle.kts
-      - printf '\nPICOCRYPT_VERSION_NAME=2.18\nPICOCRYPT_VERSION_CODE=21800\n' >>
+      - printf '\nPICOCRYPT_VERSION_NAME=%s\nPICOCRYPT_VERSION_CODE=%s\n'
+        "$$VERSION$$" "$(( $$VERCODE$$ / 10 ))" >>
         ../gradle.properties
     build:
       - pushd $$go$$/src
@@ -114,7 +116,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y -t trixie golang-go gcc libc-dev make
+      - apt-get install -y golang-go gcc libc-dev make
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     gradle:
@@ -129,7 +131,8 @@ Builds:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' build.gradle.kts
       - sed -i -e 's/include(".*")/include("x86")/' build.gradle.kts
-      - printf '\nPICOCRYPT_VERSION_NAME=2.18\nPICOCRYPT_VERSION_CODE=21800\n' >>
+      - printf '\nPICOCRYPT_VERSION_NAME=%s\nPICOCRYPT_VERSION_CODE=%s\n'
+        "$$VERSION$$" "$(( $$VERCODE$$ / 10 ))" >>
         ../gradle.properties
     build:
       - pushd $$go$$/src
@@ -162,7 +165,7 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y -t trixie golang-go gcc libc-dev make
+      - apt-get install -y golang-go gcc libc-dev make
       - mkdir -p /home/runner/
       - chown vagrant /home/runner/
     gradle:
@@ -177,7 +180,8 @@ Builds:
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - sed -i -e 's/isUniversalApk = true/isUniversalApk = false/' build.gradle.kts
       - sed -i -e 's/include(".*")/include("x86_64")/' build.gradle.kts
-      - printf '\nPICOCRYPT_VERSION_NAME=2.18\nPICOCRYPT_VERSION_CODE=21800\n' >>
+      - printf '\nPICOCRYPT_VERSION_NAME=%s\nPICOCRYPT_VERSION_CODE=%s\n'
+        "$$VERSION$$" "$(( $$VERCODE$$ / 10 ))" >>
         ../gradle.properties
     build:
       - pushd $$go$$/src
