@@ -42,7 +42,8 @@ Builds:
       - cd ../../..
       - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
       - export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      - printf '%s\n' 'EXPO_PUBLIC_BUILD_CHANNEL=fdroid' > apps/mobile/.env
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-device","expo-font","expo-keep-awake","expo-dev-client","expo-dev-menu","expo-dev-launcher","expo-updates"]}}},'
         apps/mobile/package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
@@ -62,6 +63,7 @@ Builds:
         apps/mobile/android/app/build.gradle
       - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/'
         apps/mobile/android/app/build.gradle
+      - grep -qE "applicationId ['\"]com\\.oysterclaim\\.app['\"]" apps/mobile/android/app/build.gradle
       - rm -rf scripts/android/runtime-jar-patches/.build-* scripts/android/runtime-jar-patches/.tmp-*
       - cd apps/mobile/android
     scanignore:
