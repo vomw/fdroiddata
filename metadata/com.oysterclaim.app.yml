@@ -42,14 +42,16 @@ Builds:
       - cd ../../..
       - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
       - export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}
-      - printf '%s\n' 'EXPO_PUBLIC_BUILD_CHANNEL=fdroid' > apps/mobile/.env
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-device","expo-font","expo-keep-awake","expo-dev-client","expo-dev-menu","expo-dev-launcher","expo-updates"]}}},'
+      - printf '%s
+' 'EXPO_PUBLIC_BUILD_CHANNEL=fdroid' > apps/mobile/.env
+      - sed -i -e '1a 
+        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-device","expo-font","expo-keep-awake","expo-dev-client","expo-dev-menu","expo-dev-launcher","expo-updates"]}}},'
         apps/mobile/package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
       - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
-        -e '/getInstallReferrerAsync/apromise.resolve("")'
+        -e '/getInstallReferrerAsync/apromise.resolve("")' 
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
@@ -57,8 +59,7 @@ Builds:
         apps/mobile/android/gradle.properties
       - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m/'
         apps/mobile/android/gradle.properties
-      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/'
-        apps/mobile/android/gradle.properties
+      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/' apps/mobile/android/gradle.properties
       - sed -i "s/applicationId 'com.oysterclaim.app.fdroid'/applicationId 'com.oysterclaim.app'/"
         apps/mobile/android/app/build.gradle
       - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/'
@@ -93,6 +94,7 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-UpdateCheckData: apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+UpdateCheckData: 
+  apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
 CurrentVersion: 1.0.7
 CurrentVersionCode: 96
