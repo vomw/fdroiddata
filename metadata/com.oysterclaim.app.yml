@@ -42,16 +42,13 @@ Builds:
       - cd ../../..
       - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
       - export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}
-      - printf '%s
-' 'EXPO_PUBLIC_BUILD_CHANNEL=fdroid' > apps/mobile/.env
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-device","expo-font","expo-keep-awake","expo-dev-client","expo-dev-menu","expo-dev-launcher","expo-updates"]}}},'
-        apps/mobile/package.json
+      - printf '%s\n' 'EXPO_PUBLIC_BUILD_CHANNEL=fdroid' > apps/mobile/.env
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"],"exclude":["expo-device","expo-font","expo-keep-awake","expo-dev-client","expo-dev-menu","expo-dev-launcher","expo-updates"]}}},' apps/mobile/package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
       - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
-        -e '/getInstallReferrerAsync/apromise.resolve("")' 
+        -e '/getInstallReferrerAsync/apromise.resolve("")'
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
@@ -60,10 +57,8 @@ Builds:
       - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m/'
         apps/mobile/android/gradle.properties
       - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/' apps/mobile/android/gradle.properties
-      - sed -i "s/applicationId 'com.oysterclaim.app.fdroid'/applicationId 'com.oysterclaim.app'/"
-        apps/mobile/android/app/build.gradle
-      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/'
-        apps/mobile/android/app/build.gradle
+      - sed -i "s/applicationId 'com.oysterclaim.app.fdroid'/applicationId 'com.oysterclaim.app'/" apps/mobile/android/app/build.gradle
+      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/' apps/mobile/android/app/build.gradle
       - grep -qE "applicationId ['\"]com\\.oysterclaim\\.app['\"]" apps/mobile/android/app/build.gradle
       - rm -rf scripts/android/runtime-jar-patches/.build-* scripts/android/runtime-jar-patches/.tmp-*
       - cd apps/mobile/android
@@ -94,7 +89,113 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-UpdateCheckData: 
+UpdateCheckData:
   apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+CurrentVersion: 1.0.7
+CurrentVersionCode: 96
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Finance Manager
+License: GPL-3.0-only
+AuthorName: Oysterclaim
+WebSite: https://oysterclaim.com
+SourceCode: https://github.com/Oysterclaim/oysterclaim
+IssueTracker: https://github.com/Oysterclaim/oysterclaim/issues
+Changelog: https://github.com/Oysterclaim/oysterclaim/releases
+Donate: https://oysterclaim.com/support
+
+AutoName: OysterClaim
+
+RepoType: git
+Repo: https://github.com/Oysterclaim/oysterclaim
+
+Builds:
+  - versionName: 1.0.7
+    versionCode: 96
+    commit: 343dafb5b13944fa735e7f7bae15474a3e6949d0
+    timeout: 10800
+    subdir: apps/mobile/android
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - apt-get update
+      - apt-get install -y curl ca-certificates openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - curl -fsSL -o node.tar.gz https://nodejs.org/dist/v20.19.4/node-v20.19.4-linux-x64.tar.gz
+      - echo "d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    init:
+      - cd ../../..
+      - export HUSKY=0 OYSTER_POSTINSTALL_MODE=fdroid EXPO_PUBLIC_BUILD_CHANNEL=fdroid
+      - npm ci
+    gradle:
+      - fdroid
+    srclibs:
+      - firebase-stub@4ae5aec1bf1fc3f2dfbc8e545b00b83d8a15dab8
+    prebuild:
+      - cd ../../..
+      - export EXPO_PUBLIC_BUILD_CHANNEL=fdroid
+      - export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct HEAD)}
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        apps/mobile/package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+        -e '/getInstallReferrerAsync/apromise.resolve("")'
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - sed -i 's/reactNativeArchitectures=.*/reactNativeArchitectures=armeabi-v7a,arm64-v8a/'
+        apps/mobile/android/gradle.properties
+      - sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m/'
+        apps/mobile/android/gradle.properties
+      - sed -i 's/org.gradle.parallel=true/org.gradle.parallel=false/'
+        apps/mobile/android/gradle.properties
+      - sed -i "s/applicationId 'com.oysterclaim.app.fdroid'/applicationId 'com.oysterclaim.app'/"
+        apps/mobile/android/app/build.gradle
+      - sed -i 's/applicationId "com.oysterclaim.app.fdroid"/applicationId "com.oysterclaim.app"/'
+        apps/mobile/android/app/build.gradle
+      - rm -rf scripts/android/runtime-jar-patches/.build-* scripts/android/runtime-jar-patches/.tmp-*
+      - cd apps/mobile/android
+    scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-asset/local-maven-repo
+      - node_modules/expo-crypto/local-maven-repo
+      - node_modules/expo-secure-store/local-maven-repo
+      - node_modules/expo-file-system/local-maven-repo
+      - node_modules/expo/node_modules/expo-font/local-maven-repo
+      - node_modules/expo/node_modules/expo-keep-awake/local-maven-repo
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-get-random-values/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - .tmp
+      - .expo-web-test
+      - scripts/android/runtime-jar-patches
+    scandelete:
+      - node_modules
+    gradleprops:
+      - claimlyUnsignedRelease=true
+      - reactNativeArchitectures=armeabi-v7a,arm64-v8a
+      - org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8
+      - org.gradle.caching=false
+
+MaintainerNotes: |-
+  React Native / Expo SDK 54. Follows fdroiddata templates/build-react-native.yml:
+  init runs npm ci; prebuild sed adds expo buildFromSource, JDK 21 sed, expo-application
+  installreferrer patch, firebase-stub for expo-notifications, ABI pin, and applicationId rewrite.
+  Committed apps/mobile/android/ (no expo prebuild).
+  Play Store uses com.anonymous.claimlynative (play flavor). See fdroid/REPRODUCIBLE_BUILDS.md.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: apps/mobile/android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
 CurrentVersion: 1.0.7
 CurrentVersionCode: 96
