@@ -1152,7 +1152,7 @@ Builds:
       - mkdir -p /home/runner/work/Conduit
       - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary:
+    binary: 
       https://github.com/gwitko/Conduit/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -1191,14 +1191,14 @@ Builds:
       - chown -R vagrant /home/runner/work
       - mkdir -p /data/data /tmp/conduit-termux-build
       - chown -R vagrant /data /tmp/conduit-termux-build
-      - TERMUX_PACKAGES_DIR=$$TermuxPackages$$ bash tools/build-local-shell-binaries.sh --setup-ubuntu-only
+      - TERMUX_PACKAGES_DIR=$$TermuxPackages$$ bash tools/build-local-shell-binaries.sh
+        --setup-ubuntu-only
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary:
+    binary: 
       https://github.com/gwitko/Conduit/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
       - TermuxPackages@ac296452b8ebec390cad3bce9060577c96099b10
-    ndk: r29
     rm:
       - ios
     prebuild:
@@ -1212,7 +1212,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ NDK=$$NDK$$ TERMUX_PACKAGES_DIR=$$TermuxPackages$$ bash tools/build-local-shell-binaries.sh --no-android-setup
+      - ANDROID_HOME=$$SDK$$ ANDROID_SDK_ROOT=$$SDK$$ NDK=$$NDK$$ TERMUX_PACKAGES_DIR=$$TermuxPackages$$
+        bash tools/build-local-shell-binaries.sh --no-android-setup
       - popd
       - mv $repo com.gwitko.conduit
     scandelete:
@@ -1226,6 +1227,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo com.gwitko.conduit
+    ndk: r29
 
   - versionName: 1.4.2
     versionCode: 273
