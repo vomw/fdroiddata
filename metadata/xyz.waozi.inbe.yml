@@ -261,9 +261,28 @@ Builds:
     gradleprops:
       - fDroidBuild=true
 
-  - versionName: 1.7.3
-    versionCode: 66
-    commit: 157788fa5ce976b5214bc731fcd7eb86633af3d4
+  - versionName: 1.7.4
+    versionCode: 67
+    commit: a3743c9b379e6ee47fce27ee90f557fd956c9edb
+    subdir: droid/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential jimsh
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: bash ../../scripts/copy-android-assets.sh
+    scandelete:
+      - site/static/assets-sqljs-1.12.0/
+      - vendor/flint/vendor/raylib/examples/
+      - vendor/flint/vendor/openbsd/src/regress/
+    gradleprops:
+      - fDroidBuild=true
+
+  - versionName: 1.7.5
+    versionCode: 68
+    commit: 40a660249c0b85663b76b66d0112f392968253fe
     subdir: droid/app
     submodules: true
     sudo:
@@ -284,5 +303,5 @@ AllowedAPKSigningKeys: 47648dc7665db12a97c3077a4892ce29072c756bb31b5c331b8924493
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.7.3
-CurrentVersionCode: 66
+CurrentVersion: 1.7.5
+CurrentVersionCode: 68
