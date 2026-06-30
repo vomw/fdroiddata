@@ -1,5 +1,5 @@
 Categories:
-  - Game
+  - Action Game
 License: LGPL-2.0-or-later
 WebSite: http://openlierox.net
 SourceCode: https://github.com/openlierox/openlierox
@@ -20,6 +20,7 @@ Builds:
     init:
       - bash fetch-dependencies.sh
     prebuild:
+      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|" app/build.gradle
       - mkdir -p output/assets
       - cp -a ../../share/gamedir output/assets/gamedir
       - cp deps/cacert.pem output/assets/gamedir/cacert.pem
@@ -27,6 +28,7 @@ Builds:
     gradle:
       - yes
     ndk: 29.0.14206865
+    output: app/build/outputs/apk/release/*.apk
     scanignore:
       - share/gamedir
       - build/android/deps
@@ -38,6 +40,6 @@ Builds:
       - build/DevCpp
 
 AutoUpdateMode: None
-UpdateCheckMode: Tags .*[0-9]$
+UpdateCheckMode: Static
 CurrentVersion: '20260627.4'
 CurrentVersionCode: 10599626
