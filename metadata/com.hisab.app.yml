@@ -5,11 +5,6 @@ SourceCode: https://github.com/Bittu-the-coder/hisab
 IssueTracker: https://github.com/Bittu-the-coder/hisab/issues
 
 AutoName: Hisab
-Summary: Personal expense tracker with group splitting
-Description: |-
-  Hisab is a clean, open-source expense tracking app for individuals
-  and friend groups. Track daily spending, set budgets, visualize
-  spending patterns, and split shared expenses with friends.
 
 RepoType: git
 Repo: https://github.com/Bittu-the-coder/hisab
@@ -17,17 +12,28 @@ Repo: https://github.com/Bittu-the-coder/hisab
 Builds:
   - versionName: 1.1.0
     versionCode: 1
-    commit: v1.1.0
+    commit: b8109718c8b68ccd06e003b76dca9785e84bafd3
     subdir: app
-    sudo: apt-get install -y openjdk-21-jdk-headless
-    init: flutter pub get
-    output: build/app/outputs/flutter-apk/app-release.apk
-    scandelete:
+    sudo:
+      - apt-get install -y openjdk-21-jdk-headless
+    srclibs:
+      - flutter@stable
+    rm:
       - backend
-    build: flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - [[ $flutterVersion ]]
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+    build:
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - flutter build apk --release
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|app/pubspec.yaml|version:\s(\d+\.\d+\.\d+)
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.1.0
 CurrentVersionCode: 1
