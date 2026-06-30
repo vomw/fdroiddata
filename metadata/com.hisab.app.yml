@@ -12,7 +12,7 @@ Repo: https://github.com/Bittu-the-coder/hisab
 Builds:
   - versionName: 1.1.0
     versionCode: 1
-    commit: b8109718c8b68ccd06e003b76dca9785e84bafd3
+    commit: e3fd7f4e6d8a59123d5a402aa3b85aff60f946ac
     subdir: app
     sudo:
       - apt-get install -y openjdk-21-jdk-headless
@@ -22,8 +22,8 @@ Builds:
       - backend
     output: build/app/outputs/flutter-apk/app-release.apk
     prebuild:
-      - flutterVersion=$(cat .flutter-version)
-      - [[ $flutterVersion ]]
+      - flutterVersion=
+      - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
       - flutter config --no-analytics
@@ -34,6 +34,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|app/pubspec.yaml|version:\s(.+)\+
 CurrentVersion: 1.1.0
 CurrentVersionCode: 1
