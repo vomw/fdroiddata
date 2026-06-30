@@ -3817,7 +3817,10 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev zip npm strip-nondeterminism golang-go
+      - apt-get install -y gcc libc-dev zip strip-nondeterminism golang-go
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
       - npm install -g pnpm@v10.10.0
     gradle:
       - official
