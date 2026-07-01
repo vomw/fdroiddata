@@ -15,12 +15,10 @@ Builds:
     versionCode: 10599626
     commit: a37eb46c67d9781ccbce62085275feccbe3dab8e
     subdir: build/android/app
-    novcheck: true
-    init:
-      - sh -c 'echo "VERSION_NAME=$(git log -1 --format=%cd --date=format:%Y%m%d HEAD).$(git
-        log --format=%cd --date=format:%Y%m%d HEAD | grep -c "$(git log -1 --format=%cd
-        --date=format:%Y%m%d HEAD)")" > version.properties && echo "VERSION_CODE=$((10591026
-        + $(git rev-list --count HEAD)))" >> version.properties'
+    init: sh -c 'echo "VERSION_NAME=$(git log -1 --format=%cd --date=format:%Y%m%d
+      HEAD).$(git log --format=%cd --date=format:%Y%m%d HEAD | grep -c "$(git log
+      -1 --format=%cd --date=format:%Y%m%d HEAD)")" > version.properties && echo "VERSION_CODE=$((10591026
+      + $(git rev-list --count HEAD)))" >> version.properties'
     sudo:
       - apt-get update
       - apt-get install -y libboost-dev
@@ -32,8 +30,8 @@ Builds:
       - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$(grep VERSION_NAME
         version.properties | cut -d= -f2)'" build.gradle
       - sed -i "/^def gitCommitCount = {/,/^}()/c\def gitCommitCount = 0" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode =
-        $(grep VERSION_CODE version.properties | cut -d= -f2)|" build.gradle
+      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
+        = $(grep VERSION_CODE version.properties | cut -d= -f2)|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -42,6 +40,7 @@ Builds:
       - build/DevCpp
     build: bash ../fetch-dependencies.sh
     ndk: 29.0.14206865
+    novcheck: true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^(\d+\.\d+)$
