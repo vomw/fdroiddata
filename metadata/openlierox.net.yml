@@ -14,13 +14,13 @@ Builds:
   - versionName: '20260627.4'
     versionCode: 10599626
     commit: a37eb46c67d9781ccbce62085275feccbe3dab8e
-    subdir: build/android
+    subdir: build/android/app
     sudo:
       - apt-get update
       - apt-get install -y libboost-dev
     gradle:
       - yes
-    prebuild: ln -sfn output/build build
+    prebuild: sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -28,11 +28,11 @@ Builds:
       - build/msvc
       - build/DevCpp
     build:
-      - bash fetch-dependencies.sh
-      - mkdir -p output/assets/gamedir
-      - git -C ../.. archive HEAD:share/gamedir | tar -x -C output/assets/gamedir
-      - cp deps/cacert.pem output/assets/gamedir/cacert.pem
-      - ../../get_version.sh > output/assets/gamedir.version
+      - bash ../fetch-dependencies.sh
+      - mkdir -p ../output/assets/gamedir
+      - git -C ../../.. archive HEAD:share/gamedir | tar -x -C ../output/assets/gamedir
+      - cp ../deps/cacert.pem ../output/assets/gamedir/cacert.pem
+      - ../../../get_version.sh > ../output/assets/gamedir.version
     ndk: 29.0.14206865
 
 AutoUpdateMode: None
