@@ -21,11 +21,14 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/*.apk
-    prebuild:
-      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
-        app/build.gradle
+    prebuild: sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
+      app/build.gradle
     scandelete:
       - share/gamedir
+      - libs/breakpad
+      - tools
+      - build/msvc
+      - build/DevCpp
     build:
       - bash fetch-dependencies.sh
       - mkdir -p output/assets/gamedir
