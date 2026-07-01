@@ -11,8 +11,6 @@ RepoType: git
 Repo: https://github.com/PLFIndia/pitak-x.git
 
 Builds:
-  # Historic legacy-Kotlin build. Kept verbatim to preserve the F-Droid
-  # version history; do not edit.
   - versionName: 1.0.3
     versionCode: 4
     commit: 714af008cb7f009737fd2cea20452ddb460dfe03
@@ -22,19 +20,19 @@ Builds:
 
   - versionName: 1.1.1
     versionCode: 61
-    commit: '1.1.1'
-    srclibs:
-      - flutter@3.41.1
+    commit: 1.1.1
     sudo:
       - apt-get update
-      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev rustup
+      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev 
+        rustup
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.41.1
     rm:
       - ios
       - macos
       - windows
       - linux
-      - web
     prebuild:
       - rustup default stable
       - rustup target add x86_64-linux-android
@@ -46,24 +44,25 @@ Builds:
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutter build apk --release --split-per-abi --target-platform=android-x64
+      - flutter build apk --release --split-per-abi 
+        --target-platform=android-x64
     ndk: r28c
 
   - versionName: 1.1.1
     versionCode: 62
-    commit: '1.1.1'
-    srclibs:
-      - flutter@3.41.1
+    commit: 1.1.1
     sudo:
       - apt-get update
-      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev rustup
+      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev 
+        rustup
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@3.41.1
     rm:
       - ios
       - macos
       - windows
       - linux
-      - web
     prebuild:
       - rustup default stable
       - rustup target add armv7-linux-androideabi
@@ -75,24 +74,25 @@ Builds:
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutter build apk --release --split-per-abi --target-platform=android-arm
+      - flutter build apk --release --split-per-abi 
+        --target-platform=android-arm
     ndk: r28c
 
   - versionName: 1.1.1
     versionCode: 63
-    commit: '1.1.1'
-    srclibs:
-      - flutter@3.41.1
+    commit: 1.1.1
     sudo:
       - apt-get update
-      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev rustup
+      - apt-get install -y clang cmake ninja-build pkg-config gcc libc-dev 
+        rustup
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.41.1
     rm:
       - ios
       - macos
       - windows
       - linux
-      - web
     prebuild:
       - rustup default stable
       - rustup target add aarch64-linux-android
@@ -104,7 +104,8 @@ Builds:
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - flutter build apk --release --split-per-abi 
+        --target-platform=android-arm64
     ndk: r28c
 
 AutoUpdateMode: Version
