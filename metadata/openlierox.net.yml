@@ -15,20 +15,18 @@ Builds:
     versionCode: 10599626
     commit: a37eb46c67d9781ccbce62085275feccbe3dab8e
     subdir: build/android
-    sudo:
-      - apt-get update && apt-get install -y libboost-dev
-    init:
-      - bash fetch-dependencies.sh
+    sudo: apt-get update && apt-get install -y libboost-dev
+    init: bash fetch-dependencies.sh
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/*.apk
     prebuild:
-      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|" app/build.gradle
+      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
+        app/build.gradle
       - mkdir -p output/assets
       - cp -a ../../share/gamedir output/assets/gamedir
       - cp deps/cacert.pem output/assets/gamedir/cacert.pem
       - ../../get_version.sh > output/assets/gamedir.version
-    gradle:
-      - yes
-    ndk: 29.0.14206865
-    output: app/build/outputs/apk/release/*.apk
     scanignore:
       - share/gamedir
       - build/android/deps
@@ -38,6 +36,7 @@ Builds:
       - tools
       - build/msvc
       - build/DevCpp
+    ndk: 29.0.14206865
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
