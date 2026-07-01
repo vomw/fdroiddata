@@ -18,22 +18,19 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y libboost-dev
-    init: bash fetch-dependencies.sh
     gradle:
       - yes
     output: app/build/outputs/apk/release/*.apk
     prebuild:
+      - bash fetch-dependencies.sh
       - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
         app/build.gradle
-      - mkdir -p output/assets
-      - cp -a ../../share/gamedir output/assets/gamedir
+      - mkdir -p output/assets/gamedir
+      - git -C ../.. archive HEAD:share/gamedir | tar -x -C output/assets/gamedir
       - cp deps/cacert.pem output/assets/gamedir/cacert.pem
       - ../../get_version.sh > output/assets/gamedir.version
-    scanignore:
-      - share/gamedir
-      - build/android/deps
-      - build/android/output
     scandelete:
+      - share/gamedir
       - libs/breakpad
       - tools
       - build/msvc
