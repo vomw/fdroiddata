@@ -1,0 +1,41 @@
+Categories:
+  - Recipe Manager
+  - Diet
+  - Shopping List
+License: MIT
+AuthorName: Cedric Mössner (The Morpheus)
+AuthorWebSite: https://the-morpheus.de
+WebSite: https://github.com/TheMorpheus407/morphcook-refined
+SourceCode: https://github.com/TheMorpheus407/morphcook-refined
+IssueTracker: https://github.com/TheMorpheus407/morphcook-refined/issues
+
+AutoName: MorphCook
+
+RepoType: git
+Repo: https://github.com/TheMorpheus407/morphcook-refined.git
+
+Builds:
+  - versionName: 1.2.0
+    versionCode: 5
+    commit: v1.2.0
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - ios
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.2.0
+CurrentVersionCode: 5
