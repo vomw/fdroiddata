@@ -21,11 +21,14 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
+    # subdir is the app module (where the APK lands), but npm + the Capacitor
+    # sync must run from the repo root. init/prebuild each start in subdir, so
+    # cd up two levels; keep each list's cd in one entry (entries are joined
+    # into a single shell, so a repeated cd would over-climb).
     init:
-      - npm ci
+      - cd ../.. && npm ci
     prebuild:
-      - npm run build
-      - npx cap sync android
+      - cd ../.. && npm run build && npx cap sync android
     gradle:
       - yes
 
