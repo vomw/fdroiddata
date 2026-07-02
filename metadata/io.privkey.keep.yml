@@ -12,18 +12,46 @@ AutoName: Keep
 
 RepoType: git
 Repo: https://github.com/privkeyio/keep-android
-Binaries: 
-  https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v.apk
 
 Builds:
-  - versionName: 1.1.4
-    versionCode: 22
-    commit: fbaebe7c88c34eddf37960f5a49f0b4ae331a2d0
+  - versionName: 1.1.5
+    versionCode: 232
+    commit: d79c553d1ba856c06fce7ab14520d27f06ecbe68
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
         gcc g++ libc6-dev ca-certificates rustup
-    output: app/build/outputs/apk/release/app-release.apk
+    output: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-arm64-v8a.apk
+    prebuild:
+      - rustup toolchain install 1.89.0 --profile minimal
+      - rustup default 1.89.0
+      - rustup target add aarch64-linux-android x86_64-linux-android
+      - cargo install --locked --version 4.1.2 cargo-ndk
+      - KEEP_SHA="$(tr -d '[:space:]' < keep.version)"
+      - rm -rf keep
+      - git clone https://github.com/privkeyio/keep.git keep
+      - git -C keep checkout "$KEEP_SHA"
+      - cargo fetch --locked --manifest-path keep/Cargo.toml
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PATH=$HOME/.cargo/bin:$JAVA_HOME/bin:$PATH
+      - export AWS_LC_SYS_CMAKE_BUILDER=1
+      - export SOURCE_DATE_EPOCH="$(./scripts/derive-sde.sh)"
+      - gradle assembleRelease
+    ndk: r29
+
+  - versionName: 1.1.5
+    versionCode: 234
+    commit: d79c553d1ba856c06fce7ab14520d27f06ecbe68
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
+        gcc g++ libc6-dev ca-certificates rustup
+    output: app/build/outputs/apk/release/app-x86_64-release.apk
+    binary: 
+      https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-x86_64.apk
     prebuild:
       - rustup toolchain install 1.89.0 --profile minimal
       - rustup default 1.89.0
@@ -46,5 +74,8 @@ AllowedAPKSigningKeys: 3eb0e6f6f4e0962ebd717f84eea47428b73087b686c956633d6a9fcc4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.1.4
-CurrentVersionCode: 22
+VercodeOperation:
+  - 10 * %c + 2
+  - 10 * %c + 4
+CurrentVersion: 1.1.5
+CurrentVersionCode: 234
