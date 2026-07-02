@@ -18,20 +18,13 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y libboost-dev
-    init: sh -c 'echo "VERSION_NAME=$(git log -1 --format=%cd --date=format:%Y%m%d
-      HEAD).$(git log --format=%cd --date=format:%Y%m%d HEAD | grep -c "$(git log
-      -1 --format=%cd --date=format:%Y%m%d HEAD)")" > version.properties && echo "VERSION_CODE=$((10591026
-      + $(git rev-list --count HEAD)))" >> version.properties'
     gradle:
       - yes
     prebuild:
       - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
         build.gradle
-      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$(grep VERSION_NAME
-        version.properties | cut -d= -f2)'" build.gradle
-      - sed -i "/^def gitCommitCount = {/,/^}()/c\def gitCommitCount = 0" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $(grep VERSION_CODE version.properties | cut -d= -f2)|" build.gradle
+      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
+      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode = $$VERCODE$$|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -49,20 +42,13 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y libboost-dev
-    init: sh -c 'echo "VERSION_NAME=$(git log -1 --format=%cd --date=format:%Y%m%d
-      HEAD).$(git log --format=%cd --date=format:%Y%m%d HEAD | grep -c "$(git log
-      -1 --format=%cd --date=format:%Y%m%d HEAD)")" > version.properties && echo "VERSION_CODE=$((10591026
-      + $(git rev-list --count HEAD)))" >> version.properties'
     gradle:
       - yes
     prebuild:
       - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
         build.gradle
-      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$(grep VERSION_NAME
-        version.properties | cut -d= -f2)'" build.gradle
-      - sed -i "/^def gitCommitCount = {/,/^}()/c\def gitCommitCount = 0" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $(grep VERSION_CODE version.properties | cut -d= -f2)|" build.gradle
+      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
+      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode = $$VERCODE$$|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
