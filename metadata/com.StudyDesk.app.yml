@@ -34,19 +34,12 @@ Builds:
     init:
       - cd ../.. && npm ci
     prebuild:
-      - cd ../.. && npm run build && npx cap sync android
-    # Delete build-time node tooling before the source scanner runs — these
-    # ship prebuilt binaries (esbuild, template tarballs, jars) that the scanner
-    # rejects. None are needed by the Gradle build, which only references
-    # @capacitor/android + the plugin packages.
-    scandelete:
-      - node_modules/@capacitor/cli
-      - node_modules/@capacitor/assets
-      - node_modules/@trapezedev
-      - node_modules/@esbuild
-      - node_modules/esbuild
-      - node_modules/@img
-      - node_modules/sharp
+      # Build the web app + sync, then delete build-only node tooling that
+      # ships prebuilt binaries the F-Droid source scanner rejects (esbuild,
+      # sharp/libvips, Capacitor template tarballs, gradle-parse jars). rm -rf
+      # ignores any not present, so this is uniform across apps. None are
+      # needed by Gradle, which only references @capacitor/android + plugins.
+      - cd ../.. && npm run build && npx cap sync android && rm -rf node_modules/@capacitor/cli node_modules/@capacitor/assets node_modules/@trapezedev node_modules/@esbuild node_modules/esbuild node_modules/@img node_modules/sharp
     gradle:
       - yes
 
