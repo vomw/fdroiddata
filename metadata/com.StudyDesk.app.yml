@@ -19,8 +19,14 @@ Builds:
     commit: 7b11dad449844e3bb202fd909a265bf39424c13c
     subdir: android/app
     sudo:
+      # Capacitor 8 CLI requires Node >=22; the buildserver ships Node 20.
+      # Install pinned official Node 22 LTS (verified by SHA256) into /usr/local.
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y curl xz-utils
+      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.23.1/node-v22.23.1-linux-x64.tar.xz
+      - echo "9749e988f437343b7fa832c69ded82a312e41a03116d766797ac14f6f9eee578  /tmp/node.tar.xz" | sha256sum -c -
+      - tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1
+      - node --version
     init:
       - npm ci
     prebuild:
