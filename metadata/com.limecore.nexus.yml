@@ -1,8 +1,7 @@
-# F-Droid metadata for Nexus Command Center — READY FOR SUBMISSION (2026-06-27).
-# FD-1 Fastlane metadata present (6 locales). FD-2 gradle wrapper SHA present.
-# FD-3 FOSS audit PASS (no GMS/Firebase). LICENSE MIT in repo root.
+AntiFeatures:
+  - NonFreeNet
 Categories:
-  - Money
+  - Finance Manager
 License: MIT
 AuthorName: Emil Hongisto (Limekana)
 SourceCode: https://github.com/Limekana/nexus-command-center
@@ -21,24 +20,12 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-    # subdir is the app module (where the APK lands), but npm + the Capacitor
-    # sync must run from the repo root. init/prebuild each start in subdir, so
-    # cd up two levels; keep each list's cd in one entry (entries are joined
-    # into a single shell, so a repeated cd would over-climb).
-    init:
-      - cd ../.. && npm ci
-    prebuild:
-      # Build the web app + sync, then delete build-only node tooling that
-      # ships prebuilt binaries the F-Droid source scanner rejects (esbuild,
-      # sharp/libvips, Capacitor template tarballs, gradle-parse jars). rm -rf
-      # ignores any not present, so this is uniform across apps. None are
-      # needed by Gradle, which only references @capacitor/android + plugins.
-      - cd ../.. && npm run build && npx cap sync android && rm -rf node_modules/@capacitor/cli node_modules/@capacitor/assets node_modules/@trapezedev node_modules/@esbuild node_modules/esbuild node_modules/@img node_modules/sharp
+    init: cd ../.. && npm ci
     gradle:
       - yes
-
-AntiFeatures:
-  - NonFreeNet   # Supabase sync, Google OAuth, finance APIs, AI Edge Function (all user-initiated HTTPS)
+    prebuild: cd ../.. && npm run build && npx cap sync android && rm -rf node_modules/@capacitor/cli
+      node_modules/@capacitor/assets node_modules/@trapezedev node_modules/@esbuild
+      node_modules/esbuild node_modules/@img node_modules/sharp
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
