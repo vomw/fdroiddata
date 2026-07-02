@@ -1,4 +1,5 @@
 Categories:
+  - Habit Tracker
   - Sports & Health
 License: GPL-3.0-only
 AuthorName: Alinson Xavier
@@ -27,7 +28,7 @@ Description: |-
   <a href="https://github.com/iSoron/uhabits/blob/HEAD/README.md#screenshots">Screenshots</a>
 
 RepoType: git
-Repo: https://github.com/iSoron/uhabits/
+Repo: https://github.com/iSoron/uhabits.git
 
 Builds:
   - versionName: 1.2.0
@@ -362,7 +363,40 @@ Builds:
     rm:
       - .secret
 
+  - versionName: 2.2.0
+    versionCode: 20200
+    commit: d10538e72064c196a9ec5da26c76fc6a0fe0cd80
+    subdir: uhabits-android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 2.3.0
+    versionCode: 20300
+    commit: 9ed4630f9ba0c7f17f134e72d04bc4fb1e1bffbd
+    subdir: uhabits-android
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/VERSION_11/VERSION_17/g' build.gradle.kts
+      - sed -i -e 's/jvmToolchain(11)/jvmToolchain(17)/' ../uhabits-core/build.gradle.kts
+        build.gradle.kts
+
+  - versionName: 2.3.1
+    versionCode: 20301
+    commit: 516bf394f85a5a3ab25f476da230ae2a93815a40
+    subdir: uhabits-android
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/VERSION_11/VERSION_17/g' build.gradle.kts
+      - sed -i -e 's/jvmToolchain(11)/jvmToolchain(17)/' ../uhabits-core/build.gradle.kts
+        build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.1.3
-CurrentVersionCode: 20103
+CurrentVersion: 2.3.1
+CurrentVersionCode: 20301

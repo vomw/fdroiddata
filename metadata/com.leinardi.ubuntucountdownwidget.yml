@@ -1,5 +1,5 @@
 Categories:
-  - Time
+  - Calendar & Agenda
 License: GPL-3.0-or-later
 SourceCode: https://github.com/leinardi/UbuntuCountdownWidget
 IssueTracker: https://github.com/leinardi/UbuntuCountdownWidget/issues
@@ -58,19 +58,22 @@ Builds:
     output: build/outputs/apk/release/*.apk
     build: JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 gradle assembleRelease
 
-  - versionName: 2.0.1
-    versionCode: 1694720001
-    commit: 2.0.1
+  - versionName: 2.0.3
+    versionCode: 1695620003
+    commit: 2.0.3
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y openjdk-17-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/release/*.apk
+    prebuild: sed -i 's|version + epoch|$$VERCODE$$|' 
+      ../build-conventions/src/main/kotlin/ubuntucountdownwidget.app-versioning-conventions.gradle.kts
     build: JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 gradle assembleRelease
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
-UpdateCheckData: https://github.com/leinardi/UbuntuCountdownWidget/releases/latest/download/version.txt|\+(\d+)|.|(.+)\+
-CurrentVersion: 2.0.1
-CurrentVersionCode: 1694720001
+UpdateCheckData: 
+  https://github.com/leinardi/UbuntuCountdownWidget/releases/latest/download/version.txt|\+(\d+)|.|(.+)\+
+CurrentVersion: 2.0.3
+CurrentVersionCode: 1695620003

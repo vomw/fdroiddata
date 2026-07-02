@@ -1,4 +1,5 @@
 Categories:
+  - Launcher
   - System
 License: Apache-2.0
 AuthorName: Braden Farmer
@@ -522,11 +523,48 @@ Builds:
     gradle:
       - free
 
+  - versionName: 6.2.1
+    versionCode: 206
+    commit: 0fc156edf319eb22bb1b807ffe29f425ac65b332
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - free
+
+  - versionName: 6.2.2
+    versionCode: 207
+    commit: 86b7170f004b1feefa8dbcaadd3198fe9d24b2d8
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - free
+
+  - versionName: 6.2.2-r2
+    versionCode: 208
+    commit: 24add568e2807b3db1f063df2e408292bf790852
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - free
+
 MaintainerNotes: |-
   Multiple versions with same versionName.
   See here: https://github.com/farmerbb/Taskbar/issues/4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '6.2'
-CurrentVersionCode: 204
+UpdateCheckData: dependencies.gradle|VERSION_CODE = (\d+)|.|VERSION_NAME = "(.+)"
+CurrentVersion: 6.2.2-r2
+CurrentVersionCode: 208

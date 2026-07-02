@@ -1,4 +1,5 @@
 Categories:
+  - Calendar & Agenda
   - Internet
   - Security
   - System
@@ -934,12 +935,46 @@ Builds:
     prebuild: sed -i -e 's/maven()/maven/' ../build.gradle
     ndk: r21
 
-MaintainerNotes: |-
-  Summary and Description are maintained by upstream using fastlane in
-  the source repo:
-  https://f-droid.org/docs/All_About_Descriptions_Graphics_and_Screenshots
+  - versionName: 2.4.4
+    versionCode: 20404
+    commit: b2f48e524d1605dcdcf7e036acf56783e91eb988
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/maven()/maven/' ../build.gradle
+    ndk: r21
+
+  - versionName: 2.6.0
+    versionCode: 20600
+    commit: 56cea1eec4ef375d0be08b02f233983364121cc7
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/maven()/maven/' ../build.gradle
+    ndk: r21
+
+  - versionName: 2.7.0
+    versionCode: 20700
+    commit: 54c4959b6fb918091422bebbd6eb12ce6bdceb5a
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/maven()/maven/' ../build.gradle
+    ndk: r21
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.4.3
-CurrentVersionCode: 20403
+CurrentVersion: 2.7.0
+CurrentVersionCode: 20700

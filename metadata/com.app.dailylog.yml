@@ -1,0 +1,46 @@
+Categories:
+  - Habit Tracker
+  - Note
+  - Writing
+License: GPL-3.0-only
+SourceCode: https://github.com/madCode/dailylog
+IssueTracker: https://github.com/madCode/dailylog/issues
+Changelog: https://github.com/madCode/dailylog/releases
+
+AutoName: dailylog
+
+RepoType: git
+Repo: https://github.com/madCode/dailylog.git
+Binaries: https://github.com/madCode/dailylog/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 2.0.1
+    versionCode: 2001
+    commit: 3fe0df03ef7498ce3367541aac5a318ce93407fe
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 3.1.2
+    versionCode: 3102
+    disable: fails to repro
+    commit: dc50ec9f9b1970497f0dca68ba3475e19a542727
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: 349d41f22f721c6faaf8dd70be387ff296effd33156baabcae79b3d068aff7e6
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 3.1.2
+CurrentVersionCode: 3102

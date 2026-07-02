@@ -1,5 +1,6 @@
 Categories:
   - Internet
+  - Messaging
   - Phone & SMS
 License: Apache-2.0
 AuthorName: SpiritCroc
@@ -7,6 +8,7 @@ WebSite: https://schildi.chat/android
 SourceCode: https://github.com/SchildiChat/SchildiChat-android
 IssueTracker: https://github.com/SchildiChat/SchildiChat-android/issues
 Translation: https://weblate.spiritcroc.de/projects/schildichat/schildichat-android
+Changelog: https://github.com/SchildiChat/SchildiChat-android/tags
 
 RepoType: git
 Repo: https://github.com/SchildiChat/SchildiChat-android.git
@@ -1432,7 +1434,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.5.28.sc65
     versionCode: 40101050
@@ -1490,7 +1494,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.5.30.sc66
     versionCode: 40101060
@@ -1531,7 +1537,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.5.32.sc67
     versionCode: 40101070
@@ -1572,7 +1580,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.5.32.sc68
     versionCode: 40101080
@@ -1613,7 +1623,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.6.3.sc69
     versionCode: 40101090
@@ -1650,7 +1662,9 @@ Builds:
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
     antifeatures:
-      - NonFreeNet
+      NonFreeNet: {}
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.6.5.sc71
     versionCode: 40101211
@@ -1686,6 +1700,9 @@ Builds:
       - mkdir -p "$HOME/.m2/repository/org/webkit"
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
+    antifeatures:
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.6.5.sc71
     versionCode: 40101212
@@ -1721,6 +1738,9 @@ Builds:
       - mkdir -p "$HOME/.m2/repository/org/webkit"
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
+    antifeatures:
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.6.5.sc71
     versionCode: 40101213
@@ -1756,6 +1776,9 @@ Builds:
       - mkdir -p "$HOME/.m2/repository/org/webkit"
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
+    antifeatures:
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
 
   - versionName: 1.6.5.sc71
     versionCode: 40101214
@@ -1791,6 +1814,2828 @@ Builds:
       - mkdir -p "$HOME/.m2/repository/org/webkit"
       - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
     ndk: r21d
+    antifeatures:
+      KnownVuln:
+        en-US: Vulnerability in showing WebP images (CVE-2023-4863)
+
+  - versionName: 1.6.5.sc72
+    versionCode: 40101221
+    commit: 1a47878318d4604bac702a5b274c6f65a04cfa43
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.5.sc72
+    versionCode: 40101222
+    commit: 1a47878318d4604bac702a5b274c6f65a04cfa43
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.5.sc72
+    versionCode: 40101223
+    commit: 1a47878318d4604bac702a5b274c6f65a04cfa43
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.5.sc72
+    versionCode: 40101224
+    commit: 1a47878318d4604bac702a5b274c6f65a04cfa43
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.6.sc73
+    versionCode: 40101231
+    commit: 3a7b2e8d1d1572673e18af0737f901f4ac7c01c7
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.6.sc73
+    versionCode: 40101232
+    commit: 3a7b2e8d1d1572673e18af0737f901f4ac7c01c7
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.6.sc73
+    versionCode: 40101233
+    commit: 3a7b2e8d1d1572673e18af0737f901f4ac7c01c7
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.6.sc73
+    versionCode: 40101234
+    commit: 3a7b2e8d1d1572673e18af0737f901f4ac7c01c7
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+      - rustCrypto
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.8.sc74
+    versionCode: 40101241
+    commit: 86317190c42714c64999aff6802b631f25827329
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.8.sc74
+    versionCode: 40101242
+    commit: 86317190c42714c64999aff6802b631f25827329
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.8.sc74
+    versionCode: 40101243
+    commit: 86317190c42714c64999aff6802b631f25827329
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.8.sc74
+    versionCode: 40101244
+    commit: 86317190c42714c64999aff6802b631f25827329
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc75
+    versionCode: 40101251
+    commit: d7e7a319f0e3e6b9e8006e19dabb674702fc4558
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc75
+    versionCode: 40101252
+    commit: d7e7a319f0e3e6b9e8006e19dabb674702fc4558
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc75
+    versionCode: 40101253
+    commit: d7e7a319f0e3e6b9e8006e19dabb674702fc4558
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc75
+    versionCode: 40101254
+    commit: d7e7a319f0e3e6b9e8006e19dabb674702fc4558
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc76
+    versionCode: 40101261
+    commit: 52ce0d2311aa3ad5ec04ab5cb07fc0e28ba461ce
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc76
+    versionCode: 40101262
+    commit: 52ce0d2311aa3ad5ec04ab5cb07fc0e28ba461ce
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc76
+    versionCode: 40101263
+    commit: 52ce0d2311aa3ad5ec04ab5cb07fc0e28ba461ce
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.10.sc76
+    versionCode: 40101264
+    commit: 52ce0d2311aa3ad5ec04ab5cb07fc0e28ba461ce
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.12.sc77
+    versionCode: 40101271
+    commit: 14cd245c247a2ba942943bfea4d920072d977a50
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.12.sc77
+    versionCode: 40101272
+    commit: 14cd245c247a2ba942943bfea4d920072d977a50
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.12.sc77
+    versionCode: 40101273
+    commit: 14cd245c247a2ba942943bfea4d920072d977a50
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.12.sc77
+    versionCode: 40101274
+    commit: 14cd245c247a2ba942943bfea4d920072d977a50
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.16.sc78
+    versionCode: 40101281
+    commit: 4cf3ff606e32d93ce99a3a03e26ba8fcc8b07250
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.16.sc78
+    versionCode: 40101282
+    commit: 4cf3ff606e32d93ce99a3a03e26ba8fcc8b07250
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.16.sc78
+    versionCode: 40101283
+    commit: 4cf3ff606e32d93ce99a3a03e26ba8fcc8b07250
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.16.sc78
+    versionCode: 40101284
+    commit: 4cf3ff606e32d93ce99a3a03e26ba8fcc8b07250
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.18.sc79
+    versionCode: 40101291
+    commit: 8ab5a544b921b06980d17efda6b8fb6c2db417fa
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.18.sc79
+    versionCode: 40101292
+    commit: 8ab5a544b921b06980d17efda6b8fb6c2db417fa
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.18.sc79
+    versionCode: 40101293
+    commit: 8ab5a544b921b06980d17efda6b8fb6c2db417fa
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.18.sc79
+    versionCode: 40101294
+    commit: 8ab5a544b921b06980d17efda6b8fb6c2db417fa
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.20.sc80
+    versionCode: 40101301
+    commit: ad67b7ea400adb6c2deab7b017504d2989c024f3
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.20.sc80
+    versionCode: 40101302
+    commit: ad67b7ea400adb6c2deab7b017504d2989c024f3
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.20.sc80
+    versionCode: 40101303
+    commit: ad67b7ea400adb6c2deab7b017504d2989c024f3
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.20.sc80
+    versionCode: 40101304
+    commit: ad67b7ea400adb6c2deab7b017504d2989c024f3
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven
+      - sysctl fs.inotify.max_user_watches=524288
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v16.20.0/node-v16.20.0-linux-x64.tar.gz
+      - echo "7abc0e558fa3b3c4cc0fd3c7fa5dbe61500ba7213f5e87ed560c65a733c6a5c4  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@android-sdk-8.1.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*android-sdk-8.1.1|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.22.sc81
+    versionCode: 40101311
+    commit: 7fe2e688907ed4ecf9a39ce55fea6643a5bac03c
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.22.sc81
+    versionCode: 40101312
+    commit: 7fe2e688907ed4ecf9a39ce55fea6643a5bac03c
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.22.sc81
+    versionCode: 40101313
+    commit: 7fe2e688907ed4ecf9a39ce55fea6643a5bac03c
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.22.sc81
+    versionCode: 40101314
+    commit: 7fe2e688907ed4ecf9a39ce55fea6643a5bac03c
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - bash android/scripts/release-sdk.sh "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc82
+    versionCode: 40101321
+    commit: 07c88d5119023609c52dba8efd162583e0f58135
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc82
+    versionCode: 40101322
+    commit: 07c88d5119023609c52dba8efd162583e0f58135
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc82
+    versionCode: 40101323
+    commit: 07c88d5119023609c52dba8efd162583e0f58135
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc82
+    versionCode: 40101324
+    commit: 07c88d5119023609c52dba8efd162583e0f58135
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc83
+    versionCode: 40101331
+    commit: 350c9fc9cab2f1d1b34dff82d306854cfc4d1b1b
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc83
+    versionCode: 40101332
+    commit: 350c9fc9cab2f1d1b34dff82d306854cfc4d1b1b
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc83
+    versionCode: 40101333
+    commit: 350c9fc9cab2f1d1b34dff82d306854cfc4d1b1b
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.24.sc83
+    versionCode: 40101334
+    commit: 350c9fc9cab2f1d1b34dff82d306854cfc4d1b1b
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26.sc84
+    versionCode: 40101341
+    commit: 38bfec6044400b057814945810835330e33d4258
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26.sc84
+    versionCode: 40101342
+    commit: 38bfec6044400b057814945810835330e33d4258
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26.sc84
+    versionCode: 40101343
+    commit: 38bfec6044400b057814945810835330e33d4258
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.26.sc84
+    versionCode: 40101344
+    commit: 38bfec6044400b057814945810835330e33d4258
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30.sc85
+    versionCode: 40101351
+    commit: a08fc8fbb0227f76459862967ff3ec608f7bef93
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30.sc85
+    versionCode: 40101352
+    commit: a08fc8fbb0227f76459862967ff3ec608f7bef93
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30.sc85
+    versionCode: 40101353
+    commit: a08fc8fbb0227f76459862967ff3ec608f7bef93
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.30.sc85
+    versionCode: 40101354
+    commit: a08fc8fbb0227f76459862967ff3ec608f7bef93
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.36.sc86
+    versionCode: 40101361
+    commit: 2afa030c67996d109e58bbb972fa09f4539c57d2
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.36.sc86
+    versionCode: 40101362
+    commit: 2afa030c67996d109e58bbb972fa09f4539c57d2
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.36.sc86
+    versionCode: 40101363
+    commit: 2afa030c67996d109e58bbb972fa09f4539c57d2
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.36.sc86
+    versionCode: 40101364
+    commit: 2afa030c67996d109e58bbb972fa09f4539c57d2
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.42.sc87
+    versionCode: 40101371
+    commit: 6a22e9265516b574120c6482ab81ec09fe946d49
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.42.sc87
+    versionCode: 40101372
+    commit: 6a22e9265516b574120c6482ab81ec09fe946d49
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.42.sc87
+    versionCode: 40101373
+    commit: 6a22e9265516b574120c6482ab81ec09fe946d49
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.42.sc87
+    versionCode: 40101374
+    commit: 6a22e9265516b574120c6482ab81ec09fe946d49
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.44.sc88
+    versionCode: 40101381
+    commit: eabcab9bbe76936bc5998994869cf2b45d7a14ab
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.44.sc88
+    versionCode: 40101382
+    commit: eabcab9bbe76936bc5998994869cf2b45d7a14ab
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.44.sc88
+    versionCode: 40101383
+    commit: eabcab9bbe76936bc5998994869cf2b45d7a14ab
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.44.sc88
+    versionCode: 40101384
+    commit: eabcab9bbe76936bc5998994869cf2b45d7a14ab
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-10.2.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e 's|https.*mobile-sdk-10.2.0|https://jitpack.io|'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.46.sc89
+    versionCode: 40101391
+    commit: ad64e8164df720d535c4c4aace9102ab5cfbb283
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.46.sc89
+    versionCode: 40101392
+    commit: ad64e8164df720d535c4c4aace9102ab5cfbb283
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.46.sc89
+    versionCode: 40101393
+    commit: ad64e8164df720d535c4c4aace9102ab5cfbb283
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.46.sc89
+    versionCode: 40101394
+    commit: ad64e8164df720d535c4c4aace9102ab5cfbb283
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.48.sc90
+    versionCode: 40101401
+    commit: 743f60d4b9c3d72476077efff33a515ee71e35ef
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.48.sc90
+    versionCode: 40101402
+    commit: 743f60d4b9c3d72476077efff33a515ee71e35ef
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.48.sc90
+    versionCode: 40101403
+    commit: 743f60d4b9c3d72476077efff33a515ee71e35ef
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.48.sc90
+    versionCode: 40101404
+    commit: 743f60d4b9c3d72476077efff33a515ee71e35ef
+    subdir: vector-app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y jq maven
+      - apt-get install -t trixie npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.4.0
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.52.sc91
+    versionCode: 40101411
+    commit: c4f029e57982292a54606c98decf90b704ffd5bb
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.5.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"armeabi-v7a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+      - sed -i -e '/javaVersion/s/17/21/' -e '/jvm/s/17/21/' $$jitsi-meet$$/android/build.gradle
+      - sed -i -e '/if (!rootProject.ext.libreBuild) {/,/^    }/d' $$jitsi-meet$$/android/sdk/build.gradle
+      - sed -i -e '/react-native-amplitude/d' -e '/react-native-giphy/d' -e '/react-native-google-signin/d'
+        $$jitsi-meet$$/android/settings.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.52.sc91
+    versionCode: 40101412
+    commit: c4f029e57982292a54606c98decf90b704ffd5bb
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.5.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"arm64-v8a"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+      - sed -i -e '/javaVersion/s/17/21/' -e '/jvm/s/17/21/' $$jitsi-meet$$/android/build.gradle
+      - sed -i -e '/if (!rootProject.ext.libreBuild) {/,/^    }/d' $$jitsi-meet$$/android/sdk/build.gradle
+      - sed -i -e '/react-native-amplitude/d' -e '/react-native-giphy/d' -e '/react-native-google-signin/d'
+        $$jitsi-meet$$/android/settings.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.52.sc91
+    versionCode: 40101413
+    commit: c4f029e57982292a54606c98decf90b704ffd5bb
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.5.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+      - sed -i -e '/javaVersion/s/17/21/' -e '/jvm/s/17/21/' $$jitsi-meet$$/android/build.gradle
+      - sed -i -e '/if (!rootProject.ext.libreBuild) {/,/^    }/d' $$jitsi-meet$$/android/sdk/build.gradle
+      - sed -i -e '/react-native-amplitude/d' -e '/react-native-giphy/d' -e '/react-native-google-signin/d'
+        $$jitsi-meet$$/android/settings.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+  - versionName: 1.6.52.sc91
+    versionCode: 40101414
+    commit: c4f029e57982292a54606c98decf90b704ffd5bb
+    subdir: vector-app
+    sudo:
+      - apt-get update
+      - apt-get install -y jq maven npm
+    gradle:
+      - fdroid
+    srclibs:
+      - jitsi-meet@mobile-sdk-11.5.1
+    prebuild:
+      - sed -i -e 's/-XX:MaxPermSize\S*//' ../gradle.properties $$jitsi-meet$$/android/gradle.properties
+      - sed -i -e 's/def isCiBuild =.*/def isCiBuild = true/' ../tools/gradle/doctor.gradle
+      - sed -i -e '/universalApk/d' -e '/abiFilters/d' -e '/include/s/"armeabi-v7a".*/"x86_64"/'
+        -e '/AppDistribution {/,/^            }/d' build.gradle
+      - sed -i -e '/repositories {/a mavenLocal()' -e '/Jitsi repo/,/^        }/d'
+        ../build.gradle
+      - sed -i -e '/com.google.firebase/d' -e '/gms/d' {.,..}/build.gradle
+      - sed -i -e '/git/d' $$jitsi-meet$$/android/scripts/release-sdk.sh
+      - sed -i -e '/javaVersion/s/17/21/' -e '/jvm/s/17/21/' $$jitsi-meet$$/android/build.gradle
+      - sed -i -e '/if (!rootProject.ext.libreBuild) {/,/^    }/d' $$jitsi-meet$$/android/sdk/build.gradle
+      - sed -i -e '/react-native-amplitude/d' -e '/react-native-giphy/d' -e '/react-native-google-signin/d'
+        $$jitsi-meet$$/android/settings.gradle
+    build:
+      - cd $$jitsi-meet$$
+      - export LIBRE_BUILD=true
+      - npm install --save false webpack-bundle-analyzer
+      - npm ci
+      - mkdir -p "$HOME/.m2"
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 bash android/scripts/release-sdk.sh
+        "$HOME/.m2/repository"
+      - mkdir -p "$HOME/.m2/repository/org/webkit"
+      - cp -r node_modules/jsc-android/dist/org/webkit/android-jsc "$HOME/.m2/repository/org/webkit"
+    ndk: r21d
+
+MaintainerNotes: scanner might detect 'com/google/ads/interactivemedia/v3/api/AdEvent'
+  stubs from react-native-video
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -1799,5 +4644,5 @@ VercodeOperation:
   - '%c + 2'
   - '%c + 3'
   - '%c + 4'
-CurrentVersion: 1.6.5.sc71
-CurrentVersionCode: 40101214
+CurrentVersion: 1.6.52.sc91
+CurrentVersionCode: 40101414

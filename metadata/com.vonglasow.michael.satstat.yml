@@ -1,6 +1,7 @@
 Categories:
-  - Navigation
+  - Location Tracker & Sharer
 License: GPL-3.0-or-later
+AuthorName: Michael von Glasow
 WebSite: https://mvglasow.gitlab.io/satstat/
 SourceCode: https://gitlab.com/mvglasow/satstat
 IssueTracker: https://gitlab.com/mvglasow/satstat/issues
@@ -148,22 +149,22 @@ Builds:
       - libs/*jar
     prebuild: sed -i -e 's/0.4.0/0.4.3/g' build.gradle
 
-  - versionName: '3.4'
-    versionCode: 30400
-    disable: fails to build
-    commit: e633d095ee1b28943b55694505bd4e4a3d64cc48
-    init: ./setbuild.sh
-    gradle:
-      - yes
-    rm:
-      - libs/*jar
-
   - versionName: '3.5'
     versionCode: 30500
     commit: 33a25b9e0c9b23d059b0dc0a6aa2c1483c5be25b
     init: ./setbuild.sh
     gradle:
       - yes
+
+  - versionName: 3.6.0
+    versionCode: 30600
+    commit: 2a4d2d1a80e309c1c90bf9725876d4fc902efffe
+    init: ./setbuild.sh
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/6.1.1/7.3.3/' gradle/wrapper/gradle-wrapper.properties
+      - sed -i -e 's/4.0.0/7.2.2/' build.gradle
 
 MaintainerNotes: |-
   Build 2.0 switched to gradle because of the dependency on mapsforge, which fails on the build server
@@ -174,5 +175,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.5'
-CurrentVersionCode: 30500
+CurrentVersion: 3.6.0
+CurrentVersionCode: 30600

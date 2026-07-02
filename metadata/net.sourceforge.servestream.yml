@@ -1,5 +1,6 @@
 Categories:
   - Multimedia
+  - Radio
 License: Apache-2.0
 WebSite: https://sourceforge.net/projects/servestream
 SourceCode: https://sourceforge.net/p/servestream/code
@@ -35,9 +36,11 @@ Builds:
     prebuild:
       - rm custom_rules.xml
       - echo "android.library.reference.1=$$ActionBarSherlock$$" >> project.properties
-      - wget http://sourceforge.net/p/servestream/code/1175/tree/ffmpeg/ffmpeg-0.11.1-android-2012-09-18.tar.gz?format=raw
+      - wget 
+        http://sourceforge.net/p/servestream/code/1175/tree/ffmpeg/ffmpeg-0.11.1-android-2012-09-18.tar.gz?format=raw
         --output-document=ffmpeg-0.11.1-android-2012-09-18.tar.gz
-      - wget http://sourceforge.net/p/servestream/code/1311/tree/ffmpeg/scripts/arm-build.sh?format=raw
+      - wget 
+        http://sourceforge.net/p/servestream/code/1311/tree/ffmpeg/scripts/arm-build.sh?format=raw
         --output-document=arm-build.sh
       - tar -xvf ffmpeg-0.11.1-android-2012-09-18.tar.gz
       - chmod +x arm-build.sh
@@ -152,28 +155,6 @@ Builds:
       - rm custom_rules.xml
       - echo ndk.dir=$$NDK$$ >> local.properties
       - chmod +x scripts/build-ffmpeg.sh
-    build: ./scripts/build-ffmpeg.sh
-    buildjni:
-      - yes
-    ndk: r12b
-
-  - versionName: 0.7.0
-    versionCode: 105
-    disable: Uses com.google.android.gms.cast.{MediaInfo,MediaStatus}
-    commit: v0.7.0
-    srclibs:
-      - appcompat@ad5a63f
-      - Jericho@3.3
-    prebuild:
-      - cp $$appcompat$$/libs/android-support-v4.jar libs/
-      - cp $$appcompat$$/libs/android-support-v7-appcompat.jar libs/
-      - cp -r $$Jericho$$/src/java/net/htmlparser/ src/net/
-      - cp $$Jericho$$/compile-time-dependencies/* libs/
-      - sed -i 's/make -j4/make -j2/g' scripts/*
-      - rm custom_rules.xml
-      - echo ndk.dir=$$NDK$$ >> local.properties
-      - chmod +x scripts/build-ffmpeg.sh
-    target: android-19
     build: ./scripts/build-ffmpeg.sh
     buildjni:
       - yes

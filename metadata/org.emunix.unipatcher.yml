@@ -1,5 +1,5 @@
 Categories:
-  - Games
+  - Game Helper
 License: GPL-3.0-or-later
 AuthorName: Boris Timofeev
 AuthorEmail: btimofeev@emunix.org
@@ -75,20 +75,21 @@ Builds:
       - app/src/main/cpp/xdelta3/xdelta3/examples
     ndk: r16b
 
-  - versionName: 0.17.2
-    versionCode: 170200
-    disable: https://github.com/btimofeev/UniPatcher/issues/66
-    commit: v0.17.2
+  - versionName: 0.17.3
+    versionCode: 170300
+    commit: aff8a946f90c2b26d994b339138ec260c39b5bcd
     subdir: app
     gradle:
       - free
-    scanignore:
+    prebuild: gradle downloadDependencies
+    scandelete:
+      - app/src/main/cpp/xz/xz/tests
+      - app/src/main/cpp/xdelta3/xdelta/xdelta3/examples
+      - app/src/main/cpp/xdelta3/xdelta/xdelta1
       - app/src/test
-    ndk: r21d
-    preassemble:
-      - downloadDependencies
+    ndk: r22b
 
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.17.2
-CurrentVersionCode: 170200
+CurrentVersion: 0.17.3
+CurrentVersionCode: 170300
