@@ -1,0 +1,34 @@
+AntiFeatures:
+  - NonFreeNet: This app routes traffic through external networks to bypass censorship.
+Categories:
+  - Internet
+License: GPL-3.0-only
+AuthorName: romanvht
+WebSite: https://byebyedpi.xyz
+SourceCode: https://github.com/romanvht/ByeByeDPI
+IssueTracker: https://github.com/romanvht/ByeByeDPI/issues
+
+Name: ByeByeDPI
+
+RepoType: git
+Repo: https://github.com/romanvht/ByeByeDPI
+
+Builds:
+  - versionName: 1.7.6
+    versionCode: 1760
+    commit: 882388362a412a9f87f9b8911308ea2f08df4e12
+    subdir: app
+    submodules: true
+    prebuild:
+      - rm -rf src/main/jni/hev-socks5-tunnel/third-part/wintun
+      - sed -i 's/dependsOn("runNdkBuild")//g' build.gradle.kts
+    output: app/build/outputs/apk/release/app-universal-release-unsigned.apk
+    gradle:
+      - yes
+    ndk: r27
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckName: io.github.romanvht.byedpi
+CurrentVersion: 1.7.6
+CurrentVersionCode: 1760
