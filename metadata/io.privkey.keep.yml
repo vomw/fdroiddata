@@ -17,53 +17,61 @@ Builds:
   - versionName: 1.1.5
     versionCode: 232
     commit: d79c553d1ba856c06fce7ab14520d27f06ecbe68
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
-        gcc g++ libc6-dev ca-certificates rustup
-    output: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+        g++ libc-dev rustup
+    gradle:
+      - yes
     binary: 
       https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-arm64-v8a.apk
     srclibs:
       - keep@5a31c2abf84afcca546b4ebba1c0b0ba5444b20b
     prebuild:
-      - rustup toolchain install 1.89.0 --profile minimal
+      - git -C $$keep$$ checkout -f $(cat ../keep.version)
+      - sed -i -e 's/include(.*)/include("arm64-v8a")/' build.gradle.kts
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android x86_64-linux-android
       - cargo install --locked --version 4.1.2 cargo-ndk
     build:
       - export KEEP_REPO=$$keep$$
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - export PATH=$HOME/.cargo/bin:$JAVA_HOME/bin:$PATH
       - export AWS_LC_SYS_CMAKE_BUILDER=1
-      - export SOURCE_DATE_EPOCH="$(./scripts/derive-sde.sh)"
-      - gradle assembleRelease
+      - export SOURCE_DATE_EPOCH="$(../scripts/derive-sde.sh)"
+      - export TARGETS=x86_64-linux-android
+      - gradle preBuild
+      - sed -i -e '/preBuild/,/^}/d' build.gradle.kts
     ndk: r29
 
   - versionName: 1.1.5
     versionCode: 234
     commit: d79c553d1ba856c06fce7ab14520d27f06ecbe68
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
-        gcc g++ libc6-dev ca-certificates rustup
-    output: app/build/outputs/apk/release/app-x86_64-release.apk
+        g++ libc-dev rustup
+    gradle:
+      - yes
     binary: 
       https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-x86_64.apk
     srclibs:
       - keep@5a31c2abf84afcca546b4ebba1c0b0ba5444b20b
     prebuild:
-      - rustup toolchain install 1.89.0 --profile minimal
+      - git -C $$keep$$ checkout -f $(cat ../keep.version)
+      - sed -i -e 's/include(.*)/include("x86_64")/' build.gradle.kts
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android x86_64-linux-android
       - cargo install --locked --version 4.1.2 cargo-ndk
     build:
       - export KEEP_REPO=$$keep$$
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - export PATH=$HOME/.cargo/bin:$JAVA_HOME/bin:$PATH
       - export AWS_LC_SYS_CMAKE_BUILDER=1
-      - export SOURCE_DATE_EPOCH="$(./scripts/derive-sde.sh)"
-      - gradle assembleRelease
+      - export SOURCE_DATE_EPOCH="$(../scripts/derive-sde.sh)"
+      - export TARGETS=x86_64-linux-android
+      - gradle preBuild
+      - sed -i -e '/preBuild/,/^}/d' build.gradle.kts
     ndk: r29
 
 AllowedAPKSigningKeys: 3eb0e6f6f4e0962ebd717f84eea47428b73087b686c956633d6a9fcc4c854f50
