@@ -20,12 +20,8 @@ Builds:
       - apt-get install -y libboost-dev
     gradle:
       - yes
-    prebuild:
-      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
-        build.gradle
-      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $$VERCODE$$|" build.gradle
+    prebuild: sed -i -e 's/versionName olxVersion/versionName "$$VERSION$$"/' -e "s|versionCode
+      olxVersionCode|versionCode $$VERCODE$$|" -e '/buildDirectory/d' build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -34,7 +30,6 @@ Builds:
       - build/DevCpp
     build: bash ../fetch-dependencies.sh
     ndk: 29.0.14206865
-    novcheck: true
 
   - versionName: '20260628.1'
     versionCode: 20260628
@@ -45,12 +40,8 @@ Builds:
       - apt-get install -y libboost-dev
     gradle:
       - yes
-    prebuild:
-      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
-        build.gradle
-      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $$VERCODE$$|" build.gradle
+    prebuild: sed -i -e 's/versionName olxVersion/versionName "$$VERSION$$"/' -e "s|versionCode
+      olxVersionCode|versionCode $$VERCODE$$|" -e '/buildDirectory/d' build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -59,7 +50,6 @@ Builds:
       - build/DevCpp
     build: bash ../fetch-dependencies.sh
     ndk: 29.0.14206865
-    novcheck: true
 
   - versionName: '20260702.1'
     versionCode: 20260702
@@ -70,12 +60,8 @@ Builds:
       - apt-get install -y libboost-dev
     gradle:
       - yes
-    prebuild:
-      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
-        build.gradle
-      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
-      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $$VERCODE$$|" build.gradle
+    prebuild: sed -i -e 's/versionName olxVersion/versionName "$$VERSION$$"/' -e "s|versionCode
+      olxVersionCode|versionCode $$VERCODE$$|" -e '/buildDirectory/d' build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -84,7 +70,6 @@ Builds:
       - build/DevCpp
     build: bash ../fetch-dependencies.sh
     ndk: 29.0.14206865
-    novcheck: true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^(\d+\.\d+)$
