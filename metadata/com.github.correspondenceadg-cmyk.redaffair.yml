@@ -1,0 +1,56 @@
+Categories:
+      - Games
+      License: GPL-3.0
+      SourceCode: https://github.com/correspondenceadg-cmyk/RedAffair
+
+      Name: Red Affair
+      Summary: A text‑based detective mystery set in a retro‑scifi space diner
+      Description: |
+        A short, narrative‑driven detective game inspired by classic text adventures.
+          You play as a detective investigating a murder in a space diner on the edge
+            of the Pillars of Creation. Choose your political leaning, interrogate
+              suspects, gather evidence, and decide whether to pursue justice or embrace
+                chaos. Minimalist text interface with deep branching dialogue and multiple
+                  endings.
+
+                  AuthorName: SiliCast
+                  AuthorEmail: correspondenceadg@gmail.com
+
+                  RepoType: git
+                  Repo: https://github.com/correspondenceadg-cmyk/RedAffair.git
+
+                  AutoUpdateMode: Version v%v
+                  UpdateCheckMode: Tags
+
+                  CurrentVersion: "1.0"
+                  CurrentVersionCode: 1
+
+                  Builds:
+                    - versionName: '1.0'
+                        versionCode: 1
+                            commit: v1.0
+                                subdir: .
+                                    gradle:
+                                          - yes
+                                              prebuild:
+                                                    - echo "android { defaultConfig { applicationId \"com.github.correspondenceadg-cmyk.redaffair\" } }" > build.gradle
+                                                          - echo "apply plugin: 'com.android.application'" >> build.gradle
+                                                              build:
+                                                                    - pip3 install --upgrade buildozer python-for-android
+                                                                          - p4a create --requirements=python3,kivy \
+                                                                                             --arch=arm64-v8a \
+                                                                                                                --arch=armeabi-v7a \
+                                                                                                                                   --name="Red Affair" \
+                                                                                                                                                      --package=com.github.correspondenceadg-cmyk.redaffair \
+                                                                                                                                                                         --version=1.0 \
+                                                                                                                                                                                            --private=. \
+                                                                                                                                                                                                               --orientation=portrait \
+                                                                                                                                                                                                                                  --permission=INTERNET \
+                                                                                                                                                                                                                                                     --android-api=30 \
+                                                                                                                                                                                                                                                                        --sdk-dir=/opt/android-sdk \
+                                                                                                                                                                                                                                                                                           --ndk-dir=/opt/android-ndk \
+                                                                                                                                                                                                                                                                                                              --bootstrap=sdl2 \
+                                                                                                                                                                                                                                                                                                                                 --dist-name=redaffair \
+                                                                                                                                                                                                                                                                                                                                                    --release
+                                                                                                                                                                                                                                                                                                                                                        ndk: r25b
+                                                                                                                                                                                                                                                                                                                                                            sdk: 33
