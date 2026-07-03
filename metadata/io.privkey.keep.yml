@@ -20,16 +20,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
-        gcc g++ libc6-dev ca-certificates rustup
+        g++ libc-dev rustup
     output: app/build/outputs/apk/release/app-arm64-v8a-release.apk
     binary: 
       https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-arm64-v8a.apk
     srclibs:
       - keep@5a31c2abf84afcca546b4ebba1c0b0ba5444b20b
     prebuild:
-      - rustup toolchain install 1.89.0 --profile minimal
+      - git -C $$keep$$ checkout -f $(cat keep.version)
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android x86_64-linux-android
+      - rustup target add aarch64-linux-android
       - cargo install --locked --version 4.1.2 cargo-ndk
     build:
       - export KEEP_REPO=$$keep$$
@@ -47,16 +47,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends pkg-config cmake make ninja-build
-        gcc g++ libc6-dev ca-certificates rustup
+        g++ libc-dev rustup
     output: app/build/outputs/apk/release/app-x86_64-release.apk
     binary: 
       https://github.com/privkeyio/keep-android/releases/download/v%v/keep-android-v%v-x86_64.apk
     srclibs:
       - keep@5a31c2abf84afcca546b4ebba1c0b0ba5444b20b
     prebuild:
-      - rustup toolchain install 1.89.0 --profile minimal
+      - git -C $$keep$$ checkout -f $(cat keep.version)
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android x86_64-linux-android
+      - rustup target add x86_64-linux-android
       - cargo install --locked --version 4.1.2 cargo-ndk
     build:
       - export KEEP_REPO=$$keep$$
