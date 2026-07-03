@@ -1,5 +1,5 @@
 Categories:
-  - Games
+  - Role-Playing Game
 License: GPL-3.0-or-later
 AuthorName: Clint Bellanger
 WebSite: http://flarerpg.org
@@ -53,13 +53,22 @@ Builds:
       - flare-android-project/app/src/main/jni
     ndk: r22b
 
-MaintainerNotes: |-
-  SDL repo commits were provided by the author and reflect the upstream build environment.
-  Scanner complains about binary test data in SDL repos that's safe to scandelete.
-  The engine requires data files that can be installed using the following instruction:
-  https://github.com/flareteam/flare-engine/wiki/Android-Port
+  - versionName: '1.15'
+    versionCode: 115
+    commit: e7c63fa1c3e9033b022cbbf8b23c180806466fa2
+    subdir: flare-android-project/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential file
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+    scandelete:
+      - flare-android-project/app/src/main/jni
+    ndk: 28.2.13676358
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.14'
-CurrentVersionCode: 114
+CurrentVersion: '1.15'
+CurrentVersionCode: 115
