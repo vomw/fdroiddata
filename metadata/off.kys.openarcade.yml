@@ -11,23 +11,15 @@ AutoName: OpenArcade
 
 RepoType: git
 Repo: https://github.com/kys0ff/OpenArcade.git
-Binaries: 
-  https://github.com/kys0ff/OpenArcade/releases/download/v%v/app-github-release.apk
 
 Builds:
   - versionName: 1.0.2
     versionCode: 3
     commit: fb09c63bf8e5227db515ef59a6799b4dce123fd5
     subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
-      - update-java-alternatives -a --jre-headless
     gradle:
       - fdroid
     prebuild: sed -i '/org.gradle.toolchains.foojay-resolver/d' ../settings.gradle.kts
-
-AllowedAPKSigningKeys: 531da3094b7aa909a1be1a0a66f9401ff3a3b2e9adf511636147fd0224f33fe6
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
