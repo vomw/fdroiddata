@@ -19,10 +19,12 @@ Builds:
       - mv /tmp/bookworm.list /etc/apt/sources.list.d/bookworm.list
       - apt-get update
       - apt-get install -y npm
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
     output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - npm ci
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild --platform android --no-install
     scanignore:
       - android/build.gradle
