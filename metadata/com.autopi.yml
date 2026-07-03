@@ -28,8 +28,14 @@ Builds:
       - export TERMUX_REF=401bbe54b8f4e68302b1ff70678015a24628fb1d
       - git config --global user.email fdroid@localhost
       - git config --global user.name F-Droid
-      - bash ../build_from_source.sh > ../build_from_source.log 2>&1
-      - tail -n 300 ../build_from_source.log
+      - |
+        set +e
+        bash ../build_from_source.sh > /tmp/build_from_source.log 2>&1
+        status=$?
+        echo "==== build_from_source.sh last 600 lines ===="
+        tail -n 600 /tmp/build_from_source.log || true
+        echo "==== end build_from_source.sh log ===="
+        exit "$status"
     scanignore:
       - app/src/main/assets/bootstrap-aarch64.zip
 
