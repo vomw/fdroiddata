@@ -5501,7 +5501,6 @@ Builds:
       - web
     prebuild:
       - sed -i -e 's/Xmx4096M/Xmx8G/' android/gradle.properties
-      - cp .isar-cargo.lock .isar/Cargo.lock
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -5528,7 +5527,6 @@ Builds:
     build:
       - rustup default 1.94.1
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - bash ./scripts/fdroid_build_isar.sh
       - $$flutter$$/bin/flutter build apk --release --dart-define=cronetHttpNoPlay=true
     ndk: r25c
 
