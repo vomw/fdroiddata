@@ -25,7 +25,7 @@ Builds:
         build.gradle
       - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
       - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $VERCODE$|" build.gradle
+        = $$VERCODE$$|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -50,7 +50,32 @@ Builds:
         build.gradle
       - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
       - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
-        = $VERCODE$|" build.gradle
+        = $$VERCODE$$|" build.gradle
+    scandelete:
+      - share/gamedir
+      - libs/breakpad
+      - tools
+      - build/msvc
+      - build/DevCpp
+    build: bash ../fetch-dependencies.sh
+    ndk: 29.0.14206865
+    novcheck: true
+
+  - versionName: '20260702.1'
+    versionCode: 20260702
+    commit: 6bedf5e6656897a85ed06be16685231186233d49
+    subdir: build/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y libboost-dev
+    gradle:
+      - yes
+    prebuild:
+      - sed -i "s|project.layout.buildDirectory.set(|// project.layout.buildDirectory.set(|"
+        build.gradle
+      - sed -i "/^def olxVersion = {/,/^}()/c\def olxVersion = '$$VERSION$$'" build.gradle
+      - sed -i "s|def olxVersionCode = versionCodeBase + gitCommitCount|def olxVersionCode
+        = $$VERCODE$$|" build.gradle
     scandelete:
       - share/gamedir
       - libs/breakpad
@@ -64,5 +89,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^(\d+\.\d+)$
 UpdateCheckData: '|(\d+)\.\d+||(\d+\.\d+)'
-CurrentVersion: '20260628.1'
-CurrentVersionCode: 20260628
+CurrentVersion: '20260702.1'
+CurrentVersionCode: 20260702
