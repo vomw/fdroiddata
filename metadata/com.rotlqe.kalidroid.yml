@@ -1,0 +1,72 @@
+Categories:
+  - System
+  - Security
+
+License: GPL-3.0-only
+
+WebSite: https://github.com/Rotlqe/KaliDroid
+SourceCode: https://github.com/Rotlqe/KaliDroid
+IssueTracker: https://github.com/Rotlqe/KaliDroid/issues
+
+Name: KaliDroid
+AutoName: KaliDroid
+
+Summary: Kali Linux terminal with apt/sudo for Android
+
+Description: |-
+  KaliDroid is a real, open-source Kali Linux terminal emulator for Android.
+  It runs a full Kali Linux environment via proot — no root required — giving
+  you direct access to the complete Kali rolling repository on your device.
+
+  Unlike fake terminal apps, KaliDroid is built on a native C/C++ PTY engine
+  with a real VT100/xterm-256color emulator, a genuine bash shell, and a full
+  proot-based root filesystem. Every command goes to a real process.
+
+  Features:
+
+  * Real PTY-backed bash shell — not a simulation
+  * Full apt-get / apt / sudo support
+  * Access to all Kali Linux rolling repositories
+  * Tab completion backed by bash compgen
+  * Command history with up/down arrow navigation
+  * Shell aliases built-in (ll, la, update, install, search...)
+  * Special terminal keyboard row: ESC, Tab, Ctrl, ^C, ^D, ^Z, ^L, arrows, pipe, slash
+  * Background download notifications — visible even when app is minimized
+  * Storage permission helper: type ./files -0 & permission to grant access
+  * Settings: font size, Kali mirror URL, keep screen on
+  * Pure black UI — no clutter, no ads, no trackers
+  * GPL-3.0 licensed — fully open source
+  * No proprietary SDKs, no analytics, F-Droid ready
+
+  Tool categories available via apt: Information Gathering, Vulnerability Analysis,
+  Web Application Testing, Password Attacks, Wireless Attacks, Reverse Engineering,
+  Exploitation, Sniffing and Spoofing, Post Exploitation, Forensics, Social
+  Engineering, Crypto, Android Security — and everything else in the Kali repository.
+
+  First run: On first launch, KaliDroid automatically downloads and sets up the
+  Kali Linux minimal rootfs. Progress is shown in the notification bar. Once
+  complete, run apt-get update then install any tool with apt-get install.
+
+  Requires Android 8.0 (API 26) or higher.
+  Supported architectures: arm64-v8a, armeabi-v7a, x86_64, x86.
+
+RepoType: git
+Repo: https://github.com/Rotlqe/KaliDroid
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - release
+    ndk: 26.3.11579264
+    buildjni:
+      - .
+    gradleprops:
+      - org.gradle.jvmargs=-Xmx2048m
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
