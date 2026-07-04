@@ -22,20 +22,16 @@ Builds:
       - fdroid
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
-      - flutter@3.41.9
+      - flutter@stable
     prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scanignore:
       - third_party/google_mlkit_commons
       - third_party/google_mlkit_text_recognition
-    scandelete:
-      - .pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --dart-define=FORCE_LOCATION_MANAGER=true --dart-define=FGS_FORM_APPROVED=true
+    build: $$flutter$$/bin/flutter build apk --release --flavor fdroid --dart-define=FORCE_LOCATION_MANAGER=true
+      --dart-define=FGS_FORM_APPROVED=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
