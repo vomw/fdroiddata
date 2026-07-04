@@ -20,14 +20,14 @@ Builds:
     rm:
       - backend
     prebuild:
-      - flutterVersion=
-      - '[[  ]]'
-      - git -C flutter checkout -f 
-      - export PATH="flutter/bin:flutter/bin/cache/dart-sdk/bin:"
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
       - flutter config --no-analytics
       - flutter pub get --enforce-lockfile
     build:
-      - export PATH="flutter/bin:flutter/bin/cache/dart-sdk/bin:"
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
       - flutter build apk --release
 
 AutoUpdateMode: Version
