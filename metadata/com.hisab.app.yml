@@ -8,8 +8,6 @@ AutoName: Hisab
 
 RepoType: git
 Repo: https://github.com/Bittu-the-coder/hisab
-Binaries: 
-  https://github.com/Bittu-the-coder/hisab/releases/download/v%v/app-release-signed.apk
 
 Builds:
   - versionName: 1.1.0
@@ -22,17 +20,15 @@ Builds:
     rm:
       - backend
     prebuild:
-      - flutterVersion=$(cat .flutter-version)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - flutterVersion=
+      - '[[  ]]'
+      - git -C flutter checkout -f 
+      - export PATH="flutter/bin:flutter/bin/cache/dart-sdk/bin:"
       - flutter config --no-analytics
       - flutter pub get --enforce-lockfile
     build:
-      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PATH="flutter/bin:flutter/bin/cache/dart-sdk/bin:"
       - flutter build apk --release
-
-AllowedAPKSigningKeys: be97572e4383ba23576a6dc40bb0077c12126fe47c085cd6c6d603125072ce65
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
