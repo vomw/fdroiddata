@@ -1,9 +1,6 @@
-# F-Droid Metadata for FPV Tools
-# Developer: Saturn FPV
-# License: GPL-3.0-only
 Categories:
-  - Utility
-  - Science
+  - Calculator
+  - Science & Education
 License: GPL-3.0-only
 WebSite: https://saturnfpv.com
 SourceCode: https://github.com/saturn-fpv/fpv-tools
@@ -11,7 +8,6 @@ IssueTracker: https://github.com/saturn-fpv/fpv-tools/issues
 
 AutoName: FPV Tools
 
-# F-Droid Build Recipe
 Builds:
   - versionName: 1.1.2
     versionCode: 5
@@ -19,34 +15,10 @@ Builds:
     subdir: android/app
     gradle:
       - yes
-    prebuild:
-      - chmod +x gradlew
     scanignore:
       - android/app/src/main/assets/js/chart.umd.min.js
 
-# ==============================================================================
-# AUDITING & COMPLIANCE NOTES:
-# 
-# 1. Naming Override/Rename Strategy:
-#    To comply with F-Droid's requirement for human-readable (unminified) source
-#    code, we have packaged the unminified development source files for:
-#    - React (react.development.js)
-#    - React-DOM (react-dom.development.js)
-#    - Babel Standalone (babel.js)
-#    - Leaflet (leaflet-src.js)
-#    - JSZip (jszip.js)
-#    under their original minified names (e.g. react.production.min.js) in the
-#    'fdroid' build flavor assets folder: android/app/src/fdroid/assets/js/
-#    This keeps HTML link imports static across web and mobile configurations.
-#
-# 2. Chart.js Scanignore Exception:
-#    Chart.js v4.x does not distribute an unminified pre-built UMD bundle.
-#    Since UMD is required for script-tag injection in our offline WebView,
-#    we continue using the standard minified 'chart.umd.min.js' build.
-#    We ignore it from automated audits using the scanignore key below.
-# ==============================================================================
-
-AutoUpdateMode: Version %v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 
 CurrentVersion: 1.1.2
