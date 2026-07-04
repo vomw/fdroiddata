@@ -1,0 +1,137 @@
+Categories:
+  - Inventory
+  - Money
+License: GPL-3.0-only
+AuthorName: Robin Roy
+AuthorWebSite: https://github.com/BloodBlinker
+SourceCode: https://github.com/BloodBlinker/WarrantyBoxx-
+IssueTracker: https://github.com/BloodBlinker/WarrantyBoxx-/issues
+
+AutoName: WarrantyBoxx
+
+RepoType: git
+Repo: https://github.com/BloodBlinker/WarrantyBoxx-.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 11001
+    commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+
+  - versionName: 1.0.1
+    versionCode: 12001
+    commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+
+  - versionName: 1.0.1
+    versionCode: 14001
+    commit: 91283da0c3f7f2f82b6f2e06f476a3f8839a1308
+    sudo:
+      - mkdir -p /home/runner/work/WarrantyBoxx-
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/BloodBlinker/WarrantyBoxx-/releases/download/v%v/WarrantyBoxx-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION:\ '(.*)'/\1/p" .github/workflows/ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter gen-l10n
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/WarrantyBoxx-/WarrantyBoxx-
+      - cd ..
+      - mv com.robinroy.warrantyboxx $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.robinroy.warrantyboxx
+
+AllowedAPKSigningKeys: d2003c079d5cf70f606d19d232e034a39cf6c1bb372108d3959fc50ebad35c53
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.1
+CurrentVersionCode: 14001
