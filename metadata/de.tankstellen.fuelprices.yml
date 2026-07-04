@@ -52,13 +52,13 @@ Description: |-
   '''About this F-Droid build'''
 
   This is the fully free build, with no Google Play Services and no other
-  proprietary Google libraries. Maps use Opeses
+  proprietary Google libraries. Maps use OpenStreetMap and positioning uses
   Android's location manager. Because the pump-display, receipt and barcode
-  scanners rely on Google ML Kit, scanning id — add
+  scanners rely on Google ML Kit, scanning is not available in this build — add
   fill-ups by hand instead. Every other feature works as described.
 
 RepoType: git
-Repo: https://github.com/fdittgen-png/tankst
+Repo: https://github.com/fdittgen-png/tankstellen.git
 
 Builds:
   - versionName: 6.0.1
@@ -67,20 +67,19 @@ Builds:
     subdir: android/app
     gradle:
       - fdroid
+    output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - $$flutter$$/bin/flutter config --no-
+      - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/dart run build_runne-outputs
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scanignore:
       - third_party/google_mlkit_commons
       - third_party/google_mlkit_text_recognition
-    build: |
-      $$flutter$$/bin/flutter build apk --release --flavor fdroid \
-        --dart-define=FORCE_LOCATION_MANAGER
-        --dart-define=FGS_FORM_APPROVED=true
-    output: build/app/outputs/flutter-apk/ap
+    build: $$flutter$$/bin/flutter build apk --release --flavor fdroid 
+      --dart-define=FORCE_LOCATION_MANAGER=true 
+      --dart-define=FGS_FORM_APPROVED=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
