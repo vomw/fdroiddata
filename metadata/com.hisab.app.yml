@@ -8,7 +8,7 @@ AutoName: Hisab
 
 RepoType: git
 Repo: https://github.com/Bittu-the-coder/hisab
-Binaries:
+Binaries: 
   https://github.com/Bittu-the-coder/hisab/releases/download/v%v/app-release-signed.apk
 
 Builds:
@@ -16,17 +16,17 @@ Builds:
     versionCode: 1
     commit: e3fd7f4e6d8a59123d5a402aa3b85aff60f946ac
     subdir: app
+    sudo:
+      - mkdir -p /home/runner/work/hisab
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - backend
-    sudo:
-      - mkdir -p /home/runner/work/hisab
-      - chown -R vagrant /home/runner
     prebuild:
       - export repo=/home/runner/work/hisab/hisab
-      - cd ..
+      - cd ../..
       - mv com.hisab.app $repo
       - pushd $repo
       - cd app
@@ -41,7 +41,7 @@ Builds:
       - mv $repo com.hisab.app
     build:
       - export repo=/home/runner/work/hisab/hisab
-      - cd ..
+      - cd ../..
       - mv com.hisab.app $repo
       - pushd $repo
       - cd app
