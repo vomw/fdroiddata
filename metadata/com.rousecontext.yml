@@ -12,7 +12,8 @@ AutoName: Rouse Context
 
 RepoType: git
 Repo: https://github.com/Monkopedia/rouse-context.git
-Binaries: https://github.com/Monkopedia/rouse-context/releases/download/v%v/rouse-context-%v-foss.apk
+Binaries: 
+  https://github.com/Monkopedia/rouse-context/releases/download/v%v/rouse-context-%v-foss.apk
 
 Builds:
   - versionName: 1.0.7
@@ -23,17 +24,18 @@ Builds:
       - yes
     prebuild:
       - rm -f ../gradle/google-services.gradle.kts
-      - sed -i -e '/libs.plugins.google.services/d' -e '/libs.plugins.firebase.crashlytics/d' ../build.gradle.kts
+      - sed -i -e '/libs.plugins.google.services/d' -e '/libs.plugins.firebase.crashlytics/d'
+        ../build.gradle.kts
 
 AllowedAPKSigningKeys: 7cc8d2d568eb3d20a5e190e77baa97b3bde80782dd2576f29088a16c4ce47850
 
-MaintainerNotes: "The FOSS build is the bare assembleRelease (gradle: [yes]); the\
-  \ -Pgoogle project property selects a Firebase/Play-Services variant that is not\
-  \ built for F-Droid. All non-FOSS coordinates (the google-services + firebase-crashlytics\
-  \ plugins, Crashlytics config, and firebase-* deps) live in one file, gradle/google-services.gradle.kts,\
-  \ which is applied only under -Pgoogle; the bare build compiles zero Firebase. prebuild\
-  \ removes that file (relative to the app subdir) so the scanner never sees it and\
-  \ it can't be built; this does not affect the FOSS build, which never applies it."
+MaintainerNotes: "The FOSS build is the bare assembleRelease (gradle: [yes]); the
+  -Pgoogle project property selects a Firebase/Play-Services variant that is not built
+  for F-Droid. All non-FOSS coordinates (the google-services + firebase-crashlytics
+  plugins, Crashlytics config, and firebase-* deps) live in one file, gradle/google-services.gradle.kts,
+  which is applied only under -Pgoogle; the bare build compiles zero Firebase. prebuild
+  removes that file (relative to the app subdir) so the scanner never sees it and
+  it can't be built; this does not affect the FOSS build, which never applies it."
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
