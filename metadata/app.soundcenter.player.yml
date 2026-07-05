@@ -13,11 +13,10 @@ Repo: https://github.com/Azare77/sound_center.git
 Builds:
   - versionName: 1.0.0-beta.4
     versionCode: 11
-    commit: c924efec477ea706c19fcac9812690281e51a72b
+    commit: 559b902fdc58bd9e3e0a947f1a49d6a55b48c89b
     sudo:
-      - mkdir -p /home/runner/work
-      - mkdir -p /home/runner/.pub-cache
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/runner/work/sound_center
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: https://github.com/Azare77/sound_center/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
@@ -30,33 +29,36 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/flutter-release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/sound_center
-      - mkdir -p $repo
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export repo=/home/runner/work/sound_center
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
 
   - versionName: 1.0.0-beta.4
     versionCode: 12
-    commit: c924efec477ea706c19fcac9812690281e51a72b
+    commit: 559b902fdc58bd9e3e0a947f1a49d6a55b48c89b
     sudo:
-      - mkdir -p /home/runner/work
-      - mkdir -p /home/runner/.pub-cache
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/runner/work/sound_center
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: https://github.com/Azare77/sound_center/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
@@ -66,36 +68,40 @@ Builds:
       - linux
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/flutter-release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" 
+        .github/workflows/flutter-release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/sound_center
-      - mkdir -p $repo
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export repo=/home/runner/work/sound_center
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
 
   - versionName: 1.0.0-beta.4
     versionCode: 13
-    commit: c924efec477ea706c19fcac9812690281e51a72b
+    commit: 559b902fdc58bd9e3e0a947f1a49d6a55b48c89b
     sudo:
-      - mkdir -p /home/runner/work
-      - mkdir -p /home/runner/.pub-cache
-      - chown -R vagrant /home/runner
+      - mkdir -p /home/runner/work/sound_center
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/Azare77/sound_center/releases/download/v%v/app-x86_64-release.apk
     srclibs:
@@ -108,25 +114,29 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/flutter-release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/sound_center
-      - mkdir -p $repo
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
     build:
-      - export repo=/home/runner/work/sound_center
+      - export repo=/home/runner/work/sound_center/sound_center
       - cd ..
-      - mv app.soundcenter.player $repo/sound_center
-      - pushd $repo/sound_center
-      - export PUB_CACHE=/home/runner/.pub-cache
+      - mv app.soundcenter.player $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
       - popd
-      - mv $repo/sound_center app.soundcenter.player
+      - mv $repo app.soundcenter.player
 
 AllowedAPKSigningKeys: 3a0d3140017d3dac6134ca27446b06580430796a72420adb02a50ef77736a716
 
