@@ -1,36 +1,48 @@
 Categories:
   - Education
   - Security
-  - System
-License: MIT
-AuthorName: T2DECODE
-WebSite: https://tutodecode.org/
-SourceCode: https://gitlab.com/tutodecode-org/T2DECODE
-IssueTracker: https://gitlab.com/tutodecode-org/T2DECODE/-/issues
-Changelog: https://gitlab.com/tutodecode-org/T2DECODE/-/releases
-AutoName: T2DECODE
-Summary: Local learning platform
-Description: |-
-    T2DECODE is a fully offline, air-gapped learning platform designed for IT enthusiasts, cybersecurity students, and network administrators.
-    Features:
-    * Completely offline: No internet connection required, no analytics, no tracking.
-    * Interactive Labs: Network, System, Cloud, and Cryptography simulators.
-    * Local AI Assistant: Integrate with your local Ollama models (Phi-3, Llama 3) for an air-gapped AI tutor.
-    * P2P Communication: GhostLink feature allows local LAN encrypted communication without servers.
-    * Offline Tools: Built-in utilities (Subnet calculators, Hash generators, CRON helpers, and more).
-    * Comprehensive Courses: Learn at your own pace with markdown-based courses and quizzes.
+License: GPL-3.0-or-later
+AuthorName: Association TUTODECODE
+AuthorWebSite: https://tutodecode.org
+WebSite: https://tutodecode.org
+SourceCode: https://github.com/TUTODECODE-FR/TUTODECODE
+IssueTracker: https://github.com/TUTODECODE-FR/TUTODECODE/issues
+Changelog: https://github.com/TUTODECODE-FR/TUTODECODE/releases
+AutoName: TUTODECODE
+RepoType: git
+Repo: https://github.com/TUTODECODE-FR/TUTODECODE.git
 Builds:
   - versionName: 1.0.2
     versionCode: 19
     commit: v1.0.2
     sudo:
-      - sysupdate
+      - apt-get update || apt-get update
+      - apt-get install -y openjdk-17-jdk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.29.3
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - $$flutter$$/bin/cache
+    scandelete:
+      - .pub-cache
     build:
-      - flutter config --no-analytics
-      - flutter pub get
-      - flutter build apk --release
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
     output: build/app/outputs/flutter-apk/app-release.apk
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.2
 CurrentVersionCode: 19
