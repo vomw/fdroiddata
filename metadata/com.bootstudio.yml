@@ -1,6 +1,6 @@
 Categories:
-  - System
   - Multimedia
+  - System
 License: GPL-3.0-only
 AuthorName: gauthier1024
 WebSite: https://github.com/gauthier1024/BootStudio
@@ -19,18 +19,28 @@ Binaries:
 Builds:
   - versionName: 1.1.0
     versionCode: 4
-    commit: 496346cc632b0377bf3f273ffdab08bcca949691
+    commit: 15eb099317c6a2f961abea87425e3104b2a6b808
     subdir: app
-    gradle:
-      - fossRelease
     sudo:
       - apt-get update || true
-      - apt-get install -y make build-essential
+      - apt-get install -y make build-essential patchelf
+    gradle:
+      - foss
     srclibs:
       - BootStudio-FFmpeg@n6.1
-    prebuild:
-      - cd .. && bash FfmpegBuild.sh $$BootStudio-FFmpeg$$
-    ndk: r27b
+    prebuild: cd .. && bash FfmpegBuild.sh $$BootStudio-FFmpeg$$
+    scanignore:
+      - BootAnimations/
+      - app/src/main/assets/libavcodec.so
+      - app/src/main/assets/libavfilter.so
+      - app/src/main/assets/libavformat.so
+      - app/src/main/assets/libavutil.so
+      - app/src/main/assets/libswresample.so
+      - app/src/main/assets/libswscale.so
+      - app/src/main/assets/ffmpeg-bin
+    scandelete:
+      - build/
+    ndk: r27
 
 AllowedAPKSigningKeys: 9f67ed1abc18916c691af6ec9efd93c303f2188e8e0df327d5956ceb3b6c6857
 
