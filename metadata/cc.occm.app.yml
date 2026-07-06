@@ -16,13 +16,14 @@ Repo: https://github.com/Lastorder-DC/moshidon.git
 Builds:
   - versionName: 2.3.0+fork.113.occmdm
     versionCode: 113
-    commit: 2.3.0+fork.113.occmdm
+    commit: 70ecf71fa27e60e64135866b3e16484604f6da9d
     subdir: mastodon
+    prebuild:
+      - sed -i '/id("com.google.firebase.crashlytics")/d' build.gradle
+      - rm -f mastodon/firebase.gradle
     gradle:
       - fdroid
     output: build/outputs/apk/fdroidRelease/occm-fdroidRelease-unsigned.apk
-    scanignore:
-      - build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
