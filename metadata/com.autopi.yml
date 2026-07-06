@@ -15,7 +15,7 @@ Repo: https://github.com/cryptrr/AutoPie.git
 Builds:
   - versionName: 0.15.6-beta
     versionCode: 35
-    commit: 72116561f6bbbb38646efbd39f360d58c0f2e42f
+    commit: 3c09bb769693c37ff5e28f080e983341a67a670f
     subdir: app
     sudo:
       - apt-get update
@@ -33,14 +33,7 @@ Builds:
       - export TERMUX_REF=401bbe54b8f4e68302b1ff70678015a24628fb1d
       - git config --global user.email fdroid@localhost
       - git config --global user.name F-Droid
-      - |
-        set +e
-        bash ../build_from_source.sh > /tmp/build_from_source.log 2>&1
-        status=$?
-        echo "==== build_from_source.sh last 900 lines ===="
-        tail -n 900 /tmp/build_from_source.log || true
-        echo "==== end build_from_source.sh log ===="
-        exit "$status"
+      - bash ../scripts/fdroid-build-from-source.sh
     scanignore:
       - app/src/main/assets/bootstrap-aarch64.zip
 
