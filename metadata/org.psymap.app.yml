@@ -16,13 +16,13 @@ Builds:
     commit: 509e201b30cb14fbde36e974ce87afd0fa0d8f56
     sudo:
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y npm openjdk-17-jdk-headless
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
-    scanignore:
-      - node_modules
     prebuild:
       - npm ci
       - npx expo prebuild --platform android --no-install
+    scanignore:
+      - node_modules
     build:
       - cd android
       - gradle assembleRelease
