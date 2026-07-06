@@ -37,15 +37,12 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # One block shape for all ABIs: the target platform + the flutter
-      # base build number derive from this block's versionCode (flutter's
-      # --split-per-abi offsets are +1000 armeabi-v7a / +2000 arm64-v8a /
-      # +4000 x86_64), so checkupdates-cloned blocks stay correct.
       - case $$VERCODE$$ in 6*) abi=android-arm; off=1000;; 7*) abi=android-arm64;
         off=2000;; *) abi=android-x64; off=4000;; esac
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
-        --target-platform $abi --build-number=$(( $$VERCODE$$ - off ))
-        --dart-define=FORCE_LOCATION_MANAGER=true --dart-define=FGS_FORM_APPROVED=true
+        --target-platform $abi --build-number=$(( $$VERCODE$$ - off )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true
+
   - versionName: 6.0.3
     versionCode: 7136
     commit: 52d0a30a620f0e5d1988abe63d4de4f1dc71723e
@@ -69,15 +66,12 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # One block shape for all ABIs: the target platform + the flutter
-      # base build number derive from this block's versionCode (flutter's
-      # --split-per-abi offsets are +1000 armeabi-v7a / +2000 arm64-v8a /
-      # +4000 x86_64), so checkupdates-cloned blocks stay correct.
       - case $$VERCODE$$ in 6*) abi=android-arm; off=1000;; 7*) abi=android-arm64;
         off=2000;; *) abi=android-x64; off=4000;; esac
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
-        --target-platform $abi --build-number=$(( $$VERCODE$$ - off ))
-        --dart-define=FORCE_LOCATION_MANAGER=true --dart-define=FGS_FORM_APPROVED=true
+        --target-platform $abi --build-number=$(( $$VERCODE$$ - off )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true
+
   - versionName: 6.0.3
     versionCode: 9136
     commit: 52d0a30a620f0e5d1988abe63d4de4f1dc71723e
@@ -101,22 +95,18 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # One block shape for all ABIs: the target platform + the flutter
-      # base build number derive from this block's versionCode (flutter's
-      # --split-per-abi offsets are +1000 armeabi-v7a / +2000 arm64-v8a /
-      # +4000 x86_64), so checkupdates-cloned blocks stay correct.
       - case $$VERCODE$$ in 6*) abi=android-arm; off=1000;; 7*) abi=android-arm64;
         off=2000;; *) abi=android-x64; off=4000;; esac
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
-        --target-platform $abi --build-number=$(( $$VERCODE$$ - off ))
-        --dart-define=FORCE_LOCATION_MANAGER=true --dart-define=FGS_FORM_APPROVED=true
+        --target-platform $abi --build-number=$(( $$VERCODE$$ - off )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 VercodeOperation:
   - '%c + 1000'
   - '%c + 2000'
   - '%c + 4000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 6.0.3
 CurrentVersionCode: 9136
