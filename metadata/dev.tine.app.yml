@@ -7,12 +7,6 @@ IssueTracker: https://github.com/martinkoutecky/tine/issues
 Changelog: https://github.com/martinkoutecky/tine/blob/HEAD/CHANGELOG.md
 
 AutoName: Tine
-Summary: Fast local-first Logseq-compatible outliner
-Description: |-
-    Tine is a fast, local-first outliner that reads and writes a real Logseq
-    Markdown (and Org) graph on disk. It aims to feel like — and round-trip with —
-    Logseq: the outliner, tasks/priorities, journals, page/block references,
-    queries (with a visual builder), PDF and media, and HTML export.
 
 RepoType: git
 Repo: https://github.com/martinkoutecky/tine.git
@@ -24,16 +18,19 @@ Builds:
     sudo:
       - apt-get update || true
       - apt-get install -y nodejs npm binaryen
-    ndk: 26.3.11579264
+    output: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     build:
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile
+        minimal --default-toolchain stable
+      - export PATH="$HOME/.cargo/bin:$PATH"
       - cargo install wasm-pack --version 0.15.0 --locked
       - rustup target add aarch64-linux-android wasm32-unknown-unknown
       - npm ci
       - npm run build:wasm
       - ./node_modules/.bin/tauri android build --target aarch64 --apk
-    output: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    ndk: 26.3.11579264
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 0.4.2
 CurrentVersionCode: 4002
