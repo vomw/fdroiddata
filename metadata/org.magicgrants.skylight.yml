@@ -17,14 +17,15 @@ Builds:
   - versionName: 1.0.11
     versionCode: 4021
     commit: a50b73ad067c052f2003f3aad10577198e66b4ef
-    binary: https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-armeabi-v7a.apk
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake libtool
-        ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev libncurses-dev
-        xz-utils
+      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake
+        libtool ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev 
+        libncurses-dev xz-utils
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-armeabi-v7a.apk
     srclibs:
       - flutter@stable
     rm:
@@ -35,7 +36,8 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 's/.*flutter:\s*//')
+      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 
+        's/.*flutter:\s*//')
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -44,7 +46,8 @@ Builds:
       - git config --global user.name 'MAGIC Grants'
       - git config --global user.email 'info@magicgrants.org'
       - REPO=$(pwd)
-      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
+      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} 
+        f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
       - rm -rf /tmp/monero_c
       - git clone monero_c /tmp/monero_c
       - cd /tmp/monero_c
@@ -66,13 +69,15 @@ Builds:
       - unset MAKEFLAGS
       - export SOURCE_DATE_EPOCH=$(git -C /tmp/monero_c log -1 --format=%ct)
       - cd /tmp/monero_c
-      - ./build_single.sh monero armv7a-linux-androideabi -j"$(nproc)" > armv7a-build.log 2>&1
-        || { cat armv7a-build.log; exit 1; }
+      - ./build_single.sh monero armv7a-linux-androideabi -j"$(nproc)" > 
+        armv7a-build.log 2>&1 || { cat armv7a-build.log; exit 1; }
       - rm -rf /tmp/skylight
       - cp -a "$REPO" /tmp/skylight
-      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool /tmp/skylight/.pub-cache
+      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool 
+        /tmp/skylight/.pub-cache
       - mkdir -p /tmp/skylight/android/app/src/main/jniLibs/armeabi-v7a
-      - cp /tmp/monero_c/monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
+      - cp 
+        /tmp/monero_c/monero_libwallet2_api_c/build/armv7a-linux-androideabi/libwallet2_api_c.so
         /tmp/skylight/android/app/src/main/jniLibs/armeabi-v7a/libmonero_libwallet2_api_c.so
       - rm -rf /tmp/monero_c
       - cd /tmp/skylight
@@ -84,24 +89,26 @@ Builds:
       - '[ -f "$ANDROID_HOME/ndk/28.1.13356709/package.xml" ] || touch "$ANDROID_HOME/ndk/28.1.13356709/package.xml"'
       - $$flutter$$/bin/flutter pub get
       - bash scripts/pin-tor-rust-toolchain.sh
-      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release --split-per-abi
-        --target-platform="android-arm"
+      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release
+        --split-per-abi --target-platform="android-arm"
       - mkdir -p "$REPO/build/app/outputs/flutter-apk"
-      - cp /tmp/skylight/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+      - cp 
+        /tmp/skylight/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk 
         "$REPO/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk"
     ndk: 28.1.13356709
 
   - versionName: 1.0.11
     versionCode: 4022
     commit: a50b73ad067c052f2003f3aad10577198e66b4ef
-    binary: https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-arm64-v8a.apk
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake libtool
-        ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev libncurses-dev
-        xz-utils
+      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake
+        libtool ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev 
+        libncurses-dev xz-utils
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-arm64-v8a.apk
     srclibs:
       - flutter@stable
     rm:
@@ -112,7 +119,8 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 's/.*flutter:\s*//')
+      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 
+        's/.*flutter:\s*//')
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -121,7 +129,8 @@ Builds:
       - git config --global user.name 'MAGIC Grants'
       - git config --global user.email 'info@magicgrants.org'
       - REPO=$(pwd)
-      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
+      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} 
+        f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
       - rm -rf /tmp/monero_c
       - git clone monero_c /tmp/monero_c
       - cd /tmp/monero_c
@@ -143,13 +152,15 @@ Builds:
       - unset MAKEFLAGS
       - export SOURCE_DATE_EPOCH=$(git -C /tmp/monero_c log -1 --format=%ct)
       - cd /tmp/monero_c
-      - ./build_single.sh monero aarch64-linux-android -j"$(nproc)" > aarch64-build.log 2>&1
-        || { cat aarch64-build.log; exit 1; }
+      - ./build_single.sh monero aarch64-linux-android -j"$(nproc)" > 
+        aarch64-build.log 2>&1 || { cat aarch64-build.log; exit 1; }
       - rm -rf /tmp/skylight
       - cp -a "$REPO" /tmp/skylight
-      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool /tmp/skylight/.pub-cache
+      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool 
+        /tmp/skylight/.pub-cache
       - mkdir -p /tmp/skylight/android/app/src/main/jniLibs/arm64-v8a
-      - cp /tmp/monero_c/monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
+      - cp 
+        /tmp/monero_c/monero_libwallet2_api_c/build/aarch64-linux-android/libwallet2_api_c.so
         /tmp/skylight/android/app/src/main/jniLibs/arm64-v8a/libmonero_libwallet2_api_c.so
       - rm -rf /tmp/monero_c
       - cd /tmp/skylight
@@ -161,8 +172,8 @@ Builds:
       - '[ -f "$ANDROID_HOME/ndk/28.1.13356709/package.xml" ] || touch "$ANDROID_HOME/ndk/28.1.13356709/package.xml"'
       - $$flutter$$/bin/flutter pub get
       - bash scripts/pin-tor-rust-toolchain.sh
-      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release --split-per-abi
-        --target-platform="android-arm64"
+      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release
+        --split-per-abi --target-platform="android-arm64"
       - mkdir -p "$REPO/build/app/outputs/flutter-apk"
       - cp /tmp/skylight/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         "$REPO/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
@@ -171,14 +182,15 @@ Builds:
   - versionName: 1.0.11
     versionCode: 4023
     commit: a50b73ad067c052f2003f3aad10577198e66b4ef
-    binary: https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-x86_64.apk
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake libtool
-        ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev libncurses-dev
-        xz-utils
+      - apt-get install -y make libc-dev g++ rustup pkg-config autoconf automake
+        libtool ccache cmake lbzip2 gperf unzip llvm libssl-dev zlib1g-dev 
+        libncurses-dev xz-utils
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/magicgrants/skylight-wallet/releases/download/v%v/skylight-wallet-v%v-x86_64.apk
     srclibs:
       - flutter@stable
     rm:
@@ -189,7 +201,8 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 's/.*flutter:\s*//')
+      - flutterVersion=$(grep -E '^\s+flutter:\s+' pubspec.yaml | head -1 | sed 
+        's/.*flutter:\s*//')
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -198,7 +211,8 @@ Builds:
       - git config --global user.name 'MAGIC Grants'
       - git config --global user.email 'info@magicgrants.org'
       - REPO=$(pwd)
-      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
+      - MONEROC_COMMIT=$(awk '/^  monero:/{f=1} 
+        f&&/resolved-ref:/{gsub(/"/,"",$2);print $2;exit}' pubspec.lock)
       - rm -rf /tmp/monero_c
       - git clone monero_c /tmp/monero_c
       - cd /tmp/monero_c
@@ -220,13 +234,15 @@ Builds:
       - unset MAKEFLAGS
       - export SOURCE_DATE_EPOCH=$(git -C /tmp/monero_c log -1 --format=%ct)
       - cd /tmp/monero_c
-      - ./build_single.sh monero x86_64-linux-android -j"$(nproc)" > x86_64-build.log 2>&1
-        || { cat x86_64-build.log; exit 1; }
+      - ./build_single.sh monero x86_64-linux-android -j"$(nproc)" > 
+        x86_64-build.log 2>&1 || { cat x86_64-build.log; exit 1; }
       - rm -rf /tmp/skylight
       - cp -a "$REPO" /tmp/skylight
-      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool /tmp/skylight/.pub-cache
+      - rm -rf /tmp/skylight/build /tmp/skylight/.dart_tool 
+        /tmp/skylight/.pub-cache
       - mkdir -p /tmp/skylight/android/app/src/main/jniLibs/x86_64
-      - cp /tmp/monero_c/monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
+      - cp 
+        /tmp/monero_c/monero_libwallet2_api_c/build/x86_64-linux-android/libwallet2_api_c.so
         /tmp/skylight/android/app/src/main/jniLibs/x86_64/libmonero_libwallet2_api_c.so
       - rm -rf /tmp/monero_c
       - cd /tmp/skylight
@@ -238,12 +254,15 @@ Builds:
       - '[ -f "$ANDROID_HOME/ndk/28.1.13356709/package.xml" ] || touch "$ANDROID_HOME/ndk/28.1.13356709/package.xml"'
       - $$flutter$$/bin/flutter pub get
       - bash scripts/pin-tor-rust-toolchain.sh
-      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release --split-per-abi
-        --target-platform="android-x64"
+      - $$flutter$$/bin/flutter build apk --dart-define=DEMO_MODE=true --release
+        --split-per-abi --target-platform="android-x64"
       - mkdir -p "$REPO/build/app/outputs/flutter-apk"
-      - cp /tmp/skylight/build/app/outputs/flutter-apk/app-x86_64-release.apk
+      - cp /tmp/skylight/build/app/outputs/flutter-apk/app-x86_64-release.apk 
         "$REPO/build/app/outputs/flutter-apk/app-x86_64-release.apk"
     ndk: 28.1.13356709
+
+AllowedAPKSigningKeys: 
+  15fa527885f7042110304d1af00881072709bd38e9842caf9cd89e08061c5e52
 
 MaintainerNotes: |
   monero_c: vendored jniLibs are removed (rm) and rebuilt from vtnerd/monero_c at the commit pinned in pubspec.lock before flutter build;
@@ -262,4 +281,3 @@ VercodeOperation:
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.11
 CurrentVersionCode: 4023
-AllowedAPKSigningKeys: 15fa527885f7042110304d1af00881072709bd38e9842caf9cd89e08061c5e52
