@@ -13,17 +13,16 @@ RepoType: git
 Repo: https://github.com/martinkoutecky/tine.git
 
 Builds:
-  - versionName: 0.4.2
-    versionCode: 4002
-    commit: v0.4.2
+  - versionName: 0.4.3
+    versionCode: 4003
+    commit: v0.4.3
     sudo:
       - apt-get update || true
-      - apt-get install -y nodejs npm binaryen build-essential
+      - apt-get install -y nodejs npm binaryen build-essential rustup
     output: 
       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     build:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile
-        minimal --default-toolchain stable
+      - rustup default stable
       - export PATH="$HOME/.cargo/bin:$PATH"
       - cargo install wasm-pack --version 0.15.0 --locked
       - rustup target add aarch64-linux-android wasm32-unknown-unknown
@@ -34,5 +33,5 @@ Builds:
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 0.4.2
-CurrentVersionCode: 4002
+CurrentVersion: 0.4.3
+CurrentVersionCode: 4003
