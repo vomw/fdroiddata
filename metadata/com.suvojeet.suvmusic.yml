@@ -1,0 +1,40 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Interact with third-party, non-free network services (YouTube, KuGou, LrcLib)
+Categories:
+  - Online Media Player
+License: GPL-3.0-or-later
+AuthorName: Suvojeet Sengupta
+AuthorEmail: suvojitsengupta21@gmail.com
+SourceCode: https://github.com/suvojeet-sengupta/SuvMusic
+IssueTracker: https://github.com/suvojeet-sengupta/SuvMusic/issues
+
+AutoName: SuvMusic
+
+RepoType: git
+Repo: https://github.com/suvojeet-sengupta/SuvMusic.git
+
+Builds:
+  - versionName: 2.4.1.0
+    versionCode: 28
+    commit: e427fda5ccc0f3053913649fc8a1584be23718e1
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    prebuild:
+      - sed -i 's|maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
+        }|mavenCentral()|g' ../settings.gradle.kts
+      - sed -i '/libs.androidx.core.performance.play.services/d' build.gradle.kts
+      - sed -i '/libs.androidx.core.google.shortcuts/d' build.gradle.kts
+    # media3-datasource-cronet is flagged by SUSS as it normally pulls
+    # play-services-cronet (non-free); we exclude that transitive dep and
+    # use FLOSS org.chromium.net:cronet-embedded instead.
+    scanignore:
+      - app/NewPipeExtractor/extractor/build.gradle.kts
+      - app/build.gradle.kts
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.4.1.0
+CurrentVersionCode: 28
