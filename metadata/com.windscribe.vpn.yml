@@ -2059,7 +2059,9 @@ Builds:
       - wgtunnel/tools/elf-cleaner/tests
       - wgtunnel/.cxx
       - base/src/main/libs/wsnet.aar
-    prebuild: sed -i -e '/jvmToolchain/d' -e '/JavaLanguageVersion/d' ../*/build.gradle*
+    prebuild:
+      - sed -i -e '/jvmToolchain/d' -e '/JavaLanguageVersion/d' ../*/build.gradle*
+      - sed -i -e '/include(":tv")/d' ../settings.gradle.kts
     build:
       - sdkmanager 'ndk;27.2.12479018'
       - pushd $$vcpkg$$
