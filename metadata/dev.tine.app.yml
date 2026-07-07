@@ -11,8 +11,6 @@ AutoName: Tine
 
 RepoType: git
 Repo: https://github.com/martinkoutecky/tine.git
-Binaries: 
-  https://github.com/martinkoutecky/tine/releases/download/v%v/Tine_%v_android-arm64.apk
 
 Builds:
   - versionName: 0.4.5
@@ -20,19 +18,18 @@ Builds:
     commit: 14c96ee06e567280db9f228205e3c46f5b78f49e
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm gcc make libc-dev rustup
+      - apt-get install -y nodejs npm binaryen gcc make libc-dev rustup
     output: 
       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     build:
       - rustup default 1.96.0
       - export PATH="$HOME/.cargo/bin:$PATH"
-      - export RUSTFLAGS="--remap-path-prefix=$PWD=/build --remap-path-prefix=$HOME/.cargo=/cargo"
-      - rustup target add aarch64-linux-android
+      - cargo install wasm-pack --version 0.15.0 --locked
+      - rustup target add aarch64-linux-android wasm32-unknown-unknown
       - npm ci
+      - npm run build:wasm
       - ./node_modules/.bin/tauri android build --target aarch64 --apk
     ndk: 26.3.11579264
-
-AllowedAPKSigningKeys: 41b7c0ed2890092065ce50144df5c8bd33a2b822285e88965ad6c981e78486b5
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
