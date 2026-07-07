@@ -9,18 +9,21 @@ AutoName: TuneFriend
 
 RepoType: git
 Repo: https://github.com/tunefriend/tunefriend.git
-Binaries: https://github.com/tunefriend/tunefriend/releases/download/v%v/TuneFriend-v%v.apk
+Binaries: 
+  https://github.com/tunefriend/tunefriend/releases/download/v%v/TuneFriend-v%v.apk
 
 Builds:
-  - versionName: '2.23'
-    versionCode: 34
-    commit: c3de73b06fa83ea20e4bc9bff414865c70b3c0f7
+  - versionName: '2.24'
+    versionCode: 35
+    commit: d61ca21a7725eb05ae6577cecc47ee7b15c70a3e
     subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     gradle:
       - yes
+    binary: 
+      https://github.com/tunefriend/tunefriend/releases/download/v2.24/TuneFriend-v2.24.apk
     prebuild:
       - cd ../..
       - npm ci
@@ -34,12 +37,11 @@ Builds:
       - npm run sync:www
       - npx cap sync android
       - popd
-    binary: https://github.com/tunefriend/tunefriend/releases/download/v2.23/TuneFriend-v2.23.apk
 
 AllowedAPKSigningKeys: e5cf878739b758ceb118ada03579df49f703f928b4aef6738aba0a3e0d851e88
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: android/app/build.gradle|versionCode\s(\d+)|.|versionName\s\"([^\"]+)\"
-CurrentVersion: '2.23'
-CurrentVersionCode: 34
+CurrentVersion: '2.24'
+CurrentVersionCode: 35
