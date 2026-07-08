@@ -8,8 +8,6 @@ SourceCode: https://github.com/InlitX/streak
 IssueTracker: https://github.com/InlitX/streak/issues
 Donate: https://ko-fi.com/inlitx
 
-AutoName: Streak
-
 RepoType: git
 Repo: https://github.com/InlitX/streak.git
 
@@ -20,11 +18,24 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.9
-    build:
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: https://raw.githubusercontent.com/InlitX/streak/main/pubspec.yaml|version:\s.*\+(\d+)|https://raw.githubusercontent.com/InlitX/streak/main/pubspec.yaml|version:\s(.*)\+
 CurrentVersion: 1.1.0
 CurrentVersionCode: 2
