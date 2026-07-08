@@ -91,8 +91,28 @@ Builds:
     build: bash ../fetch-dependencies.sh
     ndk: 29.0.14206865
 
+  - versionName: '20260708.17'
+    versionCode: 20260708
+    commit: 120ae9ad02c2a41cff9e2823ebcf97c42284de76
+    subdir: build/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y libboost-dev
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/versionName olxVersion/versionName "$$VERSION$$"/' -e "s|versionCode
+      olxVersionCode|versionCode $$VERCODE$$|" -e '/buildDirectory/d' build.gradle
+    scandelete:
+      - share/gamedir
+      - libs/breakpad
+      - tools
+      - build/msvc
+      - build/DevCpp
+    build: bash ../fetch-dependencies.sh
+    ndk: 29.0.14206865
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^(\d+\.\d+)$
 UpdateCheckData: '|(\d+)\.\d+||(\d+\.\d+)'
-CurrentVersion: '20260707.4'
-CurrentVersionCode: 20260707
+CurrentVersion: '20260708.17'
+CurrentVersionCode: 20260708
