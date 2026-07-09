@@ -1871,9 +1871,9 @@ Builds:
       - popd
     ndk: 29.0.14206865
 
-  - versionName: 5.62.0
-    versionCode: 5641
-    commit: 34b849aec443dd7da5b0a3e52ed3f8a7faef76fb
+  - versionName: 5.68.2
+    versionCode: 5821
+    commit: 0afc21ce4b519a4ec67eb58d86bdff77dc8a497f
     subdir: app
     submodules: true
     sudo:
@@ -1881,7 +1881,8 @@ Builds:
       - apt-get install -y make binutils gawk libc-dev rustup golang-go nasm yasm
         cmake xz-utils bzip2 perl pkg-config autoconf automake libtool libtool-bin
         libltdl-dev meson ninja-build libexpat1-dev libffi-dev python3 bison g++ xutils-dev
-        python3-xcbgen gcc-aarch64-linux-gnu libc6-dev-arm64-cross
+        python3-xcbgen gcc-aarch64-linux-gnu libc6-dev-arm64-cross gcc-arm-linux-gnueabihf
+        libc6-dev-armhf-cross
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky libwayland-dev
@@ -1893,6 +1894,7 @@ Builds:
       - core/local/src/main/jniLibs
       - core/wayland/src/main/jniLibs
       - rdp-kotlin/jniLibs
+      - spice-kotlin/jniLibs
       - rclone-android/build
       - scratch
       - wayland-android
@@ -1900,7 +1902,7 @@ Builds:
     build:
       - export PATH="$HOME/.cargo/bin:$HOME/go/bin:$PATH"
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android
+      - rustup target add aarch64-linux-android x86_64-linux-android armv7-linux-androideabi
       - cargo install cargo-ndk@3.5.4 --locked
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20251021151156-188f512ec823
       - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20251021151156-188f512ec823
@@ -1923,5 +1925,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 VercodeOperation:
   - 10 * %c + 1
-CurrentVersion: 5.62.0
-CurrentVersionCode: 5641
+CurrentVersion: 5.68.2
+CurrentVersionCode: 5821
