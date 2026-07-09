@@ -1,0 +1,36 @@
+Categories:
+  - Multimedia
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/CommandLineCoding/Elephant
+IssueTracker: https://github.com/CommandLineCoding/Elephant/issues
+
+Name: Elephant
+
+Summary: A privacy-first, open-source messenger
+Description: |-
+  Elephant is a privacy-first messaging application made with Go and Flutter.
+  It supports secure authentication, user discovery, and real-time chat
+  over WebSocket, with all communication TLS-protected between client and server.
+
+RepoType: git
+Repo: https://github.com/CommandLineCoding/Elephant.git
+
+Builds:
+  - versionName: 0.2.0
+    versionCode: 2
+    commit: v0.2.0
+    subdir: mobile/android
+    srclibs:
+      - flutter@3.12.0
+    rm:
+      - mobile/android/app/libs/*
+    build:
+      - $$flutter$$ pub get
+      - $$flutter$$ build apk --release --no-tree-shake-icons
+
+AutoName: Elephant
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.0
+CurrentVersionCode: 2
