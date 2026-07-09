@@ -1,0 +1,50 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: The app loads manual pages and offline packages from a fixed self-hosted
+      content server.
+Categories:
+  - Navigation
+  - Reading
+License: MIT
+AuthorName: JacosVerksted
+WebSite: https://jacosverksted.no
+SourceCode: https://github.com/JacosVerksted/PajIVWorkshop
+IssueTracker: https://github.com/JacosVerksted/PajIVWorkshop/issues
+Donate: https://buymeacoffee.com/jacosverksted
+
+AutoName: PajIV Workshop
+
+RepoType: git
+Repo: https://github.com/JacosVerksted/PajIVWorkshop.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 5
+    commit: adb2bddbef97617864235547c9404a50af0b40b8
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - web
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 5
