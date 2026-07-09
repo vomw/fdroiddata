@@ -758,7 +758,32 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
+  - versionName: 1.39.1
+    versionCode: 20260707
+    commit: aff7bb675d256e21d525a32cc6b5fd3a8b9343d4
+    sudo:
+      - rm -fr /opt/android-sdk/ndk/*
+      - apt-get update
+      - apt-get install -y git-lfs
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.41.2
+    rm:
+      - ios
+      - linux
+      - macos
+      - snap
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.38.1
-CurrentVersionCode: 20260626
+CurrentVersion: 1.39.1
+CurrentVersionCode: 20260707
