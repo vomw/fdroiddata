@@ -1315,9 +1315,9 @@ Builds:
       - flutter/android/app/build.gradle
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
 
-  - versionName: 1.4.8
-    versionCode: 104080001
-    commit: 9ded8d6ab24779db3c9334f5a3d6a652b8425c4f
+  - versionName: 1.4.9
+    versionCode: 104090001
+    commit: 6c578292e8ebbbec708b76986ba8c4bc7c509747
     timeout: 14400
     submodules: true
     sudo:
@@ -1335,14 +1335,16 @@ Builds:
       - flutter/macos
       - flutter/test
       - flutter/windows
-    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a prebuild
+    prebuild:
+      - sed -i -e 's/${FLUTTER_BRIDGE_VERSION}/3.22.3/' flutter/build_fdroid.sh
+      - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a prebuild
     scanignore:
       - flutter/android/app/build.gradle
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" armeabi-v7a build
 
-  - versionName: 1.4.8
-    versionCode: 104080002
-    commit: 9ded8d6ab24779db3c9334f5a3d6a652b8425c4f
+  - versionName: 1.4.9
+    versionCode: 104090002
+    commit: 6c578292e8ebbbec708b76986ba8c4bc7c509747
     timeout: 14400
     submodules: true
     sudo:
@@ -1360,14 +1362,16 @@ Builds:
       - flutter/macos
       - flutter/test
       - flutter/windows
-    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
+    prebuild:
+      - sed -i -e 's/${FLUTTER_BRIDGE_VERSION}/3.22.3/' flutter/build_fdroid.sh
+      - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a prebuild
     scanignore:
       - flutter/android/app/build.gradle
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" arm64-v8a build
 
-  - versionName: 1.4.8
-    versionCode: 104080003
-    commit: 9ded8d6ab24779db3c9334f5a3d6a652b8425c4f
+  - versionName: 1.4.9
+    versionCode: 104090003
+    commit: 6c578292e8ebbbec708b76986ba8c4bc7c509747
     timeout: 14400
     submodules: true
     sudo:
@@ -1385,7 +1389,9 @@ Builds:
       - flutter/macos
       - flutter/test
       - flutter/windows
-    prebuild: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
+    prebuild:
+      - sed -i -e 's/${FLUTTER_BRIDGE_VERSION}/3.22.3/' flutter/build_fdroid.sh
+      - flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 prebuild
     scanignore:
       - flutter/android/app/build.gradle
     build: flutter/build_fdroid.sh "$$VERSION$$" "$$VERCODE$$" x86_64 build
@@ -1426,5 +1432,5 @@ VercodeOperation:
   - 100 * %c + 3
 UpdateCheckData: 
   https://github.com/rustdesk/rustdesk/releases/download/fdroid-version/rustdesk-version.txt|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 1.4.8
-CurrentVersionCode: 104080003
+CurrentVersion: 1.4.9
+CurrentVersionCode: 104090003
