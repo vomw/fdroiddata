@@ -1,48 +1,16 @@
-AntiFeatures:
-  NonFreeDep:
-    en-US: "Uses Google's proprietary ML Kit library\n(com.google.mlkit:barcode-scanning
-      and com.google.mlkit:text-recognition)\nfor QR-code scanning and OCR. All processing
-      runs on-device. The INTERNET\npermission is stripped from the manifest, so the
-      operating system blocks\nany network attempt from the library. See app/build.gradle.kts
-      and\napp/src/main/AndroidManifest.xml for the manifest-merger strip that\nneutralises
-      the transitive Firelog transport."
 Categories:
   - Password & 2FA
   - Security
 License: GPL-3.0-or-later
 AuthorName: Rouf Syed
-WebSite: https://roufsyed.github.io/1Key/
 SourceCode: https://github.com/roufsyed/1Key
 IssueTracker: https://github.com/roufsyed/1Key/issues
-Changelog: https://github.com/roufsyed/1Key/releases
 
 AutoName: 1Key
-Description: |-
-  1Key is a local-first password manager for Android. The vault lives on your device, encrypted with a key only you hold, and never moves unless you export it yourself. There is no account to create, no server to breach, and no network connection of any kind - the INTERNET permission is stripped from the manifest, so the operating system itself enforces the offline guarantee.
-
-  Security:
-
-  * Vault key derived from your master password with Argon2id (m=64 MiB, t=3, p=1 by default; configurable up to m=256 MiB, t=16).
-  * Every credential field encrypted separately with AES-256-GCM, bound to its row and column via additional authenticated data.
-  * Master-password verifier stored in EncryptedSharedPreferences, itself wrapped by an Android Keystore-bound key (TEE or StrongBox where available), so offline brute-force of a leaked device image is not possible.
-  * Biometric unlock backed by hardware-secure key; requires master-password confirmation to enable.
-  * Tiered attempt limiting: 3, 5, and 10 wrong attempts trigger 30-second, 5-minute, and 1-hour cooldowns respectively; counters survive process kills.
-
-  Features:
-
-  * Password vault with title, username, password, URL, notes, and custom fields; tag-based organisation; full-text search.
-  * Built-in TOTP / 2FA codes stored alongside the credentials they protect.
-  * Live-preview Markdown in notes.
-  * System Autofill Service with URL-only matching to reduce phishing risk.
-  * Encrypted .1key backup or plain CSV / JSON export; import from Google Passwords, LastPass, KeePass, 1Password, Dashlane, NordPass, Safari / iCloud Keychain.
-  * Recycle bin with configurable soft-delete.
-
-  What 1Key does NOT do: no accounts, no email, no signup; no analytics, crash reporting, or telemetry; no cloud sync; no device identifiers, IP logging, or advertising IDs; no network connection at all.
 
 RepoType: git
 Repo: https://github.com/roufsyed/1Key.git
-Binaries:
-  https://github.com/roufsyed/1Key/releases/download/v%v/1Key_%v_%c_universal_release.apk
+Binaries: https://github.com/roufsyed/1Key/releases/download/v%v/1Key_%v_%c_universal_release.apk
 
 Builds:
   - versionName: 1.1.1
@@ -52,8 +20,7 @@ Builds:
     gradle:
       - yes
 
-AllowedAPKSigningKeys: 
-  12035293daabc95bba142e0deebab9ec36dfcb85e30a0f1f83bd7005cdea41f6
+AllowedAPKSigningKeys: 12035293daabc95bba142e0deebab9ec36dfcb85e30a0f1f83bd7005cdea41f6
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
