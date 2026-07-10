@@ -7,33 +7,29 @@ SourceCode: https://gitlab.com/wenningtondiasx25/psymap
 IssueTracker: https://gitlab.com/wenningtondiasx25/psymap/issues
 Changelog: https://gitlab.com/wenningtondiasx25/psymap/-/releases
 
-Binaries: https://gitlab.com/wenningtondiasx25/psymap/uploads/115674b9dde83e65c8a286c3e6c76a73/psymap-v1.0.0.apk
-AllowedAPKSigningKeys: b8e29688240b0efd8831f46d0bd426727411886322d1305ea095c97929831cc8
-
 AutoName: PsyMap
 
 RepoType: git
 Repo: https://gitlab.com/wenningtondiasx25/psymap.git
 
+Binaries:
+  https://gitlab.com/wenningtondiasx25/psymap/-/releases/v%v/downloads/psymap-v%v.apk
+
 Builds:
   - versionName: 1.0.0
-    versionCode: 11
-    commit: 9b4ff2e9ade7fcec583d5596a3dcb580079f930b
+    versionCode: 1
+    commit: a5d3936
     sudo:
       - apt-get update
       - apt-get install npm
     init: npm ci
-    output: android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - npx expo prebuild -p android --clean
-      - sed -i '/^android {/a splits { abi { reset(); enable true; universalApk false;
-        include "armeabi-v7a" } }' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - echo 'reactNativeArchitectures=armeabi-v7a' >> android/gradle.properties
       - sed -i -e 's/versionCode .*/versionCode $$VERCODE$$/' android/app/build.gradle
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
@@ -51,82 +47,12 @@ Builds:
       - cd android
       - gradle assembleRelease
 
-  - versionName: 1.0.0
-    versionCode: 12
-    commit: 9b4ff2e9ade7fcec583d5596a3dcb580079f930b
-    sudo:
-      - apt-get update
-      - apt-get install npm
-    init: npm ci
-    output: android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-    prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - npx expo prebuild -p android --clean
-      - sed -i '/^android {/a splits { abi { reset(); enable true; universalApk false;
-        include "arm64-v8a" } }' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - echo 'reactNativeArchitectures=arm64-v8a' >> android/gradle.properties
-      - sed -i -e 's/versionCode .*/versionCode $$VERCODE$$/' android/app/build.gradle
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
-    scanignore:
-      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
-      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
-      - node_modules/react-native-linear-gradient/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-svg/android/build.gradle
-    scandelete:
-      - node_modules
-    build:
-      - cd android
-      - gradle assembleRelease
-
-  - versionName: 1.0.0
-    versionCode: 13
-    commit: 9b4ff2e9ade7fcec583d5596a3dcb580079f930b
-    sudo:
-      - apt-get update
-      - apt-get install npm
-    init: npm ci
-    output: android/app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
-    prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - npx expo prebuild -p android --clean
-      - sed -i '/^android {/a splits { abi { reset(); enable true; universalApk false;
-        include "x86_64" } }' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - echo 'reactNativeArchitectures=x86_64' >> android/gradle.properties
-      - sed -i -e 's/versionCode .*/versionCode $$VERCODE$$/' android/app/build.gradle
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
-    scanignore:
-      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
-      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
-      - node_modules/react-native-linear-gradient/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-svg/android/build.gradle
-    scandelete:
-      - node_modules
-    build:
-      - cd android
-      - gradle assembleRelease
+AllowedAPKSigningKeys: b8e29688240b0efd8831f46d0bd426727411886322d1305ea095c97929831cc8
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c * 10 + 1'
-  - '%c * 10 + 2'
-  - '%c * 10 + 3'
+  - '%c'
 UpdateCheckData: app.json|"versionCode":\s*(\d+)|.|"version":\s*"([^"]+)"
 CurrentVersion: 1.0.0
-CurrentVersionCode: 13
+CurrentVersionCode: 1
