@@ -8,6 +8,8 @@ IssueTracker: https://github.com/thomasbuilds/Spectre/issues
 Changelog: https://github.com/thomasbuilds/Spectre/releases
 Bitcoin: bc1qphgd8leqsf06qlm6jjxpuw2rtq9f9hdjnhfluh
 
+AutoName: Spectre
+
 RepoType: git
 Repo: https://github.com/thomasbuilds/Spectre.git
 Binaries: https://github.com/thomasbuilds/Spectre/releases/download/v%v/spectre-v%v.apk
@@ -15,14 +17,13 @@ Binaries: https://github.com/thomasbuilds/Spectre/releases/download/v%v/spectre-
 Builds:
   - versionName: 0.1.2
     versionCode: 102999
-    commit: v0.1.2
+    commit: f8e43beb3abfd996a965ce9f32b790c113d83878
     subdir: app
     sudo:
-      - mkdir -p /usr/lib/jvm
-      - curl -L -o /tmp/jdk.tar.gz https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.3%2B9/OpenJDK25U-jdk_x64_linux_hotspot_25.0.3_9.tar.gz
-      - echo "69264a7a211bf5029830d07bc3370f879769d62ebc5b5488e90c9343a2da0e1f  /tmp/jdk.tar.gz"
-        | sha256sum -c -
-      - tar xzf /tmp/jdk.tar.gz -C /usr/lib/jvm
+      - apt-get update
+      - apt-get install -y openjdk-25-jdk-headless
+    prebuild:
+      - sed -i '/foojay-resolver-convention/d' ../settings.gradle.kts
     gradle:
       - yes
 
