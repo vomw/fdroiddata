@@ -43,14 +43,14 @@ Builds:
     sudo:
       - apt-get update || true
       - apt-get install -y curl libclang-dev clang gcc libc-dev
-      - apt-get install -y pkg-config libssl-dev perl make python3 
-        build-essential
+      - apt-get install -y pkg-config libssl-dev perl make
+      - apt-get install -y python3 build-essential
     gradle:
       - standalone
     prebuild:
       - export PATH="$HOME/.cargo/bin:$PATH"
-      - curl --proto '=https' -sSf https://sh.rustup.rs | sh -s -- -y --profile 
-        minimal
+      - curl -sSf https://sh.rustup.rs -o /tmp/rustup.sh
+      - sh /tmp/rustup.sh -y --profile minimal
       - rustup target add aarch64-linux-android armv7-linux-androideabi
       - rustup target add x86_64-linux-android i686-linux-android
       - cargo install cargo-ndk --locked
@@ -75,7 +75,7 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckName: ([0-9.]+)
-UpdateCheckData: android/app/build.gradle.kts|versionCode = 
-  ([0-9]+)|android/app/build.gradle.kts|versionName = "([0-9.]+)"
+UpdateCheckData: android/app/build.gradle.kts|versionCode = ([0-9]+)|android/app/build.gradle.kts|versionName
+  = "([0-9.]+)"
 CurrentVersion: 3.2.4
 CurrentVersionCode: 30204
