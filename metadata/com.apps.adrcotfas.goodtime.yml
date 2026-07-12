@@ -1,50 +1,41 @@
 Categories:
   - Timer
-License: Apache-2.0
+License: GPL-3.0-only
 AuthorName: Adrian Cotfas
-AuthorEmail: goodtime-app@googlegroups.com
-SourceCode: https://github.com/goodtime-productivity/Goodtime
-IssueTracker: https://github.com/goodtime-productivity/Goodtime/issues
+AuthorEmail: contact@goodtime.tools
+SourceCode: https://github.com/adrcotfas/goodtime
+IssueTracker: https://github.com/adrcotfas/goodtime/issues
 Translation: https://crowdin.com/project/goodtime
-Changelog: https://github.com/goodtime-productivity/Goodtime/releases
-Donate: 
-  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CH2SJKS6GXG6L
+Changelog: https://github.com/adrcotfas/goodtime/releases
+Donate: https://github.com/adrcotfas/goodtime
 
-Name: Goodtime - Minimalist Pomodoro Timer
+Name: Goodtime - Pomodoro Timer
 AutoName: Goodtime
-Description: |-
-  A minimalist but powerful productivity timer designed to keep you focused
-  and free of distractions.
+Description: |
+  Minimalist focus timer for deep work & study | pomodoro & time tracking
 
-  Alternate between focused work sessions and short breaks handled by the app.
+  🧠 Achieve Focus & Boost Productivity - Simple, Private, Open-Source.
 
-  Get rid of procrastination and improve your time management!
+  Goodtime is an indie open-source minimalist productivity timer - lightweight, ad-free and tracking-free.
+  Perfect for students needing a study timer, professionals seeking deep work and time management, and anyone fighting distractions and procrastination.
 
-  ⏳ split your work into sessions of focus and then reward yourself with a break
+  PRODUCTIVITY MODES
+  🍅 Pomodoro Timer - Work in structured focus sessions followed by short breaks to keep your mind sharp. Boost study efficiency.
+  ☕ Longer Breaks - Take longer breaks after several pomodoro sessions to fully recharge and maintain a high level of productivity.
+  ⏳Count-up Flow Timer - Track your uninterrupted time and accumulate a break budget as you reach a flow state. Take a break when ready.
 
-  ☕ after more sessions of work, take a longer break
-
-  <b>Features:</b>
-
-  * Lightweight and battery friendly
-  * Configurable timer
-  * Pause, skip or add 60 seconds
-  * Detailed statistics
-  * Disable sound and Wi-Fi connection during the work sessions
-  * AMOLED-friendly user interface
-  * Colored labels
-  * Timer styles
-  * Manually add sessions
-  * Edit completed sessions
-  * Backup export and import
-  * Export statistics to CSV
-  * Screensaver mode
-  * Themes
-  * Separate notification sound for work and break
-  * Insistent notifications
+  CONTROL & TIME TRACKING
+  Configurable Timer - Match the timer to your preferred workflow. Pause, skip, or add extra time with intuitive swipe gestures.
+  Minimalist Design - Clean interface helps you focus without distractions.
+  Detailed Statistics - Track your accumulated focus time and quantify your productivity. Set a daily reminder and customize the start of the day/week.
+  Focus Protection - Use Do Not Disturb mode during study sessions.
+  Labels & Customization - Assign colored labels, archive, and fully customize the timer display.
+  Statistics - Label-based visualization, manual session editing, and notes.
+  Backup & Export
+  Advanced Alerts - Screen flash, torch, and persistent notifications.
 
 RepoType: git
-Repo: https://github.com/goodtime-productivity/Goodtime.git
+Repo: https://github.com/adrcotfas/goodtime.git
 
 Builds:
   - versionName: 2.0.3
@@ -404,7 +395,28 @@ Builds:
       - fdroid
     prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
 
+  - versionName: 3.2.0
+    versionCode: 358
+    commit: b69fc5b2e7f6cc9d349df9baa9d0bace268627a6
+    subdir: androidApp
+    sudo:
+      - curl -Lo /tmp/temurin17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz
+      - echo "d8afc263758141a66e0e3aafc321e783f7016696f4eaea067d340a269037d331  /tmp/temurin17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm
+      - tar -xzf /tmp/temurin17.tar.gz -C /usr/lib/jvm
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    scanignore:
+      - shared/build.gradle.kts
+    scandelete:
+      - appKillTest/src/main/assets/seed/goodtime-db
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 3.0.15
-CurrentVersionCode: 348
+UpdateCheckData: gradle/libs.versions.toml|app-version-code = "(\d+)"|.|app-version-name
+  = "([^"]+)"
+CurrentVersion: 3.2.0
+CurrentVersionCode: 358
