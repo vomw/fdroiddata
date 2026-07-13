@@ -16,7 +16,7 @@ Repo: https://github.com/JICA98/Bachata-S4.git
 Builds:
   - versionName: 0.1.5
     versionCode: 6
-    commit: 09bae6bb1f456ff537c2e28f0b74db3175b4eff3
+    commit: 84b726103503dd2567286dd86c7be3423db43d07
     subdir: android/BachataS4/app
     sudo:
       - dpkg --add-architecture arm64
@@ -47,6 +47,9 @@ Builds:
     prebuild:
       - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0" "cmake;3.22.1"
+      - cd ../../.. && runtime/scripts/checkout-component.sh box64
+        https://github.com/ptitSeb/box64.git
+        $(python3 -c "import json; print(json.load(open('runtime/locks/components.lock.json'))['components'][0]['revision'])")
       - cd ../../.. && runtime/scripts/build-shadps4-x86_64.sh
       - cd ../../.. && runtime/scripts/build-box64-host.sh
       - cd ../../.. && node runtime/scripts/stage-debian-runtime.mjs
