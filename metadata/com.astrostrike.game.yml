@@ -81,6 +81,23 @@ Builds:
       - |
         GODOT_BIN=$(ls $$Godot$$/bin/godot.linuxbsd.editor.* | head -1)
         test -x "$GODOT_BIN"
+        test -f $$Godot$$/bin/android_source.zip
+        test -f $$Godot$$/bin/android_release.apk
+        # Godot looks for export templates under $HOME (fdroid sets HOME=$PWD)
+        TPL="$HOME/.local/share/godot/export_templates/4.6.3.stable"
+        mkdir -p "$TPL"
+        cp -f $$Godot$$/bin/android_release.apk "$TPL/"
+        cp -f $$Godot$$/bin/android_source.zip "$TPL/"
+        echo "4.6.3.stable" > "$TPL/version.txt"
+        # Install Gradle Android build template into the project
+        rm -rf android/build
+        mkdir -p android/build
+        unzip -qo $$Godot$$/bin/android_source.zip -d android/build
+        echo "4.6.3.stable" > android/.build_version
+        touch android/build/.gdignore
+        mkdir -p android/build/libs/release
+        cp -f $$Godot$$/bin/godot-lib.template_release.aar android/build/libs/release/
+        sed -i -e "s|custom_template/release=.*|custom_template/release=\"$$Godot$$/bin/android_release.apk\"|" export_presets.cfg
         "$GODOT_BIN" --headless --path . --import || true
         # Configure Android SDK path in generated editor settings
         CFG=$(ls ~/.config/godot/editor_settings-*.tres 2>/dev/null | head -1 || true)
