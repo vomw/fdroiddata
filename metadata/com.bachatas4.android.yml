@@ -18,8 +18,9 @@ Builds:
     versionCode: 6
     commit: 407a5ae8da16db93be44395095c149626b1a6ffa
     subdir: android/BachataS4/app
-    init: git -C ../../.. submodule update --init --recursive --depth 1
-    sudo: cd ../../.. && runtime/scripts/install-debian-runtime-deps.sh
+    init:
+      - git -C ../../.. submodule update --init --recursive --depth 1
+    sudo: bash -c "cd ../../.. && runtime/scripts/install-debian-runtime-deps.sh"
     gradle:
       - fdroid
     rm:
@@ -28,7 +29,7 @@ Builds:
     prebuild:
       - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
       - sdkmanager "platforms;android-37" "build-tools;37.0.0" "cmake;3.22.1"
-      - cd ../../.. && runtime/scripts/build-runtime-debian.sh
+      - bash -c "cd ../../.. && runtime/scripts/build-runtime-debian.sh"
     scanignore:
       - android/BachataS4/app/src/main/assets/runtime/runtime.zip
       - android/BachataS4/app/src/main/assets/runtime/manifest.json
