@@ -88,24 +88,20 @@ Builds:
       - yes
     prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
 
-  - versionName: 2.2.1
-    versionCode: 107030362
-    commit: v2.2.1
+  - versionName: 2.2.2
+    versionCode: 107030363
+    commit: v2.2.2
     sudo:
       - apt-get update
       - apt-get install -y build-essential clang cmake ninja-build pkg-config
       - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
       - chown -R vagrant /woodpecker
-      - mv /opt/android-sdk /opt/android-sdk-linux
-      - ln -s /opt/android-sdk-linux /opt/android-sdk
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
-      - export ANDROID_HOME=/opt/android-sdk-linux
-      - export ANDROID_SDK_ROOT=/opt/android-sdk-linux
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
       - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
       - cd ..
@@ -122,8 +118,6 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export ANDROID_HOME=/opt/android-sdk-linux
-      - export ANDROID_SDK_ROOT=/opt/android-sdk-linux
       - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
       - cd ..
       - mv tech.mmarca.openvitals $repo
@@ -139,5 +133,5 @@ AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: 
   https://codeberg.org/OpenVitals/mobile-app/raw/branch/main/pubspec.yaml|version:\s+[\d.]+\+(\d+)|.|version:\s+([\d.]+)\+
-CurrentVersion: 2.2.1
-CurrentVersionCode: 107030362
+CurrentVersion: 2.2.2
+CurrentVersionCode: 107030363
