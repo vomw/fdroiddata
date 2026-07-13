@@ -1,7 +1,7 @@
 Categories:
   - Clock
-License: MIT
-AuthorName: Léo H.
+License: GPL-3.0-or-later
+AuthorName: Ltrademark
 AuthorWebSite: https://ltrademark.com
 SourceCode: https://github.com/ltrademark/HRLY
 IssueTracker: https://github.com/ltrademark/HRLY/issues
@@ -26,9 +26,35 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: '1.5'
+    versionCode: 5
+    commit: c3255dbe7cc2e0773ac58154660757dd7832ab72
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: '1.6'
+    versionCode: 6
+    commit: 0bb40bafcdb6a6c100659c64b4d16fdd82a50d6d
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: d761b654c5f7a7e0cf7c9930d70946b8fcd00513bc60c719ed0e3fddbc7f9ab4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.4'
-CurrentVersionCode: 4
+CurrentVersion: '1.6'
+CurrentVersionCode: 6
