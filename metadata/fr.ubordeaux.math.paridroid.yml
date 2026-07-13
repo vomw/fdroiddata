@@ -1,8 +1,9 @@
 Categories:
+  - Calculator
   - Science & Education
 License: GPL-3.0-or-later
 WebSite: https://pari.math.u-bordeaux.fr/paridroid
-SourceCode: https://pari.math.u-bordeaux.fr/cgi-bin/gitweb.cgi?p=paridroid.git
+SourceCode: https://pari.math.u-bordeaux.fr/git/paridroid.git/
 IssueTracker: https://pari.math.u-bordeaux.fr/Bugs
 
 AutoName: PariDroid
@@ -174,7 +175,7 @@ Builds:
     commit: 2.11.4.1.8
     output: PariDroid/bin/PariDroid-release-unsigned.apk
     srclibs:
-      - gmp@18021:413ede7e6962
+      - gmp-unofficial-git@94fd39fa1a786c425530da018bc3e948dd6ae732
       - pari@pari-2.11.4
     target: android-11
     build: make fdroid
@@ -185,7 +186,7 @@ Builds:
     commit: 2.13.1.1.9
     output: PariDroid/bin/PariDroid-release-unsigned.apk
     srclibs:
-      - gmp@18137:36c93153e71c
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
       - pari@pari-2.13.1
     target: android-19
     build: make fdroid
@@ -198,7 +199,7 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - gmp@18137:36c93153e71c
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
       - pari@pari-2.13.2
     prebuild:
       - sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
@@ -217,7 +218,7 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - gmp@18137:36c93153e71c
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
       - pari@pari-2.13.3
     prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
     build:
@@ -232,7 +233,7 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - gmp@18137:36c93153e71c
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
       - pari@pari-2.13.3
     prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
     build:
@@ -247,7 +248,7 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - gmp@18137:36c93153e71c
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
       - pari@pari-2.13.3
     prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
     build:
@@ -255,10 +256,9 @@ Builds:
       - NDK22=1 make pari
     ndk: r22b
 
-  - versionName: 2.15.0.2.2
-    versionCode: 26
-    disable: AGP 4.1 issue
-    commit: 2.15.0.2.2
+  - versionName: 2.15.3.2.3
+    versionCode: 28
+    commit: 2.15.3.2.3
     subdir: PariDroid/app
     sudo:
       - apt-get update
@@ -266,15 +266,78 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - gmp@18137:36c93153e71c
-      - pari@pari-2.15.0
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
+      - pari@pari-2.15.3
     prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
     build:
       - cd ../..
       - NDK22=1 make pari
     ndk: r22b
 
+  - versionName: 2.15.4.2.3
+    versionCode: 29
+    commit: 2.15.4.2.3
+    subdir: PariDroid/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+      - apt-get install -y autoconf automake bison libtool make
+    gradle:
+      - yes
+    srclibs:
+      - gmp-unofficial-git@1d49961af1746c930f69b5978bf161aab88a2c48
+      - pari@pari-2.15.5
+    prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
+    build:
+      - cd ../..
+      - NDK22=1 make pari
+    ndk: 22.1.7171670
+
+  - versionName: 2.15.5.2.4
+    versionCode: 30
+    commit: 2.15.5.2.4
+    subdir: PariDroid/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+      - apt-get install -y autoconf automake bison libtool make
+    gradle:
+      - yes
+    srclibs:
+      - gmp-unofficial-git@141ed4f98a50e4a3c1a95a1758cb599b7499ac39
+      - pari@pari-2.15.5
+    prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
+    build:
+      - cd ../..
+      - NDK22=1 make pari
+    ndk: 22.1.7171670
+
+  - versionName: 2.17.3.2.5
+    versionCode: 31
+    commit: 2.17.3.2.5
+    subdir: PariDroid/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives --set java-1.11.0-openjdk-amd64
+      - apt-get install -y autoconf automake bison libtool make
+    gradle:
+      - yes
+    srclibs:
+      - gmp-unofficial-git@141ed4f98a50e4a3c1a95a1758cb599b7499ac39
+      - pari@pari-2.17.3
+    prebuild: sed -i -e 's/android:minSdkVersion=\".*\"//' src/main/AndroidManifest.xml
+    build:
+      - cd ../..
+      - NDK22=1 make pari
+    ndk: 22.1.7171670
+
 AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 2.15.0.2.2
-CurrentVersionCode: 26
+CurrentVersion: 2.17.3.2.5
+CurrentVersionCode: 31

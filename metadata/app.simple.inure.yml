@@ -1,4 +1,10 @@
+AntiFeatures:
+  NonFreeAdd:
+    en-US: Promotes its non-libre paid version
+  NonFreeDep:
+    en-US: Depends on Shizuku for functionality
 Categories:
+  - App Manager
   - System
 License: GPL-3.0-only
 AuthorName: Hamza Rizwan
@@ -11,142 +17,628 @@ Changelog: https://github.com/Hamza417/Inure/releases
 AutoName: Inure
 
 RepoType: git
-Repo: https://github.com/Hamza417/Inure
+Repo: https://github.com/Hamza417/Inure.git
+Binaries: https://github.com/Hamza417/Inure/releases/download/%v/app-github-release.apk
 
 Builds:
-  - versionName: build60_final (beta)
-    versionCode: 60
-    commit: 81147ecdd417c74f3b9a7e332b5830541d0dde81
+  - versionName: build104.1.0
+    versionCode: 10410
+    commit: ba13f4318be78ccb90d7423cf6d5d075691ea6af
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build61_final (beta)
-    versionCode: 61
-    commit: 566326315a111576ea5d5fb50737a7ff1273ef80
+  - versionName: build105.0.0
+    versionCode: 10500
+    commit: 11798cb4ea575af82cbb96386b4859c063589636
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build62_final (beta)
-    versionCode: 62
-    commit: 14c9e63efc22d82d63b0195c98a8e4bf71f91192
+  - versionName: build106.0.0
+    versionCode: 10600
+    commit: 33287f291f6a791367d265cb04a18a5c1e7ff7f4
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build63 (beta)
-    versionCode: 63
-    commit: ab44f3e888c00e56d224bf0138706d991368d82e
+  - versionName: build106.0.3
+    versionCode: 10603
+    commit: 8483be75a688af673bcd4ffb96a59bbae2205b92
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build64
-    versionCode: 64
-    commit: 1cd46603fc7bcfa9d4db69920f94c7f12be8b938
+  - versionName: build106.2.1
+    versionCode: 10621
+    commit: bbe775c6461c789b55e5fcc05874dad787df38a0
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build66
-    versionCode: 66
-    commit: cfca90cf1cfa51c0ffc7e042f5a06d9d5e6f5574
+  - versionName: build106.3.0
+    versionCode: 10630
+    commit: 327c24db7895a0ed6adc1f01490131bfd6dc3de8
     subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.5.3
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build67
-    versionCode: 67
-    commit: e7809d103b5bd5662e31d21c7d3ab67ab73c148b
+  - versionName: build106.3.2
+    versionCode: 10632
+    commit: 82b0740fcc1ac7a357d1ff2ae704807d3476b396
     subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build68
-    versionCode: 68
-    commit: e5187efc5d9b15c48f316b82887b9dd0de5fb36e
+  - versionName: build106.3.3
+    versionCode: 10633
+    commit: 2eb0164d052c6820eb2a22560cff4d87e4001392
     subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build69
-    versionCode: 69
-    commit: f9c2ab3cd2cc6772d2ddab1049587ed6ad3bb8a7
+  - versionName: build106.3.4
+    versionCode: 10634
+    commit: d05df1269f25c118ebe8ac9d27370c4074708879
     subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build70
-    versionCode: 70
-    commit: 2dfc24ce674e4247c3842031e2bf19dc42756735
+  - versionName: build106.4.0
+    versionCode: 10640
+    commit: 633338dcaafc23d0ee0255029730f58c0d26fbd7
     subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
 
-  - versionName: build71
-    versionCode: 71
-    commit: 603321506e983338ade11371150bc3b45eb0ced8
+  - versionName: build106.4.2
+    versionCode: 10642
+    commit: a1950fc2f4fbc0ba7d67004fd4f8dda12a2f2d68
     subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
     gradle:
       - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
     scanignore:
       - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
-    antifeatures:
-      - NonFreeAdd
-      - NonFreeAssets
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build106.4.3
+    versionCode: 10643
+    commit: 690e7c0bb7018226c04a4266b8a1312130ff146a
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build106.4.5
+    versionCode: 10645
+    commit: 31ca08d941916168d3cfb6bf3805f5dd139958e1
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build106.5.0
+    versionCode: 10650
+    commit: 15e19c94f3d4c43a7d51e4a0e4981754294ad373
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build106.5.1
+    versionCode: 10651
+    commit: 57e1f51da7adbdc095341567841f857e56676cf4
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build107.0.0
+    versionCode: 10700
+    commit: c6c8afc92fce2b8e42df190582be59110011f281
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build107.0.1
+    versionCode: 10701
+    commit: 4c0334f88d4320ef79da5a4f3045d3369d73c06c
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build107.0.2
+    versionCode: 10702
+    commit: ac2741c6749116e1c5f4e809adce477b5e3b1d49
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build107.0.3
+    versionCode: 10703
+    commit: 31eb2bd033207abd71a1e09fcd315c16b5348f3c
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+  - versionName: build107.0.5
+    versionCode: 10705
+    commit: 10d6bafcf6edbbea573658e05f4e06584e47265b
+    subdir: app
+    sudo:
+      - apt-get update
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - github
+    srclibs:
+      - shizuku@v13.6.0
+    rm:
+      - app/src/*/assets/rish/rish_shizuku.dex
+    prebuild: sed -i -e '/if (signingConfigs.release/,/}/d' -e 's|cppFlags ""|cFlags
+      "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk
+      -Wl,--hash-style=gnu"\ncppFlags "-ffile-prefix-map=${rootDir}=/home/runner/work/Inure/Inure
+      -ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk -Wl,--hash-style=gnu"|'
+      build.gradle
+    scanignore:
+      - app/src/main/java/app/simple/inure/trackers/dex/DexLoaderBuilder.java
+    build:
+      - appdir=$(pwd)
+      - cd $$shizuku$$/shell
+      - sed -i -e "s|into dexPath|into '$appdir/src/main/assets/rish/'|" build.gradle
+      - sed -i -e '/:manager/d' ../settings.gradle
+      - gradle assembleRelease
+
+AllowedAPKSigningKeys: 4a3f711142250805c7bb5c0a5a3287631bdb948816e6f4afc9524d0eb46b6b1b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: build71
-CurrentVersionCode: 71
+CurrentVersion: build107.0.5
+CurrentVersionCode: 10705

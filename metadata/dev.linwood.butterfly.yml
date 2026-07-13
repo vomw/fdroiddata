@@ -1,6 +1,8 @@
 Categories:
+  - Draw
+  - Note
   - Writing
-License: GPL-3.0-only
+License: AGPL-3.0-only
 AuthorName: Linwood
 AuthorEmail: admin@linwood.dev
 SourceCode: https://github.com/LinwoodDev/Butterfly
@@ -8,6 +10,7 @@ IssueTracker: https://github.com/LinwoodDev/Butterfly/issues
 Translation: https://linwood.crowdin.com/butterfly
 Changelog: https://github.com/LinwoodDev/Butterfly/blob/develop/CHANGELOG.md
 
+Name: Butterfly
 AutoName: Butterfly
 
 RepoType: git
@@ -432,28 +435,6 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor development
 
-  - versionName: 1.4.0-alpha.1
-    versionCode: 28
-    commit: d6eaeb8a77d0a9ebee226cae3187382cc622ceb1
-    subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
-    output: build/app/outputs/flutter-apk/app-development-release.apk
-    srclibs:
-      - flutter@3.0.2
-    rm:
-      - app/ios
-      - app/linux
-      - app/macos
-      - app/web
-      - app/windows
-    prebuild: sed -i -e '/applicationIdSuffix/d' android/app/build.gradle
-    build:
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter build apk --flavor development
-
   - versionName: 1.4.0-alpha.2
     versionCode: 29
     commit: a49cbe6560a622a87e404505b7f5fa1f3e222eb6
@@ -496,6 +477,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.4.0
     versionCode: 37
@@ -517,6 +503,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.4.1
     versionCode: 38
@@ -538,6 +529,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.4.2
     versionCode: 39
@@ -559,6 +555,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.4.3
     versionCode: 40
@@ -580,6 +581,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.4.4
     versionCode: 44
@@ -601,6 +607,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.5.0
     versionCode: 50
@@ -622,6 +633,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.5.1
     versionCode: 51
@@ -639,6 +655,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.6.0
     versionCode: 57
@@ -656,6 +677,11 @@ Builds:
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
 
   - versionName: 1.6.1
     versionCode: 58
@@ -678,9 +704,725 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
+
+  - versionName: 2.0.0
+    versionCode: 85
+    commit: 2e09e670d330d32335f17d91dd067193c5f3625d
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@3.16.4
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
+
+  - versionName: 2.0.1
+    versionCode: 88
+    commit: 71ccdd0871185d166d76da4d9e4c55e1102bddef
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@3.16.4
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
+
+  - versionName: 2.0.2
+    versionCode: 90
+    commit: 33826e1e602b259cc65cc90d79e523e5e58ad4d9
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@3.16.4
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
+
+  - versionName: 2.0.3
+    versionCode: 93
+    commit: 87fc5a2bcad2ac6e95cbea1c4d62f3db91adeb98
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@3.16.4
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to developer server for changelog
+      Tracking:
+        en-US: Connects to developer server to check version
+
+  - versionName: 2.1.0
+    versionCode: 104
+    commit: 5e32dfacd6c30d2b97dbbc76e92ca24d7667b31c
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat ../FLUTTER_VERSION)
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.1.1
+    versionCode: 108
+    commit: 6058fe4cc9ae7905dc398b330b751d361525e942
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat ../FLUTTER_VERSION)
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.2.0
+    versionCode: 116
+    commit: 44a29d3dd4ba25b98f6ad1eb1cdea1c33d124d07
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.2.1
+    versionCode: 119
+    commit: 35ad656a1fa5f324feb124de4a0e5f48a53fd88c
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.2.2
+    versionCode: 122
+    commit: 3722027f6b53292d9923514b79bd41d1b7f321e2
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.2.3
+    versionCode: 126
+    commit: 1209070c5943f64f80275c7a4501cce471a77a3b
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.2.4
+    versionCode: 128
+    commit: 0f47a3346ab484956c7d4727fac3e94a90e9df13
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.3.0
+    versionCode: 135
+    commit: 877cb94abae6788821fede980e0a70d586817750
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - pushd $$flutter$$
+      - git checkout -f $version
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.3.1
+    versionCode: 138
+    commit: f08b1debcd9900c0b6cf81a1d9e2b3502aaae440
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.3.2
+    versionCode: 140
+    commit: cebc1d93ee051367c8d91fc942ae1e75e140f16c
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.3.3
+    versionCode: 142
+    commit: 1b6d7207fdd880132df4a3b6f5959dfdff9db053
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.3.4
+    versionCode: 144
+    commit: 260cb90b86ab88bc31d2095e96bc71c5c389b68b
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.4.0
+    versionCode: 151
+    commit: a02b6d841aad3fd52a1ded0df58d0ea99d1f48a8
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/8.12.1/8.11.1/' 
+        .pub-cache/hosted/pub.dev/{share_plus,connectivity_plus,package_info_plus,network_info_plus,camera_android_camerax,{url_launcher,file_selector,path_provider,shared_preferences}_android,flutter_plugin_android_lifecycle}-*/android/build.gradle
+      - sed -i -e 's/8.12.2/8.11.1/' android/settings.gradle.kts
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.4.1
+    versionCode: 157
+    commit: dbcd9949ae56764995a5ad53e89a630ef54c3b88
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.4.2
+    versionCode: 163
+    commit: 40e74ad4f3f5431aaa7b0488b6f065bf16ec8952
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - sdkmanager 'ndk;23.1.7779620' 'ndk;26.1.10909125'
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+
+  - versionName: 2.4.3
+    versionCode: 165
+    commit: b0b3707a053b02c09ca804a365cc967c056df771
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    ndk: r28c
+
+  - versionName: 2.4.4
+    versionCode: 167
+    commit: d8e834334872a42e243c7556714c5930a11bdaff
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    ndk: r28c
+
+  - versionName: 2.5.0
+    versionCode: 173
+    commit: 577531a329cf4531eeea3b7f5b4106f2a109b80c
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    ndk: r28c
+
+  - versionName: 2.5.2
+    versionCode: 182
+    commit: f7ca2f14e70c86b66f3aa77ace7938c809f9c28b
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+      - pdfium-binaries@chromium/7811
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - grep chromium%2F7811 $PUB_CACHE/hosted/pub.dev/pdfium_dart-*/hook/build.dart
+      - sed -i -e '/get(archiveUri)/,+3c final bytes = await 
+        File("$$pdfium-binaries$$/pdfium-${target.archivePlatform}-${target.archiveArch}.tgz").readAsBytes();'
+        -e 's/response.bodyBytes/bytes/' -e '/http/d' $PUB_CACHE/hosted/pub.dev/pdfium_dart-*/hook/build.dart
+    scandelete:
+      - app/.pub-cache
+    build:
+      - pushd $$pdfium-binaries$$
+      - export PDFium_BRANCH="chromium/7811"
+      - export PDFium_VERSION="149.0.7811.0"
+      - sed -i 's|sudo |echo |g' steps/01-install.sh
+      - echo 'sed -i "s|  sys.exit(main())|  sys.exit(0)|g" pdfium/build/install-build-deps.py'
+        >> steps/02-checkout.sh
+      - truncate -s 0 steps/09-test.sh
+      - ./build.sh -b "$PDFium_BRANCH" android arm
+      - ./build.sh -b "$PDFium_BRANCH" android arm64
+      - ./build.sh -b "$PDFium_BRANCH" android x64
+      - cp pdfium-android-x64.tgz pdfium-android-x86.tgz
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    ndk: r28c
+
+  - versionName: 2.5.3
+    versionCode: 185
+    commit: a10a9787fd4fdc51c9426ead83ff063136015fb2
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-production-release.apk
+    srclibs:
+      - flutter@stable
+      - pdfium-binaries@chromium/7811
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export version=$(grep "^  flutter:" pubspec.yaml | cut -d ":" -f2|head -n1)
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
+      - sed -i -e '/signingConfig/,+4d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - grep chromium%2F7811 $PUB_CACHE/hosted/pub.dev/pdfium_dart-*/hook/build.dart
+      - sed -i -e '/get(archiveUri)/,+3c final bytes = await 
+        File("$$pdfium-binaries$$/pdfium-${target.archivePlatform}-${target.archiveArch}.tgz").readAsBytes();'
+        -e 's/response.bodyBytes/bytes/' -e '/http/d' $PUB_CACHE/hosted/pub.dev/pdfium_dart-*/hook/build.dart
+    scandelete:
+      - app/.pub-cache
+    build:
+      - pushd $$pdfium-binaries$$
+      - export PDFium_BRANCH="chromium/7811"
+      - export PDFium_VERSION="149.0.7811.0"
+      - sed -i 's|sudo |echo |g' steps/01-install.sh
+      - echo 'sed -i "s|  sys.exit(main())|  sys.exit(0)|g" pdfium/build/install-build-deps.py'
+        >> steps/02-checkout.sh
+      - truncate -s 0 steps/09-test.sh
+      - ./build.sh -b "$PDFium_BRANCH" android arm
+      - ./build.sh -b "$PDFium_BRANCH" android arm64
+      - ./build.sh -b "$PDFium_BRANCH" android x64
+      - cp pdfium-android-x64.tgz pdfium-android-x86.tgz
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor production
+    ndk: r28c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.6.1
-CurrentVersionCode: 58
+CurrentVersion: 2.5.3
+CurrentVersionCode: 185

@@ -8,16 +8,16 @@ IssueTracker: https://github.com/alt236/USB-Device-Info---Android/issues
 
 AutoName: USB Device Info
 Description: |-
-    Allows you to list all attached (host mode) USB devices. Information includes:
+  Allows you to list all attached (host mode) USB devices. Information includes:
 
-    * The Device class
-    * The USB device path
-    * The Vendor ID (VID) and the Product ID (PID)
-    * A List of all interfaces and their endpoints
+  * The Device class
+  * The USB device path
+  * The Vendor ID (VID) and the Product ID (PID)
+  * A List of all interfaces and their endpoints
 
-    If you download the accompanying databases, the application will also be able to
-    provide you with additional info such as the Vendor of the device (which is not
-    necessarily the brand!), the vendor's logo and the product name.
+  If you download the accompanying databases, the application will also be able to
+  provide you with additional info such as the Vendor of the device (which is not
+  necessarily the brand!), the vendor's logo and the product name.
 
 RepoType: git
 Repo: https://github.com/alt236/USB-Device-Info---Android.git
@@ -41,7 +41,20 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 3.0.0.81
+    versionCode: 81
+    commit: ea2779c0905cfefb146d94592adacc0f0bf6101c
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/versionCode .*/versionCode $$VERCODE$$/' -e 's/versionName
+      .*/versionName "$$VERSION$$"/' build.gradle
+    scandelete:
+      - buildsystem
+
+MaintainerNotes: versionName and Code are dynamic, so we force them
+
 AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 0.0.5
-CurrentVersionCode: 5
+CurrentVersion: 3.0.0.81
+CurrentVersionCode: 81

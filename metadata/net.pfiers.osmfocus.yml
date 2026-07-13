@@ -1,14 +1,15 @@
 Categories:
   - Navigation
 License: Apache-2.0
+AuthorName: Pieter Fiers
+AuthorWebSite: https://pfiers.net/
 SourceCode: https://github.com/ubipo/osmfocus
 IssueTracker: https://github.com/ubipo/osmfocus/issues
-Donate: https://pfiers.net/donate
 
 AutoName: OSMfocus Reborn
 
 RepoType: git
-Repo: https://github.com/ubipo/osmfocus
+Repo: https://github.com/ubipo/osmfocus.git
 
 Builds:
   - versionName: 1.0.0
@@ -21,14 +22,6 @@ Builds:
   - versionName: 1.0.1-fdroid
     versionCode: 101
     commit: v1.0.1
-    subdir: app
-    gradle:
-      - fdroid
-
-  - versionName: 1.0.3-fdroid
-    versionCode: 103
-    disable: https://github.com/ubipo/osmfocus/issues/8
-    commit: v1.0.3
     subdir: app
     gradle:
       - fdroid
@@ -124,7 +117,60 @@ Builds:
     gradle:
       - fdroid
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 1.5.0-fdroid
-CurrentVersionCode: 150
+  - versionName: 1.5.1-fdroid
+    versionCode: 151
+    commit: 3963320bfc946d4263e57defbdd603ba45c8aa98
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/kotlinx/d' -e '/r8-releases/d' ../build.gradle.kts
+
+  - versionName: 1.6.0-fdroid
+    versionCode: 160
+    commit: 70be0b0ad59139c6cb72d6d1b4849c06b4e7d2f3
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/kotlinx/d' -e '/r8-releases/d' ../build.gradle.kts
+
+  - versionName: 1.8.9-fdroid
+    versionCode: 1008009
+    commit: 4a91fb0a0d10c621a773e1a578c0795412a97163
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e 's/androidVersion.name/"$$VERSION$$"/' -e 's/androidVersion.code/$$VERCODE$$/'
+      build.gradle.kts
+
+  - versionName: 1.9.0-fdroid
+    versionCode: 1009000
+    commit: af94cd49f70aa7259a14507c44fc697589b1f530
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e 's/androidVersion.name/"$$VERSION$$"/' -e 's/androidVersion.code/$$VERCODE$$/'
+      build.gradle.kts
+
+  - versionName: 1.9.12-fdroid
+    versionCode: 1009012
+    commit: e4558218333424e98f171e6e1f897eefa0579197
+    subdir: app
+    gradle:
+      - fdroid
+
+  - versionName: 1.9.13-fdroid
+    versionCode: 1009013
+    commit: 61da0ff6951714ca0942e0280e80c2f3178e2e84
+    subdir: app
+    gradle:
+      - fdroid
+
+AutoUpdateMode: Version +-fdroid v%v
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: app/build.gradle.kts|versionCode = (\d+)|.|versionName = "([\d.]+)"
+CurrentVersion: 1.9.13
+CurrentVersionCode: 1009013

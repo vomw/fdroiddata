@@ -1,12 +1,13 @@
 Categories:
-  - Writing
+  - Keyboard & IME
 License: Apache-2.0
+AuthorName: Menny Even Danan
+AuthorEmail: ask@evendanan.net
 WebSite: https://anysoftkeyboard.github.io
 SourceCode: https://github.com/AnySoftKeyboard/AnySoftKeyboard
 IssueTracker: https://github.com/AnySoftKeyboard/AnySoftKeyboard/issues
 Translation: https://crowdin.com/project/anysoftkeyboard
-Changelog: https://github.com/AnySoftKeyboard/AnySoftKeyboard/releases
-Donate: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KDYBGNUNMMN94&lc=US&item_name=AnySoftKeyboard
+Donate: https://github.com/sponsors/menny
 
 AutoName: AnySoftKeyboard
 
@@ -20,7 +21,7 @@ Builds:
     srclibs:
       - AnySoftKeyboard-API@78768bc479
     prebuild: sed -i 's@\(android.library.reference.1=\).*@\1$$AnySoftKeyboard-API$$@'
-        project.properties
+      project.properties
     buildjni:
       - yes
     ndk: r12b
@@ -34,8 +35,10 @@ Builds:
       - sed -i 's@\(android.library.reference.1=\).*@\1$$AnySoftKeyboard-API$$@' project.properties
       - rm -rf libs/armeabi*/ libs/x86/ libs/mips/ ant/ keyboard_keystore StoreStuff/
         res/raw/words_1.dict
-      - wget https://softkeyboard.googlecode.com/svn-history/r544/trunk/project/dict_creation/makedict_Linux
-      - wget https://github.com/AnySoftKeyboard/AnySoftKeyboardTools/blob/HEAD/makedict/makedict.jar?raw=true
+      - wget 
+        https://softkeyboard.googlecode.com/svn-history/r544/trunk/project/dict_creation/makedict_Linux
+      - wget 
+        https://github.com/AnySoftKeyboard/AnySoftKeyboardTools/blob/HEAD/makedict/makedict.jar?raw=true
         -O makedict.jar
       - chmod +x makedict_Linux
       - ./makedict_Linux dict/words.xml
@@ -326,7 +329,7 @@ Builds:
     rm:
       - app/src/main/res/raw/words_*.dict
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        -e '/crashlytics/,$d' build.gradle
+      -e '/crashlytics/,$d' build.gradle
     scandelete:
       - buildSrc
       - app/src/debug
@@ -345,7 +348,7 @@ Builds:
     rm:
       - app/src/main/res/raw/words_*.dict
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        -e '/crashlytics/,$d' build.gradle
+      -e '/crashlytics/,$d' build.gradle
     scandelete:
       - buildSrc
       - app/src/debug
@@ -363,7 +366,7 @@ Builds:
     rm:
       - app/src/main/res/raw/words_*.dict
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        build.gradle
+      build.gradle
     scandelete:
       - buildSrc
       - app/src/debug
@@ -379,7 +382,7 @@ Builds:
       - yes
     forceversion: true
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        build.gradle
+      build.gradle
     scandelete:
       - buildSrc
     ndk: r14b
@@ -392,7 +395,7 @@ Builds:
       - yes
     forceversion: true
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        build.gradle
+      build.gradle
     scandelete:
       - buildSrc
     ndk: r14b
@@ -405,7 +408,7 @@ Builds:
       - yes
     forceversion: true
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        build.gradle
+      build.gradle
     scandelete:
       - buildSrc
     ndk: r14b
@@ -418,7 +421,7 @@ Builds:
       - yes
     forceversion: true
     prebuild: sed -i -e '/versionCode/d' -e '/versionName/aversionCode $$VERCODE$$'
-        build.gradle
+      build.gradle
     scanignore:
       - buildSrc
     ndk: r14b
@@ -465,13 +468,40 @@ Builds:
     gradleprops:
       - forceVersionBuildCount=7792
 
-MaintainerNotes: |-
-    * Prior to 1.9.2629, generates english dictionary binary (src/main/res/raw/words_*.dict) from source files (under `english_dictionary` folder. Mostly AOSP word-list)
+  - versionName: 1.12.7138
+    versionCode: 7138
+    commit: b10a79fcc1a61c1e737d7aac43aab0141f065185
+    subdir: ime/app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/navigation-dynamic-features-fragment/d' build.gradle
+    scanignore:
+      - addons/languages/*/pack/dictionary/*.gz
+    ndk: r27c
+    gradleprops:
+      - withAutoVersioning
+      - forceVersionBuildCount=8461
 
-    Summary and Description have been moved to the new localizable text files:
-    https://f-droid.org/docs/All_About_Descriptions_Graphics_and_Screenshots
+  - versionName: 1.13.8175
+    versionCode: 8175
+    commit: 8c1db51c8f23d1923d0eb05f70f1bb41d614fb6d
+    subdir: ime/app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/navigation.dynamic.features.fragment/d' build.gradle
+    scanignore:
+      - addons/languages/*/pack/dictionary/*.gz
+    scandelete:
+      - '*.class'
+    ndk: r29
+    gradleprops:
+      - withAutoVersioning
+      - forceVersionBuildCount=10582
+
+MaintainerNotes: '* Prior to 1.9.2629, generates english dictionary binary (src/main/res/raw/words_*.dict)
+  from source files (under `english_dictionary` folder. Mostly AOSP word-list)'
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.11.7137
-CurrentVersionCode: 7137
+CurrentVersion: 1.13.8175
+CurrentVersionCode: 8175

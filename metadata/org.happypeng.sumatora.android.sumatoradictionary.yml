@@ -1,6 +1,7 @@
 Categories:
-  - Science & Education
   - Reading
+  - Science & Education
+  - Translation & Dictionary
 License: GPL-3.0-or-later
 AuthorName: Nicolas Centa
 AuthorEmail: nicolas.centa@gmail.com
@@ -10,11 +11,11 @@ IssueTracker: https://github.com/HappyPeng2x/SumatoraDictionary/issues
 
 AutoName: Sumatora
 Description: |-
-    Sumatora has the following distinctive features:
-    * very fast search and display of exact term/term at the beginning/term included
-    * bookmarks and bookmark export/import
-    * search selected text in applications using contextual menu (or sharing)
-    * multilingual search (supports English, German, Russian, Spanish, Dutch, Hungarian, Swedish, Slovenian and French).
+  Sumatora has the following distinctive features:
+  * very fast search and display of exact term/term at the beginning/term included
+  * bookmarks and bookmark export/import
+  * search selected text in applications using contextual menu (or sharing)
+  * multilingual search (supports English, German, Russian, Spanish, Dutch, Hungarian, Swedish, Slovenian and French).
 
 RepoType: git
 Repo: https://github.com/HappyPeng2x/SumatoraDictionary
@@ -95,7 +96,35 @@ Builds:
       - app/src/main/assets/dictionaries/*.db.gz
     ndk: r21d
 
+  - versionName: 0.4.7.4
+    versionCode: 35
+    commit: ed456d6ac22a49b4750c0df457ac61a6aceb1774
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/oss.jfrog.org/d' ../build.gradle
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/jcenter/d' build.gradle
+    scanignore:
+      - app/src/main/assets/dictionaries/*.db.gz
+    ndk: r21d
+
+  - versionName: 0.4.7.5
+    versionCode: 36
+    commit: 1030bfc8f4c8367ea395e3d082ba5c4aeb7f4b53
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/oss.jfrog.org/d' ../build.gradle
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/jcenter/d' build.gradle
+    scanignore:
+      - app/src/main/assets/dictionaries/*.db.gz
+    ndk: r21d
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^fdroid-v
-CurrentVersion: 0.4.6
-CurrentVersionCode: 31
+CurrentVersion: 0.4.7.5
+CurrentVersionCode: 36

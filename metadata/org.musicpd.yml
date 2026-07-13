@@ -1,4 +1,5 @@
 Categories:
+  - Local Media Player
   - Multimedia
 License: GPL-2.0-or-later
 AuthorName: Music Player Daemon
@@ -8,8 +9,8 @@ IssueTracker: https://github.com/MusicPlayerDaemon/MPD/issues
 
 AutoName: MPD
 Description: Music Player Daemon (MPD) is a flexible, powerful, server-side application
-    for playing music. Through plugins and libraries it can play a variety of sound
-    files while being controlled by its network protocol.
+  for playing music. Through plugins and libraries it can play a variety of sound
+  files while being controlled by its network protocol.
 
 RepoType: git
 Repo: https://github.com/MusicPlayerDaemon/MPD.git
@@ -222,7 +223,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -250,7 +252,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -278,7 +281,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -306,7 +310,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -334,7 +339,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -362,7 +368,8 @@ Builds:
         /dev/null
       - sed -i -e "/native/a cpp_args:['-stdlib=libc++','-nostdinc++','-I/usr/lib/llvm-7/include/c++/v1',],"
         src/tag/meson.build
-      - sed -i -e "/native/a link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
+      - sed -i -e "/native/a 
+        link_args:['-lc++abi','-L/usr/lib/llvm-7/lib','-Wl,-rpath,/usr/lib/llvm-7/lib',],"
         src/tag/meson.build
     scandelete:
       - src/haiku/
@@ -442,7 +449,108 @@ Builds:
       - ninja android/apk/mpd-aligned.apk
     ndk: r25b
 
+  - versionName: 0.23.14
+    versionCode: 72
+    commit: feac1a3f56591ccfb00870aba66c9ac3abac4773
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build imagemagick g++ meson cmake quilt pkg-config
+        xz-utils make libtool m4 automake librsvg2-bin
+    output: output/android/android/apk/mpd-aligned.apk
+    rm:
+      - src/haiku/App_MusicPD
+    prebuild:
+      - mkdir -p output/android/android/classes/
+      - sed -i -e '/rm -rf/d' android/apk/make-unsigned-apk.sh
+      - sdkmanager 'platforms;android-29' 'build-tools;29.0.3'
+    build:
+      - cd output/android/
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ armeabi-v7a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-unsigned.apk
+      - rm -rf lib*.* meson-*
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ arm64-v8a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-aligned.apk
+    ndk: r25b
+
+  - versionName: 0.23.15
+    versionCode: 73
+    commit: b8bfc986181a6824b7ee9c4f2c475369ca8ac931
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build imagemagick g++ meson cmake quilt pkg-config
+        xz-utils make libtool m4 automake librsvg2-bin
+    output: output/android/android/apk/mpd-aligned.apk
+    rm:
+      - src/haiku/App_MusicPD
+    prebuild:
+      - mkdir -p output/android/android/classes/
+      - sed -i -e '/rm -rf/d' android/apk/make-unsigned-apk.sh
+      - sdkmanager 'platforms;android-29' 'build-tools;29.0.3'
+    build:
+      - cd output/android/
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ armeabi-v7a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-unsigned.apk
+      - rm -rf lib*.* meson-*
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ arm64-v8a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-aligned.apk
+    ndk: r25b
+
+  - versionName: 0.23.16
+    versionCode: 74
+    commit: b5bd294e5c88c062b1a9c0c4c60397fbf7f3f1c5
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build imagemagick g++ meson cmake quilt pkg-config
+        xz-utils make libtool m4 automake librsvg2-bin zip
+    output: output/android/android/apk/mpd-aligned.apk
+    rm:
+      - src/haiku/App_MusicPD
+    prebuild:
+      - mkdir -p output/android/android/classes/
+      - sed -i -e '/rm -rf/d' android/apk/make-unsigned-apk.sh
+      - sdkmanager 'platforms;android-29' 'build-tools;29.0.3'
+    build:
+      - cd output/android/
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ armeabi-v7a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-unsigned.apk
+      - rm -rf lib*.* meson-*
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ arm64-v8a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-aligned.apk
+    ndk: r25c
+
+  - versionName: 0.23.17
+    versionCode: 75
+    commit: b080ca8627c2ae1e6d5fec158b3e1aaaff2791bd
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build imagemagick g++ meson cmake quilt pkg-config
+        xz-utils make libtool m4 automake librsvg2-bin zip
+    output: output/android/android/apk/mpd-aligned.apk
+    rm:
+      - src/haiku/App_MusicPD
+    prebuild:
+      - mkdir -p output/android/android/classes/
+      - sed -i -e '/rm -rf/d' android/apk/make-unsigned-apk.sh
+      - sed -i -e 's|boostorg.jfrog.io/artifactory/main|archives.boost.io|' python/build/libs.py
+      - sdkmanager 'platforms;android-29' 'build-tools;29.0.3'
+    build:
+      - cd output/android/
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ armeabi-v7a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-unsigned.apk
+      - rm -rf lib*.* meson-*
+      - python3 ../../android/build.py $$SDK$$ $$NDK$$ arm64-v8a --buildtype=debugoptimized
+        -Db_ndebug=true -Dwrap_mode=forcefallback
+      - ninja android/apk/mpd-aligned.apk
+    ndk: r25c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.23.12
-CurrentVersionCode: 71
+CurrentVersion: 0.23.17
+CurrentVersionCode: 75

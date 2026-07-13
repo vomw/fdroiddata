@@ -1,21 +1,22 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: Depends on Github to load quotes.
 Categories:
   - Reading
 License: GPL-3.0-or-later
-AuthorName: Lijukay
+AuthorName: Lijucay
 AuthorEmail: lico.keins@gmail.com
-AuthorWebSite: https://github.com/Lijukay
+AuthorWebSite: https://github.com/Lijucay
 WebSite: https://lijukay.gitbook.io/qwotable/
-SourceCode: https://github.com/Lijukay/Qwotable
-IssueTracker: https://github.com/Lijukay/Qwotable/issues
-Changelog: https://github.com/Lijukay/Qwotable/releases
+SourceCode: https://github.com/Lijucay/Qwotable
+IssueTracker: https://github.com/Lijucay/Qwotable/issues
+Changelog: https://github.com/Lijucay/Qwotable/Qwotable/releases
 
 AutoName: Qwotable
 
 RepoType: git
-Repo: https://github.com/Lijukay/Qwotable.git
-Binaries: https://github.com/Lijukay/Qwotable/releases/download/v%c/Qwotable.V.%c.apk
+Repo: https://github.com/Lijucay/Qwotable.git
+Binaries: https://github.com/Lijucay/Qwotable/releases/download/v%c/Qwotable.V.%c.apk
 
 Builds:
   - versionName: 0.1.8
@@ -39,9 +40,32 @@ Builds:
     gradle:
       - yes
 
+  - versionName: '2.1'
+    versionCode: 12
+    commit: 08b6044316cd09a00c97365f5013c2a2001ef5e9
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'res/*.json'
+
+  - versionName: '3.0'
+    versionCode: 13
+    commit: 0d70f8e8b5af0475efba01b83a2c837425b618ba
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    prebuild: git reset --soft ce339f9c53672e35f0c2e1619af8c06f164c54db
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'res/*.json'
+
 AllowedAPKSigningKeys: 08f9a3480fb68073a62116bea159b11a6fe511781a0d4a183945b5151f714c7b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1'
-CurrentVersionCode: 10
+CurrentVersion: '3.0'
+CurrentVersionCode: 13

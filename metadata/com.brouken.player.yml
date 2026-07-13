@@ -1,4 +1,5 @@
 Categories:
+  - Local Media Player
   - Multimedia
 License: Unlicense
 AuthorName: Marcel Dopita
@@ -472,7 +473,8 @@ Builds:
       - popd
       - cp $$ExoPlayer-moneytoo$$/extensions/{ffmpeg,av1}/buildout/outputs/aar/*.aar
         libs/
-      - cp $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
+      - cp 
+        $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
         libs/
     ndk: r21e
 
@@ -518,7 +520,8 @@ Builds:
       - popd
       - cp $$ExoPlayer-moneytoo$$/extensions/{ffmpeg,av1}/buildout/outputs/aar/*.aar
         libs/
-      - cp $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
+      - cp 
+        $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
         libs/
     ndk: r21e
 
@@ -564,7 +567,8 @@ Builds:
       - popd
       - cp $$ExoPlayer-moneytoo$$/extensions/{ffmpeg,av1}/buildout/outputs/aar/*.aar
         libs/
-      - cp $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
+      - cp 
+        $$ExoPlayer-moneytoo$$/library/{common,core,extractor,ui}/buildout/outputs/aar/*.aar
         libs/
     ndk: r21e
 
@@ -614,10 +618,1027 @@ Builds:
         libs/
     ndk: r21e
 
-MaintainerNotes: 'Extensions build instructions: https://github.com/androidx/media/blob/1.0.0-beta03/libraries/decoder_ffmpeg/README.md
-    https://github.com/androidx/media/blob/1.0.0-beta03/libraries/decoder_av1/README.md'
+  - versionName: '0.149'
+    versionCode: 149
+    commit: v0.149
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build
+      - apt-get install -y -t bullseye-backports cmake
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.1.0
+      - FFmpeg@release/4.2
+      - cpu_features@v0.7.0
+      - abseil-cpp@20220623.0
+      - libgav1@v0.18.0
+    prebuild: sed -i -e 's/android {/&\n    ndkVersion "21.4.7075529"/' $$media-moneytoo$$/common_library_config.gradle
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 21.4.7075529
+
+  - versionName: '0.154'
+    versionCode: 154
+    commit: v0.154
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build
+      - apt-get install -y -t bullseye-backports cmake
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.2.0
+      - FFmpeg@release/4.2
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    prebuild: sed -i -e 's/android {/&\n    ndkVersion "21.4.7075529"/' $$media-moneytoo$$/common_library_config.gradle
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - gradle :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - gradle :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 21.4.7075529
+
+  - versionName: '0.161'
+    versionCode: 161
+    commit: v0.161
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.3.1
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+
+  - versionName: '0.168'
+    versionCode: 168
+    commit: v0.168
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.4.0
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+
+  - versionName: '0.178'
+    versionCode: 1781
+    commit: v0.178
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86
+
+  - versionName: '0.178'
+    versionCode: 1782
+    commit: v0.178
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86_64
+
+  - versionName: '0.178'
+    versionCode: 1783
+    commit: v0.178
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=armeabi-v7a
+
+  - versionName: '0.178'
+    versionCode: 1784
+    commit: v0.178
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=arm64-v8a
+
+  - versionName: '0.180'
+    versionCode: 1801
+    commit: v0.180
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86
+
+  - versionName: '0.180'
+    versionCode: 1802
+    commit: v0.180
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86_64
+
+  - versionName: '0.180'
+    versionCode: 1803
+    commit: v0.180
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=armeabi-v7a
+
+  - versionName: '0.180'
+    versionCode: 1804
+    commit: v0.180
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversalFull
+    srclibs:
+      - media-moneytoo@1.5.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.19.0
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=arm64-v8a
+
+  - versionName: '0.190'
+    versionCode: 1901
+    commit: v0.190
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.6.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.20.0
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86
+
+  - versionName: '0.190'
+    versionCode: 1902
+    commit: v0.190
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.6.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.20.0
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86_64
+
+  - versionName: '0.190'
+    versionCode: 1903
+    commit: v0.190
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.6.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.20.0
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=armeabi-v7a
+
+  - versionName: '0.190'
+    versionCode: 1904
+    commit: v0.190
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.6.0
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - abseil-cpp@20230802.1
+      - libgav1@v0.20.0
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_EXT_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_EXT_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$libgav1$$" libgav1
+      - cd "${AV1_EXT_PATH}/jni/libgav1"
+      - mkdir "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - cd "${AV1_EXT_PATH}/jni/libgav1/third_party"
+      - ln -s "$$abseil-cpp$$" abseil-cpp
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,extractor,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,extractor,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=arm64-v8a
+
+  - versionName: '0.201'
+    versionCode: 2011
+    commit: v0.201
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake meson nasm
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.9.0-rc01
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - dav1d@1.5.2
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_MODULE_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_MODULE_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$dav1d$$" dav1d
+      - ./build_dav1d.sh "${AV1_MODULE_PATH}" "$$NDK$$" "${HOST_PLATFORM}"
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86
+
+  - versionName: '0.201'
+    versionCode: 2012
+    commit: v0.201
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake meson nasm
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.9.0-rc01
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - dav1d@1.5.2
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_MODULE_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_MODULE_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$dav1d$$" dav1d
+      - ./build_dav1d.sh "${AV1_MODULE_PATH}" "$$NDK$$" "${HOST_PLATFORM}"
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=x86_64
+
+  - versionName: '0.201'
+    versionCode: 2013
+    commit: v0.201
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake meson nasm
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.9.0-rc01
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - dav1d@1.5.2
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_MODULE_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_MODULE_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$dav1d$$" dav1d
+      - ./build_dav1d.sh "${AV1_MODULE_PATH}" "$$NDK$$" "${HOST_PLATFORM}"
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=armeabi-v7a
+
+  - versionName: '0.201'
+    versionCode: 2014
+    commit: v0.201
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make ninja-build cmake meson nasm
+    gradle:
+      - latestUniversal
+    srclibs:
+      - media-moneytoo@1.9.0-rc01
+      - FFmpeg@release/6.0
+      - libiamf@v1.1.0
+      - cpu_features@v0.9.0
+      - dav1d@1.5.2
+      - mpeghdec@r2.0.1
+    scandelete:
+      - app/libs/
+    build:
+      - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
+      - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
+      - export ANDROID_ABI=21
+      - export ENABLED_DECODERS=(vorbis opus flac alac pcm_mulaw pcm_alaw mp3 amrnb
+        amrwb aac ac3 eac3 dca mlp truehd)
+      - pushd "${FFMPEG_EXT_PATH}/jni"
+      - ln -s "$$FFmpeg$$" ffmpeg
+      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
+      - export AV1_MODULE_PATH="$$media-moneytoo$$/libraries/decoder_av1/src/main"
+      - cd "${AV1_MODULE_PATH}/jni"
+      - ln -s "$$cpu_features$$" cpu_features
+      - ln -s "$$dav1d$$" dav1d
+      - ./build_dav1d.sh "${AV1_MODULE_PATH}" "$$NDK$$" "${HOST_PLATFORM}"
+      - cd "$$media-moneytoo$$/libraries/decoder_iamf/src/main/jni"
+      - ln -s "$$libiamf$$" libiamf
+      - cd "$$media-moneytoo$$/libraries/decoder_mpegh/src/main/jni"
+      - ln -s "$$mpeghdec$$" libmpegh
+      - cd "$$media-moneytoo$$"
+      - ./gradlew :lib-decoder-{ffmpeg,av1,iamf,mpegh}:bundleReleaseAar
+      - ./gradlew :lib-{exoplayer,ui}:bundleReleaseAar
+      - popd
+      - cp 
+        $$media-moneytoo$$/libraries/decoder_{ffmpeg,av1,iamf,mpegh}/buildout/outputs/aar/*.aar
+        libs/
+      - cp $$media-moneytoo$$/libraries/{exoplayer,ui}/buildout/outputs/aar/*.aar
+        libs/
+    ndk: 26.1.10909125
+    gradleprops:
+      - abiFilter=arm64-v8a
+
+MaintainerNotes: 'Extensions build instructions: https://github.com/androidx/media/blob/1.3.1/libraries/decoder_ffmpeg/README.md
+  https://github.com/androidx/media/blob/1.3.1/libraries/decoder_av1/README.md'
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '0.137'
-CurrentVersionCode: 137
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: '0.201'
+CurrentVersionCode: 2014

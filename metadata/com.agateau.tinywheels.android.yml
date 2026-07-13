@@ -1,11 +1,12 @@
 Categories:
-  - Games
+  - Sport Game
 License: GPL-3.0-or-later
 AuthorName: Aurélien Gâteau
 AuthorEmail: srv@agateau.com
 WebSite: https://agateau.com/projects/pixelwheels/
 SourceCode: https://github.com/agateau/pixelwheels
 IssueTracker: https://github.com/agateau/pixelwheels/issues
+Translation: https://github.com/agateau/pixelwheels/blob/HEAD/docs/translations.md
 Changelog: https://github.com/agateau/pixelwheels/blob/HEAD/CHANGELOG.md
 Donate: https://agateau.com/support/
 Liberapay: agateau
@@ -364,8 +365,84 @@ Builds:
       - make -C .. assets
       - make -C .. packer
 
+  - versionName: 0.25.0
+    versionCode: 28
+    commit: 999bf820340f8d1e93c07ae2bded2ee67d23f02d
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip make imagemagick-6.q16
+    gradle:
+      - itchio
+    prebuild: sed -i -e 's#./gradlew#gradle#' ../Makefile
+    scandelete:
+      - android/libs/
+    build:
+      - pip3 install --user -r ../requirements.txt
+      - gradle tools:dist -b ../build.gradle
+      - make -C .. assets
+      - make -C .. packer
+
+  - versionName: 0.25.1
+    versionCode: 29
+    commit: d2e8e1c364c34fa784f28f1af406ebc3b27d2ef7
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip make imagemagick-6.q16
+    gradle:
+      - itchio
+    prebuild: sed -i -e 's#./gradlew#gradle#' ../Makefile
+    scandelete:
+      - android/libs/
+    build:
+      - pip3 install --user -r ../requirements.txt
+      - gradle tools:dist -b ../build.gradle
+      - make -C .. assets
+      - make -C .. packer
+
+  - versionName: 0.26.0
+    versionCode: 30
+    commit: 9bce26292a0327988341f2e5d4ed50849b411171
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip python3-venv make imagemagick-6.q16
+    gradle:
+      - itchio
+    prebuild: sed -i -e 's#./gradlew#gradle#' ../Makefile
+    scandelete:
+      - android/libs/
+    build:
+      - python3 -m venv .
+      - source bin/activate
+      - pip3 install -r ../requirements.txt
+      - gradle tools:dist -b ../build.gradle
+      - make -C .. assets
+      - make -C .. packer
+
+  - versionName: 1.0.1
+    versionCode: 33
+    commit: de6a692f3b6f2ade9e914982e0aeadb4aa2b1de3
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y python3-pip python3-venv make imagemagick-6.q16
+    gradle:
+      - itchio
+    prebuild: sed -i -e 's#./gradlew#gradle#' ../Makefile
+    scandelete:
+      - android/libs/
+    build:
+      - python3 -m venv .
+      - source bin/activate
+      - pip3 install -r ../requirements.txt
+      - gradle tools:dist -b ../build.gradle
+      - make -C .. assets
+      - make -C .. packer
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*$
 UpdateCheckData: version.properties|VERSION_CODE=(\d+)|.|VERSION=(.*)
-CurrentVersion: 0.24.2
-CurrentVersionCode: 27
+CurrentVersion: 1.0.1
+CurrentVersionCode: 33

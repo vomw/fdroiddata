@@ -9,7 +9,7 @@ Changelog: https://github.com/NeoApplications/Neo-Backup/blob/HEAD/CHANGELOG.md
 
 AutoName: Neo Backup
 
-RequiresRoot: 'yes'
+RequiresRoot: true
 
 RepoType: git
 Repo: https://github.com/NeoApplications/Neo-Backup
@@ -35,13 +35,17 @@ Builds:
       - rustup target add x86_64-linux-android
       - mkdir oab-utils/.cargo
       - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-      - echo -e "[target.armv7-linux-androideabi]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi29-clang\"\n"
+      - echo -e "[target.armv7-linux-androideabi]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.aarch64-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang\"\n"
+      - echo -e "[target.aarch64-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.i686-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android29-clang\"\n"
+      - echo -e "[target.i686-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
-      - echo -e "[target.x86_64-linux-android]\n linker = \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android29-clang\"\n"
+      - echo -e "[target.x86_64-linux-android]\n linker = 
+        \"$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android29-clang\"\n"
         >> oab-utils/.cargo/config
     ndk: r21b
 
@@ -266,7 +270,118 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 8.3.2
+    versionCode: 8309
+    commit: ef8818ee264d22f1454fcf914126330a7b068f51
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 8.3.3
+    versionCode: 8312
+    commit: 75d354fc9ffc2be648b07825b0add9610fe138b7
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 8.3.4
+    versionCode: 8313
+    commit: 1618706605bf2e2190396818b8275d6bbbab57eb
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 8.3.5
+    versionCode: 8315
+    commit: bfc895bb1e7c545f4686d76e1c9210c726805c46
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 8.3.6
+    versionCode: 8316
+    commit: 671da90d6027a4aebf0cb2645dffbf152a39a817
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 8.3.8
+    versionCode: 8318
+    commit: b465b026e1e943c8a1f65de315238a5ed8946af6
+    gradle:
+      - yes
+
+  - versionName: 8.3.10
+    versionCode: 8320
+    commit: f68b4b1b3854af9faf8597f045ae176d8258d51d
+    gradle:
+      - yes
+
+  - versionName: 8.3.11
+    versionCode: 8321
+    commit: c49ea493ce7e69a1abef64b6b10838572f8ceecd
+    gradle:
+      - yes
+
+  - versionName: 8.3.12
+    versionCode: 8325
+    commit: c2a157695260588de04483998109fbf1bf6f0f2f
+    gradle:
+      - yes
+
+  - versionName: 8.3.14
+    versionCode: 8327
+    commit: 60fde4e21fa71fdc71961a06947d46e966e1024c
+    gradle:
+      - yes
+
+  - versionName: 8.3.15
+    versionCode: 8328
+    commit: a02445d365ad7391f74a93d5d1f8ccedf0304710
+    gradle:
+      - yes
+
+  - versionName: 8.3.16
+    versionCode: 8329
+    commit: da373260bd8f750cd7c36d5531e33c9b3bcf441e
+    gradle:
+      - yes
+
+  - versionName: 8.3.17
+    versionCode: 8330
+    commit: 129b3fbe588690ebe5b0fdb17a65233a20251c74
+    gradle:
+      - yes
+    prebuild: sed -i -e '/gradle.toolchains/d' build.gradle.kts
+
+  - versionName: 8.3.18
+    versionCode: 8331
+    commit: b27516fcef24a3b48061517b89530c7400e6e5f1
+    gradle:
+      - yes
+    prebuild: sed -i -e '/gradle.toolchains/d' build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
-CurrentVersion: 8.3.1
-CurrentVersionCode: 8302
+CurrentVersion: 8.3.18
+CurrentVersionCode: 8331

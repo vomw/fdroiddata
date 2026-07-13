@@ -1,0 +1,307 @@
+Categories:
+  - Ebook Reader
+  - Internet
+  - Multimedia
+  - Reading
+License: Apache-2.0
+AuthorName: Snd-R
+SourceCode: https://github.com/Snd-R/Komelia
+IssueTracker: https://github.com/Snd-R/Komelia/issues
+
+RepoType: git
+Repo: https://github.com/Snd-R/Komelia
+
+Builds:
+  - versionName: 0.11.1
+    versionCode: 1
+    commit: 7694cbffb9ee36f2b44ca081fd186957dcf81c96
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake libtool gettext
+        texinfo make libltdl-dev
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - git apply ./patches/disable_self_updates.patch
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+    ndk: r26d
+
+  - versionName: 0.12.2
+    versionCode: 4
+    commit: 4ff4406736014a63ec61728fd46419c92491fc9b
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake libtool gettext
+        texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - git apply ./patches/disable_self_updates.patch
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r26d
+
+  - versionName: 0.13.0
+    versionCode: 5
+    commit: 11c35e0b9d300062b9a2f2b25cb3af3f7c2ca2d4
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' src/androidMain/AndroidManifest.xml
+      - sed -i -e 's/appUpdater = appUpdater,/appUpdater = null,/' -e '/val appUpdater/d'
+        src/androidMain/kotlin/snd/komelia/Dependencies.kt
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r26d
+
+  - versionName: 0.14.1
+    versionCode: 7
+    commit: e546e0a60776e3eb5b605d4df07c73cf303fcab3
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' src/androidMain/AndroidManifest.xml
+      - sed -i -e 's/appUpdater = appUpdater,/appUpdater = null,/' -e '/val appUpdater/d'
+        src/androidMain/kotlin/snd/komelia/Dependencies.kt
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r26d
+
+  - versionName: 0.15.0
+    versionCode: 8
+    commit: 257303c7d097736817f416dfa04801465cd20f44
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' src/androidMain/AndroidManifest.xml
+      - sed -i -e 's/appUpdater = appUpdater,/appUpdater = null,/' -e '/val appUpdater/d'
+        src/androidMain/kotlin/snd/komelia/Dependencies.kt
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r26d
+
+  - versionName: 0.16.0
+    versionCode: 9
+    commit: 2c8c4e98f68a84071cf373982ac93e46ef3546e8
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' src/androidMain/AndroidManifest.xml
+      - sed -i -e 's/appUpdater = appUpdater,/appUpdater = null,/' -e '/val appUpdater/d'
+        src/androidMain/kotlin/snd/komelia/Dependencies.kt
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - NDK_PATH=$$NDK$$ ./cmake/android-arm64-build.sh
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r26d
+
+  - versionName: 0.17.0
+    versionCode: 10
+    commit: a9d8a2da0f13ddba5714a68619d9e5394684b3a4
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev npm
+      - apt-get install -y -t bookworm-backports meson cmake
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' src/androidMain/AndroidManifest.xml
+      - sed -i -e 's/appUpdater = appUpdater,/appUpdater = null,/' -e '/val appUpdater/d'
+        src/androidMain/kotlin/snd/komelia/Dependencies.kt
+    scandelete:
+      - third_party/jbr-api
+      - third_party/secret-service
+    build:
+      - cd ..
+      - ANDROID_NDK_PATH=$$NDK$$ ANDROID_SDK_PATH=$$SDK$$ ./cmake/android-build.sh
+        aarch64
+      - gradle android-arm64_copyJniLibs
+      - gradle buildWebui
+    ndk: r28c
+
+  - versionName: 0.18.1
+    versionCode: 15
+    commit: 7e7766b998616bc6081d0475ed27d1db77fdd147
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev
+      - apt-get install -y -t bookworm-backports meson cmake
+      - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.21.1/node-v22.21.1-linux-x64.tar.gz
+      - echo "219a152ea859861d75adea578bdec3dce8143853c13c5187f40c40e77b0143b2 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install -g npm@latest
+    gradle:
+      - yes
+    scandelete:
+      - third_party/secret-service
+    build:
+      - cd ..
+      - ANDROID_NDK_PATH=$$NDK$$ ANDROID_SDK_PATH=$$SDK$$ ./cmake/android-build.sh
+        aarch64
+      - gradle android-aarch64_copyJniLibs
+      - gradle buildWebui
+    ndk: r28c
+    gradleprops:
+      - snd.android.variant=fdroid
+
+  - versionName: 0.18.2
+    versionCode: 16
+    commit: 891583fa9c4e51c75029e9109dcf6b9fbc32ebd5
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev
+      - apt-get install -y -t bookworm-backports meson cmake
+      - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.21.1/node-v22.21.1-linux-x64.tar.gz
+      - echo "219a152ea859861d75adea578bdec3dce8143853c13c5187f40c40e77b0143b2 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install -g npm@latest
+    gradle:
+      - yes
+    scandelete:
+      - third_party/secret-service
+    build:
+      - cd ..
+      - ANDROID_NDK_PATH=$$NDK$$ ANDROID_SDK_PATH=$$SDK$$ ./cmake/android-build.sh
+        aarch64
+      - gradle android-aarch64_copyJniLibs
+      - gradle buildWebui
+    ndk: r28c
+    gradleprops:
+      - snd.android.variant=fdroid
+
+  - versionName: 0.18.4
+    versionCode: 18
+    commit: 57f9702e163e4554e46a90eee87f90ad16ea69fd
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev meson cmake
+    gradle:
+      - yes
+    prebuild: sed -i -e '/jvmToolchain/d' ../{*,*/*,*/*/*}/build.gradle.kts
+    scandelete:
+      - third_party/secret-service
+    build:
+      - cd ..
+      - ANDROID_NDK_PATH=$$NDK$$ ANDROID_SDK_PATH=$$SDK$$ ./cmake/android-build.sh
+        aarch64
+      - gradle android-aarch64_copyJniLibs
+      - gradle buildWebui
+    ndk: r28c
+    gradleprops:
+      - snd.android.variant=fdroid
+
+  - versionName: 0.18.5
+    versionCode: 19
+    commit: 58c97bc4e9a1e3c141220b64c46a2d4f8549d7f2
+    subdir: komelia-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build pkg-config nasm automake autopoint libtool
+        gettext texinfo make libltdl-dev meson cmake
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild: sed -i -e '/jvmToolchain/d' ../{*,*/*,*/*/*}/build.gradle.kts
+    scandelete:
+      - third_party/secret-service
+    build:
+      - cd ..
+      - ANDROID_NDK_PATH=$$NDK$$ ANDROID_SDK_PATH=$$SDK$$ ./cmake/android-build.sh
+        aarch64
+      - gradle android-aarch64_copyJniLibs
+      - gradle buildWebui
+    ndk: r28c
+    gradleprops:
+      - snd.android.variant=fdroid
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: komelia-app/build.gradle.kts|versionCode = (\d+)|gradle/libs.versions.toml|app-version
+  = "(.+)"
+CurrentVersion: 0.18.5
+CurrentVersionCode: 19

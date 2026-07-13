@@ -1,4 +1,5 @@
 Categories:
+  - Camera
   - Multimedia
 License: GPL-3.0-or-later
 AuthorName: Mark Harman
@@ -11,22 +12,22 @@ Donate: https://opencamera.org.uk/info.html#supportme
 
 AutoName: Open Camera
 Description: |-
-    A feature rich camera application, including:
+  A feature rich camera application, including:
 
-    * auto-stabilise option
-    * multitouch zoom
-    * flash/torch
-    * choice of focus modes
-    * face detection
-    * front/back camera support
-    * change recording resolution
-    * video/audio recording
-    * timer
-    * burst mode
-    * silenceable shutter
-    * configurable gui
-    * geotagging
-    * external microphone support
+  * auto-stabilise option
+  * multitouch zoom
+  * flash/torch
+  * choice of focus modes
+  * face detection
+  * front/back camera support
+  * change recording resolution
+  * video/audio recording
+  * timer
+  * burst mode
+  * silenceable shutter
+  * configurable gui
+  * geotagging
+  * external microphone support
 
 RepoType: git
 Repo: https://git.code.sf.net/p/opencamera/code
@@ -353,7 +354,63 @@ Builds:
     gradle:
       - yes
 
+  - versionName: '1.52'
+    versionCode: 88
+    commit: 542a575b4d3a1072d7810fc95abee49ab4bf6a99
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install libncurses5
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+  - versionName: 1.53.1
+    versionCode: 90
+    commit: a6673ade58550ed468d53a430608fecfe6bcd721
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install libncurses5
+    gradle:
+      - yes
+
+  - versionName: 1.54.1
+    versionCode: 92
+    commit: 7f716ef474191a585aedd7d8e8440b12c6e1d72e
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install libncurses5
+    gradle:
+      - yes
+
+  - versionName: '1.55'
+    versionCode: 93
+    commit: 53f689b0f361f636470b531a8543375b0ef614da
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install libncurses5
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+
+  - versionName: 1.56.2
+    versionCode: 96
+    commit: 0dd4cbe78872df2c6e4eb6cee3fb0d5637b0f52e
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install libncurses6
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e 's/JavaLanguageVersion.of(17)/JavaLanguageVersion.of(21)/' build.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.51.1
-CurrentVersionCode: 87
+CurrentVersion: 1.56.2
+CurrentVersionCode: 96

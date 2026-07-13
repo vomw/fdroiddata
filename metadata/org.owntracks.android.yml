@@ -1,5 +1,5 @@
 Categories:
-  - Navigation
+  - Location Tracker & Sharer
 License: EPL-1.0
 WebSite: https://owntracks.org/
 SourceCode: https://github.com/owntracks/android/
@@ -14,57 +14,110 @@ RepoType: git
 Repo: https://github.com/owntracks/android/
 
 Builds:
-  - versionName: 2.4.7
-    versionCode: 24700
-    disable: https://github.com/owntracks/android/issues/1298
-    commit: v2.4.7
+  - versionName: 2.5.0
+    versionCode: 420500014
+    commit: a03f0fd81ac923f0f4a95621c25a329735da962f
+    subdir: project/app
+    gradle:
+      - oss
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+        > $HOME/.gradle/gradle.properties
+      - "sed -i -r 's/(val packageVersionCode: Int =.* ?: )[0-9]+/\\1$$VERCODE$$/'
+        build.gradle.kts"
+
+  - versionName: 2.5.3
+    versionCode: 420503003
+    commit: v2.5.3
+    subdir: project/app
+    gradle:
+      - oss
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+        > $HOME/.gradle/gradle.properties
+      - "sed -i -r 's/(val packageVersionCode: Int =.* ?: )[0-9]+/\\1$$VERCODE$$/'
+        build.gradle.kts"
+
+  - versionName: 2.5.4
+    versionCode: 420504022
+    commit: v2.5.4
     subdir: project/app
     sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
       - update-alternatives --auto java
     gradle:
       - oss
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+        > $HOME/.gradle/gradle.properties
+      - "sed -i -r 's/(val packageVersionCode: Int =.* ?: )[0-9]+/\\1$$VERCODE$$/'
+        build.gradle.kts"
 
-  - versionName: 2.4.8
-    versionCode: 20408000
-    disable: https://github.com/owntracks/android/issues/1298
-    commit: e6bfb14ea534b7d23d34a25ea12f25becada8463
+  - versionName: 2.5.5
+    versionCode: 420505020
+    commit: 6237c1eb6c30594817d00e48d77b09d08c0e977c
     subdir: project/app
     sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
+      - apt-get install -y -t trixie openjdk-21-jdk-headless npm
       - update-alternatives --auto java
     gradle:
       - oss
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError"
+        > $HOME/.gradle/gradle.properties
+      - "sed -i -r 's/(val packageVersionCode: Int =.* ?: )[0-9]+/\\1$$VERCODE$$/'
+        build.gradle.kts"
 
-  - versionName: 2.4.9
-    versionCode: 20409000
-    disable: https://github.com/owntracks/android/issues/1298
-    commit: 4de691b0a78d07d3430447c32408ba6817fedc7c
+  - versionName: 2.5.6
+    versionCode: 420506008
+    commit: 189cdd01986ffce16cdf31f74e334eaea0d19462
     subdir: project/app
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
+      - apt-get install -y npm
     gradle:
       - oss
-    prebuild: sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - sed -i -e '/versionCode/s/packageVersionCode/$$VERCODE$$/' build.gradle.kts
 
-  - versionName: 2.4.10
-    versionCode: 20410000
-    disable: https://github.com/owntracks/android/issues/1298
-    commit: bb280f33fbf4414cf6f4b39e4592ab11a36add89
+  - versionName: 2.5.7
+    versionCode: 420507014
+    commit: 4a18111b050368b7e523f6b29bd2df7a5ef8adda
     subdir: project/app
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-11-jdk-headless
-      - update-alternatives --auto java
+      - apt-get install -y npm
     gradle:
       - oss
-    prebuild: sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - sed -i -e '/versionCode/s/packageVersionCode/$$VERCODE$$/' build.gradle.kts
 
-AutoUpdateMode: None
-UpdateCheckMode: Tags ^v[0-9]+.[0-9]+.[0-9]+$
-CurrentVersion: 2.4.10
-CurrentVersionCode: 20410000
+  - versionName: 2.5.9
+    versionCode: 420509001
+    commit: 9dc39fcb7e85c617bb63307774a0ed75ccc559bd
+    subdir: project/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    gradle:
+      - oss
+    prebuild:
+      - sed -i -e 's/storage.*"/jitpack.io"/' ../build.gradle.kts
+      - sed -i -e '/versionCode/s/packageVersionCode/$$VERCODE$$/' build.gradle.kts
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: 'https://raw.githubusercontent.com/owntracks/android/master/latest-version.yaml|versionCode:
+  (\d+)|.|versionName: (\d+.\d+.\d+)'
+CurrentVersion: 2.5.9
+CurrentVersionCode: 420509001

@@ -62,7 +62,7 @@ Please read the [General Recommendations](#general-recommendations) before you s
 1. Clone your fork.
 1. Create and checkout a new branch.
    Naming it like the app name or, much better, the app id makes it easier to keep track of your contributions.
-1. Create a new file in the the `metadata` directory named after the following schema: `<application_id>.yml`.
+1. Create a new file in the `metadata` directory named after the following schema: `<application_id>.yml`.
    So an example would be _"com.app.example.yml"_.
 1. Write down the metadata in that file. The [Build Metadata Reference](https://f-droid.org/en/docs/Build_Metadata_Reference)
    as well as the [templates](./templates/README.md)
@@ -190,13 +190,10 @@ for the answer.
 - You may like to add [localization and screenshots], so users can have a glance
     at the app in pictures and in their preferred language.
 - You can advertise the download of your app in this app store using the
-    [official graphic][get-it-on-fdroid].
+    official badge. See the instructions at https://f-droid.org/docs/Badges/.
   
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75">
 
-    ```
-    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75">
-    ```
 - You can add a badge of your apps F-Droid version from [shields.io].
   
     ![](https://img.shields.io/badge/f--droid-v1.0-blue.svg?logo=F-Droid)

@@ -1,5 +1,6 @@
 AntiFeatures:
-  - Tracking
+  Tracking:
+    en-US: Sends Analytics to bitanalytics.casperverswijvelt.be (behind Cloudflare)
 Categories:
   - Connectivity
   - Internet
@@ -11,6 +12,7 @@ AuthorEmail: casperverswijveltdev@gmail.com
 WebSite: https://casperverswijvelt.be
 SourceCode: https://github.com/CasperVerswijvelt/Better-Internet-Tiles
 IssueTracker: https://github.com/CasperVerswijvelt/Better-Internet-Tiles/issues
+Translation: https://hosted.weblate.org/projects/better-internet-tiles/#languages
 Donate: https://ko-fi.com/casperverswijvelt
 
 AutoName: Better Internet Tiles
@@ -30,7 +32,7 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
 
   - versionName: 2.5.0-fdroid
     versionCode: 2050000
@@ -43,7 +45,7 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
 
   - versionName: 2.5.1-fdroid
     versionCode: 2050100
@@ -52,7 +54,7 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
 
   - versionName: 2.5.2-fdroid
     versionCode: 2050200
@@ -61,7 +63,7 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
 
   - versionName: 2.6.0-fdroid
     versionCode: 2060000
@@ -70,7 +72,7 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
 
   - versionName: 2.6.1-fdroid
     versionCode: 2060101
@@ -79,9 +81,46 @@ Builds:
     gradle:
       - fdroid
     prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
-        ../build.gradle
+      ../build.gradle
+
+  - versionName: 3.0.0-fdroid
+    versionCode: 3000007
+    commit: 3756d1f2c1389f7c93275b1069163480b1c3be0d
+    subdir: app
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' build.gradle
+      ../build.gradle
+
+  - versionName: 3.1.0-fdroid
+    versionCode: 3010001
+    commit: 095ec1bd0fd4e0b95e7770596cfcae12c70914c2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y git-lfs
+    gradle:
+      - fdroid
+    prebuild:
+      - git lfs fetch
+      - git lfs pull
+      - sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' {..,.}/build.gradle
+
+  - versionName: 3.1.2-fdroid
+    versionCode: 3010200
+    commit: 831a1c8337d420ed1ec280de7d732294f42197c0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y git-lfs
+    gradle:
+      - fdroid
+    prebuild:
+      - git lfs fetch
+      - git lfs pull
+      - sed -i -e '/com.google.gms/d' -e '/com.google.firebase/d' {..,.}/build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: 2.6.1-fdroid
-CurrentVersionCode: 2060101
+CurrentVersion: 3.1.2-fdroid
+CurrentVersionCode: 3010200

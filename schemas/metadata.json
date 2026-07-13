@@ -15,22 +15,113 @@
       "items": {
         "type": "string",
         "enum": [
+          "Action Game",
+          "AI Chat",
+          "Alarm Clock",
+          "App Manager",
+          "App Store & Updater",
+          "Battery",
+          "Board Game",
+          "Bookmark",
+          "Browser",
+          "Calculator",
+          "Calendar & Agenda",
+          "Camera",
+          "Card Game",
+          "Cast",
+          "Casual Game",
+          "Clock",
+          "Cloud Storage & File Sync",
+          "Code & Forge",
           "Connectivity",
+          "Contact",
           "Development",
-          "Games",
+          "Dice",
+          "Diet",
+          "DNS & Hosts",
+          "Download",
+          "Draw",
+          "Ebook Reader",
+          "Educational Game",
+          "Email",
+          "Emulator",
+          "File Encryption & Vault",
+          "File Manager",
+          "File Transfer",
+          "Firewall",
+          "Finance Manager",
+          "Flashlight",
+          "Forum",
+          "Gallery",
+          "Game Helper",
           "Graphics",
+          "Habit Tracker",
+          "Health Manager",
+          "Icon Pack",
           "Internet",
-          "Money",
+          "Inventory",
+          "Keyboard & IME",
+          "Launcher",
+          "Local Media Player",
+          "Location Tracker & Sharer",
+          "Lyrics",
+          "Market & Price",
+          "Messaging",
+          "Meditation",
           "Multimedia",
+          "Music Practice Tool",
           "Navigation",
+          "Network Analyzer",
+          "News",
+          "Note",
+          "Notification",
+          "OCR",
+          "Online Media Player",
+          "Party Game",
+          "Pass Wallet",
+          "Password & 2FA",
           "Phone & SMS",
+          "Platformer Game",
+          "Podcast",
+          "Public Transport",
+          "Push",
+          "Puzzle Game",
+          "Radio",
           "Reading",
+          "Recipe Manager",
+          "Recorder",
+          "Remote Access",
+          "Remote Controller",
+          "Religion",
+          "Role-Playing Game",
           "Science & Education",
           "Security",
+          "Schedule",
+          "Shooter Game",
+          "Shopping List",
+          "Social Network",
+          "Sport Game",
           "Sports & Health",
+          "Stopwatch",
+          "Strategy Game",
           "System",
+          "Task",
+          "Text Editor",
+          "Text to Speech",
           "Theming",
-          "Time",
+          "Time Tracker",
+          "Timer",
+          "Translation & Dictionary",
+          "Unit Convertor",
+          "Visual Novel",
+          "Voice & Video Chat",
+          "Volume",
+          "VPN & Proxy",
+          "Wallet",
+          "Wallpaper",
+          "Weather",
+          "Workout",
+          "Word Game",
           "Writing"
         ]
       },
@@ -251,12 +342,8 @@
     },
     "Donate": {
       "description": "The URL to donate to the project.",
-      "$ref": "#/definitions/url"
-    },
-    "FlattrID": {
-      "description": "The project's Flattr (https://flattr.com) ID.",
       "type": "string",
-      "pattern": "^[0-9a-z]+$"
+      "pattern": "^https://.*$"
     },
     "Liberapay": {
       "description": "The project's Liberapay (https://liberapay.com) user or group name.",
@@ -269,12 +356,12 @@
     "Bitcoin": {
       "description": "A Bitcoin address for donating to the project.",
       "type": "string",
-      "pattern": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$"
+      "pattern": "^([13][a-km-zA-HJ-NP-Z1-9]{25,34}|bc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Litecoin": {
       "description": "A Litecoin address for donating to the project.",
       "type": "string",
-      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[a-km-z0-9]{39})$"
+      "pattern": "^([LM3][a-km-zA-HJ-NP-Z1-9]{26,33}|ltc1[02-9ac-hj-np-z]{39,59})$"
     },
     "Name": {
       "description": "The title of the application, with optional descriptive phrase.",
@@ -320,20 +407,19 @@
       "type": "string",
       "enum": [
         "git",
-        "svn",
         "git-svn",
         "hg",
-        "bzr",
         "srclib"
       ]
     },
     "Repo": {
-      "description": "The repository location. Usually a git: or svn: URL, for example.",
+      "description": "The repository location. Usually a https:// URL, for example.",
       "type": "string"
     },
     "Binaries": {
       "description": "The location of binaries used in verification process.",
-      "$ref": "#/definitions/url"
+      "type": "string",
+      "pattern": "^https://.*%(v|c).*$"
     },
     "Builds": {
       "description": "Any number of sub-entries can be present, each specifying a version to automatically build from source.",
@@ -359,7 +445,7 @@
           },
           "subdir": {
             "description": "Specifies to build from a subdirectory of the checked out source code. Normally this directory is changed to before building.",
-            "type": "string"
+            "$ref": "#/definitions/path"
           },
           "submodules": {
             "description": "Use if the project (git only) has submodules - causes git submodule update --init --recursive to be executed after the source is cloned.",
@@ -413,7 +499,7 @@
           },
           "rm": {
             "description": "Specifies the relative paths of files or directories to delete before the build is done.",
-            "$ref": "#/definitions/string_list"
+            "$ref": "#/definitions/path_list"
           },
           "extlibs": {
             "description": "List of external libraries (jar files) from the build/extlib library, which will be placed in the libs directory of the project.",
@@ -421,7 +507,11 @@
           },
           "srclibs": {
             "description": "Comma-separated list of source libraries or Android projects. Each item is of the form name@rev where name is the predefined source library name and rev is the revision or tag to use in the respective source control.",
-            "$ref": "#/definitions/string_list"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^.+@.+$"
+            }
           },
           "patch": {
             "description": "Apply patch(es). 'x' names one (or more - comma-separated) files within a directory below the metadata, with the same name as the metadata file but without the extension. Each of these patches is applied to the code in turn.",
@@ -433,11 +523,11 @@
           },
           "scanignore": {
             "description": "Enables one or more files/paths to be excluded from the scan process. This should only be used where there is a very good reason, and probably accompanied by a comment explaining why it is necessary.",
-            "$ref": "#/definitions/string_list"
+            "$ref": "#/definitions/path_list"
           },
           "scandelete": {
             "description": "When running the scan process, any files that trigger errors - like binaries - will be removed. It acts just like scanignore, but instead of ignoring the files, it removes them.",
-            "$ref": "#/definitions/string_list"
+            "$ref": "#/definitions/path_list"
           },
           "build": {
             "description": "As for 'prebuild', but runs during the actual build phase (but before the main Ant/Maven build). Use this only for actions that do actual building. Any preparation of the source code should be done using 'init' or 'prebuild'.",
@@ -467,7 +557,8 @@
           },
           "ndk": {
             "description": "Version of the NDK to use in this build.",
-            "type": "string"
+            "type": "string",
+            "pattern": "^(r\\d+([b-e]?|-.*)|[\\d.]+)$"
           },
           "gradle": {
             "description": "Build with Gradle instead of Ant, specifying what flavours to use. Flavours are case sensitive since the path to the output APK is as well.",
@@ -482,7 +573,10 @@
               {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "not": {
+                    "const": "yes"
+                  }
                 }
               }
             ]
@@ -516,11 +610,11 @@
           },
           "output": {
             "description": "Specify a glob path where the resulting unsigned release APK from the build should be.",
-            "type": "string"
+            "$ref": "#/definitions/path"
           },
           "binary": {
             "description": "The location of binaries used in verification process.",
-            "$ref": "#/definitions/url"
+            "$ref": "#/definitions/https"
           },
           "novcheck": {
             "description": "Don't check that the version name and code in the resulting APK are correct by looking at the build output - assume the metadata is correct.",
@@ -545,17 +639,12 @@
       "type": "string"
     },
     "RequiresRoot": {
-      "description": "Set this optional field to “Yes” if the application requires root privileges to be usable.",
-      "type": "string",
-      "enum": [
-        "True",
-        "yes"
-      ]
+      "description": "Whether the application requires root privileges to be usable.",
+      "type": "boolean"
     },
     "ArchivePolicy": {
-      "description": "This determines the policy for moving old versions of an app to the archive repo, if one is configured. Currently the only supported format is “n versions”, where n is the number of versions to keep. Defaults to “3 versions”.",
-      "type": "string",
-      "pattern": "^[0-9]+ versions$"
+      "description": "This determines the number of versions to keep. The older versions of the app are moved to the archive repo, if one is configured. Defaults to 3.",
+      "type": "integer"
     },
     "AutoUpdateMode": {
       "description": "This determines the method used for auto-generating new builds when new releases are available - in other words, adding a new Build Version line to the metadata.",
@@ -620,7 +709,8 @@
     },
     "UpdateCheckData": {
       "description": "Used in conjunction with UpdateCheckMode for certain modes.",
-      "type": "string"
+      "type": "string",
+      "pattern": ".*|.*|.*|.*"
     },
     "CurrentVersion": {
       "description": "The name of the version that is the recommended release. There may be newer versions of the application than this (e.g. unstable versions), and there will almost certainly be older ones.",
@@ -638,7 +728,11 @@
   "required": [
     "Categories",
     "License",
-    "Builds"
+    "Builds",
+    "AutoUpdateMode",
+    "UpdateCheckMode",
+    "CurrentVersion",
+    "CurrentVersionCode"
   ],
   "allOf": [
     {
@@ -659,11 +753,27 @@
     },
     {
       "if": {
+        "properties": {
+          "RepoType": {
+            "const": "git"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "Repo": {
+            "$ref": "#/definitions/https"
+          }
+        }
+      }
+    },
+    {
+      "if": {
         "anyOf": [
           {
             "properties": {
               "ArchivePolicy": {
-                "const": "0 versions"
+                "const": 0
               }
             },
             "required": [
@@ -679,9 +789,6 @@
       },
       "then": {
         "properties": {
-          "AutoUpdateMode": {
-            "const": "None"
-          },
           "UpdateCheckMode": {
             "const": "None"
           }
@@ -719,6 +826,39 @@
       }
     },
     {
+      "anyOf": [
+        {
+          "required": [
+            "Binaries"
+          ]
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "required": [
+                  "binary"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "Builds": {
+              "items": {
+                "not": {
+                  "required": [
+                    "binary"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "if": {
         "properties": {
           "UpdateCheckMode": {
@@ -734,31 +874,130 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "UpdateCheckMode": {
+            "const": "HTTP"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "AutoUpdateMode": {
+            "type": "string",
+            "pattern": "^(None|Version .+)$"
+          }
+        },
+        "required": [
+          "UpdateCheckData"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "UpdateCheckIgnore"
+        ]
+      },
+      "then": {
+        "properties": {
+          "UpdateCheckMode": {
+            "enum": [
+              "None",
+              "HTTP"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "UpdateCheckData"
+        ]
+      },
+      "then": {
+        "properties": {
+          "UpdateCheckMode": {
+            "oneOf": [
+              {
+                "enum": [
+                  "None",
+                  "HTTP"
+                ]
+              },
+              {
+                "pattern": "^Tags"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "UpdateCheckMode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "None",
+                  "Static"
+                ]
+              },
+              {
+                "pattern": "^RepoManifest(/.+)?$"
+              }
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "AutoUpdateMode": {
+            "const": "None"
+          }
+        }
+      }
     }
   ],
   "additionalProperties": false,
   "definitions": {
     "anti_features": {
       "$id": "#antifeatures",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "Ads",
-          "Tracking",
-          "NonFreeNet",
-          "NonFreeAdd",
-          "NonFreeDep",
-          "UpstreamNonFree",
-          "NonFreeAssets",
-          "NSFW",
-          "KnownVuln",
-          "ApplicationDebuggable",
-          "NoSourceSince"
-        ]
-      },
-      "uniqueItems": true,
-      "minItems": 1
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Ads",
+              "ApplicationDebuggable",
+              "KnownVuln",
+              "NonFreeAdd",
+              "NonFreeAssets",
+              "NonFreeDep",
+              "NonFreeNet",
+              "NoSourceSince",
+              "TetheredNet",
+              "Tracking"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^(Ads|ApplicationDebuggable|KnownVuln|NonFreeAdd|NonFreeAssets|NonFreeDep|NonFreeNet|NoSourceSince|TetheredNet|Tracking)$": {
+              "$ref": "#/definitions/localized_string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
     "string_list": {
       "anyOf": [
@@ -773,9 +1012,41 @@
         }
       ]
     },
+    "localized_string": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2,3}(-([A-Z][a-zA-Z]+|\\d+|[a-z]+))*$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "url": {
       "type": "string",
       "pattern": "^https?://.*$"
+    },
+    "https": {
+      "type": "string",
+      "pattern": "^https://.*$"
+    },
+    "path": {
+      "not": {
+        "anyOf": [
+          {
+            "const": "."
+          },
+          {
+            "type": "string",
+            "pattern": "^\\./"
+          }
+        ]
+      }
+    },
+    "path_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/path"
+      }
     }
   }
 }

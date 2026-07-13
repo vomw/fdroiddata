@@ -5,3 +5,5 @@ This directory contains some templates for different kinds of apps.
 - [Ant](./build-ant.yml)
 - [Maven](./build-maven.yml)
 - [React Native](./build-react-native.yml)
+- [Buildozer](./build-buildozer.yml)
+- [Godot](./build-godot.yml)
