@@ -23,8 +23,9 @@ Builds:
     init: npm ci --legacy-peer-deps
     gradle:
       - yes
-    output: build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
+      - rm -rf ../../node_modules/expo-dev-client ../../node_modules/expo-dev-launcher
+        ../../node_modules/expo-dev-menu ../../node_modules/expo-dev-menu-interface
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
         ../../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -33,15 +34,10 @@ Builds:
       - printf '\nkotlin.jvm.target.validation.mode=warning\n' >> ../gradle.properties
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
-      - node_modules/fb-dotslash/bin/linux-musl.aarch64/dotslash
       - node_modules/@react-native-masked-view/masked-view/android/build.gradle
-      - node_modules/expo-dev-launcher/android/build.gradle
-      - node_modules/expo-dev-menu/android/build.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - node_modules
 
