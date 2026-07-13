@@ -1,7 +1,7 @@
 Categories:
   - Finance Manager
-License: MIT
 AuthorName: Bittu Prajapati
+License: MIT
 SourceCode: https://github.com/Bittu-the-coder/hisab
 IssueTracker: https://github.com/Bittu-the-coder/hisab/issues
 
@@ -9,20 +9,17 @@ AutoName: Hisab
 
 RepoType: git
 Repo: https://github.com/Bittu-the-coder/hisab
-Binaries: 
-  https://github.com/Bittu-the-coder/hisab/releases/download/v%v/app-release-signed.apk
 
 Builds:
   - versionName: 1.1.0
-    versionCode: 1
-    commit: e3fd7f4e6d8a59123d5a402aa3b85aff60f946ac
+    versionCode: 11
+    commit: df13772012e7572639b1c3db42b8f8fa9b87440c
     subdir: app
     sudo:
       - mkdir -p /home/runner/work/hisab
       - chown -R vagrant /home/runner
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
-      - reproducible-apk-tools@v0.3.0
       - flutter@stable
     rm:
       - backend
@@ -51,18 +48,100 @@ Builds:
       - cd app
       - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - flutter build apk --release
+      - flutter build apk --release --split-per-abi --target-platform android-arm
       - popd
       - mv $repo com.hisab.app
-    postbuild:
-      - mv $$OUT$$ unaligned.apk
-      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
-        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.1.0
+    versionCode: 12
+    commit: df13772012e7572639b1c3db42b8f8fa9b87440c
+    subdir: app
+    sudo:
+      - mkdir -p /home/runner/work/hisab
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - backend
+    prebuild:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter config --no-analytics
+      - flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.hisab.app
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter build apk --release --split-per-abi --target-platform android-arm64
+      - popd
+      - mv $repo com.hisab.app
+
+  - versionName: 1.1.0
+    versionCode: 13
+    commit: df13772012e7572639b1c3db42b8f8fa9b87440c
+    subdir: app
+    sudo:
+      - mkdir -p /home/runner/work/hisab
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - backend
+    prebuild:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter config --no-analytics
+      - flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.hisab.app
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter build apk --release --split-per-abi --target-platform android-x64
+      - popd
+      - mv $repo com.hisab.app
 
 AllowedAPKSigningKeys: be97572e4383ba23576a6dc40bb0077c12126fe47c085cd6c6d603125072ce65
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|app/pubspec.yaml|version:\s(.+)\+
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 CurrentVersion: 1.1.0
-CurrentVersionCode: 1
+CurrentVersionCode: 11
