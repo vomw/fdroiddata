@@ -51,17 +51,23 @@ Builds:
         -e 's|keystore/release_password=.*|keystore/release_password=""|'
         export_presets.cfg || true
     build:
+      # Capture site-packages BEFORE HOME is reassigned (user scons lives under
+      # the real home; fdroid sets HOME to the app build dir).
       - export PATH=~/.local/bin:$PATH
+      - export PYTHONPATH=$(python3 -c "import site; print(':'.join(site.getsitepackages()+([site.getusersitepackages()] if site.getusersitepackages() else [])))")
+      - python3 -c "import SCons" || pip3 install --user --break-system-packages scons
+      - export PYTHONPATH=$(python3 -c "import site,SCons,os; print(os.path.dirname(os.path.dirname(SCons.__file__))+':'+':'.join(site.getsitepackages()))")
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export HOME=$PWD
       # Build Godot editor (linux) + Android release template from source
       - pushd $$Godot$$
-      - scons -j `nproc` platform=linuxbsd target=editor
-      - scons -j `nproc` platform=android target=template_release arch=arm64
-        generate_apk=yes
-      - scons -j `nproc` platform=android target=template_release arch=arm32
+      - python3 -m SCons -j `nproc` platform=linuxbsd target=editor
+      - python3 -m SCons -j `nproc` platform=android target=template_release
+        arch=arm64 generate_apk=yes
+      - python3 -m SCons -j `nproc` platform=android target=template_release
+        arch=arm32
       - cd platform/android/java
       - ./gradlew generateGodotTemplates
       - popd
