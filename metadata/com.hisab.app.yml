@@ -1,0 +1,59 @@
+Categories:
+  - Finance Manager
+License: MIT
+SourceCode: https://github.com/Bittu-the-coder/hisab
+IssueTracker: https://github.com/Bittu-the-coder/hisab/issues
+
+AutoName: Hisab
+
+RepoType: git
+Repo: https://github.com/Bittu-the-coder/hisab
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 1
+    commit: e3fd7f4e6d8a59123d5a402aa3b85aff60f946ac
+    subdir: app
+    sudo:
+      - mkdir -p /home/runner/work/hisab
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - backend
+    prebuild:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter config --no-analytics
+      - flutter pub get --enforce-lockfile
+      - rm -rf .pub-cache
+      - popd
+      - mv $repo com.hisab.app
+    build:
+      - export repo=/home/runner/work/hisab/hisab
+      - cd ../..
+      - mv com.hisab.app $repo
+      - pushd $repo
+      - cd app
+      - export PATH="$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutter build apk --release
+      - popd
+      - mv $repo com.hisab.app
+
+AllowedAPKSigningKeys: be97572e4383ba23576a6dc40bb0077c12126fe47c085cd6c6d603125072ce65
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|app/pubspec.yaml|version:\s(.+)\+
+CurrentVersion: 1.1.0
+CurrentVersionCode: 1
