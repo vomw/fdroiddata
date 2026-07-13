@@ -14,56 +14,26 @@ Repo: https://github.com/BigDadEnergy39/do-the-thing.git
 Builds:
   - versionName: 1.2.0
     versionCode: 3
-    commit: v1.2.0
+    commit: 225bc2486c6a1291c69a30df4deb4edc98e33302
     subdir: android/app
     sudo:
-      - sysctl fs.inotify.max_user_watches=524288
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.1/node-v22.23.1-linux-x64.tar.gz
-      - echo "7a8cb04b4a1df4eaf432125324b81b29a088e73570a23259a8de1c65d07fc129 node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-    init:
-      - npm ci --legacy-peer-deps
-    prebuild:
-      - sed -i -e '/signingConfig hasReleaseKeystore/d' build.gradle
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    init: npm ci --legacy-peer-deps
     gradle:
       - yes
-    scandelete:
-      # Expo precompiled Android AARs — UNUSED (buildFromSource compiles from android/src)
-      - node_modules/*/local-maven-repo
-      - node_modules/@expo/*/local-maven-repo
-      - node_modules/expo/node_modules/*/local-maven-repo
-      - node_modules/expo-router/node_modules/@expo/ui/local-maven-repo
-      # expo-sqlite prebuilt .so (libsql/vec) — NOT in APK (only source-built libsqliteJni.so ships)
-      - node_modules/expo-sqlite/android/libsql
-      - node_modules/expo-sqlite/android/vec
-      # iOS / web platform files — never referenced by the Android build
-      - node_modules/expo-sqlite/ios
-      - node_modules/expo-sqlite/web
-      - node_modules/react-native/React/I18n/strings
-      - node_modules/@react-native-async-storage/async-storage/apple-frameworks
-      - node_modules/@expo/expo-modules-macros-plugin/apple
-      - node_modules/expo-file-system/prebuilds
-      - node_modules/expo-font/prebuilds
-      - node_modules/expo-modules-core/prebuilds
-      - node_modules/expo/template.tgz
-      # Non-Linux host toolchains — not used on F-Droid's Linux buildserver
-      - node_modules/fb-dotslash/bin/windows  # prefix also covers windows-arm64
-      - node_modules/fb-dotslash/bin/macos
-      - node_modules/hermes-compiler/hermesc/osx-bin
-      - node_modules/hermes-compiler/hermesc/win64-bin
-      # Gradle-plugin build output compiled from source by `gradle clean` (runs pre-scan);
-      # not shipped in the APK — regenerated during assembleRelease
-      - node_modules/@react-native/gradle-plugin/*/build
-      - node_modules/expo-dev-launcher/expo-dev-launcher-gradle-plugin/build
-      - node_modules/expo-modules-autolinking/android/expo-gradle-plugin/*/build
-      - node_modules/expo-modules-core/expo-module-gradle-plugin/build
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+        ../../node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+        ../../node_modules/react-native/ReactAndroid/build.gradle.kts
+      - sed -i -e '/signingConfig hasReleaseKeystore/d' build.gradle
     scanignore:
-      # Build-critical toolchain binaries (compile JS->Hermes bytecode / fetch tools) — not shipped
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
       - node_modules/fb-dotslash/bin/linux-musl.aarch64/dotslash
-      # build.gradle files with maven repo decls the scanner cannot allowlist — needed source files
       - node_modules/@react-native-masked-view/masked-view/android/build.gradle
       - node_modules/expo-dev-launcher/android/build.gradle
       - node_modules/expo-dev-menu/android/build.gradle
@@ -71,7 +41,8 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/react-native/ReactAndroid/publish.gradle
-    output: build/outputs/apk/release/app-release-unsigned.apk
+    scandelete:
+      - node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
