@@ -24,19 +24,28 @@ Builds:
     prebuild:
       - mkdir -p build
       - sed -i -e 's|keystore/release=.*|keystore/release=""|' -e 's|keystore/release_user=.*|keystore/release_user=""|'
-        -e 's|keystore/release_password=.*|keystore/release_password=""|' export_presets.cfg || true
+        -e 's|keystore/release_password=.*|keystore/release_password=""|' export_presets.cfg
+        || true
     build:
       - export PATH=~/.local/bin:$PATH
-      - export PYTHONPATH=$(python3 -c "import site; print(':'.join(site.getsitepackages()+([site.getusersitepackages()] if site.getusersitepackages() else [])))")
+      - export PYTHONPATH=$(python3 -c "import site; print(':'.join(site.getsitepackages()+([site.getusersitepackages()]
+        if site.getusersitepackages() else [])))")
       - python3 -c "import SCons" || pip3 install --user --break-system-packages scons
       - export PYTHONPATH=$(python3 -c "import site,SCons,os; print(os.path.dirname(os.path.dirname(SCons.__file__))+':'+':'.join(site.getsitepackages()))")
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export HOME=$PWD
+      - mkdir -p $HOME/.android-sdk/ndk
+      - for d in build-tools platforms platform-tools cmdline-tools licenses cmake;
+        do [ -e $$SDK$$/$d ] && ln -sfn $$SDK$$/$d $HOME/.android-sdk/$d; done
+      - ln -sfn $$NDK$$ $HOME/.android-sdk/ndk/29.0.14206865
+      - export ANDROID_HOME=$HOME/.android-sdk
+      - export ANDROID_SDK_ROOT=$HOME/.android-sdk
       - pushd $$Godot$$
       - python3 -m SCons -j `nproc` platform=linuxbsd target=editor
-      - python3 -m SCons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
+      - python3 -m SCons -j `nproc` platform=android target=template_release arch=arm64
+        generate_apk=yes
       - python3 -m SCons -j `nproc` platform=android target=template_release arch=arm32
       - cd platform/android/java
       - ./gradlew generateGodotTemplates
@@ -63,11 +72,14 @@ Builds:
       - sed -i -e "s|custom_template/release=.*|custom_template/release=\"$$Godot$$/bin/android_release.apk\"|"
         export_presets.cfg
       - $GODOT_BIN --headless --path . --import || true
-      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres 2>/dev/null | head -1)
-      - if [ -n "$GODOT_CFG" ]; then sed -i -e "s|export/android/java_sdk_path.*|export/android/java_sdk_path = \"$JAVA_HOME\"|"
-        -e "s|export/android/android_sdk_path.*|export/android/android_sdk_path = \"$$SDK$$\"|" "$GODOT_CFG"; fi
-      - if [ -n "$GODOT_CFG" ] && ! grep -q android_sdk_path "$GODOT_CFG"; then echo "export/android/java_sdk_path = \"$JAVA_HOME\""
-        >> "$GODOT_CFG"; echo "export/android/android_sdk_path = \"$$SDK$$\"" >> "$GODOT_CFG"; fi
+      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres 2>/dev/null |
+        head -1)
+      - if [ -n "$GODOT_CFG" ]; then sed -i -e "s|export/android/java_sdk_path.*|export/android/java_sdk_path
+        = \"$JAVA_HOME\"|" -e "s|export/android/android_sdk_path.*|export/android/android_sdk_path
+        = \"$$SDK$$\"|" "$GODOT_CFG"; fi
+      - if [ -n "$GODOT_CFG" ] && ! grep -q android_sdk_path "$GODOT_CFG"; then echo
+        "export/android/java_sdk_path = \"$JAVA_HOME\"" >> "$GODOT_CFG"; echo "export/android/android_sdk_path
+        = \"$$SDK$$\"" >> "$GODOT_CFG"; fi
       - $GODOT_BIN --headless --path . --export-release Android build/AstroStrike-fdroid.apk
       - test -f build/AstroStrike-fdroid.apk
       - ls -lh build/AstroStrike-fdroid.apk
