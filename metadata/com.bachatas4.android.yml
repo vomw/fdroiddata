@@ -47,12 +47,11 @@ Builds:
     prebuild:
       - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0" "cmake;3.22.1"
-        https://github.com/ptitSeb/box64.git
-        $(python3 -c "import json; print(json.load(open('runtime/locks/components.lock.json'))['components'][0]['revision'])")
-      - cd ../../.. && runtime/scripts/build-shadps4-x86_64.sh
-      - cd ../../.. && runtime/scripts/build-box64-host.sh
-      - cd ../../.. && node runtime/scripts/stage-debian-runtime.mjs
-      - cd ../../.. && node runtime/scripts/package-runtime.mjs
+      - cd ../../..
+      - runtime/scripts/build-shadps4-x86_64.sh
+      - runtime/scripts/build-box64-host.sh
+      - node runtime/scripts/stage-debian-runtime.mjs
+      - node runtime/scripts/package-runtime.mjs
     scanignore:
       - android/BachataS4/app/src/main/assets/runtime/runtime.zip
       - android/BachataS4/app/src/main/assets/runtime/manifest.json
