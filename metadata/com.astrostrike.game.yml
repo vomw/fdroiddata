@@ -1,25 +1,5 @@
-# Starter F-Droid build metadata for Astro-Strike.
-#
-# HOW TO USE
-# 1. Fork https://gitlab.com/fdroid/fdroiddata
-# 2. Copy this file to: metadata/com.astrostrike.game.yml
-# 3. Replace commit: below with a real git tag/commit from
-#    https://gitlab.com/DerpBiscuit/astro-strike (e.g. after tagging v1.0.0)
-# 4. Locally: fdroid build -v -l com.astrostrike.game
-# 5. Open an MR to fdroiddata (and optionally an RFP at fdroid/rfp)
-#
-# Package ID matches export_presets.cfg package/unique_name.
-# Optional later rename: io.gitlab.derpbiscuit.astrostrike
-# (would need a new package ID in export_presets + a new metadata file).
-#
-# This recipe follows the Godot 4 pattern used by net.canvoki.godot_dice_roller
-# and similar apps: build the editor + Android template from the Godot srclib,
-# then headless-export the game. Builds take a long time and may need CI
-# timeout / NDK tweaks from F-Droid maintainers.
-
 Categories:
   - Games
-  - Action Game
 License: CC0-1.0
 AuthorName: DerpBiscuit
 WebSite: https://gitlab.com/DerpBiscuit/astro-strike
@@ -42,7 +22,6 @@ Builds:
       - update-java-alternatives -s java-1.17.0-openjdk-amd64 || true
     output: build/AstroStrike-fdroid.apk
     srclibs:
-      # Pin to the Godot version this project targets (project.godot: 4.6)
       - Godot@4.6.3-stable
     prebuild:
       - mkdir -p build
@@ -51,8 +30,6 @@ Builds:
         -e 's|keystore/release_password=.*|keystore/release_password=""|'
         export_presets.cfg || true
     build:
-      # Capture site-packages BEFORE HOME is reassigned (user scons lives under
-      # the real home; fdroid sets HOME to the app build dir).
       - export PATH=~/.local/bin:$PATH
       - export PYTHONPATH=$(python3 -c "import site; print(':'.join(site.getsitepackages()+([site.getusersitepackages()] if site.getusersitepackages() else [])))")
       - python3 -c "import SCons" || pip3 install --user --break-system-packages scons
@@ -61,7 +38,6 @@ Builds:
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export HOME=$PWD
-      # Build Godot editor (linux) + Android release template from source
       - pushd $$Godot$$
       - python3 -m SCons -j `nproc` platform=linuxbsd target=editor
       - python3 -m SCons -j `nproc` platform=android target=template_release
@@ -71,7 +47,6 @@ Builds:
       - cd platform/android/java
       - ./gradlew generateGodotTemplates
       - popd
-      # Point export preset at source-built template; arm-only for mobile
       - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1=false:' export_presets.cfg
       - sed -i -e '/architectures\/x86=/s|=.*|=false|'
         -e '/architectures\/x86_64=/s|=.*|=false|'
@@ -83,13 +58,11 @@ Builds:
         test -x "$GODOT_BIN"
         test -f $$Godot$$/bin/android_source.zip
         test -f $$Godot$$/bin/android_release.apk
-        # Godot looks for export templates under $HOME (fdroid sets HOME=$PWD)
         TPL="$HOME/.local/share/godot/export_templates/4.6.3.stable"
         mkdir -p "$TPL"
         cp -f $$Godot$$/bin/android_release.apk "$TPL/"
         cp -f $$Godot$$/bin/android_source.zip "$TPL/"
         echo "4.6.3.stable" > "$TPL/version.txt"
-        # Install Gradle Android build template into the project
         rm -rf android/build
         mkdir -p android/build
         unzip -qo $$Godot$$/bin/android_source.zip -d android/build
@@ -99,7 +72,6 @@ Builds:
         cp -f $$Godot$$/bin/godot-lib.template_release.aar android/build/libs/release/
         sed -i -e "s|custom_template/release=.*|custom_template/release=\"$$Godot$$/bin/android_release.apk\"|" export_presets.cfg
         "$GODOT_BIN" --headless --path . --import || true
-        # Configure Android SDK path in generated editor settings
         CFG=$(ls ~/.config/godot/editor_settings-*.tres 2>/dev/null | head -1 || true)
         if [ -n "$CFG" ]; then
           sed -i -e "s|export/android/java_sdk_path.*|export/android/java_sdk_path = \"$JAVA_HOME\"|" "$CFG" || true
@@ -114,15 +86,8 @@ Builds:
       - ls -lh build/AstroStrike-fdroid.apk
     ndk: r28c
 
-# Maintainer notes for F-Droid reviewers
 MaintainerNotes: |-
-  Godot 4.6.x game (GDScript only). App metadata lives in the game repo under
-  metadata/en-US/ (fastlane layout). License CC0-1.0 covers code, art, and music.
-
-  First build may need NDK version alignment with the Godot tag and possibly
-  timeout increases. Prefer tagging releases (v1.0.0) instead of building main.
-
-  Optional package rename later: io.gitlab.derpbiscuit.astrostrike
+  Godot 4.6 GDScript game. Fastlane metadata is in the app repo under metadata/en-US/.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
