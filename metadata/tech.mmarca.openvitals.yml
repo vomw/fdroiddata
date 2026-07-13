@@ -5,15 +5,15 @@ License: AGPL-3.0-or-later
 AuthorName: Manuel
 AuthorEmail: manuel@mmarca.tech
 AuthorWebSite: https://www.mmarca.tech/
-SourceCode: https://codeberg.org/mmarca-tech/OpenVitals
-IssueTracker: https://codeberg.org/mmarca-tech/OpenVitals/issues
+SourceCode: https://codeberg.org/OpenVitals/mobile-app
+IssueTracker: https://codeberg.org/OpenVitals/mobile-app/issues
 
 AutoName: OpenVitals
 
 RepoType: git
-Repo: https://codeberg.org/mmarca-tech/OpenVitals
+Repo: https://codeberg.org/OpenVitals/mobile-app
 Binaries: 
-  https://codeberg.org/mmarca-tech/OpenVitals/releases/download/v%v/OpenVitals-v%v.apk
+  https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v.apk
 
 Builds:
   - versionName: 1.3.1
@@ -88,9 +88,31 @@ Builds:
       - yes
     prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
 
+  - versionName: 2.2.0
+    versionCode: 107030361
+    commit: v2.2.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    sudo:
+      - apt-get update
+      - apt-get install -y clang cmake ninja-build pkg-config
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm,android-arm64
+
 AllowedAPKSigningKeys: 0416c0651543e951ef3b6c1ed9beb13833bff3a2be9ddacf492270712861e05d
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: 1.7.3
-CurrentVersionCode: 17003
+CurrentVersion: 2.2.0
+CurrentVersionCode: 107030361
