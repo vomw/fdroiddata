@@ -1,0 +1,47 @@
+Categories:
+  - Emulator
+  - System
+License: GPL-2.0-or-later
+AuthorName: JICA98
+AuthorEmail: jica.etzc@gmail.com
+WebSite: https://shadps4.net/
+SourceCode: https://github.com/JICA98/Bachata-S4
+IssueTracker: https://github.com/JICA98/Bachata-S4/issues
+
+AutoName: BachataS4
+
+RepoType: git
+Repo: https://github.com/JICA98/Bachata-S4.git
+
+Builds:
+  - versionName: 0.1.5
+    versionCode: 6
+    commit: 407a5ae8da16db93be44395095c149626b1a6ffa
+    subdir: android/BachataS4/app
+    init: git -C ../../.. submodule update --init --recursive --depth 1
+    sudo: cd ../../.. && runtime/scripts/install-debian-runtime-deps.sh
+    gradle:
+      - fdroid
+    rm:
+      - externals/winlator-app/app/src/main/jniLibs
+      - externals/winlator-app/app/src/main/assets
+    prebuild:
+      - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
+      - sdkmanager "platforms;android-37" "build-tools;37.0.0" "cmake;3.22.1"
+      - cd ../../.. && runtime/scripts/build-runtime-debian.sh
+    scanignore:
+      - android/BachataS4/app/src/main/assets/runtime/runtime.zip
+      - android/BachataS4/app/src/main/assets/runtime/manifest.json
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libbachata_host_box64.so
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libbachata_host_loader.so
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libXss.so
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libXss.so.1
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libxkbcommon.so
+      - android/BachataS4/core/runtime/src/main/jniLibs/arm64-v8a/libxkbcommon.so.0
+    ndk: 30.0.14904198
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+UpdateCheckData: android/BachataS4/version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.*)
+CurrentVersion: 0.1.5
+CurrentVersionCode: 6
