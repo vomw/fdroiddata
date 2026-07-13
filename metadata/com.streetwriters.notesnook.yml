@@ -14373,6 +14373,8 @@ Builds:
       - apps/web
       - packages/clipper
     prebuild:
+      - echo 'tasks.withType(Exec) { standardOutput = System.out; errorOutput = System.stderr
+        }' >> build.gradle
       - sed -i -e 's|<uses-permission android:name="com.android.vending.BILLING" />||g'
         ./src/main/AndroidManifest.xml
       - rm -rf debug.keystore
