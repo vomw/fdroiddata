@@ -45,14 +45,21 @@ Builds:
       - externals/winlator-app/app/src/main/jniLibs
       - externals/winlator-app/app/src/main/assets
     prebuild:
-      - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0" "cmake;3.22.1"
+    build:
+      - export SOURCE_DATE_EPOCH=$(git -C ../../.. log -1 --pretty=%ct)
       - cd ../../..
       - runtime/scripts/build-shadps4-x86_64.sh
       - runtime/scripts/build-box64-host.sh
       - node runtime/scripts/stage-debian-runtime.mjs
       - node runtime/scripts/package-runtime.mjs
     scandelete:
+      - runtime/sources/box64/x86lib
+      - runtime/sources/box64/x64lib
+      - runtime/sources/box64/x64android
+      - runtime/sources/box64/x86android
+      - runtime/sources/box64/tests
+      - runtime/sources/box64/tests32
       - externals/vma
       - externals/mesa-kosmickrisp/externals/mesa/src/freedreno/tests/traces
     scanignore:
