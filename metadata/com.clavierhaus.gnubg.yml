@@ -14,11 +14,13 @@ RepoType: git
 Repo: https://github.com/clavierhaus/gnubg-android.git
 
 Builds:
-  - versionName: 0.21.2
-    versionCode: 12
-    commit: v0.21.2
+  - versionName: 0.21.3
+    versionCode: 13
+    commit: v0.21.3
     subdir: gnubg-app/app
     sudo:
+      - apt-get update
+      - apt-get install -y meson ninja-build cmake patch file
       - curl -L -o /tmp/glib-2.88.1.tar.xz https://download.gnome.org/sources/glib/2.88/glib-2.88.1.tar.xz
       - echo "51ab804c56f6eab3e5045c774d1290ac5e4c923d4f9a3d8e33123bee45c1840e  /tmp/glib-2.88.1.tar.xz"
         | sha256sum -c -
@@ -31,5 +33,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 0.21.2
-CurrentVersionCode: 12
+CurrentVersion: 0.21.3
+CurrentVersionCode: 13
