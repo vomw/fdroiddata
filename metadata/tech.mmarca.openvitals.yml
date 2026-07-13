@@ -94,6 +94,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -101,16 +103,28 @@ Builds:
       - ios
     prebuild:
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p' .woodpecker/release.yml | head -1)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo tech.mmarca.openvitals
     scandelete:
       - .pub-cache
     build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --target-platform android-arm,android-arm64
+      - popd
+      - mv $repo tech.mmarca.openvitals
 
 AllowedAPKSigningKeys: 0416c0651543e951ef3b6c1ed9beb13833bff3a2be9ddacf492270712861e05d
 
