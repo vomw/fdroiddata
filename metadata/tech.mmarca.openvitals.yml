@@ -96,12 +96,16 @@ Builds:
       - apt-get install -y build-essential clang cmake ninja-build pkg-config
       - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
       - chown -R vagrant /woodpecker
+      - mv /opt/android-sdk /opt/android-sdk-linux
+      - ln -s /opt/android-sdk-linux /opt/android-sdk
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
+      - export ANDROID_HOME=/opt/android-sdk-linux
+      - export ANDROID_SDK_ROOT=/opt/android-sdk-linux
       - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
       - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
       - cd ..
@@ -118,6 +122,8 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - export ANDROID_HOME=/opt/android-sdk-linux
+      - export ANDROID_SDK_ROOT=/opt/android-sdk-linux
       - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
       - cd ..
       - mv tech.mmarca.openvitals $repo
