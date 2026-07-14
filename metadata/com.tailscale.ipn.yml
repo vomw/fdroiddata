@@ -1890,6 +1890,7 @@ Builds:
       - sed -i -e 's|$(ANDROID_HOME)/cmdline-tools/latest/bin/sdkmanager|sdkmanager|g'
         -e 's/list_installed/list/' ../Makefile
       - sed -i -e 's/getVersionProperty("VERSION_LONG")/"$$VERSION$$"/' build.gradle
+      - sed -i -e '/logtail.Config{/i logtail.Disable()' ../libtailscale/tailscale.go
     build:
       - export TOOLCHAINREV=$(cat ../go.toolchain.rev)
       - export TOOLCHAINDIR=$$tailscale-go$$
