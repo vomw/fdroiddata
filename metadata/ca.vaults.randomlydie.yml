@@ -16,8 +16,14 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
-      - npm install -g pnpm@10
+      - apt-get install -y curl
+      - "curl -fsSL https://nodejs.org/dist/v22.13.0/node-v22.13.0-linux-x64.tar.gz \
+        -o /tmp/node.tar.gz"
+      - tar -xzf /tmp/node.tar.gz -C /usr/local
+      - ln -sf /usr/local/node-v22.13.0-linux-x64/bin/node /usr/local/bin/node
+      - ln -sf /usr/local/node-v22.13.0-linux-x64/bin/npm /usr/local/bin/npm
+      - npm install -g pnpm@11
+      - ln -sf /usr/local/node-v22.13.0-linux-x64/bin/pnpm /usr/local/bin/pnpm
     init:
       - cd ..
       - pnpm install --frozen-lockfile
@@ -27,8 +33,3 @@ Builds:
       - cd ..
       - CAPACITOR_BUILD=1 pnpm quasar build
       - pnpm exec cap sync android
-
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 6.1.0
-CurrentVersionCode: 60100
