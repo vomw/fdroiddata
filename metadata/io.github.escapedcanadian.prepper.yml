@@ -10,21 +10,57 @@ AutoName: Prepper
 
 RepoType: git
 Repo: https://gitlab.com/escapedcanadian/prepper.git
-Binaries: 
-  https://gitlab.com/escapedcanadian/prepper/-/releases/v%v/downloads/app-release-signed.apk
 
 Builds:
-  - versionName: 0.8.0
-    versionCode: 10
-    commit: 0435b105701b79b414c14622aa1a3d6292654c45
+  - versionName: 0.8.1
+    versionCode: 111
+    commit: 7262014883846ad79d28277ee10c06404968f170
     subdir: app
     gradle:
       - yes
+    gradleprops:
+      - abiTarget=armeabi-v7a
+    binary: https://gitlab.com/escapedcanadian/prepper/-/releases/v%v/downloads/prepper-%v-armeabi-v7a.apk
 
-AllowedAPKSigningKeys: 07cd6bcf2fd994ffd39dadf58f1f5b8ee7e9d79d61224bc9c3fc168f16168616
+  - versionName: 0.8.1
+    versionCode: 112
+    commit: 7262014883846ad79d28277ee10c06404968f170
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - abiTarget=arm64-v8a
+    binary: https://gitlab.com/escapedcanadian/prepper/-/releases/v%v/downloads/prepper-%v-arm64-v8a.apk
+
+  - versionName: 0.8.1
+    versionCode: 113
+    commit: 7262014883846ad79d28277ee10c06404968f170
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - abiTarget=x86
+    binary: https://gitlab.com/escapedcanadian/prepper/-/releases/v%v/downloads/prepper-%v-x86.apk
+
+  - versionName: 0.8.1
+    versionCode: 114
+    commit: 7262014883846ad79d28277ee10c06404968f170
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - abiTarget=x86_64
+    binary: https://gitlab.com/escapedcanadian/prepper/-/releases/v%v/downloads/prepper-%v-x86_64.apk
+
+AllowedAPKSigningKeys: bfb9c4019f724c4c008cd16d990eea6345661863306a63c2d2244ddc38cd550c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[\d.]+$
-UpdateCheckData: app/build.gradle.kts|versionCode = (\d+)|.|versionName = "(.*)"
-CurrentVersion: 0.8.0
-CurrentVersionCode: 10
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+UpdateCheckData: app/build.gradle.kts|baseVersionCode = (\d+)|.|versionName = "(.*)"
+CurrentVersion: 0.8.1
+CurrentVersionCode: 114
