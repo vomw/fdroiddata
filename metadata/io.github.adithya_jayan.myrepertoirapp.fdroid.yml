@@ -733,11 +733,10 @@ Builds:
   - versionName: 5.0.2
     versionCode: 391
     commit: 381480d89ce6476c8ece2f42be8d8e17d852ab44
-    output: app_fdroid/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
     srclibs:
       - flutter@stable
     rm:
-      - ios
       - linux
       - macos
       - web
@@ -749,22 +748,21 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - cd app_fdroid && $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - cd app_fdroid && $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
         --target-platform=android-arm --build-number=$(( $$VERCODE$$ / 10 ))
 
   - versionName: 5.0.2
     versionCode: 392
     commit: 381480d89ce6476c8ece2f42be8d8e17d852ab44
-    output: app_fdroid/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
     srclibs:
       - flutter@stable
     rm:
-      - ios
       - linux
       - macos
       - web
@@ -776,22 +774,21 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - cd app_fdroid && $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - cd app_fdroid && $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
         --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ / 10 ))
 
   - versionName: 5.0.2
     versionCode: 393
     commit: 381480d89ce6476c8ece2f42be8d8e17d852ab44
-    output: app_fdroid/build/app/outputs/flutter-apk/app-x86_64-release.apk
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
     srclibs:
       - flutter@stable
     rm:
-      - ios
       - linux
       - macos
       - web
@@ -803,12 +800,12 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - cd app_fdroid && $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - cd app_fdroid && $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
         --target-platform=android-x64 --build-number=$(( $$VERCODE$$ / 10 ))
 
 AutoUpdateMode: Version
