@@ -16,16 +16,17 @@ Builds:
     subdir: android
     init:
       - cd ..
-      - sudo apt-get update
-      - sudo apt-get install -y nodejs npm
-      - sudo npm install -g pnpm@11
+      - curl -fsSL https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-x64.tar.xz -o node.tar.xz
+      - tar -xJf node.tar.xz
+      - export PATH="$PWD/node-v22.12.0-linux-x64/bin:$PATH"
+      - npm install -g pnpm@11
       - pnpm install --frozen-lockfile
+    gradle:
+      - yes
     prebuild:
       - cd ..
       - CAPACITOR_BUILD=1 pnpm quasar build
       - pnpm exec cap sync android
-    gradle:
-      - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
