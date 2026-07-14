@@ -1,4 +1,5 @@
 Categories:
+  - App Store & Updater
   - System
 License: GPL-3.0-or-later
 AuthorName: Iamlooker
@@ -297,8 +298,76 @@ Builds:
     scandelete:
       - app/src/androidTest
 
+  - versionName: 0.6.6
+    versionCode: 660
+    commit: 53ca19f3978453d241a6b9655c0008d8ecebdb69
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/9.0.0-rc-1/8.14.3/' ../gradle/wrapper/gradle-wrapper.properties
+      - sed -i -e '/image-viewer/s/v1.0.1/d11578fe3f/' ../gradle/libs.versions.toml
+    scandelete:
+      - app/src/androidTest
+
+  - versionName: 0.6.8
+    versionCode: 680
+    commit: ff0f6c66c8a22a9a9dc7244cbc3ff651ebe20e19
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/jvm/s/17/21/' build.gradle.kts
+    scandelete:
+      - app/src/androidTest
+
+  - versionName: 0.7.0
+    versionCode: 700
+    commit: e8d3c1473481f124677e24a33107495082832790
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/jvm/s/17/21/' build.gradle.kts
+    scandelete:
+      - app/src/androidTest
+
+  - versionName: 0.7.1
+    versionCode: 710
+    commit: 95f470df604b59064c0ad2b498cb2e14e7846ad0
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvm/s/17/21/' -e '/JavaLanguageVersion/d' -e '/vendor/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    scandelete:
+      - app/src/androidTest
+
+  - versionName: 0.7.3
+    versionCode: 730
+    commit: 25d6094d142573ecfbbd388bef7c258043c58ba1
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvm/s/17/21/' -e '/JavaLanguageVersion/d' -e '/vendor/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    scandelete:
+      - app/src/androidTest
+
+  - versionName: 0.7.4
+    versionCode: 740
+    commit: 7f70fb6121b057b321b8d15e5296d564fcced712
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/jvm/s/17/21/' -e '/JavaLanguageVersion/d' -e '/vendor/d' build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    scandelete:
+      - app/src/androidTest
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: app/build.gradle.kts|versionCode\s=\s(\d+)|.|latestVersionName\s=\s"(.*)"
-CurrentVersion: 0.6.5
-CurrentVersionCode: 650
+CurrentVersion: 0.7.4
+CurrentVersionCode: 740

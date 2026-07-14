@@ -16,7 +16,8 @@ RequiresRoot: true
 
 RepoType: git
 Repo: https://github.com/Mahmud0808/ColorBlendr.git
-Binaries: https://github.com/Mahmud0808/ColorBlendr/releases/download/%v/ColorBlendr.%v.apk
+Binaries: 
+  https://github.com/Mahmud0808/ColorBlendr/releases/download/%v/ColorBlendr.%v.apk
 
 Builds:
   - versionName: v1.0b8
@@ -169,9 +170,50 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines '$$OUT$$'
       'META-INF/services/*' 'assets/*.json'
 
+  - versionName: v2.0.2
+    versionCode: 37
+    commit: 123eb156688588f6c0acf794fcc88d594508d3ec
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    postbuild:
+      - curl -Lo upstream.apk 
+        https://github.com/Mahmud0808/ColorBlendr/releases/download/$$VERSION$$/ColorBlendr.$$VERSION$$.apk
+      - unzip -q upstream.apk -d apk
+      - export hash=$(sha256sum apk/assets/dexopt/baseline.prof)
+      - rm -rf apk upstream.apk
+      - for i in {1..10}; do unzip -q "$$OUT$$" -d apk; sha256sum -c - <<< $hash &&
+        break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
+        assembleRelease; done
+      - $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines '$$OUT$$'
+        'META-INF/services/*' 'assets/*.json' 'assets/privacy_policy.txt'
+
+  - versionName: v2.0.3
+    versionCode: 38
+    commit: 5c3a2c1af5a7044709d670cce7bcb1e06bd1d72e
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: v2.1
+    versionCode: 39
+    commit: 3f138d697b0e1056083c60f35d73e77229726966
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: v2.1.1
+    versionCode: 40
+    commit: 93b2dd4813cba7cad16e800064b5789865bf2660
+    subdir: app
+    gradle:
+      - yes
+
 AllowedAPKSigningKeys: 4af4ffa12ce90815a1775c4604ea16c19f5bed2a6e09ae7c3c92815982af052e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: v1.11.5
-CurrentVersionCode: 26
+CurrentVersion: v2.1.1
+CurrentVersionCode: 40

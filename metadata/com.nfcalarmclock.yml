@@ -1,6 +1,6 @@
 Categories:
+  - Alarm Clock
   - System
-  - Time
 License: GPL-3.0-or-later
 AuthorName: Gabe Gonzalez
 AuthorEmail: contact@nfcalarmclock.com
@@ -14,7 +14,8 @@ AutoName: NFC Alarm Clock
 
 RepoType: git
 Repo: https://github.com/gabeg805/NFC-Alarm-Clock.git
-Binaries: https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v%v/nfc_alarm_clock_v%v-foss-release.apk
+Binaries: 
+  https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v%v/nfc_alarm_clock_v%v-foss-release.apk
 
 Builds:
   - versionName: 12.5.0
@@ -39,7 +40,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -56,7 +58,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -73,7 +76,8 @@ Builds:
     build:
       - mkdir upstream
       - pushd upstream
-      - curl -L -o upstream.apk https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
+      - curl -L -o upstream.apk 
+        https://github.com/gabeg805/NFC-Alarm-Clock/releases/download/v$$VERSION$$/nfc_alarm_clock_v$$VERSION$$-foss-release.apk
       - unzip -q upstream.apk
       - export upstreamhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1)
       - popd
@@ -82,9 +86,42 @@ Builds:
         export localhash=$(sha256sum assets/dexopt/baseline.prof|cut -d " " -f1);
         [[ $localhash == $upstreamhash ]] && break ; popd; rm -fr local; done
 
+  - versionName: 12.6.1
+    versionCode: 539
+    commit: 9b0cabf0ddc4967eec8f86a34409a0213e1c15a1
+    subdir: app
+    gradle:
+      - foss
+    prebuild: git reset --soft e805e2cf188cb3b1400351c05cefbe9afce4f8b6
+    build: taskset --cpu-list 0-3 gradle assembleFossRelease
+
+  - versionName: 12.6.2
+    versionCode: 540
+    commit: 3b57196ed48eb04fd733590472648c2295c1678f
+    subdir: app
+    gradle:
+      - foss
+    build: taskset --cpu-list 0-3 gradle assembleFossRelease
+
+  - versionName: 12.6.3
+    versionCode: 567
+    commit: 713e8cd658daed9365163674056d3324041a3d1b
+    subdir: app
+    gradle:
+      - foss
+    build: taskset --cpu-list 0-3 gradle assembleFossRelease
+
+  - versionName: 12.6.4
+    versionCode: 572
+    commit: 8ee321c47f42cf5e6434a98de62cd8f90053b82f
+    subdir: app
+    gradle:
+      - foss
+    build: taskset --cpu-list 0-3 gradle assembleFossRelease
+
 AllowedAPKSigningKeys: 541422f271375eccad5cf57cfb25792dc3b059839a1b11cc4886cc3b6c378fba
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 12.5.4
-CurrentVersionCode: 477
+CurrentVersion: 12.6.4
+CurrentVersionCode: 572

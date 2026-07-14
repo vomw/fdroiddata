@@ -1,5 +1,6 @@
 Categories:
   - Development
+  - Text Editor
 License: MIT
 AuthorName: Foxdebug (Ajit Kumar)
 AuthorEmail: dellevenjack@gmail.com
@@ -11,7 +12,7 @@ Changelog: https://github.com/deadlyjack/Acode/blob/HEAD/CHANGELOG.md
 AutoName: Acode
 
 RepoType: git
-Repo: https://github.com/deadlyjack/Acode.git
+Repo: https://github.com/Acode-Foundation/Acode.git
 
 Builds:
   - versionName: 1.2.143
@@ -1273,8 +1274,322 @@ Builds:
       - node_modules/@biomejs
     build: cordova compile android --release -- --packageType=apk
 
+  - versionName: 1.11.2
+    versionCode: 958
+    commit: 2052411311f3757fcd1fd5b286238eacd65dc385
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova yarn
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/pages/donate
+      - src/plugins/iap
+    prebuild:
+      - sed -i -e '/iap/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/lib/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - yarn setup
+      - cordova prepare
+      - mkdir -p www/css/build www/js/build
+      - rm node_modules/cordova-android/framework/cordova-publish.gradle
+      - yarn build android free p
+      - sdkmanager 'build-tools;34.0.0'
+    scandelete:
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build: cordova compile android --release -- --packageType=apk
+
+  - versionName: 1.11.3
+    versionCode: 959
+    commit: d84508f515e5bab5d48ed4e776940065f7ac3bd6
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova yarn
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/pages/donate
+      - src/plugins/iap
+    prebuild:
+      - sed -i -e '/iap/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/lib/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - yarn setup
+      - cordova prepare
+      - mkdir -p www/css/build www/js/build
+      - rm node_modules/cordova-android/framework/cordova-publish.gradle
+      - yarn build android free p
+      - sdkmanager 'build-tools;34.0.0'
+    scandelete:
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build: cordova compile android --release -- --packageType=apk
+
+  - versionName: 1.11.4
+    versionCode: 962
+    commit: 90b5a6d27869421f3a1c766c755bc1904c31e7ee
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova yarn
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/pages/donate
+      - src/plugins/iap
+    prebuild:
+      - sed -i -e '/iap/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/lib/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - yarn setup
+      - cordova prepare
+      - mkdir -p www/css/build www/js/build
+      - rm node_modules/cordova-android/framework/cordova-publish.gradle
+      - yarn build android free p fdroid
+      - sdkmanager 'build-tools;34.0.0'
+    scandelete:
+      - src/plugins/proot/libs
+      - plugins/com.foxdebug.acode.rk.exec.proot/libs
+      - platforms/android/app/src/main/jniLibs
+      - node_modules/com.foxdebug.acode.rk.exec.proot/libs
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build: cordova compile android --release -- --packageType=apk
+
+  - versionName: 1.11.5
+    versionCode: 963
+    commit: da47d95cff683dfca9849f72ffc6cbec22459ffd
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova yarn
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/pages/donate
+      - src/plugins/iap
+    prebuild:
+      - sed -i -e '/iap/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/lib/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - yarn setup
+      - cordova prepare
+      - mkdir -p www/css/build www/js/build
+      - rm node_modules/cordova-android/framework/cordova-publish.gradle
+      - yarn build android free p fdroid
+      - sdkmanager 'build-tools;34.0.0'
+    scandelete:
+      - src/plugins/proot/libs
+      - plugins/com.foxdebug.acode.rk.exec.proot/libs
+      - platforms/android/app/src/main/jniLibs
+      - node_modules/com.foxdebug.acode.rk.exec.proot/libs
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build: cordova compile android --release -- --packageType=apk
+
+  - versionName: 1.11.6
+    versionCode: 965
+    commit: fd4b2c60d7031baea8e6a2c2d6336e7dc86c5cb6
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova yarn
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/plugins/iap
+    prebuild:
+      - sed -i -e '/iap/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - yarn setup
+      - cordova prepare
+      - mkdir -p www/css/build www/js/build
+      - rm node_modules/cordova-android/framework/cordova-publish.gradle
+      - yarn build android free p fdroid
+      - sdkmanager 'build-tools;35.0.0'
+    scandelete:
+      - src/plugins/proot/libs
+      - plugins/com.foxdebug.acode.rk.exec.proot/libs
+      - platforms/android/app/src/main/jniLibs
+      - node_modules/com.foxdebug.acode.rk.exec.proot/libs
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build: cordova compile android --release -- --packageType=apk
+
+  - versionName: 1.11.7
+    versionCode: 966
+    commit: 1a0d5eada6c840b209f8f9ea163d0e8af1a00a7d
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/plugins/iap
+      - src/plugins/proot
+    prebuild:
+      - sdkmanager 'build-tools;35.0.0'
+      - sed -i -e '/iap/d' -e '/proot/d' -e '/com.foxdebug.acode.rk.exec.terminal/s/{},/{}/'
+        package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - mkdir -p www/css/build www/js/build
+      - npm install
+    scandelete:
+      - node_modules/cordova-android/framework/cordova-publish.gradle
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build:
+      - npm run setup
+      - node ./utils/config.js prod paid
+      - webpack --progress --mode production
+      - cordova build android --release -- --packageType=apk
+
+  - versionName: 1.11.8
+    versionCode: 967
+    commit: e2acb9b4b94ef46cfd08e01517cf3cd9df6fe7ad
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/plugins/iap
+      - src/plugins/proot
+    prebuild:
+      - sdkmanager 'build-tools;35.0.0'
+      - sed -i -e '/iap/d' -e '/proot/d' package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - mkdir -p www/css/build www/js/build
+      - npm install
+    scandelete:
+      - node_modules/cordova-android/framework/cordova-publish.gradle
+      - node_modules/jszip/.jekyll-metadata
+      - node_modules/@biomejs
+    build:
+      - npm run setup
+      - node ./utils/config.js prod paid
+      - webpack --progress --mode production
+      - cordova build android --release -- --packageType=apk
+
+  - versionName: 1.12.0
+    versionCode: 1000
+    disable: accidentally picked from pre-release, due to config issue, wrong version
+      code bump too (disabled).
+    commit: 81b8ff85d6970f056d7256c6b25c0d1070d64254
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - chmod -R 777 /opt/android-sdk
+      - apt-get update
+      - apt-get install -y npm
+      - npm install -g cordova
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - src/plugins/iap
+      - src/plugins/proot
+    prebuild:
+      - sdkmanager 'build-tools;36.0.0'
+      - sed -i -e '/iap/d' -e '/proot/d' -e '/com.foxdebug.acode.rk.auth/s/{},/{}/'
+        package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - mkdir -p www/css/build www/js/build
+      - npm install
+    scandelete:
+      - node_modules
+    build:
+      - npm run setup
+      - node ./utils/config.js prod paid
+      - webpack --progress --mode production
+      - cordova build android --release -- --packageType=apk
+
+  - versionName: 1.12.6
+    versionCode: 1001
+    commit: 208bb55315f2c62545a8e361e29ddbad16192bb4
+    sudo:
+      - apt-get update
+      - apt-get install -y npm rustup build-essential
+      - npm install -g cordova pnpm@10.33.0
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - rspack@v2.0.8
+    rm:
+      - src/plugins/iap
+      - src/plugins/proot
+    prebuild:
+      - sdkmanager 'build-tools;36.0.0'
+      - sed -i -e '/iap/d' -e '/proot/d' -e '/com.foxdebug.acode.rk.auth/s/{},/{},/'
+        package.json
+      - sed -i -e '/iap.startConnection/,/Purchase error/c} catch (e) {' src/main.js
+      - sed -i -e '/Donate/d' src/settings/mainSettings.js
+      - sed -i -e 's/acodefree/acode/' utils/config.js
+      - sed -i -e 's/build/prepare/' utils/scripts/build.sh
+      - sed -i -e '/core-google-shortcuts/d' src/plugins/system/plugin.xml
+      - sed -i '/return prettier\.format/,/});/c\    return content;' 'hooks/modify-java-files.js'
+      - mkdir -p www/css/build www/js/build
+      - npm install
+      - export RSPACK_VER=$(grep '"@rspack/core"' package.json | sed 's/.*"@rspack\/core":\s*"[^0-9]*\([0-9][^"]*\)".*/\1/')
+      - '[[ $RSPACK_VER ]]'
+      - git -C $$rspack$$ checkout -f v${RSPACK_VER}
+      - export RUST_VER=$(grep 'channel' $$rspack$$/rust-toolchain.toml | sed 's/.*channel\s*=\s*"\([^"]*\)".*/\1/')
+      - rustup default "${RUST_VER}"
+      - pnpm install --frozen-lockfile --dir $$rspack$$
+      - pnpm i --ignore-workspace --no-lockfile --dir $$rspack$$/crates/node_binding
+    scandelete:
+      - node_modules
+    build:
+      - pushd $$rspack$$
+      - export CARGO_INCREMENTAL=0
+      - export RUSTFLAGS="-C debuginfo=0"
+      - RUST_TARGET=x86_64-unknown-linux-gnu USE_NAPI_CROSS=1 pnpm run build:cli:release
+      - packages/rspack-cli/bin/rspack.js --version
+      - popd
+      - npm run setup
+      - node ./utils/config.js prod paid
+      - $$rspack$$/packages/rspack-cli/bin/rspack.js --mode production
+      - cp ./src/boot.js ./www/build/boot.js
+      - cordova build android --release -- --packageType=apk
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v?[\d.]+$
 UpdateCheckData: config.xml|android-versionCode="(\d+)"|.|version="([\d.]+)"
-CurrentVersion: 1.11.1
-CurrentVersionCode: 957
+CurrentVersion: 1.12.6
+CurrentVersionCode: 1001

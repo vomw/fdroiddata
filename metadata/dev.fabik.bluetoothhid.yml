@@ -1,0 +1,66 @@
+Categories:
+  - Multimedia
+  - Task
+License: GPL-3.0-only
+AuthorName: fabik
+AuthorEmail: support@fabik.dev
+AuthorWebSite: https://fabik.dev
+SourceCode: https://github.com/Fabi019/hid-barcode-scanner
+IssueTracker: https://github.com/Fabi019/hid-barcode-scanner/issues
+Changelog: https://github.com/Fabi019/hid-barcode-scanner/releases
+
+AutoName: BT Scanner
+
+RepoType: git
+Repo: https://github.com/Fabi019/hid-barcode-scanner.git
+Binaries: 
+  https://github.com/Fabi019/hid-barcode-scanner/releases/download/v%v/app-universal-release.apk
+
+Builds:
+  - versionName: 2.2.0
+    versionCode: 56
+    commit: v2.2.0
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: sed -i -e '/signingConfig =/d' ./build.gradle
+
+  - versionName: 2.2.1
+    versionCode: 57
+    commit: 08681c7d74751d3e95462af8e6b15f5d8c92d401
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: sed -i -e '/signingConfig =/d' ./build.gradle
+
+  - versionName: 2.3.0
+    versionCode: 58
+    commit: 50ceb1db08eb0ccaa708170b5ad3fc4d81a37b91
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: sed -i -e '/signingConfig =/d' build.gradle.kts
+    ndk: r28c
+
+AllowedAPKSigningKeys: 4e0904469860ef7891ca8951c9380a03c94c4cff0398d2002e27c9b5e80e0491
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.3.0
+CurrentVersionCode: 58

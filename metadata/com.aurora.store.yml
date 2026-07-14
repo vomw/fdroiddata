@@ -5,6 +5,7 @@ AntiFeatures:
     en-US: By default, the apps list and system details are sent to Google Play Store
       servers, which is likely enough data to fingerprint the device
 Categories:
+  - App Store & Updater
   - System
 License: GPL-3.0-or-later
 AuthorName: Rahul Kumar Patel
@@ -437,11 +438,78 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 4.7.2
+    versionCode: 68
+    commit: 5db149f438b2b33954291ab3ce5d4986d4421157
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - vanilla
+
+  - versionName: 4.7.4
+    versionCode: 70
+    commit: d43dcd065c1de1cddaa43c6d3bb1dc2bec42678e
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - vanilla
+    prebuild: sed -i -e 's|developer.huawei.com/repo|jitpack.io|' ../settings.gradle.kts
+
+  - versionName: 4.7.5
+    versionCode: 71
+    commit: 9ccbd62df037d8358dc42740f02368719085f38b
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - vanilla
+    prebuild: sed -i -e 's|developer.huawei.com/repo|jitpack.io|' ../settings.gradle.kts
+
+  - versionName: 4.8.0
+    versionCode: 72
+    commit: 2ef5cad4bbd9326ecc494f8d714789b9475b7caa
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - vanilla
+    prebuild: sed -i -e 's|developer.huawei.com/repo|jitpack.io|' ../settings.gradle.kts
+
+  - versionName: 4.8.1
+    versionCode: 73
+    commit: b095b66f7af02427fffa14d92803afea28b6e5aa
+    subdir: app
+    gradle:
+      - vanilla
+    prebuild: sed -i -e 's|developer.huawei.com/repo|jitpack.io|' ../settings.gradle.kts
+
+  - versionName: 4.8.3
+    versionCode: 75
+    commit: e9be2c8293e02cc362d603df6b12b019fdb849f2
+    subdir: app
+    gradle:
+      - vanilla
+    prebuild: sed -i -e 's|developer.huawei.com/repo|jitpack.io|' ../settings.gradle.kts
+
 MaintainerNotes: |
-  Manually updated temporarily. Want to build all versions, but only
-  mark them as current after some testing.
+  Manually updated. Want to build all versions, but only
+  mark them as current/suggested after some feedback.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 4.7.0
-CurrentVersionCode: 66
+CurrentVersion: 4.8.3
+CurrentVersionCode: 75
