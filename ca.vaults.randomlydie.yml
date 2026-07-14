@@ -1,0 +1,31 @@
+Categories:
+  - Games
+License: GPL-3.0-or-later
+AuthorName: Tim Middleton
+SourceCode: https://github.com/timtoo/randomlydie
+IssueTracker: https://github.com/timtoo/randomlydie/issues
+Changelog: https://github.com/timtoo/randomlydie/blob/main/CHANGELOG.md
+
+RepoType: git
+Repo: https://github.com/timtoo/randomlydie.git
+
+Builds:
+  - versionName: 6.1.0
+    versionCode: 60100
+    commit: v6.1.0
+    subdir: android
+    init:
+      - cd ..
+      - npm install -g pnpm@11
+      - pnpm install --frozen-lockfile
+    prebuild:
+      - cd ..
+      - CAPACITOR_BUILD=1 pnpm quasar build
+      - pnpm exec cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 6.1.0
+CurrentVersionCode: 60100
