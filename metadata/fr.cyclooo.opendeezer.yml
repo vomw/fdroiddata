@@ -1,0 +1,61 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: The app depends on Deezer, a proprietary network service.
+  TetheredNet:
+    en-US: A Deezer account is required and the service endpoint is not configurable.
+  Tracking:
+    en-US: Playback events are reported to Deezer for listening and free-tier accounting.
+Categories:
+  - Multimedia
+License: AGPL-3.0-only
+AuthorName: Cycl0o0
+WebSite: https://github.com/Cycl0o0/OpenDeezer
+SourceCode: https://github.com/Cycl0o0/OpenDeezer
+IssueTracker: https://github.com/Cycl0o0/OpenDeezer/issues
+Changelog: https://github.com/Cycl0o0/OpenDeezer/releases
+
+AutoName: OpenDeezer
+
+RepoType: git
+Repo: https://github.com/Cycl0o0/OpenDeezer.git
+Binaries: 
+  https://github.com/Cycl0o0/OpenDeezer/releases/download/v%v/OpenDeezer-android-fdroid-%v.apk
+
+Builds:
+  - versionName: 3.1.4
+    versionCode: 26
+    commit: b6c928d487ff94f7485c58c414de407e05ec79b1
+    subdir: gui/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc6-dev
+      - apt-get install -y -t trixie-backports golang-go
+    gradle:
+      - mobile
+    srclibs:
+      - go@go1.25.12
+    rm:
+      - gui/macos/Clib/libdeezercore-amd64.a
+      - gui/macos/Clib/libdeezercore-arm64.a
+    prebuild: sdkmanager 'platforms;android-24' 'platforms;android-34' 'build-tools;34.0.0'
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$(pwd)/.fdroid-gopath
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - cd ../../..
+      - scripts/build-mobile-tools.sh "$GOPATH/bin"
+      - gomobile bind -trimpath -target=android -androidapi 24 -bootclasspath "$ANDROID_HOME/platforms/android-34/android.jar"
+        -ldflags="-s -w -buildid=" -o gui/android/app/libs/odmobile.aar ./mobile
+    ndk: r26d
+    gradleprops:
+      - upstreamUpdates=false
+
+AllowedAPKSigningKeys: e5c114ba5ef3482b5a441485923835c510c724013f4116c9a44808b347dfa230
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 3.1.4
+CurrentVersionCode: 26
