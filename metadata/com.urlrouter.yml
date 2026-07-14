@@ -1,0 +1,33 @@
+Categories:
+  - Internet
+  - System
+License: GPL-3.0-only
+AuthorName: Vojislav Vlasic
+AuthorEmail: vlasic.vojislav@gmail.com
+SourceCode: https://github.com/vdb86/urlrouter
+IssueTracker: https://github.com/vdb86/urlrouter/issues
+
+AutoName: URL Router
+
+RepoType: git
+Repo: https://github.com/vdb86/urlrouter.git
+Binaries: https://github.com/vdb86/urlrouter/releases/download/v%v/URLRouter.apk
+
+Builds:
+  - versionName: '1.1'
+    versionCode: 3
+    commit: af6f60986ba7571d695abcc8eac8f053e1dd9ff6
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'META-INF/services/*'
+
+AllowedAPKSigningKeys: 704b987da790aef3a9d5752f1f370439f89ddeb73e3ffdee0b54871c868ec07c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.1'
+CurrentVersionCode: 3
