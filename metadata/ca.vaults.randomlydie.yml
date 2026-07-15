@@ -14,12 +14,11 @@ Builds:
     versionCode: 60100
     commit: v6.1.0
     subdir: android
-    output: android/app/build/outputs/apk/release/*.apk
     sudo:
       - apt-get update
       - apt-get install -y curl
-      - "curl -fsSL https://nodejs.org/dist/v24.18.0/node-v24.18.0-linux-x64.tar.gz \
-        -o /tmp/node.tar.gz"
+      - curl -fsSL https://nodejs.org/dist/v24.18.0/node-v24.18.0-linux-x64.tar.gz 
+        -o /tmp/node.tar.gz
       - tar -xzf /tmp/node.tar.gz -C /usr/local
       - ln -sf /usr/local/node-v24.18.0-linux-x64/bin/node /usr/local/bin/node
       - ln -sf /usr/local/node-v24.18.0-linux-x64/bin/npm /usr/local/bin/npm
@@ -32,6 +31,7 @@ Builds:
       - rm -f node_modules/.pnpm/source-map@*/node_modules/source-map/lib/mappings.wasm
     gradle:
       - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - cd ..
       - CAPACITOR_BUILD=1 pnpm quasar build
