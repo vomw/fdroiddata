@@ -16,7 +16,7 @@ Builds:
   - versionName: 6.1.0
     versionCode: 60100
     commit: a185db8cf5dc68369bce1efe68a8bc69aba740dc
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y curl
@@ -28,18 +28,16 @@ Builds:
       - npm install -g pnpm@11
       - ln -sf /usr/local/node-v24.18.0-linux-x64/bin/pnpm /usr/local/bin/pnpm
     init:
-      - cd ..
+      - cd ../..
       - pnpm install --frozen-lockfile
-      - rm -rf node_modules/sass-embedded node_modules/.pnpm/sass-embedded*
-      - rm -f node_modules/.pnpm/source-map@*/node_modules/source-map/lib/mappings.wasm
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ..
+      - cd ../..
       - CAPACITOR_BUILD=1 pnpm quasar build
       - pnpm exec cap sync android
-      - rm -f node_modules/.pnpm/@capacitor+cli@*/node_modules/@capacitor/cli/assets/*.tar.gz
+    scandelete:
+      - node_modules
 
 AllowedAPKSigningKeys: c35eb08fb741cf59306601eb86c9999ea593dcfc4554d1c2aa26704d17065f94
 
