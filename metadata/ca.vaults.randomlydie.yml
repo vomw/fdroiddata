@@ -18,18 +18,18 @@ Builds:
     commit: a185db8cf5dc68369bce1efe68a8bc69aba740dc
     subdir: android/app
     sudo:
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y nodejs
-      - npm install -g pnpm@11
+      - apt-get install -y -t forky nodejs npm
     init:
       - cd ../..
-      - pnpm install --frozen-lockfile
+      - npm install 
     gradle:
       - yes
     prebuild:
       - cd ../..
       - CAPACITOR_BUILD=1 pnpm quasar build
-      - pnpm exec cap sync android
+      - npm exec cap sync android
     scandelete:
       - node_modules
 
