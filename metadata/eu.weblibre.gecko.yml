@@ -899,7 +899,7 @@ Builds:
       - sing-box@v1.13.12
       - IPtProxy@5.4.2
       - SagerNetGomobile@v0.1.12
-      - cronet-go@2faf34666c2cc8234f10f2ab6d4c4d6104d34ae2
+      - cronet-go@v148.0.7778.96-1
     prebuild:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME="fdroid"
@@ -945,13 +945,16 @@ Builds:
       - pushd $$cronet-go$$
       - go run ./cmd/build-naive --target=android/arm build
       - go run ./cmd/build-naive --target=android/arm package --local
-      - sed -i '/github.com\/sagernet\/cronet-go\/lib\//d' all/*.go all/go.mod
       - popd
+      - sed -i -e '/github.com\/sagernet\/cronet-go\/all/d' -e '/github.com\/sagernet\/cronet-go\/lib\//d'
+        $$sing-box$$/go.mod
+      - sed -i '/_ "github.com\/sagernet\/cronet-go\/all"/d' $$sing-box$$/protocol/naive/outbound.go
       - sed -i '/replace www\.bamsoftware\.com\/git\/dnstt\.git/a replace github.com/sagernet/cronet-go
-        => $$cronet-go$$\nreplace github.com/sagernet/cronet-go/all => $$cronet-go$$/all\nreplace
-        github.com/sagernet/gomobile => $$SagerNetGomobile$$' ../../native/go_mobile_runtime/scripts/build-android.sh
+        => $$cronet-go$$\nreplace github.com/sagernet/gomobile => $$SagerNetGomobile$$'
+        ../../native/go_mobile_runtime/scripts/build-android.sh
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --target android/arm --skip-install-gomobile
+        --allow-dirty
     scanignore:
       - native/go_mobile_runtime/build/weblibre-go.aar
     scandelete:
@@ -1017,7 +1020,7 @@ Builds:
       - sing-box@v1.13.12
       - IPtProxy@5.4.2
       - SagerNetGomobile@v0.1.12
-      - cronet-go@2faf34666c2cc8234f10f2ab6d4c4d6104d34ae2
+      - cronet-go@v148.0.7778.96-1
     prebuild:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME="fdroid"
@@ -1063,13 +1066,16 @@ Builds:
       - pushd $$cronet-go$$
       - go run ./cmd/build-naive --target=android/arm64 build
       - go run ./cmd/build-naive --target=android/arm64 package --local
-      - sed -i '/github.com\/sagernet\/cronet-go\/lib\//d' all/*.go all/go.mod
       - popd
+      - sed -i -e '/github.com\/sagernet\/cronet-go\/all/d' -e '/github.com\/sagernet\/cronet-go\/lib\//d'
+        $$sing-box$$/go.mod
+      - sed -i '/_ "github.com\/sagernet\/cronet-go\/all"/d' $$sing-box$$/protocol/naive/outbound.go
       - sed -i '/replace www\.bamsoftware\.com\/git\/dnstt\.git/a replace github.com/sagernet/cronet-go
-        => $$cronet-go$$\nreplace github.com/sagernet/cronet-go/all => $$cronet-go$$/all\nreplace
-        github.com/sagernet/gomobile => $$SagerNetGomobile$$' ../../native/go_mobile_runtime/scripts/build-android.sh
+        => $$cronet-go$$\nreplace github.com/sagernet/gomobile => $$SagerNetGomobile$$'
+        ../../native/go_mobile_runtime/scripts/build-android.sh
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --target android/arm64 --skip-install-gomobile
+        --allow-dirty
     scanignore:
       - native/go_mobile_runtime/build/weblibre-go.aar
     scandelete:
