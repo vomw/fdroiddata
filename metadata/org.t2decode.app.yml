@@ -30,7 +30,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(cat .flutter-version)
+      - flutterVersion="3.44.6"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -38,12 +38,16 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     build:
+      - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
       - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
       - cd /builds/tutodecode-org/T2DECODE
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
       - cd -
       - mkdir -p build/app/outputs/flutter-apk
       - cp 
@@ -65,7 +69,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(cat .flutter-version)
+      - flutterVersion="3.44.6"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -73,12 +77,16 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     build:
+      - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
       - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
       - cd /builds/tutodecode-org/T2DECODE
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
       - cd -
       - mkdir -p build/app/outputs/flutter-apk
       - cp 
@@ -100,7 +108,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(cat .flutter-version)
+      - flutterVersion="3.44.6"
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -108,12 +116,16 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     build:
+      - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
       - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
       - cd /builds/tutodecode-org/T2DECODE
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
       - cd -
       - mkdir -p build/app/outputs/flutter-apk
       - cp 
