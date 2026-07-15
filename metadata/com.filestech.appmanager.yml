@@ -12,24 +12,22 @@ AutoName: App Manager Tech
 
 RepoType: git
 Repo: https://github.com/gitubpatrice/APP-MANAGER-TECH.git
-Binaries: https://github.com/gitubpatrice/APP-MANAGER-TECH/releases/download/v%v/app-%a-release.apk
 
 Builds:
   - versionName: 0.4.0
     versionCode: 13
-    commit: v0.4.0
+    commit: 4f619335f4c69c05fbdb3a50ae0d4b6157b671d9
     subdir: app
     gradle:
       - yes
     prebuild:
-      - sed -i -e '/keystoreProperties = Properties/,/}/d' build.gradle.kts
-      - sed -i -e '/signingConfigs/,/}\s*$/d' build.gradle.kts
-      - sed -i -e '/if (keystorePropertiesFile.exists()) {/,/}/d' build.gradle.kts
-
-AllowedAPKSigningKeys: 76e8772e09951369405f58e70c4afffd41c4687553c6cfa03d08145ff60ff1cf
+      - sed -i -e '/^val keystorePropertiesFile = rootProject.file/,/^}$/d' build.gradle.kts
+      - sed -i -e '/^    signingConfigs {$/,/^    }$/d' build.gradle.kts
+      - sed -i -e '/^            signingConfig = if (keystorePropertiesFile.exists()) {$/,/^            }$/d' build.gradle.kts
+      - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-UpdateCheckData: 'app/build.gradle.kts|versionName\s*=\s*"(.*?)"|.|versionCode\s*=\s*(\d+)'
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+UpdateCheckData: 'app/build.gradle.kts|versionCode\s*=\s*(\d+)|.|versionName\s*=\s*"(.*?)"'
 CurrentVersion: 0.4.0
 CurrentVersionCode: 13
