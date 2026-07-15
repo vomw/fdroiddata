@@ -13,42 +13,34 @@ AutoName: Agenda Tech
 RepoType: git
 Repo: https://github.com/gitubpatrice/AGENDA-TECH.git
 
-# Reproducible build pinned to the upstream-signed GitHub release APKs.
-# F-Droid builds from source at the commit below and verifies the result against
-# the GitHub asset, so users keep one signature across both channels and can move
-# between them without uninstalling.
-Binaries: https://github.com/gitubpatrice/AGENDA-TECH/releases/download/v%v/app-%a-release.apk
-
 Builds:
   - versionName: 0.5.0
     versionCode: 47
-    # Not the v0.5.0 tag itself: the tag predates the fastlane metadata commit, and F-Droid
-    # reads the store listing from this checkout. The app code is byte-identical between the
-    # two (the metadata commit touches nothing under app/), so the build still reproduces the
-    # published APK.
+    # Not the v0.5.0 tag itself: the tag predates the fastlane metadata commit, and the
+    # store listing is read from this checkout. The app code is byte-identical between the
+    # two — the metadata commit touches nothing under app/.
     commit: 80c98fec3f7ec83a8dd6ce4a2371cf8207d95d76
     subdir: app
     gradle:
       - yes
     prebuild:
-      # Strip the release signing config: the keystore is not in the repository, so the
-      # build must produce an unsigned APK. The closing braces are anchored (`/^}$/`,
-      # `/^    }$/`) rather than matched loosely: both blocks contain nested braces, and
-      # an unanchored `/}/` would end the range at the first inner one, deleting half a
-      # block and leaving an orphan brace that breaks the Kotlin DSL.
-      # Verified by running these three seds and building the result without a keystore.
+      # 1-3: drop the release signing config. The keystore is not in the repository, so the
+      # build must produce an unsigned APK. The closing braces are anchored rather than
+      # matched loosely: both blocks contain nested braces, and a bare `/}/` would end the
+      # range at the first inner one, leaving an orphan brace that breaks the Kotlin DSL.
       - sed -i -e '/^val keystoreProps = Properties/,/^}$/d' build.gradle.kts
       - sed -i -e '/^    signingConfigs {$/,/^    }$/d' build.gradle.kts
       - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
-
-# SHA-256 of the upstream APK signing certificate, unchanged since v0.1.0.
-AllowedAPKSigningKeys: 538bff8ab3162017038d031909fd4e06159f30a3371867f9e1d1bc146c9a1d04
+      # 4: drop the ABI splits. Upstream ships per-ABI APKs, but they all carry the same
+      # versionCode, so there would be no way to tell the four build outputs apart. Without
+      # the splits the build emits a single app-release-unsigned.apk holding every ABI.
+      - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
 # versionCode first, then versionName — the order fdroidserver expects.
-# The version lives in version.properties (not in build.gradle.kts): it is the single
-# source of truth, deliberately frozen rather than derived from the git history.
+# The version lives in version.properties rather than in build.gradle.kts: it is the single
+# source of truth, deliberately frozen instead of derived from the git history.
 UpdateCheckData: version.properties|versionCode=(\d+)|.|versionName=(\d+\.\d+\.\d+)
 CurrentVersion: 0.5.0
 CurrentVersionCode: 47
