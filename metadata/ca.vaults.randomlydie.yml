@@ -23,13 +23,15 @@ Builds:
       - apt-get install -y -t forky nodejs npm
     init:
       - cd ../..
-      - npm install 
+      - corepack enable
+      - corepack prepare pnpm@11.2.0 --activate
+      - pnpm install --frozen-lockfile
     gradle:
       - yes
     prebuild:
       - cd ../..
-      - CAPACITOR_BUILD=1 npm exec quasar build
-      - npm exec cap sync android
+      - CAPACITOR_BUILD=1 pnpm exec quasar build
+      - pnpm exec cap sync android
     scandelete:
       - node_modules
 
