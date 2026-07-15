@@ -45,12 +45,11 @@ Builds:
       - pushd "${FFMPEG_EXT_PATH}/jni"
       - ln -s "$$FFmpeg$$" ffmpeg
       - cd "${FFMPEG_EXT_PATH}/jni"
-      # --- Add deterministic flags (must match container) ---
-      - export CFLAGS="-fno-ident -ffile-prefix-map=${PWD}=. -fdebug-prefix-map=${PWD}=."
+      - sed -i 's/^LDFLAGS="/LDFLAGS="-Wl,--build-id=none /' $$media-moneytoo$$/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
+      - export CFLAGS="-fno-ident -ffile-prefix-map=${PWD}=. -fdebug-prefix-map=${PWD}=. -Wl,--build-id=none"
       - export LDFLAGS="-Wl,--build-id=none"
       - export SOURCE_DATE_EPOCH=0
       - export ARFLAGS="rcsD"
-      # -----------------------------------------------------
       - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" "${ENABLED_DECODERS[@]}"
       - cd "$$media-moneytoo$$"
       - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar
