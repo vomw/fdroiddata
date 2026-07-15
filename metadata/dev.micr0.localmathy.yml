@@ -9,14 +9,29 @@ RepoType: git
 Repo: https://github.com/micr0-dev/localmathy.git
 
 Builds:
-  - versionName: 1.0.7
-    versionCode: 8
-    commit: d10a3e15c73117cccb76a1302b9fbe8ee6e599d2
+  - versionName: 1.0.8
+    versionCode: 12
+    commit: 2a8001e9923b791e4e8ae79c9918411de6cfd0b0
     subdir: composeApp
     gradle:
       - yes
+    prebuild: sed -i -e 's/include("arm64-v8a".*/include("arm64-v8a")/' -e '/isUniversalApk/d'
+      build.gradle.kts
+
+  - versionName: 1.0.8
+    versionCode: 14
+    commit: 2a8001e9923b791e4e8ae79c9918411de6cfd0b0
+    subdir: composeApp
+    gradle:
+      - yes
+    prebuild: sed -i -e 's/include("arm64-v8a".*/include("x86_64")/' -e '/isUniversalApk/d'
+      build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.7
-CurrentVersionCode: 8
+VercodeOperation:
+  - 2 + %c
+  - 4 + %c
+UpdateCheckData: composeApp/build.gradle.kts|versionCode\s=\s(\d+)|.|versionName\s=\s"(.*)"
+CurrentVersion: 1.0.8
+CurrentVersionCode: 14
