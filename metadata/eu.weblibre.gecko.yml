@@ -905,8 +905,6 @@ Builds:
       - export MAVEN_USERNAME="fdroid"
       - export MAVEN_PASSWORD="fdroid"
       - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
-      - sed -i '/pushd "$unifiedpush_ac"/,/^popd$/c\pushd "$mozilla_release"\ngradle
-        --project-dir "$unifiedpush_ac" publishToMavenLocal\npopd' $$MozFennecComponents$$/build.sh
       - source $$MozFennecComponents$$/setup.sh armeabi-v7a
       - $$MozFennecComponents$$/prebuild.sh
       - sed -i -e 's/maven {.*background_fetch.*/mavenLocal()/' android/build.gradle
@@ -926,14 +924,13 @@ Builds:
       - sdkmanager "platforms;android-24" "platforms;android-37.0" "build-tools;37.0.0"
       - flutter config --no-analytics
       - flutter pub global activate melos 7.8.1
+      - pushd ../../
       - melos bootstrap
       - melos run update-assets --no-select
-      - pushd ../../packages/flutter_mozilla_components/javascript/container_proxy
-      - npm ci
+      - melos run build-components --no-select
       - popd
-      - pushd ../../packages/flutter_mozilla_components/javascript/readability
-      - npm ci
-      - popd
+      - rm -rf ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
+        ../../packages/flutter_mozilla_components/javascript/readability/node_modules
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
       - pushd $$go$$/src
       - ./make.bash
@@ -963,14 +960,11 @@ Builds:
       - apps/weblibre/.pub-cache
       - apps/weblibre/.gopath
       - native/go_mobile_runtime/build/weblibre-go-sources.jar
-      - packages/flutter_mozilla_components/javascript/container_proxy/node_modules
     build:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME="fdroid"
       - export MAVEN_PASSWORD="fdroid"
-      - pushd ../../
-      - melos run build-components --no-select
-      - popd
+      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
       - source $$MozFennecComponents$$/setup.sh armeabi-v7a
       - $$MozFennecComponents$$/build.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -1028,8 +1022,6 @@ Builds:
       - export MAVEN_USERNAME="fdroid"
       - export MAVEN_PASSWORD="fdroid"
       - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
-      - sed -i '/pushd "$unifiedpush_ac"/,/^popd$/c\pushd "$mozilla_release"\ngradle
-        --project-dir "$unifiedpush_ac" publishToMavenLocal\npopd' $$MozFennecComponents$$/build.sh
       - source $$MozFennecComponents$$/setup.sh arm64-v8a
       - $$MozFennecComponents$$/prebuild.sh
       - sed -i -e 's/maven {.*background_fetch.*/mavenLocal()/' android/build.gradle
@@ -1049,14 +1041,13 @@ Builds:
       - sdkmanager "platforms;android-24" "platforms;android-37.0" "build-tools;37.0.0"
       - flutter config --no-analytics
       - flutter pub global activate melos 7.8.1
+      - pushd ../../
       - melos bootstrap
       - melos run update-assets --no-select
-      - pushd ../../packages/flutter_mozilla_components/javascript/container_proxy
-      - npm ci
+      - melos run build-components --no-select
       - popd
-      - pushd ../../packages/flutter_mozilla_components/javascript/readability
-      - npm ci
-      - popd
+      - rm -rf ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
+        ../../packages/flutter_mozilla_components/javascript/readability/node_modules
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
       - pushd $$go$$/src
       - ./make.bash
@@ -1086,14 +1077,11 @@ Builds:
       - apps/weblibre/.pub-cache
       - apps/weblibre/.gopath
       - native/go_mobile_runtime/build/weblibre-go-sources.jar
-      - packages/flutter_mozilla_components/javascript/container_proxy/node_modules
     build:
       - export MAVEN_REPO_URL="https://only-for-validation.local"
       - export MAVEN_USERNAME="fdroid"
       - export MAVEN_PASSWORD="fdroid"
-      - pushd ../../
-      - melos run build-components --no-select
-      - popd
+      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
       - source $$MozFennecComponents$$/setup.sh arm64-v8a
       - $$MozFennecComponents$$/build.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
