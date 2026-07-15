@@ -7,44 +7,35 @@ SourceCode: https://codeberg.org/alevui/sherpr
 IssueTracker: https://codeberg.org/alevui/sherpr/issues
 Changelog: https://codeberg.org/alevui/sherpr/releases
 
-AutoName: Sherpr
-Summary: Drive your Herdr AI-agent fleet from your phone, over SSH — no cloud
-Description: |-
-  Sherpr is the mobile companion for Herdr, the terminal agent
-  multiplexer. It connects to one or more Herdr instances on your workstation
-  or servers over SSH and gives you a live fleet dashboard (blocked / working /
-  done / idle), on-device notifications when an agent needs you, two-tap
-  unblock actions, workspace/session creation, and a real interactive terminal
-  on tap — all in a dark "black glass + neon" UI.
-
-  There is no vendor cloud: the app talks directly to your own machine over
-  your own SSH transport. Optional voice dictation runs on-device (whisper.cpp
-  compiled from source); Whisper models are downloaded on first use from a
-  pinned URL with SHA-256 verification, never bundled. Notifications are
-  generated on-device from the live SSH event stream — no push provider; an
-  opt-in foreground service can keep the session alive in the background. No
-  Google Play Services are required or referenced.
-
 RepoType: git
 Repo: https://codeberg.org/alevui/sherpr.git
+Binaries: https://codeberg.org/alevui/sherpr/releases/download/v%v/sherpr-v%v.apk
 
 Builds:
-  - versionName: 0.2.7
-    versionCode: 11
-    commit: v0.2.7
-    sudo: sdkmanager "ndk;27.0.11902837"
+  - versionName: 0.2.8
+    versionCode: 12
+    commit: v0.2.8
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.44.0
-    prebuild: ln -sfn packaging/fdroid/fastlane fastlane
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "ndk;27.0.11902837"
+      - export version=$(grep flutter .fvmrc | cut -d ":" -f2 | cut -d "\"" -f2)
+      - git -C $$flutter$$ checkout -f $version
+    scandelete:
+      - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/flutter build apk --release
     ndk: r28c
 
+AllowedAPKSigningKeys: 6447613902c9773f0b55045097e105f4c182397645e3fb5017842d4dfc7bd982
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
-CurrentVersion: 0.2.7
-CurrentVersionCode: 11
+CurrentVersion: 0.2.8
+CurrentVersionCode: 12
