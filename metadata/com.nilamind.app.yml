@@ -1,6 +1,7 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Downloads the Qwen2.5-1.5B language model (Apache-2.0) from Hugging Face on first run.
+    en-US: Downloads the Qwen2.5-1.5B language model, the Vosk speech-to-text model, and the ONNX
+      Runtime WASM backend for the on-device crisis classifier (all Apache-2.0) on first use.
 Categories:
   - Sports & Health
 License: Apache-2.0
@@ -13,9 +14,9 @@ RepoType: git
 Repo: https://github.com/sampathmannam/nilamind.git
 
 Builds:
-  - versionName: 1.11.1
-    versionCode: 24
-    commit: 557ee14f1057c8db2273858dc21160d1bbdfb2ba
+  - versionName: 1.18.4
+    versionCode: 41
+    commit: 95d0008cf52a0d854ae1eaa35f3069c827d4fb32
     sudo:
       - curl -Lo node.tar.gz https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-x64.tar.gz
       - echo "9d942932535988091034dc94cc5f42b6dc8784d6366df3a36c4c9ccb3996f0c2  node.tar.gz"
@@ -27,7 +28,17 @@ Builds:
       - npm run build
       - npx cap sync android
       - rm -f node_modules/llama-cpp-capacitor/android/src/main/jniLibs/arm64-v8a/libllama-cpp-arm64.so
-      - rm -f node_modules/llama-cpp-capacitor/android/build -r
+      - rm -rf node_modules/llama-cpp-capacitor/android/build
+      - rm -rf node_modules/llama-cpp-capacitor/ios
+      - rm -rf node_modules/onnxruntime-node
+      - rm -rf node_modules/@esbuild
+      - rm -rf node_modules/esbuild/bin
+      - rm -f node_modules/source-map/lib/mappings.wasm
+      - rm -rf node_modules/sharp node_modules/@img
+      - rm -rf node_modules/@trapezedev/gradle-parse/lib
+      - rm -f node_modules/@trapezedev/gradle-parse/capacitor-gradle-parse.jar
+      - rm -f node_modules/@capacitor/cli/assets/*.tar.gz
+      - rm -f node_modules/@capacitor/assets/node_modules/@capacitor/cli/assets/*.tar.gz
     gradle:
       - yes
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
@@ -35,5 +46,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 1.11.1
-CurrentVersionCode: 24
+CurrentVersion: 1.18.4
+CurrentVersionCode: 41
