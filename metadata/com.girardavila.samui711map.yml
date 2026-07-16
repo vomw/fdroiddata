@@ -19,8 +19,12 @@ Builds:
     versionCode: 8
     commit: c53f98ea5f7f3a3798412d8e5161020047dc5c56
     subdir: android
+    init:
+      - cd .. && curl -Lo node.tar.xz https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz && tar xJf node.tar.xz --strip-components=1 -C /usr/local/ && npm install && npx cap sync android
     gradle:
       - yes
+    scandelete:
+      - ../node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
