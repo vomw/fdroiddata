@@ -13,18 +13,17 @@ Repo: https://github.com/timtoo/randomlydie.git
 Binaries: https://github.com/timtoo/randomlydie/releases/download/v%v/randomlydie-%v.apk
 
 Builds:
-  - versionName: 6.1.0
-    versionCode: 60100
-    commit: a185db8cf5dc68369bce1efe68a8bc69aba740dc
+  - versionName: 6.1.1
+    versionCode: 60101
+    commit: 9264ac4d6e4b452dbee036334ab2c020cb820a11
     subdir: android/app
     sudo:
       - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky nodejs npm
+      - corepack enable
     init:
       - cd ../..
-      - corepack enable
-      - corepack prepare pnpm@11.2.0 --activate
       - pnpm install --frozen-lockfile
     gradle:
       - yes
@@ -40,5 +39,5 @@ AllowedAPKSigningKeys: c35eb08fb741cf59306601eb86c9999ea593dcfc4554d1c2aa26704d1
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: android/app/build.gradle|versionCode\s+(\d+)||v?([\d.]+)
-CurrentVersion: 6.1.0
-CurrentVersionCode: 60100
+CurrentVersion: 6.1.1
+CurrentVersionCode: 60101
