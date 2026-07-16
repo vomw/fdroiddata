@@ -1,1 +1,37 @@
-"AntiFeatures:\n  NonFreeNet:\n    en-US: Downloads the Qwen2.5-1.5B language model (Apache-2.0) from Hugging Face on first run.\nCategories:\n  - Sports 
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads the Qwen2.5-1.5B language model (Apache-2.0) from Hugging Face on first run.
+Categories:
+  - Sports & Health
+License: Apache-2.0
+AuthorName: Sujith Sampath
+SourceCode: https://github.com/sampathmannam/nilamind
+IssueTracker: https://github.com/sampathmannam/nilamind/issues
+Changelog: https://github.com/sampathmannam/nilamind/releases
+
+RepoType: git
+Repo: https://github.com/sampathmannam/nilamind.git
+
+Builds:
+  - versionName: 1.11.1
+    versionCode: 24
+    commit: 557ee14f1057c8db2273858dc21160d1bbdfb2ba
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+      - npm install -g @capacitor/cli
+    init:
+      - npm ci
+      - npm run build
+      - npx cap sync android
+      - rm -f node_modules/llama-cpp-capacitor/android/src/main/jniLibs/arm64-v8a/libllama-cpp-arm64.so
+      - rm -f node_modules/llama-cpp-capacitor/android/build -r
+    gradle:
+      - yes
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    ndk: 29.0.13113456
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.11.1
+CurrentVersionCode: 24
