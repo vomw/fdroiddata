@@ -893,7 +893,6 @@ Builds:
       - toolchain-utils@dd1ee45a84cb07337f9d5d0a6769d9b865c6e620
       - MozFennecComponents@18c3f46a0e9f0d3a395da2521280841222254b57
       - flutter@stable
-      - transistor-background-fetch@351ba84593142ec1c39793da832be1d71495f223
       - go@go1.25.0
       - sing-box@v1.13.12
       - IPtProxy@5.4.2
@@ -906,7 +905,7 @@ Builds:
       - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
       - source $$MozFennecComponents$$/setup.sh armeabi-v7a
       - $$MozFennecComponents$$/prebuild.sh
-      - sed -i -e 's/maven {.*background_fetch.*/mavenLocal()/' android/build.gradle
+      - sed -i -e '/background_fetch/d' android/build.gradle
       - sed -i 's/maven { name "Mozilla"; url "https:\/\/gitlab\.com\/api\/v4\/projects\/71401321\/packages\/maven"
         }/mavenLocal()/' ../../packages/flutter_mozilla_components/android/build.gradle
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?([^']*)'?/\1/p" ../../.github/workflows/build.yml)
@@ -931,7 +930,6 @@ Builds:
       - rm -rf 
         ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
         ../../packages/flutter_mozilla_components/javascript/readability/node_modules
-      - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
     scanignore:
       - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
     scandelete:
@@ -972,10 +970,6 @@ Builds:
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --dnstt-source $$IPtProxy$$/dnstt
         --target android/arm --skip-install-gomobile --allow-dirty
-      - pushd $$transistor-background-fetch$$/android/tsbackgroundfetch/
-      - gradle assembleRelease
-      - gradle publishToMavenLocal
-      - popd
       - flutter config --no-analytics
       - flutter build apk --release --flavor stable --no-tree-shake-icons --split-per-abi
         --target-platform="android-arm"
@@ -1013,7 +1007,6 @@ Builds:
       - toolchain-utils@dd1ee45a84cb07337f9d5d0a6769d9b865c6e620
       - MozFennecComponents@18c3f46a0e9f0d3a395da2521280841222254b57
       - flutter@stable
-      - transistor-background-fetch@351ba84593142ec1c39793da832be1d71495f223
       - go@go1.25.0
       - sing-box@v1.13.12
       - IPtProxy@5.4.2
@@ -1026,7 +1019,7 @@ Builds:
       - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
       - source $$MozFennecComponents$$/setup.sh arm64-v8a
       - $$MozFennecComponents$$/prebuild.sh
-      - sed -i -e 's/maven {.*background_fetch.*/mavenLocal()/' android/build.gradle
+      - sed -i -e '/background_fetch/d' android/build.gradle
       - sed -i 's/maven { name "Mozilla"; url "https:\/\/gitlab\.com\/api\/v4\/projects\/71401321\/packages\/maven"
         }/mavenLocal()/' ../../packages/flutter_mozilla_components/android/build.gradle
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?([^']*)'?/\1/p" ../../.github/workflows/build.yml)
@@ -1051,7 +1044,6 @@ Builds:
       - rm -rf 
         ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
         ../../packages/flutter_mozilla_components/javascript/readability/node_modules
-      - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
     scanignore:
       - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
     scandelete:
@@ -1092,10 +1084,6 @@ Builds:
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --dnstt-source $$IPtProxy$$/dnstt
         --target android/arm64 --skip-install-gomobile --allow-dirty
-      - pushd $$transistor-background-fetch$$/android/tsbackgroundfetch/
-      - gradle assembleRelease
-      - gradle publishToMavenLocal
-      - popd
       - flutter config --no-analytics
       - flutter build apk --release --flavor stable --no-tree-shake-icons --split-per-abi
         --target-platform="android-arm64"
