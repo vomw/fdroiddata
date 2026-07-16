@@ -12,27 +12,101 @@ RepoType: git
 Repo: https://github.com/retransmit/Atrium.git
 
 Builds:
-  - versionName: 1.0.2
-    versionCode: 3
-    commit: v1.0.2
+  - versionName: 1.0.3
+    versionCode: 1004
+    commit: v1.0.3
     subdir: app
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/retransmit/Atrium/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.41.9
     prebuild:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - cd .. && $$flutter$$/bin/dart run tool/build_all.dart && cd app
+      - cd .. && $$flutter$$/bin/dart run tool/build_all.dart
+      - popd
+      - mv /tmp/build app.atrium
     scandelete:
       - app/.pub-cache
     build:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv /tmp/build app.atrium
+
+  - versionName: 1.0.3
+    versionCode: 2004
+    commit: v1.0.3
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/retransmit/Atrium/releases/download/v%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.41.9
+    prebuild:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd .. && $$flutter$$/bin/dart run tool/build_all.dart
+      - popd
+      - mv /tmp/build app.atrium
+    scandelete:
+      - app/.pub-cache
+    build:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv /tmp/build app.atrium
+
+  - versionName: 1.0.3
+    versionCode: 4004
+    commit: v1.0.3
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/retransmit/Atrium/releases/download/v%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.41.9
+    prebuild:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd .. && $$flutter$$/bin/dart run tool/build_all.dart
+      - popd
+      - mv /tmp/build app.atrium
+    scandelete:
+      - app/.pub-cache
+    build:
+      - cd ../..
+      - mv app.atrium /tmp/build
+      - pushd /tmp/build/app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv /tmp/build app.atrium
+
+AllowedAPKSigningKeys: 5ebad1ff2f9cdc63f28b364addf9e858330db26909d9eba8dfbccb998de37351
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c+1000'
+  - '%c+2000'
+  - '%c+4000'
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.2
-CurrentVersionCode: 3
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4004
