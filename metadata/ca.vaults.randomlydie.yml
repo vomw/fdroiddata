@@ -23,15 +23,14 @@ Builds:
       - apt-get install -y -t forky nodejs npm
     init:
       - cd ../..
-      - corepack pnpm config -g set enable-global-virtual-store false
-      - corepack pnpm store prune
-      - NODE_OPTIONS="--experimental-vm-modules" corepack pnpm install --frozen-lockfile
+      - npm install pnpm@11.13.0
+      - ./node_modules/.bin/corepack pnpm install --frozen-lockfile
     gradle:
       - yes
     prebuild:
       - cd ../..
-      - CAPACITOR_BUILD=1 corepack pnpm exec quasar build
-      - corepack pnpm exec cap sync android
+      - CAPACITOR_BUILD=1 ./node_modules/.bin/pnpm exec quasar build
+      - ./node_modules/.bin/pnpm exec cap sync android
     scandelete:
       - node_modules
 
