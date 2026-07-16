@@ -7,6 +7,8 @@ SourceCode: https://codeberg.org/alevui/sherpr
 IssueTracker: https://codeberg.org/alevui/sherpr/issues
 Changelog: https://codeberg.org/alevui/sherpr/releases
 
+AutoName: Sherpr
+
 RepoType: git
 Repo: https://codeberg.org/alevui/sherpr.git
 Binaries: https://codeberg.org/alevui/sherpr/releases/download/v%v/sherpr-v%v.apk
@@ -21,7 +23,8 @@ Builds:
     rm:
       - ios
     prebuild:
-      - sdkmanager "ndk;27.0.11902837"
+      - sdkmanager "ndk;27.0.11902837" "platforms;android-36" "platforms;android-35"
+        "platforms;android-34" "cmake;3.22.1"
       - export version=$(grep flutter .fvmrc | cut -d ":" -f2 | cut -d "\"" -f2)
       - git -C $$flutter$$ checkout -f $version
       - export PUB_CACHE="$(pwd)/.pub-cache"
