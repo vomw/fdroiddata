@@ -12,25 +12,19 @@ RepoType: git
 Repo: https://github.com/retransmit/Atrium.git
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 2
-    commit: v1.0.1
+  - versionName: 1.0.2
+    versionCode: 3
+    commit: v1.0.2
     subdir: app
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.9
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$PATH
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      # The generated freezed and json_serializable sources are not tracked, so
-      # a clean checkout has to build them. tool/build_all.dart would do this,
-      # but it walks the pub cache when PUB_CACHE lives inside the tree, so the
-      # workspace packages are driven directly.
-      - for d in ../packages/*/ ../services/*/; do if [ -f "$d/pubspec.yaml" ]
-        && grep -q 'build_runner:' "$d/pubspec.yaml"; then ( cd "$d" &&
-        $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
-        ) || exit 1; fi; done
+      - cd .. && $$flutter$$/bin/dart run tool/build_all.dart && cd app
     scandelete:
       - app/.pub-cache
     build:
@@ -40,5 +34,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.1
-CurrentVersionCode: 2
+CurrentVersion: 1.0.2
+CurrentVersionCode: 3
