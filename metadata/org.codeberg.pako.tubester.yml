@@ -1,0 +1,35 @@
+Categories:
+  - Games
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Pascal Koenig
+SourceCode: https://codeberg.org/pako/tubester
+IssueTracker: https://codeberg.org/pako/tubester/issues
+Changelog: https://codeberg.org/pako/tubester/raw/branch/main/CHANGELOG.md
+
+AutoName: Tubester
+
+RepoType: git
+Repo: https://codeberg.org/pako/tubester.git
+
+AntiFeatures:
+  NonFreeNet:
+    en-US: Resolves and plays songs from YouTube, a non-free network service.
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
