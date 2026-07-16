@@ -863,7 +863,7 @@ Builds:
 
   - versionName: 0.20.0
     versionCode: 402
-    commit: 6e3bc40bc71d640bdf2a520577d645afcccc5030
+    commit: 8caa84609c7459f5c233f49d0258f9f594cf242d
     timeout: 36000
     subdir: apps/weblibre
     sudo:
@@ -924,7 +924,7 @@ Builds:
       - flutter config --no-analytics
       - flutter pub global activate melos 7.8.1
       - pushd ../../
-      - melos bootstrap
+      - melos bootstrap --enforce-lockfile
       - melos run update-assets --no-select
       - melos run build-components --no-select
       - popd
@@ -932,6 +932,25 @@ Builds:
         ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
         ../../packages/flutter_mozilla_components/javascript/readability/node_modules
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
+    scanignore:
+      - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
+    scandelete:
+      - apps/weblibre/.pub-cache
+    build:
+      - export MAVEN_REPO_URL="https://only-for-validation.local"
+      - export MAVEN_USERNAME="fdroid"
+      - export MAVEN_PASSWORD="fdroid"
+      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
+      - source $$MozFennecComponents$$/setup.sh armeabi-v7a
+      - $$MozFennecComponents$$/build.sh
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export NDK_HOME=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export GOPATH=$(pwd)/.gopath
+      - export GOMODCACHE=$GOPATH/pkg/mod
+      - export PATH=$PUB_CACHE/bin/:$GOPATH/bin:$$flutter$$/bin/:$PATH
       - pushd $$go$$/src
       - ./make.bash
       - popd
@@ -953,22 +972,6 @@ Builds:
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --dnstt-source $$IPtProxy$$/dnstt
         --target android/arm --skip-install-gomobile --allow-dirty
-    scanignore:
-      - native/go_mobile_runtime/build/weblibre-go.aar
-      - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
-    scandelete:
-      - apps/weblibre/.pub-cache
-      - apps/weblibre/.gopath
-      - native/go_mobile_runtime/build/weblibre-go-sources.jar
-    build:
-      - export MAVEN_REPO_URL="https://only-for-validation.local"
-      - export MAVEN_USERNAME="fdroid"
-      - export MAVEN_PASSWORD="fdroid"
-      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
-      - source $$MozFennecComponents$$/setup.sh armeabi-v7a
-      - $$MozFennecComponents$$/build.sh
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
       - pushd $$transistor-background-fetch$$/android/tsbackgroundfetch/
       - gradle assembleRelease
       - gradle publishToMavenLocal
@@ -980,7 +983,7 @@ Builds:
 
   - versionName: 0.20.0
     versionCode: 403
-    commit: 6e3bc40bc71d640bdf2a520577d645afcccc5030
+    commit: 8caa84609c7459f5c233f49d0258f9f594cf242d
     timeout: 36000
     subdir: apps/weblibre
     sudo:
@@ -1041,7 +1044,7 @@ Builds:
       - flutter config --no-analytics
       - flutter pub global activate melos 7.8.1
       - pushd ../../
-      - melos bootstrap
+      - melos bootstrap --enforce-lockfile
       - melos run update-assets --no-select
       - melos run build-components --no-select
       - popd
@@ -1049,6 +1052,25 @@ Builds:
         ../../packages/flutter_mozilla_components/javascript/container_proxy/node_modules
         ../../packages/flutter_mozilla_components/javascript/readability/node_modules
       - sed -i -e '/maven {/,/^        }/cmavenLocal()' $PUB_CACHE/hosted/pub.dev/background_fetch-*/android/build.gradle
+    scanignore:
+      - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
+    scandelete:
+      - apps/weblibre/.pub-cache
+    build:
+      - export MAVEN_REPO_URL="https://only-for-validation.local"
+      - export MAVEN_USERNAME="fdroid"
+      - export MAVEN_PASSWORD="fdroid"
+      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
+      - source $$MozFennecComponents$$/setup.sh arm64-v8a
+      - $$MozFennecComponents$$/build.sh
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export NDK_HOME=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export GOPATH=$(pwd)/.gopath
+      - export GOMODCACHE=$GOPATH/pkg/mod
+      - export PATH=$PUB_CACHE/bin/:$GOPATH/bin:$$flutter$$/bin/:$PATH
       - pushd $$go$$/src
       - ./make.bash
       - popd
@@ -1070,22 +1092,6 @@ Builds:
       - ../../native/go_mobile_runtime/scripts/fdroid-prebuild.sh --sing-box-source
         $$sing-box$$ --iptproxy-source $$IPtProxy$$ --dnstt-source $$IPtProxy$$/dnstt
         --target android/arm64 --skip-install-gomobile --allow-dirty
-    scanignore:
-      - native/go_mobile_runtime/build/weblibre-go.aar
-      - apps/weblibre/assets/sites/raw/tranco-top-1m.csv.zip
-    scandelete:
-      - apps/weblibre/.pub-cache
-      - apps/weblibre/.gopath
-      - native/go_mobile_runtime/build/weblibre-go-sources.jar
-    build:
-      - export MAVEN_REPO_URL="https://only-for-validation.local"
-      - export MAVEN_USERNAME="fdroid"
-      - export MAVEN_PASSWORD="fdroid"
-      - export SRCLIB_DIR=$(dirname $$MozFennecComponents$$)
-      - source $$MozFennecComponents$$/setup.sh arm64-v8a
-      - $$MozFennecComponents$$/build.sh
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$PUB_CACHE/bin/:$$flutter$$/bin/:$PATH
       - pushd $$transistor-background-fetch$$/android/tsbackgroundfetch/
       - gradle assembleRelease
       - gradle publishToMavenLocal
@@ -1097,7 +1103,7 @@ Builds:
 
 MaintainerNotes: |-
   Scanner detects 'com/google/android/gms/...' from microG libs for webauth.
-  The v0.20.0 weblibre-go.aar is generated during prebuild from the declared
+  The v0.20.0 weblibre-go.aar is generated during build from the declared
   sing-box, IPtProxy, dnstt, SagerNet gomobile, and cronet-go sources.
 
 AutoUpdateMode: None
