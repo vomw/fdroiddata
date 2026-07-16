@@ -18,6 +18,9 @@ Builds:
   - versionName: 1.0.2.3
     versionCode: 191
     commit: ef30f193f9a0fd73c48abb8be97ce2ade618a67d
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://sourceforge.net/projects/t2decode/files/v%v/app-armeabi-v7a-release.apk/download
@@ -30,7 +33,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion="3.44.6"
+      - flutterVersion=$(cat .flutter-version)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -38,9 +41,6 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     build:
       - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
@@ -57,6 +57,9 @@ Builds:
   - versionName: 1.0.2.3
     versionCode: 192
     commit: ef30f193f9a0fd73c48abb8be97ce2ade618a67d
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://sourceforge.net/projects/t2decode/files/v%v/app-arm64-v8a-release.apk/download
@@ -69,7 +72,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion="3.44.6"
+      - flutterVersion=$(cat .flutter-version)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -77,9 +80,6 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     build:
       - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
@@ -96,6 +96,9 @@ Builds:
   - versionName: 1.0.2.3
     versionCode: 193
     commit: ef30f193f9a0fd73c48abb8be97ce2ade618a67d
+    sudo:
+      - mkdir -p /sdks
+      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://sourceforge.net/projects/t2decode/files/v%v/app-x86_64-release.apk/download
@@ -108,7 +111,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion="3.44.6"
+      - flutterVersion=$(cat .flutter-version)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -116,9 +119,6 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     build:
       - ln -s $$flutter$$ /sdks/flutter
       - mkdir -p /builds/tutodecode-org/T2DECODE
