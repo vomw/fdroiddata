@@ -1,0 +1,39 @@
+Categories:
+  - Internet
+
+License: GPL-3.0-only
+
+WebSite: https://politik.xylorp.com
+SourceCode: https://github.com/xylorp/politicards
+IssueTracker: https://github.com/xylorp/politicards/issues
+
+AutoName: Politicards
+
+RepoType: git
+Repo: https://github.com/xylorp/politicards
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 6692bdc09fbdc699f2f26c604c536b9f16475c85
+    subdir: android/app
+    gradle:
+      - yes
+    sudo:
+      - apt-get update
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    prebuild:
+      - cd ../..
+      - npm install
+      - npm run build
+      - npx cap sync android
+      - rm -f node_modules/@capacitor/cli/assets/*.tar.gz
+
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: android/app/build.gradle|versionCode (\d+)|.|versionName ([\d.]+)
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
