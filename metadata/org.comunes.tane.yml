@@ -1,0 +1,44 @@
+Categories:
+  - Inventory
+  - Market & Price
+  - Science & Education
+License: AGPL-3.0-or-later
+AuthorName: Comunes
+AuthorWebSite: https://comunes.org
+WebSite: https://tane.comunes.org
+SourceCode: https://git.comunes.org/comunes/tane
+IssueTracker: https://git.comunes.org/comunes/tane/issues
+Translation: https://translate.comunes.org/projects/tane
+
+AutoName: Tane
+
+RepoType: git
+Repo: https://git.comunes.org/comunes/tane.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 2
+    commit: v0.1.0
+    subdir: apps/app_seeds
+    sudo:
+      - apt-get update
+      - apt-get install -y git unzip xz-utils
+      - git clone --depth 1 -b 3.41.9 https://github.com/flutter/flutter.git /opt/flutter
+      - chown -R vagrant:vagrant /opt/flutter
+    output: build/app/outputs/flutter-apk/app-release.apk
+    prebuild:
+      - export PATH="/opt/flutter/bin:$PATH"
+      - git config --global --add safe.directory /opt/flutter
+      - flutter config --no-analytics
+      - flutter pub get
+      - dart run slang
+      - dart run build_runner build --delete-conflicting-outputs
+    build:
+      - export PATH="/opt/flutter/bin:$PATH"
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v[\d.]+
+UpdateCheckData: apps/app_seeds/pubspec.yaml|version:\s*[\d.]+\+(\d+)|apps/app_seeds/pubspec.yaml|version:\s*([\d.]+)\+
+CurrentVersion: 0.1.0
+CurrentVersionCode: 2
