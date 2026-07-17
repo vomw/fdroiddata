@@ -1,0 +1,46 @@
+Categories:
+  - Recipe Manager
+License: Unlicense
+SourceCode: https://gitlab.com/recipeats/recipeats
+IssueTracker: https://gitlab.com/recipeats/recipeats/-/issues
+Changelog: https://gitlab.com/recipeats/recipeats/-/tags
+WebSite: https://recipeats.org/
+
+RepoType: git
+Repo: https://gitlab.com/recipeats/recipeats.git
+
+AntiFeatures:
+  - NonFreeNet
+
+Summary: Offline recipe cookbook with scaling, timers, and checklists
+
+Description: |-
+  ReciPeats (recipeats.org) is a static recipe site packaged for offline use.
+  The F-Droid build includes the full recipe catalog in the APK.
+
+  Features:
+  - Browse and search recipes offline
+  - Scale ingredients and convert metric/US
+  - Native countdown timers with notifications
+  - Ingredient checklist, notes, and meal plans (app UI)
+  - Cooking mode (keep screen on)
+
+  Optional network: recipe submission form and external social links.
+
+Builds:
+  - versionName: '1.10.4'
+    versionCode: 39
+    commit: v1.10.4
+    subdir: RecipeatsApp
+    gradle:
+      - fdroidRelease
+    prebuild:
+      - cd ../..
+      - hugo --minify --baseURL https://recipeats.org/
+    scandelete:
+      - app/src/fdroid/assets
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.10.4'
+CurrentVersionCode: 39
