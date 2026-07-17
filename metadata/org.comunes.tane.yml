@@ -18,28 +18,31 @@ Repo: https://git.comunes.org/comunes/tane.git
 Builds:
   - versionName: 0.1.1
     versionCode: 3
-    commit: v0.1.0
+    commit: v0.1.1
     subdir: apps/app_seeds
-    sudo:
-      - apt-get update
-      - apt-get install -y git unzip xz-utils
-      - git clone --depth 1 -b 3.41.9 https://github.com/flutter/flutter.git /opt/flutter
-      - chown -R vagrant:vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
     prebuild:
-      - export PATH="/opt/flutter/bin:$PATH"
-      - git config --global --add safe.directory /opt/flutter
-      - flutter config --no-analytics
-      - flutter pub get
-      - dart run slang
-      - dart run build_runner build --delete-conflicting-outputs
+      - export flutterVersion=$(sed -n -E 's,.*cirruslabs/flutter:([0-9.]+).*,\1,p'
+        ../../.forgejo/workflows/release.yml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ../..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - cd apps/app_seeds
+      - $$flutter$$/bin/dart run slang
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
     build:
-      - export PATH="/opt/flutter/bin:$PATH"
-      - flutter build apk --release
+      - export PUB_CACHE=$(cd ../.. && pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[\d.]+
-UpdateCheckData: 
-  apps/app_seeds/pubspec.yaml|version:\s*[\d.]+\+(\d+)|apps/app_seeds/pubspec.yaml|version:\s*([\d.]+)\+
-CurrentVersion: 0.1.0
-CurrentVersionCode: 2
+UpdateCheckData: apps/app_seeds/pubspec.yaml|version:\s*[\d.]+\+(\d+)|apps/app_seeds/pubspec.yaml|version:\s*([\d.]+)\+
+CurrentVersion: 0.1.1
+CurrentVersionCode: 3
