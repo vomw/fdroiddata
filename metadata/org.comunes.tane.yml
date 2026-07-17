@@ -24,18 +24,15 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export flutterVersion=$(sed -n -E 
-        's,.*cirruslabs/flutter:([0-9.]+).*,\1,p' 
+      - export flutterVersion=$(sed -n -E 's,.*cirruslabs/flutter:([0-9.]+).*,\1,p'
         ../../.forgejo/workflows/release.yml | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - cd ../..
       - sed -i '/flutter_tesseract_ocr/d' apps/app_seeds/pubspec.yaml
-      - sed -i '\,services/ocr/tesseract_label_extractor.dart,d' 
-        apps/app_seeds/lib/di/injector.dart
-      - sed -i -z 's/final LabelTextExtractor labelExtractor =[^;]*;/final 
-        LabelTextExtractor labelExtractor = const NoOpLabelTextExtractor();/' 
-        apps/app_seeds/lib/di/injector.dart
+      - sed -i '\,services/ocr/tesseract_label_extractor.dart,d' apps/app_seeds/lib/di/injector.dart
+      - sed -i -z 's/final LabelTextExtractor labelExtractor =[^;]*;/final LabelTextExtractor
+        labelExtractor = const NoOpLabelTextExtractor();/' apps/app_seeds/lib/di/injector.dart
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
