@@ -91,18 +91,16 @@ Builds:
       - echo "a5e07d901a11fdd10f7ffdee4650e0f52a423dab877f3b8ccbbdc162e6b7221f  $$Ventoy$$/INSTALL/EFI/BOOT/grubx64_real.efi" | sha256sum -c -
       - mv $$Ventoy$$ ..
       - cd .. && PATH=$PATH:/usr/sbin VENTOY_SRC=Ventoy bash scripts/build-ventoy-disk-img.sh
-    scanignore:
-      - app/src/main/assets/ventoy/ventoy.disk.img
     scandelete:
       - Ventoy
 
 MaintainerNotes: |-
   0.2.1 rebuilds ventoy.disk.img from the Ventoy 1.1.16 srclib. prebuild uses
-  the scanignored checked-in image only to extract and hash-verify the four
-  firmware-trusted EFI files, then creates a new FAT16 VTOYEFI image from pinned
+  the checked-in image only to extract and hash-verify the four firmware-trusted
+  EFI files, then replaces it with a new FAT16 VTOYEFI image built from pinned
   source while stripping imdisk/memdisk/7z. Rebuilding those EFI files would
-  invalidate their signatures. Hashes, SBAT, corresponding source, licenses and
-  provenance are documented in ASSET_PROVENANCE.md.
+  invalidate their signatures. Hashes, SBAT, corresponding source, licenses
+  and provenance are documented in ASSET_PROVENANCE.md.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
