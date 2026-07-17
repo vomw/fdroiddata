@@ -38,7 +38,8 @@ Builds:
       - libs/
     build:
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      - mkdir -p ../libs
+      - mkdir -p libs
+      - export APP_LIBS_DIR="$(pwd)/libs"
       - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
       - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
       - export ANDROID_ABI=24
@@ -63,7 +64,7 @@ Builds:
       - find . -name "*.so" -exec "$$NDK$$/toolchains/llvm/prebuilt/${HOST_PLATFORM}/bin/llvm-strip" --remove-section=.note.gnu.build-id {} \;
       - zip -q -r ../lib-decoder-ffmpeg-release.aar *
       - popd
-      - mv /tmp/lib-decoder-ffmpeg-release.aar ../libs/
+      - mv /tmp/lib-decoder-ffmpeg-release.aar "${APP_LIBS_DIR}/"
       - rm -rf /tmp/aar_strip
       - popd
 
