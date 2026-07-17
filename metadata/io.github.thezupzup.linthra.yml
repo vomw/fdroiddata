@@ -237,6 +237,7 @@ Builds:
       - mkdir -p /home/runner/work/Linthra
       - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-armeabi-v7a-release-signed.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -263,16 +264,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
       - popd
       - mv $repo io.github.thezupzup.linthra
-    # Upstream-signed reference APK for this ABI on the matching GitHub Release.
-    # %v expands to the build's versionName (e.g. 0.1.9); there is no
-    # %a placeholder for ABI in F-Droid metadata, so the ABI slug is hardcoded
-    # per Build entry. The Android Release Build workflow uploads the per-ABI
-    # APK under exactly this name. (Per-Build `binary` overrides any top-level
-    # `Binaries`; see fdroidserver build.py: `url := build.binary or
-    # app.Binaries`.) Added in response to the F-Droid maintainer's feedback on
-    # MR !39329 ("add binary to every version").
-    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-armeabi-v7a-release-signed.apk
-
   - versionName: 0.1.9
     versionCode: 1099992
     commit: 31d022834b15d74799e3215a515a653028a9a6f7
@@ -280,6 +271,7 @@ Builds:
       - mkdir -p /home/runner/work/Linthra
       - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-arm64-v8a-release-signed.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -306,8 +298,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
       - popd
       - mv $repo io.github.thezupzup.linthra
-    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-arm64-v8a-release-signed.apk
-
   - versionName: 0.1.9
     versionCode: 1099993
     commit: 31d022834b15d74799e3215a515a653028a9a6f7
@@ -315,6 +305,7 @@ Builds:
       - mkdir -p /home/runner/work/Linthra
       - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-x86_64-release-signed.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -341,8 +332,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
       - popd
       - mv $repo io.github.thezupzup.linthra
-    binary: https://github.com/TheZupZup/Linthra/releases/download/v%v/linthra-v%v-x86_64-release-signed.apk
-
 AllowedAPKSigningKeys: 835189ae30df4d23588580e0a86e5e9b67ea2a2745fda510759f22a3d0a78b6c
 
 AutoUpdateMode: Version
