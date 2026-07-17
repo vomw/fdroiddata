@@ -25,7 +25,7 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y make ninja-build cmake nasm openjdk-21-jdk
+      - apt-get install -y make ninja-build cmake nasm openjdk-21-jdk zip unzip
       - update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
     gradle:
       - degoogled
@@ -54,11 +54,18 @@ Builds:
       - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" 
         "${ENABLED_DECODERS[@]}"
       - cd "$$media-moneytoo$$"
-      - echo 'add_link_options("-Wl,--build-id=none")' >> libraries/decoder_ffmpeg/src/main/jni/CMakeLists.txt
-      - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar -Pandroid.externalNativeBuild.cmake.arguments="-DCMAKE_SHARED_LINKER_FLAGS=-Wl,--build-id=none"
+      - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar
+      - mkdir -p /tmp/aar_strip
+      - cp libraries/decoder_ffmpeg/buildout/outputs/aar/lib-decoder-ffmpeg-release.aar /tmp/aar_strip/
+      - pushd /tmp/aar_strip
+      - unzip -q lib-decoder-ffmpeg-release.aar
+      - rm lib-decoder-ffmpeg-release.aar
+      - find . -name "*.so" -exec "$$NDK$$/toolchains/llvm/prebuilt/${HOST_PLATFORM}/bin/llvm-strip" --remove-section=.note.gnu.build-id {} \;
+      - zip -q -r ../lib-decoder-ffmpeg-release.aar *
       - popd
-      - cp $$media-moneytoo$$/libraries/decoder_ffmpeg/buildout/outputs/aar/*.aar 
-        ../libs/
+      - mv /tmp/lib-decoder-ffmpeg-release.aar ../libs/
+      - rm -rf /tmp/aar_strip
+      - popd
 
     ndk: 29.0.14206865
 
