@@ -19,22 +19,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - B=https://github.com/adoptium/temurin17-binaries/releases/download
-      - F=jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz
-      - J=/usr/lib/jvm/java-17-openjdk-amd64
-      - H=d8afc263758141a66e0e3aafc321e783f7016696f4eaea067d340a269037d331
-      - curl -Lo /tmp/jdk17.tar.gz "$B/$F"
-      - echo "$H  /tmp/jdk17.tar.gz" | sha256sum -c -
-      - mkdir -p "$J"
-      - tar xzf /tmp/jdk17.tar.gz --strip-components=1 -C "$J"
-      - rm /tmp/jdk17.tar.gz
     init: npm ci
     gradle:
       - yes
     rm:
       - ios
-    prebuild: sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include
-      "armeabi-v7a"/' build.gradle
+    prebuild:
+      - sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include "armeabi-v7a"/'
+        build.gradle
+      - sed -i -E '/jvmToolchain|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
@@ -63,22 +57,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - B=https://github.com/adoptium/temurin17-binaries/releases/download
-      - F=jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz
-      - J=/usr/lib/jvm/java-17-openjdk-amd64
-      - H=d8afc263758141a66e0e3aafc321e783f7016696f4eaea067d340a269037d331
-      - curl -Lo /tmp/jdk17.tar.gz "$B/$F"
-      - echo "$H  /tmp/jdk17.tar.gz" | sha256sum -c -
-      - mkdir -p "$J"
-      - tar xzf /tmp/jdk17.tar.gz --strip-components=1 -C "$J"
-      - rm /tmp/jdk17.tar.gz
     init: npm ci
     gradle:
       - yes
     rm:
       - ios
-    prebuild: sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include
-      "arm64-v8a"/' build.gradle
+    prebuild:
+      - sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include "arm64-v8a"/'
+        build.gradle
+      - sed -i -E '/jvmToolchain|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
@@ -107,22 +95,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - B=https://github.com/adoptium/temurin17-binaries/releases/download
-      - F=jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz
-      - J=/usr/lib/jvm/java-17-openjdk-amd64
-      - H=d8afc263758141a66e0e3aafc321e783f7016696f4eaea067d340a269037d331
-      - curl -Lo /tmp/jdk17.tar.gz "$B/$F"
-      - echo "$H  /tmp/jdk17.tar.gz" | sha256sum -c -
-      - mkdir -p "$J"
-      - tar xzf /tmp/jdk17.tar.gz --strip-components=1 -C "$J"
-      - rm /tmp/jdk17.tar.gz
     init: npm ci
     gradle:
       - yes
     rm:
       - ios
-    prebuild: sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include
-      "x86"/' build.gradle
+    prebuild:
+      - sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include "x86"/'
+        build.gradle
+      - sed -i -E '/jvmToolchain|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
@@ -151,22 +133,16 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-      - B=https://github.com/adoptium/temurin17-binaries/releases/download
-      - F=jdk-17.0.19%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.19_10.tar.gz
-      - J=/usr/lib/jvm/java-17-openjdk-amd64
-      - H=d8afc263758141a66e0e3aafc321e783f7016696f4eaea067d340a269037d331
-      - curl -Lo /tmp/jdk17.tar.gz "$B/$F"
-      - echo "$H  /tmp/jdk17.tar.gz" | sha256sum -c -
-      - mkdir -p "$J"
-      - tar xzf /tmp/jdk17.tar.gz --strip-components=1 -C "$J"
-      - rm /tmp/jdk17.tar.gz
     init: npm ci
     gradle:
       - yes
     rm:
       - ios
-    prebuild: sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include
-      "x86_64"/' build.gradle
+    prebuild:
+      - sed -i -e 's/include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"/include "x86_64"/'
+        build.gradle
+      - sed -i -E '/jvmToolchain|JavaVersion/s/17/21/' ../../node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        ../../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/fb-dotslash/bin/linux-musl.x86_64/dotslash
