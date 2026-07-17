@@ -204,12 +204,9 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
-      # Pigeon is a separate generator (not a build_runner builder), so the bridge
-      # messages.g.dart / Messages.g.kt must be regenerated here too, exactly as
-      # scripts/ci-flutter.sh does for the published binary. Without it the build
-      # fails with "messages.g.dart: No such file or directory".
-      - (cd packages/health_connect_native && $$flutter$$/bin/flutter pub get &&
-        $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart)
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
       - popd
       - mv $repo tech.mmarca.openvitals
     scandelete:
