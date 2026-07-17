@@ -18,8 +18,8 @@ Builds:
       - yes
     prebuild: sed -i.bak '/id("org.gradle.toolchains.foojay-resolver-convention")/d'
       ../settings.gradle.kts && find .. -name "build.gradle.kts" -exec sed -i.bak
-      -E '/jvmToolchain/d' {} + && sed -i '1s/^/allprojects { tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach
-      { kotlinOptions { jvmTarget = "17" } } }\n/' ../build.gradle.kts
+      -E 's/jvmToolchain\([[:space:]]*17[[:space:]]*\)/compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17"))
+      }/g' {} +
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
