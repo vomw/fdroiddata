@@ -45,7 +45,8 @@ Builds:
       - echo "android { $D }" >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter build apk --release --split-per-abi || true
       - $$flutter$$/bin/flutter clean
-      - rm -rf .pub-cache/hosted/pub.dev/archive-*/_out || true
+      - find .pub-cache/hosted/pub.dev/archive-* -type d \( -name "test" -o -name "_out" -o -name "web" \) -prune -exec rm -rf {} + || true
+      - find .pub-cache -type f \( -name "*.wasm" -o -name "*.bin" -o -name "*.zip" \) -delete || true
     scanignore:
       - .pub-cache
     build:
@@ -96,7 +97,8 @@ Builds:
       - echo "android { $D }" >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter build apk --release --split-per-abi || true
       - $$flutter$$/bin/flutter clean
-      - rm -rf .pub-cache/hosted/pub.dev/archive-*/_out || true
+      - find .pub-cache/hosted/pub.dev/archive-* -type d \( -name "test" -o -name "_out" -o -name "web" \) -prune -exec rm -rf {} + || true
+      - find .pub-cache -type f \( -name "*.wasm" -o -name "*.bin" -o -name "*.zip" \) -delete || true
     scanignore:
       - .pub-cache
     build:
@@ -147,7 +149,8 @@ Builds:
       - echo "android { $D }" >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter build apk --release --split-per-abi || true
       - $$flutter$$/bin/flutter clean
-      - rm -rf .pub-cache/hosted/pub.dev/archive-*/_out || true
+      - find .pub-cache/hosted/pub.dev/archive-* -type d \( -name "test" -o -name "_out" -o -name "web" \) -prune -exec rm -rf {} + || true
+      - find .pub-cache -type f \( -name "*.wasm" -o -name "*.bin" -o -name "*.zip" \) -delete || true
     scanignore:
       - .pub-cache
     build:
