@@ -16,7 +16,10 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: sed -i.bak '/id("org.gradle.toolchains.foojay-resolver-convention")/d' ../settings.gradle.kts && find .. -name "build.gradle.kts" -exec sed -i.bak -E '/jvmToolchain/d' {} + && sed -i '1s/^/allprojects { tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kotlinOptions { jvmTarget = "17" } } }\n/' ../build.gradle.kts
+    prebuild: sed -i.bak '/id("org.gradle.toolchains.foojay-resolver-convention")/d'
+      ../settings.gradle.kts && find .. -name "build.gradle.kts" -exec sed -i.bak
+      -E '/jvmToolchain/d' {} + && sed -i '1s/^/allprojects { tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach
+      { kotlinOptions { jvmTarget = "17" } } }\n/' ../build.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
