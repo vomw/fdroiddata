@@ -38,36 +38,33 @@ Builds:
       - libs/
     build:
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      - mkdir -p libs
-      - export APP_LIBS_DIR="$(pwd)/libs"
+      - mkdir -p ../libs
+      - export ROOT_LIBS_DIR="$(realpath ../libs)"
       - export FFMPEG_EXT_PATH="$$media-moneytoo$$/libraries/decoder_ffmpeg/src/main"
       - export HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-x86_64"
       - export ANDROID_ABI=24
       - export ENABLED_DECODERS=(alac)
       - pushd "${FFMPEG_EXT_PATH}/jni"
-      - ln -s "$$FFmpeg$$" ffmpeg
-      - cd "${FFMPEG_EXT_PATH}/jni"
+      - ln -sf "$$FFmpeg$$" ffmpeg
       - sed -i 's/^LDFLAGS="/LDFLAGS="-Wl,--build-id=none /' $$media-moneytoo$$/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
       - export CFLAGS="-fno-ident -ffile-prefix-map=${PWD}=. -fdebug-prefix-map=${PWD}=. -Wl,--build-id=none"
       - export LDFLAGS="-Wl,--build-id=none"
       - export SOURCE_DATE_EPOCH=0
       - export ARFLAGS="rcsD"
-      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" 
-        "${ENABLED_DECODERS[@]}"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" "${ENABLED_DECODERS[@]}"
+      - popd
       - cd "$$media-moneytoo$$"
       - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar
       - mkdir -p /tmp/aar_strip
       - cp libraries/decoder_ffmpeg/buildout/outputs/aar/lib-decoder-ffmpeg-release.aar /tmp/aar_strip/
-      - pushd /tmp/aar_strip
+      - cd /tmp/aar_strip
       - unzip -q lib-decoder-ffmpeg-release.aar
       - rm lib-decoder-ffmpeg-release.aar
       - find . -name "*.so" -exec "$$NDK$$/toolchains/llvm/prebuilt/${HOST_PLATFORM}/bin/llvm-strip" --remove-section=.note.gnu.build-id {} \;
-      - zip -q -r ../lib-decoder-ffmpeg-release.aar *
-      - popd
-      - mv /tmp/lib-decoder-ffmpeg-release.aar "${APP_LIBS_DIR}/"
+      - zip -q -r lib-decoder-ffmpeg-release.aar *
+      - mv lib-decoder-ffmpeg-release.aar "${ROOT_LIBS_DIR}/"
       - rm -rf /tmp/aar_strip
-      - popd
-
+      - cd ..
     ndk: 29.0.14206865
 
 AllowedAPKSigningKeys: b78501b934d04e0aca8d94afd6726a4d1dce65797f1d41710f643c2900eb1d1d
