@@ -32,15 +32,22 @@ Builds:
       - rustup target add aarch64-linux-android
       - cargo install xbuild --git https://github.com/rust-mobile/xbuild.git
       - bash fixitgarage-ui/models/download-models.sh || true
+      - yes | sdkmanager "platforms;android-33" "build-tools;35.0.0" || true
+      - ls -la $$SDK$$/platforms || true
+      - ls -la $$SDK$$/platforms/android-33 || true
     build:
       - source $HOME/.cargo/env
       - export ANDROID_HOME=$$SDK$$
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_HOME=$$NDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - export PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$HOME/.cargo/bin:$$SDK$$/build-tools/$(ls $$SDK$$/build-tools | sort -V | tail -1):$PATH"
+      - export ANDROID_PLATFORM=android-33
+      - export ANDROID_API_LEVEL=33
+      - export ANDROID_JAR=$$SDK$$/platforms/android-33/android.jar
+      - test -f "$ANDROID_JAR"
+      - export PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$HOME/.cargo/bin:$$SDK$$/build-tools/35.0.0:$PATH"
       - which clang
-      - which llvm-ar
+      - which d8 || which apksigner || true
       - mkdir -p dist
       - x build -p fixitgarage-ui --platform android --arch arm64 --format apk --release
       - cp target/x/release/android/fixitgarage-ui.apk dist/FixItGarage-0.2.24-arm64-raw.apk
