@@ -47,20 +47,24 @@ Builds:
       - pushd "${FFMPEG_EXT_PATH}/jni"
       - ln -sf "$$FFmpeg$$" ffmpeg
       - sed -i 's/^LDFLAGS="/LDFLAGS="-Wl,--build-id=none /' $$media-moneytoo$$/libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
-      - export CFLAGS="-fno-ident -ffile-prefix-map=${PWD}=. -fdebug-prefix-map=${PWD}=. -Wl,--build-id=none"
+      - export CFLAGS="-fno-ident -ffile-prefix-map=${PWD}=. -fdebug-prefix-map=${PWD}=.
+        -Wl,--build-id=none"
       - export LDFLAGS="-Wl,--build-id=none"
       - export SOURCE_DATE_EPOCH=0
       - export ARFLAGS="rcsD"
-      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}" "${ENABLED_DECODERS[@]}"
+      - ./build_ffmpeg.sh "${FFMPEG_EXT_PATH}" "$$NDK$$" "${HOST_PLATFORM}" "${ANDROID_ABI}"
+        "${ENABLED_DECODERS[@]}"
       - popd
       - cd "$$media-moneytoo$$"
       - ./gradlew :lib-decoder-ffmpeg:bundleReleaseAar
       - mkdir -p /tmp/aar_strip
-      - cp libraries/decoder_ffmpeg/buildout/outputs/aar/lib-decoder-ffmpeg-release.aar /tmp/aar_strip/
+      - cp libraries/decoder_ffmpeg/buildout/outputs/aar/lib-decoder-ffmpeg-release.aar
+        /tmp/aar_strip/
       - cd /tmp/aar_strip
       - unzip -q lib-decoder-ffmpeg-release.aar
       - rm lib-decoder-ffmpeg-release.aar
-      - find . -name "*.so" -exec "$$NDK$$/toolchains/llvm/prebuilt/${HOST_PLATFORM}/bin/llvm-strip" --remove-section=.note.gnu.build-id {} \;
+      - find . -name "*.so" -exec "$$NDK$$/toolchains/llvm/prebuilt/${HOST_PLATFORM}/bin/llvm-strip"
+        --remove-section=.note.gnu.build-id {} \;
       - zip -q -X -r "${ROOT_LIBS_DIR}/lib-decoder-ffmpeg-release.aar" *
       - rm -rf /tmp/aar_strip
       - cd ..
