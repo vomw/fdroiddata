@@ -34,7 +34,7 @@ Builds:
       - yes | sdkmanager "platforms;android-33" "build-tools;35.0.0" || true
       - ls -la $$SDK$$/platforms || true
       - ls -la $$SDK$$/platforms/android-33 || true
-    build:
+   build:
       - source $HOME/.cargo/env
       - export ANDROID_HOME=$$SDK$$
       - export ANDROID_SDK_ROOT=$$SDK$$
@@ -44,8 +44,9 @@ Builds:
       - export ANDROID_API_LEVEL=33
       - export ANDROID_JAR=$$SDK$$/platforms/android-33/android.jar
       - test -f "$ANDROID_JAR"
-      - export
-        PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$HOME/.cargo/bin:$$SDK$$/build-tools/35.0.0:$PATH"
+      - export PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export PATH="$$SDK$$/build-tools/35.0.0:$PATH"
       - which clang
       - which d8 || which apksigner || true
       - mkdir -p dist
