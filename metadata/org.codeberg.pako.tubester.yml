@@ -38,6 +38,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo org.codeberg.pako.tubester
     scandelete:
@@ -75,6 +77,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo org.codeberg.pako.tubester
     scandelete:
@@ -97,8 +101,7 @@ Builds:
       - mkdir -p /build
       - chown -R vagrant /build
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: 
-      https://codeberg.org/pako/tubester/releases/download/v%v/app-x86_64-release.apk
+    binary: https://codeberg.org/pako/tubester/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -112,6 +115,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo org.codeberg.pako.tubester
     scandelete:
