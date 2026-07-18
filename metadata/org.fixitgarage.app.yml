@@ -5,13 +5,12 @@
 Categories:
   - Navigation
   - Science & Education
-
 License: GPL-3.0-only
-
 AuthorName: linuxbased79
-
+WebSite: https://linuxbased79.github.io/FixItGarage/
 SourceCode: https://github.com/linuxbased79/FixItGarage
 IssueTracker: https://github.com/linuxbased79/FixItGarage/issues
+Liberapay: caozuna
 
 AutoName: FixItGarage
 
@@ -23,32 +22,31 @@ Builds:
     versionCode: 2024
     commit: v0.2.24
     subdir: rust
-    output: dist/FixItGarage-0.2.24-arm64.apk
-    # Requires: Android NDK, rustup + aarch64-linux-android, xbuild (`x`),
-    # OpenJDK, Android SDK build-tools (aapt2, d8, zipalign, apksigner).
-    # See rust/F-DROID.md.
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless unzip curl python3
+      - apt-get install -y openjdk-21-jdk-headless unzip curl python3 build-essential
+    output: dist/FixItGarage-0.2.24-arm64.apk
+    srclibs:
+      - rustup@1.27.1
     prebuild:
+      - $$rustup$$/rustup-init.sh -y
+      - source $$HOME$$/.cargo/env
       - rustup target add aarch64-linux-android
-      - cargo install xbuild --git https://github.com/rust-mobile/xbuild.git || true
+      - cargo install xbuild --git https://github.com/rust-mobile/xbuild.git
       - bash fixitgarage-ui/models/download-models.sh || true
     build:
+      - source $$HOME$$/.cargo/env
       - export ANDROID_HOME=$$ANDROID_SDK_ROOT$$
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export PATH="$$PATH$$:$$HOME$$/.cargo/bin:$$ANDROID_HOME$$/build-tools/$$BUILD_TOOLS$$"
       - mkdir -p dist
       - x build -p fixitgarage-ui --platform android --arch arm64 --format apk --release
       - cp target/x/release/android/fixitgarage-ui.apk dist/FixItGarage-0.2.24-arm64-raw.apk
-      - bash scripts/package-apk-with-boot.sh dist/FixItGarage-0.2.24-arm64-raw.apk dist/FixItGarage-0.2.24-arm64.apk 0.2.24 2024
+      - bash scripts/package-apk-with-boot.sh dist/FixItGarage-0.2.24-arm64-raw.apk
+        dist/FixItGarage-0.2.24-arm64.apk 0.2.24 2024
 
-# NonFreeNet only if user opts into third-party WebDAV hosts.
-# AntiFeatures:
-#  - NonFreeNet
-
-ArchivePolicy: 4 versions
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
+ArchivePolicy: 4
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 0.2.24
 CurrentVersionCode: 2024
