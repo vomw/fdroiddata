@@ -1,0 +1,73 @@
+Categories:
+  - Internet
+  - Multimedia
+  - Security
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/CommandLineCoding/Elephant
+IssueTracker: https://github.com/CommandLineCoding/Elephant/issues
+
+RepoType: git
+Repo: https://github.com/CommandLineCoding/Elephant.git
+Binaries: https://github.com/CommandLineCoding/Elephant/releases/download/v0.2.5/elephant-v0.2.5-%c.apk
+
+Builds:
+  - versionName: 0.2.0
+    versionCode: 21
+    commit: v0.2.5
+    subdir: mobile/android
+    output: ../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@3.44.0
+    prebuild:
+      - cd ..
+      - sed -i '/in_app_update/d' pubspec.yaml
+    build:
+      - cd ..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm
+      - rm -rf .pub-cache
+
+  - versionName: 0.2.0
+    versionCode: 22
+    commit: v0.2.5
+    subdir: mobile/android
+    output: ../build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.44.0
+    prebuild:
+      - cd ..
+      - sed -i '/in_app_update/d' pubspec.yaml
+    build:
+      - cd ..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-arm64
+      - rm -rf .pub-cache
+
+  - versionName: 0.2.0
+    versionCode: 23
+    commit: v0.2.5
+    subdir: mobile/android
+    output: ../build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.44.0
+    prebuild:
+      - cd ..
+      - sed -i '/in_app_update/d' pubspec.yaml
+    build:
+      - cd ..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter build apk --split-per-abi --target-platform=android-x64
+      - rm -rf .pub-cache
+
+AllowedAPKSigningKeys: 8ad96227d76cb8c58fd1c38a61eed178e50ad647de19eb421248d906721da6a0
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.2.0
+CurrentVersionCode: 23
