@@ -1,29 +1,39 @@
 Categories:
   - Money
-  - Office
-  - Time
-License: GPL-3.0-or-later
-AuthorName: Dthrawn
+License: MIT
+AutoName: IgniteBill
+Repo: https://github.com/DThrawn/ignitebill
 SourceCode: https://github.com/DThrawn/ignitebill
 IssueTracker: https://github.com/DThrawn/ignitebill/issues
+Changelog: https://github.com/DThrawn/ignitebill/releases
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
+CurrentVersion: "1.0.7"
 CurrentVersionCode: 1
 
 Builds:
-  - versionName: 1.0.0
+  - versionName: "1.0.7"
     versionCode: 1
-    commit: v1.0.0
-    gradle:
-      - yes
-    flutter: yes
+    commit: v1.0.7
+    subdir: android
+    srclibs:
+      - flutter@3.19.6
+    output: build/app/outputs/flutter-apk/app-release.apk
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
 
 Summary: Suivi de temps et facturation hors-ligne
 Description: |-
-    IgniteBill est un utilitaire de suivi de temps 100% hors-ligne 
-    destiné aux freelances. Il permet de gérer des projets, de 
-    chronométrer des sessions et de générer des rapports de facturation 
-    au format PDF, CSV ou JSON. L'application respecte la vie privée 
+    IgniteBill est un utilitaire de suivi de temps 100% hors-ligne
+    destiné aux freelances. Il permet de gérer des projets, de
+    chronométrer des sessions et de générer des rapports de facturation
+    au format PDF, CSV ou JSON. L'application respecte la vie privée
     et ne nécessite aucune connexion internet.
