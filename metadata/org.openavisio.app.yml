@@ -1,0 +1,29 @@
+Categories:
+  - Science & Education
+License: AGPL-3.0-only
+AuthorName: OpenAvisio
+WebSite: https://openavisio.org
+SourceCode: https://codeberg.org/openavisio/openavisio
+IssueTracker: https://codeberg.org/openavisio/openavisio/issues
+
+RepoType: git
+Repo: https://codeberg.org/openavisio/openavisio.git
+
+Builds:
+  - versionName: 0.1.0-beta
+    versionCode: 1
+    commit: v0.1.0-beta
+    subdir: mobile/android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+      - corepack enable
+    prebuild:
+      - cd .. && CI=true pnpm install --frozen-lockfile && CI=true pnpm exec cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: None
+UpdateCheckMode: Static
+CurrentVersion: 0.1.0-beta
+CurrentVersionCode: 1
