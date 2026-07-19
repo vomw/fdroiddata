@@ -16,11 +16,14 @@ Builds:
     subdir: mobile/android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y curl ca-certificates
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
       - npm install -g pnpm@9.15.9
-    prebuild: cd .. && CI=true pnpm install --frozen-lockfile && CI=true pnpm exec cap sync android
     gradle:
       - yes
+    prebuild: cd .. && CI=true pnpm install --frozen-lockfile && CI=true pnpm exec
+      cap sync android
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
