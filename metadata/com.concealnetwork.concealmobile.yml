@@ -76,8 +76,12 @@ Builds:
       - reproducible-apk-tools@v0.3.0
     prebuild:
       - sed -i -e '/addSigningProps(cdv/d' build.gradle
+      - cp src/main/assets/www/cordova.js src/main/assets/www/cordova_plugins.js /tmp/
+      - cp -a src/main/assets/www/plugins /tmp/cordova-plugins
       - rm -rf src/main/assets/www
       - cp -a ../../../www src/main/assets/
+      - mv /tmp/cordova.js /tmp/cordova_plugins.js src/main/assets/www/
+      - mv /tmp/cordova-plugins src/main/assets/www/plugins
     scanignore:
       - www/_next/static/media
       - platforms/android/app/src/main/assets/www/_next/static/media
