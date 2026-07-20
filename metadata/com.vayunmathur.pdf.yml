@@ -218,7 +218,11 @@ Builds:
     subdir: pdf
     gradle:
       - yes
-    prebuild: sed -i -e '/maven2/d' ../settings.gradle.kts
+    prebuild: 
+      - sed -i -e '/maven2/d' ../settings.gradle.kts
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - source "$HOME/.cargo/env"
+      - rustup target add aarch64-linux-android
     scandelete: gradle-module-explorer
 
 AllowedAPKSigningKeys: 176fcb2525573e5be8e1cb3a496dd97b137e81ca5b887a1d32cb894b4e5717b4
