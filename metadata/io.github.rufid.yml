@@ -31,6 +31,25 @@ Builds:
     gradleprops:
       - rufid.includePayloads=true
 
+  - versionName: 0.2.1
+    versionCode: 5
+    commit: 37fdee29d5251ecbd13fefe8851aebb0a56eaf96
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends autoconf automake clang cmake cpio
+        dosfstools file flex g++ libtool lld llvm make mingw-w64 mtools nasm ninja-build
+        p7zip-full patch perl pkg-config
+    gradle:
+      - yes
+    prebuild: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+    build:
+      - export PATH=$PATH:/usr/sbin
+      - bash ../scripts/fdroid/stage-source-payloads.sh
+    ndk: r29
+    gradleprops:
+      - rufid.includePayloads=true
+
 MaintainerNotes: |-
   Payloads must not be extracted from any opaque APK. FreeDOS uses the official
   FreeDOS 1.4 LiteUSB archive only as a verified package/source input; the
@@ -42,5 +61,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: 0.1.2
-CurrentVersionCode: 3
+CurrentVersion: 0.2.1
+CurrentVersionCode: 5
