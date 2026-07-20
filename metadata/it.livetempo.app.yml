@@ -1,0 +1,52 @@
+# F-Droid Metadata for LiveTempo
+# Submit this file as: metadata/it.livetempo.app.yml
+# To: https://gitlab.com/fdroid/fdroiddata
+
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: danmigdev
+SourceCode: https://github.com/danmigdev/live_tempo
+IssueTracker: https://github.com/danmigdev/live_tempo/issues
+Changelog: https://github.com/danmigdev/live_tempo/releases
+
+AutoName: LiveTempo
+Summary: Manage song playlists with BPM for live performances
+Description: |
+  LiveTempo helps musicians manage song playlists with reference
+  BPMs for live performances. Before each song starts, check the
+  BPM to set the correct tempo right from your phone.
+
+  Features:
+  * Sign in with Google
+  * Create and manage song playlists
+  * Set a reference BPM for each song
+  * Tap Tempo: tap to calculate BPM from any rhythm
+  * Visual metronome pulse at the song's exact tempo
+  * Import playlists directly from YouTube
+  * Color-coded BPM badges (slow/medium/fast)
+  * Dark theme for stage environments
+  * Multi-language: Italian and English
+
+RepoType: git
+Repo: https://github.com/danmigdev/live_tempo.git
+
+Builds:
+  - versionName: '1.0.2'
+    versionCode: 3
+    commit: v1.0.2
+    subdir: .
+    sudo:
+      - apt-get install -y nodejs npm
+    init:
+      - npm ci
+      - npx cap sync android
+    gradle:
+      - yes
+    scanignore:
+      - android/app/src/main/assets/public
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.2
+CurrentVersionCode: 3
