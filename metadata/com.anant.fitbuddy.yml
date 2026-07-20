@@ -1,3 +1,11 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional AI providers (OpenRouter, Gemini), optional Sentry crash reports,
+      and optional MongoDB Atlas cloud backup contact proprietary network services
+      when the user enables them. Core logging works offline via the built-in simulator.
+  TetheredNet:
+    en-US: Cloud backup (when enabled) is tied to the build-configured Atlas cluster.
+      AI providers require the user-chosen service endpoint.
 Categories:
   - Sports & Health
 License: GPL-3.0-only
@@ -18,23 +26,13 @@ Builds:
     subdir: app
     gradle:
       - yes
+    prebuild: sed -i '/foojay-resolver/d' ../settings.gradle.kts
 
 MaintainerNotes: |
   Build from the fdroid branch only. Tags for F-Droid must be clean vX.Y.Z
-  (no -buildN CI tags). UpdateCheckIgnore skips GitHub Actions release tags.
-
-AntiFeatures:
-  NonFreeNet:
-    en-US: Optional AI providers (OpenRouter, Gemini), optional Sentry crash
-      reports, and optional MongoDB Atlas cloud backup contact proprietary
-      network services when the user enables them. Core logging works offline
-      via the built-in simulator.
-  TetheredNet:
-    en-US: Cloud backup (when enabled) is tied to the build-configured Atlas
-      cluster. AI providers require the user-chosen service endpoint.
+  (no -buildN CI tags). UpdateCheckMode Tags regex skips CI release tags.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-UpdateCheckIgnore: .*build.*
 CurrentVersion: 3.1.0
 CurrentVersionCode: 56
