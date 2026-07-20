@@ -9,7 +9,7 @@ WebSite: https://nextcloud.com
 SourceCode: https://github.com/nextcloud/android
 IssueTracker: https://github.com/nextcloud/android/issues
 Translation: https://explore.transifex.com/nextcloud/nextcloud/
-Changelog: https://github.com/nextcloud/android/blob/HEAD/CHANGELOG.md
+Changelog: https://github.com/nextcloud/android/releases
 Donate: https://nextcloud.com/include/
 
 AutoName: Nextcloud
@@ -1789,6 +1789,22 @@ Builds:
   - versionName: 34.0.1
     versionCode: 340000190
     commit: stable-34.0.1
+    subdir: app
+    gradle:
+      - generic
+    rm:
+      - user_manual
+    prebuild:
+      - mkdir -p $HOME/.gradle
+      - echo org.gradle.jvmargs=-Xmx9g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError
+        > $HOME/.gradle/gradle.properties
+      - sdkmanager 'cmake;4.1.2'
+    scandelete:
+      - app/src/androidTest/assets
+
+  - versionName: 34.1.0 RC1
+    versionCode: 340010051
+    commit: rc-34.1.0-01
     subdir: app
     gradle:
       - generic
