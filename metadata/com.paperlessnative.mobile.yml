@@ -28,7 +28,7 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; sed -i "s/\"arm64-v8a\"/\"$ABI\"/" app.json
+      - sed -i "s/arm64-v8a/armeabi-v7a/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
     scanignore:
@@ -58,7 +58,6 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; sed -i "s/\"arm64-v8a\"/\"$ABI\"/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
     scanignore:
@@ -80,9 +79,8 @@ AllowedAPKSigningKeys: 850ea0fa081d5b8141669e7516facbfe72b2ec02e2ba33549cf4858c5
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.3.4
-CurrentVersionCode: 232
-
 VercodeOperation:
   - 10 * %c + 1
   - 10 * %c + 2
+CurrentVersion: 1.3.4
+CurrentVersionCode: 232
