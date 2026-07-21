@@ -16,6 +16,9 @@ Builds:
   - versionName: 0.5.10
     versionCode: 5001
     commit: be4de9cb680d9ff15737ee6f79152c554b0703db
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
@@ -29,21 +32,36 @@ Builds:
         pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
         ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
 
   - versionName: 0.5.10
     versionCode: 5002
     commit: be4de9cb680d9ff15737ee6f79152c554b0703db
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
@@ -57,21 +75,36 @@ Builds:
         pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
         ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
 
   - versionName: 0.5.10
     versionCode: 5003
     commit: be4de9cb680d9ff15737ee6f79152c554b0703db
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
@@ -85,17 +118,29 @@ Builds:
         pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
         ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi 
         --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
 
 AllowedAPKSigningKeys: 
   94732296445ca0c2511fac8a6f744b87fed67ced37d16428ef88985e0ba8676a
