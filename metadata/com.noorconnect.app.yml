@@ -39,17 +39,22 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y esbuild npm
+      - apt-get install -y golang-go make npm
     gradle:
       - yes
+    srclibs:
+      - esbuild@v0.25.5
     prebuild:
       - cd ../..
       - npm ci
     scandelete:
       - node_modules
     build:
+      - pushd $$esbuild$$
+      - make esbuild
+      - popd
       - cd ../..
-      - ln -s $(which esbuild) node_modules/@esbuild/linux-x64/bin/
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/esbuild
       - npm run build
       - npx cap sync android
 
