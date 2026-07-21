@@ -1,0 +1,73 @@
+Categories:
+  - Social Network
+  - Wallet
+License: AGPL-3.0-only
+AuthorName: Fred (qo-op)
+AuthorEmail: support@qo-op.com
+WebSite: https://astroport.copylaradio.com
+SourceCode: https://github.com/papiche/zelkova
+IssueTracker: https://github.com/papiche/zelkova/issues
+
+AutoName: Ẑelkova
+
+RepoType: git
+Repo: https://github.com/papiche/zelkova
+
+Builds:
+  - versionName: 2.0.6
+    versionCode: 27
+    commit: ce9ebaddd28f172b0d35c6eb71239e9503b99174
+    sudo:
+      - apt-get update -qq
+      - apt-get install -y unzip curl
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - web
+    prebuild:
+      - cp dot.env.sample .env
+      - cp dot.env.sample .env.dev
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
+        false } }' >> android/app/build.gradle
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - cd .pub-cache/hosted/pub.dev/geolocator_android-*/android
+      - sed -i -e '/gms/d' build.gradle
+      - cd src/main/java/com/baseflow/geolocator/location
+      - rm FusedLocationClient.java
+      - sed -i -e '/if (forceAndroidLocationManager) {/,/^  }/c return new LocationManagerClient(context,
+        locationOptions);}' -e '/isGooglePlayServicesAvailable/,/^  }/d' -e '/gms/d'
+        GeolocationManager.java
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FLUTTER_FLAVOR=production
+        -t lib/main.dart
+
+MaintainerNotes: |-
+  Flutter 3.x build. Requires dart-define FLUTTER_FLAVOR=production.
+  No Firebase. geolocator_android pulls in Google Play Services location by
+  default; the prebuild step patches it to always use the AOSP LocationManager
+  (same approach as app.alextran.immich.yml). dependenciesInfo is disabled to
+  drop the Play Store dependency-metadata signing block.
+  dot.env.sample must be copied to .env before build (contains only public endpoints).
+  build_runner (envied codegen) must run after that to generate lib/env.g.dart.
+  flutter_secure_storage, local_auth, and awesome_notifications are F-Droid compatible.
+  v2.0.5 fixes a multi-line signingConfig ternary in android/app/build.gradle that
+  broke fdroidserver's remove_signing_keys() line-based cleaner (orphaned tokens
+  caused a Groovy parse error on the enclosing android {} block).
+  v2.0.6 bumps material_symbols_icons to 4.2951.0: the previously locked version
+  extended Flutter's IconData class, which recent Flutter stable made final.
+
+ArchivePolicy: 2
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.6
+CurrentVersionCode: 27
