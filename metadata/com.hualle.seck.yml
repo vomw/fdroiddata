@@ -6,29 +6,27 @@ SourceCode: https://github.com/Seeeeeck/hualle
 IssueTracker: https://github.com/Seeeeeck/hualle/issues
 Changelog: https://github.com/Seeeeeck/hualle/releases
 
-AutoName: Hualle
+AutoName: hualle
+
 RepoType: git
 Repo: https://github.com/Seeeeeck/hualle.git
 
 Builds:
-  - versionName: '1.0.9'
+  - versionName: 1.0.9
     versionCode: 20
-    commit: v1.0.9
+    commit: 8746a98eabcff43f4950634304bd0632b3edf2fd
     subdir: android
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    init:
-      - npm install
+    init: npm install
+    prebuild:
+      - cd ..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     gradle:
       - yes
-    scandelete:
-      - node_modules
     scanignore:
-      # Precompiled native binaries shipped inside official Expo module
-      # packages (published from Expo's own FOSS source at npm-publish time).
-      # Flagged by the source scanner as prebuilt binaries; whitelisted here
-      # so the build isn't blocked. Review/adjust if the F-Droid team objects.
       - node_modules/expo-sqlite/android/vec
       - node_modules/expo-sqlite/android/libsql
       - node_modules/expo-system-ui/local-maven-repo
@@ -45,8 +43,10 @@ Builds:
       - node_modules/expo-notifications/local-maven-repo
       - node_modules/expo-application/local-maven-repo
       - node_modules/expo-keep-awake/local-maven-repo
+    scandelete:
+      - node_modules
 
-AutoUpdateMode: Version %v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.0.9'
+CurrentVersion: 1.0.9
 CurrentVersionCode: 20
