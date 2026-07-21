@@ -1,0 +1,51 @@
+Categories:
+  - Multimedia
+  - Internet
+License: GPL-3.0-or-later
+AuthorName: Sebastian Palencsar
+AuthorEmail: 118485377+spalencsar@users.noreply.github.com
+WebSite: https://github.com/spalencsar/bearwave-android
+SourceCode: https://github.com/spalencsar/bearwave-android
+IssueTracker: https://github.com/spalencsar/bearwave-android/issues
+Changelog: https://github.com/spalencsar/bearwave-android/blob/main/CHANGELOG.md
+Donate: https://github.com/spalencsar/bearwave-android
+
+Summary: KDE-styled internet radio app for Android
+Description: |-
+  BearWave is a modern internet radio streaming app for Android, built with
+  Flutter. It features a clean design inspired by the KDE desktop environment,
+  full Android Auto integration, Google Cast support, and dynamic
+  metadata/cover art loading.
+
+  This is the official Android counterpart to the original Linux/KDE desktop
+  version of BearWave.
+
+RepoType: git
+Repo: https://github.com/spalencsar/bearwave-android.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: v1.0.1
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - ios
+      - test
+      - web
+      - windows
+      - macos
+      - linux
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
