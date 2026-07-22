@@ -19,9 +19,9 @@ Repo: https://github.com/abdulwahed-s/huda.git
 
 Builds:
   - versionName: 4.1.0
-    versionCode: 47
-    commit: 2972181f5fbbc47f0db7fbead65d986432977e3d
-    output: build/app/outputs/flutter-apk/app-foss-release.apk
+    versionCode: 471
+    commit: a304b270e57beaee9846fed4d71f553257f51195
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-foss-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -48,10 +48,87 @@ Builds:
     build:
       - export ORG_GRADLE_PROJECT_hudaUseLegacyPackaging=true
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor foss --release
+      - f=$$flutter$$/bin/flutter
+      - export ABI=android-arm
+      - c='build apk --flavor foss --release --split-per-abi'
+      - $f $c --target-platform=$ABI
+
+  - versionName: 4.1.0
+    versionCode: 472
+    commit: a304b270e57beaee9846fed4d71f553257f51195
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-foss-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - distribution
+      - ios
+      - linux
+      - macos
+      - supabase
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(cat .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i.bak '/^signingConfigs {/,/^   }$/d' android/app/build.gradle
+      - sed -i.bak '/signingConfig/d' android/app/build.gradle
+      - sed -i.bak '/play-services-location/d' android/app/build.gradle
+      - rm android/app/build.gradle.bak
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export ORG_GRADLE_PROJECT_hudaUseLegacyPackaging=true
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - f=$$flutter$$/bin/flutter
+      - export ABI=android-arm64
+      - c='build apk --flavor foss --release --split-per-abi'
+      - $f $c --target-platform=$ABI
+
+  - versionName: 4.1.0
+    versionCode: 473
+    commit: a304b270e57beaee9846fed4d71f553257f51195
+    output: build/app/outputs/flutter-apk/app-x86_64-foss-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - distribution
+      - ios
+      - linux
+      - macos
+      - supabase
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(cat .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i.bak '/^signingConfigs {/,/^   }$/d' android/app/build.gradle
+      - sed -i.bak '/signingConfig/d' android/app/build.gradle
+      - sed -i.bak '/play-services-location/d' android/app/build.gradle
+      - rm android/app/build.gradle.bak
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export ORG_GRADLE_PROJECT_hudaUseLegacyPackaging=true
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - f=$$flutter$$/bin/flutter
+      - export ABI=android-x64
+      - c='build apk --flavor foss --release --split-per-abi'
+      - $f $c --target-platform=$ABI
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 4.1.0
-CurrentVersionCode: 47
+CurrentVersionCode: 473
