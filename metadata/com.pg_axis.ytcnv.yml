@@ -18,9 +18,9 @@ Binaries:
   https://github.com/PGAxis/YTCnv/releases/download/v%v/youtubeConverter-%v-fdroid.apk
 
 Builds:
-  - versionName: 3.14.5
-    versionCode: 65
-    commit: ca8bf0b051a7fecbd96837e1c5c6c25768ff7d4d
+  - versionName: 3.15.1
+    versionCode: 67
+    commit: 0667256f1e6e58735fe9f976c4b6cd353144df8b
     subdir: app
     sudo:
       - apt-get update
@@ -29,13 +29,14 @@ Builds:
     gradle:
       - fdroid
     srclibs:
-      - ffmpeg-kit-16KB-for-YTCnv@v6.4
+      - ffmpeg-kit-16KB-for-YTCnv@v6.5
     scanignore:
       - app/libs/ffmpeg-kit.aar
     build:
       - pushd $$ffmpeg-kit-16KB-for-YTCnv$$
       - export ANDROID_SDK_ROOT=$$SDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
+      - export FFMPEG_KIT_OPTIMIZED_FOR_SPEED=1
       - bash android.sh
       - popd
       - cp 
@@ -47,5 +48,5 @@ AllowedAPKSigningKeys: c9599ab3880f3bd6605aec122e8a9b068330ea6361e5071fd1180d26e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 3.14.5
-CurrentVersionCode: 65
+CurrentVersion: 3.15.1
+CurrentVersionCode: 67
