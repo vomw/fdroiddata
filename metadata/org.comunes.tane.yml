@@ -15,19 +15,14 @@ AutoName: Tane
 RepoType: git
 Repo: https://git.comunes.org/comunes/tane.git
 
-# Reproducible, developer-signed: F-Droid rebuilds each split and, if it matches
-# our own signed APK on the git.comunes.org release byte-for-byte, publishes OUR
-# APK (same signature as the Play build). Value is the SHA-256 of the tane-upload
-# signing certificate (public).
-AllowedAPKSigningKeys: ddfae432091b8248a8a4a1b353487fa626301f4357ef835e94ec312f69418e38
-
 Builds:
   - versionName: 0.1.10
     versionCode: 121
     commit: v0.1.10
     subdir: apps/app_seeds
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://git.comunes.org/comunes/tane/releases/download/v%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://git.comunes.org/comunes/tane/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
       - tesseract4android@4.9.0
@@ -40,9 +35,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - "sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle"
-      - 'echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties'
-      - 'echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties'
+      - sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties
+      - echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties
       - cd apps/app_seeds
       - $$flutter$$/bin/dart run slang
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
@@ -63,7 +58,8 @@ Builds:
     commit: v0.1.10
     subdir: apps/app_seeds
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://git.comunes.org/comunes/tane/releases/download/v%v/app-arm64-v8a-release.apk
+    binary: 
+      https://git.comunes.org/comunes/tane/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
       - tesseract4android@4.9.0
@@ -76,9 +72,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - "sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle"
-      - 'echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties'
-      - 'echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties'
+      - sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties
+      - echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties
       - cd apps/app_seeds
       - $$flutter$$/bin/dart run slang
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
@@ -99,7 +95,8 @@ Builds:
     commit: v0.1.10
     subdir: apps/app_seeds
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://git.comunes.org/comunes/tane/releases/download/v%v/app-x86_64-release.apk
+    binary: 
+      https://git.comunes.org/comunes/tane/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
       - tesseract4android@4.9.0
@@ -112,9 +109,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - "sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle"
-      - 'echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties'
-      - 'echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties'
+      - sed -i '/^buildscript {/,/^}/d' $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-*/android/build.gradle
+      - echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> apps/app_seeds/android/gradle.properties
+      - echo "org.gradle.daemon=false" >> apps/app_seeds/android/gradle.properties
       - cd apps/app_seeds
       - $$flutter$$/bin/dart run slang
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
@@ -129,6 +126,8 @@ Builds:
         $$tesseract4android$$/tesseract4android/build/outputs/aar/tesseract4android-standard-release.aar
         $PUB_CACHE/hosted/pub.dev/flutter_tesseract_ocr-0.4.31/android/libs/tesseract4android-release.aar
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AllowedAPKSigningKeys: ddfae432091b8248a8a4a1b353487fa626301f4357ef835e94ec312f69418e38
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[\d.]+
