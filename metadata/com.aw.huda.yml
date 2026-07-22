@@ -1,14 +1,13 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Uses Google Gemini and Google Maps through developer-operated Supabase proxies.
+    en-US: Uses Google Gemini and Google Maps through developer-operated Supabase
+      proxies.
   Tracking:
-    en-US: Sends crash reports, including device model, Android version, app version, and error details, to a developer-operated Supabase service.
-
+    en-US: Sends crash reports, including device model, Android version, app version,
+      and error details, to a developer-operated Supabase service.
 Categories:
   - Religion
-
 License: MIT
-
 AuthorName: Abdulwahed Rifaat
 AuthorWebSite: https://awrs.me
 SourceCode: https://github.com/abdulwahed-s/huda
@@ -37,7 +36,9 @@ Builds:
       - web
       - windows
     prebuild:
-      - sed -i.bak -e '/^signingConfigs {/,/^   }$/d' -e '/signingConfig signingConfigs.release/d' -e '/gplayImplementation("com.google.android.gms:play-services-location:21.2.0")/d' android/app/build.gradle
+      - sed -i.bak -e '/^signingConfigs {/,/^   }$/d' -e '/signingConfig signingConfigs.release/d'
+        -e '/gplayImplementation("com.google.android.gms:play-services-location:21.2.0")/d'
+        android/app/build.gradle
       - rm android/app/build.gradle.bak
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -51,5 +52,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 4.1.0
 CurrentVersionCode: 47
