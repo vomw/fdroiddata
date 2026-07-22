@@ -20,7 +20,10 @@ Builds:
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      "$$OUT$$" 'META-INF/services/*'
 
 AllowedAPKSigningKeys: 6df9ce2e3c756a05f9a72b98e3bd555fa6f30bb99b56eba575ef9bce05d7b381
 
