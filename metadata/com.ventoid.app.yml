@@ -117,16 +117,15 @@ Builds:
       - mv $$Ventoy$$ ..
       - cd ..
       - PATH=$PATH:/usr/sbin VENTOY_SRC=Ventoy bash scripts/build-ventoy-disk-img.sh
-    scandelete:
-      - Ventoy
+        && rm -rf Ventoy
 
 MaintainerNotes: |-
-    0.2.2 rebuilds ventoy.disk.img from the Ventoy 1.1.16 srclib. prebuild uses
-    the checked-in image only to extract and hash-verify the four firmware-trusted
-    EFI files, then replaces it with a new FAT16 VTOYEFI image built from pinned
-    source while stripping imdisk/memdisk/7z. Rebuilding those EFI files would
-    invalidate their signatures. Hashes, SBAT, corresponding source, licenses
-    and provenance are documented in ASSET_PROVENANCE.md.
+  0.2.2 rebuilds ventoy.disk.img from the Ventoy 1.1.16 srclib. The build step
+  uses the checked-in image only to extract and hash-verify the four
+  firmware-trusted EFI files, then replaces it with a new FAT16 VTOYEFI image
+  built from pinned source while stripping imdisk/memdisk/7z. Rebuilding those
+  EFI files would invalidate their signatures. Hashes, SBAT, corresponding
+  source, licenses and provenance are documented in ASSET_PROVENANCE.md.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
