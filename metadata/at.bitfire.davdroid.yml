@@ -2206,7 +2206,39 @@ Builds:
       - ose
     prebuild: sed -i -e 's/configuration-cache=.*/configuration-cache=false/' ../gradle.properties
 
+  - versionName: 4.5.14-ose
+    versionCode: 405140001
+    commit: 04ae224a32fa3800ccb7a62fadd857090c3041be
+    subdir: app-ose
+    gradle:
+      - ose
+    prebuild: sed -i -e 's/configuration-cache=.*/configuration-cache=false/' ../gradle.properties
+
+  - versionName: 4.5.17.1
+    versionCode: 405170100
+    commit: 6c66734cecaee79c9bafd46dad54a2ef670bae96
+    subdir: app-ose
+    gradle:
+      - ose
+    prebuild:
+      - sed -i -e 's/configuration-cache=.*/configuration-cache=false/' ../gradle.properties
+      - sed -i -e '/val gradleDaemonJvmProperties/,+2d' -e 's/gradleDaemonJvmProperties.getProperty("toolchainVersion").toInt()/21/'
+        ../build-logic/build.gradle.kts ../build-logic/src/main/kotlin/davx5/buildlogic/CommonBuildConfigPlugin.kt
+
+  - versionName: 4.5.18
+    versionCode: 405180002
+    commit: cb3f0c970f7f8548bcf907baa5cdf4c1fbe044e1
+    subdir: app-ose
+    gradle:
+      - ose
+    prebuild:
+      - sed -i -e 's/configuration-cache=.*/configuration-cache=false/' ../gradle.properties
+      - sed -i -e '/val gradleDaemonJvmProperties/,+2d' -e 's/gradleDaemonJvmProperties.getProperty("toolchainVersion").toInt()/21/'
+        ../build-logic/build.gradle.kts ../build-logic/src/main/kotlin/davx5/buildlogic/CommonBuildConfigPlugin.kt
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+-ose[0-9]*$
-CurrentVersion: 4.5.13-ose
-CurrentVersionCode: 405130002
+UpdateCheckData: build-logic/src/main/kotlin/davx5/buildlogic/AppVersion.kt|CODE:\sInt
+  = (\d+)|.|NAME:\sString = "([\d.]+)"
+CurrentVersion: 4.5.18
+CurrentVersionCode: 405180002

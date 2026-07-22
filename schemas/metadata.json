@@ -17,6 +17,7 @@
         "enum": [
           "Action Game",
           "AI Chat",
+          "Alarm Clock",
           "App Manager",
           "App Store & Updater",
           "Battery",
@@ -25,22 +26,27 @@
           "Browser",
           "Calculator",
           "Calendar & Agenda",
+          "Camera",
           "Card Game",
+          "Cast",
           "Casual Game",
           "Clock",
           "Cloud Storage & File Sync",
+          "Code & Forge",
           "Connectivity",
           "Contact",
           "Development",
           "Dice",
           "Diet",
           "DNS & Hosts",
+          "Download",
           "Draw",
           "Ebook Reader",
           "Educational Game",
           "Email",
           "Emulator",
           "File Encryption & Vault",
+          "File Manager",
           "File Transfer",
           "Firewall",
           "Finance Manager",
@@ -58,15 +64,18 @@
           "Launcher",
           "Local Media Player",
           "Location Tracker & Sharer",
+          "Lyrics",
+          "Market & Price",
           "Messaging",
           "Meditation",
-          "Money",
           "Multimedia",
           "Music Practice Tool",
           "Navigation",
           "Network Analyzer",
           "News",
           "Note",
+          "Notification",
+          "OCR",
           "Online Media Player",
           "Party Game",
           "Pass Wallet",
@@ -75,10 +84,12 @@
           "Platformer Game",
           "Podcast",
           "Public Transport",
+          "Push",
           "Puzzle Game",
           "Radio",
           "Reading",
           "Recipe Manager",
+          "Recorder",
           "Remote Access",
           "Remote Controller",
           "Religion",
@@ -91,19 +102,20 @@
           "Social Network",
           "Sport Game",
           "Sports & Health",
+          "Stopwatch",
           "Strategy Game",
           "System",
           "Task",
           "Text Editor",
           "Text to Speech",
           "Theming",
-          "Time",
           "Time Tracker",
           "Timer",
           "Translation & Dictionary",
           "Unit Convertor",
           "Visual Novel",
           "Voice & Video Chat",
+          "Volume",
           "VPN & Proxy",
           "Wallet",
           "Wallpaper",
@@ -814,37 +826,64 @@
       }
     },
     {
-      "anyOf": [
-        {
-          "required": [
-            "Binaries"
-          ]
-        },
-        {
-          "properties": {
-            "Builds": {
-              "items": {
-                "required": [
-                  "binary"
+      "if": {
+        "allOf": [
+          {
+            "required": [
+              "AllowedAPKSigningKeys"
+            ]
+          },
+          {
+            "properties": {
+              "AllowedAPKSigningKeys": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1
+                  }
                 ]
               }
             }
           }
-        },
-        {
-          "properties": {
-            "Builds": {
-              "items": {
-                "not": {
+        ]
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "Binaries"
+            ]
+          },
+          {
+            "properties": {
+              "Builds": {
+                "items": {
                   "required": [
                     "binary"
                   ]
                 }
               }
             }
+          },
+          {
+            "properties": {
+              "Builds": {
+                "items": {
+                  "not": {
+                    "required": [
+                      "binary"
+                    ]
+                  }
+                }
+              }
+            }
           }
-        }
-      ]
+        ]
+      }
     },
     {
       "if": {
