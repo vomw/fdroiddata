@@ -1,0 +1,35 @@
+Categories:
+  - Finance Manager
+  - Timer
+License: MIT
+SourceCode: https://github.com/DThrawn/ignitebill
+IssueTracker: https://github.com/DThrawn/ignitebill/issues
+Changelog: https://github.com/DThrawn/ignitebill/releases
+
+AutoName: IgniteBill
+
+RepoType: git
+Repo: https://github.com/DThrawn/ignitebill
+
+Builds:
+  - versionName: 1.2.1
+    versionCode: 16
+    commit: v1.2.1
+    output: build/app/outputs/flutter-apk/app-foss-release.apk
+    srclibs:
+      - flutter@3.44.4
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor foss --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.*\+(\d+)|.|version:\s(.*)\+
+CurrentVersion: 1.2.1
+CurrentVersionCode: 16
