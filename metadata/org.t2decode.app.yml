@@ -18,9 +18,6 @@ Builds:
   - versionName: 1.0.2.4
     versionCode: 201
     commit: 2642985c4cb96fab2973708718e0669f4ac06af5
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -40,29 +37,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - rm -rf /sdks/flutter
-      - mv $$flutter$$ /sdks/flutter
-      - ln -s /sdks/flutter $$flutter$$
-      - rm -rf /builds/tutodecode-org/T2DECODE || true
-      - mkdir -p /builds/tutodecode-org/T2DECODE
-      - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
-      - cd /builds/tutodecode-org/T2DECODE
+      - FLUTTER_ABS=$(realpath $$flutter$$)
+      - mkdir -p /builds/tutodecode-org/
+      - cd ..
+      - export repo=/builds/tutodecode-org/T2DECODE/
+      - mv org.t2decode.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - unset ANDROID_NDK_HOME
-      - unset ANDROID_NDK_ROOT
-      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
-      - cd -
-      - out=build/app/outputs/flutter-apk
-      - mkdir -p $out
-      - src=/builds/tutodecode-org/T2DECODE/$out
-      - cp $src/app-armeabi-v7a-release.apk $out/
+      - $FLUTTER_ABS/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo org.t2decode.app
 
   - versionName: 1.0.2.4
     versionCode: 202
     commit: 2642985c4cb96fab2973708718e0669f4ac06af5
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -82,29 +70,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - rm -rf /sdks/flutter
-      - mv $$flutter$$ /sdks/flutter
-      - ln -s /sdks/flutter $$flutter$$
-      - rm -rf /builds/tutodecode-org/T2DECODE || true
-      - mkdir -p /builds/tutodecode-org/T2DECODE
-      - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
-      - cd /builds/tutodecode-org/T2DECODE
+      - FLUTTER_ABS=$(realpath $$flutter$$)
+      - mkdir -p /builds/tutodecode-org/
+      - cd ..
+      - export repo=/builds/tutodecode-org/T2DECODE/
+      - mv org.t2decode.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - unset ANDROID_NDK_HOME
-      - unset ANDROID_NDK_ROOT
-      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
-      - cd -
-      - out=build/app/outputs/flutter-apk
-      - mkdir -p $out
-      - src=/builds/tutodecode-org/T2DECODE/$out
-      - cp $src/app-arm64-v8a-release.apk $out/
+      - $FLUTTER_ABS/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo org.t2decode.app
 
   - versionName: 1.0.2.4
     versionCode: 203
     commit: 2642985c4cb96fab2973708718e0669f4ac06af5
-    sudo:
-      - mkdir -p /sdks
-      - chown vagrant:vagrant /sdks
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -124,22 +103,16 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - rm -rf /sdks/flutter
-      - mv $$flutter$$ /sdks/flutter
-      - ln -s /sdks/flutter $$flutter$$
-      - rm -rf /builds/tutodecode-org/T2DECODE || true
-      - mkdir -p /builds/tutodecode-org/T2DECODE
-      - cp -a $PWD/. /builds/tutodecode-org/T2DECODE/
-      - cd /builds/tutodecode-org/T2DECODE
+      - FLUTTER_ABS=$(realpath $$flutter$$)
+      - mkdir -p /builds/tutodecode-org/
+      - cd ..
+      - export repo=/builds/tutodecode-org/T2DECODE/
+      - mv org.t2decode.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - unset ANDROID_NDK_HOME
-      - unset ANDROID_NDK_ROOT
-      - /sdks/flutter/bin/flutter build apk --release --split-per-abi
-      - cd -
-      - out=build/app/outputs/flutter-apk
-      - mkdir -p $out
-      - src=/builds/tutodecode-org/T2DECODE/$out
-      - cp $src/app-x86_64-release.apk $out/
+      - $FLUTTER_ABS/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo org.t2decode.app
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
