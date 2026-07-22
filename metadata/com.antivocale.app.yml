@@ -1,0 +1,65 @@
+Categories:
+  - Multimedia
+License: Apache-2.0
+AuthorName: Paolo Antinori
+AuthorEmail: paoloantinori@users.noreply.github.com
+WebSite: https://github.com/RisorseArtificiali/anti-vocale
+SourceCode: https://github.com/RisorseArtificiali/anti-vocale
+IssueTracker: https://github.com/RisorseArtificiali/anti-vocale/issues
+Changelog: https://github.com/RisorseArtificiali/anti-vocale/releases
+AutoName: Anti-Vocale
+
+Summary: Offline voice-message transcription
+
+Description: |
+  Anti-Vocale transcribes voice messages from WhatsApp, Telegram, Signal, and other
+  messaging apps directly on your Android device. All processing happens on-device —
+  your audio never leaves your phone.
+
+  No network connection, no cloud, no accounts, no tracking. AI models run locally
+  via ONNX Runtime.
+
+  Multiple swappable ASR backends: Parakeet TDT (25 European languages), Whisper
+  Distil Italian, Whisper Turbo (99 languages), Qwen3-ASR (52 languages), Nemotron
+  3.5 streaming (progressive text display), and Gemma 4 multimodal.
+
+  Features: share-to-transcribe from any app, auto-copy to clipboard, auto-save
+  transcripts to a folder, video file transcription, progressive display, per-app
+  notification preferences, Tasker integration.
+
+RepoType: git
+Repo: https://github.com/RisorseArtificiali/anti-vocale
+
+Builds:
+  - versionName: 1.8.2
+    versionCode: 28
+    commit: v1.8.2
+    subdir: app
+    gradle:
+      - fdroid
+    scanignore:
+      - app/libs/sherpa-onnx.aar
+    prebuild: |
+      sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts ../build.gradle.kts
+      mkdir -p libs
+      curl -L -o libs/sherpa-onnx.aar \
+        https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.4/sherpa-onnx-1.13.4.aar
+
+  - versionName: 1.8.1
+    versionCode: 25
+    commit: v1.8.1
+    subdir: app
+    gradle:
+      - fdroid
+    scanignore:
+      - app/libs/sherpa-onnx.aar
+    prebuild: |
+      sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts ../build.gradle.kts
+      mkdir -p libs
+      curl -L -o libs/sherpa-onnx.aar \
+        https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.4/sherpa-onnx-1.13.4.aar
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.8.2
+CurrentVersionCode: 28
