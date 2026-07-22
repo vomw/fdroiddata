@@ -1,0 +1,145 @@
+Categories:
+  - Development
+  - Reading
+License: GPL-3.0-only
+AuthorName: Bilal W. Sul
+AuthorWebSite: https://bilsul.com
+WebSite: https://rzv.bilsul.com
+SourceCode: https://github.com/bilalsul/rzv
+IssueTracker: https://github.com/bilalsul/rzv/issues
+Donate: https://bilsul.com/support.html
+
+AutoName: RZV
+
+RepoType: git
+Repo: https://github.com/bilalsul/rzv.git
+
+Builds:
+  - versionName: 0.6.8
+    versionCode: 241
+    commit: 364616f0653ff66c0f220019d027e29e5f3d1908
+    sudo:
+      - mkdir -p /home/runner/work/RZV
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - web
+    prebuild:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - flutterVersion="3.35.6"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - find $PUB_CACHE -path "*/jni-*/src/CMakeLists.txt" -exec sed -i 's/-Wl,/-Wl,--build-id=none,/'
+        {} + 2>/dev/null || true
+      - popd
+      - mv $repo rzv.bilsul.com
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --split-debug-info=build/symbols
+      - popd
+      - mv $repo rzv.bilsul.com
+
+  - versionName: 0.6.8
+    versionCode: 242
+    commit: 364616f0653ff66c0f220019d027e29e5f3d1908
+    sudo:
+      - mkdir -p /home/runner/work/RZV
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - web
+    prebuild:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - flutterVersion="3.35.6"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - find $PUB_CACHE -path "*/jni-*/src/CMakeLists.txt" -exec sed -i 's/-Wl,/-Wl,--build-id=none,/'
+        {} + 2>/dev/null || true
+      - popd
+      - mv $repo rzv.bilsul.com
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --split-debug-info=build/symbols
+      - popd
+      - mv $repo rzv.bilsul.com
+
+  - versionName: 0.6.8
+    versionCode: 243
+    commit: 364616f0653ff66c0f220019d027e29e5f3d1908
+    sudo:
+      - mkdir -p /home/runner/work/RZV
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - web
+    prebuild:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - flutterVersion="3.35.6"
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - find $PUB_CACHE -path "*/jni-*/src/CMakeLists.txt" -exec sed -i 's/-Wl,/-Wl,--build-id=none,/'
+        {} + 2>/dev/null || true
+      - popd
+      - mv $repo rzv.bilsul.com
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/RZV/RZV
+      - cd ..
+      - mv rzv.bilsul.com $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --split-debug-info=build/symbols
+      - popd
+      - mv $repo rzv.bilsul.com
+
+AllowedAPKSigningKeys: 233fa46e73abfd9ca1104b237eddc40466c6b20747f03b3bee91b085cb8aadc9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.6.8
+CurrentVersionCode: 243
