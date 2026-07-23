@@ -1,0 +1,42 @@
+Categories:
+  - Security
+  - Internet
+License: AGPL-3.0-only
+AuthorName: Artur Tokarczyk
+AuthorEmail: artst3in@proton.me
+SourceCode: https://github.com/artst3in/Aegis
+IssueTracker: https://github.com/artst3in/Aegis/issues
+
+AutoName: Aegis
+
+RepoType: git
+Repo: https://github.com/artst3in/Aegis.git
+
+Builds:
+  - versionName: 2026.06.829
+    versionCode: 202606829
+    commit: d37e62950134cd9c3b29a0e113a66ffc787667c5
+    timeout: 60000
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y xz-utils zipalign zip unzip curl
+      - mkdir -m 0755 /nix
+      - chown vagrant /nix
+      - chown -R vagrant /tmp
+    prebuild:
+      - cd ..
+      - git clone --depth 1 --branch v6.5.1 https://github.com/simplex-chat/simplex-chat.git simplex-src
+      - cd simplex-src
+      - export USER=vagrant
+      - ARCHES="aarch64" ./scripts/android/build-android.sh
+      - cd ..
+      - mkdir -p app/src/main/jniLibs/arm64-v8a
+      - unzip -j simplex-src/simplex-chat-arm64-v8a.apk "lib/arm64-v8a/*.so" -d app/src/main/jniLibs/arm64-v8a/
+    gradle:
+      - play
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2026.06.829
+CurrentVersionCode: 202606829
