@@ -14,21 +14,9 @@ RepoType: git
 Repo: https://github.com/RisorseArtificiali/anti-vocale
 
 Builds:
-  - versionName: 1.8.1
-    versionCode: 25
-    commit: v1.8.1
-    subdir: app
-    gradle:
-      - fdroid
-    prebuild: "sed -E -i \"/(crashlytics|com\\.google\\.firebase|com\\.google\\.gms)/d\"\
-      \ build.gradle.kts ../build.gradle.kts\nmkdir -p libs\ncurl -L -o libs/sherpa-onnx.aar
-      \\\n  https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.4/sherpa-onnx-1.13.4.aar\n"
-    scanignore:
-      - app/libs/sherpa-onnx.aar
-
   - versionName: 1.8.3
     versionCode: 29
-    commit: v1.8.3
+    commit: f8d975b1baa951ee661e88c3814f63f18c8246c5
     subdir: app
     sudo:
       - apt-get update
@@ -54,8 +42,7 @@ Builds:
       - cp $$sherpa_onnx$$/build-android-armv7-eabi/install/lib/lib*.so $J/armeabi-v7a/
       - cp $$sherpa_onnx$$/build-android-x86-64/install/lib/lib*.so $J/x86_64/
       - cp $$sherpa_onnx$$/build-android-x86/install/lib/lib*.so $J/x86/
-      - $$sherpa_onnx$$/android/SherpaOnnxAar/gradlew -p $$sherpa_onnx$$/android/SherpaOnnxAar
-        :sherpa_onnx:assembleRelease
+      - gradle -p $$sherpa_onnx$$/android/SherpaOnnxAar :sherpa_onnx:assembleRelease
       - cp 
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
