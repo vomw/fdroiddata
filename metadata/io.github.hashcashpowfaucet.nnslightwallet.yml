@@ -1,0 +1,56 @@
+Categories:
+  - Money
+
+AntiFeatures:
+  NonFreeNet:
+    en-US: Light wallet — depends on remote 996-Coin RPC nodes that aren't user-self-verifiable.
+
+License: MIT
+AuthorName: Hashcash-PoW-Faucet
+AuthorWebSite: https://github.com/Hashcash-PoW-Faucet
+WebSite: https://996coin.com/
+SourceCode: https://github.com/Hashcash-PoW-Faucet/996-Coin-Mobile-Client
+IssueTracker: https://github.com/Hashcash-PoW-Faucet/996-Coin-Mobile-Client/issues
+
+AutoName: 996-Coin Wallet
+
+RepoType: git
+Repo: https://github.com/Hashcash-PoW-Faucet/996-Coin-Mobile-Client.git
+Binaries:
+  https://github.com/Hashcash-PoW-Faucet/996-Coin-Mobile-Client/releases/download/v%v/app-arm64-v8a-release.apk
+
+Builds:
+  - versionName: 1.1.2
+    versionCode: 2005
+    commit: d1a2b7c87d208205a38a58582c7338547d9f1db5
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+AllowedAPKSigningKeys: 7f7bf9c09fdc4772d8de674716c4033987db33af46015e144f295de2a143aa61
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 2000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.2
+CurrentVersionCode: 2005
