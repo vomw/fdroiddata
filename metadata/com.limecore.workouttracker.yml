@@ -26,10 +26,13 @@ Builds:
       - ln -s /opt/node-v22.23.1-linux-x64/bin/node /usr/local/bin/node
       - ln -s /opt/node-v22.23.1-linux-x64/bin/npm /usr/local/bin/npm
       - ln -s /opt/node-v22.23.1-linux-x64/bin/npx /usr/local/bin/npx
-    init: npm ci
+    init:
+      - cd ../..
+      - npm ci
     gradle:
       - yes
     prebuild:
+      - cd ../..
       - npm run build
       - npx cap sync android
     scandelete:
