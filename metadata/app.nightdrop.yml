@@ -10,29 +10,30 @@ RepoType: git
 Repo: https://github.com/nightdropapp/nightdrop.git
 
 Builds:
-  # Only the current, working release is built. 0.1.0-0.1.3 shipped without the Android INTERNET
-  # permission and cannot connect, so they are intentionally not offered.
   - versionName: 0.1.4
     versionCode: 5
     commit: v0.1.4
     subdir: app
-    ndk: r28c
     sudo:
-      - git clone --depth 1 --branch 3.44.6 https://github.com/flutter/flutter.git /opt/flutter
+      - git clone --depth 1 --branch 3.44.6 https://github.com/flutter/flutter.git
+        /opt/flutter
       - /opt/flutter/bin/flutter --version
-    prebuild:
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - chmod -R a+rwX /opt/flutter
+    output: build/app/outputs/flutter-apk/app-release.apk
     build:
-      - export PATH="/opt/flutter/bin:$$PATH"
-      - export CARGO_HOME="$${CARGO_HOME:-$$HOME/.cargo}"
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
+        1.96.0 --profile minimal
+      - export PATH="/opt/flutter/bin:$$HOME/.cargo/bin:$$PATH"
+      - export CARGO_HOME="$$HOME/.cargo"
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - export RUSTFLAGS="--remap-path-prefix=$$(cd ../ && pwd)=. --remap-path-prefix=$$CARGO_HOME=/cargo"
       - flutter pub get
       - flutter build apk --release --dart-define=NIGHTDROP_TOR=1 --dart-define=NIGHTDROP_RELAY=bzcqxuxwvtmrmvprsoscnronkjf5wknfuj5ozxiq5fr6qowvnkwrwwad.onion
-    output: build/app/outputs/flutter-apk/app-release.apk
+    ndk: r28c
 
 AllowedAPKSigningKeys: d08b8e6408aff4f43556c05b819fef25afdd6912be7a678b0552468a4582c0ac
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 0.1.4
 CurrentVersionCode: 5
