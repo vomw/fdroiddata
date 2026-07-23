@@ -20,6 +20,8 @@ Builds:
       - /opt/flutter/bin/flutter --version
       - chmod -R a+rwX /opt/flutter
     output: build/app/outputs/flutter-apk/app-release.apk
+    scandelete:
+      - core/fuzz/seeds
     build:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
         1.96.0 --profile minimal
@@ -28,7 +30,8 @@ Builds:
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - export RUSTFLAGS="--remap-path-prefix=$$(cd ../ && pwd)=. --remap-path-prefix=$$CARGO_HOME=/cargo"
       - flutter pub get
-      - flutter build apk --release --dart-define=NIGHTDROP_TOR=1 --dart-define=NIGHTDROP_RELAY=bzcqxuxwvtmrmvprsoscnronkjf5wknfuj5ozxiq5fr6qowvnkwrwwad.onion
+      - flutter build apk --release --dart-define=NIGHTDROP_TOR=1 
+        --dart-define=NIGHTDROP_RELAY=bzcqxuxwvtmrmvprsoscnronkjf5wknfuj5ozxiq5fr6qowvnkwrwwad.onion
     ndk: r28c
 
 AllowedAPKSigningKeys: d08b8e6408aff4f43556c05b819fef25afdd6912be7a678b0552468a4582c0ac
