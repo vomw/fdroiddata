@@ -12,8 +12,6 @@ AutoName: Anti-Vocale
 
 RepoType: git
 Repo: https://github.com/RisorseArtificiali/anti-vocale
-Binaries: 
-  https://github.com/RisorseArtificiali/anti-vocale/releases/download/v%v/app-fdroid-release.apk
 
 Builds:
   - versionName: 1.8.3
@@ -33,6 +31,7 @@ Builds:
       - mkdir -p libs
     build:
       - pushd $$sherpa_onnx$$
+      - export SHERPA_ONNX_ENABLE_JNI=ON SHERPA_ONNX_ENABLE_C_API=OFF
       - ./build-android-arm64-v8a.sh
       - ./build-android-armv7-eabi.sh
       - ./build-android-x86-64.sh
@@ -49,8 +48,6 @@ Builds:
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
     ndk: r27c
-
-AllowedAPKSigningKeys: 8e72e1143ca42e14ae74b3ec3055627904c99154c59925887f3edd2ca5a8b5a3
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
