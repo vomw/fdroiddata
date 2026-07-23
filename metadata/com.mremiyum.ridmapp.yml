@@ -1,0 +1,26 @@
+Categories:
+  - Multimedia
+License: MIT
+SourceCode: https://github.com/mremiyum/ridm-app
+IssueTracker: https://github.com/mremiyum/ridm-app/issues
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.1.0
+CurrentVersionCode: 10
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 10
+    commit: v1.1.0
+    subdir: android
+    sudo:
+      - apt-get update || true
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      - apt-get install -y nodejs
+    prebuild:
+      - pushd ..
+      - npm install
+      - npx expo install expo-clipboard
+      - popd
