@@ -19,13 +19,9 @@ Builds:
     commit: v1.8.2
     subdir: android/app
     sudo:
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.1/node-v22.23.1-linux-x64.tar.gz
-      - echo "7a8cb04b4a1df4eaf432125324b81b29a088e73570a23259a8de1c65d07fc129  node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --directory /opt
-      - ln -s /opt/node-v22.23.1-linux-x64/bin/node /usr/local/bin/node
-      - ln -s /opt/node-v22.23.1-linux-x64/bin/npm /usr/local/bin/npm
-      - ln -s /opt/node-v22.23.1-linux-x64/bin/npx /usr/local/bin/npx
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
     init:
       - cd ../..
       - npm ci
