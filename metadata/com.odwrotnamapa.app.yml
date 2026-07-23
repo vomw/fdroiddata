@@ -1,33 +1,62 @@
-AntiFeatures:
-  - NonFreeNet
+# SZKIC metadanych F-Droid dla Odwrotnej Mapy.
+#
+# To jest PUNKT WYJŚCIA, nie gotowy, przetestowany plik - musisz go
+# zweryfikować i dostosować przed wysłaniem, najlepiej lokalnie
+# narzędziem `fdroid build` / `fdroid readmeta` z fdroidserver,
+# zgodnie z oficjalnym przewodnikiem:
+# https://f-droid.org/en/docs/Submitting_to_F-Droid_Quick_Start_Guide/
+#
+# Aktualnie (2026) repozytorium fdroiddata jest na GitLabie, nie
+# GitHubie:
+# https://gitlab.com/fdroid/fdroiddata
+#
+# Ten plik trzeba umieścić jako:
+# fdroiddata/metadata/com.odwrotnamapa.app.yml
+
 Categories:
   - Navigation
+
 License: MIT
+
 AuthorName: Odwrotna Mapa
 SourceCode: https://github.com/odwrotnamapa/odwrotnamapa
 IssueTracker: https://github.com/odwrotnamapa/odwrotnamapa/issues
 
+# Widok uliczny łączy się z Mapillary (własność Meta) - to
+# opcjonalna funkcja (apka działa bez niej, jeśli nie skonfigurujesz
+# tokena), ale F-Droid prawdopodobnie i tak oznaczy to jako
+# "niewolny serwis sieciowy".
+AntiFeatures:
+  - NonFreeNet
+
 AutoName: Odwrotna Mapa
-Summary: Interaktywna mapa z po�udniem u g�ry
+Summary: Interaktywna mapa z południem u góry
 Description: |-
-  Odwrotna Mapa odwraca standardowe podej�cie do map - po�udnie
-  zamiast p�nocy u g�ry. Pozwala odkrywa� miejsca, planowa� trasy,
-  mierzy� odleg�o�ci i zapisywa� ulubione punkty, cz�� z nich
-  dost�pna r�wnie� offline.
+  Odwrotna Mapa odwraca standardowe podejście do map - południe
+  zamiast północy u góry. Pozwala odkrywać miejsca, planować trasy,
+  mierzyć odległości i zapisywać ulubione punkty, część z nich
+  dostępna również offline.
 
 RepoType: git
 Repo: https://github.com/odwrotnamapa/odwrotnamapa.git
 
 Builds:
+  # PRZYKŁADOWY wpis dla wersji 1.0 - dopasuj versionCode/versionName
+  # do rzeczywistej wersji, i UPEWNIJ SIĘ że commit odpowiada
+  # oznaczonemu tagowi (np. `git tag v1.0` na właściwym commicie).
   - versionName: '1.0'
     versionCode: 1
     commit: v1.0
     subdir: android/app
-    gradle:
-      - yes
+    # UWAGA: to jest apka Capacitor - przed samym Gradle trzeba
+    # zbudować zasoby webowe (folder www/) i zsynchronizować je do
+    # projektu Android. Nazwy skryptów zweryfikowane względem
+    # prawdziwego package.json.
     prebuild:
       - cd ../.. && npm install
       - cd ../.. && npm run cap:sync
+    gradle:
+      - "yes"
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
