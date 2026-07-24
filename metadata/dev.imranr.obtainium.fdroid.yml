@@ -9239,9 +9239,9 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
-  - versionName: 1.6.4
-    versionCode: 23431
-    commit: e9384c804df7dde47cc13c5536a5ddbb12e6b40b
+  - versionName: 1.6.5
+    versionCode: 23441
+    commit: e33b4439ccdc57321633f4f4cc8befe69dab9b73
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/Obtainium
@@ -9284,9 +9284,9 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
-  - versionName: 1.6.4
-    versionCode: 23432
-    commit: e9384c804df7dde47cc13c5536a5ddbb12e6b40b
+  - versionName: 1.6.5
+    versionCode: 23442
+    commit: e33b4439ccdc57321633f4f4cc8befe69dab9b73
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/Obtainium
@@ -9329,9 +9329,369 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
-  - versionName: 1.6.4
-    versionCode: 23433
-    commit: e9384c804df7dde47cc13c5536a5ddbb12e6b40b
+  - versionName: 1.6.5
+    versionCode: 23443
+    commit: e33b4439ccdc57321633f4f4cc8befe69dab9b73
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.8
+    versionCode: 23471
+    commit: 55eda5c748ce8c4dbfd2ff7a2808ff238318ea68
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-x86_64-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.8
+    versionCode: 23473
+    commit: 55eda5c748ce8c4dbfd2ff7a2808ff238318ea68
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.9
+    versionCode: 23481
+    commit: 3b56354605de629fede0b97f337dee0cf4b20c3b
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-x86_64-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.9
+    versionCode: 23482
+    commit: 3b56354605de629fede0b97f337dee0cf4b20c3b
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-armeabi-v7a-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.9
+    versionCode: 23483
+    commit: 3b56354605de629fede0b97f337dee0cf4b20c3b
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.10
+    versionCode: 23491
+    commit: dc92ac7abf48d18a5ddce989a6ebd50ac902aa07
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-x86_64-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.10
+    versionCode: 23492
+    commit: dc92ac7abf48d18a5ddce989a6ebd50ac902aa07
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Obtainium
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/ImranR98/Obtainium/releases/download/v%v/app-armeabi-v7a-fdroid-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - sed -i -e '/buildTypes {/,/^    }/d' android/app/build.gradle.kts
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Obtainium/Obtainium
+      - cd ..
+      - mv dev.imranr.obtainium.fdroid $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --flavor fdroid -t lib/main_fdroid.dart
+      - popd
+      - mv $repo dev.imranr.obtainium.fdroid
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: 1.6.10
+    versionCode: 23493
+    commit: dc92ac7abf48d18a5ddce989a6ebd50ac902aa07
     submodules: true
     sudo:
       - mkdir -p /home/runner/work/Obtainium
@@ -9383,5 +9743,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.6.4
-CurrentVersionCode: 23433
+CurrentVersion: 1.6.10
+CurrentVersionCode: 23493
