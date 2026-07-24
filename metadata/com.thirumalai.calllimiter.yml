@@ -1,0 +1,107 @@
+Categories:
+  - Phone & SMS
+  - System
+License: GPL-3.0-only
+AuthorName: Thirumalai K G
+AuthorEmail: thirumalaikg.dev@gmail.com
+AuthorWebSite: https://github.com/Thiru-Malai
+WebSite: https://github.com/Thiru-Malai/CallLimiter
+SourceCode: https://github.com/Thiru-Malai/CallLimiter
+IssueTracker: https://github.com/Thiru-Malai/CallLimiter/issues
+Changelog: https://github.com/Thiru-Malai/CallLimiter/releases
+Donate: https://www.buymeacoffee.com/thirumalaikg
+Liberapay: thirumalaikg
+Bitcoin: bc1q26ag0k77ez63pd0zu492vj7dncfqmknkk7sjfh
+
+AutoName: Call Limiter
+
+RepoType: git
+Repo: https://github.com/Thiru-Malai/CallLimiter.git
+Binaries: 
+  https://github.com/Thiru-Malai/CallLimiter/releases/download/%v/call-limiter-%v.apk
+
+Builds:
+  - versionName: 0.3.2
+    versionCode: 3
+    disable: key lost
+    commit: 0.3.2
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 0.3.3
+    versionCode: 4
+    disable: key lost
+    commit: 54d5bd9a285aed806a1535c10673830da13630b2
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 0.3.4
+    versionCode: 5
+    disable: key lost
+    commit: bc742a4f7d85089adb45bf1b5bebb6c8d3312afa
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 0.3.5
+    versionCode: 6
+    disable: key lost
+    commit: 938f7a91c0df237f4fb01ba6c8b6a942bec71164
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
+
+  - versionName: 0.3.8
+    versionCode: 9
+    commit: d33e51a9b9432dcc5b9356eb339b20008988fd0d
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
+
+  - versionName: 0.3.9
+    versionCode: 10
+    commit: 8b109b7b4798b1624cba8d36e1c0f0c8854b96b6
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
+
+AllowedAPKSigningKeys: 58cbd3798fbf9478aac4ad2fa080debf95ebdf8eaa5e03f6df7a0d87ac43772a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9.]+$
+CurrentVersion: 0.3.9
+CurrentVersionCode: 10

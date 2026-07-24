@@ -1,7 +1,7 @@
 AntiFeatures:
   - NonFreeNet
 Categories:
-  - Money
+  - Market & Price
 License: MIT
 AuthorName: Brent Panther
 AuthorEmail: apps@brentpanther.com
@@ -974,7 +974,67 @@ Builds:
     gradle:
       - fdroid
 
+  - versionName: 8.7.0
+    versionCode: 341
+    commit: 01ce7c232e5f91a367d9e48659dbe168b3afa37e
+    subdir: bitcoin
+    gradle:
+      - fdroid
+
+  - versionName: 8.7.1
+    versionCode: 342
+    commit: 9ad1f9f0ecc3284b6bd02dd8433444124ed7bc7c
+    subdir: bitcoin
+    gradle:
+      - fdroid
+
+  - versionName: 8.7.2
+    versionCode: 343
+    commit: 614ecb46ee57bc35fee485adf037e218ec1cc001
+    subdir: bitcoin
+    gradle:
+      - fdroid
+
+  - versionName: 8.7.3
+    versionCode: 344
+    commit: e54249856e76f05269cead777999abf5f212428a
+    subdir: bitcoin
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/8.13.0/8.11.1/' ../gradle/libs.versions.toml
+
+  - versionName: 8.8.0
+    versionCode: 345
+    commit: 39d5de4f00a165684d1d3295899d7f53c243fc7d
+    subdir: bitcoin
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 8.8.1
+    versionCode: 346
+    commit: 777185276998d998313ebf16df46871cf0723bfa
+    subdir: bitcoin
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 8.8.2
+    versionCode: 347
+    commit: eec5f78ba362c4c0569caa34a07223fa7475f46d
+    subdir: bitcoin
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 8.6.5
-CurrentVersionCode: 340
+CurrentVersion: 8.8.2
+CurrentVersionCode: 347
