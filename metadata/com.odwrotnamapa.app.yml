@@ -1,36 +1,13 @@
-# SZKIC metadanych F-Droid dla Odwrotnej Mapy.
-#
-# To jest PUNKT WYJŚCIA, nie gotowy, przetestowany plik - musisz go
-# zweryfikować i dostosować przed wysłaniem, najlepiej lokalnie
-# narzędziem `fdroid build` / `fdroid readmeta` z fdroidserver,
-# zgodnie z oficjalnym przewodnikiem:
-# https://f-droid.org/en/docs/Submitting_to_F-Droid_Quick_Start_Guide/
-#
-# Aktualnie (2026) repozytorium fdroiddata jest na GitLabie, nie
-# GitHubie:
-# https://gitlab.com/fdroid/fdroiddata
-#
-# Ten plik trzeba umieścić jako:
-# fdroiddata/metadata/com.odwrotnamapa.app.yml
-
+AntiFeatures:
+  - NonFreeNet
 Categories:
   - Navigation
-
 License: MIT
-
 AuthorName: Odwrotna Mapa
 SourceCode: https://github.com/odwrotnamapa/odwrotnamapa
 IssueTracker: https://github.com/odwrotnamapa/odwrotnamapa/issues
 
-# Widok uliczny łączy się z Mapillary (własność Meta) - to
-# opcjonalna funkcja (apka działa bez niej, jeśli nie skonfigurujesz
-# tokena), ale F-Droid prawdopodobnie i tak oznaczy to jako
-# "niewolny serwis sieciowy".
-AntiFeatures:
-  - NonFreeNet
-
 AutoName: Odwrotna Mapa
-Summary: Interaktywna mapa z południem u góry
 Description: |-
   Odwrotna Mapa odwraca standardowe podejście do map - południe
   zamiast północy u góry. Pozwala odkrywać miejsca, planować trasy,
@@ -41,22 +18,15 @@ RepoType: git
 Repo: https://github.com/odwrotnamapa/odwrotnamapa.git
 
 Builds:
-  # PRZYKŁADOWY wpis dla wersji 1.0 - dopasuj versionCode/versionName
-  # do rzeczywistej wersji, i UPEWNIJ SIĘ że commit odpowiada
-  # oznaczonemu tagowi (np. `git tag v1.0` na właściwym commicie).
   - versionName: '1.0'
     versionCode: 1
     commit: v1.0
     subdir: android/app
-    # Serwer budujący F-Droid nie ma domyślnie Node.js/npm - trzeba
-    # go doinstalować, zanim zadziałają komendy prebuild poniżej.
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    # UWAGA: to jest apka Capacitor - przed samym Gradle trzeba
-    # zbudować zasoby webowe (folder www/) i zsynchronizować je do
-    # projektu Android. Nazwy skryptów zweryfikowane względem
-    # prawdziwego package.json.
+    gradle:
+      - yes
     prebuild:
       - cd ../.. && npm install && npm run cap:sync
       - sed -i "/foojay/d" android/settings.gradle
@@ -66,8 +36,6 @@ Builds:
       - node_modules/@capacitor/cli/assets/ios-spm-template.tar.gz
       - node_modules/@capacitor/cli/assets/android-template.tar.gz
       - node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
-    gradle:
-      - "yes"
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
