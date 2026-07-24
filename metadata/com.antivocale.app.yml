@@ -53,10 +53,9 @@ Builds:
     ndk: r27c
     postbuild:
       - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/fix-pg-map-id.py unaligned.apk /tmp/fixed.apk 0000000
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
-        --replace unaligned.apk $$OUT$$
-      - $$reproducible-apk-tools$$/fix-pg-map-id.py $$OUT$$ /tmp/fixed.apk 0000000
-      - mv /tmp/fixed.apk $$OUT$$
+        --replace /tmp/fixed.apk $$OUT$$
 
 AllowedAPKSigningKeys: 8e72e1143ca42e14ae74b3ec3055627904c99154c59925887f3edd2ca5a8b5a3
 
