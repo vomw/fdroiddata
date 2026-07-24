@@ -1,0 +1,80 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Connects to DeepL servers.
+Categories:
+  - Reading
+License: AGPL-3.0-or-later
+AuthorName: Bilingify LLC
+AuthorWebSite: https://readest.com
+SourceCode: https://github.com/readest/readest
+IssueTracker: https://github.com/readest/readest/issues
+Changelog: https://github.com/readest/readest/releases
+
+AutoName: Readest
+
+RepoType: git
+Repo: https://github.com/readest/readest.git
+
+Builds:
+  - versionName: 0.10.1
+    versionCode: 10001
+    commit: c6886128881ca69cc31d5e68ab9ea102ae20dca3
+    subdir: apps/readest-app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential cmake libssl-dev doxygen pkg-config rustup
+        binaryen
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
+      - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install -g pnpm
+    init:
+      - pnpm install --frozen-lockfile
+      - pnpm --filter @readest/readest-app setup-vendors
+    output: 
+      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    prebuild:
+      - export RUSTUP_TOOLCHAIN=1.94.1
+      - sdkmanager "ndk;28.2.13676358"
+      - rustup default $RUSTUP_TOOLCHAIN
+      - cargo install tauri-cli@2.10.1 --locked
+      - rm -rf src-tauri/gen/android
+      - pnpm tauri android init
+      - pnpm tauri icon ../../data/icons/readest-book.png
+      - git checkout src-tauri/gen/android
+      - sed -i '/com.android.vending.BILLING/d' src-tauri/gen/android/app/src/main/AndroidManifest.xml
+    scandelete:
+      - node_modules
+      - packages/tauri/crates/tests
+      - packages/tauri/crates/tauri/test
+      - packages/tauri/crates/tauri-cli/scripts/vswhere.exe
+      - packages/simplecc-wasm/dist
+      - packages/tauri-plugins/plugins/barcode-scanner
+      - packages/tauri-plugins/plugins/geolocation
+      - apps/readest-app/public/vendor/simplecc/simplecc_wasm_bg.wasm
+      - apps/readest-app/public/vendor/pdfjs/openjpeg.wasm
+      - apps/readest-app/public/vendor/pdfjs/qcms_bg.wasm
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export RUSTUP_TOOLCHAIN=1.94.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android wasm32-unknown-unknown
+      - cargo install wasm-pack@0.14.0 wasm-bindgen-cli@0.2.115 --locked
+      - pushd ../../packages/simplecc-wasm
+      - make dist
+      - cp dist/web/simplecc_wasm_bg.wasm ../../apps/readest-app/public/vendor/simplecc/
+      - popd
+      - pushd ../../packages/qcms
+      - wasm-pack build --target web --release --no-typescript --no-pack --out-name
+        qcms --out-dir .
+      - cp qcms_bg.wasm ../../apps/readest-app/public/vendor/pdfjs/
+      - popd
+      - pnpm tauri android build -t aarch64
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: https://readest.com/api/version/fdroid|versionCode=([0-9]+)|.|versionName=(.*)
+CurrentVersion: 0.10.1
+CurrentVersionCode: 10001
