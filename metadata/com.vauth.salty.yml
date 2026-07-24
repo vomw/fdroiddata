@@ -17,7 +17,11 @@ Builds:
     commit: 7f8d0105a8509ac071c5a6310293f602b63b9396
     subdir: app
     prebuild:
+      - echo "rootProject.name = 'Salty'" > ../settings.gradle
+      - echo "include ':app'" >> ../settings.gradle
       - echo "APP_SALT=Salty@AES-256" >> ../gradle.properties
+      - mkdir -p ../gradle/wrapper
+      - echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip" > ../gradle/wrapper/gradle-wrapper.properties
     gradle:
       - yes
 
