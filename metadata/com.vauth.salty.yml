@@ -6,8 +6,9 @@ SourceCode: https://github.com/vauth/salty-app
 IssueTracker: https://github.com/vauth/salty-app/issues
 
 RepoType: git
-Repo: https://github.com/vauth/salty-app.git
-Binaries: https://github.com/vauth/salty-app/releases/download/%v/app-release.apk
+Repo: https://github.com/vauth/salty-app
+
+Binaries: https://github.com/vauth/salty-app/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: '1.1'
@@ -19,12 +20,12 @@ Builds:
     - apt-get update
     - apt-get install -y -t bookworm openjdk-17-jdk-headless
     - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
     prebuild:
       - echo "APP_SALT=Salty@AES-256" >> ../gradle.properties
       - mkdir -p ../gradle/wrapper
       - echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip" > ../gradle/wrapper/gradle-wrapper.properties
-    gradle:
-      - yes
 
 AllowedAPKSigningKeys: baca0aeff43d98243cbd1a744a5381b28725549ba53c9fdb7f5a95171946d9df
 
