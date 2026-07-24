@@ -27,6 +27,7 @@ Builds:
       - fdroid
     srclibs:
       - sherpa_onnx@142807252687d81b40d6315f23470a1512a00de3
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts
         ../build.gradle.kts
@@ -50,6 +51,10 @@ Builds:
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
     ndk: r27c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 8e72e1143ca42e14ae74b3ec3055627904c99154c59925887f3edd2ca5a8b5a3
 
