@@ -2,31 +2,37 @@ Categories:
   - Calendar & Agenda
 License: GPL-3.0-or-later
 AuthorName: Soluce Technologies
-WebSite: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile
 SourceCode: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile
 IssueTracker: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/issues
 Changelog: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/releases
-
-AutoName: Soluce Technologies
 
 RepoType: git
 Repo: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile.git
 
 Builds:
-  - versionName: 1.4.0
-    versionCode: 1
-    commit: 1.4.0
+  - versionName: 1.4.4
+    versionCode: 10404
+    commit: 1.4.4
     subdir: android/app
+    timeout: 14400
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y openjdk-17-jdk
+    init:
+      - node --version
+      - cd ../..
       - corepack enable
-      - corepack prepare yarn@stable --activate
+      - yarn install --immutable
+      - yarn expo prebuild --platform android --no-install
     gradle:
       - yes
-    prebuild: cd ../.. && yarn install --immutable
+    scandelete:
+      - node_modules
+    scanignore:
+      - android/build.gradle
+      - node_modules/react-native/android/com/facebook/react/react-native/*/
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags
-CurrentVersion: 1.4.0
-CurrentVersionCode: 1
+CurrentVersion: 1.4.4
+CurrentVersionCode: 10404
