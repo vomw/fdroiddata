@@ -16,11 +16,11 @@ Builds:
     commit: eb4751bd642cd92162c98d2dcfee0ddbed09e6aa
     subdir: clients/app
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
     rm:
       - clients/app/linux
       - clients/app/web
-    srclibs:
-      - flutter@stable
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
@@ -28,8 +28,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
-      - packages/notally_core
     scandelete:
       - clients/app/.pub-cache
     build:
