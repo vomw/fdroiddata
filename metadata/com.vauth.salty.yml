@@ -5,15 +5,15 @@ AuthorName: vauth
 SourceCode: https://github.com/vauth/salty-app
 IssueTracker: https://github.com/vauth/salty-app/issues
 
-AutoName: Salty
-
 RepoType: git
 Repo: https://github.com/vauth/salty-app
+
+Binaries: https://github.com/vauth/salty-app/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: '1.1'
     versionCode: 2
-    commit: 7f8d0105a8509ac071c5a6310293f602b63b9396
+    commit: d4a3385925a6c87611d5778d33da4135dd0f4b8c
     subdir: app
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" | tee /etc/apt/sources.list.d/bookworm.list
@@ -23,10 +23,11 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - echo "APP_SALT=Salty@AES-256" >> ../gradle.properties
       - mkdir -p ../gradle/wrapper
       - echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip"
         > ../gradle/wrapper/gradle-wrapper.properties
+
+AllowedAPKSigningKeys: baca0aeff43d98243cbd1a744a5381b28725549ba53c9fdb7f5a95171946d9df
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
