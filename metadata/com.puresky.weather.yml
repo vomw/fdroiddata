@@ -1,0 +1,41 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: Fetches forecasts from Open-Meteo, radar from RainViewer, tiles from OpenStreetMap,
+      and reverse-geocoding from Nominatim. Map UI loads Leaflet from a CDN.
+Categories:
+  - Internet
+  - Weather
+License: GPL-3.0-or-later
+AuthorName: tunefriend
+SourceCode: https://gitlab.com/tunefriend/puresky
+IssueTracker: https://gitlab.com/tunefriend/puresky/-/issues
+Changelog: https://gitlab.com/tunefriend/puresky/-/tags
+
+AutoName: PureSky
+
+RepoType: git
+Repo: https://gitlab.com/tunefriend/puresky.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - sed -i '/org.gradle.java.home/d' android/gradle.properties || true
+      - npm ci || npm install
+      - npx cap sync android
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
