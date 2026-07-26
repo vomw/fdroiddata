@@ -42,6 +42,8 @@ Builds:
       - apt-get install -y ca-certificates curl
       - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
       - apt-get install -y nodejs
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
     init: npm ci --ignore-scripts && npx --no-install patch-package
     output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
     prebuild: CABLESNAP_FDROID=1 npx expo prebuild --platform android --no-install
@@ -50,7 +52,8 @@ Builds:
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-    build: cd android && gradle assembleReleaseFdroid
+    build: export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 && cd android && gradle
+      assembleReleaseFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
