@@ -50,11 +50,10 @@ Builds:
       install-skia
     output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
     prebuild: CABLESNAP_FDROID=1 npx expo prebuild --platform android --no-install
-      && sed -i '/com.google.firebase/d' node_modules/expo-notifications/android/build.gradle
-      && sed -i '/com.android.installreferrer/d' node_modules/expo-application/android/build.gradle
-      && sed -i '/com.google.android.gms/d' node_modules/expo-camera/android/build.gradle
-      && sed -i '/com.google.mlkit/d' node_modules/expo-camera/android/build.gradle
-      && sed -i '/com.google.mlkit/d' node_modules/expo-dev-launcher/android/build.gradle
+      && sed -i '/com.google.firebase/d;/com.google.android.gms/d;/com.google.mlkit/d;/com.android.installreferrer/d'
+      node_modules/expo-notifications/android/build.gradle node_modules/expo-application/android/build.gradle
+      node_modules/expo-camera/android/build.gradle node_modules/expo-dev-launcher/android/build.gradle
+      android/app/build.gradle android/build.gradle
     scanignore:
       - node_modules
       - android/wear/build.gradle.kts
@@ -62,12 +61,12 @@ Builds:
       - modules/expo-wearos-bridge/android/build.gradle
     build: "printf '\\n%s\\n' 'expo.camera.barcode-scanner-enabled=false' >> android/gradle.properties\
       \ && printf '%s\\n' 'android { dependenciesInfo { includeInApk = false; includeInBundle\
-      \ = false } }' >> android/app/build.gradle && printf '%s\\n' 'configurations.configureEach\
-      \ { exclude group: \"com.google.android.gms\"; exclude group: \"com.google.firebase\"\
-      ; exclude group: \"com.google.mlkit\"; exclude group: \"com.android.installreferrer\"\
-      ; exclude module: \"camera-mlkit-vision\" }' >> android/app/build.gradle &&\
-      \ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 SENTRY_DISABLE_AUTO_UPLOAD=true\
-      \ && cd android && gradle assembleReleaseFdroid"
+      \ = false } }' >> android/app/build.gradle && printf '%s\\n' 'allprojects {\
+      \ configurations.configureEach { exclude group: \"com.google.android.gms\";\
+      \ exclude group: \"com.google.firebase\"; exclude group: \"com.google.mlkit\"\
+      ; exclude group: \"com.android.installreferrer\"; exclude module: \"camera-mlkit-vision\"\
+      \ } }' >> android/build.gradle && export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64\
+      \ SENTRY_DISABLE_AUTO_UPLOAD=true && cd android && gradle assembleReleaseFdroid"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
