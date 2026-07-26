@@ -1,0 +1,57 @@
+Categories:
+  - Wallet
+License: AGPL-3.0-only
+AuthorName: Fred (qo-op)
+AuthorEmail: support@qo-op.com
+WebSite: https://astroport.copylaradio.com
+SourceCode: https://github.com/papiche/troczen
+IssueTracker: https://github.com/papiche/troczen/issues
+
+AutoName: TrocZen
+
+RepoType: git
+Repo: https://github.com/papiche/troczen
+
+Builds:
+  - versionName: 3.6.2
+    versionCode: 2
+    commit: 90b6899f6471723018ebc9b19fc8c100a521a0ec
+    subdir: troczen
+    sudo:
+      - apt-get update -qq
+      - apt-get install -y unzip curl
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - web
+    prebuild:
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
+        false } }' >> android/app/build.gradle.kts
+      - sed -i -e '/^  mobile_scanner:/d' pubspec.yaml
+      - 'sed -i ''/^dependencies:/a\  flutter_zxing: ^2.3.0'' pubspec.yaml'
+      - grep -rl "import 'package:mobile_scanner/mobile_scanner.dart';" lib/
+        | xargs sed -i "s|import 'package:mobile_scanner/mobile_scanner.dart';|import
+        'package:troczen/vendor/foss_scanner.dart';|"
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+
+MaintainerNotes: |-
+  No Firebase. mobile_scanner pulls in Google ML Kit (barcode-scanning) by
+  default; the prebuild step removes it and swaps in lib/vendor/foss_scanner.dart,
+  a small API-compatible shim backed by flutter_zxing (ZXing-C++ via FFI, no
+  Google dependencies). Verified locally: the built APK contains zero
+  com/google/mlkit or com/google/android/gms classes.
+  dependenciesInfo is disabled to drop the Play Store dependency-metadata
+  signing block.
+
+ArchivePolicy: 2
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: troczen/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.6.2
+CurrentVersionCode: 2
