@@ -1,0 +1,57 @@
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Sports & Health
+  - Workout
+License: AGPL-3.0-or-later
+AuthorName: alankyshum
+WebSite: https://github.com/alankyshum/cablesnap
+SourceCode: https://github.com/alankyshum/cablesnap
+IssueTracker: https://github.com/alankyshum/cablesnap/issues
+Changelog: https://github.com/alankyshum/cablesnap/blob/HEAD/CHANGELOG.md
+
+AutoName: CableSnap
+Summary: Workout tracker for cable machine workouts
+Description: |
+  CableSnap is a local-first fitness app optimized for cable machine workouts,
+  with support for barbell, dumbbell, bodyweight, and machine exercises.
+  Track workouts, nutrition, and body measurements. Data is stored locally.
+
+  Features:
+  - Workout logging with sets, reps, weight, and RPE
+  - Exercise library with 100+ built-in exercises
+  - Workout templates and multi-day programs
+  - Nutrition tracking with macro targets
+  - Progress charts and 1RM tracking
+  - Body weight and measurements logging
+  - Workout history with calendar view
+  - Plate and 1RM calculators
+  - Tabata, EMOM, and AMRAP interval timers
+  - CSV export and sharing
+  - Dark mode support
+
+RepoType: git
+Repo: https://github.com/alankyshum/cablesnap.git
+
+Builds:
+  - versionName: 0.26.88
+    versionCode: 156
+    commit: v0.26.88
+    sudo:
+      - apt-get update
+      - apt-get install -y ca-certificates curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    init: npm ci --ignore-scripts && npx --no-install patch-package
+    output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
+    prebuild: CABLESNAP_FDROID=1 npx expo prebuild --platform android --no-install
+    scanignore:
+      - node_modules
+      - modules/expo-wearos-bridge/wear-template/build.gradle.kts
+      - modules/expo-wearos-bridge/android/build.gradle
+    build: cd android && gradle assembleReleaseFdroid
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.26.88
+CurrentVersionCode: 156
