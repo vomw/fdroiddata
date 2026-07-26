@@ -24,17 +24,16 @@ Builds:
     srclibs:
       - flutter@stable
     rm:
-      - ios
-      - linux
-      - web
+      - troczen/ios
+      - troczen/linux
+      - troczen/web
     prebuild:
       - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
         false } }' >> android/app/build.gradle.kts
       - sed -i -e '/^  mobile_scanner:/d' pubspec.yaml
-      - 'sed -i ''/^dependencies:/a\  flutter_zxing: ^2.3.0'' pubspec.yaml'
-      - grep -rl "import 'package:mobile_scanner/mobile_scanner.dart';" lib/
-        | xargs sed -i "s|import 'package:mobile_scanner/mobile_scanner.dart';|import
-        'package:troczen/vendor/foss_scanner.dart';|"
+      - "sed -i '/^dependencies:/a\\  flutter_zxing: ^2.3.0' pubspec.yaml"
+      - grep -rl "import 'package:mobile_scanner/mobile_scanner.dart';" lib/ | xargs
+        sed -i "s|import 'package:mobile_scanner/mobile_scanner.dart';|import 'package:troczen/vendor/foss_scanner.dart';|"
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
