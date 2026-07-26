@@ -47,11 +47,13 @@ Builds:
     prebuild: CABLESNAP_FDROID=1 npx expo prebuild --platform android --no-install
     scanignore:
       - node_modules
+      - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
     build: cd android && gradle assembleReleaseFdroid
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
 CurrentVersion: 0.26.88
 CurrentVersionCode: 156
