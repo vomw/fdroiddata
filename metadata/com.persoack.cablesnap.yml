@@ -22,15 +22,12 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install npm
-    init:
-      - cd ../..
-      - npm install
+    init: npm install
     gradle:
       - yes
     srclibs:
       - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     prebuild:
-      - cd ../..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
