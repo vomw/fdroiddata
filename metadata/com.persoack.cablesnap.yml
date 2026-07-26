@@ -55,8 +55,13 @@ Builds:
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-    build: export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 SENTRY_DISABLE_AUTO_UPLOAD=true
-      && cd android && gradle assembleReleaseFdroid
+    build: "printf '%s\\n' 'allprojects { configurations.configureEach { if (name.toLowerCase().contains(\"\
+      releasefdroid\")) { exclude group: \"com.google.android.gms\"; exclude group:\
+      \ \"com.google.firebase\"; exclude group: \"com.google.mlkit\"; exclude group:\
+      \ \"com.android.installreferrer\"; exclude module: \"camera-mlkit-vision\" }\
+      \ } }' > /tmp/fdroid.init.gradle && export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64\
+      \ SENTRY_DISABLE_AUTO_UPLOAD=true && cd android && gradle --init-script /tmp/fdroid.init.gradle\
+      \ assembleReleaseFdroid"
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
