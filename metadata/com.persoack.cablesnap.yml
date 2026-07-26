@@ -59,13 +59,13 @@ Builds:
       \ && sed -i '/com.android.installreferrer:installreferrer/d' node_modules/expo-application/android/build.gradle\
       \ && sed -i '/com.google.android.gms/d' node_modules/expo-camera/android/build.gradle\
       \ && sed -i '/com.google.mlkit/d' node_modules/expo-camera/android/build.gradle\
+      \ && sed -i '/com.google.mlkit/d' node_modules/expo-dev-launcher/android/build.gradle\
       \ && printf '\\n%s\\n' 'expo.camera.barcode-scanner-enabled=false' >> android/gradle.properties\
       \ && printf '%s\\n' 'android { dependenciesInfo { includeInApk = false; includeInBundle\
       \ = false } }' >> android/app/build.gradle && printf '%s\\n' 'configurations.configureEach\
-      \ { if (name.toLowerCase().contains(\"releasefdroid\")) { exclude group: \"\
-      com.google.android.gms\"; exclude group: \"com.google.firebase\"; exclude group:\
-      \ \"com.google.mlkit\"; exclude group: \"com.android.installreferrer\"; exclude\
-      \ module: \"camera-mlkit-vision\" } }' >> android/app/build.gradle && export\
+      \ { exclude group: \"com.google.android.gms\"; exclude group: \"com.google.firebase\"\
+      ; exclude group: \"com.google.mlkit\"; exclude group: \"com.android.installreferrer\"\
+      ; exclude module: \"camera-mlkit-vision\" }' >> android/build.gradle && export\
       \ JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 SENTRY_DISABLE_AUTO_UPLOAD=true\
       \ && cd android && gradle assembleReleaseFdroid"
 
