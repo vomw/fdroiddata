@@ -10,17 +10,17 @@ AutoName: Gotweb
 
 RepoType: git
 Repo: https://codeberg.org/gameoftrees/gotweb_authenticator.git
-Binaries:
-  https://codeberg.org/gameoftrees/gotweb_authenticator/releases/download/%v/app-release.apk
 
 Builds:
-  - versionName: 0.2.0
-    versionCode: 2
-    commit: 871d94c3cdc0b0edd78e8c835c0e7032f20cdef4
+  - versionName: 0.2.1
+    versionCode: 31
+    commit: dc6ee0a874f3a4d707406c087da95725b7b1ec0c
     sudo:
       - mkdir -p /home/jtt/
       - chown -R vagrant /home/jtt
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary:
+      https://codeberg.org/gameoftrees/gotweb_authenticator/releases/download/%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -51,7 +51,93 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/*/jni-*/src/CMakeLists.txt
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform='android-arm'
+      - popd
+      - mv $repo org.gameoftrees.gotweb_authenticator
+
+  - versionName: 0.2.1
+    versionCode: 32
+    commit: dc6ee0a874f3a4d707406c087da95725b7b1ec0c
+    sudo:
+      - mkdir -p /home/jtt/
+      - chown -R vagrant /home/jtt
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary:
+      https://codeberg.org/gameoftrees/gotweb_authenticator/releases/download/%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^\s+flutter:\s*([0-9.]+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/jtt/gotweb_authenticator
+      - cd ..
+      - mv org.gameoftrees.gotweb_authenticator $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo org.gameoftrees.gotweb_authenticator
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/jtt/gotweb_authenticator
+      - cd ..
+      - mv org.gameoftrees.gotweb_authenticator $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/*/jni-*/src/CMakeLists.txt
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform='android-arm64'
+      - popd
+      - mv $repo org.gameoftrees.gotweb_authenticator
+
+  - versionName: 0.2.1
+    versionCode: 33
+    commit: dc6ee0a874f3a4d707406c087da95725b7b1ec0c
+    sudo:
+      - mkdir -p /home/jtt/
+      - chown -R vagrant /home/jtt
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary:
+      https://codeberg.org/gameoftrees/gotweb_authenticator/releases/download/%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^\s+flutter:\s*([0-9.]+)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/jtt/gotweb_authenticator
+      - cd ..
+      - mv org.gameoftrees.gotweb_authenticator $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo org.gameoftrees.gotweb_authenticator
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/jtt/gotweb_authenticator
+      - cd ..
+      - mv org.gameoftrees.gotweb_authenticator $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/*/jni-*/src/CMakeLists.txt
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform='android-x64'
       - popd
       - mv $repo org.gameoftrees.gotweb_authenticator
 
@@ -59,6 +145,10 @@ AllowedAPKSigningKeys: 0f95b7a2e88a7e30956551966a6a186c2011270ece2f28a77b067969e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.2.0
-CurrentVersionCode: 2
+CurrentVersion: 0.2.1
+CurrentVersionCode: 33
