@@ -1,0 +1,50 @@
+Categories:
+  - Internet
+  - Security
+License: MIT
+AuthorName: Anton Tranelis
+AuthorEmail: info@real-life.org
+WebSite: https://web-of-trust.de
+SourceCode: https://github.com/real-life-org/web-of-trust
+IssueTracker: https://github.com/real-life-org/web-of-trust/issues
+Changelog: https://github.com/real-life-org/web-of-trust/releases
+
+AutoName: Web of Trust
+
+RepoType: git
+Repo: https://github.com/real-life-org/web-of-trust.git
+
+Builds:
+  - versionName: 0.2.1
+    versionCode: 3
+    commit: a7ee51da7825b550366b043b2ee205c163f5d4da
+    subdir: apps/demo/android/app
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - corepack enable
+      - corepack prepare pnpm@9.15.4 --activate
+    init:
+      - cd ../../../..
+      - pnpm install --frozen-lockfile
+      - export VITE_BASE_PATH=/ VITE_UPDATE_SERVER_URL=https://web-of-trust.de VITE_UPDATE_CHANNEL=android-foss
+      - pnpm build
+      - cd apps/demo
+      - npx cap sync android
+    gradle:
+      - fdroid
+    scanignore:
+      - apps/demo/android/app/src/main/assets/public/assets
+    scandelete:
+      - node_modules
+      - apps/demo/dist
+      - apps/benchmark/dist
+    ndk: r27c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v
+UpdateCheckData: apps/demo/android/version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.+)
+CurrentVersion: 0.2.1
+CurrentVersionCode: 3
