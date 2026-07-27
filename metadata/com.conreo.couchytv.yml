@@ -1,0 +1,50 @@
+# F-Droid build metadata for Couchy Launcher.
+#
+# This is the file you submit to https://gitlab.com/fdroid/fdroiddata as
+# metadata/com.conreo.couchytv.yml (a merge request against the default repo).
+# Nothing here is pushed anywhere automatically — fill in the repo URLs, then
+# open the MR yourself.
+#
+# Before submitting you MUST have a PUBLIC git repository with this exact source
+# and a signed/annotated tag "v1.0" pointing at the release commit (created
+# locally below). Then set SourceCode / Repo / IssueTracker to that repo.
+
+Categories:
+  - System
+License: GPL-3.0-only
+AuthorName: Rimko
+SourceCode: https://github.com/conreo/couchy-launcher
+IssueTracker: https://github.com/conreo/couchy-launcher/issues
+# Optional: Donate, Translation, Changelog, etc.
+
+RepoType: git
+Repo: https://github.com/conreo/couchy-launcher.git
+
+Builds:
+  - versionName: "1.0"
+    versionCode: 1
+    commit: v1.0
+    subdir: app
+    gradle:
+      - yes
+
+# F-Droid signs the build with its own key; the release variant is unsigned by
+# default (the debug signingConfig only applies with -PlocalSign, which F-Droid
+# does not pass). dependenciesInfo is disabled for a reproducible artifact.
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: "1.0"
+CurrentVersionCode: 1
+
+# Notes for the reviewer:
+# * No trackers, no ads, no Google Play services, no proprietary dependencies
+#   (Compose, androidx.tv, DataStore, kotlinx-serialization, Media3 — all
+#   Apache-2.0/EPL FOSS). Couch artwork is Twemoji (MIT).
+# * Out of the box it makes NO network requests (wallpaper defaults to a static
+#   gradient). Streaming aerial wallpapers is opt-in and pulls public video
+#   from Apple/Amazon/GitHub CDNs; consider AntiFeatures: [NonFreeNet] only if
+#   that policy applies — the feature is optional and off by default.
+# * The wallpaper video player uses a trust-all TLS client SCOPED to streaming
+#   decorative public video (Apple's sylvan.apple.com chain is rejected by many
+#   TV trust stores); no credentials or private data traverse it.
