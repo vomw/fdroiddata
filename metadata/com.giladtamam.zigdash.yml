@@ -15,15 +15,18 @@ Repo: https://gitlab.com/tamamg/zigdash.git
 Builds:
   - versionName: 1.7.0
     versionCode: 17
-    commit: v1.7.0
+    commit: 6b26bf7e88742ee9c4cfe06968cb6491ee2c6f2b
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.32.5
+      - flutter@stable
     rm:
       - ios
       - web
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
