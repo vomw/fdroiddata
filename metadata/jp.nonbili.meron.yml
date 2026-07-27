@@ -10,9 +10,9 @@ RepoType: git
 Repo: https://github.com/nonbili/meron
 
 Builds:
-  - versionName: 0.1.13
-    versionCode: 15
-    commit: c5147fba15c2e647f40e151ea9afe957a1052a51
+  - versionName: 0.1.18
+    versionCode: 20
+    commit: d1cc45f5eccbe2ec36b314a51716a517e6a6c38c
     subdir: mobile
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
@@ -32,20 +32,20 @@ Builds:
     prebuild:
       - sed -i '/foojay-resolver/d' settings.gradle
       - sed -i '/dependsOn tasks.named("packageRustCoreAndroid")/d' android/build.gradle
+      - cd ..
+      - bun scripts/i18n/catalog.ts generate
+      - rm -f package.json
+    build:
       - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
       - rustup default 1.96.1
       - rustup target add aarch64-linux-android armv7-linux-androideabi
       - export PATH="/home/vagrant/.cargo/bin:$PATH"
       - cd ..
-      - bun scripts/i18n/catalog.ts generate
-      - rm -f package.json
       - rm -rf /home/runner/work/meron/meron
       - cp -a "$(pwd)" /home/runner/work/meron/meron
       - (cd /home/runner/work/meron/meron && PROFILE=release mobile/scripts/package-rust-core-android.sh)
       - rm -rf mobile/android/src/main/jniLibs
       - cp -a /home/runner/work/meron/meron/mobile/android/src/main/jniLibs mobile/android/src/main/
-    scanignore:
-      - mobile/android/src/main/jniLibs
     ndk: 27.3.13750724
 
 AllowedAPKSigningKeys: d377b8ae9a31768658107674ebdbf6bf2d5859277a0a952ab44de0837613d204
@@ -54,5 +54,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^android/v[0-9.]+$
 UpdateCheckData: 
   mobile/android/build.gradle|releaseVersionCode\s*=\s*(\d+)|.|releaseVersionName\s*=\s*"([^"]+)"
-CurrentVersion: 0.1.13
-CurrentVersionCode: 15
+CurrentVersion: 0.1.18
+CurrentVersionCode: 20
