@@ -22,16 +22,23 @@ Builds:
     versionCode: 3
     commit: 669447322bc425b86f0ae268d19f54c3646e14ec
     subdir: ncs_ssh-mobile_V1.2.0/apk/android
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
     gradle:
       - yes
     prebuild:
       - cd ..
-      - curl -fsSL -o /tmp/node.tar.gz https://nodejs.org/dist/v24.18.0/node-v24.18.0-linux-x64.tar.gz
-      - tar -xf /tmp/node.tar.gz -C /tmp
-      - export PATH=/tmp/node-v24.18.0-linux-x64/bin:$PATH
       - npm install
       - npm run build
       - npx cap sync android
+    scandelete:
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/esbuild/bin/esbuild
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@esbuild/linux-x64/bin/esbuild
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/ios-template.tar.gz
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/android-template.tar.gz
+      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
