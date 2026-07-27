@@ -1,22 +1,15 @@
 Categories:
-  - Writing
+  - Keyboard & IME
 License: Apache-2.0
-WebSite: http://s.evendanan.net/ask
-SourceCode: https://softkeyboard.googlecode.com/svn/trunk/LanguagePacks/Esperanto
-IssueTracker: https://github.com/AnySoftKeyboard/LanguagePack/issues
-Donate: https://anysoftkeyboard.github.io/
+AuthorName: Menny Even Danan
+AuthorEmail: ask@evendanan.net
+WebSite: https://anysoftkeyboard.github.io
+SourceCode: https://github.com/AnySoftKeyboard/AnySoftKeyboard
+IssueTracker: https://github.com/AnySoftKeyboard/AnySoftKeyboard/issues
+Donate: https://github.com/sponsors/menny
 
-Name: 'AnySoftKeyboard: Esperanto'
-AutoName: AnySoftKeyboard - Esperanto Language Pack
-Description: |-
-    Dictionary is [http://wiki.apertium.org/wiki/Vikipedia_korpuso_de_Esperanto
-    based on the Wikipedia] article database and has about 50,000 words.
-
-    Install [[com.menny.android.anysoftkeyboard]] first, then select the desired
-    layout from AnySoftKeyboard's Settings->Keyboards menu.
-
-RepoType: git-svn
-Repo: https://softkeyboard.googlecode.com/svn/trunk/LanguagePacks/Esperanto
+RepoType: git
+Repo: https://github.com/AnySoftKeyboard/AnySoftKeyboard.git
 
 Builds:
   - versionName: '20100613'
@@ -37,7 +30,22 @@ Builds:
       - rm -rf assets/ libs/
     build: java -jar $$AnySoftKeyboardTools$$/makedict/makedict.jar
 
+  - versionName: 5.1.6158
+    versionCode: 6158
+    commit: b10a79fcc1a61c1e737d7aac43aab0141f065185
+    subdir: addons/languages/esperanto/apk
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/navigation-dynamic-features-fragment/d' ../../../../ime/app/build.gradle
+      - cp -R ../../../../gradle .
+    scanignore:
+      - addons/languages/*/pack/dictionary/*.gz
+    ndk: r27c
+    gradleprops:
+      - forceVersionBuildCount=8461
+
 AutoUpdateMode: None
-UpdateCheckMode: Static
-CurrentVersion: '20100613'
-CurrentVersionCode: 2
+UpdateCheckMode: None
+CurrentVersion: 5.1.6158
+CurrentVersionCode: 6158

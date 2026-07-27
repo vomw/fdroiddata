@@ -1,5 +1,6 @@
 Categories:
-  - Games
+  - Casual Game
+  - Wallpaper
 License: GPL-3.0-only
 AuthorWebSite: https://www.facebook.com/nounoursbear
 SourceCode: https://github.com/caarmen/nounours-android
@@ -8,15 +9,15 @@ Changelog: https://github.com/caarmen/nounours-android/releases
 
 AutoName: Nounours
 Description: |-
-    This cute teddy bear is a fun friend for children of all ages. Move him around
-    by moving his head, paws, tummy, and ears. Spin him around.  Shake the phone.
-    Nounours does some funny animations (disco, flying, jumping). Record and share
-    his moves.
+  This cute teddy bear is a fun friend for children of all ages. Move him around
+  by moving his head, paws, tummy, and ears. Spin him around.  Shake the phone.
+  Nounours does some funny animations (disco, flying, jumping). Record and share
+  his moves.
 
-    Includes themes of Nounours in different settings, as well as a theme of
-    Bugdroid.
+  Includes themes of Nounours in different settings, as well as a theme of
+  Bugdroid.
 
-    Includes a live wallpaper.
+  Includes a live wallpaper.
 
 RepoType: git
 Repo: https://github.com/caarmen/nounours-android
@@ -32,14 +33,6 @@ Builds:
   - versionName: 2.0.2
     versionCode: 202
     commit: release-2.0.2
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 2.1.0
-    versionCode: 210
-    disable: scanner errors
-    commit: release-2.1.0
     subdir: app
     gradle:
       - yes
@@ -167,8 +160,28 @@ Builds:
       - wear
     prebuild: sed -i "/include ':wear'/d" ../settings.gradle
 
-AutoUpdateMode: Version release-%v
-UpdateCheckMode: HTTP
-UpdateCheckData: https://raw.githubusercontent.com/caarmen/nounours-android/master/build.gradle|ext.handheldVersionCode=(.*)|.|ext.handheldVersionName="(.*)"
-CurrentVersion: 3.4.8
-CurrentVersionCode: 348
+  - versionName: 3.5.0
+    versionCode: 350
+    commit: 61b247566f7459d311d7072de225b63922d9f34e
+    subdir: handheld
+    gradle:
+      - full
+    rm:
+      - wear
+    prebuild: sed -i "/include ':wear'/d" ../settings.gradle
+
+  - versionName: 3.5.8
+    versionCode: 358
+    commit: 989769804f77ffd81539ad5ed3e1c7dddcf04302
+    subdir: handheld
+    gradle:
+      - full
+    rm:
+      - wear
+    prebuild: sed -i "/include ':wear'/d" ../settings.gradle
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^release-.*$
+UpdateCheckData: build.gradle|ext.handheldVersionCode=(\d+)|.|ext.handheldVersionName="(.*)"
+CurrentVersion: 3.5.8
+CurrentVersionCode: 358

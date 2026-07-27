@@ -1,15 +1,17 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: Depends on different public transport data providers.
 Categories:
   - Internet
   - Navigation
+  - Public Transport
 License: GPL-2.0-or-later
 WebSite: https://kde.org
 SourceCode: https://invent.kde.org/kde/ktrip/
 IssueTracker: https://invent.kde.org/kde/ktrip/issues
 
 RepoType: git
-Repo: https://invent.kde.org/kde/ktrip/
+Repo: https://invent.kde.org/kde/ktrip.git
 
 Builds:
   - versionName: 0.0.1
@@ -17,7 +19,7 @@ Builds:
     commit: v0.99.1
     timeout: 12000
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y g++ qttools5-dev-tools -t stretch-backports cmake
     output: ktrip_build_apk-release-unsigned.apk
     build:
@@ -145,6 +147,9 @@ Builds:
       - make install
       - popd
       - git clone https://anongit.kde.org/kpublictransport.git
+      - pushd kpublictransport
+      - git checkout 5f1c2c780f72379dd401cae9f8fd4bec692c780b
+      - popd
       - mkdir build/kpublictransport
       - pushd build/kpublictransport
       - cmake -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH="$QT;$PREFIX" -DCMAKE_SYSTEM_NAME=Android
@@ -161,7 +166,8 @@ Builds:
       - make install
       - make create-apk ARGS="--release"
       - popd
-      - cp build/ktrip/ktrip_build_apk//build/outputs/apk/release/ktrip_build_apk-release-unsigned.apk
+      - cp 
+        build/ktrip/ktrip_build_apk//build/outputs/apk/release/ktrip_build_apk-release-unsigned.apk
         $BASE
     ndk: r18b
 

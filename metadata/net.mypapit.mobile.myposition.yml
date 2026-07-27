@@ -1,5 +1,8 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: Rely on OpenStreetMap
 Categories:
-  - Navigation
+  - Location Tracker & Sharer
 License: GPL-2.0-or-later
 AuthorName: GDR!
 AuthorEmail: gdr@gdr.name
@@ -10,8 +13,8 @@ Changelog: https://github.com/gjedeer/mylocation/releases
 
 AutoName: My Position
 Description: |-
-    Share your location, easily and lightly. Supports plain coordinates, geo:-URI,
-    OpenStreetMap- and GoogleMaps-Links.
+  Share your location, easily and lightly. Supports plain coordinates, geo:-URI,
+  OpenStreetMap- and GoogleMaps-Links.
 
 RepoType: git
 Repo: https://github.com/gjedeer/mylocation
@@ -73,7 +76,22 @@ Builds:
     gradle:
       - yes
 
-AutoUpdateMode: Version %v
-UpdateCheckMode: Tags
-CurrentVersion: 1.3.3
-CurrentVersionCode: 16
+  - versionName: 1.3.5
+    versionCode: 18
+    commit: d3a78056923823725ba276991df349cad951419d
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - gradle
+      - app/libs
+    prebuild:
+      - sed -i -e 's/2.3.0+/7.4.0/' -e '/task wrapper/,/^}/d' -e '/repositories {/a
+        google()' ../build.gradle
+      - sed -i -e 's/compile /implementation /g' build.gradle
+
+ArchivePolicy: 0
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.3.5
+CurrentVersionCode: 18

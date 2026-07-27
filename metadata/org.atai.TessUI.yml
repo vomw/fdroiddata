@@ -1,6 +1,6 @@
 Categories:
-  - Multimedia
   - Graphics
+  - Multimedia
 License: AGPL-3.0-or-later
 WebSite: https://gitlab.com/character-recognition/character-recognition
 SourceCode: https://gitlab.com/character-recognition/character-recognition/tree/HEAD
@@ -8,10 +8,10 @@ IssueTracker: https://gitlab.com/character-recognition/character-recognition/iss
 
 AutoName: Character Recognition
 Description: |-
-    OCR software based on [https://code.google.com/p/tesseract-ocr/ Tesseract]
-    library to perform character recognition on images selected from the gallery or
-    captured from the camera. Recognition results can be edited or copied for
-    export.
+  OCR software based on <a href="https://code.google.com/p/tesseract-ocr/">Tesseract</a>
+  library to perform character recognition on images selected from the gallery or
+  captured from the camera. Recognition results can be edited or copied for
+  export.
 
 RepoType: git
 Repo: https://gitlab.com/character-recognition/character-recognition.git
@@ -29,6 +29,7 @@ Builds:
       - tesseract-android-tools
     buildjni:
       - ../tesseract-android-tools
+    ndk: r12b
 
   - versionName: 0.3.7
     versionCode: 13
@@ -43,13 +44,14 @@ Builds:
       - TessUI/libs/microsoft-translator-java-api-0.6.2-jar-with-dependencies.jar
     prebuild:
       - pushd $$BingTranslator$$
-      - $$MVN3$$ -Dmaven.test.skip=true package
+      - mvn -Dmaven.test.skip=true package
       - popd
       - cp $$BingTranslator$$/target/microsoft-translator-java-api-0.6.2.jar libs/
     scandelete:
       - tesseract-android-tools
     buildjni:
       - ../tesseract-android-tools
+    ndk: r12b
 
   - versionName: 0.3.10
     versionCode: 16
@@ -58,7 +60,8 @@ Builds:
     gradle:
       - yes
 
+ArchivePolicy: 0
 AutoUpdateMode: None
-UpdateCheckMode: Tags
+UpdateCheckMode: None
 CurrentVersion: 0.3.10
 CurrentVersionCode: 16

@@ -8,11 +8,6 @@ IssueTracker: https://github.com/mvbasov/lWS.QR/issues
 Changelog: https://github.com/mvbasov/lWS.QR/releases
 
 AutoName: lWS QR
-Description: |-
-    This app is designed as a QR Code plugin for [[net.basov.lws.fdroid]]. It can
-    also be used standalone as a small and simple QR code generator. lWS QR can be
-    easily integrated with your application. See [https://github.com/mvbasov/lWS.QR
-    the source code] for details.
 
 RepoType: git
 Repo: https://github.com/mvbasov/lWS.QR.git
@@ -54,14 +49,27 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - apt update || apt update
-      - apt install -y node-uglify
+      - apt-get update
+      - apt-get install -y node-uglify
     gradle:
       - fdroid
     prebuild: sed -i -e '/versionNameSuffix/d' build.gradle
 
-AutoUpdateMode: Version v%vf
+  - versionName: 05.00.00
+    versionCode: 50100
+    commit: e9f5b52306bfa48e0aee0dafe71e92338c581826
+    subdir: app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y node-uglify -t bullseye
+    gradle:
+      - fdroid
+    prebuild: sed -i -e '/versionNameSuffix/d' build.gradle
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.00(\.\d+)?f
 UpdateCheckName: net.basov.lws.qr
-CurrentVersion: 04.00.00
-CurrentVersionCode: 40000
+CurrentVersion: 05.00.00
+CurrentVersionCode: 50100

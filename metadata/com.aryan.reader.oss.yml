@@ -1,0 +1,141 @@
+Categories:
+  - Ebook Reader
+License: AGPL-3.0-only
+AuthorName: Aryan
+SourceCode: https://github.com/Aryan-Raj3112/episteme
+IssueTracker: https://github.com/Aryan-Raj3112/episteme/issues
+Translation: https://translate.epistemereader.com/projects/episteme
+Changelog: https://github.com/Aryan-Raj3112/episteme/releases
+
+AutoName: Episteme
+
+RepoType: git
+Repo: https://github.com/Aryan-Raj3112/episteme
+Binaries: 
+  https://github.com/Aryan-Raj3112/episteme/releases/download/v%v/Episteme-oss-v%v-release.apk
+
+Builds:
+  - versionName: 1.0.36-oss
+    versionCode: 37
+    commit: 4d06420b12c506d99c9551aa19466d78517308d0
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.37-oss
+    versionCode: 38
+    commit: 3509059d1f724f84c58a738466ebf45c77ac5b1c
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.38-oss
+    versionCode: 39
+    commit: 32e29dfc078480ef91071f19f7ebd64097777196
+    subdir: app
+    gradle:
+      - oss
+    rm:
+      - gradle/gradle-daemon-jvm.properties
+
+  - versionName: 1.0.39-oss
+    versionCode: 40
+    commit: 0d37bcefc30e3ed786ed9e1bb8f505e547957dc6
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.40-oss
+    versionCode: 41
+    commit: 6fd6dd56091cfb0f0e7184d21f6fd8d52a4fd4a5
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.41-oss
+    versionCode: 42
+    commit: 26692d2c0520ca5ff1408a9fc7ba7fe314c92cf8
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.42-oss
+    versionCode: 43
+    commit: 17a0097d4a8a4ff76b91fc17ecb27fb09d6f4332
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.43-oss
+    versionCode: 44
+    commit: 46620fa71a9f647a50f29417a8cf1140135390f9
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.45-oss
+    versionCode: 45
+    commit: d4b9bdb98a36fd1fecb2be57e906812b830dccd8
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.46-oss
+    versionCode: 46
+    commit: 4582b506f31d4d6adb7ab8cc576105601ef1476f
+    subdir: app
+    gradle:
+      - oss
+
+  - versionName: 1.0.47-oss
+    versionCode: 51
+    commit: d7a9cae9e1a8d3826eac1572004a639e0d098ac4
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e '/jogamp/d' -e '/https.jitpack/d' ../settings.gradle.kts
+
+  - versionName: 1.0.48-oss
+    versionCode: 52
+    commit: bcf34af7190b6ac662933367a775fce64a666d57
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e '/jogamp/d' -e '/https.jitpack/d' ../settings.gradle.kts
+
+  - versionName: 1.0.49-oss
+    versionCode: 53
+    commit: 5971eaa57140f5172ef1a0f3c360dd828acf0b1e
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e '/jogamp/d' -e '/https.jitpack/d' ../settings.gradle.kts
+
+  - versionName: 1.0.50-oss
+    versionCode: 54
+    commit: e615128a23cb5126d8d2342660f940d01c4f620a
+    subdir: app
+    gradle:
+      - oss
+    prebuild: sed -i -e '/jogamp/d' -e '/https.jitpack/d' ../settings.gradle.kts
+
+  - versionName: 1.0.52-oss
+    versionCode: 56
+    commit: 22c6995dc55025bae5e32c591a39a393f64a1fa4
+    subdir: app
+    gradle:
+      - oss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/jogamp/d' -e '/https.jitpack/d' ../settings.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 4d77f55745749b04fcbe9a60e1a2edca5dd0cfbbd72bb58ce0dd156cb1b814c9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.52-oss
+CurrentVersionCode: 56

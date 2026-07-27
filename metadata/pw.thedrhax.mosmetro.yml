@@ -5,17 +5,18 @@ Categories:
   - Internet
 License: GPL-3.0-only
 AuthorName: Wi-Fi в метро
-AuthorWebSite: https://jenkins.thedrhax.pw/view/Wi-Fi%20%D0%B2%20%D0%BC%D0%B5%D1%82%D1%80%D0%BE/
+AuthorWebSite: 
+  https://jenkins.thedrhax.pw/view/Wi-Fi%20%D0%B2%20%D0%BC%D0%B5%D1%82%D1%80%D0%BE/
 SourceCode: https://github.com/mosmetro-android/mosmetro-android
 IssueTracker: https://github.com/mosmetro-android/mosmetro-android/issues
 Changelog: https://github.com/mosmetro-android/mosmetro-android/blob/HEAD/CHANGELOG
 
 AutoName: Moscow Wi-Fi autologin
 Description: |-
-    Allows you to connect to Wi-Fi in the Moscow metro, Aeroexpress, MCC and other
-    ground transportation (buses, trolleybuses, trams) in fully automatic mode. No
-    action is required from you: immediately after installation, the application is
-    ready to work.
+  Allows you to connect to Wi-Fi in the Moscow metro, Aeroexpress, MCC and other
+  ground transportation (buses, trolleybuses, trams) in fully automatic mode. No
+  action is required from you: immediately after installation, the application is
+  ready to work.
 
 RepoType: git
 Repo: https://github.com/mosmetro-android/mosmetro-android
@@ -115,7 +116,85 @@ Builds:
       - yes
     prebuild: sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
 
-AutoUpdateMode: Version %c
+  - versionName: '2.0'
+    versionCode: 72
+    commit: '72'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+  - versionName: '2.1'
+    versionCode: 73
+    commit: '73'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+  - versionName: '2.2'
+    versionCode: 74
+    commit: '74'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+  - versionName: '2.3'
+    versionCode: 75
+    commit: '75'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+  - versionName: 2.3.1
+    versionCode: 76
+    commit: '76'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+  - versionName: 2.3.2
+    versionCode: 77
+    commit: '77'
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/libs/gradle-android-eclipse-1.1.1.jar
+    prebuild:
+      - sed -i -e 's|google()|maven {url "https://maven.google.com"}|' ../build.gradle
+      - sed -i -e '/greensopinion.gradle/,+25d' build.gradle
+      - sed -i -e '/pref_updater_enabled_summary/{n;s/true/false/}' src/main/res/xml/preferences.xml
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.9'
-CurrentVersionCode: 71
+CurrentVersion: 2.3.2
+CurrentVersionCode: 77

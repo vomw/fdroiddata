@@ -1,4 +1,5 @@
 Categories:
+  - Camera
   - Multimedia
 License: GPL-3.0-only
 AuthorName: Dozing Cat Software
@@ -7,10 +8,6 @@ SourceCode: https://github.com/dozingcat/VectorCamera
 IssueTracker: https://github.com/dozingcat/VectorCamera/issues
 
 AutoName: Vector Camera
-Description: Vector Camera displays real-time effects applied to what your camera
-    is pointing at. Effects include wireframes and outlines, color shifting, and rendering
-    with text characters. Take pictures and record videos, change their effects, and
-    export or share them. You can also apply the effects to your existing pictures.
 
 RepoType: git
 Repo: https://github.com/dozingcat/VectorCamera
@@ -122,10 +119,39 @@ Builds:
       - mv libvpx.a $DIR/src/main/cpp/libvpx_prebuilt_libs/x86_64/
     ndk: r15c
 
-MaintainerNotes: The libvpx build is documented by upstream [https://github.com/dozingcat/VectorCamera/blob/master/README-libvpx.md
-    here].
+  - versionName: 1.5.0
+    versionCode: 12
+    commit: v1.5.0
+    subdir: app
+    gradle:
+      - yes
 
-AutoUpdateMode: Version v%v
+  - versionName: 1.6.0
+    versionCode: 13
+    commit: 5ebb5d7234b98f4b9258815a7ed951ee432759e7
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 1.7.0
+    versionCode: 14
+    commit: v1.7.0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y libncurses5
+    gradle:
+      - yes
+
+MaintainerNotes: libncurses5 is needed by the RenderScript compiler. The libvpx build
+  (not needed in 1.5.0 and later) is documented by upstream <a 
+  href="https://github.com/dozingcat/VectorCamera/blob/fa48daf8dc080fd03eb9311c0342b81b41f345e8/README-libvpx.md">here</a>.
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.4.3
-CurrentVersionCode: 11
+CurrentVersion: 1.7.0
+CurrentVersionCode: 14

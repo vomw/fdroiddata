@@ -1,36 +1,18 @@
 Categories:
   - Internet
+  - Messaging
 License: GPL-3.0-only
 AuthorName: Janne Mareike Koschinski
 SourceCode: https://git.kuschku.de/justJanne/QuasselDroid-ng
 IssueTracker: https://git.kuschku.de/justJanne/QuasselDroid-ng/issues
-Translation: https://www.transifex.com/quasseldroid-1/quasseldroid-1/
+Translation: https://explore.transifex.com/quasseldroid-1/quasseldroid-1/
 Donate: https://www.patreon.com/justjanne
 
 Name: Quasseldroid
-Description: |-
-    Chat comfortably. Everywhere.
-
-    '''REQUIRES A QUASSEL CORE – DOES NOT WORK AS STANDALONE IRC CLIENT'''
-
-    * Use IRC on the go – thanks to the Quassel core, you’ll never miss anything
-    * Always have your entire chat history available – just scroll up to load older messages, the core keeps them for you
-    * Be notified when someone messages you – even if you had no connection in the meantime
-
-    '''Requirements:'''
-
-    You need to have an account on a Quassel core to use this app. If you have none, you can either set a core up yourself, or check if you can get an account on someone else’s core.
-
-    This app only works with cores that run at least Quassel v0.10, for all features to be available you’ll need Quassel v0.13
-
-    To learn about how to set up a quassel core, see the wiki at http://bugs.quassel-irc.org/projects/quassel-irc/wiki
-
-    '''Contact:'''
-
-    You can find us in #quasseldroid on Freenode, or contact us under support@kuschku.de
+AutoName: Quasseldroid
 
 RepoType: git
-Repo: https://git.kuschku.de/justjanne/QuasselDroid-ng/
+Repo: https://git.kuschku.de/justjanne/QuasselDroid-ng.git
 
 Builds:
   - versionName: v1.0.11
@@ -465,7 +447,62 @@ Builds:
     scandelete:
       - buildSrc
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: v1.3.2
-CurrentVersionCode: 1275
+  - versionName: 1.4.3
+    versionCode: 1290
+    commit: 1.4.3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 1.5.2
+    versionCode: 1299
+    commit: 1.5.2
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 1.5.3
+    versionCode: 1300
+    commit: 1.5.3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 1.6.2
+    versionCode: 1322
+    commit: 1.6.2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfigs {/,/^  }/d' -e '/signingConfigs/d' ../gradle/convention/src/main/kotlin/justjanne.android.signing.gradle.kts
+    scandelete:
+      - gradle/convention/build
+
+  - versionName: 1.7.0
+    versionCode: 1381
+    commit: 1.7.0
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfigs/d' ../gradle/convention/src/main/kotlin/AndroidApplicationConvention.kt
+    scandelete:
+      - gradle/convention/build
+
+  - versionName: 1.8.0
+    versionCode: 1398
+    commit: f1ce8f7e41909e778178d3c0d86302bc6d31aaf0
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/signingConfigs/d' ../gradle/convention/src/main/kotlin/AndroidApplicationConvention.kt
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: HTTP
+UpdateCheckData: 
+  https://s3.kuschku.de/releases/quasseldroid-ng/version.json|{\s*"name":\s*"[^"]*",\s*"code":\s*([0-9]+)\s*}|.|{\s*"name":\s*"([^"]*)",\s*"code":\s*[0-9]*\s*}
+CurrentVersion: 1.8.0
+CurrentVersionCode: 1398
