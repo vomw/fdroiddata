@@ -9,37 +9,36 @@ License: GPL-3.0-only
 AuthorName: NetCorSoft
 AuthorEmail: info@netcorsoft.de
 WebSite: https://netcorsoft.de
-SourceCode: https://gitl.netcorsoft.eu/applikationen/ncs_ssh-client_mobile
+SourceCode: https://gitl.netcorsoft.eu/applikationen/ncs_ssh-client_mobile_f-droid
 IssueTracker: https://gitl.netcorsoft.eu/applikationen/ncs_ssh-client_mobile/issues
 
 AutoName: NCS SSH Client
 
 RepoType: git
-Repo: https://gitl.netcorsoft.eu/applikationen/ncs_ssh-client_mobile.git
+Repo: https://gitl.netcorsoft.eu/applikationen/ncs_ssh-client_mobile_f-droid.git
 
 Builds:
   - versionName: 1.2.0
     versionCode: 3
-    commit: 669447322bc425b86f0ae268d19f54c3646e14ec
-    subdir: ncs_ssh-mobile_V1.2.0/apk/android
+    commit: 3ab7f92406a989210c6a314e85ec15f58e919302
+    subdir: apk/android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     gradle:
       - yes
-    output: app/build/outputs/apk/release/*.apk
     prebuild:
-      - cd ..
+      - cd ../..
       - npm install
       - npm run build
       - npx cap sync android
     scandelete:
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/esbuild/bin/esbuild
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@esbuild/linux-x64/bin/esbuild
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/ios-template.tar.gz
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/android-template.tar.gz
-      - ncs_ssh-mobile_V1.2.0/apk/node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
+      - apk/node_modules/esbuild/bin/esbuild
+      - apk/node_modules/@esbuild/linux-x64/bin/esbuild
+      - apk/node_modules/@capacitor/cli/assets/ios-template.tar.gz
+      - apk/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - apk/node_modules/@capacitor/cli/assets/android-template.tar.gz
+      - apk/node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
