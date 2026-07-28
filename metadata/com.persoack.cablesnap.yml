@@ -25,7 +25,7 @@ Builds:
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
-    output: android/app/build/outputs/apk/release/app-release.apk
+    output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -37,7 +37,6 @@ Builds:
         {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
         const fs=require("fs"); const a="android/app/build.gradle"; const p="android/build.gradle";
         fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
-      - sed -i '/cablesnap:fdroid-subproject-filter/,$d' android/build.gradle
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - android/wear/build.gradle.kts
@@ -48,7 +47,7 @@ Builds:
       - node_modules
     build:
       - cd android
-      - gradle assembleRelease
+      - gradle assembleReleaseFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
