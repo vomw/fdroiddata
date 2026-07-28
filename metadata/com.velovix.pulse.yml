@@ -48,11 +48,9 @@ Builds:
         package.json)
       - '[[ $skiaVersion ]] || exit 1'
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - sed -i -e 's/for (const key of mapKeys(configurations))/const key = "android";/'
-        -e 's/for (const target of mapKeys(configuration.targets))/const target =
-        "arm";/' -e 's/import { $, mapKeys, runAsync }/import { $, runAsync }/' -e
-        '/ban-ts-comment/,+1d' -e '/buildXCFrameworks()/d' -e '/buildXCFrameworks/,/^};/d'
-        -e '/copyHeaders/d' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
+      - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm", "arm64", "x86", "x64"]/'
+        -e 's/import { \$, mapKeys, runAsync }/import { $, runAsync }/'
+        $$react-native-skia$$/packages/skia/scripts/build-skia.ts
     build:
       - export ANDROID_NDK=$ANDROID_HOME/ndk/27.1.12297006
       - pushd $$react-native-skia$$/packages/skia
