@@ -37,8 +37,7 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - sed -i 's/versionCode 159/versionCode 159001/' android/app/build.gradle
@@ -79,8 +78,7 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - sed -i 's/versionCode 159/versionCode 159002/' android/app/build.gradle
@@ -121,8 +119,7 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - sed -i 's/versionCode 159/versionCode 159003/' android/app/build.gradle
@@ -144,12 +141,54 @@ Builds:
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
+  - versionName: 0.26.91
+    versionCode: 159004
+    commit: 84361b3a646f1684b676b8466a571d687bec6db2
+    sudo:
+      - apt-get update
+      - apt-get install npm
+    init:
+      - npm pkg delete dependencies.expo-dev-client
+      - npm install
+      - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
+        const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
+    output: android/app/build/outputs/apk/releaseFdroid/app-x86_64-releaseFdroid-unsigned.apk
+    prebuild:
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
+      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
+        fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
+      - sed -i 's/versionCode 159/versionCode 159004/' android/app/build.gradle
+      - sed -i '/packagingOptions {/i\    splits { abi { reset(); enable true; universalApk
+        false; include "x86_64" } }' android/app/build.gradle
+      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
+      - printf '\nreactNativeArchitectures=x86_64\n' >> android/gradle.properties
+      - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
+        modules/expo-wearos-bridge/wear-template/build.gradle.kts
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules
+      - android/wear/build.gradle.kts
+      - modules/expo-wearos-bridge/wear-template/build.gradle.kts
+      - modules/expo-wearos-bridge/android/build.gradle
+      - public/canvaskit.wasm
+    build:
+      - cd android
+      - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
+        assembleReleaseFdroid -x lintVitalAnalyzeRelease
+
 AutoUpdateMode: None
 UpdateCheckMode: None
 VercodeOperation:
   - 1000 * %c + 1
   - 1000 * %c + 2
   - 1000 * %c + 3
+  - 1000 * %c + 4
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
 CurrentVersion: 0.26.91
-CurrentVersionCode: 159003
+CurrentVersionCode: 159004
