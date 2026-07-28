@@ -16,9 +16,9 @@ RepoType: git
 Repo: https://github.com/alankyshum/cablesnap.git
 
 Builds:
-  - versionName: 0.26.88
-    versionCode: 156
-    commit: v0.26.88
+  - versionName: 0.26.90
+    versionCode: 158
+    commit: v0.26.90
     sudo:
       - apt-get update
       - apt-get install npm
@@ -26,26 +26,12 @@ Builds:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
     output: android/app/build/outputs/apk/release/app-release.apk
-    srclibs:
-      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
-        -e '/getInstallReferrerAsync/apromise.resolve("")' node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
-      - sed -i -e '/gms/d' -e '/mlkit/d' node_modules/expo-camera/android/build.gradle
-      - rm node_modules/expo-camera/android/src/main/java/expo/modules/camera/analyzers/{BarcodeScannerResultSerializer,MLKitBarcodeAnalyzer}.kt
-      - sed -i -e '/@OptIn/,/^}/d' -e '/mlkit/d' node_modules/expo-camera/android/src/main/java/expo/modules/camera/analyzers/BarcodeAnalyzer.kt
-      - sed -i -e '/barcode\./Id' -e '/mapToBarcode/,/^  }/d' node_modules/expo-camera/android/src/main/java/expo/modules/camera/records/CameraRecords.kt
-      - sed -i -e '/mlkit/d' -e '/analyzers/d' -e '/onSuccess/,/^\s\{10\}}/s/^\s\{12\}.*//'
-        -e '/launchScanner/,/^    }/s/^      .*//' node_modules/expo-camera/android/src/main/java/expo/modules/camera/CameraViewModule.kt
-      - sed -i -e '/analyzer.setAnalyzer/,/^\s\{10\})/d' -e '/BarcodeAnalyzer/d' node_modules/expo-camera/android/src/main/java/expo/modules/camera/ExpoCameraView.kt
-      - CI=true npx expo prebuild -p android --clean
+      - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - android/wear/build.gradle.kts
@@ -61,5 +47,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
-CurrentVersion: 0.26.88
-CurrentVersionCode: 156
+CurrentVersion: 0.26.90
+CurrentVersionCode: 158
