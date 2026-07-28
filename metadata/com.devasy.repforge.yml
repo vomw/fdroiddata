@@ -26,8 +26,6 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-armeabi-v7a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -37,6 +35,7 @@ Builds:
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find $PUB_CACHE -name "CMakeLists.txt" -exec sed -i -e '1a add_link_options("LINKER:--build-id=none")' {} + 2>/dev/null || true
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -46,9 +45,8 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export LDFLAGS="-Wl,--build-id=none"
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
-      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-        /home/runner/ref.apk build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -69,8 +67,6 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-arm64-v8a.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -80,6 +76,7 @@ Builds:
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find $PUB_CACHE -name "CMakeLists.txt" -exec sed -i -e '1a add_link_options("LINKER:--build-id=none")' {} + 2>/dev/null || true
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -89,9 +86,8 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export LDFLAGS="-Wl,--build-id=none"
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-        /home/runner/ref.apk build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -112,8 +108,6 @@ Builds:
     prebuild:
       - export repo=/home/runner/work/Workout-logger
       - mkdir -p $repo
-      - curl -L -o /home/runner/ref.apk 
-        https://github.com/Devasy/Workout-logger/releases/download/v$$VERSION$$/repforge-v$$VERSION$$-x86_64.apk
       - cd ../..
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
@@ -123,6 +117,7 @@ Builds:
       - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find $PUB_CACHE -name "CMakeLists.txt" -exec sed -i -e '1a add_link_options("LINKER:--build-id=none")' {} + 2>/dev/null || true
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
@@ -132,9 +127,8 @@ Builds:
       - mv com.devasy.repforge $repo/Workout-logger
       - pushd $repo/Workout-logger/workout-logger
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export LDFLAGS="-Wl,--build-id=none"
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
-      - python3 ../scripts/patch_so.py build/app/outputs/flutter-apk/app-x86_64-release.apk
-        /home/runner/ref.apk build/app/outputs/flutter-apk/app-x86_64-release.apk
       - popd
       - mv $repo/Workout-logger com.devasy.repforge
       - cd com.devasy.repforge/workout-logger
