@@ -15,19 +15,18 @@ Repo: https://github.com/zenjan1/ipmsg-torrent
 Builds:
   - versionName: 2.4.0
     versionCode: 2004000
-    commit: v2.4.0
+    commit: fa5c7fac94e96e2d74b24155c7749edf7d2a7c3a
     subdir: ipmsg-torrent/crates/app/src-tauri/gen/android
-    sudo: apt-get install -y curl build-essential && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target aarch64-linux-android --target armv7-linux-androideabi --target i686-linux-android --target x86_64-linux-android
+    sudo: apt-get install -y rustup
     gradle:
       - yes
     prebuild:
-      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
       - cargo install tauri-cli --locked
       - sed -i "s|https://mirrors.cloud.tencent.com/gradle/|https://services.gradle.org/distributions/|g" gradle/wrapper/gradle-wrapper.properties
     scandelete:
       - ipmsg-torrent/crates/app/src-tauri/target
     build:
-      - export PATH="$HOME/.cargo/bin:$PATH"
       - export NDK_HOME=$$NDK$$
       - gradle assembleRelease
 
