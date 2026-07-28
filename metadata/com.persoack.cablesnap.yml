@@ -34,7 +34,9 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
         m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),
-        {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");'
+        {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
+        const fs=require("fs"); const a="android/app/build.gradle"; const p="android/build.gradle";
+        fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8"))); fs.writeFileSync(p,m.patchProjectBuildGradle(fs.readFileSync(p,"utf8")));'
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - android/wear/build.gradle.kts
@@ -45,7 +47,7 @@ Builds:
       - node_modules
     build:
       - cd android
-      - gradle assembleRelease
+      - CABLESNAP_FDROID=1 gradle assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
