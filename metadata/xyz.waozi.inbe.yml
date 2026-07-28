@@ -393,9 +393,28 @@ Builds:
     gradleprops:
       - fDroidBuild=true
 
+  - versionName: 1.8.11
+    versionCode: 86
+    commit: 8ad30513e0db7c1e94b66ea00ab018a65c3ac01b
+    subdir: droid/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential jimsh
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: bash ../../scripts/copy-android-assets.sh
+    scandelete:
+      - site/static/assets-sqljs-1.12.0/
+      - tests/locale_keys_test
+      - vendor/flint/vendor/raylib/examples
+    gradleprops:
+      - fDroidBuild=true
+
 AllowedAPKSigningKeys: 47648dc7665db12a97c3077a4892ce29072c756bb31b5c331b8924493c888475
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.8.9
-CurrentVersionCode: 84
+CurrentVersion: 1.8.11
+CurrentVersionCode: 86
