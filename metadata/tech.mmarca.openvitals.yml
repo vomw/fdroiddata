@@ -395,14 +395,18 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - if [ ! -f lib/data/local/open_vitals_database.g.dart ]; then $$flutter$$/bin/dart
+        run build_runner build --delete-conflicting-outputs; fi
       - cd packages/health_connect_native
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
       - cd ../bluetooth_sync_native
-      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
       - if [ -d ../notification_listener_native ]; then cd ../notification_listener_native
-        && $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart; fi
+        && { [ -f lib/src/messages.g.dart ] || $$flutter$$/bin/dart run pigeon --input
+        pigeons/messages.dart; }; fi
       - popd
       - mv $repo tech.mmarca.openvitals
     scandelete:
@@ -447,14 +451,18 @@ Builds:
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - if [ ! -f lib/data/local/open_vitals_database.g.dart ]; then $$flutter$$/bin/dart
+        run build_runner build --delete-conflicting-outputs; fi
       - cd packages/health_connect_native
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
       - cd ../bluetooth_sync_native
-      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
       - if [ -d ../notification_listener_native ]; then cd ../notification_listener_native
-        && $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart; fi
+        && { [ -f lib/src/messages.g.dart ] || $$flutter$$/bin/dart run pigeon --input
+        pigeons/messages.dart; }; fi
       - popd
       - mv $repo tech.mmarca.openvitals
     scandelete:
