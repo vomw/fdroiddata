@@ -32,6 +32,8 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
+      - >-
+        node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - yarn expo prebuild --platform android --no-install
       - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-temurin-amd64"
         >> android/gradle.properties
@@ -41,7 +43,7 @@ Builds:
     build:
       - cd android
       - gradle assembleRelease
-    ndk: r23b
+    ndk: r27b
 AutoUpdateMode: None
 UpdateCheckMode: Tags
 CurrentVersion: 1.4.4
