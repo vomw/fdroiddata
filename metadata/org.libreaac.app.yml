@@ -1,0 +1,57 @@
+AntiFeatures:
+  NonFreeAssets:
+    en-US: CommuniKate 12 is licensed under CC BY-NC-SA 3.0
+Categories:
+  - Text to Speech
+License: GPL-3.0-only
+AuthorName: Luke Howson
+AuthorEmail: libretastic@gmail.com
+AuthorWebSite: https://libretastic.github.io/
+WebSite: https://libretastic.github.io/
+SourceCode: https://github.com/libretastic/libreaac-android
+IssueTracker: https://github.com/libretastic/libreaac-android/issues
+
+AutoName: LibreAAC
+
+RepoType: git
+Repo: https://github.com/libretastic/libreaac-android.git
+Binaries: 
+  https://github.com/libretastic/libreaac-android/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 0.1.9
+    versionCode: 10
+    commit: 0629c09063dcfc6f73509e16de4a3faf0566434d
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - app/src/main/assets
+    build:
+      - pushd upstream/libreaac
+      - npm ci
+      - npm run build
+      - popd
+      - scripts/sync-frontend.sh upstream/libreaac/dist $(git -C 
+        upstream/libreaac rev-parse HEAD)
+      - gradle -PlibreaacReleaseSigningEnabled=false 
+        -PlibreaacBundledOpenboardsRequired=true 
+        -PlibreaacBundledOpenboardsDelivery=base assembleRelease
+
+AllowedAPKSigningKeys: 
+  aad2f12a9125a9f2f97b0070cb6b2dfd10b26ed989a84b4f12ff99bee66e52ba
+
+MaintainerNotes: |-
+  The Android repository contains a pinned compiled frontend for ordinary
+  builds. F-Droid removes it and rebuilds it from the pinned public submodule.
+
+  Release tags pin both the frontend and reviewed openboards revisions as Git
+  submodules. Auto-generated build entries therefore retain the exact external
+  source revisions without separate srclib updates.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.9
+CurrentVersionCode: 10
