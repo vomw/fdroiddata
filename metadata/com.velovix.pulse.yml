@@ -18,17 +18,23 @@ Builds:
     commit: 007694c5bbe0aedc34233f6a0c78c585ccb4c694
     subdir: android/app
     sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y npm ninja-build bzip2 xz-utils
       - npm -g install bun
+      - npm install -g corepack
     gradle:
       - yes
+    srclibs:
+      - react-native-skia@v2.6.2
     init:
       - cd ../..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         -e '/"react-native-purchases":/d' -e '/"expo-dev-client":/d' package.json
       - bun install
-      - bunx install-skia
+    rm:
+      - node_modules/@shopify/react-native-skia/libs/android
+      - node_modules/@shopify/react-native-skia/libs/apple
     prebuild:
       - cd ../..
       - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
@@ -39,6 +45,22 @@ Builds:
       - sed -i -e 's/-Xmx[0-9]*[mg]/-Xmx4g/g' -e 's/-XX:MaxMetaspaceSize=[0-9]*[mg]/-XX:MaxMetaspaceSize=1g/g'
         android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
+        package.json)
+      - '[[ $skiaVersion ]] || exit 1'
+      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
+      - sed -i -e 's/for (const key of mapKeys(configurations))/const key = "android";/'
+        -e 's/for (const target of mapKeys(configuration.targets))/const target =
+        "arm";/' -e 's/import { $, mapKeys, runAsync }/import { $, runAsync }/' -e
+        '/ban-ts-comment/,+1d' -e '/buildXCFrameworks()/d' -e '/buildXCFrameworks/,/^};/d'
+        -e '/copyHeaders/d' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
+    build:
+      - pushd $$react-native-skia$$/packages/skia
+      - corepack enable
+      - yarn
+      - build="yarn build-skia android"
+      - $build || $build || $build
+      - popd
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
