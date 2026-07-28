@@ -25,7 +25,7 @@ Builds:
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
-    output: android/app/build/outputs/apk/release/app-release.apk
+    output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -42,7 +42,7 @@ Builds:
       - node_modules
     build:
       - cd android
-      - gradle assembleRelease
+      - CABLESNAP_FDROID=1 gradle assembleReleaseFdroid
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
