@@ -1,0 +1,46 @@
+Categories:
+  - Games
+  - Shooter Game
+License: MIT
+WebSite: https://alcojonante.es/game/path-of-sorcerers/
+SourceCode: https://codeberg.org/dhAlcojor/path-of-sorcerers
+IssueTracker: https://codeberg.org/dhAlcojor/path-of-sorcerers
+
+RepoType: git
+Repo: https://codeberg.org/dhAlcojor/path-of-sorcerers
+
+Builds:
+  - versionName: '1.3.0'
+    versionCode: 1
+    commit: 1737840a83252f7b1d182615ebe7d5914b048187
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons g++ strip-nondeterminism
+    output: PathOfSorcerers.apk
+    srclibs:
+      # Set the Godot version here
+      # Must be exact version for reproducible builds
+      - Godot@4.6-stable
+    build:
+	  # Build Godot
+      - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - scons -j `nproc` platform=linuxbsd target=editor
+      - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
+      - popd
+	  # Move the template apk. This path is set by custom_template/release in export_presets.cfg
+      - mv $$Godot$$/bin/android_release.apk android-release.apk
+	  # Use your preset name here.
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release
+        "Android Release" output.apk
+      # Remove zip metadata, if reproducible build
+      - strip-nondeterminism -t zip PathOfSorcerers.apk
+	# Use r29b for Godot 4.6.3 or later
+    ndk: r28b
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: '1.3.0'
+CurrentVersionCode: 1
