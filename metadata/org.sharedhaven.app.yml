@@ -1,0 +1,75 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on mempool.space
+Categories:
+  - Money
+  - Security
+  - Wallet
+License: GPL-3.0-or-later
+SourceCode: https://github.com/cortezhanny124/Shared-Haven
+IssueTracker: https://github.com/cortezhanny124/Shared-Haven/issues
+
+AutoName: SharedHaven
+
+RepoType: git
+Repo: https://github.com/cortezhanny124/Shared-Haven.git
+Binaries: 
+  https://github.com/cortezhanny124/Shared-Haven/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 2.0.6
+    versionCode: 2
+    commit: 31f4d9f2a5896d0ded6e10199e8bd5e7f6e790fa
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/ciprian/Desktop/flutterProjects
+      - chown -R vagrant /home/ciprian
+    output: build/app/outputs/bundle/release/app-release.aab
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/googleapis/d' android/build.gradle android/settings.gradle
+      - sed -i -e '/java.home/d' -e 's/Xmx512m/Xmx4096m/' android/gradle.properties
+      - sed -i -e '/def keystorePropsFile/,/keystoreProps.load/d' -e '/signingConfig
+        /d' android/app/build.gradle
+      - flutterVersion=$(sed -n -E 's/.*Flutter version:\ (.*)/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/ciprian/Desktop/flutterProjects/flutter_wallet
+      - cd ..
+      - mv org.sharedhaven.app $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo org.sharedhaven.app
+    scandelete:
+      - .pub-cache
+      - android/app/.cxx
+    build:
+      - export repo=/home/ciprian/Desktop/flutterProjects/flutter_wallet
+      - cd ..
+      - mv org.sharedhaven.app $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo org.sharedhaven.app
+
+AllowedAPKSigningKeys: 76340264928ce1f126c93578cf06a40e11ad001fe064b76a9830ba9ee3454672
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.0.6
+CurrentVersionCode: 2
