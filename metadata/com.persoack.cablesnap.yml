@@ -36,7 +36,8 @@ Builds:
         m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),
         {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
         const fs=require("fs"); const a="android/app/build.gradle"; const p="android/build.gradle";
-        fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8"))); fs.writeFileSync(p,m.patchProjectBuildGradle(fs.readFileSync(p,"utf8")));'
+        fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
+      - sed -i '/cablesnap:fdroid-subproject-filter/,$d' android/build.gradle
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - android/wear/build.gradle.kts
@@ -47,7 +48,7 @@ Builds:
       - node_modules
     build:
       - cd android
-      - CABLESNAP_FDROID=1 gradle assembleRelease
+      - gradle assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
