@@ -10,37 +10,71 @@ RepoType: git
 Repo: https://github.com/nightdropapp/nightdrop.git
 
 Builds:
-  - versionName: 0.1.6
-    versionCode: 7
-    commit: v0.1.6
+  - versionName: 0.1.7
+    versionCode: 8
+    commit: 210daa37c0538ece325ac96d8091b8c086755edf
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y build-essential
-      - git clone --depth 1 --branch 3.44.6 https://github.com/flutter/flutter.git
-        /opt/flutter
-      - /opt/flutter/bin/flutter --version
-      - chmod -R a+rwX /opt/flutter
+      - apt-get install -y build-essential clang cmake pkg-config rustup
     output: build/app/outputs/flutter-apk/app-release.apk
+    binary: https://github.com/nightdropapp/nightdrop/releases/download/v%v/NightDrop.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f ee80f08bbf97172ec030b8751ceab557177a34a6
+      - sed -i -e "s|_buildOptions?.toolchain.name ?? 'stable'|'1.96.0'|" rust_builder/cargokit/build_tool/lib/src/builder.dart
+      - rustup default 1.96.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
+      - app/.pub-cache
       - core/fuzz/seeds
     build:
-      - git config --global --add safe.directory '*'
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
-        1.96.0 --profile minimal
-      - export PATH="/opt/flutter/bin:$HOME/.cargo/bin:$PATH"
+      - export PATH="$$flutter$$/bin:$PATH"
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - export CARGO_HOME="$HOME/.cargo"
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-      - export RUSTFLAGS="--remap-path-prefix=$(cd ../ && pwd)=. --remap-path-prefix=$CARGO_HOME=/cargo"
-      - flutter pub get
-      - flutter build apk --release --dart-define=NIGHTDROP_TOR=1 
-        --dart-define=NIGHTDROP_RELAY=bzcqxuxwvtmrmvprsoscnronkjf5wknfuj5ozxiq5fr6qowvnkwrwwad.onion
+      - export CARGO_ENCODED_RUSTFLAGS="--remap-path-prefix=$(cd ../ && pwd)=.$(printf
+        '\037')--remap-path-prefix=$CARGO_HOME=/cargo"
+      - flutter build apk --release --dart-define=NIGHTDROP_TOR=1 --dart-define=NIGHTDROP_RELAY=bzcqxuxwvtmrmvprsoscnronkjf5wknfuj5ozxiq5fr6qowvnkwrwwad.onion
     ndk: r28c
 
 AllowedAPKSigningKeys: d08b8e6408aff4f43556c05b819fef25afdd6912be7a678b0552468a4582c0ac
 
+MaintainerNotes: |
+  Flutter UI over a cross-compiled Rust core (libnightdrop.so, built by cargokit through the
+  NDK), so the recipe provisions both toolchains.
+
+  Only 0.1.7 is offered. 0.1.0-0.1.3 shipped without the Android INTERNET permission and cannot
+  connect; 0.1.4 embedded AGP's opaque "dependency metadata" signing block, which check-apk
+  rejects (fixed in 0.1.5); 0.1.6 predates the two build fixes below, so its published APK cannot
+  be byte-matched. 0.1.7 is the first release built with this recipe's exact toolchain and flags,
+  which is why it is the first with a binary: for reproducible verification.
+
+  Pins, all needed to stay reproducible - bump together and re-verify:
+  Flutter ee80f08bbf97172ec030b8751ceab557177a34a6 (tag 3.44.6), NDK r28c (flutter.ndkVersion
+  for that release), Rust 1.96.0 (also pinned in rust-toolchain.toml). The remap flags strip the
+  build dir and cargo registry paths from the Rust core. They have to go in
+  CARGO_ENCODED_RUSTFLAGS, not RUSTFLAGS: cargokit's Android environment sets the encoded
+  variable for its NDK libgcc workaround, and that overrides plain RUSTFLAGS entirely. The
+  \037 is the unit separator cargo expects between encoded flags.
+
+  The sed patches cargokit, which otherwise runs "rustup run stable cargo build" and would
+  silently ignore rust-toolchain.toml. The usual "s/'stable'/'<version>'/" does not work here:
+  the crate ships a cargokit.yaml, so the toolchain comes from the parsed options rather than
+  the ?? fallback, and the whole expression has to be replaced.
+
+  core/fuzz/seeds is a binary fuzz corpus that trips the source scanner; not needed to build.
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags v\d+.\d+.\d+
+UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.1.6
-CurrentVersionCode: 7
+CurrentVersion: 0.1.7
+CurrentVersionCode: 8
