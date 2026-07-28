@@ -912,7 +912,6 @@ Builds:
       - app_fdroid/web
       - app_fdroid/windows
     prebuild:
-      - sdkmanager "ndk;28.2.13676358" "ndk;27.0.12077973"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\s*'(.*)'/\1/p" ../.github/workflows/release.yml
         | head -n 1)
       - '[[ $flutterVersion ]]'
@@ -920,13 +919,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
+    scandelete:
       - app_fdroid/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
         --build-number=$(( $$VERCODE$$ / 10 ))
+    ndk: r28c
 
   - versionName: 5.1.0
     versionCode: 412
@@ -942,7 +941,6 @@ Builds:
       - app_fdroid/web
       - app_fdroid/windows
     prebuild:
-      - sdkmanager "ndk;28.2.13676358" "ndk;27.0.12077973"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\s*'(.*)'/\1/p" ../.github/workflows/release.yml
         | head -n 1)
       - '[[ $flutterVersion ]]'
@@ -950,13 +948,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
+    scandelete:
       - app_fdroid/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
         --build-number=$(( $$VERCODE$$ / 10 ))
+    ndk: r28c
 
   - versionName: 5.1.0
     versionCode: 413
@@ -972,7 +970,6 @@ Builds:
       - app_fdroid/web
       - app_fdroid/windows
     prebuild:
-      - sdkmanager "ndk;28.2.13676358" "ndk;27.0.12077973"
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\s*'(.*)'/\1/p" ../.github/workflows/release.yml
         | head -n 1)
       - '[[ $flutterVersion ]]'
@@ -980,13 +977,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
+    scandelete:
       - app_fdroid/.pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
         --build-number=$(( $$VERCODE$$ / 10 ))
+    ndk: r28c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+\.\d+\.\d+\+\d+$
