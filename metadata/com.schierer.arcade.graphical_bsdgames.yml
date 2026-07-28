@@ -1,0 +1,93 @@
+Categories:
+  - Casual Game
+License: BSD-3-Clause
+AuthorName: Luke Schierer
+AuthorEmail: luke.schierer@gmail.com
+SourceCode: https://github.com/lschierer/graphical-bsdgames
+IssueTracker: https://github.com/lschierer/graphical-bsdgames/issues
+Changelog: https://github.com/lschierer/graphical-bsdgames/releases
+
+AutoName: Graphical BSD Games
+
+RepoType: git
+Repo: https://github.com/lschierer/graphical-bsdgames
+
+Builds:
+  - versionName: 0.8.1
+    versionCode: 11
+    commit: ab251e762b838815407a84c2aaaf92ced600a0e9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/macos
+    prebuild:
+      - flutterVersion=$(grep -oE '[0-9]+\.[0-9]+\.[0-9]+' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - fortune/tools/do_sort
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 0.8.1
+    versionCode: 12
+    commit: ab251e762b838815407a84c2aaaf92ced600a0e9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/macos
+    prebuild:
+      - flutterVersion=$(grep -oE '[0-9]+\.[0-9]+\.[0-9]+' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - fortune/tools/do_sort
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 0.8.1
+    versionCode: 13
+    commit: ab251e762b838815407a84c2aaaf92ced600a0e9
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/macos
+    prebuild:
+      - flutterVersion=$(grep -oE '[0-9]+\.[0-9]+\.[0-9]+' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - fortune/tools/do_sort
+      - app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.8.1
+CurrentVersionCode: 13
