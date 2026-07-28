@@ -22,26 +22,28 @@ Builds:
   - versionName: 0.1.9
     versionCode: 10
     commit: 0629c09063dcfc6f73509e16de4a3faf0566434d
+    subdir: app
     submodules: true
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    gradle:
+      - yes
     rm:
       - app/src/main/assets
     build:
-      - pushd upstream/libreaac
+      - pushd ../upstream/libreaac
       - npm ci
       - npm run build
       - popd
-      - scripts/sync-frontend.sh upstream/libreaac/dist $(git -C 
-        upstream/libreaac rev-parse HEAD)
-      - gradle -PlibreaacReleaseSigningEnabled=false 
-        -PlibreaacBundledOpenboardsRequired=true 
-        -PlibreaacBundledOpenboardsDelivery=base assembleRelease
+      - ../scripts/sync-frontend.sh ../upstream/libreaac/dist $(git -C ../upstream/libreaac rev-parse HEAD)
 
-AllowedAPKSigningKeys: 
-  aad2f12a9125a9f2f97b0070cb6b2dfd10b26ed989a84b4f12ff99bee66e52ba
+    gradleprops:
+      - libreaacReleaseSigningEnabled=false
+      - libreaacBundledOpenboardsRequired=true
+      - libreaacBundledOpenboardsDelivery=base
+
+AllowedAPKSigningKeys: aad2f12a9125a9f2f97b0070cb6b2dfd10b26ed989a84b4f12ff99bee66e52ba
 
 MaintainerNotes: |-
   The Android repository contains a pinned compiled frontend for ordinary
