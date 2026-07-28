@@ -38,6 +38,7 @@ Builds:
         {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
         const fs=require("fs"); const a="android/app/build.gradle"; process.env.CABLESNAP_FDROID_BUILD_TYPE="0";
         fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
+      - sed -i '/expo-wearos-bridge/d' android/app/build.gradle
       - sed -i 's/releaseFdroid/release/g' android/app/build.gradle
       - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
