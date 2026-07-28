@@ -22,14 +22,19 @@ Builds:
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm -g install yarn
+      - curl -Lo jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
+      - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/java-17-temurin-amd64
+      - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/java-17-temurin-amd64
     init:
       - yarn install
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
       - yarn expo prebuild --platform android --no-install
-      - echo "org.gradle.java.installations.auto-detect=true" >> android/gradle.properties
-      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64" >> android/gradle.properties
+      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-temurin-amd64"
+        >> android/gradle.properties
     scandelete:
       - node_modules
       - .yarn/install-state.gz
