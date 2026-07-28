@@ -16,27 +16,27 @@ RepoType: git
 Repo: https://github.com/alankyshum/cablesnap.git
 
 Builds:
-  - versionName: 0.26.90
-    versionCode: 158
-    commit: v0.26.90
+  - versionName: 0.26.91
+    versionCode: 159
+    commit: v0.26.91
     sudo:
       - apt-get update
       - apt-get install npm
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
-    output: android/app/build/outputs/apk/releaseFdroid/app-releaseFdroid.apk
+    output: android/app/build/outputs/apk/release/app-release.apk
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
+      - CABLESNAP_FDROID=1 CABLESNAP_FDROID_BUILD_TYPE=0 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
         m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),
         {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
         const fs=require("fs"); const a="android/app/build.gradle"; const p="android/build.gradle";
-        fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
+        process.env.CABLESNAP_FDROID_BUILD_TYPE="0"; fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - android/wear/build.gradle.kts
@@ -47,10 +47,10 @@ Builds:
       - node_modules
     build:
       - cd android
-      - gradle assembleReleaseFdroid
+      - gradle assembleRelease
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
-CurrentVersion: 0.26.90
-CurrentVersionCode: 158
+CurrentVersion: 0.26.91
+CurrentVersionCode: 159
