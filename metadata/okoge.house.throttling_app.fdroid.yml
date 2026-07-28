@@ -1,0 +1,146 @@
+Categories:
+  - Development
+License: MIT
+AuthorName: kk__777
+SourceCode: https://github.com/kk-house-777/throttling-vpn-app
+IssueTracker: https://github.com/kk-house-777/throttling-vpn-app/issues
+
+AutoName: throttling-app
+
+RepoType: git
+Repo: https://github.com/kk-house-777/throttling-vpn-app.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 31
+    commit: f09ab5022fc606d408ef07d58bd820d7dae51256
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*-x86-*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android/386 -androidapi 26 -o ../../app/libs/tun2socks.aar
+        .
+    ndk: 29.0.14206865
+
+  - versionName: 1.0.1
+    versionCode: 32
+    commit: f09ab5022fc606d408ef07d58bd820d7dae51256
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*armeabi-v7a*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android/arm -androidapi 26 -o ../../app/libs/tun2socks.aar
+        .
+    ndk: 29.0.14206865
+
+  - versionName: 1.0.1
+    versionCode: 33
+    commit: f09ab5022fc606d408ef07d58bd820d7dae51256
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*x86_64*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android/amd64 -androidapi 26 -o ../../app/libs/tun2socks.aar
+        .
+    ndk: 29.0.14206865
+
+  - versionName: 1.0.1
+    versionCode: 34
+    commit: f09ab5022fc606d408ef07d58bd820d7dae51256
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go gcc libc-dev
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*arm64-v8a*.apk
+    srclibs:
+      - go@go1.25.9
+    build:
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export PATH="$$go$$/bin:$PATH"
+      - export GOPATH="$PWD/.gopath"
+      - export PATH="$GOPATH/bin:$PATH"
+      - export GOFLAGS="-buildvcs=false"
+      - sdkmanager 'platforms;android-26'
+      - go install golang.org/x/mobile/cmd/gomobile@latest
+      - gomobile init
+      - mkdir -p libs
+      - cd ../go/tun2sockslib
+      - go mod download all
+      - gomobile bind -target=android/arm64 -androidapi 26 -o ../../app/libs/tun2socks.aar
+        .
+    ndk: 29.0.14206865
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+  - '%c * 10 + 4'
+CurrentVersion: 1.0.1
+CurrentVersionCode: 34
