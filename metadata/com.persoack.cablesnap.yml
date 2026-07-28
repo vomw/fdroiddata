@@ -33,15 +33,16 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CABLESNAP_FDROID_BUILD_TYPE=0 CI=true npx expo prebuild
         -p android --clean
-      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),
-        {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree("android");
-        const fs=require("fs"); const a="android/app/build.gradle"; process.env.CABLESNAP_FDROID_BUILD_TYPE="0";
-        fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,"utf8")));'
-      - "printf '%s\\n' 'configurations.matching { [\"releaseImplementation\", \"\
-        releaseCompileClasspath\", \"releaseRuntimeClasspath\"].contains(it.name)\
-        \ }.configureEach { exclude group: \"com.google.android.gms\"; exclude group:\
-        \ \"com.google.firebase\"; exclude module: \"expo-wearos-bridge\" }' >> android/app/build.gradle"
+      - "CABLESNAP_FDROID=1 node -e 'const m=require(\"./plugins/with-wearos-module\"\
+        ); m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),\
+        \ {removeGeneratedArtifacts:false, rewriteSources:false}); m.patchFdroidAndroidGradleTree(\"\
+        android\"); const fs=require(\"fs\"); const a=\"android/app/build.gradle\"\
+        ; process.env.CABLESNAP_FDROID_BUILD_TYPE=\"0\"; fs.writeFileSync(a,m.patchAppBuildGradle(fs.readFileSync(a,\"\
+        utf8\"))); fs.appendFileSync(a,\"\\nconfigurations.matching { [\\\"releaseImplementation\\\
+        \", \\\"releaseCompileClasspath\\\", \\\"releaseRuntimeClasspath\\\"].contains(it.name)\
+        \ }.configureEach { exclude group: \\\"com.google.android.gms\\\"; exclude\
+        \ group: \\\"com.google.firebase\\\"; exclude module: \\\"expo-wearos-bridge\\\
+        \" }\\n\");'"
       - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - sed -i -e '/signingConfig /d' android/app/build.gradle
