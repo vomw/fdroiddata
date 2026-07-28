@@ -39,6 +39,8 @@ Builds:
       - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/fromTarget("17")/fromTarget("21")/g'
+        node_modules/react-native-worklets/android/build.gradle.kts
       - EXPO_PUBLIC_STORE=f-droid EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com
         bunx expo prebuild -p android --clean --no-install
       - sed -i -e 's/-Xmx[0-9]*[mg]/-Xmx4g/g' -e 's/-XX:MaxMetaspaceSize=[0-9]*[mg]/-XX:MaxMetaspaceSize=1g/g'
