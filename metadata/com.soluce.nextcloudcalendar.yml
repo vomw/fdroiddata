@@ -13,9 +13,10 @@ Builds:
   - versionName: 1.4.4
     versionCode: 10404
     commit: 1.4.4
-    subdir: android/app
     timeout: 14400
     sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
       - sysctl fs.inotify.max_user_watches=524288
       - curl -Lo node.tar.gz https://nodejs.org/download/release/latest-v22.x/node-v22.23.1-linux-x64.tar.gz
       - echo "7a8cb04b4a1df4eaf432125324b81b29a088e73570a23259a8de1c65d07fc129  node.tar.gz"
@@ -23,18 +24,17 @@ Builds:
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm -g install yarn
     init:
-      - cd ../..
       - yarn install
-    output: android/app/build/outputs/apk/release/app-release.apk
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ../..
+      - cd android
       - sdkmanager 'cmake;3.22.1'
       - yarn expo prebuild --platform android --no-install
     scandelete:
       - node_modules
       - .yarn/install-state.gz
     build:
-      - cd ..
+      - cd android/app
       - gradle assembleRelease
     ndk: r23b
 AutoUpdateMode: None
