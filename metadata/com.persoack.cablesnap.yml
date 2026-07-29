@@ -38,10 +38,10 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
+      - rm -f public/canvaskit.wasm
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160001/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -52,11 +52,14 @@ Builds:
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      - node_modules
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-      - public/canvaskit.wasm
+    scandelete:
+      - node_modules
     build:
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
@@ -81,10 +84,10 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
+      - rm -f public/canvaskit.wasm
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160002/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -95,11 +98,14 @@ Builds:
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      - node_modules
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-      - public/canvaskit.wasm
+    scandelete:
+      - node_modules
     build:
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
@@ -124,10 +130,10 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
+      - rm -f public/canvaskit.wasm
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160003/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -138,11 +144,14 @@ Builds:
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      - node_modules
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-      - public/canvaskit.wasm
+    scandelete:
+      - node_modules
     build:
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
@@ -167,10 +176,10 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
+      - rm -f public/canvaskit.wasm
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160004/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -181,11 +190,14 @@ Builds:
         modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      - node_modules
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - android/wear/build.gradle.kts
       - modules/expo-wearos-bridge/wear-template/build.gradle.kts
       - modules/expo-wearos-bridge/android/build.gradle
-      - public/canvaskit.wasm
+    scandelete:
+      - node_modules
     build:
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
