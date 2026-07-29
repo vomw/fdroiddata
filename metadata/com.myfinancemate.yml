@@ -1,0 +1,45 @@
+Categories:
+  - Finance Manager
+License: MIT
+AuthorName: Dave-1
+SourceCode: https://github.com/Dave-1/MyFinanceMate
+IssueTracker: https://github.com/Dave-1/MyFinanceMate/issues
+Changelog: https://github.com/Dave-1/MyFinanceMate/releases
+
+AutoName: MyFinanceMate
+
+RepoType: git
+Repo: https://github.com/Dave-1/MyFinanceMate.git
+Binaries: 
+  https://github.com/Dave-1/MyFinanceMate/releases/download/v%v/MyFinanceMate.%v.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 2e969ff715071644392a398104f5c3ec36e111f4
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 1.1.0
+    versionCode: 2
+    commit: e259f99a7244f79e63d03e95bc2a9c1d717eb9f6
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*'
+
+AllowedAPKSigningKeys: 7693863c0d2cd7940817eb73a95fbb2238f0ecb688cc6905e87c51516dfd07f1
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.1.0
+CurrentVersionCode: 2
