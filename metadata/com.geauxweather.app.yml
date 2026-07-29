@@ -1,0 +1,50 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Relies on Open-Meteo, RainViewer, NHC, NWS, and OpenStreetMap network services.
+Categories:
+  - Internet
+  - Weather
+License: GPL-3.0-or-later
+AuthorName: TuneFriend
+SourceCode: https://github.com/tunefriend/GeauxWeather
+IssueTracker: https://github.com/tunefriend/GeauxWeather/issues
+Changelog: https://github.com/tunefriend/GeauxWeather/releases
+Donate: https://liberapay.com/TuneFriend
+
+AutoName: GeauxWeather
+Name: GeauxWeather
+
+RepoType: git
+Repo: https://github.com/tunefriend/GeauxWeather.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: d8bc3010982df122abad707c8f991e0961920e4e
+    subdir: android/app
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v20.19.2/node-v20.19.2-linux-x64.tar.xz
+      - echo "cbe59620b21732313774df4428586f7222a84af29e556f848abf624ba41caf90 node.tar.xz"
+        | sha256sum -c -
+      - tar xJf node.tar.xz --strip-components=1 -C /usr/local/
+    gradle:
+      - yes
+    prebuild:
+      - pushd ../..
+      - npm ci
+      - npx cap telemetry off
+      - npx cap sync android
+      - popd
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules/
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
