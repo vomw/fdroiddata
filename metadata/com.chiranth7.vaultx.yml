@@ -2,43 +2,52 @@ Categories:
   - Security
 License: MIT
 AuthorName: Chiranth Moger
-SourceCode: 
-  https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager
-IssueTracker: 
-  https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/issues
+SourceCode: https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager
+IssueTracker: https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/issues
 
 AutoName: VaultX
 
 RepoType: git
-Repo: 
-  https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager
+Repo: https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager
 
 Builds:
   - versionName: 1.3.4
     versionCode: 248
-    commit: b7af49a8dec895a4773a578763a03b28a05fc066
+    commit: d563e1a66eb64dba0d8d355c97d19091300b02d0
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install npm
+      - apt-get install -y npm
     init:
       - cd ../..
       - npm install
     gradle:
       - yes
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     prebuild:
       - cd ../..
-      - sed -i -e '1a 
-        "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' 
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
-        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '/installReferrerVersion/,+12d' node_modules/react-native-device-info/android/build.gradle
+      - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
+      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+        -e '/getInstallReferrerAsync/apromise.resolve("")'
+        node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - for m in react-native-biometrics react-native-get-random-values react-native-safe-area-context
+        react-native-view-shot; do if [ -f node_modules/$m/android/build.gradle ];
+        then sed -i "s/com.android.library/com.android.library'\napply plugin: 'org.jetbrains.kotlin.android/"
+        node_modules/$m/android/build.gradle 2>/dev/null || true; fi; done
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
 
