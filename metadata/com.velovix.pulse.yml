@@ -48,17 +48,18 @@ Builds:
       - EXPO_PUBLIC_STORE=f-droid EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com
         bunx expo prebuild -p android --clean --no-install
       - sed -i -e 's/-Xmx[0-9]*[mg]/-Xmx4g/g' -e 's/-XX:MaxMetaspaceSize=[0-9]*[mg]/-XX:MaxMetaspaceSize=1g/g'
-        -e '/^org.gradle.parallel=/d' -e '/^org.gradle.workers.max=/d' android/gradle.properties
+        -e '/^org.gradle.parallel=/d' -e '/^org.gradle.workers.max=/d' -e '/^reactNativeArchitectures=/d'
+        android/gradle.properties
       - echo "org.gradle.parallel=false" >> android/gradle.properties
       - echo "org.gradle.workers.max=1" >> android/gradle.properties
+      - echo "reactNativeArchitectures=armeabi-v7a,arm64-v8a" >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
         package.json)
       - '[[ $skiaVersion ]] || exit 1'
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm", "arm64",
-        "x86", "x64"]/' -e 's/import { \$, mapKeys, runAsync }/import { $, runAsync
-        }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
+      - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm", "arm64"]/'
+        -e 's/import { \$, mapKeys, runAsync }/import { $, runAsync }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
       - "sed -i -e 's/\\.\\.\\.(GRAPHITE ? \\[\\[\"ndk_api\", 26\\]\\] : \\[\\]),/[\"\
         ndk_api\", 24],/' $$react-native-skia$$/packages/skia/scripts/skia-configuration.ts"
     scanignore:
