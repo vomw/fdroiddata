@@ -42,7 +42,7 @@ Builds:
     commit: v1.1.10
     sudo:
       - apt-get update
-      - apt-get install -y build-essential libssl-dev npm pkg-config
+      - apt-get install -y build-essential libclang-dev libssl-dev npm pkg-config
     output: 
       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     srclibs:
@@ -59,6 +59,7 @@ Builds:
     build:
       - . "$HOME/.cargo/env"
       - export NDK_HOME=$$NDK$$
+      - export LIBCLANG_PATH=$(ls -d /usr/lib/llvm-*/lib | tail -1)
       - npm ci
       - cargo tauri android build --apk --target aarch64 --features mp3
     ndk: r27c
