@@ -38,10 +38,8 @@ Builds:
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
-      - for m in react-native-biometrics react-native-get-random-values react-native-safe-area-context
-        react-native-view-shot; do if [ -f node_modules/$m/android/build.gradle ];
-        then sed -i "s/com.android.library/com.android.library'\napply plugin: 'org.jetbrains.kotlin.android/"
-        node_modules/$m/android/build.gradle 2>/dev/null || true; fi; done
+      - sed -i '/android {/a\    namespace "com.rnbiometrics"'
+        node_modules/react-native-biometrics/android/build.gradle
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
