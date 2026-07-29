@@ -37,19 +37,15 @@ Builds:
       - export GOPATH="$HOME/go"
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - export ANDROID_NDK_HOME=$$NDK$$
-      - XM=golang.org/x/mobile
-      - XV=v0.0.0-20260520154334-0e4426e1883d
-      - go install $XM/cmd/gomobile@$XV
-      - go install $XM/cmd/gobind@$XV
-      - gomobile init
       - cd ../../client
+      - go install golang.org/x/mobile/cmd/gomobile
+      - go install golang.org/x/mobile/cmd/gobind
+      - gomobile init
       - mkdir -p ../android/libs
-      - AAR=../android/libs/deltasync.aar
-      - PKG=gitlab.com/Star95/keepass-deltasync/client/mobile
-      - gomobile bind -androidapi 21 -target=android -o $AAR $PKG
+      - gomobile bind -androidapi 21 -target=android -o deltasync.aar ./mobile
+      - mv deltasync.aar ../android/libs/
       - cd ../android/libs
-      - unzip -o deltasync.aar classes.jar
-      - mv classes.jar deltasync-classes.jar
+      - unzip -p deltasync.aar classes.jar > deltasync-classes.jar
     ndk: 25.2.9519653
 
 AutoUpdateMode: Version
