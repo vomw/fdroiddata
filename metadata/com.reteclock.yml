@@ -10,7 +10,8 @@ AutoName: reteclock
 
 RepoType: git
 Repo: https://github.com/rubidus-api/reteclock_apk.git
-Binaries: https://github.com/rubidus-api/reteclock_apk/releases/download/v%v/reteclock-%v.apk
+Binaries: 
+  https://github.com/rubidus-api/reteclock_apk/releases/download/v%v/reteclock-%v.apk
 
 Builds:
   - versionName: 0.2.2
@@ -18,6 +19,8 @@ Builds:
     commit: 665dc627dffc67e13c632c64766be1d0688271ce
     output: dist/reteclock-*-unsigned.apk
     build:
+      - test -d /usr/lib/jvm/java-17-openjdk-amd64
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - sdkmanager "platforms;android-19" "build-tools;34.0.0"
       - scripts/build.sh --unsigned
 
