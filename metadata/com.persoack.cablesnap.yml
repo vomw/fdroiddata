@@ -19,19 +19,19 @@ RepoType: git
 Repo: https://github.com/alankyshum/cablesnap.git
 
 Builds:
-  - versionName: 0.26.93
-    versionCode: 161001
-    commit: e9aa8cf48fec883dcab71721847e201300517947
+  - versionName: 0.26.94
+    versionCode: 162001
+    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
       - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"]; delete p.dependencies["@sentry/react-native"];
-        delete p.optionalDependencies["@shopify/react-native-skia"]; p.scripts.postinstall="npx
-        --no-install patch-package"; p.expo=p.expo||{}; p.expo.autolinking=p.expo.autolinking||{};
-        p.expo.autolinking.android=p.expo.autolinking.android||{}; p.expo.autolinking.android.buildFromSource=[".*"];
-        fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
+        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
+        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
+        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -47,7 +47,7 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161001/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162001/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -73,19 +73,19 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.93
-    versionCode: 161002
-    commit: e9aa8cf48fec883dcab71721847e201300517947
+  - versionName: 0.26.94
+    versionCode: 162002
+    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
       - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"]; delete p.dependencies["@sentry/react-native"];
-        delete p.optionalDependencies["@shopify/react-native-skia"]; p.scripts.postinstall="npx
-        --no-install patch-package"; p.expo=p.expo||{}; p.expo.autolinking=p.expo.autolinking||{};
-        p.expo.autolinking.android=p.expo.autolinking.android||{}; p.expo.autolinking.android.buildFromSource=[".*"];
-        fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
+        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
+        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
+        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -101,7 +101,7 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161002/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162002/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -127,19 +127,19 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.93
-    versionCode: 161003
-    commit: e9aa8cf48fec883dcab71721847e201300517947
+  - versionName: 0.26.94
+    versionCode: 162003
+    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
       - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"]; delete p.dependencies["@sentry/react-native"];
-        delete p.optionalDependencies["@shopify/react-native-skia"]; p.scripts.postinstall="npx
-        --no-install patch-package"; p.expo=p.expo||{}; p.expo.autolinking=p.expo.autolinking||{};
-        p.expo.autolinking.android=p.expo.autolinking.android||{}; p.expo.autolinking.android.buildFromSource=[".*"];
-        fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
+        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
+        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
+        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -155,7 +155,7 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161003/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162003/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -181,19 +181,19 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.93
-    versionCode: 161004
-    commit: e9aa8cf48fec883dcab71721847e201300517947
+  - versionName: 0.26.94
+    versionCode: 162004
+    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
       - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"]; delete p.dependencies["@sentry/react-native"];
-        delete p.optionalDependencies["@shopify/react-native-skia"]; p.scripts.postinstall="npx
-        --no-install patch-package"; p.expo=p.expo||{}; p.expo.autolinking=p.expo.autolinking||{};
-        p.expo.autolinking.android=p.expo.autolinking.android||{}; p.expo.autolinking.android.buildFromSource=[".*"];
-        fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
+        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
+        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
+        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -209,7 +209,7 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161004/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162004/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -243,5 +243,5 @@ VercodeOperation:
   - 1000 * %c + 3
   - 1000 * %c + 4
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
-CurrentVersion: 0.26.93
-CurrentVersionCode: 161004
+CurrentVersion: 0.26.94
+CurrentVersionCode: 162004
