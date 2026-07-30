@@ -1,52 +1,49 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Random.org is used when available; local randomness remains available as
-      a fallback.
+    en-US: Random.org is used when available; local randomness remains available as a fallback.
 Categories:
   - System
 License: MIT
 AuthorName: Vitor Hugo
+AuthorWebSite: https://hugodotnet.dev
 SourceCode: https://github.com/vitorhugo-dotnet/the_universe_decides
 IssueTracker: https://github.com/vitorhugo-dotnet/the_universe_decides/issues
 
 AutoName: The Universe Decides
-Description: |-
-  The Universe Decides helps indecisive people leave small choices to chance.
-
-  It can flip coins, roll dice, draw cards, choose an item from a custom list,
-  and keep a history of recent results. Random.org is used when available, with
-  local randomness as an offline fallback.
-
-  The F-Droid flavor excludes Google Play Games Services. The hidden minigame
-  remains playable offline, without achievements or online leaderboards.
 
 RepoType: git
 Repo: https://github.com/vitorhugo-dotnet/the_universe_decides.git
 
 Builds:
   - versionName: 2.5.0
-    versionCode: 100037
-    commit: 1bd28b40578f3c81f6746fa621b910ecfc33b075
+    versionCode: 100126
+    commit: 92a240e412d5c2be58cfc2c15ea129cd0316e1b5
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
-      - flutter@3.38.1
+      - flutter@stable
     rm:
       - android/app/src/play
       - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
       - sed -i '/playImplementation/d' android/app/build.gradle.kts
-      - git -C $$flutter$$ checkout -f 3.38.1
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p' .github/workflows/build-signed-apk.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --build-number
-        $$VERCODE$$
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --build-number $$VERCODE$$
 
-AutoUpdateMode: None
-UpdateCheckMode: Static
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+$
+UpdateCheckData: '|\+(\d+)$||^v([^+]+)\+\d+$'
 CurrentVersion: 2.5.0
-CurrentVersionCode: 100037
+CurrentVersionCode: 100126
