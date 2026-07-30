@@ -50,8 +50,9 @@ Builds:
       - sed -i -e 's/-Xmx[0-9]*[mg]/-Xmx4g/g' -e 's/-XX:MaxMetaspaceSize=[0-9]*[mg]/-XX:MaxMetaspaceSize=1g/g'
         -e '/^org.gradle.parallel=/d' -e '/^org.gradle.workers.max=/d' -e '/^reactNativeArchitectures=/d'
         android/gradle.properties
-      - printf '\norg.gradle.parallel=false\norg.gradle.workers.max=1\nreactNativeArchitectures=armeabi-v7a,arm64-v8a\n'
-        >> android/gradle.properties
+      - printf '\norg.gradle.parallel=false\n' >> android/gradle.properties
+      - printf 'org.gradle.workers.max=1\n' >> android/gradle.properties
+      - printf 'reactNativeArchitectures=armeabi-v7a,arm64-v8a\n' >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
         package.json)
