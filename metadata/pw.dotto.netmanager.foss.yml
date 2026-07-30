@@ -2,7 +2,7 @@ Categories:
   - System
   - Internet
 AuthorName: DottoXD
-AuthorWebsite: https://dotto.pw
+AuthorWebSite: https://dotto.pw
 License: GPL-3.0-only
 SourceCode: https://github.com/DottoXD/NetManager
 IssueTracker: https://github.com/DottoXD/NetManager/issues
@@ -20,7 +20,7 @@ Builds:
     commit: 1851ebd8b58ce6ee6c8c8f65e2c2b1b815a103ab
     output: build/app/outputs/flutter-apk/app-foss-release.apk
     srclibs:
-      - flutter@3.44.8
+      - flutter@stable
     rm:
       - ios
       - linux
@@ -29,7 +29,9 @@ Builds:
       - web
       - windows
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.44.8
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$PATH
       - $$flutter$$/bin/flutter config --no-analytics
