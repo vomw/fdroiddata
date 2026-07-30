@@ -24,16 +24,16 @@ Builds:
     prebuild:
       - rustup default 1.97.0
       - rustup target add aarch64-linux-android
-      - . "$HOME/.cargo/env"
+      - export PATH="$HOME/.cargo/bin:$PATH"
       - cargo install tauri-cli@2.11.4 --locked
       - export NDK_HOME=$$NDK$$
       - cargo tauri android init
       - cp -rf src-tauri/icons/android/mipmap-* src-tauri/gen/android/app/src/main/res/
       - cp -f src-tauri/icons/android/values/ic_launcher_background.xml src-tauri/gen/android/app/src/main/res/values/
     build:
-      - . "$HOME/.cargo/env"
+      - export PATH="$HOME/.cargo/bin:$PATH"
       - export NDK_HOME=$$NDK$$
-      - export LIBCLANG_PATH=$(ls -d /usr/lib/llvm-*/lib | tail -1)
+      - export LIBCLANG_PATH=$(dirname $(find /usr/lib -maxdepth 3 -name 'libclang-*.so*' -print -quit))
       - npm ci
       - cargo tauri android build --apk --target aarch64 --features mp3
     ndk: r27c
