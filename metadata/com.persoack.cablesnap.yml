@@ -19,9 +19,9 @@ RepoType: git
 Repo: https://github.com/alankyshum/cablesnap.git
 
 Builds:
-  - versionName: 0.26.92
-    versionCode: 160001
-    commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
+  - versionName: 0.26.93
+    versionCode: 161001
+    commit: e9aa8cf48fec883dcab71721847e201300517947
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -42,12 +42,11 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160001/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161001/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -71,22 +70,13 @@ Builds:
       - node_modules
     build:
       - npm install --ignore-scripts --no-save --omit=optional
-      - mkdir -p node_modules/victory-native node_modules/@shopify/react-native-skia
-      - printf '%s' '{"name":"victory-native","version":"0.0.0","main":"index.js"}'
-        > node_modules/victory-native/package.json
-      - printf '%s' 
-        'exports.CartesianChart=()=>null;exports.Line=()=>null;exports.Bar=()=>null;exports.Scatter=()=>null;'
-        > node_modules/victory-native/index.js
-      - printf '%s' '{"name":"@shopify/react-native-skia","version":"0.0.0","main":"index.js"}'
-        > node_modules/@shopify/react-native-skia/package.json
-      - printf '%s' 'exports.matchFont=()=>null;' > node_modules/@shopify/react-native-skia/index.js
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.92
-    versionCode: 160002
-    commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
+  - versionName: 0.26.93
+    versionCode: 161002
+    commit: e9aa8cf48fec883dcab71721847e201300517947
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -107,12 +97,11 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160002/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161002/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -136,22 +125,13 @@ Builds:
       - node_modules
     build:
       - npm install --ignore-scripts --no-save --omit=optional
-      - mkdir -p node_modules/victory-native node_modules/@shopify/react-native-skia
-      - printf '%s' '{"name":"victory-native","version":"0.0.0","main":"index.js"}'
-        > node_modules/victory-native/package.json
-      - printf '%s' 
-        'exports.CartesianChart=()=>null;exports.Line=()=>null;exports.Bar=()=>null;exports.Scatter=()=>null;'
-        > node_modules/victory-native/index.js
-      - printf '%s' '{"name":"@shopify/react-native-skia","version":"0.0.0","main":"index.js"}'
-        > node_modules/@shopify/react-native-skia/package.json
-      - printf '%s' 'exports.matchFont=()=>null;' > node_modules/@shopify/react-native-skia/index.js
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.92
-    versionCode: 160003
-    commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
+  - versionName: 0.26.93
+    versionCode: 161003
+    commit: e9aa8cf48fec883dcab71721847e201300517947
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -172,12 +152,11 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160003/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161003/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -201,22 +180,13 @@ Builds:
       - node_modules
     build:
       - npm install --ignore-scripts --no-save --omit=optional
-      - mkdir -p node_modules/victory-native node_modules/@shopify/react-native-skia
-      - printf '%s' '{"name":"victory-native","version":"0.0.0","main":"index.js"}'
-        > node_modules/victory-native/package.json
-      - printf '%s' 
-        'exports.CartesianChart=()=>null;exports.Line=()=>null;exports.Bar=()=>null;exports.Scatter=()=>null;'
-        > node_modules/victory-native/index.js
-      - printf '%s' '{"name":"@shopify/react-native-skia","version":"0.0.0","main":"index.js"}'
-        > node_modules/@shopify/react-native-skia/package.json
-      - printf '%s' 'exports.matchFont=()=>null;' > node_modules/@shopify/react-native-skia/index.js
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.92
-    versionCode: 160004
-    commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
+  - versionName: 0.26.93
+    versionCode: 161004
+    commit: e9aa8cf48fec883dcab71721847e201300517947
     sudo:
       - apt-get update
       - apt-get install -y npm
@@ -237,12 +207,11 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160004/' android/app/build.gradle
+      - sed -i 's/^\([[:space:]]*\)versionCode 161$/\1versionCode 161004/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
       - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
@@ -266,15 +235,6 @@ Builds:
       - node_modules
     build:
       - npm install --ignore-scripts --no-save --omit=optional
-      - mkdir -p node_modules/victory-native node_modules/@shopify/react-native-skia
-      - printf '%s' '{"name":"victory-native","version":"0.0.0","main":"index.js"}'
-        > node_modules/victory-native/package.json
-      - printf '%s' 
-        'exports.CartesianChart=()=>null;exports.Line=()=>null;exports.Bar=()=>null;exports.Scatter=()=>null;'
-        > node_modules/victory-native/index.js
-      - printf '%s' '{"name":"@shopify/react-native-skia","version":"0.0.0","main":"index.js"}'
-        > node_modules/@shopify/react-native-skia/package.json
-      - printf '%s' 'exports.matchFont=()=>null;' > node_modules/@shopify/react-native-skia/index.js
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -287,5 +247,5 @@ VercodeOperation:
   - 1000 * %c + 3
   - 1000 * %c + 4
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
-CurrentVersion: 0.26.92
-CurrentVersionCode: 160004
+CurrentVersion: 0.26.93
+CurrentVersionCode: 161004
