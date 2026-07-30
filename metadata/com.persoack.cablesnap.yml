@@ -26,7 +26,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
+      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.optionalDependencies["@shopify/react-native-skia"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -66,6 +68,11 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - npm install --ignore-scripts --no-save --omit=optional
+      - node -e 'const fs=require("fs"); for (const [name,code] of [["victory-native","exports.CartesianChart=()=>null;
+        exports.Line=()=>null; exports.Bar=()=>null; exports.Scatter=()=>null;"],["@shopify/react-native-skia","exports.matchFont=()=>null;"]])
+        { const d="node_modules/"+name; fs.mkdirSync(d,{recursive:true}); fs.writeFileSync(d+"/package.json",JSON.stringify({name,version:"0.0.0",main:"index.js"})+"\n");
+        fs.writeFileSync(d+"/index.js",code+"\n"); }'
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -77,7 +84,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
+      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.optionalDependencies["@shopify/react-native-skia"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -117,6 +126,11 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - npm install --ignore-scripts --no-save --omit=optional
+      - node -e 'const fs=require("fs"); for (const [name,code] of [["victory-native","exports.CartesianChart=()=>null;
+        exports.Line=()=>null; exports.Bar=()=>null; exports.Scatter=()=>null;"],["@shopify/react-native-skia","exports.matchFont=()=>null;"])
+        { const d="node_modules/"+name; fs.mkdirSync(d,{recursive:true}); fs.writeFileSync(d+"/package.json",JSON.stringify({name,version:"0.0.0",main:"index.js"})+"\n");
+        fs.writeFileSync(d+"/index.js",code+"\n"); }'
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -128,7 +142,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
+      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.optionalDependencies["@shopify/react-native-skia"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -168,6 +184,11 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - npm install --ignore-scripts --no-save --omit=optional
+      - node -e 'const fs=require("fs"); for (const [name,code] of [["victory-native","exports.CartesianChart=()=>null;
+        exports.Line=()=>null; exports.Bar=()=>null; exports.Scatter=()=>null;"],["@shopify/react-native-skia","exports.matchFont=()=>null;"])
+        { const d="node_modules/"+name; fs.mkdirSync(d,{recursive:true}); fs.writeFileSync(d+"/package.json",JSON.stringify({name,version:"0.0.0",main:"index.js"})+"\n");
+        fs.writeFileSync(d+"/index.js",code+"\n"); }'
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -179,7 +200,9 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
+      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
+        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
+        delete p.optionalDependencies["@shopify/react-native-skia"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
       - rm -f patches/@shopify+react-native-skia+2.6.2.patch
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
@@ -219,6 +242,11 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - npm install --ignore-scripts --no-save --omit=optional
+      - node -e 'const fs=require("fs"); for (const [name,code] of [["victory-native","exports.CartesianChart=()=>null;
+        exports.Line=()=>null; exports.Bar=()=>null; exports.Scatter=()=>null;"],["@shopify/react-native-skia","exports.matchFont=()=>null;"])
+        { const d="node_modules/"+name; fs.mkdirSync(d,{recursive:true}); fs.writeFileSync(d+"/package.json",JSON.stringify({name,version:"0.0.0",main:"index.js"})+"\n");
+        fs.writeFileSync(d+"/index.js",code+"\n"); }'
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
