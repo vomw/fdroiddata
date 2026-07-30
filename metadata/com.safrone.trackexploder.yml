@@ -8,31 +8,6 @@ IssueTracker: https://github.com/Safrone/track-exploder/issues
 Changelog: https://github.com/Safrone/track-exploder/blob/HEAD/CHANGELOG.md
 Donate: https://ko-fi.com/safrone
 
-AutoName: Track Exploder
-Description: |-
-  Most barbershop learning tracks are published as "part-left" / "part-right"
-  files: one voice is hard-panned to a single stereo channel while the other
-  three parts are summed on the opposite channel. Track Exploder loads the four
-  files for a song (tenor, lead, baritone, bass), pulls out each isolated voice,
-  and lets you build any mix you want.
-
-  * Load the four part tracks and auto-extract each voice.
-  * Automatic track alignment — publishers don't always paste the song in at the
-    same spot in all four files, so parts can play tens of milliseconds apart.
-    Track Exploder measures the set on load and lines it up, absorbing the
-    correction in the silent gap after the pitch pipe. Every part can also be
-    nudged by hand.
-  * Per-track channel selection (left / right) in case the isolated part is
-    panned the other way.
-  * Mixer per part: include/exclude, gain, pan, solo, mute.
-  * Preview before export, with transport and waveform.
-  * Tempo change without pitch change (0.5x–1.5x) for slow practice.
-  * Save export presets for quick re-use, and bulk-export a whole set at once.
-  * Export to WAV, FLAC or MP3, keeping the tags the source files share.
-
-  Everything runs on your device. The app has no accounts, no network access, no
-  analytics and no advertising.
-
 RepoType: git
 Repo: https://github.com/Safrone/track-exploder.git
 
@@ -42,14 +17,12 @@ Builds:
     commit: v1.1.11
     sudo:
       - apt-get update
-      - apt-get install -y build-essential libclang-dev libssl-dev npm pkg-config
+      - apt-get install -y build-essential libclang-dev libssl-dev npm pkg-config rustup
     output: 
       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
-    srclibs:
-      - rustup@1.28.2
     prebuild:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain 1.97.0
-        --target aarch64-linux-android
+      - rustup default 1.97.0
+      - rustup target add aarch64-linux-android
       - . "$HOME/.cargo/env"
       - cargo install tauri-cli@2.11.4 --locked
       - export NDK_HOME=$$NDK$$
@@ -64,7 +37,7 @@ Builds:
       - cargo tauri android build --apk --target aarch64 --features mp3
     ndk: r27c
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
 CurrentVersion: 1.1.10
 CurrentVersionCode: 1001010
