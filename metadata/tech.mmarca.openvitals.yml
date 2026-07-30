@@ -1,0 +1,588 @@
+Categories:
+  - Health Manager
+  - Workout
+License: AGPL-3.0-or-later
+AuthorName: Manuel
+AuthorEmail: manuel@mmarca.tech
+AuthorWebSite: https://www.mmarca.tech/
+SourceCode: https://codeberg.org/OpenVitals/mobile-app
+IssueTracker: https://codeberg.org/OpenVitals/mobile-app/issues
+
+AutoName: OpenVitals
+
+RepoType: git
+Repo: https://codeberg.org/OpenVitals/mobile-app
+Binaries: 
+  https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v.apk
+
+Builds:
+  - versionName: 1.3.1
+    versionCode: 13001
+    commit: 28b8fa7744dab1fb7c53535b870943885452d8b8
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.3.2
+    versionCode: 13002
+    commit: 441a6a467b5d76f1c5ed636c3f9550a2413ba6fd
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.4.1
+    versionCode: 14001
+    commit: d8ce21eb232e353b655480776d93a8c8f827d177
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.5.0
+    versionCode: 15000
+    commit: 2cca3b9ab241eb7cc6c0c26a89a4b8cc1be5ddfa
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.5.1
+    versionCode: 15001
+    commit: 65b6e29ed6dbb6c4af72bc6dcef761c82c3299d9
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.6.0
+    versionCode: 16000
+    commit: ee1256989760f143a48e7fc1212cb77df09654d0
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.6.3
+    versionCode: 16003
+    commit: 6ca5f17e1d1fdba7ba80bd2fce7ffa058853c544
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.7.0
+    versionCode: 17000
+    commit: eec36d517c18aca7d821840ce324ef36f84669a4
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 1.7.3
+    versionCode: 17003
+    commit: 205c47d3711df570496868826d6a05711eab599c
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 2.2.5
+    versionCode: 1070303671
+    commit: d6f41784c787f15b8d90e2e35deecdbbe469c41a
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
+        --build-number $(($baseCode * 10 + 1))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.2.5
+    versionCode: 1070303672
+    commit: d6f41784c787f15b8d90e2e35deecdbbe469c41a
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+        --build-number $(($baseCode * 10 + 2))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.2.7
+    versionCode: 1070303721
+    commit: 873b085f5f3eb94822e67b66e291eea32b1344cc
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
+        --build-number $(($baseCode * 10 + 1))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.2.7
+    versionCode: 1070303722
+    commit: 873b085f5f3eb94822e67b66e291eea32b1344cc
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+        --build-number $(($baseCode * 10 + 2))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.2.8
+    versionCode: 1070304011
+    commit: 92c254becb6f4f7feaf22ead803ba9fdf25c6a24
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
+        --build-number $(($baseCode * 10 + 1))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.2.8
+    versionCode: 1070304012
+    commit: 92c254becb6f4f7feaf22ead803ba9fdf25c6a24
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+        --build-number $(($baseCode * 10 + 2))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.3.2
+    versionCode: 1070304131
+    commit: 05089387cb31a0e698bce08057e805585186cfce
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - cd ../bluetooth_sync_native
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
+        --build-number $(($baseCode * 10 + 1))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.3.2
+    versionCode: 1070304132
+    commit: 05089387cb31a0e698bce08057e805585186cfce
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - cd ../bluetooth_sync_native
+      - $$flutter$$/bin/dart run pigeon --input pigeons/messages.dart
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export baseCode=$(sed -n 's/^version:[[:space:]]*[0-9.]*+\([0-9][0-9]*\).*/\1/p'
+        pubspec.yaml | head -1)
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+        --build-number $(($baseCode * 10 + 2))
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.4.0
+    versionCode: 1070304311
+    commit: 998c3377886b3145f6d8a273ac9e0b904970dc29
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - if [ ! -f lib/data/local/open_vitals_database.g.dart ]; then $$flutter$$/bin/dart
+        run build_runner build --delete-conflicting-outputs; fi
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
+      - cd ../bluetooth_sync_native
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
+      - if [ -d ../notification_listener_native ]; then cd ../notification_listener_native
+        && { [ -f lib/src/messages.g.dart ] || $$flutter$$/bin/dart run pigeon --input
+        pigeons/messages.dart; }; fi
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm
+        --build-number $$VERCODE$$
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+  - versionName: 2.4.0
+    versionCode: 1070304312
+    commit: 998c3377886b3145f6d8a273ac9e0b904970dc29
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential clang cmake ninja-build pkg-config
+      - mkdir -p /woodpecker/src/codeberg.org/OpenVitals
+      - chown -R vagrant /woodpecker
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://codeberg.org/OpenVitals/mobile-app/releases/download/v%v/OpenVitals-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(sed -n 's|.*cirruslabs/flutter:\([0-9][0-9.]*\).*|\1|p'
+        .woodpecker/release.yml | head -1)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - if [ ! -f lib/data/local/open_vitals_database.g.dart ]; then $$flutter$$/bin/dart
+        run build_runner build --delete-conflicting-outputs; fi
+      - cd packages/health_connect_native
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
+      - cd ../bluetooth_sync_native
+      - if [ ! -f lib/src/messages.g.dart ]; then $$flutter$$/bin/dart run pigeon
+        --input pigeons/messages.dart; fi
+      - if [ -d ../notification_listener_native ]; then cd ../notification_listener_native
+        && { [ -f lib/src/messages.g.dart ] || $$flutter$$/bin/dart run pigeon --input
+        pigeons/messages.dart; }; fi
+      - popd
+      - mv $repo tech.mmarca.openvitals
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/woodpecker/src/codeberg.org/OpenVitals/mobile-app
+      - cd ..
+      - mv tech.mmarca.openvitals $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+        --build-number $$VERCODE$$
+      - popd
+      - mv $repo tech.mmarca.openvitals
+
+AllowedAPKSigningKeys: 0416c0651543e951ef3b6c1ed9beb13833bff3a2be9ddacf492270712861e05d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+UpdateCheckData: pubspec.yaml|version:\s+[\d.]+\+(\d+)|.|version:\s+([\d.]+)\+
+CurrentVersion: 2.4.0
+CurrentVersionCode: 1070304312
