@@ -26,7 +26,7 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client
+      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
@@ -42,11 +42,6 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
-        package.json)
-      - '[[ $skiaVersion ]] || exit 1'
-      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160001/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -70,17 +65,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - pushd $$react-native-skia$$
-      - corepack enable
-      - yarn
-      - pushd ./externals/depot_tools
-      - ./update_depot_tools
-      - popd
-      - cd packages/skia
-      - yarn build-skia android-arm
-      - popd
-      - rm -rf node_modules/@shopify/react-native-skia/libs/android
-      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -92,7 +76,7 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client
+      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
@@ -108,11 +92,6 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
-        package.json)
-      - '[[ $skiaVersion ]] || exit 1'
-      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160002/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -136,17 +115,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - pushd $$react-native-skia$$
-      - corepack enable
-      - yarn
-      - pushd ./externals/depot_tools
-      - ./update_depot_tools
-      - popd
-      - cd packages/skia
-      - yarn build-skia android-arm64
-      - popd
-      - rm -rf node_modules/@shopify/react-native-skia/libs/android
-      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -158,7 +126,7 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client
+      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
@@ -174,11 +142,6 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
-        package.json)
-      - '[[ $skiaVersion ]] || exit 1'
-      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160003/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -202,17 +165,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - pushd $$react-native-skia$$
-      - corepack enable
-      - yarn
-      - pushd ./externals/depot_tools
-      - ./update_depot_tools
-      - popd
-      - cd packages/skia
-      - yarn build-skia android-x86
-      - popd
-      - rm -rf node_modules/@shopify/react-native-skia/libs/android
-      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -224,7 +176,7 @@ Builds:
       - apt-get update
       - apt-get install -y npm
     init:
-      - npm pkg delete dependencies.expo-dev-client
+      - npm pkg delete dependencies.expo-dev-client optionalDependencies.@shopify/react-native-skia
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
@@ -240,11 +192,6 @@ Builds:
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
-      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
-        package.json)
-      - '[[ $skiaVersion ]] || exit 1'
-      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - git -C $$react-native-skia$$ submodule update --init --recursive
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160004/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -268,17 +215,6 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - pushd $$react-native-skia$$
-      - corepack enable
-      - yarn
-      - pushd ./externals/depot_tools
-      - ./update_depot_tools
-      - popd
-      - cd packages/skia
-      - yarn build-skia android-x64
-      - popd
-      - rm -rf node_modules/@shopify/react-native-skia/libs/android
-      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
