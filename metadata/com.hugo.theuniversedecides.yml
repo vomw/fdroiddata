@@ -27,8 +27,7 @@ Builds:
       - ios
     prebuild:
       - sed -i '/playImplementation/d' android/app/build.gradle.kts
-      - flutterVersion=$(awk -F'"' '/FLUTTER_VERSION:/ { print $2; exit }'
-        .github/workflows/build-signed-apk.yml)
+      - flutterVersion=$(awk -F'"' '/FLUTTER_VERSION:/ { print $2; exit }' .github/workflows/build-signed-apk.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
