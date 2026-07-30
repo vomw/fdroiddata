@@ -24,13 +24,17 @@ Builds:
     commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
     sudo:
       - apt-get update
+      - apt-get install -y ninja-build bzip2 xz-utils
       - apt-get install npm
+      - npm install -g corepack
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
+    srclibs:
+      - react-native-skia@v2.6.2
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -38,11 +42,14 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
+        package.json)
+      - '[[ $skiaVersion ]] || exit 1'
+      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160001/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -66,17 +73,13 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - rm -rf node_modules/@shopify/react-native-skia node_modules/react-native-skia-android
-        node_modules/react-native-skia-apple-ios node_modules/react-native-skia-apple-macos
-        node_modules/react-native-skia-apple-tvos
-      - npm install --force --ignore-scripts --no-save @shopify/react-native-skia@2.6.2
-        react-native-skia-android@147.1.0 react-native-skia-apple-ios@147.1.0 react-native-skia-apple-macos@147.1.0
-        react-native-skia-apple-tvos@147.1.0
-      - tarball=$(npm pack --ignore-scripts --silent react-native-skia-android@147.1.0)
-      - rm -rf /tmp/cablesnap-skia && mkdir /tmp/cablesnap-skia
-      - tar -xzf "$tarball" -C /tmp/cablesnap-skia
-      - cp -a /tmp/cablesnap-skia/package/libs node_modules/react-native-skia-android/
-      - npx install-skia
+      - pushd $$react-native-skia$$/packages/skia
+      - corepack enable
+      - yarn
+      - yarn build-skia android-arm
+      - popd
+      - rm -rf node_modules/@shopify/react-native-skia/libs/android
+      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -86,13 +89,17 @@ Builds:
     commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
     sudo:
       - apt-get update
+      - apt-get install -y ninja-build bzip2 xz-utils
       - apt-get install npm
+      - npm install -g corepack
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
+    srclibs:
+      - react-native-skia@v2.6.2
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -100,11 +107,14 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
+        package.json)
+      - '[[ $skiaVersion ]] || exit 1'
+      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160002/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -128,17 +138,13 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - rm -rf node_modules/@shopify/react-native-skia node_modules/react-native-skia-android
-        node_modules/react-native-skia-apple-ios node_modules/react-native-skia-apple-macos
-        node_modules/react-native-skia-apple-tvos
-      - npm install --force --ignore-scripts --no-save @shopify/react-native-skia@2.6.2
-        react-native-skia-android@147.1.0 react-native-skia-apple-ios@147.1.0 react-native-skia-apple-macos@147.1.0
-        react-native-skia-apple-tvos@147.1.0
-      - tarball=$(npm pack --ignore-scripts --silent react-native-skia-android@147.1.0)
-      - rm -rf /tmp/cablesnap-skia && mkdir /tmp/cablesnap-skia
-      - tar -xzf "$tarball" -C /tmp/cablesnap-skia
-      - cp -a /tmp/cablesnap-skia/package/libs node_modules/react-native-skia-android/
-      - npx install-skia
+      - pushd $$react-native-skia$$/packages/skia
+      - corepack enable
+      - yarn
+      - yarn build-skia android-arm64
+      - popd
+      - rm -rf node_modules/@shopify/react-native-skia/libs/android
+      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -148,13 +154,17 @@ Builds:
     commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
     sudo:
       - apt-get update
+      - apt-get install -y ninja-build bzip2 xz-utils
       - apt-get install npm
+      - npm install -g corepack
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
+    srclibs:
+      - react-native-skia@v2.6.2
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -162,11 +172,14 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
+        package.json)
+      - '[[ $skiaVersion ]] || exit 1'
+      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160003/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -190,17 +203,13 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - rm -rf node_modules/@shopify/react-native-skia node_modules/react-native-skia-android
-        node_modules/react-native-skia-apple-ios node_modules/react-native-skia-apple-macos
-        node_modules/react-native-skia-apple-tvos
-      - npm install --force --ignore-scripts --no-save @shopify/react-native-skia@2.6.2
-        react-native-skia-android@147.1.0 react-native-skia-apple-ios@147.1.0 react-native-skia-apple-macos@147.1.0
-        react-native-skia-apple-tvos@147.1.0
-      - tarball=$(npm pack --ignore-scripts --silent react-native-skia-android@147.1.0)
-      - rm -rf /tmp/cablesnap-skia && mkdir /tmp/cablesnap-skia
-      - tar -xzf "$tarball" -C /tmp/cablesnap-skia
-      - cp -a /tmp/cablesnap-skia/package/libs node_modules/react-native-skia-android/
-      - npx install-skia
+      - pushd $$react-native-skia$$/packages/skia
+      - corepack enable
+      - yarn
+      - yarn build-skia android-x86
+      - popd
+      - rm -rf node_modules/@shopify/react-native-skia/libs/android
+      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
@@ -210,13 +219,17 @@ Builds:
     commit: 712c40768ea055bbbbd4dcd60b52a642393ed345
     sudo:
       - apt-get update
+      - apt-get install -y ninja-build bzip2 xz-utils
       - apt-get install npm
+      - npm install -g corepack
     init:
       - npm pkg delete dependencies.expo-dev-client
       - npm install
       - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
         const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
+    srclibs:
+      - react-native-skia@v2.6.2
     prebuild:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -224,11 +237,14 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
       - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
+        m.patchFdroidExpoDependencies(process.cwd()); m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
         m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
         fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
       - rm -f public/canvaskit.wasm
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p'
+        package.json)
+      - '[[ $skiaVersion ]] || exit 1'
+      - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i 's/^\([[:space:]]*\)versionCode 160$/\1versionCode 160004/' android/app/build.gradle
       - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
         = true/' android/app/build.gradle
@@ -252,17 +268,13 @@ Builds:
     scandelete:
       - node_modules
     build:
-      - rm -rf node_modules/@shopify/react-native-skia node_modules/react-native-skia-android
-        node_modules/react-native-skia-apple-ios node_modules/react-native-skia-apple-macos
-        node_modules/react-native-skia-apple-tvos
-      - npm install --force --ignore-scripts --no-save @shopify/react-native-skia@2.6.2
-        react-native-skia-android@147.1.0 react-native-skia-apple-ios@147.1.0 react-native-skia-apple-macos@147.1.0
-        react-native-skia-apple-tvos@147.1.0
-      - tarball=$(npm pack --ignore-scripts --silent react-native-skia-android@147.1.0)
-      - rm -rf /tmp/cablesnap-skia && mkdir /tmp/cablesnap-skia
-      - tar -xzf "$tarball" -C /tmp/cablesnap-skia
-      - cp -a /tmp/cablesnap-skia/package/libs node_modules/react-native-skia-android/
-      - npx install-skia
+      - pushd $$react-native-skia$$/packages/skia
+      - corepack enable
+      - yarn
+      - yarn build-skia android-x64
+      - popd
+      - rm -rf node_modules/@shopify/react-native-skia/libs/android
+      - cp -a $$react-native-skia$$/packages/skia/libs/android node_modules/@shopify/react-native-skia/libs/android
       - cd android
       - CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true gradle --no-daemon
         assembleReleaseFdroid -x lintVitalAnalyzeRelease
