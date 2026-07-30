@@ -1,0 +1,26 @@
+Categories:
+  - Time
+License: GPL-3.0-only
+AuthorName: John Hungerford
+AuthorEmail: abk1@hush.ai
+SourceCode: https://github.com/Jhon-1/Dual-View-Cal
+IssueTracker: https://github.com/Jhon-1/Dual-View-Cal/issues
+
+AutoName: Dual View Calendar
+
+RepoType: git
+Repo: https://github.com/Jhon-1/Dual-View-Cal.git
+
+Builds:
+  - versionName: '2.0'
+    versionCode: 1
+    commit: v2.0
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    output: dist/app.apk
+    build:
+      - npm install
+      - npx cap sync android
+      - cd android && ./gradlew assembleRelease
