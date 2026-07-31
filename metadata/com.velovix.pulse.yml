@@ -16,7 +16,7 @@ Repo: https://github.com/TheVelovix/pulse-app.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: b891c85c263311fb8616301489551891ae52f445
+    commit: c6e577f4b75d6ce03336690199b1b9a38b23745b
     subdir: android/app
     sudo:
       - sysctl fs.inotify.max_user_watches=524288 || true
@@ -45,8 +45,8 @@ Builds:
       - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/fromTarget("17")/fromTarget("21")/g'
         node_modules/react-native-reanimated/android/build.gradle.kts
       - sed -i -e 's/jvmToolchain(17)/jvmToolchain(21)/g' node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - EXPO_PUBLIC_STORE=f-droid EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com
-        bunx expo prebuild -p android --clean --no-install
+      - EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com bunx expo prebuild -p android
+        --clean --no-install
       - sed -i -e 's/-Xmx[0-9]*[mg]/-Xmx4g/g' -e 's/-XX:MaxMetaspaceSize=[0-9]*[mg]/-XX:MaxMetaspaceSize=1g/g'
         -e '/^org.gradle.parallel=/d' -e '/^org.gradle.workers.max=/d' -e '/^reactNativeArchitectures=/d'
         android/gradle.properties
@@ -74,12 +74,8 @@ Builds:
       - node_modules
     build:
       - mkdir -p $ANDROID_NDK/sources/android/cpufeatures
-      - test -f $ANDROID_NDK/sources/android/cpufeatures/cpu-features.c || curl -s
-        'https://android.googlesource.com/platform/ndk/+/master/sources/android/cpufeatures/cpu-features.c?format=TEXT'
-        | base64 -d > $ANDROID_NDK/sources/android/cpufeatures/cpu-features.c
-      - test -f $ANDROID_NDK/sources/android/cpufeatures/cpu-features.h || curl -s
-        'https://android.googlesource.com/platform/ndk/+/master/sources/android/cpufeatures/cpu-features.h?format=TEXT'
-        | base64 -d > $ANDROID_NDK/sources/android/cpufeatures/cpu-features.h
+      - cp ../../vendor/ndk-cpufeatures/cpu-features.c $ANDROID_NDK/sources/android/cpufeatures/cpu-features.c
+      - cp ../../vendor/ndk-cpufeatures/cpu-features.h $ANDROID_NDK/sources/android/cpufeatures/cpu-features.h
       - export PATH=$$react-native-skia$$/externals/depot_tools:$PATH
       - ensure_bootstrap
       - pushd $$react-native-skia$$/packages/skia
