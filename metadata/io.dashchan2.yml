@@ -30,8 +30,6 @@ Builds:
         cmake curl meson nasm ninja-build pkg-config unzip xz-utils
       - apt-get install --no-install-recommends -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    gradle:
-      - fdroid
     output: build/outputs/apk/fdroid/release/*-unsigned.apk
     srclibs:
       - dav1d@b546257f770768b2c88258c533da38b91a06f737
@@ -39,13 +37,11 @@ Builds:
       - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
     prebuild:
       - printf '8.1.2\n' > $$FFmpeg$$/VERSION
-      - echo "dashchanDav1dSourceDir=$$dav1d$$" >> gradle.properties
-      - echo "dashchanFfmpegSourceDir=$$FFmpeg$$" >> gradle.properties
-      - echo "dashchanLibyuvSourceDir=$$libyuv$$" >> gradle.properties
+    build:
+      - DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$ DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$
+        DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$ gradle -PnativePlayerFfmpegFlavor=ffmpeg8
+        -PnativeAbis=arm64-v8a,armeabi-v7a,x86 assembleFdroidRelease
     ndk: r29
-    gradleprops:
-      - nativePlayerFfmpegFlavor=ffmpeg8
-      - nativeAbis=arm64-v8a,armeabi-v7a,x86
 
   - versionName: 3.2.15
     versionCode: 1095
@@ -57,8 +53,6 @@ Builds:
         cmake curl meson nasm ninja-build pkg-config unzip xz-utils
       - apt-get install --no-install-recommends -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    gradle:
-      - fdroid
     output: build/outputs/apk/fdroid/release/*-unsigned.apk
     srclibs:
       - dav1d@b546257f770768b2c88258c533da38b91a06f737
@@ -66,13 +60,11 @@ Builds:
       - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
     prebuild:
       - printf '8.1.2\n' > $$FFmpeg$$/VERSION
-      - echo "dashchanDav1dSourceDir=$$dav1d$$" >> gradle.properties
-      - echo "dashchanFfmpegSourceDir=$$FFmpeg$$" >> gradle.properties
-      - echo "dashchanLibyuvSourceDir=$$libyuv$$" >> gradle.properties
+    build:
+      - DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$ DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$
+        DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$ gradle -PnativePlayerFfmpegFlavor=ffmpeg8
+        -PnativeAbis=arm64-v8a,armeabi-v7a,x86 assembleFdroidRelease
     ndk: r29
-    gradleprops:
-      - nativePlayerFfmpegFlavor=ffmpeg8
-      - nativeAbis=arm64-v8a,armeabi-v7a,x86
 
 AllowedAPKSigningKeys: a9fbac6c498f7ad8e7c56849afe43881966bed2ed2bc1dd1c73d0ffe0b9ebeba
 
