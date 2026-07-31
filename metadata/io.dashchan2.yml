@@ -16,7 +16,7 @@ AutoName: Slooop
 
 RepoType: git
 Repo: https://github.com/andrewpozdnakov7-jpg/Dashchan_2.git
-Binaries:
+Binaries: 
   https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v-%c/Slooop-%v-%c-fdroid-ffmpeg8-all-abi-signed.apk
 
 Builds:
@@ -46,9 +46,35 @@ Builds:
       - nativePlayerFfmpegFlavor=ffmpeg8
       - nativeAbis=arm64-v8a,armeabi-v7a,x86
 
+  - versionName: 3.2.15
+    versionCode: 1095
+    commit: d9c73b00a712c444f0162fbdc4c8d8c8e5ca73d9
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install --no-install-recommends -y binutils build-essential bzip2
+        cmake curl meson nasm ninja-build pkg-config unzip xz-utils
+      - apt-get install --no-install-recommends -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/*-unsigned.apk
+    srclibs:
+      - dav1d@b546257f770768b2c88258c533da38b91a06f737
+      - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
+      - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
+    prebuild:
+      - echo "dashchanDav1dSourceDir=$$dav1d$$" >> gradle.properties
+      - echo "dashchanFfmpegSourceDir=$$FFmpeg$$" >> gradle.properties
+      - echo "dashchanLibyuvSourceDir=$$libyuv$$" >> gradle.properties
+    ndk: r29
+    gradleprops:
+      - nativePlayerFfmpegFlavor=ffmpeg8
+      - nativeAbis=arm64-v8a,armeabi-v7a,x86
+
 AllowedAPKSigningKeys: a9fbac6c498f7ad8e7c56849afe43881966bed2ed2bc1dd1c73d0ffe0b9ebeba
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^\d+\.\d+\.\d+-\d+$
-CurrentVersion: 3.2.14
-CurrentVersionCode: 1094
+CurrentVersion: 3.2.15
+CurrentVersionCode: 1095
