@@ -16,21 +16,20 @@ Builds:
   - versionName: "1.1.0"
     versionCode: 2
     commit: 06fa772c79160d692f809b257f7f7be3dc5899cc
-    subdir: .
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
     init:
+      - cd ../..
       - npm ci --legacy-peer-deps
+    gradle:
+      - yes
     prebuild:
+      - cd ../..
       - npx expo prebuild --platform android --no-install
       - sed -i "/signingConfig /d" android/app/build.gradle
-    build:
-      - pushd android
-      - ./gradlew assembleRelease
-      - popd
     scanignore:
-      - android/app/build
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
