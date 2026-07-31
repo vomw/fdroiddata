@@ -1,0 +1,1449 @@
+Categories:
+  - Cloud Storage & File Sync
+  - Note
+  - Shopping List
+  - Task
+License: MIT
+AuthorName: Chen Asraf
+AuthorEmail: contact@casraf.dev
+WebSite: https://casraf.dev
+SourceCode: https://github.com/chenasraf/pantry-flutter
+IssueTracker: https://github.com/chenasraf/pantry-flutter/issues
+
+Name: Nextcloud Pantry
+AutoName: Pantry
+
+RepoType: git
+Repo: https://github.com/chenasraf/pantry-flutter.git
+
+Builds:
+  - versionName: 0.13.0
+    versionCode: 271
+    commit: 9fdee69cb968dd3a1079c3b768c84bf518a5df23
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.0
+    versionCode: 272
+    commit: 9fdee69cb968dd3a1079c3b768c84bf518a5df23
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.0
+    versionCode: 273
+    commit: 9fdee69cb968dd3a1079c3b768c84bf518a5df23
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.1
+    versionCode: 281
+    commit: 45f6f7234e4fc959266a3267eeea529856564008
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.1
+    versionCode: 282
+    commit: 45f6f7234e4fc959266a3267eeea529856564008
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.1
+    versionCode: 283
+    commit: 45f6f7234e4fc959266a3267eeea529856564008
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.2
+    versionCode: 291
+    commit: 04eb6951050b1fc4c30168b7279058d3bc1a1fd1
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.2
+    versionCode: 292
+    commit: 04eb6951050b1fc4c30168b7279058d3bc1a1fd1
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.13.2
+    versionCode: 293
+    commit: 04eb6951050b1fc4c30168b7279058d3bc1a1fd1
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.14.0
+    versionCode: 301
+    commit: 9fa08ad23c1e9d0f0eab6dcc886f4a82bd38be22
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.14.0
+    versionCode: 302
+    commit: 9fa08ad23c1e9d0f0eab6dcc886f4a82bd38be22
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.14.0
+    versionCode: 303
+    commit: 9fa08ad23c1e9d0f0eab6dcc886f4a82bd38be22
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.15.0
+    versionCode: 321
+    commit: 74998f715d093afccbef5ef775e66e83f248567d
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.15.0
+    versionCode: 322
+    commit: 74998f715d093afccbef5ef775e66e83f248567d
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.15.0
+    versionCode: 323
+    commit: 74998f715d093afccbef5ef775e66e83f248567d
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.18.0
+    versionCode: 351
+    commit: 0fe179767ef3f79615fbc09e0ab234d782bbded8
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.18.0
+    versionCode: 352
+    commit: 0fe179767ef3f79615fbc09e0ab234d782bbded8
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.18.0
+    versionCode: 353
+    commit: 0fe179767ef3f79615fbc09e0ab234d782bbded8
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.19.0
+    versionCode: 361
+    commit: 0a87ec90711bb015c80e1ba8017b8bb3601a255c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.19.0
+    versionCode: 362
+    commit: 0a87ec90711bb015c80e1ba8017b8bb3601a255c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.19.0
+    versionCode: 363
+    commit: 0a87ec90711bb015c80e1ba8017b8bb3601a255c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.20.2
+    versionCode: 401
+    commit: ace2a9d6c3792bb6ab77866494985dfb717c9f3c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.20.2
+    versionCode: 402
+    commit: ace2a9d6c3792bb6ab77866494985dfb717c9f3c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.20.2
+    versionCode: 403
+    commit: ace2a9d6c3792bb6ab77866494985dfb717c9f3c
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.21.0
+    versionCode: 411
+    commit: 8f872c5735c928d66a9dcf578f55eb152d8641d5
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.21.0
+    versionCode: 412
+    commit: 8f872c5735c928d66a9dcf578f55eb152d8641d5
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.21.0
+    versionCode: 413
+    commit: 8f872c5735c928d66a9dcf578f55eb152d8641d5
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.22.1
+    versionCode: 431
+    commit: 2bd01248d3d1ea7da6bfa7dc51b65ba51e3ee930
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.22.1
+    versionCode: 432
+    commit: 2bd01248d3d1ea7da6bfa7dc51b65ba51e3ee930
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.22.1
+    versionCode: 433
+    commit: 2bd01248d3d1ea7da6bfa7dc51b65ba51e3ee930
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.23.0
+    versionCode: 441
+    commit: d94d72e82e97e7184f3498214cd4e36afdb1697b
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.23.0
+    versionCode: 442
+    commit: d94d72e82e97e7184f3498214cd4e36afdb1697b
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+  - versionName: 0.23.0
+    versionCode: 443
+    commit: d94d72e82e97e7184f3498214cd4e36afdb1697b
+    sudo:
+      - mkdir -p /home/runner/work/pantry-flutter
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chenasraf/pantry-flutter/releases/download/v%v/pantry-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.casraf.pantry
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/pantry-flutter/pantry-flutter
+      - cd ..
+      - mv dev.casraf.pantry $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo dev.casraf.pantry
+
+AllowedAPKSigningKeys: f01b6775775e44258a8f4ac50d12b5ea267456fffd27664994dca9f4d41942b9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.23.0
+CurrentVersionCode: 443
