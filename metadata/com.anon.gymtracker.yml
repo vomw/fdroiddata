@@ -1,0 +1,46 @@
+Categories:
+  - Sports & Health
+License: MIT
+AuthorName: anon
+SourceCode: https://github.com/bellamamine-a11y/gym-tracker
+IssueTracker: https://github.com/bellamamine-a11y/gym-tracker/issues
+Changelog: https://github.com/bellamamine-a11y/gym-tracker/releases
+
+AutoName: Gym Tracker
+Summary: Minimal workout log
+Description: |
+  Simple offline gym tracker. Log each exercise with
+  sets, weight, and reps. See strength progress over
+  time with charts.
+
+  No ads. No sign-up. No cloud. Everything stored
+  locally on your device.
+
+  Dark and light mode included.
+
+RepoType: git
+Repo: https://github.com/bellamamine-a11y/gym-tracker
+
+Builds:
+  - versionName: "1.1.0"
+    versionCode: 2
+    commit: v1.1.0
+    subdir: .
+    sudo:
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    init: npm ci
+    prebuild:
+      - export ANDROID_HOME=$$ANDROID_SDK_ROOT
+      - npx expo prebuild --platform android --no-install
+    build:
+      - pushd android
+      - ./gradlew assembleRelease
+      - popd
+    scanignore:
+      - android/app/build
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v
+CurrentVersion: "1.1.0"
+CurrentVersionCode: 2
