@@ -40,6 +40,30 @@ Builds:
       - libreaacBundledOpenboardsRequired=true
       - libreaacBundledOpenboardsDelivery=base
 
+  - versionName: 0.1.15
+    versionCode: 16
+    commit: aa32247b3aafee441d21e6b42264550bc7e87c0f
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    gradle:
+      - yes
+    rm:
+      - app/src/main/assets
+    build:
+      - pushd ../upstream/libreaac
+      - npm ci
+      - npm run build
+      - popd
+      - ../scripts/sync-frontend.sh ../upstream/libreaac/dist $(git -C ../upstream/libreaac
+        rev-parse HEAD)
+    gradleprops:
+      - libreaacReleaseSigningEnabled=false
+      - libreaacBundledOpenboardsRequired=true
+      - libreaacBundledOpenboardsDelivery=base
+
 AllowedAPKSigningKeys: aad2f12a9125a9f2f97b0070cb6b2dfd10b26ed989a84b4f12ff99bee66e52ba
 
 MaintainerNotes: |-
@@ -52,5 +76,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.1.13
-CurrentVersionCode: 14
+CurrentVersion: 0.1.15
+CurrentVersionCode: 16
