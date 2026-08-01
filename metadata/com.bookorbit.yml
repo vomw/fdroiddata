@@ -1,0 +1,45 @@
+AntiFeatures:
+  NonFreeDep:
+    en-US: >-
+      Links Google's proprietary play-services-cast-framework library for
+      Chromecast support. The app checks for Google Play Services
+      availability at runtime and degrades gracefully when it's absent, but
+      the library is compiled into every APK regardless.
+Categories:
+  - Multimedia
+  - Reading
+License: AGPL-3.0-only
+AuthorName: Jared Swets
+SourceCode: https://github.com/deranjer/bookorbit-android
+IssueTracker: https://github.com/deranjer/bookorbit-android/issues
+Changelog: https://github.com/deranjer/bookorbit-android/releases
+
+AutoName: BookOrbit
+
+RepoType: git
+Repo: https://github.com/deranjer/bookorbit-android.git
+Binaries:
+  https://github.com/deranjer/bookorbit-android/releases/download/v%v/bookorbit-%v.apk
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: app
+    gradle:
+      - yes
+    # app/build.gradle.kts derives versionCode from the ORG_GRADLE_PROJECT_versionCode
+    # Gradle property (normally supplied by our own release CI via the GitHub Actions run
+    # number) and falls back to 1 when unset. F-Droid's build server has no such context
+    # and needs a fixed, reproducible versionCode of its own, so pin it here explicitly.
+    init: >-
+      sed -i
+      's/(findProperty("versionCode") as String?)?.toIntOrNull() ?: 1/1/'
+      ../app/build.gradle.kts
+
+AllowedAPKSigningKeys: 9c4dce82c3861329c01c1fba55dc59e946c76c6db5c16824cbf089cacf07c011
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
