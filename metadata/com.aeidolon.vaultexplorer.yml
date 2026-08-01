@@ -28,6 +28,14 @@ Builds:
     commit: v1.0.1
     sudo:
       - apt-get update
+      # JDK 17, alongside whatever JDK the buildserver base image already
+      # runs Gradle with (21, going by its own `java -version`). Needed for
+      # android/app/build.gradle.kts's `kotlin { jvmToolchain(17) }`: the
+      # buildserver has toolchain auto-*download* disabled (as it should,
+      # for a network-restricted build phase), so it has to be able to
+      # auto-*detect* a real JDK 17 already on disk instead, and this is
+      # the only phase with network access to install one.
+      - apt-get install -y openjdk-17-jdk-headless
       - apt-get install -y ca-certificates curl gnupg
       - mkdir -p /etc/apt/keyrings
       - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg
@@ -49,6 +57,14 @@ Builds:
     commit: v1.0.1
     sudo:
       - apt-get update
+      # JDK 17, alongside whatever JDK the buildserver base image already
+      # runs Gradle with (21, going by its own `java -version`). Needed for
+      # android/app/build.gradle.kts's `kotlin { jvmToolchain(17) }`: the
+      # buildserver has toolchain auto-*download* disabled (as it should,
+      # for a network-restricted build phase), so it has to be able to
+      # auto-*detect* a real JDK 17 already on disk instead, and this is
+      # the only phase with network access to install one.
+      - apt-get install -y openjdk-17-jdk-headless
       - apt-get install -y ca-certificates curl gnupg
       - mkdir -p /etc/apt/keyrings
       - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg
@@ -70,6 +86,14 @@ Builds:
     commit: v1.0.1
     sudo:
       - apt-get update
+      # JDK 17, alongside whatever JDK the buildserver base image already
+      # runs Gradle with (21, going by its own `java -version`). Needed for
+      # android/app/build.gradle.kts's `kotlin { jvmToolchain(17) }`: the
+      # buildserver has toolchain auto-*download* disabled (as it should,
+      # for a network-restricted build phase), so it has to be able to
+      # auto-*detect* a real JDK 17 already on disk instead, and this is
+      # the only phase with network access to install one.
+      - apt-get install -y openjdk-17-jdk-headless
       - apt-get install -y ca-certificates curl gnupg
       - mkdir -p /etc/apt/keyrings
       - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg
