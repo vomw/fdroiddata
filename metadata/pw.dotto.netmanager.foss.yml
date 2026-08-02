@@ -23,6 +23,7 @@ Builds:
       - flutter@stable
     rm:
       - test
+      - android/wear
     prebuild:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
       - '[[ $flutterVersion ]]'
@@ -37,7 +38,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin/:$PATH
       - export GIT_COMMIT=$(git rev-parse --short HEAD)
-      - $$flutter$$/bin/flutter build apk --release --flavor foss
+      - $$flutter$$/bin/flutter build apk --release --flavor foss 
         --dart-define=SENTRY_DSN=https://8be4a19c082841f4958cb347196914f9@netmanager.bugsink.com/2
         --dart-define=flutter.flutter_map.unblockOSM="Our tile servers are not." --dart-define=GIT_COMMIT=$GIT_COMMIT
         --dart-define=FOSS=true --target-platform android-arm,android-arm64
