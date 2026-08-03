@@ -20,46 +20,26 @@ Binaries:
   https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v-%c/Slooop-%v-%c-fdroid-ffmpeg8-all-abi-signed.apk
 
 Builds:
-  - versionName: 3.2.14
-    versionCode: 1094
-    commit: 5569240d5a788bde979d1e84b80818209622f4a4
-    sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install --no-install-recommends -y binutils build-essential bzip2
-        cmake curl meson nasm ninja-build pkg-config unzip xz-utils
-      - apt-get install --no-install-recommends -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    output: build/outputs/apk/fdroid/release/*-unsigned.apk
-    srclibs:
-      - dav1d@b546257f770768b2c88258c533da38b91a06f737
-      - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
-      - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
-    prebuild: printf '8.1.2\n' > $$FFmpeg$$/VERSION
-    build: DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$ DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$
-      DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$ gradle -PnativePlayerFfmpegFlavor=ffmpeg8
-      -PnativeAbis=arm64-v8a,armeabi-v7a,x86 assembleFdroidRelease
-    ndk: r29
-
   - versionName: 3.2.15
     versionCode: 1095
     commit: d9c73b00a712c444f0162fbdc4c8d8c8e5ca73d9
     sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
       - apt-get install --no-install-recommends -y binutils build-essential bzip2
         cmake curl meson nasm ninja-build pkg-config unzip xz-utils
-      - apt-get install --no-install-recommends -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - apt-get install --no-install-recommends -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
     output: build/outputs/apk/fdroid/release/*-unsigned.apk
     srclibs:
       - dav1d@b546257f770768b2c88258c533da38b91a06f737
       - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
       - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
     prebuild: printf '8.1.2\n' > $$FFmpeg$$/VERSION
-    build: DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$ DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$
-      DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$ gradle -PnativePlayerFfmpegFlavor=ffmpeg8
-      -PnativeAbis=arm64-v8a,armeabi-v7a,x86 assembleFdroidRelease
+    build: JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$
+      DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$ DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$
+      gradle -PnativePlayerFfmpegFlavor=ffmpeg8 -PnativeAbis=arm64-v8a,armeabi-v7a,x86
+      assembleFdroidRelease
     ndk: r29
 
 AllowedAPKSigningKeys: a9fbac6c498f7ad8e7c56849afe43881966bed2ed2bc1dd1c73d0ffe0b9ebeba
