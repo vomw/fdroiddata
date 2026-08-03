@@ -14,10 +14,10 @@ Repo: https://github.com/rorystandley/rune.git
 
 Builds:
   - versionName: 0.1.0
-    versionCode: 1
-    commit: affe478584f3687958c7c7dbc08b2bf4bb5144b9
+    versionCode: 11
+    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
     subdir: app
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -29,10 +29,10 @@ Builds:
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i -e 's|//f ||' android/app/build.gradle.kts
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e 's/isMinifyEnabled = false/isMinifyEnabled = true/' android/app/build.gradle.kts
     scanignore:
       - packages/notes_core/pubspec.yaml
     scandelete:
@@ -40,10 +40,70 @@ Builds:
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - export PUB_CACHE="$(pwd)/.pub-cache"
-      - ../tool/reproducibility/build_release_apk.sh build/app/outputs/flutter-apk/app-release.apk
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+    ndk: 28.2.13676358
+
+  - versionName: 0.1.0
+    versionCode: 12
+    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/macos
+      - app/linux
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i -e 's|//f ||' android/app/build.gradle.kts
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - packages/notes_core/pubspec.yaml
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: 28.2.13676358
+
+  - versionName: 0.1.0
+    versionCode: 13
+    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - app/ios
+      - app/macos
+      - app/linux
+      - app/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i -e 's|//f ||' android/app/build.gradle.kts
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - packages/notes_core/pubspec.yaml
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
     ndk: 28.2.13676358
 
 AutoUpdateMode: None
 UpdateCheckMode: None
 CurrentVersion: 0.1.0
-CurrentVersionCode: 1
+CurrentVersionCode: 13
