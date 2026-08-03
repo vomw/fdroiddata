@@ -37,7 +37,7 @@ Builds:
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
-      - sdkmanager "ndk;$NDK_VERSION"
+      - sdkmanager "ndk;$NDK_VERSION" "platforms;android-24"
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
       - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
       - git clone --depth 1 --branch $CORE_VERSION --recurse-submodules=submodules/sing-tun
@@ -45,7 +45,7 @@ Builds:
         ../sing-box-lx
       - pushd ../sing-box-lx
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
-        cmd/internal/build_libbox/main.go
+        -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
       - export GOROOT_BOOTSTRAP=$(go env GOROOT)
       - pushd $$go$$/src
       - ./make.bash
@@ -82,9 +82,16 @@ MaintainerNotes: |-
   is ABI 2. So pubspec gets 1574 while the arm64 APK reports 3574.
 
   The core (libbox.aar) is built from source in prebuild. Upstream sing-box
-  ships the same library the same way (see io.nekohasekai.sfa). The naive
-  outbound is dropped from the build tags because it pulls in cronet-go,
-  which ships a prebuilt libcronet.a; the other protocols are unaffected.
+  ships the same library the same way (see io.nekohasekai.sfa). Three edits
+  are applied to its build script first:
+
+  - the naive outbound is dropped from the build tags, because it pulls in
+    cronet-go, which ships a prebuilt libcronet.a; the other protocols are
+    unaffected;
+  - the openjdk 17 check is removed, because the buildserver runs Debian
+    trixie, which ships JDK 21 and has no openjdk-17 package — the check is
+    an upstream gate, not a gomobile requirement;
+  - the legacy AAR variant is dropped, since only the API 24 one is used.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
