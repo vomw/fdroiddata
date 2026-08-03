@@ -22,7 +22,8 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev make golang-go file xz-utils
+      - apt-get install -y gcc libc-dev make golang-go file xz-utils openjdk-17-jdk-headless
+      - update-java-alternatives -a
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.41.6
@@ -55,6 +56,7 @@ Builds:
       - export GOMODCACHE=$(pwd)/.gomodcache
       - export GOFLAGS=-mod=mod
       - make lib_install
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - make lib_android
       - popd
       - mkdir -p android/app/libs
