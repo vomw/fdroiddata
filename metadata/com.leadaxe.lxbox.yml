@@ -22,7 +22,7 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev make file xz-utils
+      - apt-get install -y gcc libc-dev make golang-go file xz-utils
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.41.6
@@ -45,6 +45,7 @@ Builds:
         ../sing-box-lx
       - pushd ../sing-box-lx
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' cmd/internal/build_libbox/main.go
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
       - pushd $$go$$/src
       - ./make.bash
       - popd
@@ -69,7 +70,22 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
+MaintainerNotes: |-
+  Version is derived from the git tag at build time, so pubspec.yaml in the
+  repository holds a stale placeholder and cannot be read by checkupdates.
+  The prebuild step rewrites it to the released version. New releases are
+  tagged vX.Y.Z, so a build entry can be added by hand from the tag.
+
+  versionCode is not the value written into pubspec.yaml: --split-per-abi
+  makes the Flutter Gradle plugin emit ABI * 1000 + versionCode, and arm64
+  is ABI 2. So pubspec gets 1574 while the arm64 APK reports 3574.
+
+  The core (libbox.aar) is built from source in prebuild. Upstream sing-box
+  ships the same library the same way (see io.nekohasekai.sfa). The naive
+  outbound is dropped from the build tags because it pulls in cronet-go,
+  which ships a prebuilt libcronet.a; the other protocols are unaffected.
+
 AutoUpdateMode: None
-UpdateCheckMode: Tags
+UpdateCheckMode: None
 CurrentVersion: 2.19.4
 CurrentVersionCode: 3574
