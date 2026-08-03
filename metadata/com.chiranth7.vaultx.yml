@@ -14,22 +14,20 @@ Repo: https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manage
 Builds:
   - versionName: 1.3.4
     versionCode: 248
-    commit: d563e1a66eb64dba0d8d355c97d19091300b02d0
+    commit: 1146047e2c76bf51f06b2d7084600293e1c7c621
     subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
       - cd ../..
-      - npm install
+      - npm install --legacy-peer-deps
     gradle:
       - yes
     prebuild:
       - cd ../..
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i '/android {/a\    namespace "com.rnbiometrics"' node_modules/react-native-biometrics/android/build.gradle
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
@@ -37,10 +35,6 @@ Builds:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-view-shot/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/react-native-biometrics/android/build.gradle
     scandelete:
       - node_modules
 
@@ -48,3 +42,4 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 1.3.4
 CurrentVersionCode: 248
+
