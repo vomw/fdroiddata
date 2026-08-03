@@ -33,9 +33,9 @@ RepoType: git
 Repo: https://github.com/marco201091-glitch/PhyrexianArena.git
 
 Builds:
-  - versionName: 7.1.2
-    versionCode: 70102
-    commit: e1974808885675b13bb39c4cda60651e6cccda7c
+  - versionName: 8.0.0
+    versionCode: 80000
+    commit: 94a0eeeebd791d1456662b628adc48e300efe066
     timeout: 7200
     subdir: expo
     sudo:
@@ -65,18 +65,11 @@ Builds:
       - export EXPO_PUBLIC_FDROID_BUILD=true
       - export EXPO_PUBLIC_SENTRY_ENABLED=false
       - export EXPO_PUBLIC_DISABLE_PUSH_NOTIFICATIONS=true
-      - find node_modules/@react-native/gradle-plugin node_modules/react-native -name
-        '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
-      - |-
-        TOOLCHAIN_FILE=node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-        sed -i 's/import org.jetbrains.kotlin.gradle.dsl.kotlinExtension/import org.jetbrains.kotlin.gradle.dsl.kotlinExtension\nimport org.jetbrains.kotlin.gradle.tasks.KotlinCompile/' "$TOOLCHAIN_FILE"
-        sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g' "$TOOLCHAIN_FILE"
-        sed -i '/project.kotlinExtension.jvmToolchain(21)/a\        project.tasks.withType(KotlinCompile::class.java).configureEach {\n          kotlinOptions.jvmTarget = "17"\n        }' "$TOOLCHAIN_FILE"
       - cd android
       - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a
         --no-daemon --console=plain
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 7.1.2
-CurrentVersionCode: 70102
+CurrentVersion: 8.0.0
+CurrentVersionCode: 80000
