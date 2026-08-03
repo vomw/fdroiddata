@@ -16,13 +16,11 @@ AutoName: Slooop
 
 RepoType: git
 Repo: https://github.com/andrewpozdnakov7-jpg/Dashchan_2.git
-Binaries: 
-  https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v-%c/Slooop-%v-%c-fdroid-ffmpeg8-all-abi-signed.apk
 
 Builds:
-  - versionName: 3.2.15
-    versionCode: 1095
-    commit: d9c73b00a712c444f0162fbdc4c8d8c8e5ca73d9
+  - versionName: 3.2.16
+    versionCode: 10961
+    commit: 3.2.16
     sudo:
       - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
@@ -31,6 +29,7 @@ Builds:
       - apt-get install --no-install-recommends -y -t trixie openjdk-21-jdk-headless
       - update-alternatives --auto java
     output: build/outputs/apk/fdroid/release/*-unsigned.apk
+    binary: https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v/Slooop-%v-%c-fdroid-ffmpeg8-armeabi-v7a-signed.apk
     srclibs:
       - dav1d@b546257f770768b2c88258c533da38b91a06f737
       - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
@@ -38,13 +37,63 @@ Builds:
     prebuild: printf '8.1.2\n' > $$FFmpeg$$/VERSION
     build: JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$
       DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$ DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$
-      gradle -PnativePlayerFfmpegFlavor=ffmpeg8 -PnativeAbis=arm64-v8a,armeabi-v7a,x86
-      assembleFdroidRelease
+      gradle -PnativePlayerFfmpegFlavor=ffmpeg8 -PnativeAbis=armeabi-v7a
+      -PpackageVersionCode=10961 assembleFdroidRelease
+    ndk: r29
+
+  - versionName: 3.2.16
+    versionCode: 10962
+    commit: 3.2.16
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install --no-install-recommends -y binutils build-essential bzip2
+        cmake curl meson nasm ninja-build pkg-config unzip xz-utils
+      - apt-get install --no-install-recommends -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/outputs/apk/fdroid/release/*-unsigned.apk
+    binary: https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v/Slooop-%v-%c-fdroid-ffmpeg8-arm64-v8a-signed.apk
+    srclibs:
+      - dav1d@b546257f770768b2c88258c533da38b91a06f737
+      - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
+      - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
+    prebuild: printf '8.1.2\n' > $$FFmpeg$$/VERSION
+    build: JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$
+      DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$ DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$
+      gradle -PnativePlayerFfmpegFlavor=ffmpeg8 -PnativeAbis=arm64-v8a
+      -PpackageVersionCode=10962 assembleFdroidRelease
+    ndk: r29
+
+  - versionName: 3.2.16
+    versionCode: 10963
+    commit: 3.2.16
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install --no-install-recommends -y binutils build-essential bzip2
+        cmake curl meson nasm ninja-build pkg-config unzip xz-utils
+      - apt-get install --no-install-recommends -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/outputs/apk/fdroid/release/*-unsigned.apk
+    binary: https://github.com/andrewpozdnakov7-jpg/Dashchan_2/releases/download/%v/Slooop-%v-%c-fdroid-ffmpeg8-x86-signed.apk
+    srclibs:
+      - dav1d@b546257f770768b2c88258c533da38b91a06f737
+      - FFmpeg@38b88335f99e76ed89ff3c93f877fdefce736c13
+      - libyuv@6afd9becdf58822b1da6770598d8597c583ccfad
+    prebuild: printf '8.1.2\n' > $$FFmpeg$$/VERSION
+    build: JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 DASHCHAN_DAV1D_SOURCE_DIR=$$dav1d$$
+      DASHCHAN_FFMPEG_SOURCE_DIR=$$FFmpeg$$ DASHCHAN_LIBYUV_SOURCE_DIR=$$libyuv$$
+      gradle -PnativePlayerFfmpegFlavor=ffmpeg8 -PnativeAbis=x86
+      -PpackageVersionCode=10963 assembleFdroidRelease
     ndk: r29
 
 AllowedAPKSigningKeys: a9fbac6c498f7ad8e7c56849afe43881966bed2ed2bc1dd1c73d0ffe0b9ebeba
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^\d+\.\d+\.\d+-\d+$
-CurrentVersion: 3.2.15
-CurrentVersionCode: 1095
+UpdateCheckMode: Tags ^\d+\.\d+\.\d+$
+VercodeOperation:
+  - '%c + 1'
+  - '%c + 2'
+  - '%c + 3'
+CurrentVersion: 3.2.16
+CurrentVersionCode: 10963
