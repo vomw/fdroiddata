@@ -35,7 +35,7 @@ Repo: https://github.com/marco201091-glitch/PhyrexianArena.git
 Builds:
   - versionName: 7.1.2
     versionCode: 70102
-    commit: dc35d55fa1d8002cf870c95695f02ace55b91718
+    commit: aedc7bb99decead647a0ec2ef84af1a5932c5dcc
     timeout: 7200
     subdir: expo
     sudo:
@@ -67,7 +67,8 @@ Builds:
       - export EXPO_PUBLIC_DISABLE_PUSH_NOTIFICATIONS=true
       - find node_modules/@react-native/gradle-plugin node_modules/react-native -name
         '*.gradle.kts' -exec sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' {} +
-      - sed -i 's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)/g'
+      - sed -i
+        's/project.kotlinExtension.jvmToolchain(17)/project.kotlinExtension.jvmToolchain(21)\n        project.kotlinExtension.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/g'
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - cd android
       - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a
