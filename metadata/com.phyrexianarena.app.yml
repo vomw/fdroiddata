@@ -19,12 +19,12 @@ Builds:
     subdir: expo
     sudo:
       - apt-get update
-      - apt-get install -y ca-certificates curl
-      - curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
-      - apt-get install -y nodejs
+      - apt-get install -y nodejs npm
     init:
-      - cd .. && npm ci
-      - cd expo && npm ci
+      - cd ..
+      - npm ci
+      - cd expo
+      - npm ci
       - node scripts/patch-fdroid-java-toolchains.mjs
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
