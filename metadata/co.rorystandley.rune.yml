@@ -17,17 +17,21 @@ Binaries:
 Builds:
   - versionName: 0.1.0
     versionCode: 1
-    commit: v0.1.0
+    commit: affe478584f3687958c7c7dbc08b2bf4bb5144b9
     subdir: app
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.44.2
+      - flutter@stable
     rm:
       - app/ios
       - app/macos
       - app/linux
       - app/windows
     prebuild:
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' 
+        ../.github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
