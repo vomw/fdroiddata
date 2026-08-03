@@ -11,8 +11,7 @@ AutoName: Rune
 
 RepoType: git
 Repo: https://github.com/rorystandley/rune.git
-Binaries: 
-  https://github.com/rorystandley/rune/releases/download/v%v/rune-android.apk
+Binaries: https://github.com/rorystandley/rune/releases/download/v%v/rune-android.apk
 
 Builds:
   - versionName: 0.1.0
@@ -28,26 +27,25 @@ Builds:
       - app/linux
       - app/windows
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' 
-        ../.github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - packages/notes_core/pubspec.yaml
     scandelete:
       - app/.pub-cache
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - export PUB_CACHE="$(pwd)/.pub-cache"
-      - ../tool/reproducibility/build_release_apk.sh 
-        build/app/outputs/flutter-apk/app-release.apk
+      - ../tool/reproducibility/build_release_apk.sh build/app/outputs/flutter-apk/app-release.apk
     ndk: 28.2.13676358
 
-AllowedAPKSigningKeys: 
-  9713bd2fd4a7a6e677d9638dcebb0a718f434f9c62b954008d8c99fe521378ac
+AllowedAPKSigningKeys: 9713bd2fd4a7a6e677d9638dcebb0a718f434f9c62b954008d8c99fe521378ac
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 0.1.0
 CurrentVersionCode: 1
