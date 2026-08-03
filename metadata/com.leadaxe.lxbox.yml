@@ -66,6 +66,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get
     scanignore:
       - sing-box-lx
+      - app/android/app/libs/libbox.aar
     scandelete:
       - app/.pub-cache
     build:
@@ -93,6 +94,13 @@ MaintainerNotes: |-
     trixie, which ships JDK 21 and has no openjdk-17 package — the check is
     an upstream gate, not a gomobile requirement;
   - the legacy AAR variant is dropped, since only the API 24 one is used.
+
+  libbox.aar is in scanignore because the scanner rejects any .aar on sight.
+  This one is not a prebuilt: it is produced by the prebuild step above, a
+  few commands earlier, and it is absent from the app repository (.gitignore
+  covers app/android/app/libs/). The core tree is ignored for the same
+  reason — its Go module cache is read-only, so the scanner cannot strip the
+  fuzz corpus it finds there, and none of it reaches the APK.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
