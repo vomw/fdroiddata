@@ -1,0 +1,75 @@
+Categories:
+  - DNS & Hosts
+  - Internet
+  - VPN & Proxy
+License: GPL-3.0-or-later
+AuthorName: Leadaxe
+AuthorEmail: leadaxe@gmail.com
+WebSite: https://github.com/Leadaxe/LxBox
+SourceCode: https://github.com/Leadaxe/LxBox
+IssueTracker: https://github.com/Leadaxe/LxBox/issues
+Changelog: https://github.com/Leadaxe/LxBox/blob/HEAD/CHANGELOG.md
+
+AutoName: L×Box
+
+RepoType: git
+Repo: https://github.com/Leadaxe/LxBox.git
+
+Builds:
+  - versionName: 2.19.4
+    versionCode: 3574
+    commit: v2.19.4
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev make file xz-utils
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.41.6
+      - go@go1.25.0
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      - '[[ $NDK_VERSION ]]'
+      - sdkmanager "ndk;$NDK_VERSION"
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
+      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
+      - git clone --depth 1 --branch $CORE_VERSION --recurse-submodules=submodules/sing-tun
+        --recurse-submodules=submodules/wireguard-go --shallow-submodules https://github.com/Leadaxe/sing-box-lx.git
+        ../sing-box-lx
+      - pushd ../sing-box-lx
+      - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' cmd/internal/build_libbox/main.go
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$(pwd)/.gopath
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOMODCACHE=$(pwd)/.gomodcache
+      - export GOFLAGS=-mod=mod
+      - make lib_install
+      - make lib_android
+      - popd
+      - mkdir -p android/app/libs
+      - mv ../sing-box-lx/libbox.aar android/app/libs/libbox.aar
+      - "sed -i -e 's/^version: .*/version: 2.19.4+1574/' pubspec.yaml"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - app/.pub-cache
+      - sing-box-lx
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 2.19.4
+CurrentVersionCode: 3574
