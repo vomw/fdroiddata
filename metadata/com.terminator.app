@@ -14,7 +14,7 @@ Repo: https://github.com/8dmusichannels-star/terminator.git
 Builds:
   - versionName: '0.2.2'
     versionCode: 6
-    commit: a1b2c3d4e5f6789012345678901234567890abcd
+    commit: 6beb6d69d6c3790db5befd8f252c9476ff241d16
     subdir: app
     gradle:
       - yes
