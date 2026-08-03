@@ -1,0 +1,32 @@
+Categories:
+  - Internet
+  - Reading
+License: MIT
+AuthorName: lielu.eu
+WebSite: https://news.lielu.eu
+SourceCode: https://github.com/notsogeek87/swipernews
+IssueTracker: https://github.com/notsogeek87/swipernews/issues
+Changelog: https://github.com/notsogeek87/swipernews/releases
+
+RepoType: git
+Repo: https://github.com/notsogeek87/swipernews.git
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 10100
+    commit: v1.1.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y curl ca-certificates
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    init: npm ci && npm run cap:sync
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 1.1.0
+CurrentVersionCode: 10100
