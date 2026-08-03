@@ -14,7 +14,8 @@ AutoName: Buge App Manager
 
 RepoType: git
 Repo: https://github.com/BugeStudioTeam/Buge-App-Manager.git
-Binaries: https://github.com/BugeStudioTeam/Buge-App-Manager/releases/download/AppManager%v/BugeAppManager-v%v-release.apk
+Binaries:
+  https://github.com/BugeStudioTeam/Buge-App-Manager/releases/download/AppManager%v/BugeAppManager-v%v-release.apk
 
 Builds:
   - versionName: 9.61.107
@@ -24,9 +25,20 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 9.61.108
+    versionCode: 148
+    commit: 2013156eb62932ef4a3864257f4e29160e1c761f
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i '/release {/a \            isCrunchPngs = false' build.gradle.kts
+      - echo "android.enableResourceOptimizations=false" >> ../gradle.properties
+      - echo "android.enableResourcePathShortening=false" >> ../gradle.properties
+
 AllowedAPKSigningKeys: 4b0e4446330530801756b5a2680ee5526b64ba982c327f56758e05497377885b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^AppManager(\d+\.\d+\.\d+)$
-CurrentVersion: 9.61.107
-CurrentVersionCode: 147
+CurrentVersion: 9.61.108
+CurrentVersionCode: 148
