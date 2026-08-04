@@ -49,10 +49,7 @@ Builds:
     ndk: r27c
     binary: https://github.com/8dmusichannels-star/terminator/releases/download/v%v/app-x86_64-release.apk
 
-AllowedAPKSigningKeys:
-  - 2ceccbe571e76d60d46776d59c58158dbf46349e81eb3b0d700f37ea2f9e3434
+AllowedAPKSigningKeys: 2ceccbe571e76d60d46776d59c58158dbf46349e81eb3b0d700f37ea2f9e3434
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '0.2.2'
-CurrentVersionCode: 6
