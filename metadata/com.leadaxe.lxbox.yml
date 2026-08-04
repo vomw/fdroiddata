@@ -25,9 +25,9 @@ Builds:
       - apt-get install -y gcc libc-dev make golang-go file xz-utils
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.6
-      - go@go1.25.0
-      - sing-box-lx@v1.14.0-lx.20-rc.2
+      - flutter@stable
+      - go@release-branch.go1.25
+      - sing-box-lx@lx
     rm:
       - app/ios
       - app/linux
@@ -35,6 +35,12 @@ Builds:
       - app/web
       - app/windows
     prebuild:
+      - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - export GO_VERSION=$(tr -d '[:space:]' < android/go.version)
+      - '[[ $GO_VERSION ]]'
+      - git -C $$go$$ checkout -q $GO_VERSION
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
@@ -49,8 +55,10 @@ Builds:
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
-      - '[[ $(tr -d "[:space:]" < android/libbox.version) == $(git -C $$sing-box-lx$$
-        describe --tags --exact-match) ]]'
+      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
+      - '[[ $CORE_VERSION ]]'
+      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
       - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
@@ -111,10 +119,12 @@ MaintainerNotes: |-
     an upstream gate, not a gomobile requirement;
   - the legacy AAR variant is dropped, since only the API 24 one is used.
 
-  The app also pins the core version in android/libbox.version, inside its own
-  commit, so that an older app commit builds against the core it was written
-  for. The build asserts that this pin and the srclib tag agree, and fails
-  loudly if they ever drift apart.
+  The srclibs track branches and the exact versions come from the app commit,
+  so they cannot drift: android/flutter.version, android/go.version and
+  android/libbox.version are read in the build and checked out. An older app
+  commit therefore builds with the toolchain and core it was written for. Each
+  is asserted non-empty first, so a missing or renamed file fails the build
+  rather than silently building against a branch tip.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
