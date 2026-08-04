@@ -18,7 +18,7 @@ Repo: https://github.com/Leadaxe/LxBox.git
 Builds:
   - versionName: 2.19.5
     versionCode: 3582
-    commit: v2.19.5
+    commit: 785b6457e47decc8c18ee1cd46db1de5fdd3f2e1
     subdir: app
     sudo:
       - apt-get update
@@ -74,14 +74,30 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
 MaintainerNotes: |-
-  Version is derived from the git tag at build time, so pubspec.yaml in the
-  repository holds a stale placeholder and cannot be read by checkupdates.
-  The prebuild step rewrites it to the released version. New releases are
-  tagged vX.Y.Z, so a build entry can be added by hand from the tag.
+  UpdateCheckMode and AutoUpdateMode are None because neither the version
+  name nor the version code can be read from the repository:
 
-  versionCode is not the value written into pubspec.yaml: --split-per-abi
-  makes the Flutter Gradle plugin emit ABI * 1000 + versionCode, and arm64
-  is ABI 2. So pubspec gets 1582 while the arm64 APK reports 3582.
+  - versionName lives only in the git tag. pubspec.yaml holds a frozen
+    placeholder (currently 2.19.2-dev.57+1491) that is deliberately never
+    bumped; both CI and the local build script rewrite it from the tag just
+    before `flutter build`, and the app reads its version back from the APK
+    manifest at runtime. checkupdates fails on this with "Couldn't find any
+    version information".
+  - versionCode cannot be derived from the tag either. It is
+    `git rev-list --count HEAD` on the release commit, and --split-per-abi
+    then makes the Flutter Gradle plugin emit `ABI * 1000 + versionCode`
+    (arm64 is ABI 2). For 2.19.5 that is 1582 in pubspec and 3582 in the
+    arm64 APK — no regex over "v2.19.5" produces either number.
+
+  So each release needs a small MR adding a build entry by hand. Teaching
+  the app's CI to write a readable version into pubspec.yaml is on the
+  roadmap; until the scheme changes, autoupdate would only ever pick up
+  wrong numbers.
+
+  Reproducible builds are not possible here: this build intentionally
+  differs from the APKs published on GitHub — the naive outbound is dropped
+  (see below) and only arm64 is built — so the two can never match byte for
+  byte. Signing with the F-Droid key is expected.
 
   The core (libbox.aar) is built from source in prebuild. Upstream sing-box
   ships the same library the same way (see io.nekohasekai.sfa). Three edits
