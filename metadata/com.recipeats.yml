@@ -1,0 +1,37 @@
+AntiFeatures:
+  - NonFreeNet
+Categories:
+  - Reading
+License: Unlicense
+WebSite: https://recipeats.org/
+SourceCode: https://gitlab.com/recipeats/recipeats
+IssueTracker: https://gitlab.com/recipeats/recipeats/-/issues
+Changelog: https://gitlab.com/recipeats/recipeats/-/tags
+
+AutoName: Recipeats
+
+RepoType: git
+Repo: https://gitlab.com/recipeats/recipeats.git
+
+Builds:
+  - versionName: 1.10.8
+    versionCode: 43
+    commit: 2fd4c24b3e1a8d7730035056af5b8effef652f0b
+    subdir: RecipeatsApp
+    sudo:
+      - apt-get update
+      - apt-get install -y hugo
+    gradle:
+      - fdroid
+    output: app/build/outputs/apk/fdroid/release/*fdroid*release*.apk
+    prebuild:
+      - cd ..
+      - hugo --minify --baseURL https://recipeats.org/
+      - rm -f LICENSE README.md
+    scandelete:
+      - mockups
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.10.8
+CurrentVersionCode: 43
