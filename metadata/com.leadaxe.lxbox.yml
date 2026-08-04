@@ -17,13 +17,13 @@ Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
   - versionName: 2.19.5
-    versionCode: 3582
+    versionCode: 1582
     commit: 785b6457e47decc8c18ee1cd46db1de5fdd3f2e1
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y gcc libc-dev make golang-go file xz-utils
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.41.6
       - go@go1.25.0
@@ -38,6 +38,15 @@ Builds:
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
       - sdkmanager "ndk;$NDK_VERSION" "platforms;android-24"
+      - "sed -i -e 's/^version: .*/version: $$VERSION$$+$$VERCODE$$/' pubspec.yaml"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
       - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
       - git clone --depth 1 --branch $CORE_VERSION --recurse-submodules=submodules/sing-tun
@@ -60,48 +69,32 @@ Builds:
       - popd
       - mkdir -p android/app/libs
       - mv ../sing-box-lx/libbox.aar android/app/libs/libbox.aar
-      - "sed -i -e 's/^version: .*/version: 2.19.5+1582/' pubspec.yaml"
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
-      - sing-box-lx
-      - app/android/app/libs/libbox.aar
-    scandelete:
-      - app/.pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
 
 MaintainerNotes: |-
-  UpdateCheckMode and AutoUpdateMode are None because neither the version
-  name nor the version code can be read from the repository:
+  UpdateCheckMode and AutoUpdateMode are None because the version cannot be
+  read from the repository. pubspec.yaml holds a frozen placeholder that is
+  deliberately never bumped: both CI and the local build script rewrite it
+  from the git tag right before `flutter build`, and the app reads its
+  version back from the APK manifest at runtime. checkupdates fails on this
+  with "Couldn't find any version information". versionCode is
+  `git rev-list --count HEAD` on the release commit, which no regex over the
+  tag name can produce either.
 
-  - versionName lives only in the git tag. pubspec.yaml holds a frozen
-    placeholder (currently 2.19.2-dev.57+1491) that is deliberately never
-    bumped; both CI and the local build script rewrite it from the tag just
-    before `flutter build`, and the app reads its version back from the APK
-    manifest at runtime. checkupdates fails on this with "Couldn't find any
-    version information".
-  - versionCode cannot be derived from the tag either. It is
-    `git rev-list --count HEAD` on the release commit, and --split-per-abi
-    then makes the Flutter Gradle plugin emit `ABI * 1000 + versionCode`
-    (arm64 is ABI 2). For 2.19.5 that is 1582 in pubspec and 3582 in the
-    arm64 APK — no regex over "v2.19.5" produces either number.
+  Making the version readable from source is on my roadmap; I will enable
+  autoupdate once the scheme changes. Until then a small MR per release adds
+  the build entry by hand.
 
-  So each release needs a small MR adding a build entry by hand. Teaching
-  the app's CI to write a readable version into pubspec.yaml is on the
-  roadmap; until the scheme changes, autoupdate would only ever pick up
-  wrong numbers.
+  Reproducible builds are not possible here: this build intentionally differs
+  from the APKs published on GitHub — the naive outbound is dropped (see
+  below) and only arm64 is built — so the two can never match byte for byte.
+  Signing with the F-Droid key is expected.
 
-  Reproducible builds are not possible here: this build intentionally
-  differs from the APKs published on GitHub — the naive outbound is dropped
-  (see below) and only arm64 is built — so the two can never match byte for
-  byte. Signing with the F-Droid key is expected.
-
-  The core (libbox.aar) is built from source in prebuild. Upstream sing-box
-  ships the same library the same way (see io.nekohasekai.sfa). Three edits
-  are applied to its build script first:
+  The core (libbox.aar) is built from source in `build:`, so the scanner sees
+  the tree it is compiled from and no binary survives into the APK. Upstream
+  sing-box ships the same library the same way (see io.nekohasekai.sfa).
+  Three edits are applied to its build script first:
 
   - the naive outbound is dropped from the build tags, because it pulls in
     cronet-go, which ships a prebuilt libcronet.a; the other protocols are
@@ -111,12 +104,10 @@ MaintainerNotes: |-
     an upstream gate, not a gomobile requirement;
   - the legacy AAR variant is dropped, since only the API 24 one is used.
 
-  libbox.aar is in scanignore because the scanner rejects any .aar on sight.
-  This one is not a prebuilt: it is produced by the prebuild step above, a
-  few commands earlier, and it is absent from the app repository (.gitignore
-  covers app/android/app/libs/). The core tree is ignored for the same
-  reason — its Go module cache is read-only, so the scanner cannot strip the
-  fuzz corpus it finds there, and none of it reaches the APK.
+  The core is cloned rather than added as a srclib because its version is
+  pinned by android/libbox.version inside the app commit, which keeps the two
+  in lockstep: checking out an older app commit builds it against the core it
+  was written for.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
