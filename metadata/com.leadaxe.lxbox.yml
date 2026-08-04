@@ -37,7 +37,7 @@ Builds:
     prebuild:
       - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
       - '[[ $FLUTTER_VERSION ]]'
-      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - git -C $$flutter$$ checkout -q -f $FLUTTER_VERSION
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
@@ -54,11 +54,11 @@ Builds:
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
       - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
       - '[[ $CORE_VERSION ]]'
-      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ checkout -q -f $CORE_VERSION
       - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
       - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
       - '[[ $GO_VERSION ]]'
-      - git -C $$go$$ checkout -q $GO_VERSION
+      - git -C $$go$$ checkout -q -f $GO_VERSION
       - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
@@ -101,7 +101,7 @@ Builds:
     prebuild:
       - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
       - '[[ $FLUTTER_VERSION ]]'
-      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - git -C $$flutter$$ checkout -q -f $FLUTTER_VERSION
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
@@ -118,11 +118,11 @@ Builds:
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
       - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
       - '[[ $CORE_VERSION ]]'
-      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ checkout -q -f $CORE_VERSION
       - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
       - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
       - '[[ $GO_VERSION ]]'
-      - git -C $$go$$ checkout -q $GO_VERSION
+      - git -C $$go$$ checkout -q -f $GO_VERSION
       - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
@@ -165,7 +165,7 @@ Builds:
     prebuild:
       - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
       - '[[ $FLUTTER_VERSION ]]'
-      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - git -C $$flutter$$ checkout -q -f $FLUTTER_VERSION
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
@@ -182,11 +182,11 @@ Builds:
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
       - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
       - '[[ $CORE_VERSION ]]'
-      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ checkout -q -f $CORE_VERSION
       - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
       - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
       - '[[ $GO_VERSION ]]'
-      - git -C $$go$$ checkout -q $GO_VERSION
+      - git -C $$go$$ checkout -q -f $GO_VERSION
       - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
