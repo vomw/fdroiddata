@@ -25,6 +25,7 @@ Builds:
       - test
       - android/wear
     prebuild:
+      - sed -i '/:wear/d' android/settings.gradle.kts
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
