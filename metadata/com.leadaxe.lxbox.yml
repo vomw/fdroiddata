@@ -16,18 +16,18 @@ RepoType: git
 Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
-  - versionName: 2.19.6
-    versionCode: 15932
-    commit: ce4fe33068a7388996300c19b41b378c22869aa2
+  - versionName: 2.19.7
+    versionCode: 16061
+    commit: 239970c5436d09498185222dc8efa89a3448ba0a
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y gcc libc-dev make golang-go file xz-utils
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.6
-      - go@go1.25.0
-      - sing-box-lx@v1.14.0-lx.20-rc.2
+      - flutter@stable
+      - go@release-branch.go1.25
+      - sing-box-lx@lx
     rm:
       - app/ios
       - app/linux
@@ -35,6 +35,9 @@ Builds:
       - app/web
       - app/windows
     prebuild:
+      - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - '[[ $NDK_VERSION ]]'
@@ -49,8 +52,77 @@ Builds:
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
-      - '[[ $(tr -d "[:space:]" < android/libbox.version) == $(git -C $$sing-box-lx$$
-        describe --tags --exact-match) ]]'
+      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
+      - '[[ $CORE_VERSION ]]'
+      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
+      - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
+      - '[[ $GO_VERSION ]]'
+      - git -C $$go$$ checkout -q $GO_VERSION
+      - pushd $$sing-box-lx$$
+      - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
+        -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$(pwd)/.gopath
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOMODCACHE=$(pwd)/.gomodcache
+      - export GOFLAGS=-mod=mod
+      - make lib_install
+      - make lib_android
+      - popd
+      - mkdir -p android/app/libs
+      - mv $$sing-box-lx$$/libbox.aar android/app/libs/libbox.aar
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export LXBOX_ABI_FILTER=armeabi-v7a
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm
+
+  - versionName: 2.19.7
+    versionCode: 16062
+    commit: 239970c5436d09498185222dc8efa89a3448ba0a
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev make golang-go file xz-utils
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - go@release-branch.go1.25
+      - sing-box-lx@lx
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      - '[[ $NDK_VERSION ]]'
+      - sdkmanager "ndk;$NDK_VERSION" "platforms;android-24"
+      - "sed -i -e 's/^version: .*/version: $$VERSION$$+$$VERCODE$$/' pubspec.yaml"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
+      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
+      - '[[ $CORE_VERSION ]]'
+      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
+      - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
+      - '[[ $GO_VERSION ]]'
+      - git -C $$go$$ checkout -q $GO_VERSION
       - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
@@ -71,6 +143,70 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export LXBOX_ABI_FILTER=arm64-v8a
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
+
+  - versionName: 2.19.7
+    versionCode: 16064
+    commit: 239970c5436d09498185222dc8efa89a3448ba0a
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev make golang-go file xz-utils
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - go@release-branch.go1.25
+      - sing-box-lx@lx
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/web
+      - app/windows
+    prebuild:
+      - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -q $FLUTTER_VERSION
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      - '[[ $NDK_VERSION ]]'
+      - sdkmanager "ndk;$NDK_VERSION" "platforms;android-24"
+      - "sed -i -e 's/^version: .*/version: $$VERSION$$+$$VERCODE$$/' pubspec.yaml"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - app/.pub-cache
+    build:
+      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
+        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
+      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
+      - '[[ $CORE_VERSION ]]'
+      - git -C $$sing-box-lx$$ checkout -q $CORE_VERSION
+      - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
+      - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
+      - '[[ $GO_VERSION ]]'
+      - git -C $$go$$ checkout -q $GO_VERSION
+      - pushd $$sing-box-lx$$
+      - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
+        -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$(pwd)/.gopath
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - export GOMODCACHE=$(pwd)/.gomodcache
+      - export GOFLAGS=-mod=mod
+      - make lib_install
+      - make lib_android
+      - popd
+      - mkdir -p android/app/libs
+      - mv $$sing-box-lx$$/libbox.aar android/app/libs/libbox.aar
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export LXBOX_ABI_FILTER=x86_64
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-x64
 
 MaintainerNotes: |-
   UpdateCheckMode and AutoUpdateMode are None because the version cannot be
@@ -111,12 +247,21 @@ MaintainerNotes: |-
     an upstream gate, not a gomobile requirement;
   - the legacy AAR variant is dropped, since only the API 24 one is used.
 
-  The app also pins the core version in android/libbox.version, inside its own
-  commit, so that an older app commit builds against the core it was written
-  for. The build asserts that this pin and the srclib tag agree, and fails
-  loudly if they ever drift apart.
+  The srclibs track branches and the exact versions are read from source, so
+  they cannot drift: android/flutter.version and android/libbox.version come
+  from the app commit, and the Go toolchain from the core's own go.version
+  once it is checked out — Go belongs to the core, which is what gets compiled
+  with it. An older app commit therefore builds with the toolchain and core it
+  was written for. Each value is asserted non-empty first, so a missing or
+  renamed file fails the build rather than silently using a branch tip.
+
+  On the Go version specifically: the core's go.mod says 1.24, but that is the
+  language floor, not the toolchain. An AAR built with 1.24.x kills every
+  quic-go outbound (hysteria2, tuic, masque-h3) on some vendor Android
+  kernels, verified on a device with the toolchain as the only variable, so
+  go-version-file: go.mod must not be used here.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 2.19.6
-CurrentVersionCode: 15932
+CurrentVersion: 2.19.7
+CurrentVersionCode: 16064
