@@ -17,7 +17,7 @@ Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
   - versionName: 2.19.6
-    versionCode: 1593
+    versionCode: 15932
     commit: ce4fe33068a7388996300c19b41b378c22869aa2
     subdir: app
     sudo:
@@ -82,6 +82,13 @@ MaintainerNotes: |-
   `git rev-list --count HEAD` on the release commit, which no regex over the
   tag name can produce either.
 
+  The version code carries an ABI digit last, as `rev-list * 10 + ABI`, so
+  that sorting by version code keeps releases in order and groups the ABIs of
+  one release together. 2.19.6 is rev-list 1593, and 2 is arm64, hence 15932.
+  Note this is not what the Flutter Gradle plugin does on its own: with
+  --split-per-abi it emits `ABI * 1000 + versionCode`, putting the ABI first.
+  This build does not use --split-per-abi, so the value above is taken as is.
+
   Making the version readable from source is on my roadmap; I will enable
   autoupdate once the scheme changes. Until then a small MR per release adds
   the build entry by hand.
@@ -112,4 +119,4 @@ MaintainerNotes: |-
 AutoUpdateMode: None
 UpdateCheckMode: None
 CurrentVersion: 2.19.6
-CurrentVersionCode: 1593
+CurrentVersionCode: 15932
