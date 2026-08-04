@@ -27,6 +27,7 @@ Builds:
     srclibs:
       - flutter@3.41.6
       - go@go1.25.0
+      - sing-box-lx@v1.14.0-lx.20-rc.2
     rm:
       - app/ios
       - app/linux
@@ -48,11 +49,9 @@ Builds:
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
-      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
-      - git clone --depth 1 --branch $CORE_VERSION --recurse-submodules=submodules/sing-tun
-        --recurse-submodules=submodules/wireguard-go --shallow-submodules https://github.com/Leadaxe/sing-box-lx.git
-        ../sing-box-lx
-      - pushd ../sing-box-lx
+      - '[[ $(tr -d "[:space:]" < android/libbox.version) == $(git -C $$sing-box-lx$$
+        describe --tags --exact-match) ]]'
+      - pushd $$sing-box-lx$$
       - sed -i -e 's/"with_utls", "with_naive_outbound",/"with_utls",/' -e 's/^\tcheckJavaVersion()$//'
         -e '/\/\/ Build legacy variant/,/}, bindTarget)/d' cmd/internal/build_libbox/main.go
       - export GOROOT_BOOTSTRAP=$(go env GOROOT)
@@ -68,7 +67,7 @@ Builds:
       - make lib_android
       - popd
       - mkdir -p android/app/libs
-      - mv ../sing-box-lx/libbox.aar android/app/libs/libbox.aar
+      - mv $$sing-box-lx$$/libbox.aar android/app/libs/libbox.aar
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
 
@@ -104,10 +103,10 @@ MaintainerNotes: |-
     an upstream gate, not a gomobile requirement;
   - the legacy AAR variant is dropped, since only the API 24 one is used.
 
-  The core is cloned rather than added as a srclib because its version is
-  pinned by android/libbox.version inside the app commit, which keeps the two
-  in lockstep: checking out an older app commit builds it against the core it
-  was written for.
+  The app also pins the core version in android/libbox.version, inside its own
+  commit, so that an older app commit builds against the core it was written
+  for. The build asserts that this pin and the srclib tag agree, and fails
+  loudly if they ever drift apart.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
