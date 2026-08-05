@@ -384,8 +384,29 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - ./flutterw build apk
 
+  - versionName: 0.9.25
+    versionCode: 126
+    commit: 6a82c1af1ca098844a8fe3cb3c64ff953b5e9c36
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-release.apk
+    rm:
+      - ios
+    prebuild:
+      - sed -i -e '/signingConfig /,/minifyEnabled/d' android/app/build.gradle
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw config --no-analytics
+      - ./flutterw packages pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./flutterw build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags .*[0-9]$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.6.27
-CurrentVersionCode: 52
+CurrentVersion: 0.9.25
+CurrentVersionCode: 126
