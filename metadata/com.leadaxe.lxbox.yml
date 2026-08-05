@@ -58,6 +58,12 @@ Builds:
     scandelete:
       - app/.pub-cache
     build:
+      - export repo=/home/runner/work/LxBox/LxBox
+      - cd ../..
+      - export ORIG=$(pwd)
+      - mkdir -p $(dirname $repo)
+      - mv com.leadaxe.lxbox $repo
+      - cd $repo/app
       - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
         | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
       - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
@@ -97,6 +103,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export LXBOX_ABI_FILTER=arm64-v8a
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
+      - cd $ORIG
+      - mv $repo com.leadaxe.lxbox
 
 MaintainerNotes: |-
   Packaging decisions are documented in the app repo:
