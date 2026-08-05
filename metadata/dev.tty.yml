@@ -4,7 +4,8 @@ License: GPL-3.0-only
 AuthorName: Alex Alvarez
 SourceCode: https://github.com/AlexAlvarezAlmendros/TTYLauncher
 IssueTracker: https://github.com/AlexAlvarezAlmendros/TTYLauncher/issues
-Changelog: https://github.com/AlexAlvarezAlmendros/TTYLauncher/blob/HEAD/fastlane/metadata/android/en-US/changelogs
+Changelog: 
+  https://github.com/AlexAlvarezAlmendros/TTYLauncher/blob/HEAD/fastlane/metadata/android/en-US/changelogs
 
 AutoName: tty
 
@@ -19,7 +20,10 @@ Builds:
     gradle:
       - yes
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+AutoUpdateMode: Version v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: 
+  https://raw.githubusercontent.com/AlexAlvarezAlmendros/TTYLauncher/HEAD/gradle/libs.versions.toml|versionCode
+  = "(\d+)"|.|versionName = "([\d.]+)"
 CurrentVersion: 1.0.0
 CurrentVersionCode: 2
