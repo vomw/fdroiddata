@@ -1,0 +1,36 @@
+Categories:
+  - File Encryption & Vault
+License: Apache-2.0
+AuthorName: NorseHorse
+AuthorEmail: NorseHorse@norsehor.se
+WebSite: https://vaultpony.app
+SourceCode: https://github.com/norsehorse-dev/VaultPonyAndroid
+IssueTracker: https://github.com/norsehorse-dev/VaultPonyAndroid/issues
+
+AutoName: VaultPony
+
+RepoType: git
+Repo: https://github.com/norsehorse-dev/VaultPonyAndroid.git
+Binaries: https://github.com/norsehorse-dev/VaultPonyAndroid/releases/download/v%v/VaultPonyAndroid-v%v.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: a1230d3a1daf6d747ba43ea9adc7c770549224c9
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install cargo-ndk --locked
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: bc222b1fa68a0ddcd9e1b1dbfcef2493290bb6c64964fea7fe5b2fa67c0d4858
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
