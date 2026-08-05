@@ -17,87 +17,6 @@ Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
   - versionName: 2.20.0
-    versionCode: 22000500
-    commit: 95cd0a8224bd963e0132f145e4b3b547aeff6704
-    subdir: app
-    sudo:
-      - apt-get update
-      - apt-get install -y gcc libc-dev make golang-go ninja-build file xz-utils
-      - export CPUS_MAX=16
-      - export CPUS=$(getconf _NPROCESSORS_ONLN)
-      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
-        ; done
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@stable
-      - go@release-branch.go1.25
-      - sing-box-lx@lx
-      - cronet-go@4185d471b2e46870521eaa8159776303a29297bf
-    rm:
-      - app/ios
-      - app/linux
-      - app/macos
-      - app/web
-      - app/windows
-    prebuild:
-      - export FLUTTER_VERSION=$(tr -d '[:space:]' < android/flutter.version)
-      - '[[ $FLUTTER_VERSION ]]'
-      - git -C $$flutter$$ checkout -q -f $FLUTTER_VERSION
-      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
-        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-      - '[[ $NDK_VERSION ]]'
-      - export COMPILE_SDK=$(grep -oE "compileSdkVersion. Int = [0-9]+" $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
-        | grep -oE "[0-9]+$")
-      - '[[ $COMPILE_SDK ]]'
-      - sdkmanager "ndk;$NDK_VERSION" "platforms;android-$COMPILE_SDK"
-      - "sed -i -e 's/^version: .*/version: $$VERSION$$+$$VERCODE$$/' pubspec.yaml"
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - app/.pub-cache
-    build:
-      - export NDK_VERSION=$(grep ndkVersion $$flutter$$/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt
-        | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-      - export ANDROID_NDK_HOME=$$SDK$$/ndk/$NDK_VERSION
-      - export CORE_VERSION=$(tr -d '[:space:]' < android/libbox.version)
-      - '[[ $CORE_VERSION ]]'
-      - git -C $$sing-box-lx$$ checkout -q -f $CORE_VERSION
-      - git -C $$sing-box-lx$$ submodule update --init submodules/sing-tun submodules/wireguard-go
-        submodules/gvisor
-      - export GO_VERSION=$(tr -d '[:space:]' < $$sing-box-lx$$/go.version)
-      - '[[ $GO_VERSION ]]'
-      - git -C $$go$$ checkout -q -f $GO_VERSION
-      - pushd $$sing-box-lx$$
-      - sed -i -e 's/^\tcheckJavaVersion()$//' -e '/\/\/ Build legacy variant/,/},
-        bindTarget)/d' cmd/internal/build_libbox/main.go
-      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH=$(pwd)/.gopath
-      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
-      - export GOMODCACHE=$(pwd)/.gomodcache
-      - export GOFLAGS=-mod=mod
-      - go mod download github.com/sagernet/cronet-go/lib/android_arm github.com/sagernet/cronet-go/lib/android_arm64
-        github.com/sagernet/cronet-go/lib/android_amd64
-      - pushd $$cronet-go$$
-      - for arch in arm arm64 amd64; do go run ./cmd/build-naive --target=android/$arch
-        build > /dev/null; go run ./cmd/build-naive --target=android/$arch package
-        --local > /dev/null; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib
-        -maxdepth 1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f
-        "$ref"; cmp lib/android_$arch/libcronet.a "$ref"; done
-      - popd
-      - make lib_install
-      - make lib_android
-      - popd
-      - mkdir -p android/app/libs
-      - mv $$sing-box-lx$$/libbox.aar android/app/libs/libbox.aar
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --stacktrace --target-platform=android-arm,android-arm64,android-x64
-
-  - versionName: 2.20.0
     versionCode: 22000501
     commit: 95cd0a8224bd963e0132f145e4b3b547aeff6704
     subdir: app
@@ -349,8 +268,11 @@ MaintainerNotes: |-
 
   PRE is 50 for a final release, 01-49 for -rc.N and 51-98 for a hotfix; ABI
   is 0 universal, 1 armeabi-v7a, 2 arm64-v8a, 4 x86_64. So 2.20.0 arm64 is
-  22000502. All four artifacts published on GitHub are built here, universal
-  included, so that none of them stays outside verification. The value committed to pubspec.yaml carries ABI=0 (22000500) and
+  22000502. The three per-ABI splits are built here. The universal APK is
+  published on GitHub only: with the naive outbound restored every entry
+  compiles Chromium from source, and a fat entry would mean three more of
+  those for an artifact the catalogue does not need — F-Droid serves the
+  split matching the device. The value committed to pubspec.yaml carries ABI=0 (22000500) and
   VercodeOperation replaces that last digit per build entry, hence `%c + N`
   rather than `%c * 10 + N` — the shift is already part of the formula.
 
@@ -404,7 +326,6 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c + 0'
   - '%c + 1'
   - '%c + 2'
   - '%c + 4'
