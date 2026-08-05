@@ -84,10 +84,10 @@ Builds:
       - go mod download github.com/sagernet/cronet-go/lib/android_arm
       - pushd $$cronet-go$$
       - for arch in arm; do go run ./cmd/build-naive --target=android/$arch build
-        > /dev/null; go run ./cmd/build-naive --target=android/$arch package --local
-        > /dev/null; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib -maxdepth
-        1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f "$ref";
-        cmp lib/android_$arch/libcronet.a "$ref"; done
+        2>&1 | tail -60; go run ./cmd/build-naive --target=android/$arch package --local
+        2>&1 | tail -15; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib
+        -maxdepth 1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f
+        "$ref"; cmp lib/android_$arch/libcronet.a "$ref"; done
       - popd
       - make lib_install
       - make lib_android
@@ -166,10 +166,10 @@ Builds:
       - go mod download github.com/sagernet/cronet-go/lib/android_arm64
       - pushd $$cronet-go$$
       - for arch in arm64; do go run ./cmd/build-naive --target=android/$arch build
-        > /dev/null; go run ./cmd/build-naive --target=android/$arch package --local
-        > /dev/null; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib -maxdepth
-        1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f "$ref";
-        cmp lib/android_$arch/libcronet.a "$ref"; done
+        2>&1 | tail -60; go run ./cmd/build-naive --target=android/$arch package --local
+        2>&1 | tail -15; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib
+        -maxdepth 1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f
+        "$ref"; cmp lib/android_$arch/libcronet.a "$ref"; done
       - popd
       - make lib_install
       - make lib_android
@@ -248,10 +248,10 @@ Builds:
       - go mod download github.com/sagernet/cronet-go/lib/android_amd64
       - pushd $$cronet-go$$
       - for arch in amd64; do go run ./cmd/build-naive --target=android/$arch build
-        > /dev/null; go run ./cmd/build-naive --target=android/$arch package --local
-        > /dev/null; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib -maxdepth
-        1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f "$ref";
-        cmp lib/android_$arch/libcronet.a "$ref"; done
+        2>&1 | tail -60; go run ./cmd/build-naive --target=android/$arch package --local
+        2>&1 | tail -15; ref=$(find $GOMODCACHE/github.com/sagernet/cronet-go/lib
+        -maxdepth 1 -type d -name "android_$arch@*" | head -1)/libcronet.a; test -f
+        "$ref"; cmp lib/android_$arch/libcronet.a "$ref"; done
       - popd
       - make lib_install
       - make lib_android
