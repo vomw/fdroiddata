@@ -45,8 +45,10 @@ Builds:
       - yes
     srclibs:
       - reproducible-apk-tools@v0.3.0
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
-      fix-newlines $$OUT$$ 'META-INF/services/*'
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 7693863c0d2cd7940817eb73a95fbb2238f0ecb688cc6905e87c51516dfd07f1
 
