@@ -16,9 +16,9 @@ RepoType: git
 Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
-  - versionName: 2.20.1
-    versionCode: 22001502
-    commit: c82cbe1cd8946783003afeb7b08a97ed60c79bfb
+  - versionName: 2.20.2
+    versionCode: 22002502
+    commit: bee44d9c5d4c977bc867082799bc26a14cbdcde3
     subdir: app
     sudo:
       - apt-get update
@@ -56,7 +56,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
+      - sed -i -e '1a add_link_options("LINKER:--build-id=sha1")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/src/CMakeLists.txt
     scandelete:
       - app/.pub-cache
     build:
@@ -116,5 +116,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - '%c + 2'
 UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.20.1
-CurrentVersionCode: 22001502
+CurrentVersion: 2.20.2
+CurrentVersionCode: 22002502
