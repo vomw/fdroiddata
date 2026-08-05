@@ -1,0 +1,45 @@
+Categories:
+  - Development
+License: GPL-3.0-only
+AuthorName: SixtyFPS GmbH
+AuthorEmail: info@slint.dev
+WebSite: https://slint.dev
+SourceCode: https://github.com/slint-ui/slint
+IssueTracker: https://github.com/slint-ui/slint/issues
+Changelog: https://github.com/slint-ui/slint/blob/HEAD/CHANGELOG.md
+
+AutoName: Slint Viewer
+
+RepoType: git
+Repo: https://github.com/slint-ui/slint.git
+
+Builds:
+  - versionName: 1.17.1
+    versionCode: 11701
+    commit: cf62c975c311e7036d599ed8ed0b7e6a8386a934
+    subdir: tools/viewer/android
+    sudo:
+      - apt-get update
+      - apt-get install -y clang libclang-dev python3 ninja-build make rustup
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - rustup default stable
+      - export PATH=$HOME/.cargo/bin:$PATH
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install --locked cargo-ndk resvg
+      - ../../../scripts/render_android_app_icon.bash
+      - sdkmanager "platforms;android-35" "build-tools;35.0.1"
+    build:
+      - export ANDROID_JAR=$(ls $$SDK$$/platforms/*/android.jar | sort -V | tail -1)
+      - export ANDROID_NDK=$$NDK$$ FORCE_SKIA_BUILD=1
+      - cd ../../..
+      - cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 --platform 26 -o tools/viewer/android/app/src/main/jniLibs
+        build --release --locked -p slint-viewer --lib --features remote
+    ndk: r27
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.17.1
+CurrentVersionCode: 11701
