@@ -16,9 +16,9 @@ RepoType: git
 Repo: https://github.com/Leadaxe/LxBox.git
 
 Builds:
-  - versionName: 2.19.7
-    versionCode: 16061
-    commit: 239970c5436d09498185222dc8efa89a3448ba0a
+  - versionName: 2.20.0
+    versionCode: 22000501
+    commit: 95cd0a8224bd963e0132f145e4b3b547aeff6704
     subdir: app
     sudo:
       - apt-get update
@@ -81,9 +81,9 @@ Builds:
       - export LXBOX_ABI_FILTER=armeabi-v7a
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm
 
-  - versionName: 2.19.7
-    versionCode: 16062
-    commit: 239970c5436d09498185222dc8efa89a3448ba0a
+  - versionName: 2.20.0
+    versionCode: 22000502
+    commit: 95cd0a8224bd963e0132f145e4b3b547aeff6704
     subdir: app
     sudo:
       - apt-get update
@@ -146,9 +146,9 @@ Builds:
       - export LXBOX_ABI_FILTER=arm64-v8a
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
 
-  - versionName: 2.19.7
-    versionCode: 16064
-    commit: 239970c5436d09498185222dc8efa89a3448ba0a
+  - versionName: 2.20.0
+    versionCode: 22000504
+    commit: 95cd0a8224bd963e0132f145e4b3b547aeff6704
     subdir: app
     sudo:
       - apt-get update
@@ -212,29 +212,33 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-x64
 
 MaintainerNotes: |-
-  UpdateCheckMode and AutoUpdateMode are None because the version cannot be
-  read from the repository. pubspec.yaml holds a frozen placeholder that is
-  deliberately never bumped: both CI and the local build script rewrite it
-  from the git tag right before `flutter build`, and the app reads its
-  version back from the APK manifest at runtime. checkupdates fails on this
-  with "Couldn't find any version information". versionCode is
-  `git rev-list --count HEAD` on the release commit, which no regex over the
-  tag name can produce either.
+  Autoupdate is on as of 2.20.0. The version code is now derived from the
+  version itself, so both values can be read from the repository at the
+  release tag:
 
-  The version code carries an ABI digit last, as `rev-list * 10 + ABI`, so
-  that sorting by version code keeps releases in order and groups the ABIs of
-  one release together. 2.19.6 is rev-list 1593, and 2 is arm64, hence 15932.
-  Note this is not what the Flutter Gradle plugin does on its own: with
+    versionCode = ((major * 10000 + minor * 100 + patch) * 100 + PRE) * 10 + ABI
+
+  PRE is 50 for a final release, 01-49 for -rc.N and 51-98 for a hotfix; ABI
+  is 0 universal, 1 armeabi-v7a, 2 arm64-v8a, 4 x86_64. So 2.20.0 arm64 is
+  22000502. The value committed to pubspec.yaml carries ABI=0 (22000500) and
+  VercodeOperation replaces that last digit per build entry, hence `%c + N`
+  rather than `%c * 10 + N` — the shift is already part of the formula.
+
+  The ABI digit is last so that sorting by version code keeps releases in
+  order and groups the ABIs of one release together, as asked for in the
+  review. This is not what the Flutter Gradle plugin does on its own: with
   --split-per-abi it emits `ABI * 1000 + versionCode`, putting the ABI first.
-  This build does not use --split-per-abi, so the value above is taken as is.
+  That flag is no longer used upstream, so the value above is taken as is and
+  the codes here match the APKs published on GitHub exactly.
 
-  Making the version readable from source is on my roadmap; I will enable
-  autoupdate once the scheme changes. Until then a small MR per release adds
-  the build entry by hand.
+  Previously pubspec.yaml held a placeholder that was rewritten from the git
+  tag right before `flutter build`, and checkupdates failed with "Couldn't
+  find any version information". The real version is now committed once, on
+  the release commit the tag points at.
 
-  Reproducible builds are not possible here: this build intentionally differs
-  from the APKs published on GitHub — the naive outbound is dropped (see
-  below) and only arm64 is built — so the two can never match byte for byte.
+  Reproducible builds are not possible here yet: this build intentionally
+  differs from the APKs published on GitHub, because the naive outbound is
+  dropped (see below), so the two cannot match byte for byte.
   Signing with the F-Droid key is expected.
 
   The core (libbox.aar) is built from source in `build:`, so the scanner sees
@@ -264,7 +268,12 @@ MaintainerNotes: |-
   kernels, verified on a device with the toolchain as the only variable, so
   go-version-file: go.mod must not be used here.
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 2.19.7
-CurrentVersionCode: 16064
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+VercodeOperation:
+  - '%c + 1'
+  - '%c + 2'
+  - '%c + 4'
+CurrentVersion: 2.20.0
+CurrentVersionCode: 22000504
