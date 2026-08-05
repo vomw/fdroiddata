@@ -10,7 +10,7 @@ AutoName: MyFinanceMate
 
 RepoType: git
 Repo: https://github.com/Dave-1/MyFinanceMate.git
-Binaries: 
+Binaries:
   https://github.com/Dave-1/MyFinanceMate/releases/download/v%v/MyFinanceMate.%v.apk
 
 Builds:
@@ -37,9 +37,25 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
       fix-newlines $$OUT$$ 'META-INF/services/*'
 
+  - versionName: 1.2.0
+    versionCode: 3
+    commit: f70369f27df930ed994267b788daa3862ac84811
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*'
+
 AllowedAPKSigningKeys: 7693863c0d2cd7940817eb73a95fbb2238f0ecb688cc6905e87c51516dfd07f1
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.1.0
-CurrentVersionCode: 2
+CurrentVersion: 1.2.0
+CurrentVersionCode: 3
