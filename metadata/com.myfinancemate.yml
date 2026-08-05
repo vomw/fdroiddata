@@ -10,6 +10,8 @@ AutoName: MyFinanceMate
 
 RepoType: git
 Repo: https://github.com/Dave-1/MyFinanceMate.git
+Binaries: 
+  https://github.com/Dave-1/MyFinanceMate/releases/download/v%v/MyFinanceMate.%v.apk
 
 Builds:
   - versionName: 1.0.0
@@ -41,6 +43,12 @@ Builds:
     subdir: app
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*'
+
+AllowedAPKSigningKeys: 7693863c0d2cd7940817eb73a95fbb2238f0ecb688cc6905e87c51516dfd07f1
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
