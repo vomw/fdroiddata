@@ -12,19 +12,19 @@ RepoType: git
 Repo: https://github.com/marco201091-glitch/PhyrexianArena.git
 
 Builds:
-  - versionName: 8.0.0
-    versionCode: 80000
-    commit: 801f0a95818f3b52bda5904e9dd2694d491e9a4d
+  - versionName: 8.0.3
+    versionCode: 80003
+    commit: 665bb5dc0bcfe936fc19212d62cbd3db8acdc43e
     timeout: 7200
     subdir: expo
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y ca-certificates curl
+      - curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
+      - apt-get install -y nodejs
     init:
-      - cd ..
-      - npm ci
-      - cd expo
-      - npm ci
+      - cd .. && npm ci
+      - cd expo && npm ci
       - node scripts/patch-fdroid-java-toolchains.mjs
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
@@ -60,10 +60,11 @@ Builds:
       - export EXPO_PUBLIC_SENTRY_ENABLED=false
       - export EXPO_PUBLIC_DISABLE_PUSH_NOTIFICATIONS=true
       - cd android
-      - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a
+      - gradle :app:assembleRelease -PfdroidBuild=true
         --no-daemon --console=plain
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 8.0.0
-CurrentVersionCode: 80000
+AutoUpdateMode: Version
+UpdateCheckMode: Tags fdroid-v[0-9.]+$
+UpdateCheckData: expo/app.json|"versionCode":\s*(\d+),|.|"version":\s*"([^"]+)"
+CurrentVersion: 8.0.3
+CurrentVersionCode: 80003
