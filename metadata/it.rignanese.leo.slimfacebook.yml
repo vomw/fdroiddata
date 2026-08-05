@@ -326,7 +326,7 @@ Builds:
       - _old
       - SlimSocial_for_Facebook/ios
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter":\ "(.*)"/\1/p' .fvmrc)
+      - flutterVersion=$(grep flutter\"\: .fvmrc | cut -d "\"" -f 4)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - sed -i -e '/in_app_review/d' -e '/in_app_purchase/d' pubspec.yaml
