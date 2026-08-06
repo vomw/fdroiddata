@@ -75,10 +75,27 @@ Builds:
       - cordova/node_modules/cordova-android/framework/cordova-publish.gradle
     build: cordova build android --release -- --packageType=apk
 
+  - versionName: 1.5.9-2
+    versionCode: 1050902
+    commit: 791728f1601459ea078f54941675eee921da6759
+    subdir: cordova
+    sudo:
+      - sysctl fs.inotify.max_user_watches=524288 || true
+      - apt-get update
+      - apt-get install npm
+      - npm install -g cordova
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - sdkmanager 'platforms;android-34' 'build-tools;34.0.0'
+      - cordova platform add android
+    scandelete:
+      - cordova/node_modules/cordova-android/framework/cordova-publish.gradle
+    build: cordova build android --release -- --packageType=apk
+
 AllowedAPKSigningKeys: f79e14acebf2bf19f843f12522a0d363f39942e8a7f8951d576aae1662766c81
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: cordova/config.xml|android-versionCode="(\d+)"|.|version="([-\d.]+)"
-CurrentVersion: 1.5.9-1
-CurrentVersionCode: 1050901
+CurrentVersion: 1.5.9-2
+CurrentVersionCode: 1050902
