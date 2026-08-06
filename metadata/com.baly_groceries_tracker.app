@@ -2,6 +2,7 @@ Categories:
   - Money
 License: MIT
 AuthorName: rw-account
+AuthorEmail: whybalnbhany@gmail.com
 SourceCode: https://github.com/rw-account/baly_groceries_tracker
 IssueTracker: https://github.com/rw-account/baly_groceries_tracker/issues
 
@@ -13,7 +14,7 @@ Repo: https://github.com/rw-account/baly_groceries_tracker.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: 8f0af9e27b1bbce77eda49caf0062b5020c04213
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.0
