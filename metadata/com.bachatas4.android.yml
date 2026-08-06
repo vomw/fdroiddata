@@ -35,6 +35,7 @@ Builds:
   - versionName: 0.1.7
     versionCode: 26080313
     commit: 37d0b4fc
+    timeout: 14400
     subdir: android/BachataS4/app
     submodules: true
     sudo:
@@ -67,8 +68,16 @@ Builds:
         ../../../runtime/sources/winlator-app
       - git -C ../../../runtime/sources/winlator-app sparse-checkout set app/src/main/cpp
       - git -C ../../../runtime/sources/winlator-app checkout 72ec347c9ced676e206fbc3762b9d567852cb3e3
+      - cd ../../.. && bash runtime/scripts/build-runtime-debian.sh
+      - node runtime/scripts/install-host-jnilibs.mjs
+      - node runtime/tests/verify-runtime.mjs runtime/locks/components.lock.json
+    scanignore:
+      - android/BachataS4/app/src/main/assets/runtime/runtime.zip
+      - android/BachataS4/core/runtime/src/main/jniLibs
+      - runtime/sources/fex/Source/Windows/wine_builtin.bin
     scandelete:
       - android/BachataS4/app/src/playstore
+      - runtime/build
       - externals/CLI11/book
       - externals/CLI11/tests/fuzzFail
       - externals/cpp-httplib/test/fuzzing
