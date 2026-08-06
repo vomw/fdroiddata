@@ -14,7 +14,7 @@ Repo: https://github.com/Phylliida/memki
 Builds:
   - versionName: '1.0'
     versionCode: 1
-    commit: 5b0df662405f18a3c2455402d274810f419de0b4  # tag v1.0
+    commit: 5b0df662405f18a3c2455402d274810f419de0b4
     subdir: android
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -22,15 +22,13 @@ Builds:
       - DEBIAN_FRONTEND=noninteractive apt-get install -y -t forky nodejs npm
     gradle:
       - yes
-    # Runs in subdir (android/): the web assets are assembled from the repo
-    # root, then gradle packages android/app/src/main/assets/public.
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     build:
       - cd ..
       - npm ci
       - bash scripts/build-capacitor.sh
       - npx cap sync android
       - cd android
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
