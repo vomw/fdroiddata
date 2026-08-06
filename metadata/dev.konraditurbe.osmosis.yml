@@ -21,7 +21,11 @@ Builds:
     subdir: app
     gradle:
       - yes
-    prebuild: echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64" >> ../gradle.properties
+    prebuild:
+      - echo "JAVA_HOME=$JAVA_HOME"
+      - java -version 2>&1 | head -3
+      - ls -d /usr/lib/jvm/*/ 2>/dev/null || echo "no /usr/lib/jvm"
+      - ls -d /usr/lib/jvm/*/ 2>/dev/null | head -1 | xargs -I{} echo "org.gradle.java.home={}" >> ../gradle.properties
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
