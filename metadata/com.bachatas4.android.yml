@@ -37,6 +37,14 @@ Builds:
     commit: 809df814
     subdir: android/BachataS4/app
     submodules: true
+    prebuild:
+      - mkdir -p ../../runtime/sources
+      - git clone --filter=blob:none --no-checkout
+        https://github.com/JICA98/winlator-app.git ../../runtime/sources/winlator-app
+      - git -C ../../runtime/sources/winlator-app fetch --depth 1 origin
+        72ec347c9ced676e206fbc3762b9d567852cb3e3
+      - git -C ../../runtime/sources/winlator-app checkout
+        72ec347c9ced676e206fbc3762b9d567852cb3e3
     sudo:
       - dpkg --add-architecture amd64
       - dpkg --add-architecture arm64
