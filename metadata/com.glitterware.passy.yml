@@ -314,11 +314,17 @@ Builds:
     rm:
       - ios
       - linux
+      - web
       - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get --enforce-lockfile
     scandelete:
       - submodules/flutter
+      - .pub-cache
     build:
-      - submodules/flutter/bin/flutter config --no-analytics
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - submodules/flutter/bin/flutter build apk --dart-define=UPDATES_POPUP_ENABLED=false
 
 AutoUpdateMode: Version
