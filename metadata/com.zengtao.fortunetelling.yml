@@ -1,8 +1,3 @@
-Disabled: Exploratory draft only, updated to a newer commit with a finalized applicationId,
-  verified license audit, and verified local build reproducibility. Still not a real
-  inclusion request - real F-Droid build-server and dependency-scanner feedback on
-  this commit has not been obtained yet. See the Description field for exactly what
-  has and hasn't been verified.
 Categories:
   - Science & Education
 License: MIT
@@ -10,56 +5,7 @@ AuthorName: zengtao227
 SourceCode: https://github.com/zengtao227/Fortune-telling
 IssueTracker: https://github.com/zengtao227/Fortune-telling/issues
 
-AutoName: Fortune Telling (exploratory probe, still Disabled)
-Description: |-
-  EXPLORATORY DRAFT SUBMISSION, updated to point at a newer, more
-  complete commit than the original probe. This metadata exists to get
-  real F-Droid build-server and dependency-scanner feedback ahead of a
-  real inclusion request; it is not a request for inclusion yet.
-
-  applicationId is now finalized as com.zengtao.fortunetelling (this is
-  what the app has shipped under; a provisional
-  io.github.zengtao227.fortunetelling id used in an earlier probe
-  revision has been dropped).
-
-  Since the previous probe revision, the following have been resolved:
-    - the app's product surface (branding, custom fonts, I Ching
-      hexagram visualization, loading animations, accessibility color
-      fixes) is fully intact at this commit - it was never altered on
-      this branch, unlike an earlier abandoned branch that bundled
-      product changes into F-Droid prep work
-    - package-lock.json is finalized and the build uses `npm ci`;
-      reproducibility was verified locally (two independent clean
-      builds from this commit, extracted and diffed file-by-file:
-      identical content across all 860 files in the APK; only the
-      outer zip container's timestamps differ, which is expected and
-      not a content-reproducibility issue)
-    - the full production dependency tree (1202 packages) has been
-      license-audited (`license-checker --production`): every license
-      found is a standard OSI-approved/FLOSS license (MIT, ISC, BSD,
-      Apache-2.0, MPL-2.0, 0BSD, Unlicense, CC0-1.0, Python-2.0,
-      BlueOak-1.0.0; OFL-1.1 for the two bundled Google Fonts). No
-      proprietary or non-free license, and no analytics/tracking SDK,
-      anywhere in the tree. See THIRD_PARTY_NOTICES.md in the repo.
-    - scanignore below now reflects the actual native modules present
-      in a real local `gradlew assembleRelease` build of this exact
-      commit, not an analogy to other apps' recipes
-
-  Still open, not yet attempted:
-    - GitLab CI's `Disabled:` field means the real F-Droid build server
-      and dependency scanner have not run against this commit yet -
-      everything above was verified locally, not by F-Droid's own
-      infrastructure
-    - no Android/Hermes on-device verification of the app's DST
-      timezone logic (Intl.DateTimeFormat) has been done; this was
-      checked statically (Hermes on Android delegates to the
-      platform's own android.icu, present since Android 7.0/API 24)
-      but not confirmed on a real device or emulator
-    - an Expo SDK 50->57 upgrade was explored on a separate branch and
-      found technically feasible, but deliberately not adopted here -
-      F-Droid does not require any specific Expo/SDK version, and the
-      upgrade did not resolve enough of an actual problem to justify
-      the added dependency-audit surface right now
+AutoName: Fortune Telling
 
 RepoType: git
 Repo: https://github.com/zengtao227/Fortune-telling.git
@@ -67,7 +13,7 @@ Repo: https://github.com/zengtao227/Fortune-telling.git
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: a0d6a57190e77e03287bbf0a3343ed0efd01b248
+    commit: 952dc66906d604b71ef1aaf590921eda64a10177
     sudo:
       - apt-get update
       - apt-get install -y npm
