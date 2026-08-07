@@ -2,7 +2,7 @@
 
 <p><img src="https://gitlab.com/fdroid/artwork/-/raw/master/fdroid-logo-2015/fdroid-logo.svg" width="200"></p>
 
-# F-Droid Datas
+# F-Droid Data
 ### Metadata for all the apps of the F-Droid main repository.
 
 [![build status](https://gitlab.com/fdroid/fdroiddata/badges/master/pipeline.svg)](https://gitlab.com/fdroid/fdroiddata/-/pipelines)
