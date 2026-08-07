@@ -21,10 +21,12 @@ Builds:
     submodules: yes
     ndk: r27b
     sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
       - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
       - export PATH="$JAVA_HOME/bin:$PATH"
+      - - update-alternatives --auto java
     gradle:
       - yes
 
