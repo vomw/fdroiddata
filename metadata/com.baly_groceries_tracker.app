@@ -1,5 +1,5 @@
 Categories:
-  - Inventory
+  - Shopping List
 License: MIT
 AuthorName: rw-account
 AuthorEmail: whybalnbhany@gmail.com
