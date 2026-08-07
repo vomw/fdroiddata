@@ -43,11 +43,6 @@ Builds:
     versionCode: 14
     commit: 2471374e02a81678e0296440821124a8dcfa4a07
     subdir: android/app
-    # False positive: F-Droid scanner regex matches .so in this text fixture filename.
-    # File is a 26-byte ASCII test fixture, not a real shared library.
-    # Fixed upstream by renaming to libtracker_so.txt in a follow-up release.
-    scanignore:
-      - android/security/fixtures/tracker-scan/positive/native_symbol/libtracker.so.txt
     sudo:
       - apt-get update
       - apt-get install -y rustup build-essential binutils
@@ -60,6 +55,8 @@ Builds:
       - export CARGO_HOME="$HOME/.cargo"
       - rustup default stable
       - rustup target add aarch64-linux-android x86_64-linux-android
+    scanignore:
+      - android/security/fixtures/tracker-scan/positive/native_symbol/libtracker.so.txt
     build:
       - export CARGO_HOME="$HOME/.cargo"
       - export ANDROID_NDK_HOME="$$NDK$$"
