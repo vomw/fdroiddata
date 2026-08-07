@@ -38,7 +38,29 @@ Builds:
       - ../scripts/build-etebase-client-16kb.sh
     ndk: 28.2.13676358
 
+  - versionName: 0.5.0-beta
+    versionCode: 14
+    commit: 2471374e02a81678e0296440821124a8dcfa4a07
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup build-essential binutils
+      - ln -sf /home/vagrant/.cargo/bin/cargo /usr/local/bin/cargo
+      - ln -sf /home/vagrant/.cargo/bin/rustc /usr/local/bin/rustc
+      - ln -sf /home/vagrant/.cargo/bin/rustup /usr/local/bin/rustup
+    gradle:
+      - yes
+    prebuild:
+      - export CARGO_HOME="$HOME/.cargo"
+      - rustup default stable
+      - rustup target add aarch64-linux-android x86_64-linux-android
+    build:
+      - export CARGO_HOME="$HOME/.cargo"
+      - export ANDROID_NDK_HOME="$$NDK$$"
+      - ../scripts/build-etebase-client-16kb.sh
+    ndk: 28.2.13676358
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+(-beta)?$
-CurrentVersion: 0.4.0-beta
-CurrentVersionCode: 11
+CurrentVersion: 0.5.0-beta
+CurrentVersionCode: 14
