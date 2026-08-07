@@ -14,22 +14,12 @@ Builds:
   - versionName: 1.0.1
     versionCode: 2
     commit: 952dc66906d604b71ef1aaf590921eda64a10177
-    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
-    init:
-      - cd ../..
-      - npm ci
+    init: npm ci
     gradle:
       - yes
-    prebuild:
-      - cd ../..
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/build.gradle.kts
-      - npx expo prebuild --clean --platform android --no-install
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - node_modules/expo/android/build.gradle
       - node_modules/expo-modules-core/android/build.gradle
@@ -56,6 +46,13 @@ Builds:
       - node_modules/react-native/sdks/hermesc/win64-bin/icuio64.dll
     scandelete:
       - node_modules
+    build:
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - npx expo prebuild --clean --platform android --no-install
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/build.gradle.kts
+      - cd android
+      - gradle assembleRelease
 
 AutoUpdateMode: None
 UpdateCheckMode: None
