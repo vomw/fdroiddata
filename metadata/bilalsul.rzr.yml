@@ -20,10 +20,10 @@ Binaries:
 Builds:
   - versionName: 0.6.9
     versionCode: 25
-    commit: 52eb51228300caa7463824aa843938aa20ff0068
+    commit: 315acb74518f59a80c693dac567683d9f76bbd0f
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.35.6
     rm:
       - ios
       - linux
@@ -31,10 +31,6 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/^\s*flutter:\s*(.*)/\1/p" pubspec.yaml | head
-        -n 1)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
