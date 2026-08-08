@@ -13,25 +13,118 @@ Repo: https://github.com/banan-guh/ermchat.git
 
 Builds:
   - versionName: 0.5.5
-    versionCode: 11
+    versionCode: 1011
     commit: 75c8787d2635a2c02e62b3398f96f9f7e9af4aeb
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/banan-guh/ermchat/releases/download/v%v/ermchat-v%v-armeabi-v7a.apk
     srclibs:
       - flutter@3.44.9
     rm:
       - ios
+    sudo:
+      - mkdir -p /home/runner/work/ermchat
+      - chown -R vagrant /home/runner
     prebuild:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt || true
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
+
+  - versionName: 0.5.5
+    versionCode: 2011
+    commit: 75c8787d2635a2c02e62b3398f96f9f7e9af4aeb
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/banan-guh/ermchat/releases/download/v%v/ermchat-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@3.44.9
+    rm:
+      - ios
+    sudo:
+      - mkdir -p /home/runner/work/ermchat
+      - chown -R vagrant /home/runner
+    prebuild:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt || true
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
+
+  - versionName: 0.5.5
+    versionCode: 4011
+    commit: 75c8787d2635a2c02e62b3398f96f9f7e9af4aeb
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/banan-guh/ermchat/releases/download/v%v/ermchat-v%v-x86_64.apk
+    srclibs:
+      - flutter@3.44.9
+    rm:
+      - ios
+    sudo:
+      - mkdir -p /home/runner/work/ermchat
+      - chown -R vagrant /home/runner
+    prebuild:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt || true
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
+
+AllowedAPKSigningKeys: e13e88f0c0b66ee0f5299812145cf58e3a06e03626b5aeb0366965769635db28
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v.*$
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.5.5
-CurrentVersionCode: 11
+CurrentVersionCode: 4011
