@@ -9,18 +9,19 @@ AutoName: MyLexicon
 
 RepoType: git
 Repo: https://github.com/aryany9/MyLexicon.git
-Binaries: https://github.com/aryany9/MyLexicon/releases/download/v%v/app-release.apk
+Binaries: 
+  https://github.com/aryany9/MyLexicon/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: 20d6ce4292839649485b2f7433c178d4bb1c5349
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.44.6
     sudo:
       - mkdir -p /home/runner/work/MyLexicon/MyLexicon
       - chown vagrant /home/runner/work/MyLexicon/MyLexicon
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.6
     prebuild:
       - export repo=com.aryanyadav.mylexicon
       - export workspaceBuild=/home/runner/work/MyLexicon/MyLexicon
@@ -31,7 +32,9 @@ Builds:
       - pushd "$workspaceBuild"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - shopt -s dotglob
       - mv "$workspaceBuild"/* "$repo"
@@ -53,7 +56,8 @@ Builds:
       - mv "$workspaceBuild"/* "$repo"
       - shopt -u dotglob
 
-AllowedAPKSigningKeys: 970c76c65c3083a458da6e057565bbd835e47e95102328378c6f2f3c1340af0b
+AllowedAPKSigningKeys: 
+  970c76c65c3083a458da6e057565bbd835e47e95102328378c6f2f3c1340af0b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v([\d.]+)$
