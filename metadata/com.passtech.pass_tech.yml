@@ -1,0 +1,49 @@
+Categories:
+  - Security
+  - System
+License: Apache-2.0
+AuthorName: Patrice Haltaya
+AuthorEmail: contact@files-tech.com
+WebSite: https://www.files-tech.com/pass-tech.php
+SourceCode: https://github.com/gitubpatrice/pass_tech
+IssueTracker: https://github.com/gitubpatrice/pass_tech/issues
+Changelog: https://github.com/gitubpatrice/pass_tech/releases
+
+AutoName: Pass Tech
+
+RepoType: git
+Repo: https://github.com/gitubpatrice/pass_tech.git
+
+Builds:
+  - versionName: 2.6.0
+    versionCode: 39
+    commit: 753b5e3788b2382ef8cdf8b1768e09a05d010a52
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - sed -i -e '/foojay-resolver-convention/d' android/settings.gradle.kts
+      - sed -i -e 's/if (!keyPropsFile.exists() && releaseTaskDemande) {/if (false)
+        {/' android/app/build.gradle.kts
+      - sed -i -e '/^            signingConfig = if (keyPropsFile.exists()) {$/,/^            }$/d'
+        android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 2.6.0
+CurrentVersionCode: 39
