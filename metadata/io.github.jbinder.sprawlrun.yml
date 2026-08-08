@@ -25,8 +25,18 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter config --no-cli-animations
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scanignore:
-      - .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
+      - GEO=$(dirname $PUB_CACHE/hosted/pub.dev/geolocator_android-*/android/build.gradle)
+      - GM=$GEO/src/main/java/com/baseflow/geolocator/location/GeolocationManager.java
+      - rm $GEO/src/main/java/com/baseflow/geolocator/location/FusedLocationClient.java
+      - sed -i '/play-services-location/d' $GEO/build.gradle
+      - sed -i '/^import com\.google\.android\.gms\./d' $GM
+      - sed -i 's|return isGooglePlayServicesAvailable(context)|return new LocationManagerClient(context,
+        locationOptions);|' $GM
+      - sed -i '/new FusedLocationClient(context, locationOptions)/d' $GM
+      - sed -i '/^ *[:].*new LocationManagerClient/d' $GM
+      - sed -i '/private boolean isGooglePlayServicesAvailable/,/^  }$/d' $GM
+      - if grep -rq 'com\.google\.android\.gms' $GEO; then echo 'GMS still referenced
+        in geolocator_android'; exit 1; fi
     scandelete:
       - .pub-cache
     build:
