@@ -8,6 +8,9 @@ IssueTracker: https://github.com/banan-guh/ermchat/issues
 
 AutoName: ErmChat
 
+Binaries: https://github.com/banan-guh/ErmChat/releases/download/v%v/ErmChat-v%v.apk
+
+AllowedAPKSigningKeys: e13e88f0c0b66ee0f5299812145cf58e3a06e03626b5aeb0366965769635db28
 
 RepoType: git
 Repo: https://github.com/banan-guh/ermchat.git
@@ -16,14 +19,14 @@ Builds:
   - versionName: 0.5.5
     versionCode: 11
     commit: 75c8787d2635a2c02e62b3398f96f9f7e9af4aeb
+    sudo:
+      - mkdir -p /home/runner/work/ermchat
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.9
     rm:
       - ios
-    sudo:
-      - mkdir -p /home/runner/work/ermchat
-      - chown -R vagrant /home/runner
     prebuild:
       - export repo=/home/runner/work/ermchat/ermchat
       - cd ..
@@ -32,7 +35,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt || true
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+        || true
       - popd
       - mv $repo io.github.bananguh.ErmChat
     scandelete:
