@@ -21,10 +21,12 @@ Builds:
       - flutter@3.44.9
     rm:
       - ios
+    sudo:
+      - mkdir -p /home/runner/work/ermchat
+      - chown -R vagrant /home/runner
     prebuild:
       - export repo=/home/runner/work/ermchat/ermchat
       - cd ..
-      - mkdir -p $(dirname $repo)
       - mv io.github.bananguh.ErmChat $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -38,7 +40,6 @@ Builds:
     build:
       - export repo=/home/runner/work/ermchat/ermchat
       - cd ..
-      - mkdir -p $(dirname $repo)
       - mv io.github.bananguh.ErmChat $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
