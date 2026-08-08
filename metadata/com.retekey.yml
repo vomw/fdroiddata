@@ -1,3 +1,20 @@
+# F-Droid build recipe for ReteKey.
+#
+# This is the file that goes into the fdroiddata repository on GitLab, as
+# metadata/com.retekey.yml. It is kept here so the recipe and the build it drives
+# change together, and so anyone can see how the F-Droid build is defined without leaving this repo.
+#
+# Only the `modern` flavour is published here. Both flavours carry the same applicationId, so one
+# package can serve only one of them, and `modern` is what the README's own download link serves.
+# The `legacy` build (Android 4.0 and up) stays on the releases page.
+#
+# Binaries + AllowedAPKSigningKeys make this a reproducible build: F-Droid compiles the app on its
+# own server, compares the result against the APK published on the releases page, and on a match
+# ships that file signed with this project's key rather than F-Droid's. That is only possible
+# because a clean clone builds byte-identically — `vcsInfo { include = false }` in app/build.gradle
+# is what makes it so, by keeping the builder's git checkout out of the APK. It also means the
+# signing key must be kept: losing it ends the ability to update the app.
+
 Categories:
   - Keyboard & IME
   - System
@@ -14,9 +31,9 @@ Repo: https://github.com/rubidus-api/retekey_apk.git
 Binaries: https://github.com/rubidus-api/retekey_apk/releases/download/v%v/retekey-%v.apk
 
 Builds:
-  - versionName: 0.1.85
-    versionCode: 86
-    commit: bcffc3a56bd2b35c9a70c3906feaa52c4a4214aa
+  - versionName: 0.1.87
+    versionCode: 88
+    commit: aa782c8f4b5c228801d6726868af12d86495a950
     subdir: app
     gradle:
       - modern
@@ -25,5 +42,5 @@ AllowedAPKSigningKeys: 9edf10f8088e6eeece9831687fde92dcb737c774f1d39ec37c596905a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: 0.1.85
-CurrentVersionCode: 86
+CurrentVersion: 0.1.87
+CurrentVersionCode: 88
