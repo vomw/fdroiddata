@@ -7,11 +7,10 @@ SourceCode: https://github.com/banan-guh/ermchat
 IssueTracker: https://github.com/banan-guh/ermchat/issues
 
 AutoName: ErmChat
+
+
 RepoType: git
 Repo: https://github.com/banan-guh/ermchat.git
-
-Binaries: https://github.com/banan-guh/ErmChat/releases/download/v%v/ErmChat-v%v.apk
-AllowedAPKSigningKeys: e13e88f0c0b66ee0f5299812145cf58e3a06e03626b5aeb0366965769635db28
 
 Builds:
   - versionName: 0.5.5
@@ -23,14 +22,27 @@ Builds:
     rm:
       - ios
     prebuild:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt || true
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/ermchat/ermchat
+      - cd ..
+      - mv io.github.bananguh.ErmChat $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo io.github.bananguh.ErmChat
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v.*$
