@@ -1,0 +1,49 @@
+Categories:
+  - Sports & Health
+License: MIT
+AuthorName: jbinder
+SourceCode: https://github.com/jbinder/sprawlrun
+IssueTracker: https://github.com/jbinder/sprawlrun/issues
+Changelog: https://github.com/jbinder/sprawlrun/releases
+
+AutoName: SPRAWL//RUN
+
+RepoType: git
+Repo: https://github.com/jbinder/sprawlrun.git
+
+Builds:
+  - versionName: 0.2.0
+    versionCode: 2
+    commit: v0.2.0
+
+    srclibs:
+      - flutter@3.44.8
+
+    output: build/app/outputs/flutter-apk/app-release.apk
+
+    ndk: 28.2.13676358
+
+    rm:
+      - ios
+
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter config --no-cli-animations
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+
+    scanignore:
+      - .pub-cache
+    scandelete:
+      - .pub-cache
+
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s+.*\+([0-9]+)|pubspec.yaml|version:\s+([0-9.]+)
+CurrentVersion: 0.2.0
+CurrentVersionCode: 2
+
