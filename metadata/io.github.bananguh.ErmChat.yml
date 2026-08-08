@@ -1,0 +1,44 @@
+Categories:
+  - Internet
+License: MIT
+AuthorName: banan
+AuthorEmail: kuhwalri.contact@gmail.com
+SourceCode: https://github.com/banan-guh/ermchat
+IssueTracker: https://github.com/banan-guh/ermchat/issues
+
+AutoName: ErmChat
+Description: |-
+  ErmChat is a Twitch chat client built with Flutter, inspired by DankChat
+  but multi-platform (flutter). Beyond usual features, it gives you (local)
+  analytics, broadcaster widgets for hype trains, polls, and predictions, 
+  and robust thread logic that persists threads after root messages are wiped.
+  Still in development, check github.com/banan-guh/ermchat TODO for the
+  current roadmap, and feel free to contribute bugreports, issues and PRs.
+
+RepoType: git
+Repo: https://github.com/banan-guh/ermchat.git
+
+Builds:
+  - versionName: 0.5.1
+    versionCode: 7
+    commit: v0.5.1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v.*$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.5.1
+CurrentVersionCode: 7
