@@ -78,10 +78,31 @@ Builds:
       # splits the build emits a single app-release-unsigned.apk holding every ABI.
       - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
 
+  - versionName: 1.27.4
+    versionCode: 280
+    commit: 431092a2edf2baee6ce889f35b0625e1ff8a9b0c
+    subdir: app
+    gradle:
+      - yes
+    rm:
+      - app/lint-baseline.xml
+    prebuild:
+      # 1-3: drop the release signing config — the keystore is not in the repository, so the
+      # build must produce an unsigned APK. The closing braces are anchored rather than
+      # matched loosely: both blocks contain nested braces, and a bare `/}/` would end the
+      # range at the first inner one, leaving an orphan brace that breaks the Kotlin DSL.
+      - sed -i -e '/^val keystoreProps = Properties/,/^}$/d' build.gradle.kts
+      - sed -i -e '/^    signingConfigs {$/,/^    }$/d' build.gradle.kts
+      - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
+      # 4: drop the ABI splits. Upstream ships per-ABI APKs, but they all carry the same
+      # versionCode, so there would be no way to tell the build outputs apart. Without the
+      # splits the build emits a single app-release-unsigned.apk holding every ABI.
+      - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
+
 # No UpdateCheckData: this app derives its versionCode from `git rev-list --count HEAD`,
 # so it exists in no file for a regex to read. New versions are added by hand until
 # upstream moves the version into a checked-in file.
 AutoUpdateMode: None
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
-CurrentVersion: 1.27.3
-CurrentVersionCode: 277
+CurrentVersion: 1.27.4
+CurrentVersionCode: 280
