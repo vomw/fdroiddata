@@ -1,0 +1,35 @@
+Categories:
+  - Habit Tracker
+License: GPL-3.0-or-later
+SourceCode: https://gitlab.com/peanutplays61/phone-usage
+
+AutoName: Phone Usage
+Description: A Flutter application to track when the user turns on and off their
+  phone. It records the timestamps of these events and provides a history of 
+  phone usage.
+
+RepoType: git
+Repo: https://peanutplays61@gitlab.com/peanutplays61/phone-usage.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 69a0c8dde814f4b1957dfda17ec711c421d4ebc7
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
