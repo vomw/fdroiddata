@@ -18,15 +18,40 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.6
+    sudo:
+      - mkdir -p /home/runner/work/MyLexicon/MyLexicon
+      - chown vagrant /home/runner/work/MyLexicon/MyLexicon
     prebuild:
+      - export repo=com.aryanyadav.mylexicon
+      - export workspaceBuild=/home/runner/work/MyLexicon/MyLexicon
+      - cd ..
+      - shopt -s dotglob
+      - mv "$repo"/* "$workspaceBuild"
+      - shopt -u dotglob
+      - pushd "$workspaceBuild"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - shopt -s dotglob
+      - mv "$workspaceBuild"/* "$repo"
+      - shopt -u dotglob
     scandelete:
       - .pub-cache
     build:
+      - export repo=com.aryanyadav.mylexicon
+      - export workspaceBuild=/home/runner/work/MyLexicon/MyLexicon
+      - cd ..
+      - shopt -s dotglob
+      - mv "$repo"/* "$workspaceBuild"
+      - shopt -u dotglob
+      - pushd "$workspaceBuild"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - shopt -s dotglob
+      - mv "$workspaceBuild"/* "$repo"
+      - shopt -u dotglob
 
 AllowedAPKSigningKeys: 970c76c65c3083a458da6e057565bbd835e47e95102328378c6f2f3c1340af0b
 
