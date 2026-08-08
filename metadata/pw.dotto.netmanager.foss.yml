@@ -15,31 +15,37 @@ Repo: https://github.com/DottoXD/NetManager.git
 Binaries: https://github.com/DottoXD/NetManager/releases/download/%v/NetManager-FOSS.apk
 
 Builds:
-  - versionName: 0.1.2
-    versionCode: 8
-    commit: 1851ebd8b58ce6ee6c8c8f65e2c2b1b815a103ab
+  - versionName: 0.1.3
+    versionCode: 9
+    commit: cb14896c7ff6f31116fd06671b37904e00224ed0
     output: build/app/outputs/flutter-apk/app-foss-release.apk
+    ndk: 28.2.13676358
     srclibs:
       - flutter@stable
     rm:
       - test
       - android/wear
     prebuild:
+      - mv pw.dotto.netmanager.foss /tmp/build
+      - cd /tmp/build
       - sed -i '/:wear/d' android/settings.gradle.kts
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$PATH
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
+      - cd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin/:$PATH
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
       - export GIT_COMMIT=$(git rev-parse --short HEAD)
-      - $$flutter$$/bin/flutter build apk --release --flavor foss 
+      - $$flutter$$/bin/flutter build apk --release --flavor foss --extra-gen-snapshot-options=--strip 
         --dart-define=SENTRY_DSN=https://8be4a19c082841f4958cb347196914f9@netmanager.bugsink.com/2
         --dart-define=flutter.flutter_map.unblockOSM="Our tile servers are not." --dart-define=GIT_COMMIT=$GIT_COMMIT
         --dart-define=FOSS=true --target-platform android-arm,android-arm64
@@ -49,5 +55,5 @@ AllowedAPKSigningKeys: 7aef716f2bd8f1e1b9935ce64d5966b5d3060f4562a889ce7adfd8aab
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.1.2
-CurrentVersionCode: 8
+CurrentVersion: 0.1.3
+CurrentVersionCode: 9
