@@ -1,0 +1,32 @@
+AI Tech is a 100% on-device conversational AI assistant for Android.
+No Internet connection, no cloud, no subscription, no tracker, no ads.
+
+'''Radical privacy''':
+* INTERNET permission removed from the manifest (tools:node="remove") —
+  the app is technically incapable of sending data.
+* ACCESS_NETWORK_STATE also removed.
+* Verifiable via aapt dump permissions.
+
+'''Supported models (imported by the user via SAF)''':
+* Gemma 3 1B int4 — Google Kaggle (~554 MB, recommended)
+* Qwen, Phi, Llama (.task or .litertlm)
+* Models from 500 MB to 4 GB
+
+'''Security''':
+* EncryptedJsonStore<T>: AES-256-GCM with AAD bound to object id
+* Master key sealed by Android Keystore via flutter_secure_storage 10.x
+* Anti-injection prompt sanitization (12 patterns Llama/ChatML/Gemma)
+* RAG sanitization (anti "you are now", "ignore previous", etc.)
+* SHA-256 verified on model import + "Verify" button in Settings
+* libOpenCL native lib (GPU acceleration via MediaPipe)
+* FLAG_SECURE active
+
+'''Performance''' (Gemma 3 1B int4, indicative):
+* Samsung S24 FE: ~43 tokens/s
+* Samsung S9: ~9.8 tokens/s
+* POCO C75: ~7.7 tokens/s
+
+'''Panic mode''': immediate destruction of encrypted chats and
+parameters + uninstall of imported models.
+
+'''Apache 2.0''' open source — full code on GitHub.
