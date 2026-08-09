@@ -1,6 +1,5 @@
 Categories:
-  - Internet
-  - Navigation
+  - Game Helper
 License: AGPL-3.0-only
 AuthorName: ccev
 SourceCode: https://github.com/ccev/diadem
@@ -12,9 +11,9 @@ RepoType: git
 Repo: https://github.com/ccev/diadem.git
 
 Builds:
-  - versionName: '0.8'
-    versionCode: 8
-    commit: 21a8d539f4d12366f9ac171369b0dce486c47436
+  - versionName: '0.9'
+    versionCode: 9
+    commit: af0ee226b24870b3714b616febb02542b82c3ce9
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -31,14 +30,12 @@ Builds:
       - pushd ../..
       - bash setup.sh
       - pnpm exec svelte-kit sync
-      - BUILD_TARGET=native VITE_NO_GMS=true pnpm exec vite build
-      - rm -rf node_modules/@capacitor/geolocation node_modules/.pnpm/@capacitor+geolocation@*
-      - pnpm exec cap sync android
+      - bash ./scripts/native/build-nogms.sh
       - popd
     scandelete:
       - node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '0.8'
-CurrentVersionCode: 8
+CurrentVersion: '0.9'
+CurrentVersionCode: 9
