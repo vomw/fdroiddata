@@ -113,8 +113,31 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter build apk
 
+  - versionName: 1.2.0
+    versionCode: 120
+    commit: 5e01b0234b48879d52b34e15ef613fc5f3472637
+    subdir: animeone
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.4
+    rm:
+      - animeone/ios
+      - animeone/linux
+      - animeone/test
+      - animeone/windows
+    prebuild:
+      - sed -i -e '/update.checkUpdate/d' lib/ui/page/home.dart
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - animeone/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: animeone/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.1.8
-CurrentVersionCode: 118
+CurrentVersion: 1.2.0
+CurrentVersionCode: 120
