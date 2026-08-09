@@ -1,0 +1,30 @@
+Categories:
+  - Writing
+License: AGPL-3.0-or-later
+AuthorName: Clément Pera
+AuthorWebSite: https://clem.nextmiracle.eu
+SourceCode: https://github.com/ClemPera/Nooto
+IssueTracker: https://github.com/ClemPera/Nooto/issues
+
+RepoType: git
+Repo: https://github.com/ClemPera/Nooto
+
+Builds:
+  - versionName: 0.2.0
+    versionCode: 2000
+    commit: client-v0.2.0
+    subdir: client/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
+    prebuild:
+      - cd ../../.. && npm install && npm run build
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^client-v[0-9.]+$
+CurrentVersion: 0.2.0
+CurrentVersionCode: 2000
