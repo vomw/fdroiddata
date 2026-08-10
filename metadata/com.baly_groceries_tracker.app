@@ -15,7 +15,7 @@ Binaries: https://github.com/rw-account/baly_groceries_tracker/releases/download
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 4fecca8045dd3bc13554e16b45340cd9e78b9886
+    commit: b3b135d0f3f38de8b888d22ef9ad9e37a764628c
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.0
