@@ -297,10 +297,25 @@ Builds:
     scandelete:
       - downloads/*.zip
 
+  - versionName: '64.0'
+    versionCode: 1643
+    commit: 0fe69b5c32868803861bf3bff38a7c8fff978236
+    subdir: app
+    gradle:
+      - lite
+    prebuild:
+      - sed -i -e 's/Xmx6192m/Xmx9g/' ../gradle.properties
+      - gradle buildDictionaryDownloads || gradle buildDictionaryDownloads
+      - sed -i -e '/tasks.register("buildDictionaryDownloads")/,/^}/s/^\s.*//' build.gradle
+    scanignore:
+      - app/languages/ngrams/*.zip
+    scandelete:
+      - downloads/*.zip
+
 AllowedAPKSigningKeys: 57f09ab8dcfedbb63fa309362fedbbb0d8026cada8b2dc78ff00057f98c6020b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[a-z0-9.]*$
 UpdateCheckData: app/src/main/AndroidManifest.xml|versionCode="(\d+)"|.|versionName="(.+)"
-CurrentVersion: '63.0'
-CurrentVersionCode: 1607
+CurrentVersion: '64.0'
+CurrentVersionCode: 1643
