@@ -16,9 +16,9 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: b3b135d0f3f38de8b888d22ef9ad9e37a764628c
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
-      - flutter@3.44.0
+      - flutter@3.44.8
     rm:
       - ios
       - linux
@@ -26,7 +26,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.44.0
+      - git -C $$flutter$$ checkout -f 3.44.8
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get --enforce-lockfile
@@ -43,6 +43,8 @@ AllowedAPKSigningKeys: 3d168406ea989fd09452bf5801fee9460c6050165f4c930cc114e39c0
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 2'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+CurrentVersionCode: 12
