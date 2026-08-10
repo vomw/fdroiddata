@@ -1,0 +1,44 @@
+Categories:
+  - Religion
+License: MIT
+SourceCode: https://gitlab.com/papewas/nischenlicht-app
+IssueTracker: https://gitlab.com/papewas/nischenlicht-app/-/issues
+
+AutoName: NischenLicht
+Summary: Tägliche Bahá'í-Lesungen — offline, werbefrei, 2.100+ Texte
+Description: |-
+  Stille Begleitung durch die Weisheit der Bahá'í-Schriften. Über 2.100 Texte
+  aus elf Sammlungen auf Deutsch und Englisch, tägliche Morgen- und
+  Abendlesung nach Bahá'í-Kalender. Fokus-Modus, 13 Schriftarten, Hell/Dunkel.
+  Kein Tracking, keine Werbung, vollständig offline.
+
+  English: NicheLight offers 2,100+ texts from eleven Bahá'í collections in
+  German and English (Hidden Words, Prayers, Gleanings, Sacred Writings, Some
+  Answered Questions, and more). Daily readings, focus mode,
+  13 typefaces. No tracking, no ads, fully offline.
+
+RepoType: git
+Repo: https://gitlab.com/papewas/nischenlicht-app.git
+
+Builds:
+  - versionName: '4.0'
+    versionCode: 40001
+    commit: v4.0.1
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y curl
+      # Capacitor-CLI 8 benötigt Node >= 22
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
+    init:
+      - npm ci
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: '4.0'
+CurrentVersionCode: 40001
