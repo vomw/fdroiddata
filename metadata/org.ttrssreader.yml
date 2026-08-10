@@ -807,6 +807,10 @@ Builds:
     versionCode: 1982
     commit: 9f6706618ec404de051a176ffbb7bf6a463f5b1e
     subdir: ttrssreader
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
     gradle:
       - fdroid
     srclibs:
@@ -815,10 +819,10 @@ Builds:
       - sed -i -e '/play-services/d' build.gradle
       - sed -i -e '/maven {/,+8d' -e '/repositories {/amavenLocal()' ../settings.gradle
     build:
-      - pushd $$twofortyfouram-monorepo$$
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - cd $$twofortyfouram-monorepo$$
       - gradle assembleRelease
       - gradle publishToMavenLocal
-      - popd
 
 MaintainerNotes: |-
   Upstream mistags often and retags, so never use tags directly.
