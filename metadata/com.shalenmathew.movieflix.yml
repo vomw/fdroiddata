@@ -48,9 +48,23 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       $$OUT$$ 'res/-g.json'
 
+  - versionName: '1.5'
+    versionCode: 6
+    commit: a8e571a14adcae10c61349e8e574b79f2c9dfe07
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild:
+      - echo 'movieApiKey="edc78b0442bb6d9f5edd90eb623fa9c0"' >> ../local.properties
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'res/-g.json'
+
 AllowedAPKSigningKeys: ec20b70fd628fef42b53ba82650b7b15b9e83c0b62ed0886365b1e6a2ec72231
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.4'
-CurrentVersionCode: 5
+CurrentVersion: '1.5'
+CurrentVersionCode: 6
