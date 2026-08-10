@@ -10,12 +10,12 @@ AutoName: Baly Groceries Tracker
 
 RepoType: git
 Repo: https://github.com/rw-account/baly_groceries_tracker.git
-Binaries: https://github.com/rw-account/baly_groceries_tracker/releases/download/v1.0.0/BalyGroceriesTracker-v1.0.0-arm64-v8a-release.apk
+Binaries: https://github.com/rw-account/baly_groceries_tracker/releases/download/v1.0.0/BalyGroceriesTracker-arm64-v8a-release.apk
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 92536512e05045051215f58942a1be49f7e4f326
+    commit: 4fecca8045dd3bc13554e16b45340cd9e78b9886
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.0
