@@ -1,10 +1,12 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: Optional voice-engine downloads from GitHub releases and optional user-keyed cloud TTS providers
 Categories:
-  - Multimedia
+  - Text to Speech
+  - System
   - Reading
 License: GPL-3.0-or-later
-AuthorName: Max
+AuthorName: Maxwell Warren
 SourceCode: https://github.com/maxwhipw/marmalade-tts-android
 IssueTracker: https://github.com/maxwhipw/marmalade-tts-android/issues
 Changelog: https://github.com/maxwhipw/marmalade-tts-android/blob/main/CHANGELOG.md
@@ -13,20 +15,27 @@ AutoName: Marmalade TTS
 
 RepoType: git
 Repo: https://github.com/maxwhipw/marmalade-tts-android.git
+Binaries: https://github.com/maxwhipw/marmalade-tts-android/releases/download/v%v/marmalade-tts-%v-fdroid.apk
 
 Builds:
-  - versionName: 1.0.0-beta.1
-    versionCode: 33
-    commit: v1.0.0-beta.1
+  - versionName: 1.0.0
+    versionCode: 10000000
+    commit: ff135e5d42c307cbd221db8590f575e373167535
     subdir: app
     submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential
     gradle:
       - fdroid
     scanignore:
       - third_party/espeak-ng/phsource
+      - app/src/main/assets/engines-seed/kitten-direct-v0_8/voices
     ndk: r26d
 
+AllowedAPKSigningKeys: 556ebcb67b5ba498707c345a72ffe59ea156dca544800bf966d40989272118d0
+
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 1.0.0-beta.1
-CurrentVersionCode: 33
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+CurrentVersion: 1.0.0
+CurrentVersionCode: 10000000
