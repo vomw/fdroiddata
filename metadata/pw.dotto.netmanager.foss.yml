@@ -25,8 +25,9 @@ Builds:
       - test
       - android/wear
     prebuild:
+      - export ORIG_DIR=$(pwd)
       - cd ..
-      - mv pw.dotto.netmanager.foss /tmp/build
+      - mv "$ORIG_DIR" /tmp/build
       - cd /tmp/build
       - sed -i '/:wear/d' android/settings.gradle.kts
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
@@ -37,12 +38,14 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - mv /tmp/build pw.dotto.netmanager.foss
+      - cd ..
+      - mv /tmp/build "$ORIG_DIR"
     scandelete:
       - .pub-cache
     build:
+      - export ORIG_DIR=$(pwd)
       - cd ..
-      - mv pw.dotto.netmanager.foss /tmp/build
+      - mv "$ORIG_DIR" /tmp/build
       - cd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin/:$PATH
@@ -52,7 +55,8 @@ Builds:
         --dart-define=SENTRY_DSN=https://8be4a19c082841f4958cb347196914f9@netmanager.bugsink.com/2
         --dart-define=flutter.flutter_map.unblockOSM="Our tile servers are not." --dart-define=GIT_COMMIT=$GIT_COMMIT
         --dart-define=FOSS=true --target-platform android-arm,android-arm64
-      - mv /tmp/build pw.dotto.netmanager.foss
+      - cd ..
+      - mv /tmp/build "$ORIG_DIR"
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: 7aef716f2bd8f1e1b9935ce64d5966b5d3060f4562a889ce7adfd8aab12350f6
