@@ -40,6 +40,7 @@ Builds:
       - ANDROID_PLATFORM=android-21
       - TOOLCHAIN=$$NDK$$/build/cmake/android.toolchain.cmake
       - sdkmanager 'cmake;3.22.1'
+      - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
       - LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI
@@ -51,12 +52,13 @@ Builds:
       - git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-ogg -j$(nproc)
       - cp build-ogg/libogg.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
+        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-vorbis -j$(nproc)
       - cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so
         $LIBS_DIR/
@@ -64,12 +66,12 @@ Builds:
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF
         -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIRS=$(pwd)/ogg/include
-        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so
+        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-flac --target FLAC -j$(nproc)
       - cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-opus -j$(nproc)
       - cp build-opus/libopus.so $LIBS_DIR/
       - cd ..
@@ -104,6 +106,7 @@ Builds:
       - ANDROID_PLATFORM=android-21
       - TOOLCHAIN=$$NDK$$/build/cmake/android.toolchain.cmake
       - sdkmanager 'cmake;3.22.1'
+      - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
       - LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI
@@ -115,12 +118,13 @@ Builds:
       - git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-ogg -j$(nproc)
       - cp build-ogg/libogg.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
+        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-vorbis -j$(nproc)
       - cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so
         $LIBS_DIR/
@@ -128,12 +132,12 @@ Builds:
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF
         -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIRS=$(pwd)/ogg/include
-        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so
+        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-flac --target FLAC -j$(nproc)
       - cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-opus -j$(nproc)
       - cp build-opus/libopus.so $LIBS_DIR/
       - cd ..
@@ -168,6 +172,7 @@ Builds:
       - ANDROID_PLATFORM=android-21
       - TOOLCHAIN=$$NDK$$/build/cmake/android.toolchain.cmake
       - sdkmanager 'cmake;3.22.1'
+      - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
       - LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI
@@ -179,12 +184,13 @@ Builds:
       - git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-ogg -j$(nproc)
       - cp build-ogg/libogg.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
+        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-vorbis -j$(nproc)
       - cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so
         $LIBS_DIR/
@@ -192,12 +198,12 @@ Builds:
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF
         -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIRS=$(pwd)/ogg/include
-        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so
+        -DOGG_LIBRARIES=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-flac --target FLAC -j$(nproc)
       - cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/
       - /opt/android-sdk/cmake/3.22.1/bin/cmake -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
         -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
       - /opt/android-sdk/cmake/3.22.1/bin/cmake --build build-opus -j$(nproc)
       - cp build-opus/libopus.so $LIBS_DIR/
       - cd ..
