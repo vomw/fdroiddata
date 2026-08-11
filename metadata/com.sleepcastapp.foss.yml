@@ -21,18 +21,20 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends nodejs npm
-      - u=https://api.adoptium.net/v3/binary/version/jdk-17.0.20+8/linux/x64/jdk/hotspot/normal/eclipse
-      - curl -Lo jdk17.tar.gz "$u"
-      - test "$(sha256sum jdk17.tar.gz | cut -c1-64)" = be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35
-      - mkdir -p /usr/lib/jvm/temurin-17
-      - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/temurin-17
-    init: cd ../.. && npm ci --ignore-scripts
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
     gradle:
       - foss
     output: build/outputs/apk/foss/release/app-foss-release-unsigned.apk
     rm:
       - node_modules/onnxruntime-react-native
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' 
+        node_modules/@react-native/gradle-plugin/*/build.gradle.kts 
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - node_modules/react-native/ReactAndroid
       - node_modules/react-native-safe-area-context/android/build.gradle
@@ -40,7 +42,8 @@ Builds:
     scandelete:
       - node_modules
 
-AllowedAPKSigningKeys: 67b13f786e2d6df90162ac20ccf83f44e1004edc6add293fd9d5bc0afa9c0f06
+AllowedAPKSigningKeys: 
+  67b13f786e2d6df90162ac20ccf83f44e1004edc6add293fd9d5bc0afa9c0f06
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
