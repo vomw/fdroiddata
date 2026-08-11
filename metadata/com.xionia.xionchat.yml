@@ -1,5 +1,6 @@
 Categories:
   - Internet
+  - Chat
 License: AGPL-3.0-only
 AuthorName: Fernando Martin Lopez
 AuthorEmail: fernandomlopez@protonmail.com
@@ -16,17 +17,32 @@ Description: |
   "Sovereignty is not asked for. It is compiled."
 
 RepoType: git
-Repo: https://github.com/mamanga1/xionia-xtp
+Repo: https://github.com/mamanga1/xionia-xtp.git
 
 Builds:
   - versionName: 1.0.6
     versionCode: 6
     commit: v1.0.6
     subdir: xionchat_flutter
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go
+    prebuild:
+      - cd ..
+      - go mod download
+      - mkdir -p android/jniLibs/arm64-v8a
+      - GOOS=android GOARCH=arm64 CGO_ENABLED=1 go build -buildmode=c-shared -o android/jniLibs/arm64-v8a/libxionia.so ./mobile.go
+      - cp android/jniLibs/arm64-v8a/libxionia.so xionchat_flutter/android/app/src/main/jniLibs/arm64-v8a/
+      - cd xionchat_flutter
+      - flutter config --no-analytics
+      - flutter pub get
     build:
-      - flutter build apk --release
+      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+    output: build/app/outputs/flutter-apk/app-release.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.6
 CurrentVersionCode: 6
