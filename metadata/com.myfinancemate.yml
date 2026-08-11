@@ -42,12 +42,13 @@ Builds:
     commit: fe2fdbbc3d52fa208b6407619de19f34a7de8835
     subdir: app
     sudo:
-      - export CPUS_MAX=1
+      - export CPUS_MAX=16
       - export CPUS=$(getconf _NPROCESSORS_ONLN)
       - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
         ; done
     gradle:
       - yes
+    binary: https://github.com/Dave-1/MyFinanceMate/releases/download/v%v/MyFinanceMate-v%v.apk
     srclibs:
       - reproducible-apk-tools@v0.3.0
     postbuild:
