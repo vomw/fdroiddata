@@ -1,0 +1,53 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: fishese
+WebSite: https://divelog.fishese.cc
+SourceCode: https://github.com/fishese/diveframe
+IssueTracker: https://github.com/fishese/diveframe/issues
+
+AutoName: DiveFrame
+
+RepoType: git
+Repo: https://github.com/fishese/diveframe.git
+Binaries: https://github.com/fishese/diveframe/releases/download/nightly/diveframe-nightly.apk
+
+Builds:
+  - versionName: 1.0.21
+    versionCode: 22
+    commit: 0d8b449dff6d703567ae0b866e14bd8ed6f64dff
+    subdir: android
+    ndk: 27.0.12077973
+    gradle:
+      - yes
+    srclibs:
+      - libdivecomputer@8e564eb5cf9fb4318af3d540895abb916e1809b0
+    prebuild:
+      - rm -rf app/src/main/cpp/vendor/libdivecomputer
+      - mkdir -p app/src/main/cpp/vendor/libdivecomputer
+      - cp -R $$libdivecomputer$$/. app/src/main/cpp/vendor/libdivecomputer/
+      - sed -e 's/@DC_VERSION@/0.10.0-devel/' -e 's/@DC_VERSION_MAJOR@/0/' -e 's/@DC_VERSION_MINOR@/10/' -e 's/@DC_VERSION_MICRO@/0/' app/src/main/cpp/vendor/libdivecomputer/include/libdivecomputer/version.h.in > app/src/main/cpp/vendor/libdivecomputer/include/libdivecomputer/version.h
+      - printf '#define DC_VERSION_REVISION "8e564eb5cf9fb4318af3d540895abb916e1809b0"
+' > app/src/main/cpp/vendor/libdivecomputer/src/revision.h
+      - cd ..
+      - npm ci
+      - npm run native:sync
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules/
+      - dist/
+      - public/sql-wasm.wasm
+      - android/app/src/main/assets/public/sql-wasm.wasm
+    build:
+      - cd ..
+      - npm ci --offline
+      - npm run native:sync
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+
+AllowedAPKSigningKeys: 90311d4a659f32a767199164791dba0aa5e05ffa5ed9f73b93baffc9112bb25a
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.21
+CurrentVersionCode: 22
