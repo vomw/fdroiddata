@@ -5,13 +5,6 @@ SourceCode: https://gitlab.com/papewas/auvae-app
 IssueTracker: https://gitlab.com/papewas/auvae-app/-/issues
 
 AutoName: Auvae
-Description: |-
-  Authentisch vertraut werden. Ein stilles Spiel für 1–12 Menschen in
-  Deutsch, Englisch und Spanisch — vollständig offline, ohne Konto, ohne
-  Werbung, ohne Tracking. 257 Fragen führen reihum durch ein Gespräch:
-  Jede Person bekommt ihre eigene Farbe, eine zufällige Frage erscheint,
-  ein Tippen gibt weiter. Die App braucht keine Internetverbindung und hat
-  außer VIBRATE keine Berechtigungen.
 
 RepoType: git
 Repo: https://gitlab.com/papewas/auvae-app.git
@@ -19,14 +12,20 @@ Repo: https://gitlab.com/papewas/auvae-app.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: c6abbdd7b97abba92de372c378d76934b2e943af
     subdir: android-offline
-    init: cd .. && rm -rf android-offline/app/src/main/assets && mkdir -p android-offline/app/src/main/assets
-      && cp index.html manifest.webmanifest datenschutz.html privacy.html privacidad.html
-      android-offline/app/src/main/assets/ && cp -r css js icons android-offline/app/src/main/assets/
+    init:
+      - cd ..
+      - rm -rf android-offline/app/src/main/assets
+      - mkdir -p android-offline/app/src/main/assets
+      - cp index.html manifest.webmanifest datenschutz.html privacy.html privacidad.html android-offline/app/src/main/assets/
+      - cp -r css js icons android-offline/app/src/main/assets/
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
+
+AllowedAPKSigningKeys: 380c96a359eafdabeb1faf77a4335a72ae0ffa720ef25269674f07c76f0345fa
+Binaries: https://gitlab.com/papewas/auvae-app/-/releases/v1.0.0/downloads/auvae-v1.0.0.apk
 
 AutoUpdateMode: None
 UpdateCheckMode: None
