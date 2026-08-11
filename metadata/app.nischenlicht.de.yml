@@ -5,38 +5,35 @@ SourceCode: https://gitlab.com/papewas/nischenlicht-app
 IssueTracker: https://gitlab.com/papewas/nischenlicht-app/-/issues
 
 AutoName: NischenLicht
-Description: |-
-  Stille Begleitung durch die Weisheit der Bahá'í-Schriften. Über 2.100 Texte
-  aus elf Sammlungen auf Deutsch und Englisch, tägliche Morgen- und
-  Abendlesung nach Bahá'í-Kalender. Fokus-Modus, 13 Schriftarten, Hell/Dunkel.
-  Kein Tracking, keine Werbung, vollständig offline.
-
-  English: NicheLight offers 2,100+ texts from eleven Bahá'í collections in
-  German and English (Hidden Words, Prayers, Gleanings, Sacred Writings, Some
-  Answered Questions, and more). Daily readings, focus mode,
-  13 typefaces. No tracking, no ads, fully offline.
 
 RepoType: git
 Repo: https://gitlab.com/papewas/nischenlicht-app.git
 
 Builds:
-  - versionName: '4.0'
+  - versionName: '4.0.1'
     versionCode: 40001
-    commit: v4.0.1
+    commit: 40d6e61eb28119a302018dff50c09850976a7acc
     subdir: android
     sudo:
       - apt-get update
       - apt-get install -y curl
       - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
       - apt-get install -y nodejs
-    init: cd .. && npm ci && npm run build && npx cap sync android
+    init:
+      - cd ..
+      - npm ci
+      - npm run build
+      - npx cap sync android
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
     scandelete:
       - node_modules/
 
+AllowedAPKSigningKeys: 90627eba6ee38b0ea090a0b7cf34e3e6c8b42a93f7c4bce90ef5d080583e1b68
+Binaries: https://gitlab.com/papewas/nischenlicht-app/-/releases/v4.0.3/downloads/nischenlicht-v4.0.3.apk
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: '4.0'
+CurrentVersion: '4.0.1'
 CurrentVersionCode: 40001
