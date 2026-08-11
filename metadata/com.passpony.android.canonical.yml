@@ -1,0 +1,43 @@
+Categories:
+  - Password & 2FA
+License: Apache-2.0
+AuthorName: NorseHorse
+AuthorEmail: NorseHorse@norsehor.se
+WebSite: https://passpony.app
+SourceCode: https://github.com/norsehorse-dev/PassPonyAndroid
+IssueTracker: https://github.com/norsehorse-dev/PassPonyAndroid/issues
+Changelog: https://github.com/norsehorse-dev/PassPonyAndroid/releases
+
+AutoName: PassPony
+
+RepoType: git
+Repo: https://github.com/norsehorse-dev/PassPonyAndroid.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 100
+    commit: 45ace6e843078b8182b6097652390f1823100272
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y perl make openjdk-17-jdk-headless
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain
+        none
+    gradle:
+      - foss
+    output: app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+    prebuild:
+      - export JAVA_HOME=$(ls -d /usr/lib/jvm/java-17-openjdk-*)
+      - export PATH="$JAVA_HOME/bin:$PATH"
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export ANDROID_NDK_HOME="$$NDK$$"
+      - cd ../third_party/passponycore && rustup show
+      - cargo install cargo-ndk
+      - cd .. && bash scripts/build-core.sh
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 100
