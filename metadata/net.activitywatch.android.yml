@@ -39,7 +39,31 @@ Builds:
       - make aw-server-rust/aw-webui/dist
     ndk: r25c
 
+  - versionName: 0.14.0b1
+    versionCode: 39
+    commit: a21b48cedc40c091c82a48e1396cdd1d9ad8363f
+    subdir: mobile
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm make
+    gradle:
+      - yes
+    srclibs:
+      - rustup@1.27.1
+    prebuild: sed -i -e '/minSdkVersion/a maxSdkVersion 32' -e '/targetSdkVersion/s/34/32/'
+      build.gradle
+    build:
+      - cd ..
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.76.0 --target aarch64-linux-android
+        armv7-linux-androideabi x86_64-linux-android i686-linux-android
+      - source $HOME/.cargo/env
+      - ./scripts/setup-rust-with-ndk.sh
+      - env RELEASE=true make aw-server-rust
+      - make aw-server-rust/aw-webui/dist
+    ndk: r25c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.12.1
-CurrentVersionCode: 34
+CurrentVersion: 0.14.0b1
+CurrentVersionCode: 39
