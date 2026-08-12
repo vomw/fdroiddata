@@ -1,0 +1,95 @@
+Categories:
+  - Reading
+License: GPL-3.0-only
+AuthorName: Mudlej
+WebSite: https://mudlej.com/projects/mj-pdf
+SourceCode: https://gitlab.com/mudlej_android/mj_pdf_reader
+IssueTracker: https://gitlab.com/mudlej_android/mj_pdf_reader/-/issues
+
+AutoName: MJ PDF
+
+RepoType: git
+Repo: https://gitlab.com/mudlej_android/mj_pdf_reader.git
+
+Builds:
+  - versionName: 3.1.0
+    versionCode: 1058
+    commit: V3.1.0
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 python3-requests git curl pkg-config cmake
+        ninja-build gcc g++ libc-dev
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    build:
+      - export ANDROID_NDK=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - python3 build_dependencies.py --pdfium from-source --abi armeabi-v7a
+    ndk: r28c
+    gradleprops:
+      - fdroidAbi=armeabi-v7a
+
+  - versionName: 3.1.0
+    versionCode: 2058
+    commit: V3.1.0
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 python3-requests git curl pkg-config cmake
+        ninja-build gcc g++ libc-dev
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    build:
+      - export ANDROID_NDK=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - python3 build_dependencies.py --pdfium from-source --abi arm64-v8a
+    ndk: r28c
+    gradleprops:
+      - fdroidAbi=arm64-v8a
+
+  - versionName: 3.1.0
+    versionCode: 3058
+    commit: V3.1.0
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 python3-requests git curl pkg-config cmake
+        ninja-build gcc g++ libc-dev
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-x86-release-unsigned.apk
+    build:
+      - export ANDROID_NDK=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - python3 build_dependencies.py --pdfium from-source --abi x86
+    ndk: r28c
+    gradleprops:
+      - fdroidAbi=x86
+
+  - versionName: 3.1.0
+    versionCode: 4058
+    commit: V3.1.0
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 python3-requests git curl pkg-config cmake
+        ninja-build gcc g++ libc-dev
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    build:
+      - export ANDROID_NDK=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - python3 build_dependencies.py --pdfium from-source --abi x86_64
+    ndk: r28c
+    gradleprops:
+      - fdroidAbi=x86_64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 3000'
+  - '%c + 4000'
+CurrentVersion: 3.1.0
+CurrentVersionCode: 4058
