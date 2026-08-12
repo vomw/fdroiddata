@@ -7278,9 +7278,39 @@ Builds:
     rm:
       - desktop
 
+  - versionName: 4.21.4-patch1
+    versionCode: 1240
+    commit: 6369eaaeb96b81f1640e5ca4ca9db0f873e51177
+    subdir: android
+    gradle:
+      - yes
+    rm:
+      - desktop
+
+  - versionName: 4.21.5
+    versionCode: 1241
+    commit: d80b312cbc4d69c8b96105dd5d9db5bb2c79050d
+    subdir: android
+    gradle:
+      - yes
+    rm:
+      - desktop
+
+  - versionName: 4.21.7-patch2
+    versionCode: 1245
+    commit: b8da6ba92dfd1ce621bdbfaf03f98827b9ce304a
+    subdir: android
+    gradle:
+      - yes
+    rm:
+      - desktop
+    prebuild:
+      - sed -i -e '/project(":desktop")/,+19d' ../build.gradle.kts
+      - sed -i -e 's/"desktop",//' ../settings.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: buildSrc/src/main/kotlin/BuildConfig.kt|appCodeNumber = (\d+)|.|appVersion
   = "(.*)"
-CurrentVersion: 4.21.4
-CurrentVersionCode: 1239
+CurrentVersion: 4.21.7-patch2
+CurrentVersionCode: 1245
