@@ -93,13 +93,12 @@ Builds:
     subdir: src
     sudo:
       - apt-get update
-      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
-        libffi-dev libssl-dev cython3
-      - apt-get install -y python3-pip python3-pexpect python3-virtualenv python3-sh
-      - apt-get install -y python3-colorama python3-jinja2 python3-build python3-toml python3-packaging
-      - apt-get install -y ant
-      - apt-get install -y openjdk-17-jdk-headless
-      - update-alternatives --auto java
+      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev libffi-dev libssl-dev cython3 python3-pip python3-pexpect python3-virtualenv python3-sh python3-colorama python3-jinja2 python3-build python3-toml python3-packaging ant
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - rm /opt/android-sdk/tools/bin/sdkmanager
       - ln -s $(which sdkmanager) /opt/android-sdk/tools/bin/sdkmanager
     output: bin/mobile_paper_wallet-*-arm64-v8a_armeabi-v7a-release-unsigned.apk
