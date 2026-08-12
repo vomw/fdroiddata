@@ -1,0 +1,67 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Connects to third-party web services for Islamic content including prayer
+      times (aladhan.com), Quran text (alquran.cloud), audio recitations (quranicaudio.com),
+      radio streams, and live streaming. No tracking or analytics SDKs present.
+Categories:
+  - Alarm Clock
+  - Religion
+License: GPL-3.0-only
+SourceCode: https://gitlab.com/theredhacker0345/Noor-connect
+IssueTracker: https://gitlab.com/theredhacker0345/Noor-connect/issues
+
+AutoName: Noor Connect
+
+RepoType: git
+Repo: https://gitlab.com/theredhacker0345/Noor-connect.git
+
+Builds:
+  - versionName: 1.2.0
+    versionCode: 4
+    commit: 04e809c1989abd38ef7a9b12d2649f3ce7b39449
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm install
+      - npm run build
+      - npx cap sync android
+    scandelete:
+      - node_modules
+
+  - versionName: 2.0.1
+    versionCode: 6
+    commit: 89046224248edba14d3c697026a2192134ae36a1
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go make npm
+    gradle:
+      - foss
+    srclibs:
+      - esbuild@v0.21.5
+    prebuild:
+      - cd ../..
+      - npm ci
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules
+    build:
+      - pushd $$esbuild$$
+      - make esbuild
+      - popd
+      - cd ../..
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/
+      - cp $$esbuild$$/esbuild node_modules/esbuild/bin/
+      - npm run build
+      - npx cap sync android
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.0.1
+CurrentVersionCode: 6
