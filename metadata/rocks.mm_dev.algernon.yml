@@ -12,20 +12,19 @@ RepoType: git
 Repo: https://codeberg.org/mm-dev/algernon.git
 
 MaintainerNotes: |-
-- Real-time audio goes through `flutter_soloud`, which bridges Flutter to
-  the SoLoud (C++) engine via Dart FFI.
-- `flutter_soloud` ships precompiled Xiph libraries (Ogg/Vorbis/FLAC/Opus)
-  per ABI. To avoid prebuilt binaries, the `build:` step clones and
-  compiles them from source via NDK/CMake instead.
-- Each build entry loops over all four ABIs (not just its target one)
-  because `flutter_soloud`'s Gradle module compiles native code for all
-  ABIs regardless of `--target-platform` — so all four Xiph library sets
-  must exist before Gradle runs, even though only one ABI ends up in that
-  split APK.
-- `armeabi-v7a` and `x86` (32-bit) need `android-24`; the 64-bit ABIs use
-  `android-21` — Bionic only exposes `ftello`/`fseeko` (used by FLAC) at
-  API 24+ on 32-bit targets.
-.
+  - Real-time audio goes through `flutter_soloud`, which bridges Flutter to
+    the SoLoud (C++) engine via Dart FFI.
+  - `flutter_soloud` ships precompiled Xiph libraries (Ogg/Vorbis/FLAC/Opus)
+    per ABI. To avoid prebuilt binaries, the `build:` step clones and
+    compiles them from source via NDK/CMake instead.
+  - Each build entry loops over all four ABIs (not just its target one)
+    because `flutter_soloud`'s Gradle module compiles native code for all
+    ABIs regardless of `--target-platform` — so all four Xiph library sets
+    must exist before Gradle runs, even though only one ABI ends up in that
+    split APK.
+  - `armeabi-v7a` and `x86` (32-bit) need `android-24`; the 64-bit ABIs use
+    `android-21` — Bionic only exposes `ftello`/`fseeko` (used by FLAC) at
+    API 24+ on 32-bit targets.
 
 Builds:
   - versionName: 0.0.9
