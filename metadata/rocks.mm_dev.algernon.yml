@@ -42,34 +42,7 @@ Builds:
       - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
-      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a"
-        ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi;
-        LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI
-        && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5
-        https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git;
-        git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone
-        --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B
-        build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
-        -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp
-        build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h;
-        $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI
-        -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so
-        build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac
-        -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF
-        -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so
-        $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
-        -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW;
-        $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/;
-        cd ..; done
+      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a" ] || [ "$ABI" = "x86" ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi; LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5 https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git; git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h; $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/; cd ..; done
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
     ndk: 27.0.12077973
 
@@ -103,34 +76,7 @@ Builds:
       - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
-      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a"
-        ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi;
-        LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI
-        && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5
-        https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git;
-        git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone
-        --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B
-        build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
-        -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp
-        build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h;
-        $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI
-        -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so
-        build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac
-        -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF
-        -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so
-        $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
-        -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW;
-        $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/;
-        cd ..; done
+      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a" ] || [ "$ABI" = "x86" ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi; LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5 https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git; git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h; $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/; cd ..; done
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
     ndk: 27.0.12077973
 
@@ -164,34 +110,7 @@ Builds:
       - NINJA=/opt/android-sdk/cmake/3.22.1/bin/ninja
       - SOLOUD_ANDROID_DIR=$(find $PUB_CACHE/hosted/pub.dev -maxdepth 1 -type d -name
         'flutter_soloud-*')/android
-      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a"
-        ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi;
-        LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI
-        && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5
-        https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git;
-        git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone
-        --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B
-        build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA
-        -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp
-        build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h;
-        $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI
-        -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so
-        build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac
-        -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM
-        -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF
-        -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF
-        -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so
-        -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE
-        --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so
-        $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
-        -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW;
-        $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/;
-        cd ..; done
+      - for ABI in arm64-v8a armeabi-v7a x86_64 x86; do if [ "$ABI" = "armeabi-v7a" ] || [ "$ABI" = "x86" ]; then ANDROID_PLATFORM=android-24; else ANDROID_PLATFORM=android-21; fi; LIBS_DIR=$SOLOUD_ANDROID_DIR/libs/$ABI; mkdir -p $LIBS_DIR; rm -rf xiph-src-$ABI && mkdir xiph-src-$ABI && cd xiph-src-$ABI; git clone --depth 1 --branch v1.3.5 https://github.com/xiph/ogg.git; git clone --depth 1 --branch v1.3.7 https://github.com/xiph/vorbis.git; git clone --depth 1 --branch 1.4.3 https://github.com/xiph/flac.git; git clone --depth 1 --branch v1.4 https://github.com/xiph/opus.git; $CMAKE -S ogg -B build-ogg -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-ogg -j$(nproc); cp build-ogg/libogg.so $LIBS_DIR/; cp build-ogg/include/ogg/config_types.h ogg/include/ogg/config_types.h; $CMAKE -S vorbis -B build-vorbis -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-vorbis -j$(nproc); cp build-vorbis/lib/libvorbis.so build-vorbis/lib/libvorbisfile.so build-vorbis/lib/libvorbisenc.so $LIBS_DIR/; $CMAKE -S flac -B build-flac -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_CXXLIBS=OFF -DBUILD_TESTING=OFF -DBUILD_PROGRAMS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DINSTALL_MANPAGES=OFF -DOGG_INCLUDE_DIR=$(pwd)/ogg/include -DOGG_LIBRARY=$(pwd)/build-ogg/libogg.so -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-flac --target FLAC -j$(nproc); cp build-flac/src/libFLAC/libFLAC.so $LIBS_DIR/; $CMAKE -S opus -B build-opus -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=$ABI -DANDROID_PLATFORM=$ANDROID_PLATFORM -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA -DCMAKE_POLICY_DEFAULT_CMP0057=NEW; $CMAKE --build build-opus -j$(nproc); cp build-opus/libopus.so $LIBS_DIR/; cd ..; done
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
     ndk: 27.0.12077973
 
