@@ -1269,7 +1269,45 @@ Builds:
         | grep -F app-foss-release-unsigned.apk | cut -c-64 | tr -cd '0-9a-f' )"
       - sha256sum -c <<< "$sha256sum  $$OUT$$"
 
+  - versionName: 1.0.0 (Wear OS)
+    versionCode: 200
+    commit: 306e7b52011300ee7d3be09891215cdf704723cf
+    subdir: app
+    gradle:
+      - wear
+    binary: https://github.com/CatimaLoyalty/Android/releases/download/v%v/wear-release.apk
+    postbuild:
+      - sha256sum="$( curl -L 
+        https://github.com/CatimaLoyalty/Android/releases/download/v$$VERSION$$/SHA256SUMS
+        | grep -F wear-release-unsigned.apk | cut -c-64 | tr -cd '0-9a-f' )"
+      - sha256sum -c <<< "$sha256sum  $$OUT$$"
+
+  - versionName: 2.45.0 (F-Droid)
+    versionCode: 1001
+    commit: 22193b1872ee0df6efa6111972b90b59a0253c4d
+    subdir: app
+    gradle:
+      - fdroidLegacy
+    postbuild:
+      - sha256sum="$( curl -L 
+        https://github.com/CatimaLoyalty/Android/releases/download/v$$VERSION$$/SHA256SUMS
+        | grep -F app-fdroidLegacy-release-unsigned.apk | cut -c-64 | tr -cd '0-9a-f' )"
+      - sha256sum -c <<< "$sha256sum  $$OUT$$"
+
+  - versionName: 2.45.0
+    versionCode: 1002
+    commit: 22193b1872ee0df6efa6111972b90b59a0253c4d
+    subdir: app
+    gradle:
+      - foss
+    binary: https://github.com/CatimaLoyalty/Android/releases/download/v%v/app-foss-release.apk
+    postbuild:
+      - sha256sum="$( curl -L 
+        https://github.com/CatimaLoyalty/Android/releases/download/v$$VERSION$$/SHA256SUMS
+        | grep -F app-foss-release-unsigned.apk | cut -c-64 | tr -cd '0-9a-f' )"
+      - sha256sum -c <<< "$sha256sum  $$OUT$$"
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.44.0
-CurrentVersionCode: 168
+CurrentVersion: 2.45.0
+CurrentVersionCode: 1002
