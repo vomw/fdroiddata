@@ -1,0 +1,49 @@
+Categories:
+  - Office
+License: MIT
+WebSite: https://github.com/bigbear2/voxtotext
+SourceCode: https://github.com/bigbear2/voxtotext
+IssueTracker: https://github.com/bigbear2/voxtotext/issues
+Changelog: https://github.com/bigbear2/voxtotext/releases
+AuthorName: Fabio Lucci
+Name: VoxToText
+AutoName: VoxToText
+Summary: Transcribe WhatsApp/Telegram voice notes to text
+Description: |
+  VoxToText receives voice notes (.opus) shared from WhatsApp or Telegram and
+  transcribes them to text using the Groq API (Whisper large-v3).
+
+  It integrates with the Android share sheet, includes a built-in audio player
+  (reliable playback on Xiaomi/MIUI devices), a local history and 12 localized
+  languages. You need your own free Groq API key, set from the in-app Settings.
+AntiFeatures:
+  - NonFreeNet
+RequiresRoot: 'No'
+MinimalVersion: '21'
+RepoType: git
+Repo: https://github.com/bigbear2/voxtotext.git
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 46947aa0c48ac700fe86c5680bbf784f69ae503b
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
