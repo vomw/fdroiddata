@@ -1,0 +1,55 @@
+Categories:
+  - Keyboard & IME
+  - Writing
+License: AGPL-3.0-only
+AuthorName: VocaHQ
+AuthorEmail: hello@vocahq.com
+WebSite: https://github.com/VocaHQ
+SourceCode: https://github.com/VocaHQ/vocaphone
+IssueTracker: https://github.com/VocaHQ/vocaphone/issues
+Changelog: https://github.com/VocaHQ/vocaphone/releases
+
+RepoType: git
+Repo: https://github.com/VocaHQ/vocaphone.git
+
+Builds:
+  - versionName: 0.1.0-beta.10
+    versionCode: 10
+    commit: v0.1.0-beta.10
+    subdir: android/app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - fdroid
+    output: build/outputs/apk/fdroid/release/vocaphone-fdroidRelease.apk
+    rm:
+      - ios
+      - server
+      - android/app/src/full
+      - android/third_party/whisper.cpp/bindings
+      - android/third_party/whisper.cpp/examples
+      - android/third_party/whisper.cpp/models
+    ndk: 27.2.12479018
+
+MaintainerNotes: |-
+  The upstream project ships two Android product flavors. "full" bundles
+  prebuilt sherpa-onnx and ONNX Runtime JNI libraries, so only "fdroid" is
+  buildable here; it drops those libraries and keeps whisper.cpp, which is
+  compiled from the pinned android/third_party/whisper.cpp submodule. The rm
+  list deletes the full flavor's source set along with the whisper.cpp test
+  models, examples and language bindings, none of which the build needs and
+  all of which carry binaries.
+
+  Speech models are not bundled. The user either points the app at a
+  self-hosted VocaGateway (AGPL-3.0, https://github.com/VocaHQ/vocagateway)
+  or downloads a whisper.cpp model from Hugging Face on first use; the
+  catalog pins every model to a repository revision, byte length and SHA-256.
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0-beta.10
+CurrentVersionCode: 10
