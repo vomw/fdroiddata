@@ -401,12 +401,9 @@ Builds:
       - infra
       - server
       - web
-      - mobile/apps/auth
-      - mobile/apps/photos
       - mobile/apps/locker/ios
     prebuild:
       - sed -i -e "s/'stable'/'1.94.1'/" ../../packages/rust/cargokit/build_tool/lib/src/builder.dart
-      - sed -i -e '\!apps/auth!d' -e '\!apps/photos!d' ../../pubspec.yaml
       - export PUB_CACHE=$(pwd)/.pub-cache
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*/\1/p'
         ../../../.github/actions/setup-flutter/action.yml)
@@ -421,6 +418,8 @@ Builds:
       - sed -i -e '/play-services-cronet/d' $PUB_CACHE/hosted/pub.dev/cronet_http-*/android/build.gradle
     scandelete:
       - mobile/apps/locker/.pub-cache
+      - mobile/apps/auth
+      - mobile/apps/photos
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$HOME/.cargo/bin:$PATH
