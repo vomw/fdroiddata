@@ -27,6 +27,22 @@ Builds:
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release
 
+MaintainerNotes: |-
+  gitubpatrice: check apk flags six com.google.android.play.core classes. They are dead type
+  descriptors emitted by the Flutter/R8 toolchain, not embedded Play Core code. Measured with
+  androguard on com.filestech.notes_tech_50.apk: 0 of those classes are defined in the dex, 0
+  classes reference them in code, 0 occurrences exist anywhere outside the dex, and 11 type
+  descriptors remain in the dex string pool. R8 emits them while processing the Flutter
+  embedding, which names those types in PlayStoreDeferredComponentManager.
+  .
+  The app uses no Play Core feature: no deferred-components block in pubspec.yaml, no
+  com.google.android.play entry in releaseRuntimeClasspath, and no INTERNET permission in the
+  merged manifest, so nothing can reach that code at runtime.
+  .
+  Adding exclude(group = "com.google.android.play") plus -dontwarn on a scratch copy leaves the
+  11 descriptors byte for byte identical, so they do not originate from an artifact that can be
+  excluded. Discussed at length in fdroiddata!37885.
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
