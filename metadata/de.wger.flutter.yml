@@ -947,6 +947,7 @@ Builds:
       - macos
       - web
     prebuild:
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) { minorApiLevel = 0 } }/' android/app/build.gradle
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/actions/flutter-common/action.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
