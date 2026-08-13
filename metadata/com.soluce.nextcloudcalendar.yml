@@ -22,18 +22,18 @@ Builds:
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm -g install yarn
-      - curl -Lo jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
+      - curl -Lo jdk17.tar.gz
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
       - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  jdk17.tar.gz"
         | sha256sum -c -
       - mkdir -p /usr/lib/jvm/java-17-temurin-amd64
       - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/java-17-temurin-amd64
-    init:
-      - yarn install
+    init: yarn install
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - >-
-        node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+      - node -e "const fs=require('fs');const
+        p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - yarn expo prebuild --platform android --no-install
       - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - echo "" >> android/gradle.properties
@@ -59,6 +59,7 @@ Builds:
       - cd android
       - gradle assembleRelease --stacktrace --console=plain 2>&1
     ndk: r27b
+
   - versionName: 1.5.0
     versionCode: 10500
     commit: 1.5.0
@@ -71,18 +72,18 @@ Builds:
         | sha256sum -c -
       - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm -g install yarn
-      - curl -Lo jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
+      - curl -Lo jdk17.tar.gz
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
       - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  jdk17.tar.gz"
         | sha256sum -c -
       - mkdir -p /usr/lib/jvm/java-17-temurin-amd64
       - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/java-17-temurin-amd64
-    init:
-      - yarn install
+    init: yarn install
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - >-
-        node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+      - node -e "const fs=require('fs');const
+        p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - yarn expo prebuild --platform android --no-install
       - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - echo "" >> android/gradle.properties
@@ -108,7 +109,9 @@ Builds:
       - cd android
       - gradle assembleRelease --stacktrace --console=plain 2>&1
     ndk: r27b
-AutoUpdateMode: None
-UpdateCheckMode: Tags
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9.]+$
 CurrentVersion: 1.5.0
 CurrentVersionCode: 10500
+UpdateCheckData: app.config.ts|versionCode = (\d+)|package.json|"version":\s*"([^"]+)"
