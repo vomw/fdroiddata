@@ -1,0 +1,85 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: Optional map downloads use Geofabrik OpenStreetMap extracts, 
+      OpenFreeMap for online basemap tiles, and Mapterhorn for elevation data. 
+      Routing and navigation run offline after those files are on the device.
+Categories:
+  - Navigation
+License: GPL-3.0-or-later
+AuthorName: Navi contributors
+WebSite: https://github.com/Supermagnum/Navi
+SourceCode: https://github.com/Supermagnum/Navi
+IssueTracker: https://github.com/Supermagnum/Navi/issues
+Changelog: https://github.com/Supermagnum/Navi/releases
+Donate: https://github.com/Supermagnum/Navi#support-navi
+
+AutoName: Navi
+
+RepoType: git
+Repo: https://github.com/Supermagnum/Navi.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    timeout: 14400
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends build-essential curl 
+        ca-certificates openjdk-17-jdk-headless python3 pkg-config libssl-dev
+      - update-java-alternatives -a || true
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- 
+        -y --default-toolchain stable
+      - bash -lc 'source "$HOME/.cargo/env" && rustup toolchain install 1.88.0 
+        --profile minimal && rustup default 1.88.0 && rustup target add 
+        aarch64-linux-android x86_64-linux-android'
+    gradle:
+      - yes
+    rm:
+      - app/src/main/jniLibs/arm64-v8a/libnavi.so
+      - app/src/main/jniLibs/x86_64/libnavi.so
+    prebuild: "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${CARGO_HOME:-$HOME/.cargo}/bin:${PATH:-}\"\
+      \n. \"${CARGO_HOME:-$HOME/.cargo}/env\" 2>/dev/null || true\nNDK=\"$$NDK$$\"\
+      \ntest -n \"$NDK\" && test -d \"$NDK\"\nCLANG_PRE=\"$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin\"\
+      \nmkdir -p ../.cargo\nprintf '%s\\n' \\\n  '[target.x86_64-linux-android]' \\\
+      \n  \"linker = \\\"$CLANG_PRE/x86_64-linux-android34-clang\\\"\" \\\n  'rustflags
+      = [\"-C\", \"link-arg=-lc++_shared\"]' \\\n  '' \\\n  '[target.aarch64-linux-android]'
+      \\\n  \"linker = \\\"$CLANG_PRE/aarch64-linux-android34-clang\\\"\" \\\n  'rustflags
+      = [\"-C\", \"link-arg=-lc++_shared\"]' \\\n  > ../.cargo/config.toml\nrm -f
+      ../app/src/main/jniLibs/*/libnavi.so\nprintf 'sdk.dir=%s\\nndk.dir=%s\\n' \"\
+      $$SDK$$\" \"$$NDK$$\" > ../local.properties\n"
+    build: "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${CARGO_HOME:-$HOME/.cargo}/bin:${PATH:-}\"\
+      \n. \"${CARGO_HOME:-$HOME/.cargo}/env\" 2>/dev/null || true\nexport ANDROID_NDK_HOME=\"\
+      $$NDK$$\"\nexport ANDROID_HOME=\"$$SDK$$\"\n# Annotated tags can leave SOURCE_DATE_EPOCH
+      empty; ring/cc-rs reject that.\nif ! [[ \"${SOURCE_DATE_EPOCH:-}\" =~ ^[0-9]+$
+      ]]; then\n  export SOURCE_DATE_EPOCH=\"$(git -C .. log -1 --pretty=%ct)\"\n\
+      fi\ntest ! -e ../app/src/main/jniLibs/arm64-v8a/libnavi.so\ntest ! -e ../app/src/main/jniLibs/x86_64/libnavi.so\n\
+      ../scripts/build-android-native.sh aarch64-linux-android release\n../scripts/build-android-native.sh
+      x86_64-linux-android release\ntest -f ../app/src/main/jniLibs/arm64-v8a/libnavi.so\n\
+      test -f ../app/src/main/jniLibs/x86_64/libnavi.so\nsha256sum ../app/src/main/jniLibs/arm64-v8a/libnavi.so
+      \\\n  ../app/src/main/jniLibs/x86_64/libnavi.so\ngradle assembleRelease\n"
+    ndk: r27c
+
+MaintainerNotes: |
+  Rust 1.88.0 via rustup in sudo: (matches rust-toolchain.toml). .cargo/config.toml
+  linker paths are rewritten from $$NDK$$ in prebuild.
+  dependenciesInfo.includeInApk/Bundle are false in app/build.gradle.kts.
+  libnavi.so: rm and prebuild delete committed jniLibs prebuilts (local/CI Gradle-only);
+  build: runs scripts/build-android-native.sh for aarch64 and x86_64 before assembleRelease
+  (asserts absence before compile and presence after).
+  io.opencensus: AGP Unified Test Platform host tooling only
+  (com.google.testing.platform via com.android.tools.utp) — not on
+  releaseRuntimeClasspath, not shipped in the APK, not used for app telemetry.
+  Do not globally exclude (breaks instrumented-test UTP). False-positive tracker flag.
+  build: restores SOURCE_DATE_EPOCH from git when empty (annotated tags); otherwise
+  ring/cc-rs fails.
+  Recipe validated locally with fdroidserver in F-Droid's buildserver-trixie image
+  (Podman) before this metadata was submitted.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: 
+  app/build.gradle.kts|versionCode\s=\s(\d+)|.|versionName\s=\s"(.*)"
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
