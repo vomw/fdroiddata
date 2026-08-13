@@ -416,6 +416,7 @@ Builds:
       - popd
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - sed -i -e '/play-services-cronet/d' $PUB_CACHE/hosted/pub.dev/cronet_http-*/android/build.gradle
+      - sed -i -e '/dependsOn downloadLibsodium/d' $PUB_CACHE/hosted/pub.dev/sodium_libs-*/android/build.gradle
     scandelete:
       - mobile/apps/locker/.pub-cache
       - mobile/apps/auth
@@ -428,14 +429,6 @@ Builds:
       - pushd ../../packages/rust
       - flutter_rust_bridge_codegen generate
       - popd
-      - sodiumLibsPkg=$(python3 -c "import json; from urllib.parse import urlparse,
-        unquote; pkg = next(p for p in json.load(open('.dart_tool/package_config.json'))['packages']
-        if p['name'] == 'sodium_libs'); print(unquote(urlparse(pkg['rootUri']).path))")
-      - '[[ -n "$sodiumLibsPkg" && -d "$sodiumLibsPkg" ]]'
-      - sed -i -e '/dependsOn downloadLibsodium/d' $sodiumLibsPkg/android/build.gradle
-      - sodiumLibsPath="$sodiumLibsPkg/android/src/main/jniLibs"
-      - mkdir -p "$sodiumLibsPath"/armeabi-v7a "$sodiumLibsPath"/x86_64 "$sodiumLibsPath"/arm64-v8a
-        "$sodiumLibsPath"/x86
       - pushd $$libsodium$$
       - export NDK_PLATFORM="android-21"
       - ./autogen.sh -s
@@ -444,10 +437,15 @@ Builds:
       - ./dist-build/android-x86.sh
       - ./dist-build/android-x86_64.sh
       - popd
-      - cp $$libsodium$$/libsodium-android-armv7-a/lib/libsodium.so "$sodiumLibsPath"/armeabi-v7a/
-      - cp $$libsodium$$/libsodium-android-westmere/lib/libsodium.so "$sodiumLibsPath"/x86_64/
-      - cp $$libsodium$$/libsodium-android-armv8-a+crypto/lib/libsodium.so "$sodiumLibsPath"/arm64-v8a/
-      - cp $$libsodium$$/libsodium-android-i686/lib/libsodium.so "$sodiumLibsPath"/x86/
+      - pushd $PUB_CACHE/hosted/pub.dev/sodium_libs-*/android
+      - mkdir -p src/main/jniLibs
+      - cd src/main/jniLibs
+      - mkdir -p armeabi-v7a x86_64 arm64-v8a x86
+      - cp $$libsodium$$/libsodium-android-armv7-a/lib/libsodium.so armeabi-v7a/
+      - cp $$libsodium$$/libsodium-android-westmere/lib/libsodium.so x86_64/
+      - cp $$libsodium$$/libsodium-android-armv8-a+crypto/lib/libsodium.so arm64-v8a/
+      - cp $$libsodium$$/libsodium-android-i686/lib/libsodium.so x86/
+      - popd
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid -t lib/main.dart
         --dart-define=cronetHttpNoPlay=true
     ndk: r28c
