@@ -2,6 +2,7 @@ Categories:
   - Calendar & Agenda
 License: GPL-3.0-or-later
 AuthorName: Soluce Technologies
+AuthorEmail: contact@soluce-technologies.com
 SourceCode: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile
 IssueTracker: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/issues
 Changelog: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/releases
@@ -12,32 +13,24 @@ Repo: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile.git
 Builds:
   - versionName: 1.4.5
     versionCode: 10405
-    commit: 1.4.5
+    commit: 84de9788771342af7a42fdeb8c0fdea128cd92ae
     timeout: 14400
     sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - sysctl fs.inotify.max_user_watches=524288
-      - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.23.1/node-v22.23.1-linux-x64.tar.gz
-      - echo "7a8cb04b4a1df4eaf432125324b81b29a088e73570a23259a8de1c65d07fc129  node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - apt-get install -y -t forky nodejs npm
+      - apt-get install -y openjdk-17-jdk-headless
       - npm -g install yarn
-      - curl -Lo jdk17.tar.gz 
-        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
-      - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  jdk17.tar.gz"
-        | sha256sum -c -
-      - mkdir -p /usr/lib/jvm/java-17-temurin-amd64
-      - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/java-17-temurin-amd64
     init: yarn install
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - node -e "const fs=require('fs');const 
-        p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+      - node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - yarn expo prebuild --platform android --no-install
       - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - echo "" >> android/gradle.properties
-      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-temurin-amd64"
+      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
         >> android/gradle.properties
       - echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8"
         >> android/gradle.properties
@@ -62,32 +55,24 @@ Builds:
 
   - versionName: 1.5.0
     versionCode: 10500
-    commit: 1.5.0
+    commit: 5858f0013e270c3ce33c66a6b260f5bd21e3c567
     timeout: 14400
     sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - sysctl fs.inotify.max_user_watches=524288
-      - curl -Lo node.tar.gz https://nodejs.org/download/release/v22.23.1/node-v22.23.1-linux-x64.tar.gz
-      - echo "7a8cb04b4a1df4eaf432125324b81b29a088e73570a23259a8de1c65d07fc129  node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - apt-get install -y -t forky nodejs npm
+      - apt-get install -y openjdk-17-jdk-headless
       - npm -g install yarn
-      - curl -Lo jdk17.tar.gz 
-        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
-      - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  jdk17.tar.gz"
-        | sha256sum -c -
-      - mkdir -p /usr/lib/jvm/java-17-temurin-amd64
-      - tar xzf jdk17.tar.gz --strip-components=1 -C /usr/lib/jvm/java-17-temurin-amd64
     init: yarn install
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - node -e "const fs=require('fs');const 
-        p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+      - node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.expo=p.expo||{};p.expo.autolinking=Object.assign({},p.expo.autolinking,{buildFromSource:['.*'],exclude:['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface']});fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - yarn expo prebuild --platform android --no-install
       - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - echo "" >> android/gradle.properties
-      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-temurin-amd64"
+      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
         >> android/gradle.properties
       - echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8"
         >> android/gradle.properties
