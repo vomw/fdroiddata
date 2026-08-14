@@ -16,13 +16,13 @@ Changelog: https://github.com/marco201091-glitch/PhyrexianArena/releases
 
 RepoType: git
 Repo: https://github.com/marco201091-glitch/PhyrexianArena.git
-Binaries:
+Binaries: 
   https://github.com/marco201091-glitch/PhyrexianArena/releases/download/fdroid-v%v/mtg-tracker-fdroid-v%v.apk
 
 Builds:
-  - versionName: 8.0.5
-    versionCode: 80005
-    commit: 38caf624ac30ab601d53dd4cae91cd9dce20b555
+  - versionName: 8.0.6
+    versionCode: 80006
+    commit: 4480842981c233022eb6f85e7525eef1821a876c
     timeout: 7200
     subdir: expo
     sudo:
@@ -34,6 +34,7 @@ Builds:
       - cd expo
       - npm ci
       - node scripts/patch-fdroid-java-toolchains.mjs
+      - node scripts/patch-fdroid-reproducibility.mjs
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - export APP_VARIANT=fdroid
@@ -70,7 +71,7 @@ Builds:
       - export EXPO_PUBLIC_SENTRY_ENABLED=false
       - export EXPO_PUBLIC_DISABLE_PUSH_NOTIFICATIONS=true
       - cd android
-      - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a
+      - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a -PreactNativeDevServerIp=localhost
         --no-daemon --console=plain
 
 AllowedAPKSigningKeys: 5d25e32cdf901becfba81adf93189e1d755e50a90b897efa21da4c2ab3002106
@@ -78,5 +79,5 @@ AllowedAPKSigningKeys: 5d25e32cdf901becfba81adf93189e1d755e50a90b897efa21da4c2ab
 AutoUpdateMode: Version
 UpdateCheckMode: Tags fdroid-v[0-9.]+$
 UpdateCheckData: expo/app.json|"versionCode":\s*(\d+),|.|"version":\s*"([^"]+)"
-CurrentVersion: 8.0.5
-CurrentVersionCode: 80005
+CurrentVersion: 8.0.6
+CurrentVersionCode: 80006
