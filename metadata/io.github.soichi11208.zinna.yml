@@ -6,6 +6,9 @@ WebSite: https://soichi-portfolio.soichi1208.workers.dev
 SourceCode: https://github.com/soichi11208/Zinna-IME
 IssueTracker: https://github.com/soichi11208/Zinna-IME/issues
 
+# Both addresses live in the README's donation section rather than in fields of their own. Monero
+# has no field at all, and the Litecoin one is an MWEB address, which fdroidserver's validator
+# rejects — it accepts only legacy and bech32 forms.
 Donate: https://github.com/soichi11208/Zinna-IME/blob/main/README_en.md#donations
 
 AutoName: zinna-IME
@@ -19,11 +22,14 @@ Builds:
     commit: 0.1.1
     subdir: app
     sudo:
-      # Everything the bazel bootstrap links against comes from Debian. bazel's own compile.sh
-      # reads tools/distributions/debian/debian_java.BUILD and looks under /usr/share/java, so this
-      # list is upstream's, not ours.
+      # The only chance to install anything: fdroidserver purges sudo as soon as these finish.
+      #
+      # build-essential is for the bazel bootstrap and for mozc's host tools. The NDK brings its
+      # own clang for the Android targets, but nothing on the image compiles for the host, and
+      # bazel needs a host C++ toolchain before it can build anything at all. zip is what
+      # compile.sh packages the built bazel with.
       - apt-get update
-      - apt-get install -y default-jdk-headless python3 unzip curl
+      - apt-get install -y build-essential default-jdk-headless python3 unzip zip curl
     gradle:
       - yes
     prebuild:
