@@ -13,73 +13,81 @@ Repo: https://gitlab.com/mudlej_android/mj_pdf_reader.git
 
 Builds:
   - versionName: 3.1.0
-    versionCode: 1058
-    commit: V3.1.0
+    versionCode: 5801
+    commit: 4c43fe2ca68abc74a03143e46b999a3558c1cf62
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y python3 python3-requests git curl pkg-config cmake ninja-build
         gcc g++ libc-dev make
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    prebuild: sed -i 's/offset \* 1000 + android\.defaultConfig\.versionCode/$$VERCODE$$/'
+      build.gradle
     build:
       - export ANDROID_NDK=$$NDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - python3 build_dependencies.py --pdfium from-source --abi armeabi-v7a
+      - cd .. && python3 build_dependencies.py --pdfium from-source --abi armeabi-v7a
     ndk: r28c
     gradleprops:
       - fdroidAbi=armeabi-v7a
 
   - versionName: 3.1.0
-    versionCode: 2058
-    commit: V3.1.0
+    versionCode: 5802
+    commit: 4c43fe2ca68abc74a03143e46b999a3558c1cf62
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y python3 python3-requests git curl pkg-config cmake ninja-build
         gcc g++ libc-dev make
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    prebuild: sed -i 's/offset \* 1000 + android\.defaultConfig\.versionCode/$$VERCODE$$/'
+      build.gradle
     build:
       - export ANDROID_NDK=$$NDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - python3 build_dependencies.py --pdfium from-source --abi arm64-v8a
+      - cd .. && python3 build_dependencies.py --pdfium from-source --abi arm64-v8a
     ndk: r28c
     gradleprops:
       - fdroidAbi=arm64-v8a
 
   - versionName: 3.1.0
-    versionCode: 3058
-    commit: V3.1.0
+    versionCode: 5803
+    commit: 4c43fe2ca68abc74a03143e46b999a3558c1cf62
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y python3 python3-requests git curl pkg-config cmake ninja-build
         gcc g++ libc-dev make
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-x86-release-unsigned.apk
+    prebuild: sed -i 's/offset \* 1000 + android\.defaultConfig\.versionCode/$$VERCODE$$/'
+      build.gradle
     build:
       - export ANDROID_NDK=$$NDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - python3 build_dependencies.py --pdfium from-source --abi x86
+      - cd .. && python3 build_dependencies.py --pdfium from-source --abi x86
     ndk: r28c
     gradleprops:
       - fdroidAbi=x86
 
   - versionName: 3.1.0
-    versionCode: 4058
-    commit: V3.1.0
+    versionCode: 5804
+    commit: 4c43fe2ca68abc74a03143e46b999a3558c1cf62
+    subdir: app
     sudo:
       - apt-get update
       - apt-get install -y python3 python3-requests git curl pkg-config cmake ninja-build
         gcc g++ libc-dev make
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    prebuild: sed -i 's/offset \* 1000 + android\.defaultConfig\.versionCode/$$VERCODE$$/'
+      build.gradle
     build:
       - export ANDROID_NDK=$$NDK$$
       - export ANDROID_NDK_ROOT=$$NDK$$
-      - python3 build_dependencies.py --pdfium from-source --abi x86_64
+      - cd .. && python3 build_dependencies.py --pdfium from-source --abi x86_64
     ndk: r28c
     gradleprops:
       - fdroidAbi=x86_64
@@ -87,9 +95,9 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c + 1000'
-  - '%c + 2000'
-  - '%c + 3000'
-  - '%c + 4000'
+  - 100 * %c + 1
+  - 100 * %c + 2
+  - 100 * %c + 3
+  - 100 * %c + 4
 CurrentVersion: 3.1.0
-CurrentVersionCode: 4058
+CurrentVersionCode: 5804
