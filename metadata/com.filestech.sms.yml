@@ -13,8 +13,6 @@ AutoName: SMS Tech
 
 RepoType: git
 Repo: https://github.com/gitubpatrice/SMS-TECH.git
-Binaries: 
-  https://github.com/gitubpatrice/SMS-TECH/releases/download/v%v/sms-tech-universel-%v.apk
 
 Builds:
   - versionName: 1.27.5
@@ -29,13 +27,6 @@ Builds:
       - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
       - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
 
-AllowedAPKSigningKeys: b09a951114908885aefe6144ac980975dd8bd889beb9e61676a5c2c8966c687d
-
-# No autoupdate. `UpdateCheckMode: Tags` walks EVERY tag matching the pattern, not just the
-# newest one, and `version.properties` only exists from 2026-08-08 onward — before that the
-# versionCode came from `git rev-list --count HEAD`. On an older tag such as v1.27.1 the file
-# is absent, the read falls back to vercode=1, and checkupdates fails with "current version
-# is newer". Revisit once every tag in range carries the file.
 AutoUpdateMode: None
 UpdateCheckMode: None
 CurrentVersion: 1.27.5
