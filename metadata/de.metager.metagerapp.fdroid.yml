@@ -139,8 +139,6 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
-      - update-java-alternatives -a
       - apt-get install -y --no-install-recommends ca-certificates curl xz-utils
       - curl -sSfL https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz
         -o /tmp/node.tar.xz
@@ -151,6 +149,13 @@ Builds:
       - ln -sf /opt/node-v22.23.2-linux-x64/bin/npm /usr/local/bin/npm
       - ln -sf /opt/node-v22.23.2-linux-x64/bin/npx /usr/local/bin/npx
       - rm -f /tmp/node.tar.xz
+      - JDK=https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
+      - curl -sSfLo /tmp/jdk17.tar.gz "$JDK"
+      - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm
+      - tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm
+      - rm -f /tmp/jdk17.tar.gz
     init: npm ci --no-audit --no-fund
     gradle:
       - yes
