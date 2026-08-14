@@ -13,11 +13,13 @@ AutoName: SMS Tech
 
 RepoType: git
 Repo: https://github.com/gitubpatrice/SMS-TECH.git
+Binaries: 
+  https://github.com/gitubpatrice/SMS-TECH/releases/download/v%v/sms-tech-universel-%v.apk
 
 Builds:
-  - versionName: 1.27.4
-    versionCode: 280
-    commit: 431092a2edf2baee6ce889f35b0625e1ff8a9b0c
+  - versionName: 1.27.5
+    versionCode: 281
+    commit: 584db9d0787a436f577c8da92e4f9182540b87bc
     subdir: app
     gradle:
       - yes
@@ -26,9 +28,11 @@ Builds:
       - sed -i -e '/^    signingConfigs {$/,/^    }$/d' build.gradle.kts
       - sed -i -e '/if (keystoreProps.isNotEmpty()) signingConfig/d' build.gradle.kts
       - sed -i -e '/^    splits {$/,/^    }$/d' build.gradle.kts
-      - sed -i -e '/^plugins {$/,/^}$/d' ../settings.gradle.kts
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.27.4
-CurrentVersionCode: 280
+AllowedAPKSigningKeys: b09a951114908885aefe6144ac980975dd8bd889beb9e61676a5c2c8966c687d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+UpdateCheckData: version.properties|versionCode=(\d+)|.|versionName=(\d+\.\d+\.\d+)
+CurrentVersion: 1.27.5
+CurrentVersionCode: 281
