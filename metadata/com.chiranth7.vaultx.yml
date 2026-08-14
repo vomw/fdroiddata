@@ -31,6 +31,14 @@ Builds:
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i '/android {/a\    namespace "com.rnbiometrics"' node_modules/react-native-biometrics/android/build.gradle
+      - sed -i "s/apply plugin: 'com.android.library'/apply plugin: 'com.android.library'\napply plugin: 'kotlin-android'/"
+        node_modules/react-native-biometrics/android/build.gradle
+      - sed -i '/android {/a\    namespace "org.linusu"' node_modules/react-native-get-random-values/android/build.gradle
+      - sed -i "s/apply plugin: 'com.android.library'/apply plugin: 'com.android.library'\napply plugin: 'kotlin-android'/"
+        node_modules/react-native-get-random-values/android/build.gradle
+      - sed -i '/android {/a\    namespace "org.reactnative.maskedview"' node_modules/@react-native-masked-view/masked-view/android/build.gradle
+      - sed -i "s/apply plugin: 'com.android.library'/apply plugin: 'com.android.library'\napply plugin: 'kotlin-android'/"
+        node_modules/@react-native-masked-view/masked-view/android/build.gradle
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
