@@ -138,28 +138,16 @@ Builds:
     commit: 57b637c79a769344cf43093e5941313cdc302e43
     subdir: android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y --no-install-recommends ca-certificates curl xz-utils
-      - curl -sSfL https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz
-        -o /tmp/node.tar.xz
-      - echo "d60acfe00a2932254bb0ad20e01b0d74397a0875595de719654b214f4b03f307  /tmp/node.tar.xz"
-        | sha256sum -c -
-      - tar -xJf /tmp/node.tar.xz -C /opt
-      - ln -sf /opt/node-v22.23.2-linux-x64/bin/node /usr/local/bin/node
-      - ln -sf /opt/node-v22.23.2-linux-x64/bin/npm /usr/local/bin/npm
-      - ln -sf /opt/node-v22.23.2-linux-x64/bin/npx /usr/local/bin/npx
-      - rm -f /tmp/node.tar.xz
-      - JDK=https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20_8.tar.gz
-      - curl -sSfLo /tmp/jdk17.tar.gz "$JDK"
-      - echo "be7668bc030d578b83d6d5ef9221d6d6729bbbca8cf94a7d52e16ac68b5a5a35  /tmp/jdk17.tar.gz"
-        | sha256sum -c -
-      - mkdir -p /usr/lib/jvm
-      - tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm
-      - rm -f /tmp/jdk17.tar.gz
-    init: npm ci --no-audit --no-fund
+      - apt-get install -y -t forky npm
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
-    scanignore:
+    prebuild: npm ci --no-audit --no-fund
+    scandelete:
       - node_modules
 
 AutoUpdateMode: Version
