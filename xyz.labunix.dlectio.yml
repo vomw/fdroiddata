@@ -1,0 +1,76 @@
+# F-Droid build metadata for dlectio.
+#
+# This file is not read from here. It is the file to submit as a merge request
+# against https://gitlab.com/fdroid/fdroiddata as metadata/xyz.labunix.dlectio.yml.
+# It is kept in-tree so it versions with the app it describes.
+#
+# The engine is Go bound to a native library with gomobile. F-Droid does not
+# accept the prebuilt .aar (a library dependency must be built from source or
+# come from a trusted Maven repo), so the build below compiles it on their
+# server: Go from the `go` srclib, gomobile pinned to the same pseudo-version
+# lectio's own go.sum pins, then `gomobile bind` into app/libs/ before Gradle
+# runs. This mirrors io.github.saeeddev94.xray.yml, which builds the same way.
+#
+# lectio is a git submodule at engine/lectio, pinned to the commit whose
+# calendar this release carries: v0.46.0 plus one documentation commit, so
+# `git describe` there reads v0.46.0-1-g7012543. The engine binary is identical
+# to the tag's; only NOTICE differs.
+#
+# arm64-v8a only. The app's Gradle build emits x86_64 too by default, for the
+# emulator, but shipping it here would mean a second gomobile bind and a second
+# Gradle run on every release for a population that is essentially empty:
+# Intel Chromebooks and a few TV boxes. -PabiTarget confines this build to one.
+#
+# Verified locally before submission: a clean --recurse-submodules clone of the
+# tag, the bind and Gradle commands below run verbatim, producing an APK whose
+# versionCode is the one declared here.
+
+Categories:
+  - Religion
+License: GPL-3.0-only
+AuthorName: Łukasz Kasprzak
+AuthorEmail: lukas@labunix.xyz
+SourceCode: https://codeberg.org/labunix/dlectio
+IssueTracker: https://codeberg.org/labunix/dlectio/issues
+
+RepoType: git
+Repo: https://codeberg.org/labunix/dlectio.git
+
+Builds:
+  - versionName: 0.2.1
+    versionCode: 31
+    commit: v0.2.1
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless gcc libc-dev
+      - update-java-alternatives -a
+    gradle:
+      - yes
+    gradleprops:
+      - abiTarget=arm64-v8a
+    srclibs:
+      - go@go1.25.0
+    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$$go$$
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+      - mkdir -p app/libs
+      - pushd engine/lectio
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260730202154-c700fe717e6e
+      - go mod download
+      - gomobile init
+      - gomobile bind -target=android/arm64 -androidapi 26 -javapkg=xyz.labunix.dlectio.engine
+        -tags fullbible -ldflags="-buildid=" -trimpath -o ../../app/libs/dlectio-engine.aar
+        github.com/lukaszkasprzak/lectio/mobile
+      - popd
+    ndk: 26.1.10909125
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.1
+CurrentVersionCode: 31
