@@ -9,7 +9,7 @@ SourceCode: https://gitlab.metager.de/metager/metager-app
 IssueTracker: https://gitlab.metager.de/metager/metager-app/-/issues
 Donate: https://metager.de/spende
 
-AutoName: MetaGer Suche
+AutoName: MetaGer
 
 RepoType: git
 Repo: https://gitlab.metager.de/metager/metager-app.git
@@ -135,33 +135,29 @@ Builds:
 
   - versionName: 6.9.0
     versionCode: 60900
-    # First commit with the React Native source tree. React Native moved the
-    # Gradle project down one level; subdir/gradle below reflect that.
     commit: 57b637c79a769344cf43093e5941313cdc302e43
     subdir: android/app
     sudo:
       - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
       - apt-get install -y --no-install-recommends ca-certificates curl xz-utils
-      # Debian's packaged nodejs is older than what this React Native version
-      # requires, so install a pinned, checksummed tarball instead.
-      - curl -sSfL https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz -o /tmp/node.tar.xz
-      - echo "d60acfe00a2932254bb0ad20e01b0d74397a0875595de719654b214f4b03f307  /tmp/node.tar.xz" | sha256sum -c -
+      - curl -sSfL https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz
+        -o /tmp/node.tar.xz
+      - echo "d60acfe00a2932254bb0ad20e01b0d74397a0875595de719654b214f4b03f307  /tmp/node.tar.xz"
+        | sha256sum -c -
       - tar -xJf /tmp/node.tar.xz -C /opt
       - ln -sf /opt/node-v22.23.2-linux-x64/bin/node /usr/local/bin/node
       - ln -sf /opt/node-v22.23.2-linux-x64/bin/npm /usr/local/bin/npm
       - ln -sf /opt/node-v22.23.2-linux-x64/bin/npx /usr/local/bin/npx
       - rm -f /tmp/node.tar.xz
-    init:
-      - npm ci --no-audit --no-fund
+    init: npm ci --no-audit --no-fund
     gradle:
       - yes
-    # npm ships prebuilt .so/.aar/.jar binaries as build inputs (not shipped
-    # code); scanignore (not scandelete) keeps the scanner from deleting
-    # library build.gradle files the autolinked Gradle projects need.
     scanignore:
       - node_modules
 
-AutoUpdateMode: Version
+AutoUpdateMode: None
 UpdateCheckMode: RepoManifest
 UpdateCheckName: de.metager.metagerapp
 CurrentVersion: 6.9.0
