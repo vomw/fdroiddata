@@ -1,0 +1,48 @@
+Categories:
+  - Writing
+License: Apache-2.0
+AuthorName: soichi11208
+WebSite: https://soichi-portfolio.soichi1208.workers.dev
+SourceCode: https://github.com/soichi11208/Zinna-IME
+IssueTracker: https://github.com/soichi11208/Zinna-IME/issues
+
+# Monero has no field of its own, so the donation section of the README stands in for it. The
+# Litecoin address is the same one listed there.
+Donate: https://github.com/soichi11208/Zinna-IME/blob/main/README_en.md#donations
+Litecoin: ltcmweb1qqd974nfw2hn2hua5mefltrxe3yeunceqqwd4je76q9pqmw48q0nz2qel738v9anp6rj2mx3yrttwrfjhrsr2p05s6vp98w203u7nk2afucg330wq
+
+AutoName: zinna-IME
+
+RepoType: git
+Repo: https://github.com/soichi11208/Zinna-IME.git
+
+Builds:
+  - versionName: 0.1.1
+    versionCode: 11
+    commit: 0.1.1
+    subdir: app
+    sudo:
+      # Everything the bazel bootstrap links against comes from Debian. bazel's own compile.sh
+      # reads tools/distributions/debian/debian_java.BUILD and looks under /usr/share/java, so this
+      # list is upstream's, not ours.
+      - apt-get update
+      - apt-get install -y default-jdk-headless python3 unzip curl
+    gradle:
+      - yes
+    prebuild:
+      # Runs from `subdir`, so everything is relative to the repository root one level up.
+      - cd ..
+      # bazel, from source, using no bazel.
+      - ./scripts/bootstrap_bazel.sh
+      # Supplementary dictionaries. Every source is pinned to a commit and hash-checked.
+      - ./scripts/fetch_dictionaries.sh
+      # libmozc.so and mozc.data. This also clones mozc at the commit the script pins and applies
+      # patches/ to it. ANDROID_NDK_HOME makes mozc use the NDK F-Droid supplies instead of
+      # downloading r29 itself; measured working with 27.2.12479018.
+      - ANDROID_NDK_HOME=$$NDK$$ ./scripts/build_mozc.sh
+    ndk: 27.2.12479018
+
+AutoUpdateMode: Version %v
+# Unprefixed, matching 0.0.2 onwards. Anchoring on a digit also skips the one stray
+# v0.0.1-arm64 tag, which was a one-off build artefact rather than a release.
+UpdateCheckMode: Tags ^[0-9]
