@@ -14,28 +14,20 @@ Binaries:
   https://github.com/fishese/diveframe/releases/download/fdroid-v%v/diveframe-%v.apk
 
 Builds:
-  - versionName: 1.0.22
-    versionCode: 23
-    commit: 24e09b38a4921d5c3c80ec291a9544734fe5851f
+  - versionName: 1.0.23
+    versionCode: 24
+    commit: 169cb26a12e398e9872b1d58cd0b974077059cd3
     subdir: android/app
+    submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
     gradle:
       - yes
-    srclibs:
-      - libdivecomputer@8e564eb5cf9fb4318af3d540895abb916e1809b0
     prebuild:
-      - rm -rf src/main/cpp/vendor/libdivecomputer
-      - mkdir -p src/main/cpp/vendor/libdivecomputer
-      - cp -R $$libdivecomputer$$/. src/main/cpp/vendor/libdivecomputer/
-      - sed -e 's/@DC_VERSION@/0.10.0-devel/' -e 's/@DC_VERSION_MAJOR@/0/' -e 's/@DC_VERSION_MINOR@/10/'
-        -e 's/@DC_VERSION_MICRO@/0/' src/main/cpp/vendor/libdivecomputer/include/libdivecomputer/version.h.in
-        > src/main/cpp/vendor/libdivecomputer/include/libdivecomputer/version.h
-      - printf '#define DC_VERSION_REVISION "8e564eb5cf9fb4318af3d540895abb916e1809b0"'
-        > src/main/cpp/vendor/libdivecomputer/src/revision.h
       - cd ../..
+      - sh scripts/fetch-libdivecomputer.sh
       - npm ci
       - npm run native:sync
     scanignore:
@@ -56,5 +48,5 @@ AllowedAPKSigningKeys: 90311d4a659f32a767199164791dba0aa5e05ffa5ed9f73b93baffc91
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: android/app/build.gradle|versionCode.*:\s*(\d+)|.|versionName.*"([^"]+)"
-CurrentVersion: 1.0.22
-CurrentVersionCode: 23
+CurrentVersion: 1.0.23
+CurrentVersionCode: 24
