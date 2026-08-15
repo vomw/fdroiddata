@@ -1,0 +1,91 @@
+Categories:
+  - Security
+  - VPN & Proxy
+License: GPL-3.0-or-later
+AuthorName: FoxHole Team
+AuthorEmail: adam@merovingian.io
+SourceCode: https://github.com/foxhole-team/foxhole-guard
+IssueTracker: https://github.com/foxhole-team/foxhole-guard/issues
+Changelog: https://github.com/foxhole-team/foxhole-guard/releases
+
+AutoName: FoxHole Guard
+
+RepoType: git
+Repo: https://github.com/foxhole-team/foxhole-guard.git
+Binaries: 
+  https://github.com/foxhole-team/foxhole-guard/releases/download/v%v/FoxHole-v%v-arm64-v8a-release.apk
+
+Builds:
+  - versionName: 0.0.1
+    versionCode: 89
+    commit: 95c4fb2148d8fb89219cb73d5299a77a3d293711
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential ca-certificates cmake curl git golang-go
+        ninja-build perl pkg-config rustup
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - FoxHoleCore@7e1305668e65787f0426d6fdd2cf61fb54973b1f
+      - go@go1.25.8
+    prebuild:
+      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C $$FoxHoleCore$$
+        rev-parse HEAD)"
+      - sed -i '/^[[:space:]]*compileSdk = 37$/a\    ndkVersion = "29.0.14206865"'
+        app/build.gradle.kts
+    build:
+      - mkdir -p /home/runner/work/foxhole-guard
+      - cd ..
+      - mv com.foxhole.guard /home/runner/work/foxhole-guard/foxhole-guard
+      - pushd /home/runner/work/foxhole-guard/foxhole-guard
+      - export CARGO_HOME=/home/runner/.cargo
+      - export RUSTUP_HOME=/home/runner/.rustup
+      - rustup set profile minimal
+      - rustup default 1.97.1
+      - rustup target add aarch64-linux-android
+      - cargo install cargo-ndk --version 4.1.2 --locked
+      - cargo fetch --locked --manifest-path $$FoxHoleCore$$/Cargo.toml
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export GOPATH=$HOME/go
+      - export PATH="$GOROOT/bin:$GOPATH/bin:$CARGO_HOME/bin:$PATH"
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export FOXCORE_SOURCE_ROOT=$$FoxHoleCore$$
+      - export I2PD_ABIS=arm64-v8a
+      - SOURCE_DATE_EPOCH=1786666149 scripts/build-i2pd.sh
+      - perl -0777 -pi -e 'use bytes; my $old = pack("H*", "fa71addd14b705c5bfb59140feea10dff73269b2");
+        my $new = pack("H*", "4347cf89be60e438e188c822f45ae5be59931c0f"); my $count
+        = s/\Q$old\E/$new/; die "unexpected-build-id-$count" unless $count == 1;'
+        app/src/main/jniLibs/arm64-v8a/libi2pd.so
+      - gradle --no-daemon --console=plain -Pfoxhole.updateChannel=github :app:assembleRelease
+      - popd
+      - mv /home/runner/work/foxhole-guard/foxhole-guard com.foxhole.guard
+    ndk: 29.0.14206865
+    gradleprops:
+      - foxhole.updateChannel=github
+
+AllowedAPKSigningKeys: e59de2486084c38f3c77e9df0eb5eff9a4559f3c68024f1208e0e9c04b0df665
+
+MaintainerNotes: |-
+  FoxHole Core is a separate pinned source workspace. For every new app release,
+  update the FoxHoleCore srclib revision to match config/foxcore-revision.txt.
+  The F-Droid build is arm64-v8a only, matching the public upstream release.
+  The signed 0.0.1 APK was promoted unchanged from dev candidate 95c4fb2;
+  release commit 5b85bcc has the identical Git tree 235e7bf. Building the
+  candidate commit preserves AGP's embedded VCS revision for verification.
+  Rust and i2pd embed absolute build paths, so the recipe reproduces the
+  upstream runner's /home/runner paths. AGP also uses the pinned NDK 29 for
+  the same deterministic native-library stripping as the published APK.
+  i2pd embeds OpenSSL's configure timestamp; the version-specific
+  SOURCE_DATE_EPOCH reproduces the signed candidate's OpenSSL build epoch.
+  The pinned linker emits a different 20-byte build-id on the F-Droid runner;
+  the recipe verifies and normalizes that note to the signed candidate's ID.
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags ^v[0-9].*$
+CurrentVersion: 0.0.1
+CurrentVersionCode: 89
