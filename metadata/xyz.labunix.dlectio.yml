@@ -14,13 +14,13 @@ Builds:
   - versionName: 0.2.1
     versionCode: 31
     commit: d2e4cefb23d32f45bc4f182a04e4bc495692f845
+    subdir: app
     submodules: true
     sudo:
       - apt-get update
       - apt-get install -y golang-go gcc libc-dev
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     srclibs:
       - go@go1.25.0
     prebuild: sdkmanager "platforms;android-34" "build-tools;34.0.0"
@@ -35,8 +35,8 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH=$$go$$
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
-      - mkdir -p app/libs
-      - pushd engine/lectio
+      - mkdir -p libs
+      - pushd ../engine/lectio
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260730202154-c700fe717e6e
       - go mod download
       - gomobile init
