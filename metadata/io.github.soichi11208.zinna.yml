@@ -56,6 +56,17 @@ Builds:
       # patches/ to it. ANDROID_NDK_HOME makes mozc use the NDK F-Droid supplies instead of
       # downloading r29 itself; measured working with 27.2.12479018.
       - ANDROID_NDK_HOME=$$NDK$$ ./scripts/build_mozc.sh
+    # The bootstrapped bazel and the archive it came from have done their work by now. Left in
+    # place the scanner finds the bazel binary and the couple of hundred Maven jars underneath it
+    # and refuses the build, which is the correct instinct on its part — none of that belongs in
+    # a source tree, and none of it ends up in the APK.
+    scandelete:
+      - third_party/bazel-dist
+      - third_party/bazel-9.0.2-dist.zip
+    # What the whole build exists to produce. The scanner flags every .so it meets; these four are
+    # compiled from mozc's sources during prebuild, a few lines above.
+    scanignore:
+      - mozc/src/main/jniLibs
     ndk: 27.2.12479018
 
 # Only the -fdroid tags. Upstream's own release tags (0.0.2 onwards, plus one stray v0.0.1-arm64)
