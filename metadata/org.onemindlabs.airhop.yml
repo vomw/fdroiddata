@@ -1,0 +1,39 @@
+Categories:
+  - Internet
+  - Security
+License: MIT
+AuthorName: Areeb Ahmed
+AuthorEmail: hi@areeb.dev
+WebSite: https://airhop.1mindlabs.org
+SourceCode: https://github.com/areebahmeddd/airhop
+IssueTracker: https://github.com/areebahmeddd/airhop/issues
+Changelog: https://github.com/areebahmeddd/airhop/releases
+
+RepoType: git
+Repo: https://github.com/areebahmeddd/airhop.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10000
+    commit: d49b0354c86011b625440f3f47e139d80c8e0a5d
+    subdir: android/app
+    ndk: 27.1.12297006
+    sudo:
+      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz
+      - echo "83bf07dd343002a26211cf1fcd46a9d9534219aad42ee02847816940bf610a72  /tmp/node.tar.xz" | sha256sum -c -
+      - tar -xJf /tmp/node.tar.xz -C /opt
+      - ln -sf /opt/node-v22.11.0-linux-x64/bin/node /usr/local/bin/node
+      - ln -sf /opt/node-v22.11.0-linux-x64/bin/npm /usr/local/bin/npm
+      - ln -sf /opt/node-v22.11.0-linux-x64/bin/npx /usr/local/bin/npx
+    prebuild:
+      - pushd ../.. && npm ci && popd
+    gradle:
+      - yes
+    scanignore:
+      - android/app/debug.keystore
+    output: build/outputs/apk/release/app-release.apk
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 10000
