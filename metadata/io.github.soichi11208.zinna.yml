@@ -15,7 +15,7 @@ Repo: https://github.com/soichi11208/Zinna-IME.git
 Builds:
   - versionName: 0.1.1
     versionCode: 11
-    commit: 0.1.1-fdroid
+    commit: f2b68fa434f77ad0bed3801c009d9c71e7d63131
     subdir: app
     sudo:
       - apt-get update
@@ -25,16 +25,11 @@ Builds:
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
-    prebuild:
+    build:
       - cd ..
       - ./scripts/bootstrap_bazel.sh
       - ./scripts/fetch_dictionaries.sh
       - ANDROID_NDK_HOME=$$NDK$$ ./scripts/build_mozc.sh
-    scanignore:
-      - mozc/src/main/jniLibs
-    scandelete:
-      - third_party/bazel-dist
-      - third_party/bazel-9.0.2-dist.zip
     ndk: 27.2.12479018
 
 AutoUpdateMode: Version
