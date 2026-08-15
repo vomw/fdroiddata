@@ -9,28 +9,24 @@ IssueTracker: https://github.com/prit-007/nook/issues
 Changelog: https://github.com/prit-007/nook/blob/main/CHANGELOG.md
 
 Name: Nook
-AutoName: Nook
+AutoName: nook
 
 RepoType: git
 Repo: https://github.com/prit-007/nook.git
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.8.2
-CurrentVersionCode: 3
-
 Builds:
   - versionName: 0.8.2
     versionCode: 3
-    commit: v0.8.2
+    commit: v0.8.2.2
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev ninja-build
+      - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
+        ninja-build
     output: build/app/outputs/flutter-apk/app-release.apk
     build:
       - export FLUTTER_HOME="$PWD/flutter"
-      - git clone --depth 1 --branch 3.24.0 https://github.com/flutter/flutter.git "$FLUTTER_HOME"
+      - git clone --depth 1 --branch 3.44.8 https://github.com/flutter/flutter.git
+        "$FLUTTER_HOME"
       - export PATH="$FLUTTER_HOME/bin:$PATH"
       - flutter config --no-analytics
       - flutter pub get
@@ -39,3 +35,9 @@ Builds:
       - dart run tool/patch_mdns_dart.dart
       - dart run build_runner build --delete-conflicting-outputs
       - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.8.2
+CurrentVersionCode: 3
