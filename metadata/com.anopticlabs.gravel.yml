@@ -1,0 +1,72 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Pairing, notifications, health sync, dictation, and firmware updates work
+      without any of these; the watchapp store, weather, timeline, notification icons,
+      and language packs use the Core Devices and Rebble web services, and the optional
+      speech model is downloaded from Hugging Face.
+Categories:
+  - Connectivity
+  - Sports & Health
+License: GPL-3.0-only
+AuthorName: david-cant-code
+SourceCode: https://github.com/david-cant-code/pebble-app-degoogled
+IssueTracker: https://github.com/david-cant-code/pebble-app-degoogled/issues
+Changelog: 
+  https://github.com/david-cant-code/pebble-app-degoogled/tree/HEAD/fastlane/metadata/android/en-US/changelogs
+
+AutoName: Gravel
+
+RepoType: git
+Repo: https://github.com/david-cant-code/pebble-app-degoogled.git
+
+Builds:
+  - versionName: 0.1.3
+    versionCode: 2245
+    commit: 3287ee75d30c565976d48997a83a667b36291d57
+    subdir: androidApp
+    submodules: true
+    gradle:
+      - yes
+    rm:
+      - whisper-native/src/main/cpp/whisper.cpp/bindings
+      - whisper-native/src/main/cpp/whisper.cpp/examples
+      - whisper-native/src/main/cpp/whisper.cpp/models
+      - whisper-native/src/main/cpp/whisper.cpp/samples
+      - whisper-native/src/main/cpp/whisper.cpp/tests
+    prebuild: sdkmanager 'cmake;3.22.1'
+    ndk: r28c
+
+MaintainerNotes: |-
+  versionCode is the git commit count of the built commit and versionName is
+  `git describe --tags` of it, so a tag build reports the tag name and
+  `git rev-list --count <tag>` as versionCode. androidApp/version.properties
+  holds one line, versionCode=<n>, the versionCode of the latest tagged
+  release; the update check reads it from the tag and takes the tag name as
+  versionName. The app's own build fails a tag checkout whose file disagrees
+  with the commit count.
+
+  The tree pins no JVM toolchain and builds with the buildserver's JDK; the
+  bytecode target is 17.
+
+  The whisper.cpp submodule is the speech engine, compiled from source by the
+  whisper-native module. The rm list removes the parts of it that the build
+  does not use and that trip the scanner (language bindings with their own
+  gradle builds and a lockfile-less package.json, example apps naming a maven
+  host off the allowlist, binary test-fixture models, sample audio, the
+  upstream test suite). ndk r28c and cmake 3.22.1 match the pins in
+  whisper-native/build.gradle.kts. FdroidGuardrailsTest in the repo
+  replicates the scanner over the tree minus this rm list, so a submodule
+  bump that needs a change here fails the app's own CI first.
+
+  The whisper engine libraries are built for arm64-v8a only (the CMake build
+  targets an armv8.2 feature floor); armeabi-v7a builds ship everything else
+  and the app disables dictation at runtime where the libraries are absent.
+  The per-ABI library difference the check apk job reports is that.
+
+  A checkout without keystore.jks packages the release variant unsigned.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: androidApp/version.properties|versionCode=(\d+)||
+CurrentVersion: 0.1.3
+CurrentVersionCode: 2245
