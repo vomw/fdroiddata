@@ -45,6 +45,11 @@ Builds:
       - sdkmanager "platforms;android-35" "build-tools;35.0.0"
     gradle:
       - yes
+    # The build splits by ABI, which leaves five APKs where fdroidserver wants one. Naming the
+    # universal APK here settles it without touching the project: `output` only decides which file
+    # is picked up, while `gradle` above still decides how it is built. Universal rather than one
+    # architecture because a single APK has to run everywhere F-Droid offers it.
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
     prebuild:
       # Runs from `subdir`, so everything is relative to the repository root one level up.
       - cd ..
