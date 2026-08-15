@@ -7,21 +7,16 @@ AuthorName: Prit Vasani
 SourceCode: https://github.com/prit-007/nook
 IssueTracker: https://github.com/prit-007/nook/issues
 Changelog: https://github.com/prit-007/nook/blob/main/CHANGELOG.md
-
-# --- THE FIX ---
 Repo: https://github.com/prit-007/nook.git
 RepoType: git
-# ---------------
-
 AutoName: Nook
 Name: Nook
 Summary: The private, local-first workspace for your mind.
 Description: |-
-  Nook was born from a singular, uncompromising vision: your thoughts belong to you, and the tools you use to capture them should feel like a masterpiece. 
-  
+  Nook was born from a singular, uncompromising vision: your thoughts belong to you, and the tools you use to capture them should feel like a masterpiece.
+
   Featuring a distraction-free rich text editor, an organic doodle canvas, and strictly offline peer-to-peer syncing.
 
-# F-Droid Automation Hooks
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: 0.8.2
@@ -31,19 +26,19 @@ Builds:
   - versionName: '0.8.2'
     versionCode: 3
     commit: v0.8.2
-    
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends libsecret-1-dev ninja-build cmake
-      
+      - apt-get install -y --no-install-recommends curl git unzip xz-utils zip libglu1-mesa libsecret-1-dev ninja-build cmake
     prebuild:
+      - curl -fsSL https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.44.8-stable.tar.xz | tar -xJ -C /opt
+      - export PATH="/opt/flutter/bin:$PATH"
+      - flutter config --no-analytics
       - flutter pub get
       - dart run tool/patch_appflowy_editor.dart
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
       - dart run build_runner build --delete-conflicting-outputs
-      
     build:
+      - export PATH="/opt/flutter/bin:$PATH"
       - flutter build apk --release
-      
     output: build/app/outputs/flutter-apk/app-release.apk
