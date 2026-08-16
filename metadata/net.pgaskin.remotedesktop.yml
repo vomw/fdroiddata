@@ -27,7 +27,6 @@ Builds:
       - yes
     prebuild:
       - git -C .. submodule update --init
-      - sdkmanager 'cmake;3.30.5'
       - ../patch.sh -n
       - gradle :backends:fetchCryptoSources
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
@@ -42,7 +41,6 @@ Builds:
       - third_party/ironrdp/crates/ironrdp-testsuite-core
       - third_party/libjpeg-turbo/java
       - third_party/openssl/test
-    ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: 08d46917a818ad0c479733b458acb7488a4cc39f0a5a20ccc6a39181b2fb8f55
 
@@ -55,8 +53,9 @@ MaintainerNotes: |-
     consists of gnulib headers and ecc curves (it's all non-binary, and mostly reproducible,
     but I commit it since they have a bunch of host deps and may differ slightly depending
     on the host)
-  - ndk/cmake/cargo-ndk versions must match backends/build.gradle and rust-toolchain.toml,
-    and the versions are checked at build-time
+  - ndk/cmake versions are pinned and auto-installed by gradle
+  - cargo-ndk version must match
+  - ndk/cmake/cargo-ndk versions are automaticaly verifies during the build
   - scandelete is for the images and testdata in the third_party submodules
   - all third-party licenses are gpl3-compatible
   - submodules are initialized in prebuild to avoid --recursive, which pulls in ~700 MB of
