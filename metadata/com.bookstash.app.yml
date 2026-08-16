@@ -1,10 +1,6 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: >-
-      Optional discovery and download features fetch works from Archive of Our
-      Own, Royal Road and Scribble Hub, and book metadata from Goodreads. Royal
-      Road, Scribble Hub and Goodreads run proprietary server software. The
-      library, reader and file import work fully offline without any of them.
+    en-US: Depends on Royal Road, Scribble Hub and Goodreads.
 Categories:
   - Ebook Reader
 License: GPL-3.0-only
@@ -35,7 +31,24 @@ Builds:
     scandelete:
       - node_modules
 
+  - versionName: 0.8.29
+    versionCode: 8029
+    commit: 37dbdb2278a98491a73c0e9456731cdd0c0569c5
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm ci
+      - npm run build
+      - npx cap sync android
+    scandelete:
+      - node_modules
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.8.28
-CurrentVersionCode: 8028
+CurrentVersion: 0.8.29
+CurrentVersionCode: 8029
