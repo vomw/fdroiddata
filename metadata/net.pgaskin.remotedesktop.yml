@@ -1,0 +1,75 @@
+Categories:
+  - Connectivity
+  - Remote Access
+License: GPL-3.0-or-later
+AuthorName: Patrick Gaskin
+AuthorWebSite: https://pgaskin.net
+WebSite: https://pgaskin.net/vento/
+SourceCode: https://github.com/pgaskin/vento
+IssueTracker: https://github.com/pgaskin/vento/issues
+Changelog: https://github.com/pgaskin/vento/releases
+
+AutoName: Vento
+
+RepoType: git
+Repo: https://github.com/pgaskin/vento.git
+Binaries: https://github.com/pgaskin/vento/releases/download/v%v/Vento.apk
+
+Builds:
+  - versionName: '1'
+    versionCode: 1
+    commit: e0d6acb82f64d068fc5b6b3d6cc5b0f9afbdcaf1
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup xz-utils
+    gradle:
+      - yes
+    prebuild:
+      - git -C .. submodule update --init
+      - sdkmanager 'cmake;3.30.5'
+      - ../patch.sh -n
+      - ../gradlew :backends:fetchCryptoSources
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android x86_64-linux-android
+      - cargo install cargo-ndk@4.1.2
+    scandelete:
+      - third_party/freerdp/libfreerdp/codec/test
+      - third_party/gnutls/fuzz
+      - third_party/ironrdp/crates/ironrdp-graphics/src/rdp6/test_assets
+      - third_party/ironrdp/crates/ironrdp-graphics/src/zgfx/test_assets
+      - third_party/ironrdp/crates/ironrdp-testsuite-core
+      - third_party/libjpeg-turbo/java
+      - third_party/openssl/test
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 08d46917a818ad0c479733b458acb7488a4cc39f0a5a20ccc6a39181b2fb8f55
+
+MaintainerNotes: |-
+  - submodules are pinned to upstream commits, with patches applied using patch.sh
+  - gnutls and nettle use release tarballs (fetched using fetchCryptoSources, which pins the
+    SHA) so a host toolchain and autotools isn't required (which also avoids reproducibility
+    issues caused by it)
+  - the generated code in backend/ports/{openssl,gnutls.nettle} is committed and mostly
+    consists of gnulib headers and ecc curves (it's all non-binary, and mostly reproducible,
+    but I commit it since they have a bunch of host deps and may differ slightly depending
+    on the host)
+  - ndk/cmake/cargo-ndk versions must match backends/build.gradle and rust-toolchain.toml,
+    and the versions are checked at build-time
+  - scandelete is for the images and testdata in the third_party submodules
+  - all third-party licenses are gpl3-compatible
+  - submodules are initialized in prebuild to avoid --recursive, which pulls in ~700 MB of
+    unnecessary openssl submodules (which also happen to contain a bunch of binary files)
+  - minifyEnabled is false due to the amount of jni usage and reflection (which would
+    require proguard exceptions), and the dex size is insignificant compared to the native
+    libs anyways
+  - I chose to ship a universal apk since it's not that much bigger than a single arch, and
+    it simplifies builds
+  - the app optionally supports a proprietary realvnc backend, but this is not included in
+    the main app, and it is not mentioned anywhere in it either
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+$
+CurrentVersion: '1'
+CurrentVersionCode: 1
