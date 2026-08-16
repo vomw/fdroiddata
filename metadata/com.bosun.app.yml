@@ -1,79 +1,3 @@
-# Draft F-Droid build metadata for Bosun's Android app.
-#
-# This is NOT submitted anywhere yet. F-Droid inclusion works like this:
-#   1. Fork https://gitlab.com/fdroid/fdroiddata
-#   2. Add this file (renamed to just the package ID: metadata/com.bosun.app.yml)
-#      to that fork's metadata/ directory
-#   3. Open a merge request against fdroiddata
-#   4. F-Droid's build server (Linux, sandboxed, no network access beyond
-#      what's declared) attempts an actual build using this recipe and
-#      reports back pass/fail
-#   5. A human F-Droid maintainer reviews the MR (license, anti-features,
-#      reproducibility) - this can take from days to several weeks, and
-#      commonly involves iterating on the build recipe based on real
-#      build-server failures
-#
-# None of steps 1-5 can be done by an AI assistant - they need a GitLab
-# account and ongoing engagement with the F-Droid community. This file is
-# a starting point for that submission, not a finished one.
-#
-# PRIOR ATTEMPT (2026-07-24, MR !43795, still open, found 2026-08-16 while
-# starting this session's submission - almost duplicated it blind): dropped
-# Builds: entirely in favor of Binaries:-only verification ("Tauri/Rust
-# build not supported in F-Droid env"), which schema-validates as invalid -
-# 'Builds' is a required property even alongside Binaries: (that's what
-# Binaries: verifies AGAINST - F-Droid still builds from source and diffs
-# the result). Also had License: MIT (stale - the repo declared
-# GPL-3.0-or-later this session) and a non-templated Binaries: URL
-# (schema requires a %v or %c placeholder so future releases resolve
-# automatically, not a URL hardcoded to v0.5.0). This draft restores a
-# real Builds: entry (below) and fixes both of those, keeping the same
-# AllowedAPKSigningKeys - independently re-derived this session from a
-# fresh v0.6.0 release APK via `apksigner verify --print-certs` and it's
-# identical, confirming the signing key itself hasn't changed across
-# releases (only a CI build-tools/tag_name bug briefly broke publishing
-# a properly signed artifact - fixed separately in the main repo).
-#
-# TESTED LOCALLY (2026-08-16) against a real fdroidserver + F-Droid
-# buildserver image (registry.gitlab.com/fdroid/fdroidserver:buildserver,
-# which is the actual Debian 13 environment F-Droid's CI builds on -
-# fdroidserver itself pip-installed on top, since the image doesn't ship
-# it). `fdroid lint com.bosun.app` passes clean. `fdroid build -t`
-# (local/non-server test mode) found and fixed three real bugs:
-#   - init: used an invented $$bosun-midi-captain$$ placeholder for "repo
-#     root" - not real F-Droid syntax (only $$SDK$$/$$NDK$$/$$VERSION$$
-#     are), and since init commands run through bash -c, bash's own $$
-#     (process ID) mangled every path. Rewritten with relative paths.
-#   - The buildserver image's ndk/ directory ships EMPTY - added the
-#     `ndk:` field so F-Droid actually provisions $$NDK$$ before init:
-#     runs, instead of assuming it's already there.
-#   - cargo had no linker configured for aarch64-linux-android (same
-#     requirement build-android.ps1 sets locally via
-#     CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER) - added the export.
-#
-# STILL UNVERIFIED (local test mode skips `sudo:` entirely - "these
-# commands were skipped because fdroid build is not running on a
-# dedicated build server" - so none of this can be confirmed without an
-# actual F-Droid buildserver submission):
-#   - Whether node/npm/rustup actually install and produce a working
-#     aarch64-linux-android target inside F-Droid's real sandboxed
-#     buildserver (network/permissions may differ from this local test).
-#   - Tauri Android apps have a documented history of F-Droid build
-#     failures because F-Droid's build server strips the project's own
-#     `gradlew` (untrusted binary) and substitutes its own, and older
-#     Tauri/cargo-mobile2 tooling hard-depended on the bundled one
-#     (tauri-apps/tauri#6367, closed via tauri-apps/cargo-mobile2#111).
-#     Bosun's own build-android.ps1 already avoids `tauri android build`'s
-#     orchestration - it calls cargo and gradlew directly - which should
-#     help, but this is unverified against F-Droid's actual environment.
-#   - Cargo needs to fetch crate dependencies from crates.io during the
-#     Rust build step. F-Droid's build servers restrict network access
-#     during builds for reproducibility; whether crates.io fetches are
-#     permitted, or whether vendoring all Cargo dependencies into the repo
-#     is required instead, needs confirming against current F-Droid docs/
-#     policy - this draft assumes network access is fine and will need
-#     correction if not.
-
 Categories:
   - Multimedia
 License: GPL-3.0-or-later
@@ -84,83 +8,40 @@ IssueTracker: https://github.com/danmigdev/bosun-midi-captain/issues
 AutoName: Bosun
 Summary: Editor and Stage view for PaintAudio MIDI Captain foot controllers
 Description: |
-    Bosun is an editor and live "Stage" companion for the PaintAudio MIDI
-    Captain foot controller running Bosun firmware. Configure switches,
-    bindings and screen layout, and mirror the pedal's live state on a
-    phone or tablet at a gig - connects directly over USB-OTG, no computer
-    needed. Plugin system supports Kemper Player, Hotone Ampero II Stage,
-    Line 6 Helix, and generic MIDI devices.
+  Bosun is an editor and live "Stage" companion for the PaintAudio MIDI
+  Captain foot controller running Bosun firmware. Configure switches,
+  bindings and screen layout, and mirror the pedal's live state on a
+  phone or tablet at a gig - connects directly over USB-OTG, no computer
+  needed. Plugin system supports Kemper Player, Hotone Ampero II Stage,
+  Line 6 Helix, and generic MIDI devices.
 
 RepoType: git
 Repo: https://github.com/danmigdev/bosun-midi-captain
-
-# %v is required by F-Droid's schema (a bare hardcoded version in the old
-# draft's URL failed schema validation) - it's substituted with each new
-# release's version as CurrentVersion advances, so this doesn't need
-# manual updates going forward. F-Droid builds from source per Builds:
-# below and diffs the result against whatever this resolves to, as the
-# reproducibility check.
 Binaries: https://github.com/danmigdev/bosun-midi-captain/releases/download/v%v/bosun.apk
-
-# SHA-256 of the release signing certificate - re-derived 2026-08-16 from
-# a fresh v0.6.0 APK via `apksigner verify --print-certs`, matches the
-# prior MR's value exactly (same signing key across all releases).
-AllowedAPKSigningKeys: 53fd21db1e975195c7f6faf45f9c3f3a3fdcb310738762a61397be175e136e93
 
 Builds:
   - versionName: 0.6.0
     versionCode: 29
     commit: v0.6.0
     subdir: editor/src-tauri/gen/android
-    # Provisions $$NDK$$ (and sets ANDROID_NDK/ANDROID_NDK_HOME) before
-    # init: runs - matches the version build-android.ps1 pins locally
-    # (editor/src-tauri, $ndkBin). Found via a local test (2026-08-16):
-    # the buildserver image's ndk/ directory ships EMPTY - this field is
-    # what actually provisions it, not something baked into the image.
-    # 30.0.15729638 (what build-android.ps1 uses locally on Windows) isn't
-    # available in F-Droid's NDK repo - confirmed live 2026-08-16, pipeline
-    # #2763718402: "Failed to find package 'ndk;30.0.15729638' - Did you
-    # mean 'ndk;30.0.14904198'?" - same NDK release line, different exact
-    # build. Using what F-Droid actually has.
-    ndk: "30.0.14904198"
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-      # Pin to whatever Rust toolchain this repo's rust-toolchain (if
-      # added) or CI declares - unverified, needs a real value.
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - rustup target add aarch64-linux-android
     init:
-      # Frontend build + Rust cross-compile happen here since F-Droid's
-      # standard `gradle:` build type only drives the Gradle half - see
-      # build-android.ps1 for the equivalent Windows/local version of
-      # this same three-step sequence. Paths are relative, walking up
-      # from `subdir` (editor/src-tauri/gen/android) - NOT the $$VAR$$
-      # syntax, which is reserved for F-Droid's own substitutions
-      # ($$SDK$$/$$NDK$$/$$VERSION$$); an earlier draft invented
-      # $$bosun-midi-captain$$ for "repo root", which isn't a real
-      # F-Droid feature and got mangled by bash's own $$ (PID) variable
-      # instead (confirmed via a local `fdroid build -t` test,
-      # 2026-08-16 - see that test's other finding below: `sudo:` steps
-      # don't run in local/non-server mode, so the Rust toolchain/NDK
-      # question this recipe exists to answer is still unverified past
-      # this point without manually pre-installing them in the test
-      # environment). All four lines run as ONE joined shell (cwd
-      # carries over), so each cd is relative to wherever the previous
-      # line left off. CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER matches
-      # what build-android.ps1 sets for the same cross-compile locally
-      # (there, $$NDK$$ is the Windows NDK dir + ...\windows-x86_64\bin\
-      # ...21-clang.cmd; here it's the Linux NDK's linux-x86_64 toolchain,
-      # no .cmd extension) - without it cargo has no linker for the
-      # aarch64-linux-android target and the build fails at link time.
       - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
       - cd ../../.. && npm ci && npm run build
-      - cd src-tauri && cargo build --release --target aarch64-linux-android && cd ..
+      - cd src-tauri && cargo build --release --target aarch64-linux-android && cd
+        ..
       - mkdir -p src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a
       - cp src-tauri/target/aarch64-linux-android/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a/
     gradle:
       - yes
     output: app/build/outputs/apk/arm64/release/app-arm64-release-unsigned.apk
+    ndk: 30.0.14904198
+
+AllowedAPKSigningKeys: 53fd21db1e975195c7f6faf45f9c3f3a3fdcb310738762a61397be175e136e93
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
