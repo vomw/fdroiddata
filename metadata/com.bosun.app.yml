@@ -27,8 +27,10 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - $HOME/.cargo/bin/rustup target add aarch64-linux-android
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | HOME=/home/vagrant
+        sh -s -- -y
+      - chown -R vagrant:vagrant /home/vagrant/.cargo /home/vagrant/.rustup
+      - HOME=/home/vagrant /home/vagrant/.cargo/bin/rustup target add aarch64-linux-android
     init:
       - export PATH="$HOME/.cargo/bin:$PATH"
       - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
