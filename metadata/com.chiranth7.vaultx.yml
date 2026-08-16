@@ -42,7 +42,7 @@ Builds:
         implementation 'com.facebook.react:react-android' }\" > node_modules/@react-native-masked-view/masked-view/android/build.gradle"
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
+      - sed -i 's/MaxMetaspaceSize=512m/MaxMetaspaceSize=768m/' android/gradle.properties
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/react-native-screens/android/build.gradle
