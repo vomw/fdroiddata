@@ -28,6 +28,7 @@ Builds:
     prebuild:
       - git -C .. submodule update --init
       - ../patch.sh -n
+      - sdkmanager 'cmake;3.30.5'
       - gradle :backends:fetchCryptoSources
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
@@ -53,8 +54,8 @@ MaintainerNotes: |-
     consists of gnulib headers and ecc curves (it's all non-binary, and mostly reproducible,
     but I commit it since they have a bunch of host deps and may differ slightly depending
     on the host)
-  - ndk/cmake versions are pinned and auto-installed by gradle
-  - cargo-ndk version must match
+  - ndk is pinned and auto-installed by agp
+  - cmake/cargo-ndk version must match
   - ndk/cmake/cargo-ndk versions are automaticaly verifies during the build
   - scandelete is for the images and testdata in the third_party submodules
   - all third-party licenses are gpl3-compatible
