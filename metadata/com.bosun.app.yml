@@ -25,14 +25,15 @@ Builds:
     subdir: editor/src-tauri/gen/android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm build-essential
+      - apt-get install -y build-essential
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | HOME=/home/vagrant
         sh -s -- -y
-      - chown -R vagrant:vagrant /home/vagrant/.cargo /home/vagrant/.rustup
+      - curl -fL -o /tmp/node.tar.xz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz && mkdir -p /home/vagrant/node-v22.23.2-linux-x64 && tar -xJf /tmp/node.tar.xz -C /home/vagrant/node-v22.23.2-linux-x64 --strip-components=1 && rm /tmp/node.tar.xz
+      - chown -R vagrant:vagrant /home/vagrant/.cargo /home/vagrant/.rustup /home/vagrant/node-v22.23.2-linux-x64
       - HOME=/home/vagrant /home/vagrant/.cargo/bin/rustup target add aarch64-linux-android
         armv7-linux-androideabi i686-linux-android x86_64-linux-android
     init:
-      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export PATH="/home/vagrant/node-v22.23.2-linux-x64/bin:$HOME/.cargo/bin:$PATH"
       - export RUSTFLAGS="--remap-path-prefix=$HOME=/build"
       - export 
         CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang
