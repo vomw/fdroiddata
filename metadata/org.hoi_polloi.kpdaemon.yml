@@ -43,7 +43,9 @@ Builds:
       - export TGT=$(pwd)/src/main/assets/kpclientd
       - pushd $$katzenpost$$
       - go mod verify
-      - go build -trimpath -buildvcs=false -ldflags="-s -w" -o $TGT ./cmd/kpclientd
+      - go build -trimpath -buildvcs=false
+        -ldflags="-s -w -buildid= -extldflags=-Wl,--build-id=none"
+        -o $TGT ./cmd/kpclientd
       - popd
     ndk: 28.0.13004108
 
