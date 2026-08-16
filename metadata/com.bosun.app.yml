@@ -1,38 +1,49 @@
-# F-Droid Metadata for Bosun
-# Submit this file as: metadata/com.bosun.app.yml
-
 Categories:
   - Multimedia
-License: MIT
-AuthorName: danmigdev
+License: GPL-3.0-or-later
+AuthorName: Danilo Migliarino
 SourceCode: https://github.com/danmigdev/bosun-midi-captain
 IssueTracker: https://github.com/danmigdev/bosun-midi-captain/issues
-Changelog: https://github.com/danmigdev/bosun-midi-captain/releases
 
 AutoName: Bosun
-Summary: Configure MIDI Captain pedals from your phone
-
+Summary: Editor and Stage view for PaintAudio MIDI Captain foot controllers
 Description: |
-  Bosun is an editor for the PaintAudio MIDI Captain pedal. Connect your
-  pedal to your Android phone via USB-OTG and edit every aspect of your
-  MIDI foot controller on the go.
-
-  Features include patch and binding editing (tap, latched, momentary,
-  long-press, double-tap modes with multi-message chains), LED colour
-  configuration, TFT screen layout editor, MIDI Learn table, expression
-  pedal calibration, profile management, and setlist view.
-
-  Works with plugins for Kemper Player, Hotone Ampero II Stage, Line 6
-  Helix, and generic MIDI devices. No internet connection required.
+  Bosun is an editor and live "Stage" companion for the PaintAudio MIDI
+  Captain foot controller running Bosun firmware. Configure switches,
+  bindings and screen layout, and mirror the pedal's live state on a
+  phone or tablet at a gig - connects directly over USB-OTG, no computer
+  needed. Plugin system supports Kemper Player, Hotone Ampero II Stage,
+  Line 6 Helix, and generic MIDI devices.
 
 RepoType: git
-Repo: https://github.com/danmigdev/bosun-midi-captain.git
+Repo: https://github.com/danmigdev/bosun-midi-captain
+Binaries: https://github.com/danmigdev/bosun-midi-captain/releases/download/v%v/bosun.apk
 
-Binaries: https://github.com/danmigdev/bosun-midi-captain/releases/download/v0.5.0/bosun.apk
+Builds:
+  - versionName: 0.6.0
+    versionCode: 29
+    commit: v0.6.0
+    subdir: editor/src-tauri/gen/android
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - rustup target add aarch64-linux-android
+    init:
+      - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
+      - cd ../../.. && npm ci && npm run build
+      - cd src-tauri && cargo build --release --target aarch64-linux-android && cd
+        ..
+      - mkdir -p src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a
+      - cp src-tauri/target/aarch64-linux-android/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a/
+    gradle:
+      - yes
+    output: app/build/outputs/apk/arm64/release/app-arm64-release-unsigned.apk
+    ndk: 30.0.15729638
 
 AllowedAPKSigningKeys: 53fd21db1e975195c7f6faf45f9c3f3a3fdcb310738762a61397be175e136e93
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.5.0
-CurrentVersionCode: 1
+CurrentVersion: 0.6.0
+CurrentVersionCode: 29
