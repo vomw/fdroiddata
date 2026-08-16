@@ -6,7 +6,6 @@ SourceCode: https://github.com/danmigdev/bosun-midi-captain
 IssueTracker: https://github.com/danmigdev/bosun-midi-captain/issues
 
 AutoName: Bosun
-Summary: Editor and Stage view for PaintAudio MIDI Captain foot controllers
 Description: |
   Bosun is an editor and live "Stage" companion for the PaintAudio MIDI
   Captain foot controller running Bosun firmware. Configure switches,
@@ -30,7 +29,8 @@ Builds:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | HOME=/home/vagrant
         sh -s -- -y
       - chown -R vagrant:vagrant /home/vagrant/.cargo /home/vagrant/.rustup
-      - HOME=/home/vagrant /home/vagrant/.cargo/bin/rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - HOME=/home/vagrant /home/vagrant/.cargo/bin/rustup target add aarch64-linux-android
+        armv7-linux-androideabi i686-linux-android x86_64-linux-android
     init:
       - export PATH="$HOME/.cargo/bin:$PATH"
       - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
@@ -48,18 +48,30 @@ Builds:
         -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null; curl -fL -o
         editor/src-tauri/resources/circuitpython.uf2 https://downloads.circuitpython.org/bin/raspberry_pi_pico/en_US/adafruit-circuitpython-raspberry_pi_pico-en_US-9.2.7.uf2
       - cd editor && npm ci && npm run build
-      - cd src-tauri && cargo build --release --target aarch64-linux-android --target armv7-linux-androideabi --target i686-linux-android --target x86_64-linux-android && cd ..
-      - mkdir -p src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a src-tauri/gen/android/app/src/main/jniLibs/armeabi-v7a src-tauri/gen/android/app/src/main/jniLibs/x86 src-tauri/gen/android/app/src/main/jniLibs/x86_64
+      - cd src-tauri && cargo build --release --target aarch64-linux-android --target
+        armv7-linux-androideabi --target i686-linux-android --target x86_64-linux-android
+        && cd ..
+      - mkdir -p src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a src-tauri/gen/android/app/src/main/jniLibs/armeabi-v7a
+        src-tauri/gen/android/app/src/main/jniLibs/x86 src-tauri/gen/android/app/src/main/jniLibs/x86_64
       - cp src-tauri/target/aarch64-linux-android/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/arm64-v8a/
-      - cp src-tauri/target/armv7-linux-androideabi/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/armeabi-v7a/
+      - cp src-tauri/target/armv7-linux-androideabi/release/libbosun_editor_lib.so
+        src-tauri/gen/android/app/src/main/jniLibs/armeabi-v7a/
       - cp src-tauri/target/i686-linux-android/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/x86/
       - cp src-tauri/target/x86_64-linux-android/release/libbosun_editor_lib.so src-tauri/gen/android/app/src/main/jniLibs/x86_64/
       - mkdir -p src-tauri/gen/android/app/src/main/assets
-      - printf '%s' '{"$schema":"https://schema.tauri.app/config/2","productName":"Bosun","version":"0.6.0","identifier":"com.bosun.app","app":{"windows":[{"label":"main","create":true,"url":"index.html","dragDropEnabled":true,"center":false,"width":1100.0,"height":720.0,"minWidth":800.0,"minHeight":600.0,"resizable":true,"maximizable":true,"minimizable":true,"closable":true,"title":"Bosun","fullscreen":false,"focus":true,"focusable":true,"transparent":false,"maximized":false,"visible":true,"decorations":true,"alwaysOnBottom":false,"alwaysOnTop":false,"visibleOnAllWorkspaces":false,"contentProtected":false,"skipTaskbar":false,"titleBarStyle":"Visible","hiddenTitle":false,"acceptFirstMouse":false,"shadow":true,"incognito":false,"zoomHotkeysEnabled":false,"browserExtensionsEnabled":false,"useHttpsScheme":false,"javascriptDisabled":false,"allowLinkPreview":true,"disableInputAccessoryView":false,"scrollBarStyle":"default","generalAutofillEnabled":true}],"security":{"freezePrototype":false,"dangerousDisableAssetCspModification":false,"assetProtocol":{"scope":[],"enable":false},"pattern":{"use":"brownfield"},"capabilities":[]},"macOSPrivateApi":false,"withGlobalTauri":false,"enableGTKAppId":false},"build":{"devUrl":"http://localhost:1420/","frontendDist":"../dist","beforeDevCommand":"npm run dev","beforeBuildCommand":"npm run build","removeUnusedCommands":false,"additionalWatchFolders":[]},"bundle":{"active":true,"targets":[],"createUpdaterArtifacts":false,"icon":["icons/32x32.png","icons/128x128.png","icons/icon.icns","icons/icon.ico"],"resources":{"resources/circuitpython.uf2":"circuitpython.uf2","resources/firmware":"firmware","resources/lib":"lib"},"shortDescription":"Editor for PaintAudio MIDI Captain controllers running Bosun firmware.","longDescription":"Desktop editor for PaintAudio MIDI Captain controllers running Bosun firmware, with a plugin system for any MIDI target device (Kemper Player, Hotone Ampero II Stage, Line 6 Helix, generic MIDI, and more).","useLocalToolsDir":false,"windows":{"digestAlgorithm":null,"certificateThumbprint":null,"timestampUrl":null,"tsp":false,"webviewInstallMode":{"type":"downloadBootstrapper","silent":true},"allowDowngrades":true,"minimumWebview2Version":null,"wix":null,"nsis":null,"signCommand":null},"linux":{"appimage":{"bundleMediaFramework":false,"files":{}},"deb":{"files":{}},"rpm":{"release":"1","epoch":0,"files":{}}},"macOS":{"files":{},"minimumSystemVersion":"10.13","hardenedRuntime":true,"dmg":{"windowSize":{"width":660,"height":400},"appPosition":{"x":180,"y":170},"applicationFolderPosition":{"x":480,"y":170}}},"iOS":{"minimumSystemVersion":"14.0"},"android":{"minSdkVersion":29,"versionCode":2,"autoIncrementVersionCode":false}},"plugins":{}}' > src-tauri/gen/android/app/src/main/assets/tauri.conf.json
+      - printf '%s' '{"$schema":"https://schema.tauri.app/config/2","productName":"Bosun","version":"0.6.0","identifier":"com.bosun.app","app":{"windows":[{"label":"main","create":true,"url":"index.html","dragDropEnabled":true,"center":false,"width":1100.0,"height":720.0,"minWidth":800.0,"minHeight":600.0,"resizable":true,"maximizable":true,"minimizable":true,"closable":true,"title":"Bosun","fullscreen":false,"focus":true,"focusable":true,"transparent":false,"maximized":false,"visible":true,"decorations":true,"alwaysOnBottom":false,"alwaysOnTop":false,"visibleOnAllWorkspaces":false,"contentProtected":false,"skipTaskbar":false,"titleBarStyle":"Visible","hiddenTitle":false,"acceptFirstMouse":false,"shadow":true,"incognito":false,"zoomHotkeysEnabled":false,"browserExtensionsEnabled":false,"useHttpsScheme":false,"javascriptDisabled":false,"allowLinkPreview":true,"disableInputAccessoryView":false,"scrollBarStyle":"default","generalAutofillEnabled":true}],"security":{"freezePrototype":false,"dangerousDisableAssetCspModification":false,"assetProtocol":{"scope":[],"enable":false},"pattern":{"use":"brownfield"},"capabilities":[]},"macOSPrivateApi":false,"withGlobalTauri":false,"enableGTKAppId":false},"build":{"devUrl":"http://localhost:1420/","frontendDist":"../dist","beforeDevCommand":"npm
+        run dev","beforeBuildCommand":"npm run build","removeUnusedCommands":false,"additionalWatchFolders":[]},"bundle":{"active":true,"targets":[],"createUpdaterArtifacts":false,"icon":["icons/32x32.png","icons/128x128.png","icons/icon.icns","icons/icon.ico"],"resources":{"resources/circuitpython.uf2":"circuitpython.uf2","resources/firmware":"firmware","resources/lib":"lib"},"shortDescription":"Editor
+        for PaintAudio MIDI Captain controllers running Bosun firmware.","longDescription":"Desktop
+        editor for PaintAudio MIDI Captain controllers running Bosun firmware, with
+        a plugin system for any MIDI target device (Kemper Player, Hotone Ampero II
+        Stage, Line 6 Helix, generic MIDI, and more).","useLocalToolsDir":false,"windows":{"digestAlgorithm":null,"certificateThumbprint":null,"timestampUrl":null,"tsp":false,"webviewInstallMode":{"type":"downloadBootstrapper","silent":true},"allowDowngrades":true,"minimumWebview2Version":null,"wix":null,"nsis":null,"signCommand":null},"linux":{"appimage":{"bundleMediaFramework":false,"files":{}},"deb":{"files":{}},"rpm":{"release":"1","epoch":0,"files":{}}},"macOS":{"files":{},"minimumSystemVersion":"10.13","hardenedRuntime":true,"dmg":{"windowSize":{"width":660,"height":400},"appPosition":{"x":180,"y":170},"applicationFolderPosition":{"x":480,"y":170}}},"iOS":{"minimumSystemVersion":"14.0"},"android":{"minSdkVersion":29,"versionCode":2,"autoIncrementVersionCode":false}},"plugins":{}}'
+        > src-tauri/gen/android/app/src/main/assets/tauri.conf.json
       - cp src-tauri/resources/circuitpython.uf2 src-tauri/gen/android/app/src/main/assets/circuitpython.uf2
       - cp -r src-tauri/resources/firmware src-tauri/gen/android/app/src/main/assets/firmware
-      - printf '// THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.\ntauri.android.versionName=0.6.0\ntauri.android.versionCode=%s\n' "$(cat src-tauri/android-version-code.txt)" > src-tauri/gen/android/app/tauri.properties
-      - printf '\ntasks.matching { it.name.startsWith("rustBuild") }.configureEach { enabled = false }\n' >> src-tauri/gen/android/app/build.gradle.kts
+      - printf '// THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.\ntauri.android.versionName=0.6.0\ntauri.android.versionCode=%s\n'
+        "$(cat src-tauri/android-version-code.txt)" > src-tauri/gen/android/app/tauri.properties
+      - printf '\ntasks.matching { it.name.startsWith("rustBuild") }.configureEach
+        { enabled = false }\n' >> src-tauri/gen/android/app/build.gradle.kts
     gradle:
       - yes
     output: app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
@@ -76,6 +88,6 @@ Builds:
 AllowedAPKSigningKeys: 53fd21db1e975195c7f6faf45f9c3f3a3fdcb310738762a61397be175e136e93
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Static
 CurrentVersion: 0.6.0
 CurrentVersionCode: 29
