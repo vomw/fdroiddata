@@ -28,8 +28,9 @@ Builds:
       - apt-get update
       - apt-get install -y nodejs npm
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - rustup target add aarch64-linux-android
+      - $HOME/.cargo/bin/rustup target add aarch64-linux-android
     init:
+      - export PATH="$HOME/.cargo/bin:$PATH"
       - export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
       - cd ../../.. && npm ci && npm run build
       - cd src-tauri && cargo build --release --target aarch64-linux-android && cd
