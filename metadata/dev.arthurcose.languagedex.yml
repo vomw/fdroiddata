@@ -159,6 +159,9 @@ Builds:
       - npm_config_build_from_source=true yarn --ignore-optional --force
       - yarn run licenses
       - yarn run prebuild-android
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
