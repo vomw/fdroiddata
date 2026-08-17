@@ -14,7 +14,7 @@ Repo: https://github.com/bfix/kpclientd-android.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1000000
-    commit: be12ff951541bd86e43ea1e7fd2632315dbc83f5
+    commit: 1026b14447e6955836443cba49895e18fbf89964
     subdir: apk/app
     sudo:
       - apt-get update
@@ -23,12 +23,19 @@ Builds:
       - yes
     binary: https://hoi-polloi.org/files/kpclientd_%c.apk
     srclibs:
-      - go@go1.26.2
-      - katzenpost@v0.0.98
+      - go@master
+      - katzenpost@main
     prebuild:
+      - export GO_VER=$(grep "go=" ../../dependencies.txt | cut -d'=' -f2)
       - export GOROOT_BOOTSTRAP=/usr/lib/go-1.25
-      - pushd $$go$$/src
+      - pushd $$go$$
+      - git fetch --tags && git checkout tags/$GO_VER
+      - cd src/
       - ./make.bash
+      - popd
+      - export KP_VER=$(grep "katzenpost=" ../../dependencies.txt | cut -d'=' -f2)
+      - pushd $$katzenpost$$
+      - git fetch --tags && git checkout tags/$KP_VER
       - popd
     build:
       - export GOROOT=$$go$$
