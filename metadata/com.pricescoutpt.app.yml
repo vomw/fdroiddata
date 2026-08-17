@@ -13,7 +13,7 @@ Repo: https://github.com/jlfernandes22/PriceScoutPT
 Builds:
   - versionName: 1.0.0
     versionCode: 11
-    commit: 3e51d3be022fd83ffdb6458cd849d7a9fc005b50
+    commit: db615647d0990dac6f7b1f2ae94bf83ee9848562
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -46,7 +46,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 12
-    commit: 3e51d3be022fd83ffdb6458cd849d7a9fc005b50
+    commit: db615647d0990dac6f7b1f2ae94bf83ee9848562
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -79,7 +79,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 13
-    commit: 3e51d3be022fd83ffdb6458cd849d7a9fc005b50
+    commit: db615647d0990dac6f7b1f2ae94bf83ee9848562
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -112,7 +112,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 14
-    commit: 3e51d3be022fd83ffdb6458cd849d7a9fc005b50
+    commit: db615647d0990dac6f7b1f2ae94bf83ee9848562
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -154,6 +154,14 @@ MaintainerNotes: |-
   reactNativeArchitectures Gradle property; the versionCode is set per ABI
   with the abiVersionCode Gradle property read by the androidComponents hook
   in app/build.gradle (10 * %c + 1..4, per the F-Droid ABI split guide).
+
+  The app is a client for a self-hosted backend, so no production endpoint is
+  baked into the F-Droid build. Since commit db615647 the API base URL is
+  resolved at runtime (build-time extra > user setting in AsyncStorage >
+  __DEV__ localhost only) and never falls back to the emulator alias
+  (10.0.2.2). Without a configured endpoint, a setup screen blocks first use
+  until the user provides a self-hosted server URL (settings panel allows
+  changing it later), so the app is fully usable from F-Droid.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
