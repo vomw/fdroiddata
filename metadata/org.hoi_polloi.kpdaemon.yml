@@ -23,19 +23,19 @@ Builds:
       - yes
     binary: https://hoi-polloi.org/files/kpclientd_%c.apk
     srclibs:
-      - go@master
-      - katzenpost@main
+      - go@go1.26.2
+      - katzenpost@v0.0.98
     prebuild:
       - export GO_VER=$(grep "go=" ../../dependencies.txt | cut -d'=' -f2)
       - export GOROOT_BOOTSTRAP=/usr/lib/go-1.25
       - pushd $$go$$
-      - git fetch --tags && git checkout tags/$GO_VER
+      - git fetch --tags && git checkout $GO_VER
       - cd src/
       - ./make.bash
       - popd
       - export KP_VER=$(grep "katzenpost=" ../../dependencies.txt | cut -d'=' -f2)
       - pushd $$katzenpost$$
-      - git fetch --tags && git checkout tags/$KP_VER
+      - git fetch --tags && git checkout $KP_VER
       - popd
     build:
       - export GOROOT=$$go$$
