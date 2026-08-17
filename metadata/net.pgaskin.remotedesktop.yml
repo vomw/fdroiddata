@@ -45,30 +45,6 @@ Builds:
 
 AllowedAPKSigningKeys: 08d46917a818ad0c479733b458acb7488a4cc39f0a5a20ccc6a39181b2fb8f55
 
-MaintainerNotes: |-
-  - submodules are pinned to upstream commits, with patches applied using patch.sh
-  - gnutls and nettle use release tarballs (fetched using fetchCryptoSources, which pins the
-    SHA) so a host toolchain and autotools isn't required (which also avoids reproducibility
-    issues caused by it)
-  - the generated code in backend/ports/{openssl,gnutls.nettle} is committed and mostly
-    consists of gnulib headers and ecc curves (it's all non-binary, and mostly reproducible,
-    but I commit it since they have a bunch of host deps and may differ slightly depending
-    on the host)
-  - ndk is pinned and auto-installed by agp
-  - cmake/cargo-ndk version must match
-  - ndk/cmake/cargo-ndk versions are automaticaly verifies during the build
-  - scandelete is for the images and testdata in the third_party submodules
-  - all third-party licenses are gpl3-compatible
-  - submodules are initialized in prebuild to avoid --recursive, which pulls in ~700 MB of
-    unnecessary openssl submodules (which also happen to contain a bunch of binary files)
-  - minifyEnabled is false due to the amount of jni usage and reflection (which would
-    require proguard exceptions), and the dex size is insignificant compared to the native
-    libs anyways
-  - I chose to ship a universal apk since it's not that much bigger than a single arch, and
-    it simplifies builds
-  - the app optionally supports a proprietary realvnc backend, but this is not included in
-    the main app, and it is not mentioned anywhere in it either
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+$
 CurrentVersion: '1'
