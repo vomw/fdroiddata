@@ -3,6 +3,7 @@ Categories:
 License: AGPL-3.0-or-later
 AuthorName: Bernd Fix   >Y<
 AuthorEmail: brf@hoi-polloi.org
+AllowedAPKSigningKeys: 97ce57a5e92f7163a96a134f4c0a2fdd57e9a79a9389aab9f04ede893a4bd9ad
 SourceCode: https://github.com/bfix/kpclientd-android
 IssueTracker: https://github.com/bfix/kpclientd-android/issues
 
@@ -14,13 +15,14 @@ Repo: https://github.com/bfix/kpclientd-android.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1000000
-    commit: 61ec46f74a81b09498203a7f3aed4a3402720a96
+    commit: bd328d925d298f812ab20ee6ddf5f06d789026cf
     subdir: apk/app
     sudo:
       - apt-get update
       - apt-get install -y golang-1.25-go gcc libc-dev
     gradle:
       - yes
+    binary: https://hoi-polloi.org/files/kpclientd_%c.apk
     srclibs:
       - go@go1.26.2
       - katzenpost@v0.0.98
@@ -43,14 +45,12 @@ Builds:
       - export TGT=$(pwd)/src/main/assets/kpclientd
       - pushd $$katzenpost$$
       - go mod verify
-      - go build -trimpath -buildvcs=false
-        -ldflags="-s -w -buildid= -extldflags=-Wl,--build-id=none"
+      - go build -trimpath -buildvcs=false -ldflags="-s -w -buildid= -extldflags=-Wl,--build-id=none"
         -o $TGT ./cmd/kpclientd
       - popd
     ndk: 28.0.13004108
 
-AutoUpdateMode: Version
+AutoUpdateMode: None
 UpdateCheckMode: Tags
-UpdateCheckName: Ignore
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1000000
