@@ -139,14 +139,77 @@ Builds:
       - cp build/app/outputs/flutter-apk/app-x64-release.apk android/build/app/outputs/flutter-apk/app-x64-release.apk
     ndk: r28c
 
+  - versionName: 1.7.0
+    versionCode: 1001
+    commit: fda7c1e07fb6169011301c327620e1a557ae3916
+    subdir: android
+    output: build/app/outputs/flutter-apk/app-armeabi-release.apk
+    binary: 
+      https://github.com/R0b0To/VaultExplorer/releases/download/v%v/VaultExplorer-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/build-release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - cd ..
+      - bash ./scripts/reproducible_build.sh armeabi
+      - mkdir -p android/build/app/outputs/flutter-apk
+      - cp build/app/outputs/flutter-apk/app-armeabi-release.apk android/build/app/outputs/flutter-apk/app-armeabi-release.apk
+    ndk: r28c
+
+  - versionName: 1.7.0
+    versionCode: 1002
+    commit: fda7c1e07fb6169011301c327620e1a557ae3916
+    subdir: android
+    output: build/app/outputs/flutter-apk/app-x64-release.apk
+    binary: 
+      https://github.com/R0b0To/VaultExplorer/releases/download/v%v/VaultExplorer-v%v-x64.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/build-release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - cd ..
+      - bash ./scripts/reproducible_build.sh x64
+      - mkdir -p android/build/app/outputs/flutter-apk
+      - cp build/app/outputs/flutter-apk/app-x64-release.apk android/build/app/outputs/flutter-apk/app-x64-release.apk
+    ndk: r28c
+
+  - versionName: 1.7.0
+    versionCode: 1003
+    commit: fda7c1e07fb6169011301c327620e1a557ae3916
+    subdir: android
+    output: build/app/outputs/flutter-apk/app-arm64-release.apk
+    binary: 
+      https://github.com/R0b0To/VaultExplorer/releases/download/v%v/VaultExplorer-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../.github/workflows/build-release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+    build:
+      - export PATH="$$flutter$$/bin:$PATH"
+      - cd ..
+      - bash ./scripts/reproducible_build.sh arm64
+      - mkdir -p android/build/app/outputs/flutter-apk
+      - cp build/app/outputs/flutter-apk/app-arm64-release.apk android/build/app/outputs/flutter-apk/app-arm64-release.apk
+    ndk: r28c
+
 AllowedAPKSigningKeys: 0bde9d3b0ee3f56617d02632c843b1629bf0b2faa4560dff5d26f651dc325f19
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 100 * %c + 1
-  - 100 * %c + 2
   - 100 * %c + 3
+  - 100 * %c + 2
+  - 100 * %c + 1
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.4.0
-CurrentVersionCode: 603
+CurrentVersion: 1.7.0
+CurrentVersionCode: 1003
