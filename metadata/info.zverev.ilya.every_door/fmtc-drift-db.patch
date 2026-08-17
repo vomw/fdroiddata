@@ -1,0 +1,42 @@
+From c504c1583abf074167be354d3ade298be6803c89 Mon Sep 17 00:00:00 2001
+From: mpeter50 <83356418+mpeter50@users.noreply.github.com>
+Date: Mon, 17 Aug 2026 22:12:31 +0200
+Subject: [PATCH] replace FMTC backend with Drift database
+
+---
+ lib/screens/loading.dart | 4 +---
+ pubspec.yaml             | 3 ++-
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/lib/screens/loading.dart b/lib/screens/loading.dart
+index 8a49f39..e516514 100644
+--- a/lib/screens/loading.dart
++++ b/lib/screens/loading.dart
+@@ -60,9 +60,7 @@ class _LoadingPageState extends ConsumerState<LoadingPage> {
+     ref.read(changesetTagsProvider);
+ 
+     // Initialize imagery caches.
+-    await FMTCObjectBoxBackend().initialise(
+-      maxDatabaseSize: kRasterCacheSizeMB * 1024,
+-    );
++    await FMTCDriftBackend().initialise();
+     await FMTCStore(kTileCacheBase).manage.create();
+     await FMTCStore(kTileCacheImagery).manage.create();
+     await FMTCStore(kTileCacheDownload).manage.create();
+diff --git a/pubspec.yaml b/pubspec.yaml
+index 79ed47e..b511d67 100644
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -37,7 +37,8 @@ dependencies:
+   flutter_map: ^8.2.0
+   flutter_map_geojson2: ^1.0.0
+   flutter_map_mbtiles: ^1.0.4
+-  flutter_map_tile_caching: ^11.0.0-dev.2
++  flutter_map_tile_caching:
++    path: ../flutter_map_tile_caching/
+   flutter_portal: ^1.1.4
+   flutter_riverpod: ^3.3.1
+   flutter_secure_storage: ^10.0.0-beta.4
+-- 
+2.51.0
+
