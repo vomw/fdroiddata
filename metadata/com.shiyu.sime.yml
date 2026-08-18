@@ -10,7 +10,6 @@ AutoName: 是语输入法
 
 RepoType: git
 Repo: https://github.com/Ismantic/SimeApp.git
-Binaries: https://github.com/Ismantic/SimeApp/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 0.17.2
@@ -30,8 +29,6 @@ Builds:
     gradleprops:
       - includeHandwriting=false
 
-AllowedAPKSigningKeys: 6123f19ef029287bed8c1db277fdd1b26cc3de98889b866dc860544a6ebfcdff
-
 MaintainerNotes: |-
   The project uses source submodules for Sime, ncnn, and its optional
   Handwritten runtime. The F-Droid build intentionally disables Handwritten:
@@ -40,7 +37,9 @@ MaintainerNotes: |-
   the Sime submodule's save/ directory and is required to build a functional
   offline input method. The two ignored GRU ncnn binaries are the required
   Apache-2.0 model weights; their source and training pipeline are in the
-  Sime submodule.
+  Sime submodule. The upstream developer APK includes the optional Handwritten
+  feature, while the F-Droid build intentionally omits it; F-Droid therefore
+  signs and publishes its own build rather than verifying the upstream APK.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
