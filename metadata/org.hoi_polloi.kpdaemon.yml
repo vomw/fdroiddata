@@ -19,7 +19,7 @@ Builds:
     subdir: apk/app
     sudo:
       - apt-get update
-      - apt-get install -y golang-1.25-go gcc libc-dev
+      - apt-get install -y golang-go gcc libc-dev
     gradle:
       - yes
     srclibs:
@@ -29,14 +29,12 @@ Builds:
       - export GO_VER=$(grep "go=" ../../dependencies.txt | cut -d'=' -f2)
       - export GOROOT_BOOTSTRAP=/usr/lib/go-1.25
       - pushd $$go$$
-      - git fetch --tags && git checkout $GO_VER
+      - git checkout $GO_VER
       - cd src/
       - ./make.bash
       - popd
       - export KP_VER=$(grep "katzenpost=" ../../dependencies.txt | cut -d'=' -f2)
-      - pushd $$katzenpost$$
-      - git fetch --tags && git checkout $KP_VER
-      - popd
+      - git -C $$katzenpost$$ checkout $KP_VER
     build:
       - export GOROOT=$$go$$
       - export PATH="$GOROOT/bin:$PATH"
