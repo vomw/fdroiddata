@@ -19,16 +19,16 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y gcc g++ make libc-dev zip bzip2
-      - sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - apt-get install -y g++ make libc-dev zip bzip2
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
     build:
+      - sdkmanager "platforms;android-35" "build-tools;35.0.0"
       - cd ..
       - ./scripts/bootstrap_bazel.sh
       - ./scripts/fetch_dictionaries.sh
-      - ANDROID_NDK_HOME=$$NDK$$ ./scripts/build_mozc.sh
+      - ./scripts/build_mozc.sh
     ndk: 27.2.12479018
 
 AutoUpdateMode: Version
