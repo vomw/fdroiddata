@@ -1,0 +1,63 @@
+Categories:
+  - Navigation
+  - Science & Education
+License: GPL-3.0-only
+AuthorName: linuxbased79
+WebSite: https://linuxbased79.github.io/FixItGarage/
+SourceCode: https://github.com/linuxbased79/FixItGarage
+IssueTracker: https://github.com/linuxbased79/FixItGarage/issues
+Liberapay: caozuna
+
+AutoName: FixItGarage
+
+RepoType: git
+Repo: https://github.com/linuxbased79/FixItGarage.git
+
+Builds:
+  - versionName: 0.2.24
+    versionCode: 2024
+    commit: v0.2.24
+    timeout: 18000
+    subdir: rust
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless unzip zip curl python3 build-essential
+    output: dist/FixItGarage-0.2.24-arm64.apk
+    srclibs:
+      - rustup@1.27.1
+    prebuild:
+      - $$rustup$$/rustup-init.sh -y
+      - source $HOME/.cargo/env
+      - rustup target add aarch64-linux-android
+      - cargo install xbuild --git https://github.com/rust-mobile/xbuild.git
+      - bash fixitgarage-ui/models/download-models.sh || true
+      - yes | sdkmanager "platforms;android-33" "build-tools;35.0.0" || true
+      - ls -la $$SDK$$/platforms || true
+      - ls -la $$SDK$$/platforms/android-33 || true
+    build:
+      - source $HOME/.cargo/env
+      - export ANDROID_HOME=$$SDK$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_PLATFORM=android-33
+      - export ANDROID_API_LEVEL=33
+      - export ANDROID_JAR=$$SDK$$/platforms/android-33/android.jar
+      - test -f "$ANDROID_JAR"
+      - export PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export PATH="$$SDK$$/build-tools/35.0.0:$PATH"
+      - which clang
+      - which d8 || which apksigner || true
+      - mkdir -p dist
+      - x build -p fixitgarage-ui --platform android --arch arm64 --format apk --release
+      - cp target/x/release/android/fixitgarage-ui.apk dist/FixItGarage-0.2.24-arm64-raw.apk
+      - bash scripts/package-apk-with-boot.sh dist/FixItGarage-0.2.24-arm64-raw.apk
+        dist/FixItGarage-0.2.24-arm64.apk 0.2.24 2024
+    ndk: r27c
+
+ArchivePolicy: 4
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.2.24
+CurrentVersionCode: 2024
