@@ -1,0 +1,53 @@
+Categories:
+  - Alarm Clock
+License: GPL-3.0-only
+AuthorName: Gixita (Kris Laermans)
+AuthorEmail: info@gixita.be
+SourceCode: https://git.gixita.be/gixita/soft_wakeup
+IssueTracker: https://git.gixita.be/gixita/soft_wakeup/issues
+Changelog: 
+  https://git.gixita.be/gixita/soft_wakeup/src/branch/main/fastlane/metadata/android/en-US/changelogs
+
+AutoName: SoftWakeup
+Description: |-
+  SoftWakeup is a smart alarm clock for people who can't wake up — gentle to
+  wake to, impossible to sleep through. It plays soft alarm sounds and sleep
+  music (birdsong, breeze, your own audio) minutes before your time, easing
+  you awake. No button to hunt, no snooze to smash — your snooze becomes a
+  gentle crescendo until you're up. A calmer sleep app than a harsh alarm,
+  built for deep sleepers and serial snoozers.
+
+RepoType: git
+Repo: https://git.gixita.be/gixita/soft_wakeup.git
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 4
+    commit: 47067209a8ce81b3a803c5d5c9c938948d7a3501
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.44.8
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - sed -i '/FlutterFire Configuration/,/FlutterFire Configuration/d' android/settings.gradle.kts
+      - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4
