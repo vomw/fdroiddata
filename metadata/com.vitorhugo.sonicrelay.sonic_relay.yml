@@ -1,0 +1,92 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: Vitor Hugo
+AuthorWebSite: https://hugodotnet.dev
+SourceCode: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay
+IssueTracker: https://github.com/vitorhugo-dotnet/dotnet_SonicRelay/issues
+
+AutoName: SonicRelay
+
+RepoType: git
+Repo: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay.git
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 891
+    commit: PLACEHOLDER_RELEASE_COMMIT
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-arm --build-number=$(( $$VERCODE$$ / 10 ))
+
+  - versionName: 1.1.0
+    versionCode: 892
+    commit: PLACEHOLDER_RELEASE_COMMIT
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ / 10 ))
+
+  - versionName: 1.1.0
+    versionCode: 893
+    commit: PLACEHOLDER_RELEASE_COMMIT
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-x64 --build-number=$(( $$VERCODE$$ / 10 ))
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: '|\+(\d+)$||^v([^+]+)\+\d+$'
+CurrentVersion: 1.1.0
+CurrentVersionCode: 893
