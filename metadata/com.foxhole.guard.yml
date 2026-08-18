@@ -55,7 +55,7 @@ Builds:
       - export FOXHOLE_NATIVE_DEPS_DIR=/home/runner/work/foxhole-guard/foxhole-native-deps
       - export FOXHOLE_NATIVE_OFFLINE=1
       - export I2PD_ABIS=arm64-v8a
-      - scripts/build-i2pd.sh
+      - SOURCE_DATE_EPOCH=1787044986 scripts/build-i2pd.sh
       - perl -0777 -pi -e 'use bytes; my $prefix = pack("V3a4", 4, 20, 3, "GNU\0");
         my $new = pack("H*", "1e327f87ac68eff0b0c549402952a1c230fe4b22"); my $count
         = s/\Q$prefix\E.{20}/$prefix$new/s; die "unexpected-build-id-$count" unless
@@ -82,6 +82,8 @@ MaintainerNotes: |-
   runner's /home/runner layout and uses the pinned NDK 29. Network inputs for
   FoxHole Core, i2pd, lyrebird, and conjure are fetched before the Gradle phase;
   the actual build is offline and aborts if any pinned input is missing.
+  OpenSSL embeds its configure time, so SOURCE_DATE_EPOCH is pinned to the
+  signed candidate's exact UTC build instant.
   The linker-generated i2pd build-id is normalized to the verified candidate's
   value; every other byte still has to match for F-Droid verification to pass.
 
