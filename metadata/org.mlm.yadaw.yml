@@ -47,10 +47,41 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --pad-like-apksigner --replace unaligned.apk
         $$OUT$$
 
+  - versionName: 0.10.2
+    versionCode: 16779778
+    commit: 7839cd2d43fe3d6b064184257a3f55a0708f817c
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: target/release/apk/yadaw.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - third_party/android/termux/
+    prebuild:
+      - export ANDROID_API=$(sed -E -n 's/.*ANDROID_API.*"(.*)".*/\1/p' .github/workflows/release.yml)
+      - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*ANDROID_BUILD_TOOLS.*"(.*)".*/\1/p'
+        .github/workflows/release.yml | head -1)
+      - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS"
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android
+      - export CARGO_RAPK_TAG=$(sed -E -n 's/.*CARGO_RAPK_VERSION.*"([^"]+)".*/\1/p'
+        .github/workflows/release.yml)
+      - cargo install --git https://github.com/mlm-games/cargo-rapk.git --tag v$CARGO_RAPK_TAG
+        cargo-rapk --locked
+    build: cargo rapk build --release --deterministic --unsigned --target aarch64-linux-android
+      --no-default-features --features android,clap-host --lib
+    ndk: 28.2.13676358
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --pad-like-apksigner --replace unaligned.apk
+        $$OUT$$
+
 AllowedAPKSigningKeys: 4aed2f691df64a7b0fea25a6b8c80183c6dc520e049dac0178defa1d6472228f
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: Cargo.toml|version_code\s*=\s*([0-9]+)|Cargo.toml|version\s*=\s*"([^"]+)"
-CurrentVersion: 0.9.2
-CurrentVersionCode: 16779522
+CurrentVersion: 0.10.2
+CurrentVersionCode: 16779778
