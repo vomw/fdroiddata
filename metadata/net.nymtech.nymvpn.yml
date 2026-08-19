@@ -972,6 +972,9 @@ Builds:
       - nym-vpn-apple
       - nym-vpn-app
     prebuild:
+      - export goVersion=$(grep go\  ../../wireguard/libwg/go.mod | cut -d " " -f2 | head -n1)
+      - '[[ $goVersion ]]'
+      - git -C $$go$$ checkout -f go$goVersion
       - source '../../.env'
       - rustup default "$RUST_VERSION"
       - rustup target add x86_64-linux-android aarch64-linux-android armv7-linux-androideabi
