@@ -105,6 +105,9 @@ Builds:
       - yes
     prebuild:
       - cd ../..
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - printf "C\n" | ./build-android.sh n y
       - python ./scripts/fix-for-fdroid.py
       - sed -i -e '/artifacts/d' android/build.gradle
