@@ -11,31 +11,31 @@ Changelog: https://github.com/sookoothaii/digital-spyglass-android/releases
 
 AutoName: Ghost
 Description: |-
-    Ghost is a stateless Android onion meta-search client. It queries 13 public
-    onion search engines in parallel, aggregates and ranks the results, and hands
-    off links to Tor Browser via external intent.
+  Ghost is a stateless Android onion meta-search client. It queries 13 public
+  onion search engines in parallel, aggregates and ranks the results, and hands
+  off links to Tor Browser via external intent.
 
-    '''Key features:'''
-    * 13 onion search engines queried in parallel
-    * RAM-only session — no queries, results, or history written to disk
-    * Three purge triggers: panic wipe, screen lock, app exit
-    * VPN gate — non-dismissible, blocks queries unless Orbot VPN is active
-    * Tor SOCKS5 transport with remote DNS via Tor
-    * FLAG_SECURE — blocks screenshots and recents thumbnails
-    * No backend, no telemetry, no accounts, no ads
-    * Stop button to cancel running searches
-    * Consent gate with 18+ verification, shown every session
-    * External link handoff to Tor Browser
+  '''Key features:'''
+  * 13 onion search engines queried in parallel
+  * RAM-only session — no queries, results, or history written to disk
+  * Three purge triggers: panic wipe, screen lock, app exit
+  * VPN gate — non-dismissible, blocks queries unless Orbot VPN is active
+  * Tor SOCKS5 transport with remote DNS via Tor
+  * FLAG_SECURE — blocks screenshots and recents thumbnails
+  * No backend, no telemetry, no accounts, no ads
+  * Stop button to cancel running searches
+  * Consent gate with 18+ verification, shown every session
+  * External link handoff to Tor Browser
 
-    '''Requirements:'''
-    * Android 7.0+ (API 24)
-    * Orbot in VPN mode
-    * Tor Browser for Android (for opening result links)
+  '''Requirements:'''
+  * Android 7.0+ (API 24)
+  * Orbot in VPN mode
+  * Tor Browser for Android (for opening result links)
 
-    '''Privacy:'''
-    No data collected, stored, or transmitted to any server. Queries and results
-    exist only in RAM during the active session. Only three non-sensitive
-    preferences are persisted: engine selection, snippet filter, VPN requirement.
+  '''Privacy:'''
+  No data collected, stored, or transmitted to any server. Queries and results
+  exist only in RAM during the active session. Only three non-sensitive
+  preferences are persisted: engine selection, snippet filter, VPN requirement.
 
 RequiresRoot: false
 
@@ -49,7 +49,9 @@ Builds:
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
+      - apt-get install -y curl
+      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      - apt-get install -y nodejs
       - npm install -g bun
     init:
       - cd ..
@@ -72,6 +74,9 @@ MaintainerNotes: |-
   Bun is used for JS dependency management and the Vite web build. The web
   assets are built with `bun run build:mobile` and synced to Android with
   `bunx cap sync android` before the Gradle build.
+
+  Node.js 22+ is required for Capacitor CLI. Installed via NodeSource setup_22.x
+  since Debian's default nodejs is too old.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
