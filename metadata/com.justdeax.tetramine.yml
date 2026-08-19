@@ -21,12 +21,12 @@ Builds:
       - yes
     srclibs:
       - reproducible-apk-tools@v0.3.0
+    gradleprops:
+      - android.bundle.enableBaselineProfiles=false
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
-    gradleprops:
-      - android.bundle.enableBaselineProfiles=false
 
 AllowedAPKSigningKeys: 6b2ab59a567e5e05d5a3d56366bd5ae0d12a11ee2e1046d54d149bfa5343d2e0
 
