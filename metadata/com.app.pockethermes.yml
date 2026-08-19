@@ -31,6 +31,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
+    srclibs:
+      - rustup@1.25.2
     init:
       - cd ..
       - npm install pnpm@9.12.0 --no-save --no-package-lock
@@ -39,8 +41,9 @@ Builds:
       - release
     output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.88.0 --profile minimal --target aarch64-linux-android
       - echo "Building Pocket Relay offline embedded Python wheels for ARM64"
-      - bash ../scripts/build-android-python-wheels.sh
+      - source $HOME/.cargo/env && bash ../scripts/build-android-python-wheels.sh
     scandelete:
       - node_modules
 
