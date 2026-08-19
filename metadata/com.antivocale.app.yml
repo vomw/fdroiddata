@@ -254,11 +254,11 @@ Builds:
       - sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts
         ../build.gradle.kts
       - mkdir -p libs
-      - sdkmanager 'ndk;27.0.12077973' 'ndk;27.2.12479018'
+      - sdkmanager 'ndk;27.2.12479018'
     build:
       - pushd $$sherpa_onnx$$
       - export SHERPA_ONNX_ENABLE_JNI=ON SHERPA_ONNX_ENABLE_C_API=OFF
-      - ./build-android-armv7-eabi.sh
+      - ANDROID_NDK="/opt/android-sdk/ndk/27.2.12479018" ./build-android-armv7-eabi.sh
       - popd
       - J=$$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs
       - mkdir -p $J/armeabi-v7a
@@ -267,6 +267,7 @@ Builds:
       - cp 
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
+    ndk: 27.0.12077973
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
@@ -291,11 +292,11 @@ Builds:
       - sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts
         ../build.gradle.kts
       - mkdir -p libs
-      - sdkmanager 'ndk;27.0.12077973' 'ndk;27.2.12479018'
+      - sdkmanager 'ndk;27.2.12479018'
     build:
       - pushd $$sherpa_onnx$$
       - export SHERPA_ONNX_ENABLE_JNI=ON SHERPA_ONNX_ENABLE_C_API=OFF
-      - ./build-android-arm64-v8a.sh
+      - ANDROID_NDK="/opt/android-sdk/ndk/27.2.12479018" ./build-android-arm64-v8a.sh
       - popd
       - J=$$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs
       - mkdir -p $J/arm64-v8a
@@ -304,6 +305,7 @@ Builds:
       - cp 
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
+    ndk: 27.0.12077973
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
@@ -328,11 +330,11 @@ Builds:
       - sed -E -i "/(crashlytics|com\.google\.firebase|com\.google\.gms)/d" build.gradle.kts
         ../build.gradle.kts
       - mkdir -p libs
-      - sdkmanager 'ndk;27.0.12077973' 'ndk;27.2.12479018'
+      - sdkmanager 'ndk;27.2.12479018'
     build:
       - pushd $$sherpa_onnx$$
       - export SHERPA_ONNX_ENABLE_JNI=ON SHERPA_ONNX_ENABLE_C_API=OFF
-      - ./build-android-x86-64.sh
+      - ANDROID_NDK="/opt/android-sdk/ndk/27.2.12479018" ./build-android-x86-64.sh
       - popd
       - J=$$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs
       - mkdir -p $J/x86_64
@@ -341,6 +343,7 @@ Builds:
       - cp 
         $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
         libs/sherpa-onnx.aar
+    ndk: 27.0.12077973
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
