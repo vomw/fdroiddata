@@ -1,6 +1,6 @@
 Categories:
-  - Security
   - Internet
+  - Security
 License: MIT
 AuthorName: Ghost Project
 AuthorWebSite: https://github.com/sookoothaii
@@ -37,8 +37,6 @@ Description: |-
   exist only in RAM during the active session. Only three non-sensitive
   preferences are persisted: engine selection, snippet filter, VPN requirement.
 
-RequiresRoot: false
-
 RepoType: git
 Repo: https://github.com/sookoothaii/digital-spyglass-android.git
 
@@ -61,9 +59,6 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
-    rm:
-      - android/key.properties
-      - android/app/release-keystore.jks
 
 MaintainerNotes: |-
   The signing key in the repo (key.properties, release-keystore.jks) is for
@@ -77,6 +72,9 @@ MaintainerNotes: |-
 
   Node.js 22+ is required for Capacitor CLI. Installed via NodeSource setup_22.x
   since Debian's default nodejs is too old.
+
+  The key files (key.properties, release-keystore.jks) are gitignored and not
+  in the repo, so no `rm:` is needed — F-Droid builds from a clean checkout.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
