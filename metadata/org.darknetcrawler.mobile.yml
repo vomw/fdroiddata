@@ -9,7 +9,7 @@ SourceCode: https://github.com/sookoothaii/digital-spyglass-android
 IssueTracker: https://github.com/sookoothaii/digital-spyglass-android/issues
 Changelog: https://github.com/sookoothaii/digital-spyglass-android/releases
 
-AutoName: Ghost
+AutoName: Ghost Search
 Description: |-
   Ghost is a stateless Android onion meta-search client. It queries 13 public
   onion search engines in parallel, aggregates and ranks the results, and hands
@@ -59,6 +59,15 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
+    scanignore:
+      - node_modules/nitro/dist/THIRD-PARTY-LICENSES.md.gz
+      - node_modules/nitro/dist/node_modules/source-map/lib/mappings.wasm
+      - node_modules/source-map/lib/mappings.wasm
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - node_modules/@capacitor/cli/assets/ios-pods-template.tar.gz
+      - node_modules/@capacitor/cli/assets/ios-spm-template.tar.gz
+      - node_modules/@capacitor/cli/assets/android-template.tar.gz
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
 
 MaintainerNotes: |-
   The signing key in the repo (key.properties, release-keystore.jks) is for
@@ -75,6 +84,9 @@ MaintainerNotes: |-
 
   The key files (key.properties, release-keystore.jks) are gitignored and not
   in the repo, so no `rm:` is needed — F-Droid builds from a clean checkout.
+
+  scanignore covers gzip/wasm binaries in node_modules that are legit
+  dependencies (Capacitor templates, source-map WASM, nitro licenses).
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
