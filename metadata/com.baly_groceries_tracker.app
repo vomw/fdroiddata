@@ -10,12 +10,12 @@ AutoName: Baly Groceries Tracker
 
 RepoType: git
 Repo: https://github.com/rw-account/baly_groceries_tracker.git
-Binaries: https://github.com/rw-account/baly_groceries_tracker/releases/download/v1.0.0/BalyGroceriesTracker-arm64-v8a-release.apk
+Binaries: https://github.com/rw-account/baly_groceries_tracker/releases/download/v1.0.1/baly_groceries_tracker-1.0.1-arm64-v8a-release.apk
 
 Builds:
-  - versionName: 1.0.0
-    versionCode: 1
-    commit: 3597b70bc9be794d5fecae31cf3de1d01574d6f3
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: c0d1e5c4af631c537789f30df289ec2d3b558b6e
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.44.8
@@ -37,7 +37,7 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - .flutter/bin/flutter build apk --target-platform android-arm64
 
 AllowedAPKSigningKeys: 3d168406ea989fd09452bf5801fee9460c6050165f4c930cc114e39c0bb4723c
 
@@ -46,5 +46,5 @@ UpdateCheckMode: Tags
 VercodeOperation:
   - '%c * 10 + 2'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.0
-CurrentVersionCode: 12
+CurrentVersion: 1.0.1
+CurrentVersionCode: 22
