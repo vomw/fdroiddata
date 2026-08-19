@@ -10,7 +10,6 @@ IssueTracker: https://github.com/sookoothaii/digital-spyglass-android/issues
 Changelog: https://github.com/sookoothaii/digital-spyglass-android/releases
 
 AutoName: Ghost
-Summary: Transient onion meta-search aggregator
 Description: |-
     Ghost is a stateless Android onion meta-search client. It queries 13 public
     onion search engines in parallel, aggregates and ranks the results, and hands
@@ -44,15 +43,13 @@ RepoType: git
 Repo: https://github.com/sookoothaii/digital-spyglass-android.git
 
 Builds:
-  - versionName: "1.0"
+  - versionName: '1.0'
     versionCode: 1
     commit: v1.0.0
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y curl
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-      - apt-get install -y nodejs
+      - apt-get install -y nodejs npm
       - npm install -g bun
     init:
       - cd ..
@@ -62,18 +59,21 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
+    rm:
+      - android/key.properties
+      - android/app/release-keystore.jks
 
 MaintainerNotes: |-
-    The signing key in the repo (key.properties, release-keystore.jks) is for
-    the developer's GitHub Release. F-Droid uses its own signing key, so the
-    key files are removed before build. The build produces an unsigned APK
-    that F-Droid signs with its own key.
+  The signing key in the repo (key.properties, release-keystore.jks) is for
+  the developer's GitHub Release. F-Droid uses its own signing key, so the
+  key files are removed before build. The build produces an unsigned APK
+  that F-Droid signs with its own key.
 
-    Bun is used for JS dependency management and the Vite web build. The web
-    assets are built with `bun run build:mobile` and synced to Android with
-    `bunx cap sync android` before the Gradle build.
+  Bun is used for JS dependency management and the Vite web build. The web
+  assets are built with `bun run build:mobile` and synced to Android with
+  `bunx cap sync android` before the Gradle build.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: "1.0"
+CurrentVersion: '1.0'
 CurrentVersionCode: 1
