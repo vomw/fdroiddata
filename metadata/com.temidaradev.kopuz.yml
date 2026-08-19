@@ -1,0 +1,43 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: temidaradev
+SourceCode: https://github.com/Kopuz-org/kopuz
+IssueTracker: https://github.com/Kopuz-org/kopuz/issues
+
+AutoName: Kopuz
+
+RepoType: git
+Repo: https://github.com/Kopuz-org/kopuz.git
+Binaries: https://github.com/Kopuz-org/kopuz/releases/download/v%v/kopuz-%v-arm64-v8a.apk
+
+Builds:
+  - versionName: 0.15.1
+    versionCode: 1501
+    commit: e603623651e4526daeaae04e47b5d676577f27d4
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup build-essential cmake pkg-config
+    init:
+      - rustup target add aarch64-linux-android
+      - cargo install dioxus-cli@0.7.9 --locked
+      - npm ci
+      - npx @tailwindcss/cli -i ./tailwind.css -o ./crates/kopuz/assets/tailwind.css
+        --content './crates/kopuz/**/*.rs,./crates/components/**/*.rs,./crates/pages/**/*.rs,./crates/hooks/**/*.rs,./crates/player/**/*.rs,./crates/reader/**/*.rs'
+    output: target/dx/kopuz/release/android/app/app/build/outputs/apk/release/app-release-unsigned.apk
+    ndk: r27d
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export SQLX_OFFLINE=true
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export NDK_HOME=$$NDK$$
+      - dx build --package kopuz --platform android --release --locked --target
+        aarch64-linux-android
+      - cd target/dx/kopuz/release/android/app && ./gradlew assembleRelease
+
+AllowedAPKSigningKeys: 423eef73021a555b74afa664d519c3c4af3ce52c746e369a16c72c65a5c452c5
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 0.15.1
+CurrentVersionCode: 1501
