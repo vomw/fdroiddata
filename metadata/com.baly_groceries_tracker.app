@@ -16,7 +16,7 @@ Builds:
   - versionName: 1.0.1
     versionCode: 2
     commit: c0d1e5c4af631c537789f30df289ec2d3b558b6e
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.8
     rm:
