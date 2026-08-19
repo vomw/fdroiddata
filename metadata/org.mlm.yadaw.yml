@@ -57,8 +57,10 @@ Builds:
     srclibs:
       - reproducible-apk-tools@v0.3.0
     prebuild:
-      - export ANDROID_API=$(grep platforms\;android- .github/workflows/ci.yml | cut -d "-" -f2 | cut -d "\"" -f1)
-      - export ANDROID_BUILD_TOOLS=$(grep build-tools\; .github/workflows/ci.yml | cut -d ";" -f2 | cut -d "\"" -f1)
+      - export ANDROID_API=$(grep platforms\;android- .github/workflows/ci.yml | cut
+        -d "-" -f2 | cut -d "\"" -f1)
+      - export ANDROID_BUILD_TOOLS=$(grep build-tools\; .github/workflows/ci.yml |
+        cut -d ";" -f2 | cut -d "\"" -f1)
       - sdkmanager "platforms;android-$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS"
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
       - rustup default $RUST_VERSION
