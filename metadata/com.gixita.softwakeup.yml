@@ -29,17 +29,27 @@ Builds:
       - web
       - windows
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.44.8
+      - cd ..
+      - mv com.gixita.softwakeup /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - git -C $$flutter$$ checkout -f 3.44.8
       - sed -i '/FlutterFire Configuration/,/FlutterFire Configuration/d' android/settings.gradle.kts
       - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /tmp/build com.gixita.softwakeup
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv com.gixita.softwakeup /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv /tmp/build com.gixita.softwakeup
 
 AllowedAPKSigningKeys: 622069efd70d5306178797a329d4b6ba1295538728d516c375cf0fa89b9dca98
 
