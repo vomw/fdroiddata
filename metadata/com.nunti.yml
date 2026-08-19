@@ -1039,12 +1039,15 @@ Builds:
       - apt-get update
       - apt-get install npm
       - npm install -g yarn
-    init:
-      - cd ../..
-      - npm install --omit=optional --legacy-peer-deps
     gradle:
       - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - cd ../..
+      - npm install --omit=optional --legacy-peer-deps
+      - sed -i '/jvmToolchain/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+      - sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' -e 's/jvmToolchain(17)/jvmToolchain(21)/g'
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - Nunti/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - Nunti/node_modules/react-native-vector-icons/android/build.gradle
