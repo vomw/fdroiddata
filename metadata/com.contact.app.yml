@@ -31,11 +31,10 @@ Builds:
       - apt-get install -y nodejs npm
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     init: npm ci
-    prebuild:
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
     gradle:
       - yes
+    prebuild: sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+      ../../package.json
     scandelete:
       - node_modules
     antifeatures:
