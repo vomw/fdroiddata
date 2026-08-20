@@ -2,6 +2,7 @@ Categories:
   - App Manager
   - Cloud Storage & File Sync
   - File Encryption & Vault
+  - File Manager
   - System
   - Text Editor
 License: GPL-3.0-or-later
@@ -10,7 +11,7 @@ AuthorEmail: vishalmeham2@gmail.com
 WebSite: https://teamamaze.xyz
 SourceCode: https://github.com/TeamAmaze/AmazeFileManager
 IssueTracker: https://github.com/TeamAmaze/AmazeFileManager/issues
-Translation: https://www.transifex.com/amaze/amaze-file-manager/
+Translation: https://explore.transifex.com/amaze/amaze-file-manager/
 Donate: https://github.com/TeamAmaze/AmazeFileManager#support
 Liberapay: Team-Amaze
 
@@ -100,9 +101,28 @@ Builds:
         rustc)\"|" ../file_operations/build.gradle
     ndk: r28c
 
+  - versionName: 3.11.3
+    versionCode: 125
+    commit: e7733bc9b0585f1698526d51d8a1a2fd5630c88f
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i -e '/jcenter/d' -e '/liferay/d' {..,.}/build.gradle
+      - sed -i -e 
+        's/jvmToolchain(17)/compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)/'
+        ../*/build.gradle
+      - rustup default 1.92.0
+      - rustup target add armv7-linux-androideabi aarch64-linux-android i686-linux-android
+        x86_64-linux-android
+    ndk: r28c
+
 MaintainerNotes: junrar and cloudrail are stubs. ACRA is opt-in.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 3.11.2
-CurrentVersionCode: 124
+CurrentVersion: 3.11.3
+CurrentVersionCode: 125

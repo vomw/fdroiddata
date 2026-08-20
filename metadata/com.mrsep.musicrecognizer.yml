@@ -1,20 +1,22 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Depends on AudD music recognition service
+    en-US: Depends on non-free music recognition services
 Categories:
   - Internet
   - Multimedia
 License: GPL-3.0-or-later
 AuthorName: Aleksey Saenko
-SourceCode: https://github.com/aleksey-saenko/MusicRecognizer
-IssueTracker: https://github.com/aleksey-saenko/MusicRecognizer/issues
+SourceCode: https://github.com/AudileTeam/Audile
+IssueTracker: https://github.com/AudileTeam/Audile/issues
 Translation: https://hosted.weblate.org/projects/audile/
-Changelog: https://github.com/aleksey-saenko/MusicRecognizer/releases
+Changelog: https://github.com/AudileTeam/Audile/releases
+Donate: https://github.com/AudileTeam/Audile/blob/master/FUNDING.md
+Bitcoin: bc1qtxjs9h3yulfhxgpr6ppckv0f6pxgtlx8jat6hy
 
 AutoName: Audile
 
 RepoType: git
-Repo: https://github.com/aleksey-saenko/MusicRecognizer.git
+Repo: https://github.com/AudileTeam/Audile.git
 
 Builds:
   - versionName: 1.0.0
@@ -372,7 +374,191 @@ Builds:
       - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
     ndk: 29.0.14206865
 
+  - versionName: 1.13.2
+    versionCode: 37
+    commit: ab7f12f1585b10562f2a47d81d812d9470c53926
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    scandelete:
+      - build-logic
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
+  - versionName: 1.14.0
+    versionCode: 38
+    commit: e0c1838931bd39488e394830d91a08519385b8c4
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
+  - versionName: 1.15.0
+    versionCode: 39
+    commit: 2f0429109bfe76d8db47d6d3cbb4a8a6c6bd9979
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
+  - versionName: 1.15.1
+    versionCode: 40
+    commit: 3b7851505012bff50cf96fef651a035ebb939e5e
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential curl tar gzip
+    gradle:
+      - yes
+    build:
+      - cd ../core/recognition/src/main/cpp/vibrafp/third_party/
+      - chmod +x ./build-fftw-android.sh && ./build-fftw-android.sh
+    ndk: 29.0.14206865
+
+  - versionName: 1.16.0
+    versionCode: 41
+    commit: 6926ef38842c1c031d2b93172070ede3938beaa7
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.16.1
+    versionCode: 42
+    commit: 1f80885f615d0bef4218e4032435b28eb2462790
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.17.0
+    versionCode: 43
+    commit: b0dfd774f3163070614feb1c8d54a03978af2feb
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.18.0
+    versionCode: 44
+    commit: d4042954a9459382534cccced6cf28ff32410ee2
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.18.1
+    versionCode: 45
+    commit: 05a8de35e3d9e471054aeb9e904e21952462f1c4
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.18.2
+    versionCode: 46
+    commit: 0d87fc1284c706b531b5d333f4f1120d1c08f7e5
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
+  - versionName: 1.18.3
+    versionCode: 47
+    commit: 2e96802e03bcc1e91c795ea791f3dcbfdebbddb0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup gcc libc-dev
+    gradle:
+      - yes
+    prebuild:
+      - export RUST_TOOLCHAIN_FILE="../core/recognition/native/songrecfp/rust-toolchain.toml"
+      - export RUST_CHANNEL=$(awk -F'"' '/^[[:space:]]*channel[[:space:]]*=/{print
+        $2; exit}' "$RUST_TOOLCHAIN_FILE")
+      - rustup toolchain install "$RUST_CHANNEL" --profile minimal
+      - rustup default "$RUST_CHANNEL"
+      - cargo install cargo-ndk@4.1.2 --locked
+    ndk: 29.0.14206865
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 1.13.1
-CurrentVersionCode: 36
+CurrentVersion: 1.18.3
+CurrentVersionCode: 47
