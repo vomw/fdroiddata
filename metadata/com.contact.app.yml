@@ -25,8 +25,11 @@ Builds:
     commit: 9fad32ce968aa8f388cdd086f4a14b2fd694dfc0
     subdir: android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless nodejs npm
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - apt-get install -y nodejs npm
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     init: npm ci
     gradle:
       - yes
