@@ -15,7 +15,11 @@ Builds:
   - versionName: 1.1.0
     versionCode: 1001071
     commit: bca5a1244e66d9989e64e1e25c473b29fb889872
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.1.0+100107/sonic-relay-armeabi-v7a-fdroid-v1.1.0+100107.apk
     srclibs:
       - flutter@stable
     rm:
@@ -25,20 +29,40 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-arm --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
   - versionName: 1.1.0
     versionCode: 1001072
     commit: bca5a1244e66d9989e64e1e25c473b29fb889872
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.1.0+100107/sonic-relay-arm64-v8a-fdroid-v1.1.0+100107.apk
     srclibs:
       - flutter@stable
     rm:
@@ -48,20 +72,40 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
   - versionName: 1.1.0
     versionCode: 1001073
     commit: bca5a1244e66d9989e64e1e25c473b29fb889872
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.1.0+100107/sonic-relay-x86_64-fdroid-v1.1.0+100107.apk
     srclibs:
       - flutter@stable
     rm:
@@ -71,20 +115,40 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-x64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
   - versionName: 1.2.0
     versionCode: 1001091
     commit: 7bad52ae28ccc9ffbef698fbd333e4d7e22cba50
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.2.0+100109/sonic-relay-armeabi-v7a-fdroid-v1.2.0+100109.apk
     srclibs:
       - flutter@stable
     rm:
@@ -94,20 +158,40 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-arm --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
   - versionName: 1.2.0
     versionCode: 1001092
     commit: 7bad52ae28ccc9ffbef698fbd333e4d7e22cba50
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.2.0+100109/sonic-relay-arm64-v8a-fdroid-v1.2.0+100109.apk
     srclibs:
       - flutter@stable
     rm:
@@ -117,20 +201,40 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
   - versionName: 1.2.0
     versionCode: 1001093
     commit: 7bad52ae28ccc9ffbef698fbd333e4d7e22cba50
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.2.0+100109/sonic-relay-x86_64-fdroid-v1.2.0+100109.apk
     srclibs:
       - flutter@stable
     rm:
@@ -140,15 +244,160 @@ Builds:
         .github/workflows/flutter-ci.yml | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform=android-x64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
+
+  - versionName: 1.5.0
+    versionCode: 1001211
+    commit: 22665570919c8630b012c987f5af9973933c9ca7
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.5.0+100121/sonic-relay-armeabi-v7a-fdroid-v1.5.0+100121.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-arm --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
+
+  - versionName: 1.5.0
+    versionCode: 1001212
+    commit: 22665570919c8630b012c987f5af9973933c9ca7
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.5.0+100121/sonic-relay-arm64-v8a-fdroid-v1.5.0+100121.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-arm64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
+
+  - versionName: 1.5.0
+    versionCode: 1001213
+    commit: 22665570919c8630b012c987f5af9973933c9ca7
+    sudo:
+      - mkdir -p /home/runner/work/flutter_mobile-web_SonicRelay
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay/releases/download/v1.5.0+100121/sonic-relay-x86_64-fdroid-v1.5.0+100121.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*"([^"]+)".*$/\1/p'
+        .github/workflows/flutter-ci.yml | head -n 1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - mkdir -p $repo
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '1a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/flutter_zxing-*/*/CMakeLists.txt
+      - sed -i -e '/^project(/a add_link_options("LINKER:--build-id=none")' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/flutter_mobile-web_SonicRelay
+      - cd ..
+      - mv com.vitorhugo.sonicrelay.sonic_relay $repo/flutter_mobile-web_SonicRelay
+      - pushd $repo/flutter_mobile-web_SonicRelay
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform=android-x64 --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo/flutter_mobile-web_SonicRelay com.vitorhugo.sonicrelay.sonic_relay
+    ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: 10433809f4fb4d79988d248110470bd6ec3fa667da27f4fbb21faeca34cebc2c
 
@@ -159,5 +408,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
 UpdateCheckData: '|\+(\d+)$||^v([^+]+)\+\d+$'
-CurrentVersion: 1.2.0
-CurrentVersionCode: 1001093
+CurrentVersion: 1.5.0
+CurrentVersionCode: 1001213
