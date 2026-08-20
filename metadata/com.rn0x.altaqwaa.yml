@@ -1,6 +1,13 @@
+# F-Droid metadata — altaqwaa (التقوى)
+#
+# Official submission file for f-droid/fdroiddata
+# (merge into metadata/com.rn0x.altaqwaa.yml there).
+# Build recipe: scripts/fdroid-build.sh · docs/fdroid-build.md.
+
 Categories:
   - Education
   - Multimedia
+
 License: GPL-3.0-or-later
 AuthorName: Rayan Almalki
 AuthorEmail: rn0x.me@gmail.com
@@ -12,20 +19,23 @@ Changelog: https://github.com/rn0x/altaqwaa-android/releases
 AutoName: التقوى
 Summary: تطبيق إسلامي مجاني ومفتوح المصدر
 Description: |-
-  تطبيق «التقوى» — رفيق المسلم اليومي: المصحف، التفسير الميسر، مواقيت
-  الصلاة مع الأذان، اتجاه القبلة، الأذكار وحصن المسلم، المسبحة
-  الإلكترونية (يدوية وصوتية)، راديو، فتاوى ابن باز، الموسوعة التاريخية
-  والخطب. مجاني بالكامل دون إعلانات أو تتبع.
+  تطبيق «التقوى» — رفيق المسلم اليومي:
+  المصحف، التفسير الميسر، مواقيت الصلاة، اتجاه القبلة،
+  الأذكار وحصن المسلم، المسبحة الإلكترونية، راديو التقوى،
+  الموسوعة التاريخية، فتاوى ابن باز، الخطب، وأنشطة تفاعلية.
+  مجاني بالكامل دون إعلانات أو تتبع، ويعمل دون إنترنت للمحتوى المرفق.
   .
-
-RepoType: git
 Repo: https://github.com/rn0x/altaqwaa-android.git
+RepoType: git
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: config.xml|android-versionCode="(\d+)"|.|version="([0-9.]+)"
 CurrentVersion: 3.0.1
 CurrentVersionCode: 30001
+
+# config.xml holds the explicit android-versionCode + version fields (Cordova
+# honors android-versionCode verbatim, so APK versionName/versionCode match).
 
 Builds:
   - versionName: '3.0.1'
@@ -44,6 +54,7 @@ Builds:
     init:
       - npm ci
     build:
+      - sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
       - bash scripts/fdroid-build.sh
     scandelete:
       - platforms
