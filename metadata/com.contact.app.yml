@@ -1,0 +1,46 @@
+Categories:
+  - Phone & SMS
+  - Navigation
+License: 0BSD
+AntiFeatures:
+  - NonFreeNet
+  - TetheredNet
+AuthorName: Public Emergency Codes
+AuthorEmail: support@emergency.codes
+WebSite: https://github.com/Public-Emergency-Codes/Contact
+SourceCode: https://github.com/Public-Emergency-Codes/Contact
+IssueTracker: https://github.com/Public-Emergency-Codes/Contact/issues
+Changelog: https://github.com/Public-Emergency-Codes/Contact/releases
+
+AutoName: Contact
+
+RepoType: git
+Repo: https://github.com/Public-Emergency-Codes/Contact.git
+Binaries: https://github.com/Public-Emergency-Codes/Contact/releases/download/v%v/Contact-%v.apk
+
+Builds:
+  - versionName: '1.0.1'
+    versionCode: 2
+    commit: 505e104b3281fa11c92bc126b7fae826f89cf6e3
+    subdir: android/app
+    antifeatures:
+      NonFreeNet:
+        en-US: Uses proprietary public-safety and mapping network services for optional emergency features.
+      TetheredNet:
+        en-US: Some emergency integrations depend on fixed third-party service endpoints.
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless nodejs npm
+    init:
+      - npm ci
+    gradle:
+      - yes
+    scandelete:
+      - node_modules
+
+AllowedAPKSigningKeys: 2c20946753e9318015f46970197507ee245cbc93ada2f857a387d083bbca5972
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: '1.0.1'
+CurrentVersionCode: 2
