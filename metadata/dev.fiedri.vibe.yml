@@ -15,18 +15,18 @@ Repo: https://github.com/fiedri/vibe-player.git
 Binaries: https://github.com/fiedri/vibe-player/releases/download/v%v/app-release.apk
 
 Builds:
-  - versionName: 0.5.1
-    versionCode: 6
-    commit: 76b76c10dcb1e399e73f6813696cb0e86699cf82
+  - versionName: 0.5.3
+    versionCode: 8
+    commit: 9902b9f33bf2efb5ba9749af94d2ead84e63afcd
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky nodejs npm
-      - npm install -g pnpm@9
+      - npm install -g pnpm@10.33.2
     init:
       - cd ../..
-      - pnpm install --no-frozen-lockfile
+      - pnpm install --frozen-lockfile
       - BUILD_ID=$$COMMIT$$ pnpm build
       - npx cap sync android
       - find node_modules -type f \( -name "*.node" -o -name "*.so*" -o -name "*.wasm"
@@ -39,5 +39,5 @@ AllowedAPKSigningKeys: c99bcb4ede3f6bd244af57785293e008928d1266f622675fe8b1715ad
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.5.1
-CurrentVersionCode: 6
+CurrentVersion: 0.5.3
+CurrentVersionCode: 8
