@@ -21,10 +21,10 @@ Builds:
       - apt-get update || true
       - apt-get install -y --no-install-recommends openjdk-17-jdk-headless || 
         true
-      - yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses ||
-        true
-      - yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager 
-        "platforms;android-37" || true
+      - yes | sdkmanager --licenses || true
+      - yes | sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+      - chown -R vagrant:vagrant /opt/android-sdk || true
+      - chmod -R a+rX /opt/android-sdk || true
     gradle:
       - yes
 
