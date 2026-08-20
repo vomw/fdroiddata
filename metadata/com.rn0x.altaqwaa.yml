@@ -1,0 +1,49 @@
+Categories:
+  - Education
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Rayan Almalki
+AuthorEmail: rn0x.me@gmail.com
+WebSite: https://i8x.net
+SourceCode: https://github.com/rn0x/altaqwaa-android
+IssueTracker: https://github.com/rn0x/altaqwaa-android/issues
+Changelog: https://github.com/rn0x/altaqwaa-android/releases
+
+AutoName: التقوى
+Summary: تطبيق إسلامي مجاني ومفتوح المصدر
+Description: |-
+  تطبيق «التقوى» — رفيق المسلم اليومي: المصحف، التفسير الميسر، مواقيت
+  الصلاة مع الأذان، اتجاه القبلة، الأذكار وحصن المسلم، المسبحة
+  الإلكترونية (يدوية وصوتية)، راديو، فتاوى ابن باز، الموسوعة التاريخية
+  والخطب. مجاني بالكامل دون إعلانات أو تتبع.
+  .
+
+RepoType: git
+Repo: https://github.com/rn0x/altaqwaa-android.git
+
+Builds:
+  - versionName: '3.0.1'
+    versionCode: 30001
+    commit: v3.0.1
+    subdir: .
+    sudo:
+      - apt-get update
+      - apt-get install -y npm nodejs ninja-build openjdk-21-jdk-headless python3 python3-pil
+    ndk: 27.1.12297006
+    init:
+      - npm ci
+    build:
+      - bash scripts/fdroid-build.sh
+    scandelete:
+      - platforms
+      - www
+      - cordova-plugins/moonshine-stt/src/android/native/build
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+
+MaintainerNotes: |-
+  Cordova app. versionCode derives from config.xml (3.0.1 → 30001). The
+  Moonshine STT native engine is vendored from handy-computer/transcribe.cpp
+  v0.2.0 (MIT) and compiled at build time with the NDK (no committed .so).
+  Requires Android SDK + NDK 27 (via ndk: field), Node 20, JDK 21, CMake,
+  Ninja. Builds produce an unsigned APK for F-Droid to sign.
+  .
