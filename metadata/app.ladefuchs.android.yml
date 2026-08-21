@@ -703,7 +703,10 @@ Builds:
     commit: e51a204972e9504bf062a1be26e7ededd2d1149e
     sudo:
       - apt-get update
-      - apt-get install -y npm jq
+      - apt-get install -y jq
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     rm:
       - components/storeReview/storeRating.tsx
