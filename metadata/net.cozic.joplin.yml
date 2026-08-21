@@ -7334,9 +7334,9 @@ Builds:
       - npm install --build-from-source > /dev/null
       - popd
 
-  - versionName: 3.7.2
-    versionCode: 2097811
-    commit: a0bed69a7703e90fc41903df960ec84ba9106d41
+  - versionName: 3.6.21
+    versionCode: 2097809
+    commit: f251427d346243bf72e5b8dfc0b2d50e91bc2fd6
     subdir: packages/app-mobile/android/app
     sudo:
       - apt-get update
@@ -7370,7 +7370,7 @@ Builds:
       - sed -i -e '/geolocation/d' -e '/"autolinking":\ {/a "android":{"buildFromSource":[".*"]},'
         packages/app-mobile/package.json
       - YARN_ENABLE_IMMUTABLE_INSTALLS=false BUILD_SEQUENCIAL=1 yarn install
-      - sed -i -e '/installreferrer/,+17d' packages/app-mobile/node_modules/react-native-device-info/android/build.gradle
+      - sed -i -e '/installreferrer/,+12d' packages/app-mobile/node_modules/react-native-device-info/android/build.gradle
       - pushd packages/app-mobile/node_modules/expo-camera/android
       - sed -i -e '/gms/d' -e '/mlkit/d' build.gradle
       - cd src/main/java/expo/modules/camera
@@ -7401,6 +7401,7 @@ Builds:
       - packages/app-mobile/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
       - packages/app-mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - packages/app-mobile/node_modules/react-native-device-info/android/build.gradle
+      - packages/app-mobile/node_modules/react-native-get-random-values/android/build.gradle
       - packages/app-mobile/node_modules/react-native-image-picker/android/build.gradle
       - packages/app-mobile/node_modules/react-native-localize/android/build.gradle
       - packages/app-mobile/node_modules/react-native-rsa-native/android/bin/build.gradle
@@ -7443,8 +7444,9 @@ MaintainerNotes: |-
   - "scanignore" of "build.gradle" are for local Maven repositories, the React Native folder
     is for "react-native-0.66.1.aar", and the JSC Android folder for "android-jsc-intl-r241213.jar".
   - we build libvips from source for the sharp library
+  - we should pickup only Latest labelled tag name from https://github.com/laurent22/joplin-android/releases and use that name to find the same named tag in source code repo, and build that
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags android-.*
-CurrentVersion: 3.7.2
-CurrentVersionCode: 2097811
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 3.6.21
+CurrentVersionCode: 2097809
