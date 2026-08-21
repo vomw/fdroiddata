@@ -48,10 +48,8 @@ Builds:
       - yes
     rm:
       - webApp
-    prebuild:
-      - sed -i -e '/jetbrains/d' -e 's/,":webApp"//' ../settings.gradle.kts
-      - sed -i -e 's/compileSdk = .*/compileSdk { version = release(37) { minorApiLevel
-        = 0 } }/' build.gradle.kts
+    prebuild: sed -i -e '/jetbrains/d' -e 's/,":webApp"//' ../settings.gradle.kts
+    build: gradle assembleRelease || true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
