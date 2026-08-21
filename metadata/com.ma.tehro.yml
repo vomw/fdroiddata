@@ -43,11 +43,15 @@ Builds:
   - versionName: 1.5.0
     versionCode: 13
     commit: 62216e718ae8ef384e168c5fb682f0aa4558b792
-    subdir: app
+    subdir: androidApp
     gradle:
       - yes
+    rm:
+      - webApp
+    prebuild: sed -i -e '/jetbrains/d' -e 's/,":webApp"//' ../settings.gradle.kts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: gradle/libs.versions.toml|appVersionCode\s=\s"(\d+)"|.|appVersionName\s=\s"(.*)"
 CurrentVersion: 1.5.0
 CurrentVersionCode: 13
