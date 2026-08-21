@@ -26,10 +26,15 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y nodejs npm
-    init: npm ci
     gradle:
       - yes
-    prebuild: npm run build:android
+    prebuild:
+      - npm ci
+      - npm run build:android
+    scanignore:
+      - node_modules/@capacitor/assets/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules
 
 AllowedAPKSigningKeys: b355cb6472af2d21d71dc6ddfe238b14da6759cf025383d6a933a78049bfd37c
 
