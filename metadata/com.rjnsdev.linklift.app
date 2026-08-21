@@ -1,0 +1,28 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: Rajnish Sharma
+SourceCode: https://github.com/RajnishOne/LinkLift
+IssueTracker: https://github.com/RajnishOne/LinkLift/issues
+Changelog: https://github.com/RajnishOne/LinkLift/releases
+
+AutoName: LinkLift
+
+RepoType: git
+Repo: https://github.com/RajnishOne/LinkLift.git
+
+Builds:
+  - versionName: '2.6'
+    versionCode: 16
+    commit: fc68a2dde280b016aab9b69f5a4797f3b2bb4b9b
+    subdir: app
+    gradle:
+      - yes
+    binaries: https://github.com/RajnishOne/LinkLift/releases/download/v2.6/app-release.apk
+
+AllowedAPKSigningKeys: 647060481d45eebe02328a07c42c786faff4735cb6aaa6dd5ca18808bc25119e
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '2.6'
+CurrentVersionCode: 16
