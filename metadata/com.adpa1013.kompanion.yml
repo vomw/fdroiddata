@@ -12,18 +12,50 @@ RepoType: git
 Repo: https://github.com/adpa1013/kompanion.git
 
 Builds:
-  - versionName: 1.4.3
-    versionCode: 2
-    commit: 1f33dba53a6e844a9da7f4984386286fe0cab0a0
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.4.4
+    versionCode: 31
+    commit: 1e492972772ea444adeb9c3b8dfe56a498a1712c
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/adpa1013/kompanion/releases/download/v%v/kompanion-v%v-armeabi-v7a.apk
     srclibs:
       - flutter@stable
     build:
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 1.4.4
+    versionCode: 32
+    commit: 1e492972772ea444adeb9c3b8dfe56a498a1712c
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/adpa1013/kompanion/releases/download/v%v/kompanion-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 1.4.4
+    versionCode: 33
+    commit: 1e492972772ea444adeb9c3b8dfe56a498a1712c
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/adpa1013/kompanion/releases/download/v%v/kompanion-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AllowedAPKSigningKeys: 53831915683ff02f843f310c54a4f144f2f4815431bfbea392cbff841acf55f9
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.4.3
-CurrentVersionCode: 2
+CurrentVersion: 1.4.4
+CurrentVersionCode: 33
