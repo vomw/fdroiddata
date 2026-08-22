@@ -49,6 +49,7 @@ Builds:
       - .pub-cache
     build:
       - sed -i 's/version "9\.1\.0"/version "8.13.0"/' android/settings.gradle.kts
+      - python3 tool/strip_firebase.py
       - sed -i 's|gradle-9\.3\.1-all\.zip|gradle-8\.14\.3-all\.zip|' android/gradle/wrapper/gradle-wrapper.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --flavor fdroid --dart-define=ENCLAVD_FLAVOR=fdroid --dart-define=ENCLAVD_FEATURE_NOTIFICATIONS=true --dart-define=ENCLAVD_FEATURE_CHAT=true --dart-define=ENCLAVD_FEATURE_SEARCH=true
