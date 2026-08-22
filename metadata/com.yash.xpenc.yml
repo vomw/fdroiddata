@@ -1,45 +1,3 @@
-# Reference copy of the fdroiddata recipe for XPENC — the live version is in
-# the fdroiddata MR (gitlab.com/fdroid/fdroiddata, metadata/com.yash.xpenc.yml).
-# Kept here so the repo documents its own F-Droid packaging. Replaced with a
-# byte-accurate copy of the live GitLab file on 2026-08-22 (pasted directly
-# from the MR editor) — the previous version of this file had a fabricated
-# 1.1.2 entry that was never actually in the live recipe; don't reintroduce
-# it. Re-verify with `fdroid lint` + `fdroid rewritemeta` before submitting.
-#
-# Live status as of 2026-08-22: F-Droid users are stuck on 1.2.1/versionCode 73
-# because every 1.3.0 and 1.4.0 build entry upstream carries
-# `disable: https://github.com/PATILYASHH/XPENC/issues/49` — a real database
-# migration crash on upgrade from 1.2.1, fixed in v1.4.1. Those disables are
-# correct and left in place.
-#
-# v1.4.1 (versionCode 111/112/113) is ALSO broken — disabled here: confirmed
-# via a real failed F-Droid sandbox build
-# (gitlab.com/PATILYASHH/data/-/jobs/16030524904). `flutter pub get
-# --enforce-lockfile` under the pinned Flutter 3.38.9 fails with "Unable to
-# satisfy `pubspec.yaml` using `pubspec.lock`" — v1.4.1's tagged pubspec.lock
-# (commit 6bc6d131) was generated against a newer local Flutter and never
-# regenerated against 3.38.9 before tagging. That drift was fixed twice after
-# the fact (commits 4e0aa46, then 592033e = the v1.4.3 tag) but tags are
-# immutable, so v1.4.1's own lockfile is permanently stuck broken.
-#
-# Target v1.4.5 instead (commit 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8):
-# it's downstream of both lockfile fixes AND of the real FLOSS fix for #57 —
-# commit 254274d forked flutter_tesseract_ocr (packages/flutter_tesseract_ocr_floss)
-# to pull cz.adaptech.tesseract4android straight from JitPack (an F-Droid
-# trusted repo) instead of vendoring a prebuilt .aar, verified end-to-end with
-# a real release build + on-device OCR run. v1.4.2's build entries below stay
-# disabled (they still carry the vendored-blob/ML Kit problem).
-#
-# Also corrected WebSite below: live file still pointed at the old
-# getxpenc.vercel.app; the project moved to xpenc.in (commit a5f30b0),
-# unrelated to today's build fix but stale and trivial to fix alongside it.
-#
-# versionCode scheme (F-Droid standard for Flutter, set in build.gradle.kts):
-#   base versionCode * 10 + ABI  (armeabi-v7a=1, arm64-v8a=2, x86_64=3).
-#   Encoded in VercodeOperation. commit: uses the full hash (not a tag) per
-# F-Droid review. Flutter version is extracted (digit-anchored sed) from
-# release.yml at build time. No `rm:` — the project is Android-only.
-
 Categories:
   - Finance Manager
 License: MIT
@@ -365,7 +323,8 @@ Builds:
 
   - versionName: 1.4.1
     versionCode: 111
-    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
+    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned
+      Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
     commit: 6bc6d131444730fcfd58ac04fdf35e1ebc116cc2
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
@@ -386,7 +345,8 @@ Builds:
 
   - versionName: 1.4.1
     versionCode: 112
-    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
+    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned
+      Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
     commit: 6bc6d131444730fcfd58ac04fdf35e1ebc116cc2
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
@@ -407,68 +367,9 @@ Builds:
 
   - versionName: 1.4.1
     versionCode: 113
-    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
+    disable: pubspec.lock at this commit doesn't satisfy pubspec.yaml under the pinned
+      Flutter 3.38.9 (--enforce-lockfile fails) — see gitlab.com/PATILYASHH/data/-/jobs/16030524904
     commit: 6bc6d131444730fcfd58ac04fdf35e1ebc116cc2
-    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    srclibs:
-      - flutter@stable
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - .pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
-    ndk: 28.2.13676358
-
-  - versionName: 1.4.5
-    versionCode: 151
-    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
-    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    srclibs:
-      - flutter@stable
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - .pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
-    ndk: 28.2.13676358
-
-  - versionName: 1.4.5
-    versionCode: 152
-    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    srclibs:
-      - flutter@stable
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - .pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
-    ndk: 28.2.13676358
-
-  - versionName: 1.4.5
-    versionCode: 153
-    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -532,6 +433,66 @@ Builds:
     versionCode: 123
     disable: https://github.com/PATILYASHH/XPENC/issues/57
     commit: 4e0aa4626ea3ca53288c18260a4efd798a21ed2e
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+    ndk: 28.2.13676358
+
+  - versionName: 1.4.5
+    versionCode: 151
+    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+    ndk: 28.2.13676358
+
+  - versionName: 1.4.5
+    versionCode: 152
+    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '([0-9][^']*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: 28.2.13676358
+
+  - versionName: 1.4.5
+    versionCode: 153
+    commit: 541f7ae4db384cdffbd0765cdbcdeb532f55d6c8
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
