@@ -122,13 +122,16 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y golang-go gcc libc-dev
+      - apt-get install -y golang-go gcc libc-dev curl
     gradle:
       - yes
     srclibs:
       - go@go1.27.0
       - reproducible-apk-tools@v0.3.0
     build:
+      - curl -L https://go.dev/dl/go1.24.6.linux-amd64.tar.gz -o /tmp/go-bootstrap.tar.gz
+      - tar -C /tmp -xzf /tmp/go-bootstrap.tar.gz
+      - export GOROOT_BOOTSTRAP=/tmp/go
       - pushd $$go$$/src
       - ./make.bash
       - popd
