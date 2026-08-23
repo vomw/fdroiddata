@@ -19,15 +19,15 @@ Builds:
     timeout: 14400
     sudo:
       - apt-get update
-      - apt-get install -y build-essential scons pkg-config libx11-dev libxcursor-dev
-        libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev
-        libxi-dev libxrandr-dev
+      - apt-get install -y build-essential scons pkg-config openjdk-17-jdk-headless
+        libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev
+        libpulse-dev libudev-dev libxi-dev libxrandr-dev
     output: bin/PlayTable.apk
     srclibs:
       - Godot@4.3-stable
     prebuild: mkdir -p bin
     build:
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export JAVA_HOME=$(ls -d /usr/lib/jvm/java-17-openjdk-* | head -1)
       - export ANDROID_SDK_ROOT=$$SDK$$
       - pushd $$Godot$$
       - scons -j `nproc` platform=linuxbsd target=editor
