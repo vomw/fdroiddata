@@ -91,6 +91,84 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
+  - versionName: 1.2.1
+    versionCode: 161
+    commit: 50bd8a568d6912306fb87ad446f036b23737843d
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i -e '/google_mlkit/d' -e '/cunning_document_scanner/d' pubspec.yaml
+      - sed -i 's/applicationId = "com.ventouxlabs.paperlessgo"/applicationId = "com.ventouxlabs.paperlessgo.nogoogle"/'
+        android/app/build.gradle.kts
+      - cp pubspec.lock.fdroid pubspec.lock
+      - cp lib/features/scanner/processing/mlkit_deskew_stub.dart lib/features/scanner/processing/mlkit_deskew.dart
+      - cp lib/features/scanner/processing/ocr_extractor_stub.dart lib/features/scanner/processing/ocr_extractor.dart
+      - cp lib/features/scanner/document_scanner_stub.dart lib/features/scanner/document_scanner.dart
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 1.2.1
+    versionCode: 162
+    commit: 50bd8a568d6912306fb87ad446f036b23737843d
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i -e '/google_mlkit/d' -e '/cunning_document_scanner/d' pubspec.yaml
+      - sed -i 's/applicationId = "com.ventouxlabs.paperlessgo"/applicationId = "com.ventouxlabs.paperlessgo.nogoogle"/'
+        android/app/build.gradle.kts
+      - cp pubspec.lock.fdroid pubspec.lock
+      - cp lib/features/scanner/processing/mlkit_deskew_stub.dart lib/features/scanner/processing/mlkit_deskew.dart
+      - cp lib/features/scanner/processing/ocr_extractor_stub.dart lib/features/scanner/processing/ocr_extractor.dart
+      - cp lib/features/scanner/document_scanner_stub.dart lib/features/scanner/document_scanner.dart
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 1.2.1
+    versionCode: 163
+    commit: 50bd8a568d6912306fb87ad446f036b23737843d
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - sed -i -e '/google_mlkit/d' -e '/cunning_document_scanner/d' pubspec.yaml
+      - sed -i 's/applicationId = "com.ventouxlabs.paperlessgo"/applicationId = "com.ventouxlabs.paperlessgo.nogoogle"/'
+        android/app/build.gradle.kts
+      - cp pubspec.lock.fdroid pubspec.lock
+      - cp lib/features/scanner/processing/mlkit_deskew_stub.dart lib/features/scanner/processing/mlkit_deskew.dart
+      - cp lib/features/scanner/processing/ocr_extractor_stub.dart lib/features/scanner/processing/ocr_extractor.dart
+      - cp lib/features/scanner/document_scanner_stub.dart lib/features/scanner/document_scanner.dart
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
@@ -98,5 +176,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.1.7
-CurrentVersionCode: 123
+CurrentVersion: 1.2.1
+CurrentVersionCode: 163
