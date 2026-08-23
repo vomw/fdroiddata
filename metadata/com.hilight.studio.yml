@@ -1,0 +1,53 @@
+Categories:
+  - System
+License: MIT
+AuthorName: Dhananjay Bhosale
+AuthorWebSite: https://github.com/DhananjayBhosale
+SourceCode: https://github.com/DhananjayBhosale/hilight-studio
+IssueTracker: https://github.com/DhananjayBhosale/hilight-studio/issues
+Changelog:
+  https://github.com/DhananjayBhosale/hilight-studio/blob/HEAD/CHANGELOG.md
+
+AutoName: HiLight Studio
+Summary: Control the HiLight LED array on supported Pixel 11 Pro devices
+Description: |-
+  HiLight Studio controls the eight-LED HiLight array on the Pixel 11 Pro,
+  Pixel 11 Pro XL, and Pixel 11 Pro Fold running Android 17.
+
+  Features include solid colours, animated patterns, presets, notification and
+  foreground-app rules, per-contact rules, and microphone or camera activity
+  rules. Runtime limits, quiet hours, Do Not Disturb, Battery Saver, and
+  low-battery controls help prevent unwanted output.
+
+  The app automatically uses root access when available. Shizuku and an
+  ADB-started helper are supported as alternatives. Privileged access must be
+  restored after a reboot.
+
+  There are no advertisements, analytics, accounts, or telemetry. Rules and
+  settings stay on the device. Notification contents, audio, and video are never
+  recorded or uploaded. The internet is used only when the user manually checks
+  for updates.
+
+  This is experimental software for specific hardware. It is not affiliated
+  with or endorsed by Google. Review the upstream setup instructions and safety
+  notes before use.
+
+RepoType: git
+Repo: https://github.com/DhananjayBhosale/hilight-studio.git
+
+Builds:
+  - versionName: 1.0.6
+    versionCode: 7
+    commit: fa8b89fc97087d910d100c8482e9db701f6fb2ab
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) {
+        minorApiLevel = 0 } }/' build.gradle.kts
+      - sed -i -e '/signingConfig = signingConfigs.getByName/d' build.gradle.kts
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+-experimental$
+CurrentVersion: 1.0.6
+CurrentVersionCode: 7
