@@ -19,12 +19,13 @@ Builds:
     timeout: 14400
     sudo:
       - apt-get update
-      - apt-get install -y pkgconf scons
+      - apt-get install -y build-essential scons pkg-config libx11-dev libxcursor-dev
+        libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev
+        libxi-dev libxrandr-dev
     output: bin/PlayTable.apk
     srclibs:
       - Godot@4.3-stable
-    prebuild:
-      - mkdir -p bin
+    prebuild: mkdir -p bin
     build:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_SDK_ROOT=$$SDK$$
@@ -47,5 +48,6 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+UpdateCheckData: export_presets.cfg|version/code=(\d+)|.|version/name="([\d.]+)"
 CurrentVersion: 0.2.1
 CurrentVersionCode: 3
