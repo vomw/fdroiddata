@@ -11,8 +11,6 @@ AutoName: xyzterm
 RepoType: git
 Repo: https://github.com/vxyzview/xyzterm
 
-AllowedAPKSigningKeys: f665fa36963b20cec9954399d2213331be522aca035ebf56cfa5a6abdf3e3de2
-
 Builds:
   - versionName: 1.0.0
     versionCode: 1
@@ -21,11 +19,15 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - sed -r '/(foojay|toolchainVendor)/d' -i ../gradle/gradle-daemon-jvm.properties || true
+      - sed -r '/(foojay|toolchainVendor)/d' -i ../gradle/gradle-daemon-jvm.properties
+        || true
       - sed -ri '/foojay-resolver-convention/d' -i ../settings.gradle.kts || true
+      - sed -r '/repo.eclipse.org/d' -i ../settings.gradle.kts || true
       - sed -r '/signingConfigs.getByName/d' -i build.gradle.kts || true
 
-AutoUpdateMode: Version v%v
+AllowedAPKSigningKeys: f665fa36963b20cec9954399d2213331be522aca035ebf56cfa5a6abdf3e3de2
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: 1.0.0
 CurrentVersionCode: 1
