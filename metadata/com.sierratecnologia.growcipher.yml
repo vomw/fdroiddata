@@ -13,30 +13,84 @@ RepoType: git
 Repo: https://github.com/ricardosierra/growcipher.git
 
 Builds:
-  - versionName: 0.2.0
-    versionCode: 2
-    commit: 1333c589b01899c3d6201da8bf0e56f43102c027
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 0.2.1
+    versionCode: 31
+    commit: 97754aee40c284579d8323abd8b52c4f25168976
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
-      - flutter@3.44.9
+      - flutter@stable
     rm:
       - ios
-      - macos
-      - windows
       - linux
+      - macos
       - web
+      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 0.2.1
+    versionCode: 32
+    commit: 97754aee40c284579d8323abd8b52c4f25168976
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 0.2.1
+    versionCode: 33
+    commit: 97754aee40c284579d8323abd8b52c4f25168976
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.2.0
-CurrentVersionCode: 2
+CurrentVersion: 0.2.1
+CurrentVersionCode: 33
