@@ -19,12 +19,9 @@ Builds:
     timeout: 14400
     sudo:
       - apt-get update
-      - echo "=== JVMS INSTALADAS ==="; ls -d /usr/lib/jvm/* 2>/dev/null || echo nenhuma
-      - echo "=== JAVA DEFAULT ==="; javac -version 2>&1; readlink -f $(which javac)
-      - echo "=== PACOTES JDK DISPONIVEIS ==="; apt-cache search --names-only 'openjdk-.*-jdk'
-        | sort
-      - echo "=== DEBIAN ==="; cat /etc/os-release | head -3
-      - exit 1
+      - apt-get install -y build-essential scons pkg-config openjdk-17-jdk-headless
+        libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev
+        libpulse-dev libudev-dev libxi-dev libxrandr-dev
     output: bin/PlayTable.apk
     srclibs:
       - Godot@4.3-stable
