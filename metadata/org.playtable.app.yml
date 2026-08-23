@@ -19,9 +19,7 @@ Builds:
     timeout: 14400
     sudo:
       - apt-get update
-      - apt-get install -y build-essential scons pkg-config libx11-dev libxcursor-dev
-        libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev
-        libxi-dev libxrandr-dev
+      - apt-get install -y pkgconf scons g++
     output: bin/PlayTable.apk
     srclibs:
       - Godot@4.6-stable
@@ -32,16 +30,18 @@ Builds:
       - pushd $$Godot$$
       - scons -j `nproc` platform=linuxbsd target=editor
       - scons -j `nproc` platform=android target=template_release arch=arm64
-      - scons -j `nproc` platform=android target=template_release arch=arm32
-      - cd platform/android/java
-      - gradle generateGodotTemplates
+      - scons -j `nproc` platform=android target=template_release arch=arm32 generate_apk=yes
       - popd
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
       - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
         export_presets.cfg
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
+      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
+      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" $GODOT_CFG
+      - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
         bin/PlayTable.apk
-    ndk: 23.2.8568313
+    ndk: 28.1.13356709
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
