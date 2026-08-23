@@ -1,0 +1,70 @@
+Categories:
+  - Religion
+License: MIT
+AuthorName: Abdalrahman Samir
+AuthorEmail: abdalraman.samir2001@gmail.com
+WebSite: https://github.com/Cancelllls/Aya
+SourceCode: https://github.com/Cancelllls/Aya
+IssueTracker: https://github.com/Cancelllls/Aya/issues
+Translation: https://github.com/Cancelllls/Aya
+Changelog: https://github.com/Cancelllls/Aya/releases
+
+AutoName: Aya
+
+RepoType: git
+Repo: https://github.com/Cancelllls/Aya.git
+
+Builds:
+  - versionName: 1.2.9
+    versionCode: 12209
+    commit: 2bb9faa91e66f2ff536d44098b01f2faae561293
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    srclibs:
+      - flutter@3.44.4
+    rm:
+      - ios
+    prebuild:
+      - sed -i '/in_app_purchase/d' pubspec.yaml
+      - rm -f pubspec.lock
+      - cp lib/donation/google_play_donation_stub.dart lib/donation/google_play_donation.dart
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - find .pub-cache -name "build.gradle" -path "*/geolocator_android*/*" -exec
+        sed -i "/play-services-location/d" {} +
+      - printf '%s\n' 'package com.baseflow.geolocator.location;' 'import android.app.Activity;'
+        'import android.content.Context;' 'import com.baseflow.geolocator.errors.ErrorCallback;'
+        'public class FusedLocationClient implements LocationClient {' '  public FusedLocationClient(Context
+        c, LocationOptions o) {}' '  public void isLocationServiceEnabled(LocationServiceListener
+        l) {}' '  public void getLastKnownPosition(PositionChangedCallback p, ErrorCallback
+        e) {}' '  public boolean onActivityResult(int r, int c) { return false; }'
+        '  public void startPositionUpdates(Activity a, PositionChangedCallback p,
+        ErrorCallback e) {}' '  public void stopPositionUpdates() {}' '}' > $(find
+        .pub-cache -name "FusedLocationClient.java")
+      - find .pub-cache -name "GeolocationManager.java" -exec sed -i "/com.google.android.gms/d"
+        {} +
+      - find .pub-cache -name "GeolocationManager.java" -exec sed -i "/LocationClient
+        createLocationClient/,/^[[:space:]]\{2\}\}/c\  public LocationClient createLocationClient(Context
+        context, boolean forceAndroidLocationManager, LocationOptions locationOptions)
+        {\n    return new LocationManagerClient(context, locationOptions);\n  }" {}
+        +
+      - find .pub-cache -name "GeolocationManager.java" -exec sed -i "/isGooglePlayServicesAvailable(Context/,/^[[:space:]]\{2\}\}/c\  private
+        boolean isGooglePlayServicesAvailable(Context context) {\n    return false;\n  }"
+        {} +
+      - printf '%s\n' "-dontwarn com.google.android.play.core.**" "-dontwarn io.flutter.embedding.**"
+        "-dontwarn com.google.android.gms.**" "-dontwarn com.baseflow.geolocator.**"
+        "-dontwarn com.google.android.play.**" >> android/app/proguard-rules.pro
+    scanignore:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64" --obfuscate --split-debug-info=build/debug-info
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 2000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.2.9
+CurrentVersionCode: 12209
