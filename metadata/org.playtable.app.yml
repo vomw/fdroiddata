@@ -13,21 +13,21 @@ RepoType: git
 Repo: https://github.com/ricardosierra/jogos-de-mesa-offline.git
 
 Builds:
-  - versionName: 0.2.1
-    versionCode: 3
-    commit: b19baef60b87aa98db9415b0dd5be1abc68fe845
+  - versionName: 0.3.0
+    versionCode: 4
+    commit: df92aeafbf01f1264bf6e157952c6f19a156f9b5
     timeout: 14400
     sudo:
       - apt-get update
-      - apt-get install -y build-essential scons pkg-config openjdk-17-jdk-headless
-        libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev
-        libpulse-dev libudev-dev libxi-dev libxrandr-dev
+      - apt-get install -y build-essential scons pkg-config libx11-dev libxcursor-dev
+        libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev
+        libxi-dev libxrandr-dev
     output: bin/PlayTable.apk
     srclibs:
-      - Godot@4.3-stable
+      - Godot@4.6-stable
     prebuild: mkdir -p bin
     build:
-      - export JAVA_HOME=$(ls -d /usr/lib/jvm/java-17-openjdk-* | head -1)
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_SDK_ROOT=$$SDK$$
       - pushd $$Godot$$
       - scons -j `nproc` platform=linuxbsd target=editor
@@ -39,9 +39,6 @@ Builds:
       - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
         export_presets.cfg
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
-      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
-      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" $GODOT_CFG
-      - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
         bin/PlayTable.apk
     ndk: 23.2.8568313
@@ -49,5 +46,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: export_presets.cfg|version/code=(\d+)|.|version/name="([\d.]+)"
-CurrentVersion: 0.2.1
-CurrentVersionCode: 3
+CurrentVersion: 0.3.0
+CurrentVersionCode: 4
