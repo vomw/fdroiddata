@@ -35,7 +35,7 @@ Builds:
 
   - versionName: 2.0.1
     versionCode: 2011
-    commit: 7f5724ac16157ea7cc003396b94fc993a64b3353
+    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -45,15 +45,22 @@ Builds:
     srclibs:
       - flutter@3.47.1
     prebuild:
+      - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
+      - cd ..
+      - mv com.enclavd.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.enclavd.app
     scandelete:
       - .pub-cache
     build: bash tool/fdroid_build.sh $$flutter$$ android-arm
 
   - versionName: 2.0.1
     versionCode: 2012
-    commit: 7f5724ac16157ea7cc003396b94fc993a64b3353
+    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -63,15 +70,22 @@ Builds:
     srclibs:
       - flutter@3.47.1
     prebuild:
+      - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
+      - cd ..
+      - mv com.enclavd.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.enclavd.app
     scandelete:
       - .pub-cache
     build: bash tool/fdroid_build.sh $$flutter$$ android-arm64
 
   - versionName: 2.0.1
     versionCode: 2013
-    commit: 7f5724ac16157ea7cc003396b94fc993a64b3353
+    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -81,8 +95,15 @@ Builds:
     srclibs:
       - flutter@3.47.1
     prebuild:
+      - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
+      - cd ..
+      - mv com.enclavd.app $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.enclavd.app
     scandelete:
       - .pub-cache
     build: bash tool/fdroid_build.sh $$flutter$$ android-x64
