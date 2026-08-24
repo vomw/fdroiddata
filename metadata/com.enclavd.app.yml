@@ -33,9 +33,9 @@ Builds:
     binary: 
       https://github.com/Slime-jkl/enclavd-android-source/releases/download/v%v/Enclavd_v%v--fdroid.apk
 
-  - versionName: 2.0.1
-    versionCode: 2011
-    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
+  - versionName: 2.0.2
+    versionCode: 2021
+    commit: 6ebeea398ff2782f48f9036dc077bd13e9e0b8a6
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -43,8 +43,11 @@ Builds:
     binary: 
       https://github.com/Slime-jkl/enclavd-android-source/releases/download/v%v/binary-armeabi-v7a.apk
     srclibs:
-      - flutter@3.47.1
+      - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\\ '(.*)'/\\1/p" .github/workflows/build.yml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
       - cd ..
       - mv com.enclavd.app $repo
@@ -58,9 +61,9 @@ Builds:
       - .pub-cache
     build: bash tool/fdroid_build.sh $$flutter$$ android-arm
 
-  - versionName: 2.0.1
-    versionCode: 2012
-    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
+  - versionName: 2.0.2
+    versionCode: 2022
+    commit: 6ebeea398ff2782f48f9036dc077bd13e9e0b8a6
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -68,8 +71,11 @@ Builds:
     binary: 
       https://github.com/Slime-jkl/enclavd-android-source/releases/download/v%v/binary-arm64-v8a.apk
     srclibs:
-      - flutter@3.47.1
+      - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\\ '(.*)'/\\1/p" .github/workflows/build.yml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
       - cd ..
       - mv com.enclavd.app $repo
@@ -83,9 +89,9 @@ Builds:
       - .pub-cache
     build: bash tool/fdroid_build.sh $$flutter$$ android-arm64
 
-  - versionName: 2.0.1
-    versionCode: 2013
-    commit: dd8dad404684ebf6fea667307c6e56ce3ed97436
+  - versionName: 2.0.2
+    versionCode: 2023
+    commit: 6ebeea398ff2782f48f9036dc077bd13e9e0b8a6
     sudo:
       - mkdir -p /home/runner/work/enclavd-android-source
       - chown -R vagrant /home/runner/work/enclavd-android-source
@@ -93,8 +99,11 @@ Builds:
     binary: 
       https://github.com/Slime-jkl/enclavd-android-source/releases/download/v%v/binary-x86_64.apk
     srclibs:
-      - flutter@3.47.1
+      - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\\ '(.*)'/\\1/p" .github/workflows/build.yml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/home/runner/work/enclavd-android-source/enclavd-android-source
       - cd ..
       - mv com.enclavd.app $repo
@@ -117,5 +126,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s*[0-9.]+?\+([0-9]+)|pubspec.yaml|version:\s*([0-9.]+)
-CurrentVersion: 2.0.1
-CurrentVersionCode: 2013
+CurrentVersion: 2.0.2
+CurrentVersionCode: 2023
