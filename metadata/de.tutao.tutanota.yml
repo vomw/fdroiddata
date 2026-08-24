@@ -6642,6 +6642,10 @@ Builds:
       - rm -rf packages/node-mimimi/dist/*.node
       - mkdir -p build/app-android
       - node buildSrc/prepareMobileBuild.js --app mail
+      - sed -i '/com.android.vending.BILLING/d' app-android/app/src/main/AndroidManifest.xml
+      - sed -i '/com.android.billingclient/d' app-android/gradle/libs.versions.toml
+      - sed -i '/libs.billing/d' app-android/tutashared/build.gradle.kts
+      - rm -rf app-android/tutashared/src/tutao
     scandelete:
       - node_modules
       - src/app-kit/mimimi/node_modules
