@@ -11,7 +11,7 @@ AutoName: VaultPony
 
 RepoType: git
 Repo: https://github.com/norsehorse-dev/VaultPonyAndroid.git
-Binaries: 
+Binaries:
   https://github.com/norsehorse-dev/VaultPonyAndroid/releases/download/v%v/VaultPonyAndroid-v%v.apk
 
 Builds:
@@ -21,18 +21,13 @@ Builds:
     subdir: app
     submodules: true
     sudo:
-      - mkdir -p /home/runner
-      - chown vagrant /home/runner
       - apt-get update
-      - apt-get install -y build-essential
+      - apt-get install -y rustup build-essential
     output: build/outputs/apk/release/app-release-unsigned.apk
-    srclibs:
-      - rustup@1.28.2
     build:
-      - export CARGO_HOME=/home/runner/.cargo
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.95.0 --target aarch64-linux-android
-        --target armv7-linux-androideabi --target x86_64-linux-android
-      - source $CARGO_HOME/env
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default 1.95.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
       - gradle assembleRelease
     ndk: 27.2.12479018
