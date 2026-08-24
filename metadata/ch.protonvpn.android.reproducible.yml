@@ -1,0 +1,48 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: The backend is proprietary
+  TetheredNet:
+    en-US: Relies on Proton's API and VPN servers
+  Tracking:
+    en-US: Usage and crash reporting are enabled by default (require opt-out).
+Categories:
+  - Connectivity
+  - Internet
+  - VPN & Proxy
+License: GPL-3.0-only
+AuthorName: Proton
+AuthorEmail: support@protonvpn.com
+WebSite: https://protonvpn.com/
+SourceCode: https://github.com/ProtonVPN/android-app
+IssueTracker: https://github.com/ProtonVPN/android-app/issues
+Changelog: https://github.com/ProtonVPN/android-app/releases
+
+AutoName: ProtonVPN
+
+RepoType: git
+Repo: https://github.com/ProtonVPN/android-app.git
+Binaries: 
+  https://github.com/ProtonVPN/android-app/releases/download/%v/ProtonVPN-%v.%c.-production-vanilla-openSource-release-fdroid.apk
+
+Builds:
+  - versionName: 5.20.57.0
+    versionCode: 605205700
+    commit: fd1cb1dd108888e57b36ce8d7cc1dcdc25517c61
+    subdir: app
+    gradle:
+      - production
+      - vanilla
+      - openSource
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+    gradleprops:
+      - buildUniversalApk
+      - appId=ch.protonvpn.android.reproducible
+
+AllowedAPKSigningKeys: dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: metadata/version_fdroid.txt|versionCode=(\d+)|.|versionName=(.*)
+CurrentVersion: 5.20.57.0
+CurrentVersionCode: 605205700
