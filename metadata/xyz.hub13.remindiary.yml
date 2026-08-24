@@ -1,14 +1,3 @@
-# DRAFT — not yet submitted to fdroiddata.
-#
-# This is a working copy of the recipe that would eventually be copied into
-# a checkout of https://gitlab.com/fdroid/fdroiddata as
-# metadata/xyz.hub13.remindiary.yml for the inclusion merge request. It has
-# NOT been run against F-Droid's actual isolated buildserver yet — every
-# block marked VERIFY below is a guess grounded in this repo's own working
-# release.yml and in real precedent (fdroiddata's com.mattermost.rnbeta.yml),
-# not a confirmed-working recipe. Validate with `fdroid build --verbose`
-# against the real buildserver VM before opening the MR.
-
 Categories:
   - Writing
 License: GPL-3.0-or-later
@@ -17,7 +6,6 @@ IssueTracker: https://github.com/grantstephens/ReminDiary/issues
 Changelog: https://github.com/grantstephens/ReminDiary/releases
 
 AutoName: ReminDiary
-Summary: Offline daily journal that surfaces what you wrote this day in past years
 Description: |-
   ReminDiary is an offline daily journal. Write today's entry and save it, and the
   app reveals what you wrote on this same calendar date in previous years.
@@ -42,153 +30,49 @@ Builds:
   - versionName: 1.0.0
     versionCode: 10000999
     commit: v1.0.0
-
-    # No subdir. This is the fix for a real structural bug the first draft
-    # had: fdroidserver's prepare_source() checks os.path.exists(root_dir)
-    # - where root_dir = build_dir/subdir - BEFORE init/prebuild ever run,
-    # and raises BuildException('Missing subdir ...') if it is not there.
-    # android/ does not exist at checkout - Expo's managed workflow
-    # generates it via `expo prebuild`, mid-recipe, not before. Confirmed
-    # against fdroidserver 2.4.5's own source (common.py) and against a
-    # real, currently-accepted Expo-managed-workflow recipe already in
-    # fdroiddata (com.mmazzarolo.breathly.yml), which uses this same
-    # no-subdir + output: + custom build: shape for exactly this reason.
-
-    # Setup phase — network is allowed here. Node bootstrap matches this
-    # repo's own release.yml/mise.toml pin (v24.16.0), rather than the
-    # buildserver's system nodejs (Debian trixie ships 20.19.2), so the
-    # build uses the exact same Node version as every other release of
-    # this app. Checksum from nodejs.org's own SHASUMS256.txt.
     sudo:
-      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v24.16.0/node-v24.16.0-linux-x64.tar.xz
-      - echo "d804845d34eddc21dc1092b519d643ef40b1f58ec5dec5c22b1f4bd8fabde6c9  /tmp/node.tar.xz" | sha256sum -c -
-      - tar xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local/
-
-    # Still setup phase, still network-allowed. `npm ci` is the one real
-    # unknown here — this is the exact step that decides whether Expo/RN
-    # apps are even buildable on F-Droid's infra. CI=1 and
-    # EXPO_NO_TELEMETRY=1 suppress Expo CLI's own network calls (update
-    # checks, anonymous telemetry) so nothing outside `npm ci` itself tries
-    # to reach the network.
+      - curl -Lo /tmp/node.tar.gz https://nodejs.org/dist/v24.16.0/node-v24.16.0-linux-x64.tar.gz
+      - echo "2faf6a387e9b62b888e21c54f01249fb27537ffecf1842f29f4c919d0a59a0ff  /tmp/node.tar.gz"
+        | sha256sum -c -
+      - tar xzf /tmp/node.tar.gz --strip-components=1 -C /usr/local/
     init:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
       - npm ci
-
-    # No network from here on — this has to be reproducible.
-    prebuild:
-      - export CI=1
-      - export EXPO_NO_TELEMETRY=1
-      # Mirrors release.yml's "Set app.json version" step.
-      - |-
-        node -e "
-        const fs = require('fs');
-        const config = JSON.parse(fs.readFileSync('app.json', 'utf8'));
-        config.expo.version = '1.0.0';
-        config.expo.android.versionCode = 10000999;
-        fs.writeFileSync('app.json', JSON.stringify(config, null, 2) + '\n');
-        "
-      # Forces Expo's autolinking to build every native module from
-      # source rather than pulling each expo-*/react-native-* package's
-      # prebuilt AAR - the same trick com.mmazzarolo.breathly.yml uses,
-      # needed because F-Droid's scanner flags prebuilt binaries wherever
-      # they appear, not just the two this repo's own node_modules were
-      # confirmed to ship (see scanignore below).
-      - |-
-        node -e "
-        const fs = require('fs');
-        const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-        pkg.expo = pkg.expo || {};
-        pkg.expo.autolinking = { android: { buildFromSource: ['.*'] } };
-        fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-        "
-      - npx expo prebuild --platform android --no-install
-      # The buildserver ships OpenJDK 21 (confirmed by running the image
-      # directly), not the 17 that RN 0.86's own gradle-plugin hardcodes
-      # (verified against this repo's actual node_modules: both files
-      # below reference 17 in the same places com.mmazzarolo.breathly.yml
-      # patches for the same reason). Retargeting the plugin to 21 is the
-      # real, proven-working fix for that mismatch - not installing a
-      # second JDK, which the first draft of this recipe wrongly assumed
-      # was necessary.
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      # Removes the debug-keystore signingConfig line from the release
-      # build type, so assembleRelease emits an unsigned APK for F-Droid
-      # to sign with its own key - anchored on the exact text release.yml
-      # already asserts on for its own (different) signing patch, so a
-      # future Expo template change breaks this loudly instead of
-      # silently shipping a debug-signed "release" APK.
-      - |-
-        python3 -c "
-        path = 'android/app/build.gradle'
-        with open(path) as f:
-            content = f.read()
-        anchor = '''            // Caution! In production, you need to generate your own keystore file.
-                    // see https://reactnative.dev/docs/signed-apk-android.
-                    signingConfig signingConfigs.debug'''
-        assert content.count(anchor) == 1, 'signingConfig anchor not found verbatim - Expo template may have changed'
-        stripped = anchor.replace('\n            signingConfig signingConfigs.debug', '')
-        content = content.replace(anchor, stripped, 1)
-        with open(path, 'w') as f:
-            f.write(content)
-        "
-      # Headroom for the gradle daemon during a real Hermes/AGP build -
-      # com.mmazzarolo.breathly.yml carries the same line for the same
-      # buildserver.
-      - printf '\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g\n' >> android/gradle.properties
-
-    # No `gradle:` field: that key makes fdroidserver invoke its own
-    # clean+assemble cycle with cwd=root_dir, which (with no subdir set)
-    # would be the repo root, not the actual gradle project android/app
-    # now sits in. output: being set instead makes build_method() resolve
-    # to 'raw', so only this custom build: block runs the real invocation.
-    # `gradle` here is the buildserver's own gradlew-fdroid (confirmed:
-    # /usr/local/bin/gradle is a symlink to it) - it reads
-    # android/app/../gradle/wrapper/gradle-wrapper.properties the same way
-    # a real ./gradlew would, downloading and caching the exact matching
-    # Gradle version rather than using a single fixed system version.
-    build:
-      - cd android/app
-      - gradle assembleRelease
-
-    # Confirmed by running the real scanner (`fdroid build`, not a guess):
-    # everything below is iOS-only, Windows/macOS-only, or web-only, so it
-    # can never be reached by an Android gradle build regardless of the
-    # buildFromSource autolinking patch above. Deleted outright rather than
-    # scanignore'd, since there is zero risk of the Android build needing
-    # any of it.
+    output: android/app/build/outputs/apk/release/*.apk
     rm:
-      # Apple/iOS-only build tool and framework output - `.xcframework`,
-      # `.lproj` (Apple bundle i18n convention), and the `apple/` build tool
-      # subdirectory are all Apple-platform-specific by construction.
       - node_modules/@expo/expo-modules-macros-plugin/apple/
       - node_modules/expo-sqlite/ios/
       - node_modules/expo-file-system/prebuilds/
       - node_modules/expo-font/prebuilds/
       - node_modules/expo-modules-core/prebuilds/
       - node_modules/react-native/React/I18n/strings/
-      # Web-only WASM build of SQLite - this app never runs expo-sqlite's
-      # web target on Android.
       - node_modules/expo-sqlite/web/
-      # dotslash is a cross-platform binary-fetching tool; every prebuilt
-      # binary it ships is for a host platform (macOS, Windows, musl-libc
-      # Linux) other than this glibc Linux buildserver.
       - node_modules/fb-dotslash/bin/
-      # An unrelated packaged template archive, not part of the build.
       - node_modules/expo/template.tgz
-
-    # Confirmed by running the real scanner end to end (`fdroid build`, not
-    # a guess): the hermes-compiler/lightningcss entries were verified
-    # against this repo's actual node_modules before any build ever ran;
-    # everything else below only surfaced once the scanner actually ran
-    # against a real generated android/ tree, exactly as this comment
-    # predicted it would. These are genuinely Android-relevant artifacts
-    # (prebuilt AARs/JARs/.so files each expo-* package ships, and a few
-    # build.gradle files declaring local maven repos) - scanignore'd rather
-    # than rm'd, since it is not yet confirmed the actual gradle build
-    # tolerates their absence even with autolinking's buildFromSource set;
-    # deleting them is a possible future tightening once a real APK has
-    # actually been produced to test against, not before.
+    prebuild:
+      - export CI=1
+      - export EXPO_NO_TELEMETRY=1
+      - "node -e \"\nconst fs = require('fs');\nconst config = JSON.parse(fs.readFileSync('app.json',\
+        \ 'utf8'));\nconfig.expo.version = '1.0.0';\nconfig.expo.android.versionCode\
+        \ = 10000999;\nfs.writeFileSync('app.json', JSON.stringify(config, null, 2)\
+        \ + '\\n');\n\""
+      - "node -e \"\nconst fs = require('fs');\nconst pkg = JSON.parse(fs.readFileSync('package.json',\
+        \ 'utf8'));\npkg.expo = pkg.expo || {};\npkg.expo.autolinking = { android:\
+        \ { buildFromSource: ['.*'] } };\nfs.writeFileSync('package.json', JSON.stringify(pkg,\
+        \ null, 2) + '\\n');\n\""
+      - npx expo prebuild --platform android --no-install
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - "python3 -c \"\npath = 'android/app/build.gradle'\nwith open(path) as f:\n\
+        \    content = f.read()\nanchor = '''            // Caution! In production,\
+        \ you need to generate your own keystore file.\n            // see https://reactnative.dev/docs/signed-apk-android.\n\
+        \            signingConfig signingConfigs.debug'''\nassert content.count(anchor)\
+        \ == 1, 'signingConfig anchor not found verbatim - Expo template may have\
+        \ changed'\nstripped = anchor.replace('\\n            signingConfig signingConfigs.debug',\
+        \ '')\ncontent = content.replace(anchor, stripped, 1)\nwith open(path, 'w')\
+        \ as f:\n    f.write(content)\n\""
+      - printf '\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g\n' >> android/gradle.properties
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-asset/local-maven-repo/
@@ -209,32 +93,10 @@ Builds:
     scandelete:
       - node_modules/hermes-compiler/hermesc/osx-bin
       - node_modules/hermes-compiler/hermesc/win64-bin
+    build:
+      - cd android/app
+      - gradle assembleRelease
 
-    # VERIFY: glob, since assembleRelease's exact output filename can vary
-    # (app-release.apk vs app-release-unsigned.apk depending on whether any
-    # signingConfig survives) - confirm the real filename once a build
-    # actually produces one, same caution as before.
-    output: android/app/build/outputs/apk/release/*.apk
-
-# Confirmed by a real CI failure on the actual fdroiddata pipeline, not a
-# guess: UpdateCheckMode: Tags makes `fdroid checkupdates` check out each of
-# the repo's recent tags and look for a committed AndroidManifest.xml to
-# read versionCode/versionName from - but android/ is generated by `expo
-# prebuild` mid-recipe, never committed, so no tag ever has one, and
-# checkupdates hard-fails the pipeline with "Couldn't find any version
-# information" rather than just skipping quietly. UpdateCheckData (the
-# usual fix for a missing manifest) cannot help either: our versionCode is
-# packed via real arithmetic from the tag string (see release.yml's own
-# comment on the scheme), not a literal number regex-extractable from any
-# committed file or from the tag text itself.
-#
-# Static is the honest fit for how this app actually works: CurrentVersion/
-# CurrentVersionCode are already maintained by hand for every release
-# (confirmed in fdroidserver's own checkupdates.py: UpdateCheckMode in
-# ('None', 'Static') returns immediately with no error, skipping the
-# tag-scanning path entirely). AutoUpdateMode: None for the same
-# reason - every new release needs its own Builds: entry added by hand,
-# an ongoing per-release chore, not a one-time submission cost.
 AutoUpdateMode: None
 UpdateCheckMode: Static
 CurrentVersion: 1.0.0
