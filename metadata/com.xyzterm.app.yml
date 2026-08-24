@@ -11,6 +11,11 @@ AutoName: xyzterm
 RepoType: git
 Repo: https://github.com/vxyzview/xyzterm
 
+# Upstream CI-signed release APKs; lets F-Droid verify its source build
+# matches upstream byte-for-byte (reproducible build). %v = versionName,
+# matching the v%v tag / xyzterm-%v.apk release asset layout.
+Binaries: https://github.com/vxyzview/xyzterm/releases/download/v%v/xyzterm-%v.apk
+
 Builds:
   - versionName: 1.0.0
     versionCode: 1
@@ -19,9 +24,9 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - sed -ri '/foojay-resolver-convention/d' -i ../settings.gradle.kts || true
-      - sed -r '/repo.eclipse.org/d' -i ../settings.gradle.kts || true
-      - sed -r '/signingConfigs.getByName/d' -i build.gradle.kts || true
+      - sed -ri '/foojay-resolver-convention/d' -i ../settings.gradle.kts
+      - sed -r '/repo.eclipse.org/d' -i ../settings.gradle.kts
+      - sed -r '/signingConfigs.getByName/d' -i build.gradle.kts
 
 AllowedAPKSigningKeys: f665fa36963b20cec9954399d2213331be522aca035ebf56cfa5a6abdf3e3de2
 
