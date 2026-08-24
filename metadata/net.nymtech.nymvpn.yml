@@ -955,9 +955,9 @@ Builds:
     gradleprops:
       - buildDeps=false
 
-  - versionName: 2026.12.0
-    versionCode: 20261200
-    commit: 8b2a7d036540b05c0b4dc788c698d46f3eda4cb7
+  - versionName: 2026.12.1
+    versionCode: 20261201
+    commit: 13f9a9df2b661cf380c7a985fd356c01a72247f9
     subdir: nym-vpn-android/app
     sudo:
       - apt-get update
@@ -972,11 +972,9 @@ Builds:
       - nym-vpn-apple
       - nym-vpn-app
     prebuild:
-      - export goVersion=$(grep go\  ../../wireguard/libwg/go.mod | cut -d " " -f2
-        | head -n1)
-      - '[[ $goVersion ]]'
-      - git -C $$go$$ checkout -f go$goVersion
       - source '../../.env'
+      - '[[ $GOLANG_VERSION ]]'
+      - git -C $$go$$ checkout -f go$GOLANG_VERSION
       - rustup default "$RUST_VERSION"
       - rustup target add x86_64-linux-android aarch64-linux-android armv7-linux-androideabi
       - sed -i -e '/foojay/d' ../settings.gradle.kts
@@ -1003,5 +1001,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^nym-vpn-v[\d.]+$
 UpdateCheckData: nym-vpn-android/buildSrc/src/main/kotlin/Constants.kt|VERSION_CODE
   = (\d+)|.|VERSION_NAME = "(v?[\d.]+)"
-CurrentVersion: 2026.12.0
-CurrentVersionCode: 20261200
+CurrentVersion: 2026.12.1
+CurrentVersionCode: 20261201
