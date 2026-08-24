@@ -15,26 +15,26 @@ Binaries:
   https://github.com/norsehorse-dev/VaultPonyAndroid/releases/download/v%v/VaultPonyAndroid-v%v.apk
 
 Builds:
-  - versionName: 1.0.2
-    versionCode: 3
-    commit: 7f89f8fa86fd8bb30a2642407b0c1702a37ba97b
+  - versionName: 1.0.3
+    versionCode: 4
+    commit: 49f0c3d7494d8253c96b01add68df735ed37236e
     subdir: app
     submodules: true
     sudo:
       - apt-get update
       - apt-get install -y rustup build-essential
-    output: build/outputs/apk/release/app-release-unsigned.apk
-    build:
+    gradle:
+      - yes
+    prebuild:
       - export PATH="$HOME/.cargo/bin:$PATH"
       - rustup default 1.95.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk@4.1.2 --locked
-      - gradle assembleRelease
     ndk: 27.2.12479018
 
 AllowedAPKSigningKeys: bc222b1fa68a0ddcd9e1b1dbfcef2493290bb6c64964fea7fe5b2fa67c0d4858
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.2
-CurrentVersionCode: 3
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4
