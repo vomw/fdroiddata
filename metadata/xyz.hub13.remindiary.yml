@@ -64,14 +64,13 @@ Builds:
       - npx expo prebuild --platform android --no-install
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - "python3 -c \"\npath = 'android/app/build.gradle'\nwith open(path) as f:\n\
-        \    content = f.read()\nanchor = '''            // Caution! In production,
-        you need to generate your own keystore file.\n            // see https://reactnative.dev/docs/signed-apk-android.\n\
-        \            signingConfig signingConfigs.debug'''\nassert content.count(anchor)
-        == 1, 'signingConfig anchor not found verbatim - Expo template may have changed'\n
-        stripped = anchor.replace('\\n            signingConfig signingConfigs.debug',
-        '')\ncontent = content.replace(anchor, stripped, 1)\nwith open(path, 'w')
-        as f:\n    f.write(content)\n\""
+      - python3 -c "path = 'android/app/build.gradle'; f = open(path); content = f.read();
+        f.close(); anchor = '            // Caution! In production, you need to generate
+        your own keystore file.\n            // see https://reactnative.dev/docs/signed-apk-android.\n            signingConfig
+        signingConfigs.debug'; line = '\n            signingConfig signingConfigs.debug';
+        assert content.count(anchor) == 1, 'signingConfig anchor not found verbatim';
+        stripped = anchor.replace(line, ''); content = content.replace(anchor, stripped,
+        1); f = open(path, 'w'); f.write(content); f.close()"
       - printf '\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g\n' >> android/gradle.properties
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
