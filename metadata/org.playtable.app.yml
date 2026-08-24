@@ -14,7 +14,7 @@ Repo: https://github.com/ricardosierra/PlayTable.git
 
 Builds:
   - versionName: 0.3.0
-    versionCode: 4
+    versionCode: 41
     commit: b93f81252fb7f38d4d328060fb0fea1f6f168821
     timeout: 14400
     sudo:
@@ -29,11 +29,78 @@ Builds:
       - export ANDROID_SDK_ROOT=$$SDK$$
       - pushd $$Godot$$
       - scons -j `nproc` platform=linuxbsd target=editor
-      - scons -j `nproc` platform=android target=template_release arch=arm64
       - scons -j `nproc` platform=android target=template_release arch=arm32 generate_apk=yes
       - popd
       - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
       - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
+        export_presets.cfg
+      - sed -i -e '/architectures\/x86/s|=.*|=false|' -e '/architectures\/x86_64/s|=.*|=false|'
+        -e '/architectures\/armeabi-v7a/s|=.*|=true|' -e '/architectures\/arm64-v8a/s|=.*|=false|'
+        export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
+      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
+      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" $GODOT_CFG
+      - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
+        bin/PlayTable.apk
+    ndk: 28.1.13356709
+
+  - versionName: 0.3.0
+    versionCode: 42
+    commit: b93f81252fb7f38d4d328060fb0fea1f6f168821
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons g++
+    output: bin/PlayTable.apk
+    srclibs:
+      - Godot@4.6-stable
+    prebuild: mkdir -p bin
+    build:
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - pushd $$Godot$$
+      - scons -j `nproc` platform=linuxbsd target=editor
+      - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
+      - popd
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
+      - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
+        export_presets.cfg
+      - sed -i -e '/architectures\/x86/s|=.*|=false|' -e '/architectures\/x86_64/s|=.*|=false|'
+        -e '/architectures\/armeabi-v7a/s|=.*|=false|' -e '/architectures\/arm64-v8a/s|=.*|=true|'
+        export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
+      - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
+      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" $GODOT_CFG
+      - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
+        bin/PlayTable.apk
+    ndk: 28.1.13356709
+
+  - versionName: 0.3.0
+    versionCode: 43
+    commit: b93f81252fb7f38d4d328060fb0fea1f6f168821
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons g++
+    output: bin/PlayTable.apk
+    srclibs:
+      - Godot@4.6-stable
+    prebuild: mkdir -p bin
+    build:
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - pushd $$Godot$$
+      - scons -j `nproc` platform=linuxbsd target=editor
+      - scons -j `nproc` platform=android target=template_release arch=x86_32
+      - scons -j `nproc` platform=android target=template_release arch=x86_64 generate_apk=yes
+      - popd
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
+      - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
+        export_presets.cfg
+      - sed -i -e '/architectures\/x86/s|=.*|=true|' -e '/architectures\/x86_64/s|=.*|=true|'
+        -e '/architectures\/armeabi-v7a/s|=.*|=false|' -e '/architectures\/arm64-v8a/s|=.*|=false|'
         export_presets.cfg
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
       - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
@@ -45,6 +112,10 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: export_presets.cfg|version/code=(\d+)|.|version/name="([\d.]+)"
 CurrentVersion: 0.3.0
-CurrentVersionCode: 4
+CurrentVersionCode: 43
