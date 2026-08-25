@@ -21,7 +21,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl
+        ninja-build tcl gcc
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.44.8
@@ -36,8 +36,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c && cd ..
+      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
+        && make sqlite3.c)
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
@@ -60,7 +60,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl
+        ninja-build tcl gcc
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.44.8
@@ -75,8 +75,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c && cd ..
+      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
+        && make sqlite3.c)
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
@@ -99,7 +99,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl
+        ninja-build tcl gcc
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@3.44.8
@@ -114,8 +114,8 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c && cd ..
+      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
+        && make sqlite3.c)
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
