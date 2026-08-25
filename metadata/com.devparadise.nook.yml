@@ -33,27 +33,24 @@ Builds:
       - web
       - windows
     prebuild:
-      - tar -xf $$flutter$$
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c && cd ..
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
+      - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
+      - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scanignore:
       - .dart_tool
     scandelete:
       - .pub-cache
     build:
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter build apk --release --split-per-abi --target-platform=android-arm
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
         --obfuscate --split-debug-info=build/symbols
     ndk: 28.2.13676358
 
@@ -75,27 +72,24 @@ Builds:
       - web
       - windows
     prebuild:
-      - tar -xf $$flutter$$
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c && cd ..
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
+      - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
+      - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scanignore:
       - .dart_tool
     scandelete:
       - .pub-cache
     build:
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
         --obfuscate --split-debug-info=build/symbols
     ndk: 28.2.13676358
 
@@ -117,27 +111,24 @@ Builds:
       - web
       - windows
     prebuild:
-      - tar -xf $$flutter$$
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c && cd ..
       - "sed -i '/source: sqlcipher/c\\      source: source\\n      path: $$sqlcipher$$/sqlite3.c\\n      defines:\\n        - SQLITE_HAS_CODEC'
         pubspec.yaml"
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
+      - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
+      - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     scanignore:
       - .dart_tool
     scandelete:
       - .pub-cache
     build:
-      - export PATH="$PWD/flutter/bin:$PATH"
-      - export PUB_CACHE="$PWD/.pub-cache"
-      - flutter build apk --release --split-per-abi --target-platform=android-x64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
         --obfuscate --split-debug-info=build/symbols
     ndk: 28.2.13676358
 
