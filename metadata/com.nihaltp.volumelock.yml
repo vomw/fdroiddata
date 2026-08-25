@@ -1,0 +1,33 @@
+Categories:
+  - System
+License: MIT
+AuthorName: nihaltp
+AuthorEmail: nihaltpnki@gmail.com
+WebSite: https://nihaltp.github.io/volumelock/
+SourceCode: https://github.com/nihaltp/volumelock
+IssueTracker: https://github.com/nihaltp/volumelock/issues
+
+AutoName: Volume Lock
+
+RepoType: git
+Repo: https://github.com/nihaltp/volumelock
+Binaries: https://github.com/nihaltp/volumelock/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 2.0.1
+    versionCode: 5005
+    commit: 58c077c97e31f82428d234a273748f1b8193662b
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      "$$OUT$$" 'META-INF/services/*'
+
+AllowedAPKSigningKeys: 6df9ce2e3c756a05f9a72b98e3bd555fa6f30bb99b56eba575ef9bce05d7b381
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.0.1
+CurrentVersionCode: 5005
