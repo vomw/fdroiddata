@@ -17,11 +17,11 @@ Repo: https://github.com/prit-007/nook.git
 Builds:
   - versionName: 0.8.4
     versionCode: 61
-    commit: b180073abc7d2b303cefdd108044caec0d9c967a
+    commit: a82a7d6b350ec2881362aa7beddce7505aac8474
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl gcc make
+        ninja-build tcl clang
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.44.8
@@ -38,8 +38,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - |-
-        sed -i '/source: sqlcipher/c\      source: source\n      path: $$sqlcipher$$/sqlite3.c\n      defines:\n        - SQLITE_HAS_CODEC' pubspec.yaml
+      - $$flutter$$/bin/dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
       - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
       - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
@@ -56,11 +55,11 @@ Builds:
 
   - versionName: 0.8.4
     versionCode: 62
-    commit: b180073abc7d2b303cefdd108044caec0d9c967a
+    commit: a82a7d6b350ec2881362aa7beddce7505aac8474
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl gcc make
+        ninja-build tcl clang
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.44.8
@@ -77,8 +76,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - |-
-        sed -i '/source: sqlcipher/c\      source: source\n      path: $$sqlcipher$$/sqlite3.c\n      defines:\n        - SQLITE_HAS_CODEC' pubspec.yaml
+      - $$flutter$$/bin/dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
       - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
       - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
@@ -95,11 +93,11 @@ Builds:
 
   - versionName: 0.8.4
     versionCode: 63
-    commit: b180073abc7d2b303cefdd108044caec0d9c967a
+    commit: a82a7d6b350ec2881362aa7beddce7505aac8474
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
-        ninja-build tcl gcc make
+        ninja-build tcl clang
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@3.44.8
@@ -116,8 +114,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - |-
-        sed -i '/source: sqlcipher/c\      source: source\n      path: $$sqlcipher$$/sqlite3.c\n      defines:\n        - SQLITE_HAS_CODEC' pubspec.yaml
+      - $$flutter$$/bin/dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
       - $$flutter$$/bin/dart run tool/patch_appflowy_editor.dart
       - $$flutter$$/bin/dart run tool/patch_talker_flutter.dart
       - $$flutter$$/bin/dart run tool/patch_mdns_dart.dart
