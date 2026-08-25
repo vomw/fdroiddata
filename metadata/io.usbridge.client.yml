@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/USBridge-Technologies/USBridge-Remote.git
 
 Builds:
-  - versionName: 2.1.16
-    versionCode: 20116
-    commit: 1006d7fe0ba1a231e527110fb4be7ab0f1210624
+  - versionName: 2.3.2
+    versionCode: 20302
+    commit: 63b0e4540cc4c0cb651d6dae1b384f9dac0f81f3
     subdir: client/android
     submodules: true
     sudo:
@@ -23,7 +23,7 @@ Builds:
       - apt-get install -y build-essential cmake
     init:
       - mkdir -p $HOME/goroot
-      - curl -sSL https://go.dev/dl/go1.25.12.linux-amd64.tar.gz -o /tmp/go.tgz
+      - curl -sSL https://go.dev/dl/go1.26.6.linux-amd64.tar.gz -o /tmp/go.tgz
       - tar -C $HOME/goroot --strip-components=1 -xzf /tmp/go.tgz
       - rm /tmp/go.tgz
       - export PATH="$HOME/goroot/bin:$PATH"
@@ -65,10 +65,10 @@ Builds:
       - gomobile bind -target android/arm64 -androidapi 26 -o android/app/libs/androidbridge.aar
         ./androidbridge
       - mkdir -p android/app/src/main/jniLibs/arm64-v8a
-      - go build -trimpath -tags="omitgui,ts_omit_gui,nosystray,ts_omit_systray" -ldflags="-s
+      - go build -trimpath -tags="omitgui,ts_omit_gui,nosystray,ts_omit_systray,ts_omit_ssh" -ldflags="-s
         -w -linkmode=external -extldflags=$NDK_PAGE_SIZE_LDFLAGS" -o android/app/src/main/jniLibs/arm64-v8a/libtailscale.so
         tailscale.com/cmd/tailscale
-      - go build -trimpath -tags="omitgui,ts_omit_gui,nosystray,ts_omit_systray" -ldflags="-s
+      - go build -trimpath -tags="omitgui,ts_omit_gui,nosystray,ts_omit_systray,ts_omit_ssh" -ldflags="-s
         -w -linkmode=external -extldflags=$NDK_PAGE_SIZE_LDFLAGS" -o android/app/src/main/jniLibs/arm64-v8a/libtailscaled.so
         tailscale.com/cmd/tailscaled
       - env -u CC -u CXX -u CGO_LDFLAGS GOOS=linux GOARCH=amd64 go install fyne.io/tools/cmd/fyne@v1.7.2
@@ -111,7 +111,19 @@ MaintainerNotes: |
   SOURCE_DATE_EPOCH, deterministic linker flags, etc.) this project
   hasn't done yet -- worth revisiting later, not required for inclusion.
 
+  Recipe synced to 2.3.2 (2026-08-25): bumped from 2.1.16, which was only
+  ever a validation entry against F-Droid's real buildserver, not an
+  actual release meant to ship. init: now fetches go1.26.6 instead of
+  go1.25.12 -- the module's go.mod moved to `go 1.26.6` since 2.1.16, and
+  the buildserver has no network access to let Go auto-fetch a newer
+  toolchain, so the old init: step would have failed outright. Also added
+  the ts_omit_ssh build tag to the two tailscale.com/cmd/{tailscale,
+  tailscaled} go build steps to match client/scripts/build_android_gradle.sh
+  as of this commit. init/build/gradle steps otherwise unchanged and
+  diff-verified identical against the 2.1.16 commit for every file this
+  recipe touches.
+
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 2.1.16
-CurrentVersionCode: 20116
+CurrentVersion: 2.3.2
+CurrentVersionCode: 20302
