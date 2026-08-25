@@ -1,5 +1,7 @@
 Categories:
   - Market & Price
+AntiFeatures:
+  - NonFreeNet
 License: GPL-3.0-or-later
 AuthorName: PriceScoutPT
 SourceCode: https://github.com/jlfernandes22/PriceScoutPT
@@ -13,7 +15,7 @@ Repo: https://github.com/jlfernandes22/PriceScoutPT
 Builds:
   - versionName: 1.0.0
     versionCode: 11
-    commit: 99669cfc5ed8000c0574a6bf06f58d06415ccecc
+    commit: 6f9f30301262ba4eed4123e7302be8a864c3a6ce
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -46,7 +48,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 12
-    commit: 99669cfc5ed8000c0574a6bf06f58d06415ccecc
+    commit: 6f9f30301262ba4eed4123e7302be8a864c3a6ce
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -79,7 +81,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 13
-    commit: 99669cfc5ed8000c0574a6bf06f58d06415ccecc
+    commit: 6f9f30301262ba4eed4123e7302be8a864c3a6ce
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -112,7 +114,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 14
-    commit: 99669cfc5ed8000c0574a6bf06f58d06415ccecc
+    commit: 6f9f30301262ba4eed4123e7302be8a864c3a6ce
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -155,12 +157,14 @@ MaintainerNotes: |-
   with the abiVersionCode Gradle property read by the androidComponents hook
   in app/build.gradle (10 * %c + 1..4, per the F-Droid ABI split guide).
 
-  The app talks to the shared production backend
-  (https://pricescoutpt-api.yellowflower-63c75e19.northeurope.azurecontainerapps.io),
-  which is baked in as the default API base URL since commit 99669cf. The
-  recipe does not need to set apiBaseUrl: the emulator-only fallback
-  (http://10.0.2.2:3000) has been removed, and the expo extra apiBaseUrl
-  remains only as a build-time override for development builds.
+  NonFreeNet: by default the app talks to the shared developer-operated
+  backend (https://pricescoutpt-api.yellowflower-63c75e19.northeurope.azurecontainerapps.io),
+  which is the default API base URL in the source. The endpoint is NOT
+  fixed: it can be replaced at runtime with any self-hosted instance
+  (in-app Settings -> Servidor, persisted in AsyncStorage and loaded
+  before any network request) without rebuilding. The recipe does not
+  need to set apiBaseUrl; the expo extra apiBaseUrl remains only as a
+  build-time override for development builds.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
