@@ -28,13 +28,14 @@ Builds:
       - echo 'exec /usr/share/dotnet/dotnet "$@"' >> /usr/bin/dotnet
       - chmod +x /usr/bin/dotnet
       - dotnet workload install android
-    output:
+    output: 
       FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.siarheikuchuk.ftpsserver-Signed.apk
     build:
       - export ANDROID_HOME=/home/vagrant/android-sdk
       - export ANDROID_SDK_ROOT=/home/vagrant/android-sdk
       - dotnet build -t:InstallAndroidDependencies FtpsServerAvalonia/FtpsServerAvalonia.Android/FtpsServerAvalonia.Android.csproj
-        -f net10.0-android -p:AndroidSdkDirectory=/home/vagrant/android-sdk -p:AcceptAndroidSdkLicenses=true /nodeReuse:false
+        -f net10.0-android -p:AndroidSdkDirectory=/home/vagrant/android-sdk -p:AcceptAndroidSdkLicenses=true
+        /nodeReuse:false
       - dotnet build-server shutdown
       - dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$
         /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
