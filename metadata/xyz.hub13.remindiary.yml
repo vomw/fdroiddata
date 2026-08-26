@@ -6,22 +6,6 @@ IssueTracker: https://github.com/grantstephens/ReminDiary/issues
 Changelog: https://github.com/grantstephens/ReminDiary/releases
 
 AutoName: ReminDiary
-Description: |-
-  ReminDiary is an offline daily journal. Write today's entry and save it, and the
-  app reveals what you wrote on this same calendar date in previous years.
-
-  Everything stays on your device. There is no account and no sync. Entries export to
-  and import from plain CSV, so your writing is never locked in. The only network
-  activity the app performs at all is a single opt-in, off-by-default analytics
-  toggle in Settings, which reports which screen you're on and nothing else - never
-  entry content, dates, or any other personal data. See the full privacy policy at
-  https://remindiary.hub13.xyz/privacy/ for exactly what that does and does not send.
-
-  * One entry per calendar date
-  * Automatic reveal of past entries on the same date in previous years
-  * CSV export and import
-  * Light and dark themes, following the system by default
-  * A single Android permission (INTERNET), used only by the opt-in analytics toggle
 
 RepoType: git
 Repo: https://github.com/grantstephens/ReminDiary.git
@@ -42,8 +26,8 @@ Builds:
     prebuild:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
-      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"1.0.0\"/' app.json"
-      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": 10000999,'
+      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"$$VERSION$$\"/' app.json"
+      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": $$VERCODE$$,'
         app.json"
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -79,8 +63,8 @@ Builds:
     prebuild:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
-      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"1.0.1\"/' app.json"
-      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": 10001999,'
+      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"$$VERSION$$\"/' app.json"
+      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": $$VERCODE$$,'
         app.json"
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
@@ -101,7 +85,7 @@ Builds:
       - cd android/app
       - gradle assembleRelease
 
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: fdroid-version.txt|versionCode=([0-9]+)|.|versionName=(.+)
 CurrentVersion: 1.0.1
