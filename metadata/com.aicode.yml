@@ -1,0 +1,59 @@
+# F-Droid 构建配方（fdroiddata: metadata/com.aicode.yml）
+#
+# 说明：
+# - 商店素材（标题/简介/描述/图标/截图/changelog）已放应用仓库 fastlane/metadata/android/
+#   （en-US + zh-CN），F-Droid 从「最新 release 的源码树」自动读取；截图禁止进 fdroiddata。
+# - v1.9.0 的 tag 树尚无 fastlane 素材，故本 yml 暂保留英文 Summary/Description，
+#   并由 com.aicode.zh-rCN.yml 提供中文描述；fastlane 素材自 v1.10.0 起生效后，
+#   再提一个小 MR 移除 yml 中的 Summary/Description，交由 fastlane 全权管理多语言。
+# - Builds 必须显式 versionName/versionCode（schema required）。
+#   versionCode=394 = v1.9.0 的 git commit count（git rev-list --count v1.9.0），与 CI 一致。
+#   后续新 tag 由 AutoUpdateMode 自动追加条目（versionName 去 v 前缀、versionCode 构建后从 APK 读取）。
+Categories:
+  - Development
+License: GPL-3.0-only
+AuthorName: jieapi
+WebSite: https://github.com/jieapi/aicode
+SourceCode: https://github.com/jieapi/aicode
+IssueTracker: https://github.com/jieapi/aicode/issues
+Changelog: https://github.com/jieapi/aicode/releases
+
+Name: AiCode
+Summary: AI coding agent with terminal, Linux container and Git
+Description: |-
+  AiCode is an AI-powered coding tool for Android. It embeds a terminal
+  emulator, a Linux container (PRoot) and Git integration, and connects
+  to Anthropic, OpenAI or any OpenAI-compatible API provider to generate,
+  review and execute code directly on the device.
+
+  Features:
+  * Built-in terminal with Termux components
+  * Linux container environment (Alpine/Ubuntu/Debian) via PRoot
+  * Git repository management and visual commit history
+  * Multi-provider model support with cost tracking
+  * Remote SSH server and SFTP file access
+  * MCP (Model Context Protocol) client support
+
+RepoType: git
+Repo: https://github.com/jieapi/aicode.git
+
+# 版本检测：git tag（v1.9.0 等）。rc 版不上 F-Droid（正式版自动推送）；
+# 如需 rc 也发布，删除 UpdateCheckIgnore 即可。
+UpdateCheckMode: Tags
+UpdateCheckIgnore: .*-rc.*
+
+Builds:
+  - versionName: 1.9.0
+    versionCode: 394
+    commit: v1.9.0
+    gradle:
+      - universal
+    output: app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+
+# 可复现构建：拉取 GitHub Release 的官方签名 APK 做字节对比，一致则发布开发者签名版。
+# %v = versionName（去 v），与 CI 资产名 aicode-universal-<版本>.apk 精确匹配。
+Binaries: https://github.com/jieapi/aicode/releases/download/v%v/aicode-universal-%v.apk
+# 官方 APK 签名证书 SHA-256（从 GitHub Release v1.9.0 universal APK 提取）
+AllowedAPKSigningKeys: bab791d7680850f934105d7f35801a2e9f3ceca4313b52c284511f0573433718
+
+AutoUpdateMode: Version
