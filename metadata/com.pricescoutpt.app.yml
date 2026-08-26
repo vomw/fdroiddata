@@ -1,8 +1,3 @@
-AntiFeatures:
-  NonFreeNet:
-    en-US: Uses the default developer-operated PriceScoutPT backend to sync the product
-      catalogue and price history. It can be replaced with a self-hosted endpoint
-      in Settings -> Server.
 Categories:
   - Market & Price
 License: GPL-3.0-or-later
@@ -160,14 +155,17 @@ MaintainerNotes: |-
   with the abiVersionCode Gradle property read by the androidComponents hook
   in app/build.gradle (10 * %c + 1..4, per the F-Droid ABI split guide).
 
-  NonFreeNet: by default the app talks to the shared developer-operated
-  backend (https://pricescoutpt-api.yellowflower-63c75e19.northeurope.azurecontainerapps.io),
-  which is the default API base URL in the source. The endpoint is NOT
-  fixed: it can be replaced at runtime with any self-hosted instance
-  (in-app Settings -> Servidor, persisted in AsyncStorage and loaded
-  before any network request) without rebuilding. The recipe does not
-  need to set apiBaseUrl; the expo extra apiBaseUrl remains only as a
-  build-time override for development builds.
+  The backend (api/ and scraper/) is free software (GPL-3.0) shipped in
+  the upstream repository with a documented docker-compose deployment.
+  By default the app talks to the shared developer-operated instance
+  (https://pricescoutpt-api.yellowflower-63c75e19.northeurope.azurecontainerapps.io),
+  but the endpoint is NOT fixed: it can be replaced at runtime with any
+  self-hosted instance (in-app Settings -> Servidor, persisted in
+  AsyncStorage and loaded before any network request) without rebuilding.
+  Because the service is free software and fully self-hostable, no
+  NonFreeNet AntiFeature applies. The recipe does not need to set
+  apiBaseUrl; the expo extra apiBaseUrl remains only as a build-time
+  override for development builds.
 
   Permission hygiene: the merged release manifest only declares INTERNET
   and VIBRATE. The Expo template and expo-file-system library entries
