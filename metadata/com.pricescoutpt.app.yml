@@ -1,5 +1,8 @@
 AntiFeatures:
-  - NonFreeNet
+  NonFreeNet:
+    en-US: Uses the default developer-operated PriceScoutPT backend to sync the product
+      catalogue and price history. It can be replaced with a self-hosted endpoint
+      in Settings -> Server.
 Categories:
   - Market & Price
 License: GPL-3.0-or-later
@@ -15,7 +18,7 @@ Repo: https://github.com/jlfernandes22/PriceScoutPT
 Builds:
   - versionName: 1.0.0
     versionCode: 11
-    commit: 86cc0193c09f4d24b46b603d2afb3ae5e8289edc
+    commit: 0eaa3f117630dd3603af097b1e3abe7abf42e131
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -48,7 +51,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 12
-    commit: 86cc0193c09f4d24b46b603d2afb3ae5e8289edc
+    commit: 0eaa3f117630dd3603af097b1e3abe7abf42e131
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -81,7 +84,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 13
-    commit: 86cc0193c09f4d24b46b603d2afb3ae5e8289edc
+    commit: 0eaa3f117630dd3603af097b1e3abe7abf42e131
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -114,7 +117,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 14
-    commit: 86cc0193c09f4d24b46b603d2afb3ae5e8289edc
+    commit: 0eaa3f117630dd3603af097b1e3abe7abf42e131
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -165,6 +168,16 @@ MaintainerNotes: |-
   before any network request) without rebuilding. The recipe does not
   need to set apiBaseUrl; the expo extra apiBaseUrl remains only as a
   build-time override for development builds.
+
+  Permission hygiene: the merged release manifest only declares INTERNET
+  and VIBRATE. The Expo template and expo-file-system library entries
+  (SYSTEM_ALERT_WINDOW, READ/WRITE_EXTERNAL_STORAGE) are stripped in
+  android/app/src/main/AndroidManifest.xml via tools:node=remove, and
+  app.json pins the allowlist so prebuild reproduces it.
+
+  usesCleartextTraffic=true is intentional: the in-app Settings -> Servidor
+  feature accepts plain-HTTP URLs so users can point the app at LAN /
+  self-hosted instances; the default backend is HTTPS.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
