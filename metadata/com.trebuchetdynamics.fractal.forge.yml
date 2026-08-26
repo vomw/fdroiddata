@@ -1,0 +1,58 @@
+Categories:
+  - Graphics
+  - Multimedia
+License: Apache-2.0
+AuthorName: Trebuchet Dynamics
+AutoName: Fractal Forge
+WebSite: https://fractal.trebuchetdynamics.com
+SourceCode: https://github.com/TrebuchetDynamics/flutter-fractal-forge
+IssueTracker: https://github.com/TrebuchetDynamics/flutter-fractal-forge/issues
+Changelog: https://github.com/TrebuchetDynamics/flutter-fractal-forge/blob/main/CHANGELOG.md
+
+RepoType: git
+Repo: https://github.com/TrebuchetDynamics/flutter-fractal-forge.git
+
+MaintainerNotes: |-
+  FDROID_BUILD disables the upstream signing configuration; F-Droid signs the
+  resulting universal APK. Flutter's official Android embedding retains unused
+  Play Store deferred-component type references even though this app declares
+  no deferred components and its releaseRuntimeClasspath contains no Play Core
+  dependency.
+
+Builds:
+  - versionName: 1.1.95
+    versionCode: 95
+    commit: c2ea0a697a1f74aaba637491889fcb9d04886d78
+    output: build/app/outputs/flutter-apk/app-release.apk
+    timeout: 3600
+    ndk: r28c
+    srclibs:
+      - flutter@3.44.6
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
+      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
+      - $$flutter$$/bin/flutter build apk --release --build-name="$version_name" --build-number="$version_code"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: fdroid/version.properties|versionCode=(\d+)|.|versionName=(.+)
+CurrentVersion: 1.1.95
+CurrentVersionCode: 95
