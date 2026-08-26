@@ -1,14 +1,24 @@
 Categories:
-  - Food
-License: GPL-3.0
+  - Shopping List
+  - Diet
+License: GPL-3.0-only
 SourceCode: https://gitlab.com/manyar-app/manyar
 IssueTracker: https://gitlab.com/manyar-app/manyar/-/issues
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
 
 Builds:
   - versionName: 0.1.0
     versionCode: 1
     commit: v0.1.0
-    buildmode: flutter
+    subdir: .
+    output: build/app/outputs/flutter-apk/release/app-release.apk
+    srclibs:
+      - flutter@3.24.3
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
