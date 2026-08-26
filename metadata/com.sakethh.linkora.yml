@@ -331,28 +331,20 @@ Builds:
         break; sha256sum apk/assets/dexopt/baseline.prof; rm -fr apk; gradle clean
         assembleRelease; done
 
-  - versionName: 0.19.0
-    versionCode: 53
-    commit: 79324f2c65ce0b804353ae2910d92559546111f8
+  - versionName: 0.20.0
+    versionCode: 54
+    commit: 206dfd46a5bcbb2bf15a2af9f7b55e1989baac57
     subdir: composeApp
-    sudo:
-      - apt-get update
-      - apt-get install -y rustup gcc libc-dev make
-      - export CPUS_MAX=16
-      - export CPUS=$(getconf _NPROCESSORS_ONLN)
-      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
-        ; done
     gradle:
       - yes
     output: build/outputs/apk/release/composeApp-universal-release-unsigned.apk
     binary: 
       https://github.com/LinkoraApp/Linkora/releases/download/release-v%v/Linkora-universal-release.apk
-    prebuild: rustup default 1.97.1
     ndk: r29
 
 AllowedAPKSigningKeys: f3efd4da30e29011353b0da50ae9e3a3a74efb956adfa8cf2bf6b7e8df6f3d30
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.19.0
-CurrentVersionCode: 53
+CurrentVersion: 0.20.0
+CurrentVersionCode: 54
