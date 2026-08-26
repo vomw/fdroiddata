@@ -1,0 +1,27 @@
+Categories:
+  - Online Media Player
+License: GPL-3.0-only
+AuthorName: akkirrai
+SourceCode: https://github.com/akkirrai1337/hibiki
+IssueTracker: https://github.com/akkirrai1337/hibiki/issues
+Changelog: https://github.com/akkirrai1337/hibiki/releases
+
+AutoName: hibiki
+
+RepoType: git
+Repo: https://github.com/akkirrai1337/hibiki.git
+
+Builds:
+  - versionName: 2.4.1
+    versionCode: 241
+    commit: 4f6c4a3ec75f1e145b9f4b9ffbe52a658f21ab18
+    output: app/build/outputs/apk/fdroid/release/*.apk
+    prebuild:
+      - sed -i /foojay-resolver-convention/d settings.gradle.kts
+      - sed -i '\|https://maven.pkg.github.com/akkirrai1337/hibiki|d' parsers/build.gradle.kts
+    build: gradle :app:assembleFdroidRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.4.1
+CurrentVersionCode: 241
