@@ -1,0 +1,36 @@
+Categories:
+  - Education
+License: GPL-3.0-or-later
+AuthorName: RuslanLit
+SourceCode: https://github.com/RuslanLit/Tutor_Language
+IssueTracker: https://github.com/RuslanLit/Tutor_Language/issues
+
+AutoName: Tutor Language
+
+RepoType: git
+Repo: https://github.com/RuslanLit/Tutor_Language.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 816cc5f9a1bd9b4791a8e0c67c9ca7e8c3cd7f27
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.44.0
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
