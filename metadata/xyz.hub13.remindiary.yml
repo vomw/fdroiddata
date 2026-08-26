@@ -1,6 +1,10 @@
 Categories:
   - Writing
 License: GPL-3.0-or-later
+AuthorName: Grant Stephens
+AuthorEmail: grant@stephens.co.za
+AuthorWebSite: https://grant.stephens.co.za
+WebSite: https://remindiary.hub13.xyz
 SourceCode: https://github.com/grantstephens/ReminDiary
 IssueTracker: https://github.com/grantstephens/ReminDiary/issues
 Changelog: https://github.com/grantstephens/ReminDiary/releases
@@ -11,43 +15,6 @@ RepoType: git
 Repo: https://github.com/grantstephens/ReminDiary.git
 
 Builds:
-  - versionName: 1.0.0
-    versionCode: 10000999
-    commit: 748ae4395ec76f40e33de425d21f76f1cb6c8c20
-    sudo:
-      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - apt-get update
-      - apt-get install -y -t forky nodejs npm
-    init:
-      - export CI=1
-      - export EXPO_NO_TELEMETRY=1
-      - npm ci
-    output: android/app/build/outputs/apk/release/*.apk
-    prebuild:
-      - export CI=1
-      - export EXPO_NO_TELEMETRY=1
-      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"$$VERSION$$\"/' app.json"
-      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": $$VERCODE$$,'
-        app.json"
-      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json
-      - npx expo prebuild --platform android --no-install
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - printf '\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g\n' >> android/gradle.properties
-    scanignore:
-      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/react-native/ReactAndroid/publish.gradle
-    scandelete:
-      - node_modules/
-    build:
-      - cd android/app
-      - gradle assembleRelease
-
   - versionName: 1.0.1
     versionCode: 10001999
     commit: bc08c5b733dc12d3c1d9c3cd733b7dd141b17dd6
