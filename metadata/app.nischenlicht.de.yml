@@ -1,25 +1,43 @@
+# F-Droid Build Recipe — Vorlage für fdroid/fdroiddata
+#
+# So einreichen:
+#   1. Fork von https://gitlab.com/fdroid/fdroiddata
+#   2. Diese Datei als metadata/app.nischenlicht.de.yml einfügen
+#   3. Merge Request stellen
+#
+# Voraussetzung: GitLab-Repo muss PUBLIC sein.
+
 Categories:
   - Religion
 License: MIT
+AuthorName: Robert Bartha
 SourceCode: https://gitlab.com/papewas/nischenlicht-app
 IssueTracker: https://gitlab.com/papewas/nischenlicht-app/-/issues
 
 AutoName: NischenLicht
+Description: |-
+  Stille Begleitung durch die Weisheit der Bahá'í-Schriften. Über 2.100 Texte
+  aus elf Sammlungen auf Deutsch und Englisch, tägliche Morgen- und
+  Abendlesung nach Bahá'í-Kalender. Fokus-Modus, 13 Schriftarten, Hell/Dunkel.
+  Kein Tracking, keine Werbung. Alle Texte sind offline verfügbar; nur die
+  optionale Vertonung wird beim Abspielen von nischenlicht.de geladen.
+
+  English: NicheLight offers 2,100+ texts from eleven Bahá'í collections in
+  German and English (Hidden Words, Prayers, Gleanings, Sacred Writings, Some
+  Answered Questions, and more). Daily readings, focus mode,
+  13 typefaces. No tracking, no ads. All texts work offline; only the optional
+  narration is streamed from nischenlicht.de when you press play.
 
 RepoType: git
 Repo: https://gitlab.com/papewas/nischenlicht-app.git
-Binaries: 
-  https://gitlab.com/papewas/nischenlicht-app/-/releases/v%v/downloads/nischenlicht-v%v.apk
 
 Builds:
-  - versionName: 4.0.1
+  - versionName: '4.0'
     versionCode: 40001
-    commit: cfa52a11240bdac9e32960ea23c0cbc2de695c60
+    commit: v4.0.1
     subdir: android
     sudo:
       - apt-get update
-      - apt-get install -y curl
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
       - apt-get install -y nodejs
     init:
       - cd ..
@@ -28,13 +46,11 @@ Builds:
       - npx cap sync android
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     scandelete:
       - node_modules/
 
 AllowedAPKSigningKeys: 90627eba6ee38b0ea090a0b7cf34e3e6c8b42a93f7c4bce90ef5d080583e1b68
-
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 4.0.1
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+CurrentVersion: '4.0'
 CurrentVersionCode: 40001
