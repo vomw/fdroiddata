@@ -23,15 +23,16 @@ Builds:
       - apt-get install -y --no-install-recommends ca-certificates curl
       - curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
       - bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /usr/share/dotnet
-      - ln -sf /usr/share/dotnet/dotnet /usr/bin/dotnet
+      - printf '#!/bin/sh\nexport DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1\nexec /usr/share/dotnet/dotnet "$@"\n' > /usr/bin/dotnet
+      - chmod +x /usr/bin/dotnet
       - dotnet workload install android
+    output:
+      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.SiarheiKuchuk.FtpsServer.apk
     build: dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$
       /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
       /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$ /p:Configuration=Release
       /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False /p:AndroidSdkDirectory=$$SDK$$
       /p:AndroidNdkDirectory=$$NDK$$ --self-contained true --property WarningLevel=0
-    output:
-      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.SiarheiKuchuk.FtpsServer.apk
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
