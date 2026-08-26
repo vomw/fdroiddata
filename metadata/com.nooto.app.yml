@@ -13,30 +13,32 @@ Builds:
   - versionName: 0.2.0
     versionCode: 2000
     commit: d0618b1ddc66a6c74ff30166d9b53933e283c898
-    subdir: client/src-tauri/gen/android
+    subdir: client
     sudo:
       - apt update
       - apt install -y rustup npm make build-essential libwebkit2gtk-4.1-dev wget libxdo-dev libayatana-appindicator3-dev librsvg2-dev
       - sdkmanager --install "ndk;29.0.14206865"
-      - rustup default stable
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
 
     init:
       - export ANDROID_NDK_HOME=/opt/android-sdk/ndk/29.0.14206865
       - export NDK_HOME=/opt/android-sdk/ndk/29.0.14206865 
-      
-      - cd ../../.. 
+
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
+
+    build:
       - npm install
       - npm run tauri android build -- --apk
 
-      #post
-      - cp client/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk client/src-tauri/gen/android/fdroid-release/
-      - rm -rf target
-      - rm -rf client/src-tauri/gen/android/app/build
-    output: fdroid-release/*.apk
-    scandelete:
-      - client/node_modules/@rolldown/binding-wasm32-wasi
-      
+    #postbuild:
+      #- mkdir fdroid-release
+      #- cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk fdroid-release/
+      #- rm -rf ../target
+      #- rm -rf src-tauri/gen/android/app/build
+
+    #output: fdroid-release/*.apk
+    output: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+
 #TODO
 #Binaries: https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-universal-release.apk
 #AllowedAPKSigningKeys: <the SHA-256 digest from apksigner, no colons>
