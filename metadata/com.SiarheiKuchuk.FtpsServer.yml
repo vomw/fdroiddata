@@ -29,17 +29,18 @@ Builds:
       - chmod +x /usr/bin/dotnet
       - dotnet workload install android
     output:
-      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/*.apk
+      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.siarheikuchuk.ftpsserver-Signed.apk
     build:
       - export ANDROID_HOME=/home/vagrant/android-sdk
       - export ANDROID_SDK_ROOT=/home/vagrant/android-sdk
       - dotnet build -t:InstallAndroidDependencies FtpsServerAvalonia/FtpsServerAvalonia.Android/FtpsServerAvalonia.Android.csproj
-          -f net10.0-android -p:AndroidSdkDirectory=/home/vagrant/android-sdk -p:AcceptAndroidSdkLicenses=true
+        -f net10.0-android -p:AndroidSdkDirectory=/home/vagrant/android-sdk -p:AcceptAndroidSdkLicenses=true
       - dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$
-          /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
-          /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$ /p:Configuration=Release
-          /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False /p:AndroidSdkDirectory=/home/vagrant/android-sdk
-          /p:AcceptAndroidSdkLicenses=true --self-contained true --property WarningLevel=0
+        /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
+        /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$
+        /p:Configuration=Release /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False
+        /p:AndroidSdkDirectory=/home/vagrant/android-sdk /p:AcceptAndroidSdkLicenses=true
+        --self-contained true --property WarningLevel=0
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
