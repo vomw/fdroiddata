@@ -19,16 +19,21 @@ Builds:
     commit: 2026.08.27
     subdir: sources
     sudo:
-      - curl -o /tmp/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
-      - dpkg -i /tmp/packages-microsoft-prod.deb
       - apt-get update
-      - apt-get install -y dotnet-sdk-10.0
+      - apt-get install -y --no-install-recommends ca-certificates curl
+      - curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+      - bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /usr/share/dotnet
+      - ln -sf /usr/share/dotnet/dotnet /usr/bin/dotnet
       - dotnet workload install android
-    build:
-      - dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$ /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$ /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$ /p:Configuration=Release /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False /p:AndroidSdkDirectory=$$SDK$$ /p:AndroidNdkDirectory=$$NDK$$ --self-contained true --property WarningLevel=0
-    output: FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.SiarheiKuchuk.FtpsServer.apk
+    build: dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$
+      /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
+      /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$ /p:Configuration=Release
+      /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False /p:AndroidSdkDirectory=$$SDK$$
+      /p:AndroidNdkDirectory=$$NDK$$ --self-contained true --property WarningLevel=0
+    output:
+      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.SiarheiKuchuk.FtpsServer.apk
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
+AutoUpdateMode: None
+UpdateCheckMode: Static
 CurrentVersion: 2026.08.27
 CurrentVersionCode: 20260827
