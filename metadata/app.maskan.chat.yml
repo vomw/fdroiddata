@@ -60,8 +60,11 @@ Builds:
     srclibs:
       - reproducible-apk-tools@v0.3.0
     prebuild: sed -i -e 's/isEnable = true/isEnable = false/' build.gradle.kts
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
-      $$OUT$$ 'META-INF/services/*'
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py fix-newlines "$$OUT$$" 'META-INF/services/*'
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: c829f0fc885ad4a32f80f7507274972a0b88a88926d551d96d181eeed8d496e3
 
