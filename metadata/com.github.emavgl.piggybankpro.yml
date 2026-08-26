@@ -2071,6 +2071,81 @@ Builds:
       - submodules/flutter/bin/flutter build apk --release --flavor fdroid --split-per-abi
         --target-platform="android-x64"
 
+  - versionName: 1.12.1
+    versionCode: 7143001
+    commit: 3fec8e75ff1ae38009737f8f0af490cf7221abbd
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    rm:
+      - ios
+      - macos
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - python3 scripts/stub_in_app_purchase.py
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+      - package.json
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform="android-arm"
+    ndk: r28c
+
+  - versionName: 1.12.1
+    versionCode: 7143002
+    commit: 3fec8e75ff1ae38009737f8f0af490cf7221abbd
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    rm:
+      - ios
+      - macos
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - python3 scripts/stub_in_app_purchase.py
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+      - package.json
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform="android-arm64"
+    ndk: r28c
+
+  - versionName: 1.12.1
+    versionCode: 7143004
+    commit: 3fec8e75ff1ae38009737f8f0af490cf7221abbd
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    rm:
+      - ios
+      - macos
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - python3 scripts/stub_in_app_purchase.py
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter pub get
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - submodules/flutter
+      - .pub-cache
+      - package.json
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform="android-x64"
+    ndk: r28c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
