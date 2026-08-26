@@ -30,9 +30,8 @@ Builds:
     prebuild:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
-      - "sed -i 's/\"version\": \"1.0.0\"/\"version\": \"$$VERSION$$\"/' app.json"
-      - "sed -i '/\"package\": \"xyz.hub13.remindiary\"/a\\    \"versionCode\": $$VERCODE$$,'
-        app.json"
+      - sed -i -e '/"version"/s/1.0.0/$$VERSION$$/' -e '/"android":\ {/a "versionCode":$$VERCODE$$,'
+        app.json
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - npx expo prebuild --platform android --no-install
