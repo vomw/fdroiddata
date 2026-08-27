@@ -1,3 +1,5 @@
+AntiFeatures:
+  - NonFreeNet
 Categories:
   - Password & 2FA
   - Security
@@ -9,29 +11,27 @@ IssueTracker: https://github.com/Monica-Pass/Monica-Fdroid/issues
 
 AutoName: Monica F-Droid
 
-AntiFeatures:
-  - NonFreeNet
-
 RepoType: git
 Repo: https://github.com/Monica-Pass/Monica-Fdroid
 
 Builds:
   - versionName: 1.0.307
     versionCode: 14
-    commit: 7d1627c638e680b7e60289fe8a12054dea90564c
+    commit: 780e5a9697bf0c9a8c7dfa410a90f4f0103b9882
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -y rustup
     gradle:
       - yes
-    gradleprops:
-      - fdroidUniversal=true
     output: build/outputs/apk/release/*.apk
-    ndk: 26.1.10909125
     prebuild:
+      - rustup default stable
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
       - cargo install cargo-ndk --version 4.1.2 --locked
+    ndk: 26.1.10909125
+    gradleprops:
+      - fdroidUniversal=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
