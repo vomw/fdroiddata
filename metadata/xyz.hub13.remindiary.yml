@@ -29,6 +29,8 @@ Builds:
     output: android/app/build/outputs/apk/release/*.apk
     binary: 
       https://github.com/grantstephens/ReminDiary/releases/download/v1.0.2/remindiary-v1.0.2-armeabi-v7a.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
@@ -52,6 +54,10 @@ Builds:
     build:
       - cd android/app
       - gradle -PreactNativeArchitectures=armeabi-v7a assembleRelease
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
   - versionName: 1.0.2
     versionCode: 100029992
@@ -67,6 +73,8 @@ Builds:
     output: android/app/build/outputs/apk/release/*.apk
     binary: 
       https://github.com/grantstephens/ReminDiary/releases/download/v1.0.2/remindiary-v1.0.2-arm64-v8a.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - export CI=1
       - export EXPO_NO_TELEMETRY=1
@@ -90,6 +98,10 @@ Builds:
     build:
       - cd android/app
       - gradle -PreactNativeArchitectures=arm64-v8a assembleRelease
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: a79298e44336ddcb4d63b728d70dda772381274274cbb44609bdaa6ff2e2f328
 
