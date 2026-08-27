@@ -808,7 +808,9 @@ Builds:
       - fdroid
     rm:
       - scripts
-    prebuild: sed -i -e '/foojay/d' ../settings.gradle
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/if (signingConfigs.release.storeFile/,+1d' build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*$
