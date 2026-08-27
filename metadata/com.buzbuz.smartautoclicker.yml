@@ -1133,17 +1133,18 @@ Builds:
       - core
 
   - versionName: 4.0.1
-    versionCode: 96
+    versionCode: 960001
     commit: 31d6669bf55e0c346c0ed0bea297274b2679f2fc
     subdir: smartautoclicker
     gradle:
       - fDroid
     output: 
-      build/outputs/apk/fDroid/release/smartautoclicker-fDroid-universal-release-unsigned.apk
+      build/outputs/apk/fDroid/release/smartautoclicker-fDroid-armeabi-v7a-release-unsigned.apk
     rm:
       - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/plugins/CrashlyticsConventionPlugin.kt
     prebuild:
       - sdkmanager 'cmake;3.22.1'
+      - sed -i -e 's/include("armeabi.*/include("armeabi-v7a")/' build.gradle.kts
       - cd ..
       - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
         gradle/libs.versions.toml
