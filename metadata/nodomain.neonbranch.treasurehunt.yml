@@ -14,33 +14,55 @@ AutoName: Treasure Hunt
 
 RepoType: git
 Repo: https://codeberg.org/neonbranch/treasurehunt.git
+Binaries: 
+  https://codeberg.org/neonbranch/treasurehunt/releases/download/v%v/treasurehunt-%v.apk
 
 Builds:
   - versionName: 0.6.3
-    versionCode: 2080
+    versionCode: 80
     commit: 313b4e2012b8a9c69563c3f8da94907b1edac23d
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    sudo:
+      - mkdir -p /home/daniel/AndroidStudioProjects
+      - chown -R vagrant /home/daniel
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" 
+        pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ..
+      - mv nodomain.neonbranch.treasurehunt 
+        /home/daniel/AndroidStudioProjects/schatzsuche
+      - pushd /home/daniel/AndroidStudioProjects/schatzsuche
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /home/daniel/AndroidStudioProjects/schatzsuche 
+        nodomain.neonbranch.treasurehunt
     scandelete:
       - .pub-cache
     build:
+      - cd ..
+      - mv nodomain.neonbranch.treasurehunt 
+        /home/daniel/AndroidStudioProjects/schatzsuche
+      - pushd /home/daniel/AndroidStudioProjects/schatzsuche
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - $$flutter$$/bin/flutter build apk --release 
+        --target-platform=android-arm64 --no-shrink
+      - popd
+      - mv /home/daniel/AndroidStudioProjects/schatzsuche 
+        nodomain.neonbranch.treasurehunt
+
+AllowedAPKSigningKeys: 
+  25238413a89a413554e5e9414d62f0b8ac0714730a930c57c32cf8f14a5d97ba
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-VercodeOperation:
-  - '%c + 2000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.6.3
-CurrentVersionCode: 2080
+CurrentVersionCode: 80
