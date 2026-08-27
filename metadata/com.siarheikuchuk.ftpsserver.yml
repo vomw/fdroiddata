@@ -1,0 +1,50 @@
+Categories:
+  - File Transfer
+License: CC0-1.0
+AuthorName: Siarhei Kuchuk
+AuthorEmail: 4712173+drweb86@users.noreply.github.com
+WebSite: https://github.com/drweb86/dotnet-ftps-server
+SourceCode: https://github.com/drweb86/dotnet-ftps-server
+IssueTracker: https://github.com/drweb86/dotnet-ftps-server/issues
+Changelog: https://github.com/drweb86/dotnet-ftps-server/blob/main/CHANGELOG.md
+
+AutoName: FTPS Server
+
+RepoType: git
+Repo: https://github.com/drweb86/dotnet-ftps-server.git
+
+Builds:
+  - versionName: 2026.08.27
+    versionCode: 20260827
+    commit: 2026.08.27
+    subdir: sources
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends ca-certificates curl
+      - curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+      - bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /usr/share/dotnet
+      - echo '#!/bin/sh' > /usr/bin/dotnet
+      - echo 'export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' >> /usr/bin/dotnet
+      - echo 'exec /usr/share/dotnet/dotnet "$@"' >> /usr/bin/dotnet
+      - chmod +x /usr/bin/dotnet
+      - dotnet workload install android
+    output: 
+      FtpsServerAvalonia/FtpsServerAvalonia.Android/bin/Release/net10.0-android/com.siarheikuchuk.ftpsserver-Signed.apk
+    build:
+      - export ANDROID_HOME=/home/vagrant/android-sdk
+      - export ANDROID_SDK_ROOT=/home/vagrant/android-sdk
+      - dotnet build -t:InstallAndroidDependencies FtpsServerAvalonia/FtpsServerAvalonia.Android/FtpsServerAvalonia.Android.csproj
+        -f net10.0-android -p:AndroidSdkDirectory=/home/vagrant/android-sdk -p:AcceptAndroidSdkLicenses=true
+        --no-dependencies /nodeReuse:false
+      - dotnet build-server shutdown
+      - dotnet publish FtpsServer.Android.slnx /p:InformationalVersion=$$VERSION$$
+        /p:VersionPrefix=$$VERSION$$ /p:Version=$$VERSION$$ /p:AssemblyVersion=$$VERSION$$
+        /p:ApplicationVersion=$$VERCODE$$ /p:ApplicationDisplayVersion=$$VERSION$$
+        /p:Configuration=Release /p:PublishReadyToRun=false /p:RunAnalyzersDuringBuild=False
+        /p:AndroidSdkDirectory=/home/vagrant/android-sdk /p:AcceptAndroidSdkLicenses=true
+        /nodeReuse:false --self-contained true --property WarningLevel=0
+
+AutoUpdateMode: None
+UpdateCheckMode: Static
+CurrentVersion: 2026.08.27
+CurrentVersionCode: 20260827
