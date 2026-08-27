@@ -3,6 +3,7 @@ Categories:
   - Multimedia
 License: Apache-2.0
 AuthorName: Trebuchet Dynamics
+AuthorWebSite: https://trebuchetdynamics.com
 AutoName: Fractal Forge
 WebSite: https://fractal.trebuchetdynamics.com
 SourceCode: https://github.com/TrebuchetDynamics/flutter-fractal-forge
@@ -13,21 +14,22 @@ RepoType: git
 Repo: https://github.com/TrebuchetDynamics/flutter-fractal-forge.git
 
 MaintainerNotes: |-
-  FDROID_BUILD disables the upstream signing configuration; F-Droid signs the
-  resulting universal APK. Flutter's official Android embedding retains unused
-  Play Store deferred-component type references even though this app declares
-  no deferred components and its releaseRuntimeClasspath contains no Play Core
-  dependency.
+  FDROID_BUILD disables upstream signing so F-Droid can verify the three
+  ABI-specific APKs against the developer-signed reference binaries. Flutter's
+  official Android embedding retains unused Play Store deferred-component type
+  references even though this app declares no deferred components and its
+  releaseRuntimeClasspath contains no Play Core dependency.
 
 Builds:
-  - versionName: 1.1.95
-    versionCode: 95
-    commit: c2ea0a697a1f74aaba637491889fcb9d04886d78
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.1.96
+    versionCode: 961
+    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
     timeout: 3600
     ndk: r28c
     srclibs:
-      - flutter@3.44.6
+      - flutter@stable
     rm:
       - docs/qa/fractal-audits
       - integration_test
@@ -39,20 +41,144 @@ Builds:
       - windows
       - research
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
     scandelete:
       - .pub-cache
     build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - export FDROID_BUILD=1
+      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
       - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
       - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
-      - $$flutter$$/bin/flutter build apk --release --build-name="$version_name" --build-number="$version_code"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm" --build-name="$version_name" --build-number="$version_code"
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+
+  - versionName: 1.1.96
+    versionCode: 962
+    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
+    timeout: 3600
+    ndk: r28c
+    srclibs:
+      - flutter@stable
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
+      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
+      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64" --build-name="$version_name" --build-number="$version_code"
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+
+  - versionName: 1.1.96
+    versionCode: 963
+    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
+    timeout: 3600
+    ndk: r28c
+    srclibs:
+      - flutter@stable
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
+      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
+      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64" --build-name="$version_name" --build-number="$version_code"
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+
+AllowedAPKSigningKeys: 8d5f69b91dd44476ceaad141f1fa9f6abeccdfa20cd3f7bcdfe709df623878fd
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: fdroid/version.properties|versionCode=(\d+)|.|versionName=(.+)
-CurrentVersion: 1.1.95
-CurrentVersionCode: 95
+CurrentVersion: 1.1.96
+CurrentVersionCode: 963
