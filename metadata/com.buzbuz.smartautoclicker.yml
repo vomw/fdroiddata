@@ -1132,7 +1132,31 @@ Builds:
     scandelete:
       - core
 
+  - versionName: 4.0.1
+    versionCode: 96
+    commit: 31d6669bf55e0c346c0ed0bea297274b2679f2fc
+    subdir: smartautoclicker
+    gradle:
+      - fDroid
+    output: 
+      build/outputs/apk/fDroid/release/smartautoclicker-fDroid-universal-release-unsigned.apk
+    rm:
+      - build-logic/convention/src/main/kotlin/com/buzbuz/gradle/convention/plugins/CrashlyticsConventionPlugin.kt
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - cd ..
+      - sed -i -e '/firebase/Id'  -e '/billing/d' -e '/ump/d' -e '/gms/Id' -e '/play/d'
+        gradle/libs.versions.toml
+      - sed -i -e '/register("crashlytics/,/^        }/d' -e '/gms/d' -e '/firebase/d'
+        build-logic/{convention,obfuscation}/build.gradle.kts
+      - sed -i -e '/googleCrashlytics/d;/googleGms/d' build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' feature/{review,revenue}/build.gradle.kts
+      - sed -i -e '/firebase/d' core/common/base/build.gradle.kts
+      - sed -i -e '/playStoreImplementation/d' core/smart/detection-models/build.gradle.kts
+    scandelete:
+      - core
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*(|-RC[0-9])$
-CurrentVersion: 4.0.0
-CurrentVersionCode: 95
+CurrentVersion: 4.0.1
+CurrentVersionCode: 96
