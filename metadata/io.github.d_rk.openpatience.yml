@@ -10,10 +10,14 @@ RepoType: git
 Repo: https://github.com/d-rk/open-patience.git
 
 Builds:
-  - versionName: 1.0.4
-    versionCode: 61
-    commit: 78c2d0dc434d82c92dba2f6cd9ef097ffb585c22
+  - versionName: 1.0.6
+    versionCode: 81
+    commit: f31979057067f0b4147618d76c9144dfc108654c
+    sudo:
+      - mkdir -p /home/runner/work/open-patience
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-production-release.apk
+    binary: https://github.com/d-rk/open-patience/releases/download/v%v/app-armeabi-v7a-production-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -24,6 +28,10 @@ Builds:
       - test
       - integration_test
     prebuild:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
         -1)
       - '[[ $flutterVersion ]]'
@@ -31,17 +39,30 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter build apk --release --flavor production --split-per-abi
-        --target-platform=android-arm --obfuscate --split-debug-info=build/app/outputs/symbols
+        --target-platform=android-arm
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
 
-  - versionName: 1.0.4
-    versionCode: 62
-    commit: 78c2d0dc434d82c92dba2f6cd9ef097ffb585c22
+  - versionName: 1.0.6
+    versionCode: 82
+    commit: f31979057067f0b4147618d76c9144dfc108654c
+    sudo:
+      - mkdir -p /home/runner/work/open-patience
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-production-release.apk
+    binary: https://github.com/d-rk/open-patience/releases/download/v%v/app-arm64-v8a-production-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -52,6 +73,10 @@ Builds:
       - test
       - integration_test
     prebuild:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
         -1)
       - '[[ $flutterVersion ]]'
@@ -59,17 +84,30 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter build apk --release --flavor production --split-per-abi
-        --target-platform=android-arm64 --obfuscate --split-debug-info=build/app/outputs/symbols
+        --target-platform=android-arm64
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
 
-  - versionName: 1.0.4
-    versionCode: 63
-    commit: 78c2d0dc434d82c92dba2f6cd9ef097ffb585c22
+  - versionName: 1.0.6
+    versionCode: 83
+    commit: f31979057067f0b4147618d76c9144dfc108654c
+    sudo:
+      - mkdir -p /home/runner/work/open-patience
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-production-release.apk
+    binary: https://github.com/d-rk/open-patience/releases/download/v%v/app-x86_64-production-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -80,6 +118,10 @@ Builds:
       - test
       - integration_test
     prebuild:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - flutterVersion=$(sed -n -E "s/^\s+flutter:\ (.*)/\1/p" pubspec.yaml | head
         -1)
       - '[[ $flutterVersion ]]'
@@ -87,12 +129,23 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/open-patience
+      - cd ..
+      - mv io.github.d_rk.openpatience $repo/open-patience
+      - pushd $repo/open-patience
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - export SOURCE_DATE_EPOCH=0
       - $$flutter$$/bin/flutter build apk --release --flavor production --split-per-abi
-        --target-platform=android-x64 --obfuscate --split-debug-info=build/app/outputs/symbols
+        --target-platform=android-x64
+      - popd
+      - mv $repo/open-patience io.github.d_rk.openpatience
+
+AllowedAPKSigningKeys: 8df8a6e8bcac974b85e666eccb799963bc02c1ca6d0aa83d82f7ac6e20fec423
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
@@ -101,5 +154,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.4
-CurrentVersionCode: 63
+CurrentVersion: 1.0.6
+CurrentVersionCode: 83
