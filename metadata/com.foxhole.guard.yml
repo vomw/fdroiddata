@@ -54,7 +54,7 @@ Description: |
 
 RepoType: git
 Repo: https://github.com/foxhole-team/foxhole-guard.git
-Binaries:
+Binaries: 
   https://github.com/foxhole-team/foxhole-guard/releases/download/v%v/FoxHole-v%v-arm64-v8a-release.apk
 
 Builds:
@@ -64,7 +64,7 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends build-essential
+      - apt-get install -y --no-install-recommends build-essential 
         ca-certificates cmake curl git ninja-build perl pkg-config rustup
       - mkdir -p /home/runner/work/foxhole-guard
       - chown -R vagrant /home/runner
@@ -72,7 +72,7 @@ Builds:
     srclibs:
       - FoxHoleCore@83c9f4b95080c254a4f88d2f2cb7fd48ad849c05
     prebuild:
-      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C
+      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C 
         $$FoxHoleCore$$ rev-parse HEAD)"
       - export CARGO_HOME=/home/runner/.cargo
       - export RUSTUP_HOME=/home/runner/.rustup
@@ -82,7 +82,7 @@ Builds:
       - rustup target add aarch64-linux-android
       - cargo install cargo-ndk --version 4.1.2 --locked
       - cargo fetch --locked --manifest-path $$FoxHoleCore$$/Cargo.toml
-      - export
+      - export 
         FOXHOLE_NATIVE_DEPS_DIR=/home/runner/work/foxhole-guard/foxhole-native-deps
       - scripts/fetch-native-deps.sh
     build:
@@ -95,17 +95,17 @@ Builds:
       - export PATH="$CARGO_HOME/bin:$PATH"
       - export ANDROID_NDK_HOME=$$NDK$$
       - export FOXCORE_SOURCE_ROOT=$$FoxHoleCore$$
-      - export
+      - export 
         FOXHOLE_NATIVE_DEPS_DIR=/home/runner/work/foxhole-guard/foxhole-native-deps
       - export FOXHOLE_NATIVE_OFFLINE=1
       - export I2PD_ABIS=arm64-v8a
       - SOURCE_DATE_EPOCH=1787044986 scripts/build-i2pd.sh
-      - perl -0777 -pi -e 'use bytes; my $prefix = pack("V3a4", 4, 20, 3,
-        "GNU\0"); my $new = pack("H*",
-        "1e327f87ac68eff0b0c549402952a1c230fe4b22"); my $count =
-        s/\Q$prefix\E.{20}/$prefix$new/s; die "unexpected-build-id-$count"
+      - perl -0777 -pi -e 'use bytes; my $prefix = pack("V3a4", 4, 20, 3, 
+        "GNU\0"); my $new = pack("H*", 
+        "1e327f87ac68eff0b0c549402952a1c230fe4b22"); my $count = 
+        s/\Q$prefix\E.{20}/$prefix$new/s; die "unexpected-build-id-$count" 
         unless $count == 1;' app/src/main/jniLibs/arm64-v8a/libi2pd.so
-      - gradle --no-daemon --console=plain -Pfoxhole.updateChannel=github
+      - gradle --no-daemon --console=plain -Pfoxhole.updateChannel=github 
         -Pfoxhole.nativeOffline=true :app:assembleRelease
       - popd
       - mv /home/runner/work/foxhole-guard/foxhole-guard com.foxhole.guard
@@ -120,13 +120,13 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends build-essential
+      - apt-get install -y --no-install-recommends build-essential 
         ca-certificates cmake ninja-build perl pkg-config rustup
     output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     srclibs:
       - FoxHoleCore@cd8bf71e950247d7bcebc8cd62142adef5c970fc
     prebuild:
-      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C
+      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C 
         $$FoxHoleCore$$ rev-parse HEAD)"
       - rustup set profile minimal
       - rustup default 1.97.1
@@ -142,8 +142,8 @@ Builds:
       - export FOXHOLE_NATIVE_OFFLINE=1
       - export I2PD_ABIS=arm64-v8a
       - export TOR_TRANSPORT_ABIS=arm64-v8a
-      - gradle --no-daemon --console=plain -Pfoxhole.splitApks=true
-        -Pfoxhole.updateChannel=github -Pfoxhole.nativeOffline=true
+      - gradle --no-daemon --console=plain -Pfoxhole.splitApks=true 
+        -Pfoxhole.updateChannel=github -Pfoxhole.nativeOffline=true 
         :app:assembleRelease
     ndk: 29.0.14206865
     gradleprops:
@@ -151,7 +151,7 @@ Builds:
       - foxhole.updateChannel=github
       - foxhole.nativeOffline=true
 
-AllowedAPKSigningKeys:
+AllowedAPKSigningKeys: 
   e59de2486084c38f3c77e9df0eb5eff9a4559f3c68024f1208e0e9c04b0df665
 
 MaintainerNotes: |-
