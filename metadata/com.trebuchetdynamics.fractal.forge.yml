@@ -4,30 +4,25 @@ Categories:
 License: Apache-2.0
 AuthorName: Trebuchet Dynamics
 AuthorWebSite: https://trebuchetdynamics.com
-AutoName: Fractal Forge
 WebSite: https://fractal.trebuchetdynamics.com
 SourceCode: https://github.com/TrebuchetDynamics/flutter-fractal-forge
 IssueTracker: https://github.com/TrebuchetDynamics/flutter-fractal-forge/issues
-Changelog: https://github.com/TrebuchetDynamics/flutter-fractal-forge/blob/main/CHANGELOG.md
+Changelog: 
+  https://github.com/TrebuchetDynamics/flutter-fractal-forge/blob/main/CHANGELOG.md
+
+AutoName: Fractal Forge
 
 RepoType: git
 Repo: https://github.com/TrebuchetDynamics/flutter-fractal-forge.git
 
-MaintainerNotes: |-
-  FDROID_BUILD disables upstream signing so F-Droid can verify the three
-  ABI-specific APKs against the developer-signed reference binaries. Flutter's
-  official Android embedding retains unused Play Store deferred-component type
-  references even though this app declares no deferred components and its
-  releaseRuntimeClasspath contains no Play Core dependency.
-
 Builds:
-  - versionName: 1.1.96
-    versionCode: 961
-    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
+  - versionName: 1.1.97
+    versionCode: 971
+    commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
+    timeout: 3600
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
-    timeout: 3600
-    ndk: r28c
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -67,17 +62,19 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
       - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
       - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm" --build-name="$version_name" --build-number="$version_code"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --build-name="$version_name" --build-number="$version_code"
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
 
-  - versionName: 1.1.96
-    versionCode: 962
-    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
+  - versionName: 1.1.97
+    versionCode: 972
+    commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
+    timeout: 3600
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
-    timeout: 3600
-    ndk: r28c
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -117,17 +114,19 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
       - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
       - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64" --build-name="$version_name" --build-number="$version_code"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --build-name="$version_name" --build-number="$version_code"
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
 
-  - versionName: 1.1.96
-    versionCode: 963
-    commit: 9523410090399dad2a79f2afbb42c89e3d74ecf3
-    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
+  - versionName: 1.1.97
+    versionCode: 973
+    commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
     timeout: 3600
-    ndk: r28c
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -167,11 +166,19 @@ Builds:
       - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
       - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
       - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64" --build-name="$version_name" --build-number="$version_code"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --build-name="$version_name" --build-number="$version_code"
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
 
 AllowedAPKSigningKeys: 8d5f69b91dd44476ceaad141f1fa9f6abeccdfa20cd3f7bcdfe709df623878fd
+
+MaintainerNotes: |-
+  FDROID_BUILD disables upstream signing so F-Droid can verify the three
+  ABI-specific APKs against the developer-signed reference binaries. Release
+  minification removes Flutter's unused Play Store deferred-component
+  implementation; the app declares no deferred components or Play Core dependency.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
@@ -180,5 +187,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: fdroid/version.properties|versionCode=(\d+)|.|versionName=(.+)
-CurrentVersion: 1.1.96
-CurrentVersionCode: 963
+CurrentVersion: 1.1.97
+CurrentVersionCode: 973
