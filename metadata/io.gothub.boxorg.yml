@@ -1,0 +1,39 @@
+Categories:
+  - Time
+License: MIT
+AuthorName: Vincenz Koop
+AuthorEmail: info@gothub.io
+WebSite: https://boxorg.app
+SourceCode: https://codeberg.org/anderslum/boxorg
+IssueTracker: https://codeberg.org/anderslum/boxorg/issues
+Changelog: https://codeberg.org/anderslum/boxorg/releases
+
+AutoName: boxorg
+
+RepoType: git
+Repo: https://codeberg.org/anderslum/boxorg.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 5
+    commit: fda2877
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends npm nodejs
+      - npm install -g pnpm@11
+    init:
+      - pnpm install --frozen-lockfile
+      - IZZY_BUILD=1 npx expo prebuild --platform android --no-install
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/.pnpm/*/node_modules/*/local-maven-repo
+      - node_modules/.pnpm/*/node_modules/@expo/*/local-maven-repo
+    ndk: r27b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v
+UpdateCheckData: app.config.js|versionCode:\s*(\d+)|.|version:\s*'([\d.]+)'
+CurrentVersion: 1.0.1
+CurrentVersionCode: 5
