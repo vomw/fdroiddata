@@ -1,1 +1,40 @@
-QW50aUZlYXR1cmVzOgogIE5vbkZyZWVOZXQ6CiAgICBlbi1VUzogT3B0aW9uYWwgaW50ZWdyYXRpb25zIHdpdGggcHJvcHJpZXRhcnkgc2VydmljZXMgKFN0ZWFtIEd1YXJkLCBCaXR3YXJkZW4KICAgICAgY2xvdWQsIHJlbW90ZSBmYXZpY29ucyk7IGFsbCBhcmUgb3B0LWluIGFuZCB0aGUgY29yZSB2YXVsdCB3b3JrcyBmdWxseSBvZmZsaW5lLgpDYXRlZ29yaWVzOgogIC0gUGFzc3dvcmQgJiAyRkEKICAtIFNlY3VyaXR5CkxpY2Vuc2U6IEdQTC0zLjAtb25seQpBdXRob3JOYW1lOiBKb3lpbkpvZXN0ZXIKQXV0aG9yRW1haWw6IGxpY2hhb3JhbjhAZ21haWwuY29tClNvdXJjZUNvZGU6IGh0dHBzOi8vZ2l0aHViLmNvbS9Nb25pY2EtUGFzcy9Nb25pY2EtRmRyb2lkCklzc3VlVHJhY2tlcjogaHR0cHM6Ly9naXRodWIuY29tL01vbmljYS1QYXNzL01vbmljYS1GZHJvaWQvaXNzdWVzCgpBdXRvTmFtZTogTW9uaWNhCgpSZXBvVHlwZTogZ2l0ClJlcG86IGh0dHBzOi8vZ2l0aHViLmNvbS9Nb25pY2EtUGFzcy9Nb25pY2EtRmRyb2lkCgpCdWlsZHM6CiAgLSB2ZXJzaW9uTmFtZTogMS4wLjMwNwogICAgdmVyc2lvbkNvZGU6IDE0CiAgICBjb21taXQ6IDA5ZjIwNGYyMWExMWNhYTY0ZTBjMjBhMjljYjZlOWYyMjFlZGMwMmIKICAgIHN1YmRpcjogYXBwCiAgICBzdWRvOgogICAgICAtIGFwdC1nZXQgdXBkYXRlCiAgICAgIC0gYXB0LWdldCBpbnN0YWxsIC15IGJ1aWxkLWVzc2VudGlhbCBydXN0dXAKICAgIGdyYWRsZToKICAgICAgLSB5ZXMKICAgIHByZWJ1aWxkOgogICAgICAtIHJ1c3R1cCBkZWZhdWx0IHN0YWJsZQogICAgICAtIHJ1c3R1cCB0YXJnZXQgYWRkIGFhcmNoNjQtbGludXgtYW5kcm9pZCBhcm12Ny1saW51eC1hbmRyb2lkZWFiaSB4ODZfNjQtbGludXgtYW5kcm9pZAogICAgICAtIGNhcmdvIGluc3RhbGwgY2FyZ28tbmRrIC0tdmVyc2lvbiA0LjEuMiAtLWxvY2tlZAogICAgbmRrOiAyNi4xLjEwOTA5MTI1CiAgICBncmFkbGVwcm9wczoKICAgICAgLSBmZHJvaWRVbml2ZXJzYWw9dHJ1ZQoKQXV0b1VwZGF0ZU1vZGU6IFZlcnNpb24KVXBkYXRlQ2hlY2tNb2RlOiBUYWdzCkN1cnJlbnRWZXJzaW9uOiAxLjAuMzA3CkN1cnJlbnRWZXJzaW9uQ29kZTogMTQ=
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional integrations with proprietary services (Steam Guard, Bitwarden
+      cloud, remote favicons); all are opt-in and the core vault works fully offline.
+Categories:
+  - Password & 2FA
+  - Security
+License: GPL-3.0-only
+AuthorName: JoyinJoester
+AuthorEmail: lichaoran8@gmail.com
+SourceCode: https://github.com/Monica-Pass/Monica-Fdroid
+IssueTracker: https://github.com/Monica-Pass/Monica-Fdroid/issues
+
+AutoName: Monica
+
+RepoType: git
+Repo: https://github.com/Monica-Pass/Monica-Fdroid
+
+Builds:
+  - versionName: 1.0.307
+    versionCode: 14
+    commit: 09f204f21a11caa64e0c20a29cb6e9f221edc02b
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    gradle:
+      - yes
+    prebuild:
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo install cargo-ndk --version 4.1.2 --locked
+    ndk: 26.1.10909125
+    gradleprops:
+      - fdroidUniversal=true
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.307
+CurrentVersionCode: 14
