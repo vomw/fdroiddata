@@ -64,9 +64,21 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
       fix-newlines $$OUT$$ 'META-INF/services/*' 'assets/python/*' 'assets/themes/*'
 
+  - versionName: '3.0'
+    versionCode: 16
+    commit: 364bde9f9d23f09dde0d21e6163f37fea74b87f0
+    subdir: app
+    gradle:
+      - default
+    srclibs:
+      - reproducible-apk-tools@v0.2.8
+    prebuild: sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle.kts
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'META-INF/services/*' 'assets/python/*' 'assets/themes/*'
+
 AllowedAPKSigningKeys: e632303f5c22a8aec2165f8ca75cf11d1376eb456bba92dc621e4464c6818489
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.0'
-CurrentVersionCode: 15
+CurrentVersion: '3.0'
+CurrentVersionCode: 16
