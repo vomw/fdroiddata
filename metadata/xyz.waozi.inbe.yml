@@ -526,10 +526,28 @@ Builds:
     gradleprops:
       - fDroidBuild=true
 
-  - versionName: 1.9.9
-    versionCode: 111
-    disable: failed RB
-    commit: 7c9229c14614e7c4933114400380316fe653536f
+  - versionName: 1.9.10
+    versionCode: 112
+    commit: c7235be76e5c8733430fd88c7bc451a7591a3203
+    subdir: droid/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential jimsh
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    prebuild: bash ../../scripts/copy-android-assets.sh
+    scandelete:
+      - site/static/assets-sqljs-1.12.0/
+      - tests/locale_keys_test
+      - vendor/kryon/vendor
+    gradleprops:
+      - fDroidBuild=true
+
+  - versionName: 1.9.11
+    versionCode: 113
+    commit: cc03f1712a3b95305fffad8d8b6ea5bd60ac47fe
     subdir: droid/app
     submodules: true
     sudo:
@@ -550,5 +568,5 @@ AllowedAPKSigningKeys: 47648dc7665db12a97c3077a4892ce29072c756bb31b5c331b8924493
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.9.9
-CurrentVersionCode: 111
+CurrentVersion: 1.9.11
+CurrentVersionCode: 113
