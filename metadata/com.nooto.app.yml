@@ -9,6 +9,15 @@ IssueTracker: https://github.com/ClemPera/Nooto/issues
 RepoType: git
 Repo: https://github.com/ClemPera/Nooto
 
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^client-v[0-9.]+$
+UpdateCheckData: ''
+CurrentVersion: 0.2.0
+CurrentVersionCode: 2000
+
+Binaries: https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-universal-release.apk
+AllowedAPKSigningKeys: 46ce9259dd8eba36470faaf0dcdcd1fc958b6d3c5f84f0303645603a5b86e8b0
+
 Builds:
   - versionName: 0.2.0
     versionCode: 2000
@@ -30,16 +39,5 @@ Builds:
       - npm install
       - npm run tauri android build -- --apk
 
-    #postbuild:
-      #- mkdir fdroid-release
-      #- cp src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk fdroid-release/
-      #- rm -rf ../target
-      #- rm -rf src-tauri/gen/android/app/build
-
-    #output: fdroid-release/*.apk
     output: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
 
-#TODO
-#Binaries: https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-universal-release.apk
-#AllowedAPKSigningKeys: <the SHA-256 digest from apksigner, no colons>
-#no && but a command per line
