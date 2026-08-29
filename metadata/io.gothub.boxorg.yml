@@ -1,5 +1,5 @@
 Categories:
-  - Time
+  - Inventory
 License: MIT
 AuthorName: Vincenz Koop
 AuthorEmail: info@gothub.io
@@ -17,20 +17,24 @@ Builds:
   - versionName: 1.0.1
     versionCode: 5
     commit: fda2877def8cfee494f6c93f1ead976c04dd315a
-    subdir: android/app
     sudo:
-      - apt-get update
-      - apt-get install -y --no-install-recommends npm nodejs
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz
+      - echo "44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89 node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
       - npm install -g pnpm@11
     init:
       - pnpm install --frozen-lockfile
       - IZZY_BUILD=1 npx expo prebuild --platform android --no-install
-    gradle:
-      - yes
+    scanignore:
+      - node_modules/react-native/sdks/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
     scandelete:
-      - node_modules/.pnpm/*/node_modules/*/local-maven-repo
-      - node_modules/.pnpm/*/node_modules/@expo/*/local-maven-repo
+      - node_modules
+    build:
+      - cd android && ./gradlew :app:assembleRelease
     ndk: r27b
+    output: android/app/build/outputs/apk/release/*.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v
