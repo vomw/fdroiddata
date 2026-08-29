@@ -39,7 +39,13 @@ Builds:
     subdir: app
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     prebuild: git reset --soft HEAD~1
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 318fbad00b0de8b10f3d1bb684d2648a7878a0d63133993fdd10d506e0e442d4
 
