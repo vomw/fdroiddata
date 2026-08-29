@@ -29,6 +29,10 @@ Builds:
       - apt-get install -y rustup
     gradle:
       - yes
+    prebuild:
+      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
+        | head -n1)
+      - sdkmanager --install "ndk;$NDK_VERSION"
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
@@ -48,6 +52,10 @@ Builds:
       - apt-get install -y rustup
     gradle:
       - yes
+    prebuild:
+      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
+        | head -n1)
+      - sdkmanager --install "ndk;$NDK_VERSION"
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
@@ -67,6 +75,10 @@ Builds:
       - apt-get install -y rustup
     gradle:
       - yes
+    prebuild:
+      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
+        | head -n1)
+      - sdkmanager --install "ndk;$NDK_VERSION"
     build:
       - export CARGO_HOME=/home/runner/.cargo
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
