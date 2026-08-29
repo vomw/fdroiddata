@@ -1,0 +1,84 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on Cloudflare and Telegram's network.
+Categories:
+  - Connectivity
+  - Internet
+  - VPN & Proxy
+License: MIT
+AuthorName: Ivan Utenkov
+AuthorEmail: dev@valnesfjord.com
+AuthorWebSite: https://valnesfjord.com
+SourceCode: https://github.com/valnesfjord/tg-ws-proxy-rs
+IssueTracker: https://github.com/valnesfjord/tg-ws-proxy-rs/issues
+
+AutoName: TG WS Proxy
+
+RepoType: git
+Repo: https://github.com/UjuiUjuMandan/tg-ws-proxy-rs
+
+Builds:
+  - versionName: 2.3.0
+    versionCode: 203001
+    commit: 08c3ff652684facf6772756d2bde34aa39299d76
+    subdir: android/app
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+      - apt-get update
+      - apt-get install -y rustup
+    gradle:
+      - yes
+    build:
+      - export CARGO_HOME=/home/runner/.cargo
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add armv7-linux-androideabi
+    gradleprops:
+      - TG_ANDROID_ABIS=armeabi-v7a
+
+  - versionName: 2.3.0
+    versionCode: 203002
+    commit: 08c3ff652684facf6772756d2bde34aa39299d76
+    subdir: android/app
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+      - apt-get update
+      - apt-get install -y rustup
+    gradle:
+      - yes
+    build:
+      - export CARGO_HOME=/home/runner/.cargo
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android
+    gradleprops:
+      - TG_ANDROID_ABIS=arm64-v8a
+
+  - versionName: 2.3.0
+    versionCode: 203003
+    commit: 08c3ff652684facf6772756d2bde34aa39299d76
+    subdir: android/app
+    sudo:
+      - mkdir -p /home/runner
+      - chown vagrant /home/runner
+      - apt-get update
+      - apt-get install -y rustup
+    gradle:
+      - yes
+    build:
+      - export CARGO_HOME=/home/runner/.cargo
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add x86_64-linux-android
+    gradleprops:
+      - TG_ANDROID_ABIS=x86_64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: Cargo.toml|version_code = (\d+)|.|version = "([\d.]+)"
