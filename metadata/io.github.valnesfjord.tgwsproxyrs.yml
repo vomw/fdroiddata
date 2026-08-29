@@ -20,7 +20,7 @@ Repo: https://github.com/UjuiUjuMandan/tg-ws-proxy-rs
 Builds:
   - versionName: 2.3.0
     versionCode: 203001
-    commit: 5a1da26c6bd3d5deb727bae24ce1e0ca9f296c6c
+    commit: c6ec517e0d467ed43c1fdd4eff781fce855241f2
     subdir: android/app
     sudo:
       - apt-get update
@@ -28,15 +28,14 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
-        | head -n1)
+      - NDK_VERSION=$(sed -n -E 's/^ndk = "(.+)"/\1/p' ../../android/gradle/libs.versions.toml)
       - sdkmanager --install "ndk;$NDK_VERSION"
     gradleprops:
       - TG_ANDROID_ABIS=armeabi-v7a
 
   - versionName: 2.3.0
     versionCode: 203002
-    commit: 5a1da26c6bd3d5deb727bae24ce1e0ca9f296c6c
+    commit: c6ec517e0d467ed43c1fdd4eff781fce855241f2
     subdir: android/app
     sudo:
       - apt-get update
@@ -44,15 +43,14 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
-        | head -n1)
+      - NDK_VERSION=$(sed -n -E 's/^ndk = "(.+)"/\1/p' ../../android/gradle/libs.versions.toml)
       - sdkmanager --install "ndk;$NDK_VERSION"
     gradleprops:
       - TG_ANDROID_ABIS=arm64-v8a
 
   - versionName: 2.3.0
     versionCode: 203003
-    commit: 5a1da26c6bd3d5deb727bae24ce1e0ca9f296c6c
+    commit: c6ec517e0d467ed43c1fdd4eff781fce855241f2
     subdir: android/app
     sudo:
       - apt-get update
@@ -60,8 +58,7 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - NDK_VERSION=$(sed -n -E 's/.*ndk="ndk;([0-9.]+)".*/\1/p' ../../.github/workflows/ci.yml
-        | head -n1)
+      - NDK_VERSION=$(sed -n -E 's/^ndk = "(.+)"/\1/p' ../../android/gradle/libs.versions.toml)
       - sdkmanager --install "ndk;$NDK_VERSION"
     gradleprops:
       - TG_ANDROID_ABIS=x86_64
