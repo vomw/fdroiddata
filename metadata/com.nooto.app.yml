@@ -8,23 +8,35 @@ IssueTracker: https://github.com/ClemPera/Nooto/issues
 
 RepoType: git
 Repo: https://github.com/ClemPera/Nooto
+Binaries: 
+  https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-universal-release.apk
 
 Builds:
   - versionName: 0.2.0
     versionCode: 2000
-    commit: client-v0.2.0
-    subdir: client/src-tauri/gen/android
+    commit: d0618b1ddc66a6c74ff30166d9b53933e283c898
+    subdir: client
     sudo:
-      - apt-get update
-      - apt-get install -y rustup
+      - apt update
+      - apt install -y rustup npm make build-essential libwebkit2gtk-4.1-dev wget
+        libxdo-dev libayatana-appindicator3-dev librsvg2-dev
+      - sdkmanager --install "ndk;27.0.12077973"
+    init:
+      - export ANDROID_NDK_HOME=/opt/android-sdk/ndk/27.0.12077973
+      - export NDK_HOME=/opt/android-sdk/ndk/27.0.12077973
+      - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
       - rustup default stable
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
-    prebuild:
-      - cd ../../.. && npm install && npm run build
-    gradle:
-      - yes
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+    output: 
+      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    build:
+      - npm install
+      - npm run tauri android build -- --apk
 
-AutoUpdateMode: Version
-UpdateCheckMode: Tags ^client-v[0-9.]+$
+AllowedAPKSigningKeys: 46ce9259dd8eba36470faaf0dcdcd1fc958b6d3c5f84f0303645603a5b86e8b0
+
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 0.2.0
 CurrentVersionCode: 2000
