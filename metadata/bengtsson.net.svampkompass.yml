@@ -1,20 +1,19 @@
 Categories:
   - Navigation
 License: MIT
+AuthorName: David Bengtsson
 SourceCode: https://github.com/duelago/svampkompass
 IssueTracker: https://github.com/duelago/svampkompass/issues
-
 AutoName: svampkompass
-Description: En kompass som visar vägen hem och till sparade svampställen.
 
 RepoType: git
 Repo: https://github.com/duelago/svampkompass
 
 Builds:
   - versionName: 1.0.1
-    versionCode: 2
-    commit: v1.0.1
-    output: build/app/outputs/flutter-apk/app-release.apk
+    versionCode: 22
+    commit: e103b5ff4de7eee835ef72988ae05aaaf311cc03
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -33,10 +32,11 @@ Builds:
       - sed -i -e '/com.google.android.gms/d' .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --no-pub
+      - $$flutter$$/bin/flutter build apk --no-pub --split-per-abi
 
+AllowedAPKSigningKeys: 569d5af2af6c1c9089a8fe9075d65b6e1cce31b7f21a4ee54729bd33e936d5f5
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.1
-CurrentVersionCode: 2
+CurrentVersionCode: 22
