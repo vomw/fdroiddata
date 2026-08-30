@@ -15,9 +15,12 @@ Repo: https://github.com/DottoXD/NetManager.git
 Binaries: https://github.com/DottoXD/NetManager/releases/download/%v/NetManager-FOSS.apk
 
 Builds:
-  - versionName: 0.1.4
-    versionCode: 10
-    commit: 123659cc540bb98c51d162918b62ed47023e9a03
+  - versionName: 0.1.5
+    versionCode: 11
+    commit: 2f5cb9f0f43a6b05cd01a34910cd6c241b638606
+    sudo:
+      - mkdir -p /home/runner/work/NetManager
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-foss-release.apk
     srclibs:
       - flutter@stable
@@ -25,40 +28,38 @@ Builds:
       - test
       - android/wear
     prebuild:
-      - export ORIG_DIR=$(pwd)
+      - export repo=/home/runner/work/NetManager
       - cd ..
-      - mv "$ORIG_DIR" /tmp/build
-      - cd /tmp/build
+      - mv pw.dotto.netmanager.foss $repo/NetManager
+      - pushd $repo/NetManager
       - sed -i '/:wear/d' android/settings.gradle.kts
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '?(.*)'?/\1/p" .github/workflows/android-foss.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export PATH=$$flutter$$/bin:$PATH
       - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - cd ..
-      - mv /tmp/build "$ORIG_DIR"
-      - cd "$ORIG_DIR"
+      - flutter config --no-analytics
+      - flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo/NetManager pw.dotto.netmanager.foss
     scandelete:
       - .pub-cache
     build:
-      - export ORIG_DIR=$(pwd)
+      - export repo=/home/runner/work/NetManager
       - cd ..
-      - mv "$ORIG_DIR" /tmp/build
-      - cd /tmp/build
+      - mv pw.dotto.netmanager.foss $repo/NetManager
+      - pushd $repo/NetManager
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin/:$PATH
+      - export PATH=$$flutter$$/bin:$PATH
       - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
-      - export GIT_COMMIT=$(git rev-parse --short HEAD)
-      - $$flutter$$/bin/flutter build apk --release --flavor foss --extra-gen-snapshot-options=--strip
+      - export GIT_COMMIT=$(git rev-parse --short=7 HEAD)
+      - flutter build apk --release --flavor foss --extra-gen-snapshot-options=--strip
         --dart-define=SENTRY_DSN=https://8be4a19c082841f4958cb347196914f9@netmanager.bugsink.com/2
         --dart-define=flutter.flutter_map.unblockOSM="Our tile servers are not." --dart-define=GIT_COMMIT=$GIT_COMMIT
-        --dart-define=FOSS=true --target-platform android-arm,android-arm64
-      - cd ..
-      - mv /tmp/build "$ORIG_DIR"
-      - cd "$ORIG_DIR"
+        --target-platform android-arm,android-arm64
+      - popd
+      - mv $repo/NetManager pw.dotto.netmanager.foss
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: 7aef716f2bd8f1e1b9935ce64d5966b5d3060f4562a889ce7adfd8aab12350f6
@@ -66,5 +67,5 @@ AllowedAPKSigningKeys: 7aef716f2bd8f1e1b9935ce64d5966b5d3060f4562a889ce7adfd8aab
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.1.4
-CurrentVersionCode: 10
+CurrentVersion: 0.1.5
+CurrentVersionCode: 11
