@@ -1,0 +1,55 @@
+License: GPL-3.0-only
+SourceCode: https://github.com/amurcanov/tg-ws-proxy-android
+IssueTracker: https://github.com/amurcanov/tg-ws-proxy-android/issues
+
+AutoName: Telegram WS Proxy
+Summary: MTProto local proxy server with or without CF proxying for partial bypass of Telegram loading problems
+Description: |-
+    Local MTProto proxy for Telegram. Redirects traffic via secured Cloudflare
+    WebSocket connections or directly to Telegram data centers.
+
+    Features: Material 3 / Jetpack Compose UI, foreground service with
+    connection keep-alive, real-time log viewer, dynamic color themes,
+    Telegram integration via tg://proxy deep links (AyuGram, Plus Messenger,
+    NekoGram etc.), built-in app update checks.
+
+    Native core is written in Rust (tokio + rustls).
+
+RepoType: git
+Repo: https://github.com/amurcanov/tg-ws-proxy-android
+
+Builds:
+  - versionName: 1.2.3
+    versionCode: 123
+    commit: da54314b7d9c1577851fc0f420bcfb6a1b67eee9
+    subdir: app
+    output: build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    gradle:
+      - universal
+    # prebuilt native libs are committed in the repo; drop them and rebuild from source
+    scandelete:
+      - src/main/jniLibs
+    sudo:
+      - apt-get update || apt-get update
+      - apt-get install -y --no-install-recommends curl
+      - curl -Ls https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.88.0 --profile minimal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - cargo install --locked cargo-ndk --version 3.5.4
+    # upstream only ships gradlew.bat (Windows); generate a unix wrapper
+    prebuild:
+      - cd ..
+      - gradle wrapper --gradle-version 9.1.0
+      - chmod +x gradlew
+      - cd app
+    ndk: r28
+    build:
+      - export PATH=$PATH:$$HOME$$/.cargo/bin
+      - cd ..
+      - cargo ndk --platform 24 -t arm64-v8a -o app/src/main/jniLibs build --release --locked
+      - cargo ndk --platform 21 -t armeabi-v7a -o app/src/main/jniLibs build --release --locked
+      - cd app
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersionCode: 123
+CurrentVersionName: 1.2.3
