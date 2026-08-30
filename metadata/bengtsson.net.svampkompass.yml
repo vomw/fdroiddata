@@ -1,0 +1,34 @@
+Categories:
+  - Navigation
+License: MIT
+SourceCode: https://github.com/duelago/svampkompass
+IssueTracker: https://github.com/duelago/svampkompass/issues
+
+AutoName: Svampkompassen
+Description: En kompass som visar vägen hem och till sparade svampställen.
+
+RepoType: git
+Repo: https://github.com/duelago/svampkompass
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: v1.0.1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
