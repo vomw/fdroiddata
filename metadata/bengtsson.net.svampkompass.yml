@@ -4,7 +4,7 @@ License: MIT
 SourceCode: https://github.com/duelago/svampkompass
 IssueTracker: https://github.com/duelago/svampkompass/issues
 
-AutoName: Svampkompassen
+AutoName: svampkompass
 Description: En kompass som visar vägen hem och till sparade svampställen.
 
 RepoType: git
@@ -21,7 +21,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-      # Rensa bort binärer, arkiv och oanvända filer från pub-cache
       - find .pub-cache/ -name "*.wasm" -delete
       - find .pub-cache/ -name "*.zip" -delete
       - find .pub-cache/ -name "*.bin" -delete
@@ -31,7 +30,6 @@ Builds:
       - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
       - find .pub-cache/ -type d -name "test" -exec rm -rf {} +
       - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
-      # Ta bort beroendet av Google Play Services (GMS) från geolocator_android
       - sed -i -e '/com.google.android.gms/d' .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
