@@ -1,0 +1,50 @@
+Categories:
+  - Graphics
+  - AI Chat
+  - Finance Manager
+  - Habit Tracker
+  - System
+  - Writing
+License: Apache-2.0
+AuthorName: wangzhishou
+WebSite: https://www.oneboxable.com
+SourceCode: https://github.com/wangzhishou/OneBox
+IssueTracker: https://github.com/wangzhishou/OneBox/issues
+Changelog: https://github.com/wangzhishou/OneBox/releases
+
+AutoName: OneBox
+
+RepoType: git
+Repo: https://github.com/wangzhishou/OneBox.git
+
+Builds:
+  - versionName: 1.3.9
+    versionCode: 139
+    commit: 662d74f5aa0072fd58531260c88bc916f958a0db
+    timeout: 10800
+    subdir: app
+    gradle:
+      - foss
+      - universal
+    output: build/outputs/apk/fossUniversal/release/OneBox-*-foss-universal-release-unsigned.apk
+    ndk: 28.1.13356709
+    prebuild:
+      - sed -i -e '/mirrors.cloud.tencent.com/d' -e '/maven.aliyun.com/d' -e '/foojay/d' ../settings.gradle.kts
+        ../build.gradle.kts ../build-logic/settings.gradle.kts
+      - sed -i -e 's/-Xmx16g/-Xmx8g/' ../gradle.properties
+    scandelete:
+      - core/weather/libs
+      - build-logic/convention/build
+      - web
+    antifeatures:
+      NonFreeNet:
+        en-US: Connects to the proprietary OneBox backend for AI chat and account
+          features
+      Tracking:
+        en-US: Update checker is enabled by default
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9.]*$
+UpdateCheckData: gradle/libs.versions.toml|versionCode = "(\d+)"|.|versionName = "([\d.]+)"
+CurrentVersion: 1.3.9
+CurrentVersionCode: 139
