@@ -20,8 +20,9 @@ Builds:
       - flutter@stable
     prebuild:
       - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - test -d /opt/android-sdk/platforms/android-37.0 && ln -sf /opt/android-sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
+      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
+      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -43,8 +44,9 @@ Builds:
       - flutter@stable
     prebuild:
       - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - test -d /opt/android-sdk/platforms/android-37.0 && ln -sf /opt/android-sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
+      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
+      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -66,8 +68,9 @@ Builds:
       - flutter@stable
     prebuild:
       - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - test -d /opt/android-sdk/platforms/android-37.0 && ln -sf /opt/android-sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
+      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
+      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
