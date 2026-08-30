@@ -21,7 +21,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-      # 1. Rensa binärer, arkiv och testfiler från pub-cache
+      # Rensa bort binärer, arkiv och oanvända filer från pub-cache
       - find .pub-cache/ -name "*.wasm" -delete
       - find .pub-cache/ -name "*.zip" -delete
       - find .pub-cache/ -name "*.bin" -delete
@@ -31,11 +31,11 @@ Builds:
       - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
       - find .pub-cache/ -type d -name "test" -exec rm -rf {} +
       - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
-      # 2. Ta bort beroendet av Google Play Services (GMS) från geolocator_android
+      # Ta bort beroendet av Google Play Services (GMS) från geolocator_android
       - sed -i -e '/com.google.android.gms/d' .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk
+      - $$flutter$$/bin/flutter build apk --no-pub
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
