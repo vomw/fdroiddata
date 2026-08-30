@@ -1,1 +1,58 @@
-# F-Droid build metadata for Audiobook NightForge
+# F-Droid build metadata for Audiobook NightForge (com.forge.audiobookforge)
+# Store copy (title, descriptions, changelogs) lives upstream in Fastlane
+# structure: fastlane/metadata/android/en-US/
+#
+# OPEN QUESTIONS for reviewer feedback:
+#  1. The prebuild clones sherpa-onnx at pinned tag v1.13.6 and runs its
+#     own build script. If outbound network is not allowed in prebuild,
+#     happy to rework sherpa-onnx as an srclib.
+#  2. The prebuild script needs ANDROID_NDK env var (r22+ per upstream's
+#     own defaults). Confirm the build server's NDK is compatible.
+#  3. UpdateCheckMode is None because versionCode is hand-incremented and
+#     not derivable from tag names; metadata updated manually per release.
+
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: kingfish600
+RepoType: git
+Repo: https://github.com/kingfish600/Audiobook-NightForge
+SourceCode: https://github.com/kingfish600/Audiobook-NightForge
+IssueTracker: https://github.com/kingfish600/Audiobook-NightForge/issues
+Changelog: https://github.com/kingfish600/Audiobook-NightForge/tags
+
+# Summary and Description intentionally omitted: provided by the
+# Fastlane metadata in the upstream source repository.
+
+UpdateCheckMode: None
+
+Builds:
+  - versionName: 0.8.6
+    versionCode: 78
+    commit: v0.8.6
+    gradle: 8.7
+
+    # The source tree contains 2 prebuilt .so committed at
+    # app/src/main/jniLibs/arm64-v8a/. The fdroid binary scanner runs
+    # BEFORE prebuild, so these must be scanignored even though the
+    # prebuild below rebuilds them from source.
+    scanignore:
+      - app/src/main/jniLibs/arm64-v8a/libsherpa-onnx-jni.so
+      - app/src/main/jniLibs/arm64-v8a/libonnxruntime.so
+
+    # Provenance of the committed .so files:
+    #   - sherpa-onnx: https://github.com/k2-fsa/sherpa-onnx tag v1.13.6,
+    #     Apache-2.0 (rebuilt from source by the prebuild below)
+    #   - onnxruntime: the upstream build script downloads the official
+    #     onnxruntime-android 1.27.1 binaries (Microsoft upstream, Apache-2.0,
+    #     via the k2-fsa mirror); upstream itself does not build
+    #     onnxruntime from source
+    #
+    # Script facts verified at tag v1.13.6:
+    #   - script: build-android-arm64-v8a.sh (repo root)
+    #   - requires ANDROID_NDK env var; errors out if unset
+    #   - outputs land in build-android-arm64-v8a/install/lib/
+    prebuild:
+      - export ANDROID_NDK=${ANDROID_NDK:-$ANDROID_NDK_HOME} && git clone --depth 1 --branch v1.13.6 https://github.com/k2-fsa/sherpa-onnx /tmp/sherpa-onnx && cd /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
+      - cp -f /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libsherpa-onnx-jni.so app/src/main/jniLibs/arm64-v8a/
+      - cp -f /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
