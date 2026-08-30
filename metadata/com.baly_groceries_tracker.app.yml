@@ -14,74 +14,59 @@ Repo: https://github.com/rw-account/baly_groceries_tracker.git
 Builds:
   - versionName: 1.1.2
     versionCode: 2031
-    commit: 3b85fee06b90ad9a22cb7be61e36e723bbb2b736
+    commit: 9ca5a4cf942b54355c3f5517d3e0615dbf61c19a
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
-      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
-      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    target: android-37
     scandelete:
       - .pub-cache
     build:
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
   - versionName: 1.1.2
     versionCode: 2032
-    commit: 3b85fee06b90ad9a22cb7be61e36e723bbb2b736
+    commit: 9ca5a4cf942b54355c3f5517d3e0615dbf61c19a
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
-      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
-      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    target: android-37
     scandelete:
       - .pub-cache
     build:
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
   - versionName: 1.1.2
     versionCode: 2033
-    commit: 3b85fee06b90ad9a22cb7be61e36e723bbb2b736
+    commit: 9ca5a4cf942b54355c3f5517d3e0615dbf61c19a
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     prebuild:
-      - mkdir -p /tmp/sdk && cp -rs /opt/android-sdk/* /tmp/sdk/ 2>/dev/null || true
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk
-      - yes | sdkmanager --sdk_root=/tmp/sdk "platforms;android-37" || true
-      - test -d /tmp/sdk/platforms/android-37.0 && ln -sfn /tmp/sdk/platforms/android-37.0 /tmp/sdk/platforms/android-37 || true
       - flutterVersion=$(cat .fvmrc)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    target: android-37
     scandelete:
       - .pub-cache
     build:
-      - export ANDROID_HOME=/tmp/sdk ANDROID_SDK_ROOT=/tmp/sdk PUB_CACHE=$(pwd)/.pub-cache
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 AutoUpdateMode: Version
