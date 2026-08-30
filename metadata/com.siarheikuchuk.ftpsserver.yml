@@ -1,0 +1,41 @@
+Categories:
+  - Internet
+  - Connectivity
+
+License: CC0-1.0
+
+AuthorName: Siarhei Kuchuk
+AutoName: FTPS Server
+
+SourceCode: https://github.com/drweb86/dotnet-ftps-server
+IssueTracker: https://github.com/drweb86/dotnet-ftps-server/issues
+Changelog: https://github.com/drweb86/dotnet-ftps-server/blob/HEAD/CHANGELOG.md
+
+RepoType: git
+Repo: https://github.com/drweb86/dotnet-ftps-server.git
+
+Binaries: https://github.com/drweb86/dotnet-ftps-server/releases/download/%v/ftpsserver_%v_android.apk
+
+Builds:
+  - versionName: '2026.08.32'
+    versionCode: 20260832
+    commit: dea5d06b7a040898a3416fe31379842cc0cbb424
+    subdir: sources/android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: 4e3a2a5259d8b62487ece6f59c55186638096750c15986f6db806c09187f4227
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: sources/android/app/build.gradle.kts|val defaultVersionCode = (\d+)|.|val defaultVersionName = "(.+)"
+CurrentVersion: '2026.08.32'
+CurrentVersionCode: 20260832
+
+AntiFeatures:
+  NonFreeNet:
+    en-US: Checks GitHub for newer releases.
