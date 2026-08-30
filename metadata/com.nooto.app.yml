@@ -17,15 +17,14 @@ Builds:
     commit: d0618b1ddc66a6c74ff30166d9b53933e283c898
     subdir: client
     sudo:
-      - apt update
-      - apt install -y rustup npm make build-essential libwebkit2gtk-4.1-dev wget
-        libxdo-dev libayatana-appindicator3-dev librsvg2-dev
-      - sdkmanager --install "ndk;27.0.12077973"
+      - apt-get update
+      - apt-get install -y rustup npm make build-essential wget libxdo-dev libayatana-appindicator3-dev
+        librsvg2-dev
     init:
-      - export ANDROID_NDK_HOME=/opt/android-sdk/ndk/27.0.12077973
-      - export NDK_HOME=/opt/android-sdk/ndk/27.0.12077973
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export NDK_HOME=$$NDK$$
       - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
-      - rustup default stable
+      - rustup default 1.98.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
         i686-linux-android
     output: 
@@ -33,6 +32,7 @@ Builds:
     build:
       - npm install
       - npm run tauri android build -- --apk
+    ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 46ce9259dd8eba36470faaf0dcdcd1fc958b6d3c5f84f0303645603a5b86e8b0
 
