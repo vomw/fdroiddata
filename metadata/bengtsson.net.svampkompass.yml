@@ -21,11 +21,14 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-    scandelete:
-      - .pub-cache/hosted/pub.dev/shared_preferences-*/extension/devtools/build
-      - .pub-cache/hosted/pub.dev/geolocator_windows-*/example
-      - .pub-cache/hosted/pub.dev/geolocator_android-*/example
-      - .pub-cache/hosted/pub.dev/geolocator-*/example
+      # 1. Clean binaries, devtools, and example folders from pub cache
+      - find .pub-cache/ -name "*.wasm" -delete
+      - find .pub-cache/ -name "*.zip" -delete
+      - find .pub-cache/ -name "*.bin" -delete
+      - rm -rf .pub-cache/hosted/pub.dev/shared_preferences-*/extension/devtools
+      - rm -rf .pub-cache/hosted/pub.dev/*/example
+      # 2. Patch geolocator_android to remove Google Play Services (GMS)
+      - sed -i -e '/com.google.android.gms/d' .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
