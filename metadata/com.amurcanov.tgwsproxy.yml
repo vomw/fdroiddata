@@ -19,7 +19,7 @@ Repo: https://github.com/UjuiUjuMandan/tg-ws-proxy-android
 Builds:
   - versionName: 1.2.3
     versionCode: 123
-    commit: 3d997386a1a3865ae541c0182671f052ad2485be
+    commit: f878aadad9d43cc392b54a9611eeba159ca63b09
     subdir: app
     sudo:
       - apt-get update
@@ -33,9 +33,12 @@ Builds:
       - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
       - rustup default $RUST_VERSION
       - rustup target add aarch64-linux-android armv7-linux-androideabi
-      - cargo install --locked cargo-ndk@3.5.4
-      - export CARGO_HOME=$$HOME$$/.cargo
-      - export RUSTFLAGS="--remap-path-prefix=$CARGO_HOME=."
+      - export CARGO_NDK_VERSION=$(sed -n -E 's/^set "CARGO_NDK_VERSION=([^"[:space:]]+)"$/\1/p'
+        ../build_so.bat)
+      - cargo install --locked cargo-ndk@$CARGO_NDK_VERSION
+      - export CARGO_HOME=$HOME/.cargo
+      - export BUILD_ROOT=$(cd .. && pwd)
+      - export RUSTFLAGS="--remap-path-prefix=$CARGO_HOME=/cargo --remap-path-prefix=$BUILD_ROOT=/build"
       - pushd ..
       - cargo ndk --platform 24 -t arm64-v8a -o app/src/main/jniLibs build --release
         --locked
