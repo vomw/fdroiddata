@@ -79,6 +79,8 @@ Builds:
     srclibs:
       - reproducible-apk-tools@v0.3.0
     prebuild:
+      - curl -s "https://get.sdkman.io" | bash
+      - bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && sdk install kotlin"
       - export ANDROID_API=$(sed -E -n 's/.*android-api.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*android-build-tools.*"(.*)".*/\1/p'
         .github/workflows/release.yml | head -1)
