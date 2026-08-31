@@ -5,12 +5,14 @@ AuthorName: GSurrel
 AuthorWebSite: https://gregoire.surrel.org
 SourceCode: https://github.com/gsurrel/coAIRence
 
+AutoName: coAIRence
+
 RepoType: git
 Repo: https://github.com/gsurrel/coAIRence.git
 
 Builds:
   - versionName: 0.2.0
-    versionCode: 1
+    versionCode: 11
     commit: 33e1f3236bb037cedbe0cbcf770ba55a246f2e7c
     sudo:
       - mkdir -p /upstream/
@@ -26,6 +28,7 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
       - mv $repo org.surrel.coairence
     scanignore:
       - $$flutter$$/bin/cache
@@ -37,8 +40,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi
         --target-platform="android-arm64"
+      - popd
       - mv $repo org.surrel.coairence
-      
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
