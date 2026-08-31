@@ -21,16 +21,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-      - find .pub-cache/ -name "*.wasm" -delete
-      - find .pub-cache/ -name "*.zip" -delete
-      - find .pub-cache/ -name "*.bin" -delete
-      - find .pub-cache/ -name "*.gz" -delete
-      - find .pub-cache/ -name "*.tgz" -delete
-      - find .pub-cache/ -type d -name "example" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "test" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
       - sed -i -e '/com.google.android.gms/d' .pub-cache/hosted/pub.dev/geolocator_android-*/android/build.gradle
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --no-pub --split-per-abi
