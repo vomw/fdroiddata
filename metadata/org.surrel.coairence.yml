@@ -1,0 +1,47 @@
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 0000000000000000000000000000000000000000
+    submodules: true
+    sudo:
+      - mkdir -p /upstream/
+      - chown -R vagrant /upstream/
+    output: build/app/outputs/flutter-apk/app-prod-release.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/upstream/
+      - cd ..
+      - mv org.surrel.coairence $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo org.surrel.coairence
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export repo=/upstream/
+      - cd ..
+      - mv org.surrel.coairence $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --flavor=prod --release --split-per-abi --target-platform="android-arm64"
+      - mv $repo org.surrel.coairence
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0'
+CurrentVersionCode: 11
