@@ -19,7 +19,7 @@ Repo: https://github.com/UjuiUjuMandan/tg-ws-proxy-android
 Builds:
   - versionName: 1.2.3
     versionCode: 123
-    commit: f878aadad9d43cc392b54a9611eeba159ca63b09
+    commit: cce464495c51d3922731382a3807f03a9fa6ea6e
     subdir: app
     sudo:
       - apt-get update
@@ -36,6 +36,11 @@ Builds:
       - export CARGO_NDK_VERSION=$(sed -n -E 's/^set "CARGO_NDK_VERSION=([^"[:space:]]+)"$/\1/p'
         ../build_so.bat)
       - cargo install --locked cargo-ndk@$CARGO_NDK_VERSION
+      - export ANDROID_NDK_VERSION=$(sed -n -E 's/^set "ANDROID_NDK_VERSION=([^"[:space:]]+)"$/\1/p'
+        ../build_so.bat)
+      - sdkmanager "ndk;$ANDROID_NDK_VERSION"
+      - export ANDROID_NDK_HOME=${ANDROID_SDK_ROOT:-$ANDROID_HOME}/ndk/$ANDROID_NDK_VERSION
+      - export NDK_HOME=$ANDROID_NDK_HOME
       - export CARGO_HOME=$HOME/.cargo
       - export BUILD_ROOT=$(cd .. && pwd)
       - export RUSTFLAGS="--remap-path-prefix=$CARGO_HOME=/cargo --remap-path-prefix=$BUILD_ROOT=/build"
@@ -45,7 +50,6 @@ Builds:
       - cargo ndk --platform 21 -t armeabi-v7a -o app/src/main/jniLibs build --release
         --locked
       - popd
-    ndk: r28
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
