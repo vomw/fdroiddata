@@ -5,7 +5,8 @@ AuthorName: Likhith Praveen K
 AuthorEmail: lpkatlagunta@gmail.com
 SourceCode: https://github.com/likhithpraveenk/storii
 IssueTracker: https://github.com/likhithpraveenk/storii/issues
-Changelog: https://github.com/likhithpraveenk/storii/releases
+Translation: https://hosted.weblate.org/engage/storii
+Changelog: https://github.com/likhithpraveenk/storii/blob/main/CHANGELOG.md
 
 Name: Storii - audiobookshelf client
 AutoName: Storii
@@ -878,7 +879,10 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - (cd packages/abs_api && $$flutter$$/bin/dart pub get && $$flutter$$/bin/dart
+        run build_runner build)
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo com.likhithpraveenk.storii
@@ -918,7 +922,10 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - (cd packages/abs_api && $$flutter$$/bin/dart pub get && $$flutter$$/bin/dart
+        run build_runner build)
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo com.likhithpraveenk.storii
@@ -958,7 +965,10 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - (cd packages/abs_api && $$flutter$$/bin/dart pub get && $$flutter$$/bin/dart
+        run build_runner build)
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build
       - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo com.likhithpraveenk.storii
