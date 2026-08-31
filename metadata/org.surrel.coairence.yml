@@ -12,14 +12,14 @@ Builds:
   - versionName: 0.2.0
     versionCode: 1
     commit: 33e1f3236bb037cedbe0cbcf770ba55a246f2e7c
-    srclibs:
-      - flutter@stable
     sudo:
       - mkdir -p /upstream/
       - chown -R vagrant /upstream/
     output: build/app/outputs/flutter-apk/app-prod-release.apk
+    srclibs:
+      - flutter@stable
     prebuild:
-      - export repo=/upstream/
+      - export repo=/upstream/org.surrel.coairence
       - cd ..
       - mv org.surrel.coairence $repo
       - pushd $repo
@@ -30,14 +30,15 @@ Builds:
     scanignore:
       - $$flutter$$/bin/cache
     build:
-      - export repo=/upstream/
+      - export repo=/upstream/org.surrel.coairence
       - cd ..
       - mv org.surrel.coairence $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi --target-platform="android-arm64"
+      - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi
+        --target-platform="android-arm64"
       - mv $repo org.surrel.coairence
-
+      
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
