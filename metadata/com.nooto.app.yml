@@ -20,15 +20,13 @@ Builds:
       - apt-get update
       - apt-get install -y rustup npm make build-essential wget
     init:
-      - export ANDROID_NDK_HOME=$$NDK$$
-      - export NDK_HOME=$$NDK$$
-      - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
       - rustup default 1.98.0
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
         i686-linux-android
     output: 
       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
     build:
+      - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
       - npm install
       - npm run tauri android build -- --apk
     ndk: 27.0.12077973
