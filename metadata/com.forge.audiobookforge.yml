@@ -16,42 +16,33 @@ Builds:
     versionCode: 78
     commit: v0.8.6
     gradle:
-      - '8.7'
+      - yes
     prebuild:
-      - export ANDROID_NDK=$$NDK$$ && git clone --depth 1 --branch v1.13.6 
-        https://github.com/k2-fsa/sherpa-onnx /tmp/sherpa-onnx && cd 
-        /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
-      - cp -f 
-        /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libsherpa-onnx-jni.so
-        app/src/main/jniLibs/arm64-v8a/
-      - cp -f 
-        /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libonnxruntime.so 
-        app/src/main/jniLibs/arm64-v8a/
+      - git clone --depth 1 --branch v1.13.6 https://github.com/k2-fsa/sherpa-onnx /tmp/sherpa-onnx
+      - cd /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
+      - L=/tmp/sherpa-onnx/build-android-arm64-v8a/install/lib
+      - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
     scanignore:
       - app/src/main/jniLibs/arm64-v8a/libsherpa-onnx-jni.so
       - app/src/main/jniLibs/arm64-v8a/libonnxruntime.so
+    ndk: r28c
 
   - versionName: 0.9.9
     versionCode: 88
     commit: v0.9.9
     gradle:
-      - '8.7'
+      - yes
     prebuild:
-      - export ANDROID_NDK=$$NDK$$ && git clone --depth 1 --branch v1.13.6 
-        https://github.com/k2-fsa/sherpa-onnx /tmp/sherpa-onnx && cd 
-        /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
-      - cp -f 
-        /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libsherpa-onnx-jni.so
-        app/src/main/jniLibs/arm64-v8a/
-      - cp -f 
-        /tmp/sherpa-onnx/build-android-arm64-v8a/install/lib/libonnxruntime.so 
-        app/src/main/jniLibs/arm64-v8a/
+      - git clone --depth 1 --branch v1.13.6 https://github.com/k2-fsa/sherpa-onnx /tmp/sherpa-onnx
+      - cd /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
+      - L=/tmp/sherpa-onnx/build-android-arm64-v8a/install/lib
+      - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
     scanignore:
       - app/src/main/jniLibs/arm64-v8a/libsherpa-onnx-jni.so
       - app/src/main/jniLibs/arm64-v8a/libonnxruntime.so
+    ndk: r28c
 
-AllowedAPKSigningKeys: 
-  dc8707e24b644deea9d0ca4266fa26e59652d72d14be5bf491a22a02b8efcb1a
+AllowedAPKSigningKeys: dc8707e24b644deea9d0ca4266fa26e59652d72d14be5bf491a22a02b8efcb1a
 
 AutoUpdateMode: None
 UpdateCheckMode: None
