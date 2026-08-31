@@ -74,11 +74,18 @@ Builds:
     commit: 87a484d74c808cefc3107200e58e8933ef06a825
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev rustup kotlin
+      - apt-get install -y gcc libc-dev rustup
     output: target/release/apk/wifi_exporter.apk
     srclibs:
       - reproducible-apk-tools@v0.3.0
     prebuild:
+      - export KOTLIN_VERSION=$(sed -E -n 's/.*kotlin-version.*"(.*)".*/\1/p' .github/workflows/release.yml)
+      - mkdir -p /tmp/kotlin
+      - curl -fsSL -o /tmp/kotlin.zip
+        "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
+      - unzip -q /tmp/kotlin.zip -d /tmp/kotlin
+      - export PATH=/tmp/kotlin/kotlinc/bin:$PATH
+      
       - export ANDROID_API=$(sed -E -n 's/.*android-api.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*android-build-tools.*"(.*)".*/\1/p'
         .github/workflows/release.yml | head -1)
