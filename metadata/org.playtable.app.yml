@@ -18,7 +18,7 @@ Builds:
     commit: 54ac315b0d87236f69c270c8b9c4621486e96795
     sudo:
       - apt-get update
-      - apt-get install -y pkgconf scons g++
+      - apt-get install -y clang pkgconf scons
     output: bin/PlayTable.apk
     srclibs:
       - Godot@4.6-stable
@@ -27,22 +27,28 @@ Builds:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export ANDROID_SDK_ROOT=$$SDK$$
       - pushd $$Godot$$
-      - scons -j `nproc` platform=linuxbsd target=editor
-      - scons -j `nproc` platform=android target=template_release arch=arm64 generate_apk=yes
+      - scons -j `nproc` platform=linuxbsd target=editor use_llvm=yes 
+        production=yes accesskit=no
+      - scons -j `nproc` platform=android target=template_release arch=arm64 
+        use_llvm=yes production=yes accesskit=no generate_apk=yes
       - popd
-      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
-      - sed -i -e '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|'
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' 
         export_presets.cfg
-      - sed -i -e '/architectures\/x86/s|=.*|=false|' -e '/architectures\/x86_64/s|=.*|=false|'
-        -e '/architectures\/armeabi-v7a/s|=.*|=false|' -e '/architectures\/arm64-v8a/s|=.*|=true|'
+      - sed -i -e 
+        '/custom_template\/release/s|=.*|="$$Godot$$/bin/android_release.apk"|' 
         export_presets.cfg
+      - sed -i -e '/architectures\/x86/s|=.*|=false|' -e 
+        '/architectures\/x86_64/s|=.*|=false|' -e 
+        '/architectures\/armeabi-v7a/s|=.*|=false|' -e 
+        '/architectures\/arm64-v8a/s|=.*|=true|' export_presets.cfg
       - sed -i -e '/version\/code=/s|=.*|=8|' export_presets.cfg
       - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
       - export GODOT_CFG=$(ls ~/.config/godot/editor_settings-*.tres)
-      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" $GODOT_CFG
+      - sed -i -e "s:\(^.*java_sdk_path\)\s*=.*$:\1 = \"$JAVA_HOME\":" 
+        $GODOT_CFG
       - sed -i -e 's:\(^.*android_sdk_path\)\s*=.*$:\1 = "$$SDK$$":' $GODOT_CFG
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 'Android'
-        bin/PlayTable.apk
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 
+        'Android' bin/PlayTable.apk
     ndk: 28.1.13356709
 
 AutoUpdateMode: Version
