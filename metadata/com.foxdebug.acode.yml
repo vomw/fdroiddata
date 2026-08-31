@@ -1781,7 +1781,10 @@ Builds:
     commit: dbdb9680c97e35cbf745f9b9cf38723675be5878
     sudo:
       - apt-get update
-      - apt-get install -y npm rustup build-essential
+      - apt-get install -y rustup build-essential
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
       - npm install -g cordova pnpm@10.33.0
     output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
