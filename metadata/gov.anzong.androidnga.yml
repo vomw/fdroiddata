@@ -373,6 +373,11 @@ Builds:
     versionCode: 5002
     commit: 22ba3082501bcbb08f52a66d787f970f59c2dda7
     subdir: nga_phone_base_3.0
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -t bookworm -y openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     srclibs:
@@ -395,8 +400,6 @@ Builds:
       - sed -i -e 's/3.1.1/7.2.2/' build.gradle
       - sed -i -e '/gradle-mvn-push/d' library/build.gradle
       - sed -i -e 's/4.4/7.3.3/' gradle/wrapper/gradle-wrapper.properties
-    scanignore:
-      - nga_phone_base_3.0/src/main/java/sp/phone/util/PluginUtils.java
     build:
       - pushd $$android-floating-action-button$$
       - gradle assembleRelease
