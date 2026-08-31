@@ -12,25 +12,27 @@ Builds:
     versionCode: 123
     commit: da54314b7d9c1577851fc0f420bcfb6a1b67eee9
     subdir: app
-    output: build/outputs/apk/universal/release/app-universal-release-unsigned.apk
-    gradle:
-      - universal
-    scandelete:
-      - src/main/jniLibs
     sudo:
       - apt-get update
       - apt-get install -y rustup build-essential
       - rustup target add aarch64-linux-android armv7-linux-androideabi
       - cargo install --locked cargo-ndk --version 3.5.4
-    ndk: r28
+    gradle:
+      - universal
+    output: build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    scandelete:
+      - src/main/jniLibs
     build:
       - export PATH=$PATH:$$HOME$$/.cargo/bin
       - pushd ..
-      - cargo ndk --platform 24 -t arm64-v8a -o app/src/main/jniLibs build --release --locked
-      - cargo ndk --platform 21 -t armeabi-v7a -o app/src/main/jniLibs build --release --locked
+      - cargo ndk --platform 24 -t arm64-v8a -o app/src/main/jniLibs build --release
+        --locked
+      - cargo ndk --platform 21 -t armeabi-v7a -o app/src/main/jniLibs build --release
+        --locked
       - popd
+    ndk: r28
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: 1.2.3
 CurrentVersionCode: 123
-CurrentVersionName: 1.2.3
