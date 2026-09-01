@@ -20,11 +20,11 @@ Builds:
       - apt-get install -y wget unzip cmake make
     gradle:
       - yes
-    prebuild:
-      - git clone --depth 1 --branch v1.13.6 https://github.com/k2-fsa/sherpa-onnx
-        /tmp/sherpa-onnx
-      - cd /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
-      - L=/tmp/sherpa-onnx/build-android-arm64-v8a/install/lib
+    srclibs:
+      - sherpa-onnx@v1.13.6
+    build:
+      - (cd $$sherpa-onnx$$ && ./build-android-arm64-v8a.sh)
+      - L=$$sherpa-onnx$$/build-android-arm64-v8a/install/lib
       - mkdir -p app/src/main/jniLibs/arm64-v8a
       - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
     scanignore:
@@ -40,11 +40,11 @@ Builds:
       - apt-get install -y wget unzip cmake make
     gradle:
       - yes
-    prebuild:
-      - git clone --depth 1 --branch v1.13.6 https://github.com/k2-fsa/sherpa-onnx
-        /tmp/sherpa-onnx
-      - cd /tmp/sherpa-onnx && ./build-android-arm64-v8a.sh
-      - L=/tmp/sherpa-onnx/build-android-arm64-v8a/install/lib
+    srclibs:
+      - sherpa-onnx@v1.13.6
+    build:
+      - (cd $$sherpa-onnx$$ && ./build-android-arm64-v8a.sh)
+      - L=$$sherpa-onnx$$/build-android-arm64-v8a/install/lib
       - mkdir -p app/src/main/jniLibs/arm64-v8a
       - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
     scanignore:
