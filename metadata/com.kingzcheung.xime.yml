@@ -16,27 +16,6 @@ Repo: https://github.com/ximeiorg/Xime.git
 Binaries: https://github.com/ximeiorg/Xime/releases/download/v%v/Xime-%v-arm64-v8a.apk
 
 Builds:
-  - versionName: 2.7.0
-    versionCode: 20260825
-    commit: cbce5688c356542df0745ead1474ccb07be6c7df
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y python-is-python3
-    gradle:
-      - yes
-    prebuild:
-      - mkdir -p build
-      - sed -i -e '/abiFilters += listOf/d' -e 's/include(.*)/include("arm64-v8a")/'
-        -e '/isUniversalApk/s/true/false/' build.gradle.kts
-      - sed -i 's|mirrors.cloud.tencent.com/gradle/|services.gradle.org/distributions/|'
-        ../gradle/wrapper/gradle-wrapper.properties
-    scanignore:
-      - app/src/main/assets/ChaiPUA-0.2.7-snow.ttf
-    scandelete:
-      - app/src/main/jni/librime-predict/tools/make_predict_data/Cargo.toml
-
   - versionName: 2.7.1
     versionCode: 20260827
     commit: 91af517b
