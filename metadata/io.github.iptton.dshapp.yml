@@ -1,32 +1,10 @@
-# F-Droid fdroiddata 收录申请草稿 — io.github.iptton.dshapp
-#
-# 用法:fork gitlab.com/fdroid/fdroiddata,把本文件复制为 metadata/io.github.iptton.dshapp.yml
-# 后提交 MR(阶段 4,见 docs/FDROID-PUBLISH-PLAN.md)。本文件随仓库维护:
-# 版本升级时由发布流程同步 Builds 条目 + CurrentVersion。
-#
-# 与规划模板的差异(2026-09-01 执行时修订):
-#   ① srclibs flutter@stable → flutter@3.35.7(先例 de.wger.flutter/chat.fluffy.fluffychat
-#     均用精确上游 tag;上游 3.35 系最高 tag 为 3.35.7,.flutter-version 与之一致);
-#   ② prebuild 末尾追加 tool/fdroid_prepare.sh —— 剥离 mobile_scanner
-#     (Android 端 MLKit 闭源二进制,主仓无过审先例;fdroiddata 检索 2026-09-01,
-#     引用 mobile_scanner 的收录应用 info.zverev.ilya.every_door 即在 prebuild 剥离),
-#     相机扫码降级剪贴板粘贴,配对页「手动配对」表单不受影响;
-#   ③ prepare 脚本内已含 flutter pub get(lock 与摘行后的 pubspec 失配,
-#     不能用 --enforce-lockfile;flutter SDK 版本由 srclib + .flutter-version 钉死,
-#     与 every_door 的「prebuild 内裸 pub get」同款护栏强度);
-#   ④ License 用 GPL-3.0-only(新 SPDX 写法,fdroidserver 2.4.5 lint 实测拒绝
-#     GPL-3.0;fdroiddata 现役主流写法)。
-#
-# lint 记录(2026-09-01,fdroidserver 2.4.5):除「Categories 'Internet' is not
-# valid」外全绿 —— 该报错对 chat.fluffy.fluffychat / de.wger.flutter 等已收录
-# 应用同样出现(本地版 categories 校验共性),与生态基线一致,非本文件问题。
-
 Categories:
   - Internet
 License: GPL-3.0-only
 AuthorName: iptton
 SourceCode: https://github.com/iptton-ai/DeepseekHarnessApp
 IssueTracker: https://github.com/iptton-ai/DeepseekHarnessApp/issues
+
 AutoName: DshAPP
 
 RepoType: git
@@ -47,11 +25,11 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - export PATH=$$flutter$$/bin:$$PATH$$
       - ./tool/fdroid_prepare.sh
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$$PWD$$/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
-    scandelete:
-      - .pub-cache
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
