@@ -53,9 +53,26 @@ Builds:
       - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
       - node_modules/@capacitor/cli/assets/android-template.tar.gz
 
+  - versionName: 1.0.9
+    versionCode: 8
+    commit: b0a19c2059c0c92ec2d2ad31106f4129958bb739
+    subdir: android/app
+    sudo: apt-get install -y nodejs npm
+    init:
+      - cd ../..
+      - npm ci
+      - rm -f node_modules/@capacitor/cli/assets/ios-pods-template.tar.gz node_modules/@capacitor/cli/assets/ios-spm-template.tar.gz
+        node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
+      - npx cap sync android
+    gradle:
+      - yes
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - node_modules/@capacitor/cli/assets/android-template.tar.gz
+
 AllowedAPKSigningKeys: 072c84d73f2492380c42cf4a96d51e0f1cf874779a929dc0bfbc679828549e09
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.8
-CurrentVersionCode: 7
+CurrentVersion: 1.0.9
+CurrentVersionCode: 8
