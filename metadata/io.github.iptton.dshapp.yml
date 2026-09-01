@@ -23,39 +23,38 @@
 
 Categories:
   - Internet
-  License: GPL-3.0-only
-  AuthorName: iptton
-  SourceCode: https://github.com/iptton-ai/DeepseekHarnessApp
-  IssueTracker: https://github.com/iptton-ai/DeepseekHarnessApp/issues
-  AutoName: DshAPP
+License: GPL-3.0-only
+AuthorName: iptton
+SourceCode: https://github.com/iptton-ai/DeepseekHarnessApp
+IssueTracker: https://github.com/iptton-ai/DeepseekHarnessApp/issues
+AutoName: DshAPP
 
-  RepoType: git
-  Repo: https://github.com/iptton-ai/DeepseekHarnessApp.git
+RepoType: git
+Repo: https://github.com/iptton-ai/DeepseekHarnessApp.git
 
-  Builds:
-    - versionName: 1.0.0
-        versionCode: 1
-            commit: v1.0.0
-                output: build/app/outputs/flutter-apk/app-release.apk
-                    srclibs:
-                          - flutter@3.35.7
-                              prebuild:
-                                    - flutterVersion=$(cat .flutter-version)
-                                          - '[[ $$flutterVersion ]]'
-                                                - git -C $$flutter$$ checkout -f $$flutterVersion
-                                                      - export PUB_CACHE=$$PWD$$/.pub-cache
-                                                            - $$flutter$$/bin/flutter config --no-analytics
-                                                                  - export PATH=$$flutter$$/bin:$$PATH$$
-                                                                        - ./tool/fdroid_prepare.sh
-                                                                            build:
-                                                                                  - export PUB_CACHE=$$PWD$$/.pub-cache
-                                                                                        - $$flutter$$/bin/flutter build apk --release
-                                                                                            scandelete:
-                                                                                                  - .pub-cache
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.35.7
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $$flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $$flutterVersion
+      - export PUB_CACHE=$$PWD$$/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - export PATH=$$flutter$$/bin:$$PATH$$
+      - ./tool/fdroid_prepare.sh
+    build:
+      - export PUB_CACHE=$$PWD$$/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    scandelete:
+      - .pub-cache
 
-                                                                                                  AutoUpdateMode: Version
-                                                                                                  UpdateCheckMode: Tags
-                                                                                                  UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-                                                                                                  CurrentVersion: 1.0.0
-                                                                                                  CurrentVersionCode: 1
-                                                                                                  
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
