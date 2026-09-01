@@ -16,6 +16,11 @@ Builds:
   - versionName: 1.4.0
     versionCode: 5
     commit: cd8cc59f8bbfe40d31076d95f246ca4520fc5049
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
