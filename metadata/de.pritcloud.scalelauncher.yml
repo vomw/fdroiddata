@@ -11,28 +11,21 @@ AutoName: ScaleLauncher
 
 RepoType: git
 Repo: https://github.com/1260er/ScaleLauncher.git
-
 Builds:
-  - versionName: 1.4.0
-    versionCode: 5
-    commit: cd8cc59f8bbfe40d31076d95f246ca4520fc5049
-    sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+  - versionName: 1.5.0
+    versionCode: 6
+    commit: ad95d1e2780cd9fc668ef528d00e13c300d460f8
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
-    binary: 
+    binary:
       https://github.com/1260er/ScaleLauncher/releases/download/v%v/ScaleLauncher-%v.apk
     prebuild: mkdir -p gradle/wrapper && echo 'distributionUrl=https://services.gradle.org/distributions/gradle-8.9-bin.zip'
       > gradle/wrapper/gradle-wrapper.properties
-
 AllowedAPKSigningKeys: c8a11d01ccde3349a9087b23ac832273f7ee03bd7729e487ed2669485c20c918
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: app/build.gradle.kts|versionCode\s*=.*\?:\s*(\d+)|.|versionName\s*=\s*"([^"]+)"
-CurrentVersion: 1.4.0
-CurrentVersionCode: 5
+CurrentVersion: 1.5.0
+CurrentVersionCode: 6
