@@ -18,7 +18,7 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y golang-go
+      - apt-get install -t trixie-backports -y golang-go
       - apt-get install -y gcc libc-dev make
     gradle:
       - yes
@@ -34,17 +34,14 @@ Builds:
       - export GOPATH=$HOME/go
       - export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
       - cd ../native
-      - go install 
-        golang.org/x/mobile/cmd/gomobile@v0.0.0-20260821190718-4776eadac327
-      - go install 
-        golang.org/x/mobile/cmd/gobind@v0.0.0-20260821190718-4776eadac327
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260821190718-4776eadac327
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260821190718-4776eadac327
       - gomobile init
-      - gomobile bind -target=android -androidapi 26 -trimpath -ldflags='-s -w 
-        -buildid=' -o ../app/libs/megaproxy.aar ./mobile
+      - gomobile bind -target=android -androidapi 26 -trimpath -ldflags='-s -w -buildid='
+        -o ../app/libs/megaproxy.aar ./mobile
     ndk: 29.0.14206865
 
-AllowedAPKSigningKeys: 
-  8a014a2a558a75b5f900ee0c33cd50f24b7432734912406699fc08866747f822
+AllowedAPKSigningKeys: 8a014a2a558a75b5f900ee0c33cd50f24b7432734912406699fc08866747f822
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
