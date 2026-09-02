@@ -23,14 +23,13 @@ Builds:
       - apt-get install -y gcc libc-dev make openjdk-21-jdk-headless
       - mkdir -p /home/runner/work/AndroidMegaProxy
       - chown -R vagrant:vagrant /home/runner
-    prebuild:
-      - sdkmanager 'platforms;android-26'
     gradle:
       - yes
-    binary: 
+    binary:
       https://github.com/andre487/AndroidMegaProxy/releases/download/v%v/mega-proxy-universal.apk
     srclibs:
       - go@go1.26.3
+    prebuild: sdkmanager 'platforms;android-26'
     build:
       - pushd $$go$$/src
       - ./make.bash
