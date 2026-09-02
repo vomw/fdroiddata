@@ -72,7 +72,9 @@ Builds:
       - default
     srclibs:
       - reproducible-apk-tools@v0.2.8
-    prebuild: sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle.kts
+    prebuild:
+      - sed -i -e '/gms/d' -e '/firebase/d' ../build.gradle.kts
+      - sed -i -e '/JavaVersion/s/17/21/g' -e '/jvmToolchain/s/17/21/' build.gradle.kts
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
       fix-newlines $$OUT$$ 'META-INF/services/*' 'assets/python/*' 'assets/themes/*'
 
