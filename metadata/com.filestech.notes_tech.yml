@@ -25,7 +25,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
   - versionName: 2.0.5
     versionCode: 1053
@@ -37,7 +37,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
   - versionName: 2.0.3
     versionCode: 2051
@@ -49,7 +49,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
   - versionName: 2.0.5
     versionCode: 2053
@@ -61,7 +61,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
   - versionName: 2.0.3
     versionCode: 4051
@@ -73,7 +73,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
   - versionName: 2.0.5
     versionCode: 4053
@@ -85,7 +85,7 @@ Builds:
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 MaintainerNotes: |-
   gitubpatrice: builds up to 2.0.2 (50) tripped check apk with six
@@ -113,6 +113,13 @@ MaintainerNotes: |-
   v2.0.3 binaries with androguard rather than derived: arm64-v8a=2051, armeabi-v7a=1051,
   x86_64=4051. The guide's snippet, which maps x86_64 to 3, would have declared 3051 and the
   build would not have matched.
+  .
+  Each build line carries --target-platform because F-Droid builds every entry independently.
+  Without it, all three entries run a full --split-per-abi build that produces all three APKs
+  and keeps one: measured on the 2.0.3 pipeline, 3 Gradle builds (568 s + 389 s + 365 s), 9 APKs
+  produced and 6 discarded, for a 30-minute job whose actual build work was 13 minutes. With
+  --target-platform each entry compiles only its own ABI. Values from Flutter's own mapping:
+  armeabi-v7a is android-arm, arm64-v8a is android-arm64, x86_64 is android-x64.
   .
   AutoUpdateMode is None deliberately, and this scheme is why. fdroid rewritemeta sorts Builds
   by versionCode, and abi*1000+versionCode makes consecutive versions INTERLEAVE once sorted:
