@@ -16,16 +16,40 @@ Repo: https://github.com/gitubpatrice/notes_tech.git
 
 Builds:
   - versionName: 2.0.3
-    versionCode: 51
+    versionCode: 1051
     commit: 7180a2c13e74ba08aa723b07d82061ae54e61d10
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild: $$flutter$$/bin/flutter config --no-analytics
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+
+  - versionName: 2.0.3
+    versionCode: 2051
+    commit: 7180a2c13e74ba08aa723b07d82061ae54e61d10
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild: $$flutter$$/bin/flutter config --no-analytics
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
+
+  - versionName: 2.0.3
+    versionCode: 4051
+    commit: 7180a2c13e74ba08aa723b07d82061ae54e61d10
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild: $$flutter$$/bin/flutter config --no-analytics
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
 
 MaintainerNotes: |-
   gitubpatrice: builds up to 2.0.2 (50) tripped check apk with six
@@ -44,9 +68,24 @@ MaintainerNotes: |-
   .
   A -checkdiscard on both classes now fails the build if they ever reappear, so a Flutter
   upgrade or a new plugin cannot silently reintroduce them. History in fdroiddata!37885.
+  .
+  gitubpatrice: the three ABI versionCodes are Flutter's own, not the scheme in the F-Droid
+  quick-start guide. flutter build apk --split-per-abi applies versionCodeOverride =
+  ABI_VERSION[abi] * 1000 + versionCode, and FlutterPluginConstants.ABI_VERSION maps
+  armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was retired with x86 support. So for
+  the pubspec versionCode 51 the APKs carry 1051, 2051 and 4051. Measured on the published
+  v2.0.3 binaries with androguard rather than derived: arm64-v8a=2051, armeabi-v7a=1051,
+  x86_64=4051. The guide's snippet, which maps x86_64 to 3, would have declared 3051 and the
+  build would not have matched. The Builds entries are kept in ascending versionCode order
+  because checkupdates pairs zip(builds[-3:], sorted(vercodes)), so any other order would
+  attach the wrong output: to the wrong versionCode on the next auto-update.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - 1000 + %c
+  - 2000 + %c
+  - 4000 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.0.3
-CurrentVersionCode: 51
+CurrentVersionCode: 4051
