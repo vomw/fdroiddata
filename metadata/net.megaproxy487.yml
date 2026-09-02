@@ -13,25 +13,24 @@ RepoType: git
 Repo: https://github.com/andre487/AndroidMegaProxy.git
 
 Builds:
-  - versionName: 0.0.9
-    versionCode: 9001
-    commit: e999fe628ed85a102ab25cf6e46001d70b2faeac
+  - versionName: 0.0.10
+    versionCode: 10001
+    commit: 4e17ee8e075147514ee11a2c287fe7eaf2300a5c
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -t trixie-backports -y golang-go
       - apt-get install -y gcc libc-dev make openjdk-21-jdk-headless
-      - mkdir -p /home/runner/work/AndroidMegaProxy
-      - chown -R vagrant:vagrant /home/runner
     gradle:
       - yes
+    gradleprops:
+      - megaproxyVersionVariant=armeabi-v7a
     binary: 
       https://github.com/andre487/AndroidMegaProxy/releases/download/v%v/mega-proxy-armeabi-v7a.apk
     srclibs:
       - go@go1.26.3
     prebuild:
-      - sdkmanager 'platforms;android-26'
-      - echo 'megaproxyVersionVariant=armeabi-v7a' >> ../gradle.properties
+      - sdkmanager 'platforms;android-26' 'platforms;android-36' 'build-tools;36.0.0'
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -39,33 +38,27 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH=$HOME/go
       - export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-      - rm -rf /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cp -a .. /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cd /home/runner/work/AndroidMegaProxy/AndroidMegaProxy/app
       - MEGAPROXY_ANDROID_ABI=armeabi-v7a ../scripts/build-fdroid-native.sh
-      - mkdir -p $OLDPWD/libs
-      - cp libs/megaproxy.aar $OLDPWD/libs/
     ndk: 29.0.14206865
 
-  - versionName: 0.0.9
-    versionCode: 9002
-    commit: e999fe628ed85a102ab25cf6e46001d70b2faeac
+  - versionName: 0.0.10
+    versionCode: 10002
+    commit: 4e17ee8e075147514ee11a2c287fe7eaf2300a5c
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -t trixie-backports -y golang-go
       - apt-get install -y gcc libc-dev make openjdk-21-jdk-headless
-      - mkdir -p /home/runner/work/AndroidMegaProxy
-      - chown -R vagrant:vagrant /home/runner
     gradle:
       - yes
+    gradleprops:
+      - megaproxyVersionVariant=arm64-v8a
     binary: 
       https://github.com/andre487/AndroidMegaProxy/releases/download/v%v/mega-proxy-arm64-v8a.apk
     srclibs:
       - go@go1.26.3
     prebuild:
-      - sdkmanager 'platforms;android-26'
-      - echo 'megaproxyVersionVariant=arm64-v8a' >> ../gradle.properties
+      - sdkmanager 'platforms;android-26' 'platforms;android-36' 'build-tools;36.0.0'
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -73,33 +66,27 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH=$HOME/go
       - export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-      - rm -rf /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cp -a .. /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cd /home/runner/work/AndroidMegaProxy/AndroidMegaProxy/app
       - MEGAPROXY_ANDROID_ABI=arm64-v8a ../scripts/build-fdroid-native.sh
-      - mkdir -p $OLDPWD/libs
-      - cp libs/megaproxy.aar $OLDPWD/libs/
     ndk: 29.0.14206865
 
-  - versionName: 0.0.9
-    versionCode: 9003
-    commit: e999fe628ed85a102ab25cf6e46001d70b2faeac
+  - versionName: 0.0.10
+    versionCode: 10003
+    commit: 4e17ee8e075147514ee11a2c287fe7eaf2300a5c
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -t trixie-backports -y golang-go
       - apt-get install -y gcc libc-dev make openjdk-21-jdk-headless
-      - mkdir -p /home/runner/work/AndroidMegaProxy
-      - chown -R vagrant:vagrant /home/runner
     gradle:
       - yes
+    gradleprops:
+      - megaproxyVersionVariant=x86
     binary: 
       https://github.com/andre487/AndroidMegaProxy/releases/download/v%v/mega-proxy-x86.apk
     srclibs:
       - go@go1.26.3
     prebuild:
-      - sdkmanager 'platforms;android-26'
-      - echo 'megaproxyVersionVariant=x86' >> ../gradle.properties
+      - sdkmanager 'platforms;android-26' 'platforms;android-36' 'build-tools;36.0.0'
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -107,33 +94,27 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH=$HOME/go
       - export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-      - rm -rf /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cp -a .. /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cd /home/runner/work/AndroidMegaProxy/AndroidMegaProxy/app
       - MEGAPROXY_ANDROID_ABI=x86 ../scripts/build-fdroid-native.sh
-      - mkdir -p $OLDPWD/libs
-      - cp libs/megaproxy.aar $OLDPWD/libs/
     ndk: 29.0.14206865
 
-  - versionName: 0.0.9
-    versionCode: 9004
-    commit: e999fe628ed85a102ab25cf6e46001d70b2faeac
+  - versionName: 0.0.10
+    versionCode: 10004
+    commit: 4e17ee8e075147514ee11a2c287fe7eaf2300a5c
     subdir: app
     sudo:
       - apt-get update
       - apt-get install -t trixie-backports -y golang-go
       - apt-get install -y gcc libc-dev make openjdk-21-jdk-headless
-      - mkdir -p /home/runner/work/AndroidMegaProxy
-      - chown -R vagrant:vagrant /home/runner
     gradle:
       - yes
+    gradleprops:
+      - megaproxyVersionVariant=x86_64
     binary: 
       https://github.com/andre487/AndroidMegaProxy/releases/download/v%v/mega-proxy-x86_64.apk
     srclibs:
       - go@go1.26.3
     prebuild:
-      - sdkmanager 'platforms;android-26'
-      - echo 'megaproxyVersionVariant=x86_64' >> ../gradle.properties
+      - sdkmanager 'platforms;android-26' 'platforms;android-36' 'build-tools;36.0.0'
     build:
       - pushd $$go$$/src
       - ./make.bash
@@ -141,12 +122,7 @@ Builds:
       - export GOROOT=$$go$$
       - export GOPATH=$HOME/go
       - export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-      - rm -rf /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cp -a .. /home/runner/work/AndroidMegaProxy/AndroidMegaProxy
-      - cd /home/runner/work/AndroidMegaProxy/AndroidMegaProxy/app
       - MEGAPROXY_ANDROID_ABI=x86_64 ../scripts/build-fdroid-native.sh
-      - mkdir -p $OLDPWD/libs
-      - cp libs/megaproxy.aar $OLDPWD/libs/
     ndk: 29.0.14206865
 
 AllowedAPKSigningKeys: 8a014a2a558a75b5f900ee0c33cd50f24b7432734912406699fc08866747f822
@@ -159,5 +135,5 @@ VercodeOperation:
   - 1000 * %c + 3
   - 1000 * %c + 4
 UpdateCheckData: app/build.gradle.kts|versionCodeBase = (\d+)|.|versionName = "([^"]+)"
-CurrentVersion: 0.0.9
-CurrentVersionCode: 9004
+CurrentVersion: 0.0.10
+CurrentVersionCode: 10004
