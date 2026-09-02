@@ -11,7 +11,8 @@ AutoName: Cache Cleaner
 
 RepoType: git
 Repo: https://github.com/bmx666/android-appcachecleaner.git
-Binaries: https://github.com/bmx666/android-appcachecleaner/releases/download/v%v/app-release.apk
+Binaries: 
+  https://github.com/bmx666/android-appcachecleaner/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 0.1.4
@@ -549,9 +550,29 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 2.2.10
+    versionCode: 108
+    commit: 596c479c0831c2b72132aa11fbf16458f34a51ea
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+  - versionName: 2.3.0
+    versionCode: 109
+    commit: 5b0b442113a18a99fec52dc5e1faed51fda6fa88
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
 AllowedAPKSigningKeys: 28fa393354f1d13d70c2f1f5298cdd455ffdbc2c17939cbc8f053ddc5e152da8
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.2.9
-CurrentVersionCode: 107
+CurrentVersion: 2.3.0
+CurrentVersionCode: 109

@@ -44,9 +44,38 @@ Builds:
       - yes
     prebuild: git reset --soft HEAD~1
 
+  - versionName: '1.7'
+    versionCode: 17
+    commit: 20fe63b1d6c9564bcfe5ca5253183f6f883e24a7
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: '1.8'
+    versionCode: 19
+    commit: ff32d9b9790aa8ebadf748a54c7204ee88c416a7
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'res/o5.json'
+
+  - versionName: '2.0'
+    versionCode: 20
+    commit: 704f8b18962b81af817c45b2a26efd8c022f2bb1
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
+      $$OUT$$ 'res/o5.json'
+
 AllowedAPKSigningKeys: 660a1d0cdcf16e1d7495aa4c0e484feb7b28e06a4b91cb04cf9fe8a12852760c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '1.4'
-CurrentVersionCode: 14
+CurrentVersion: '2.0'
+CurrentVersionCode: 20

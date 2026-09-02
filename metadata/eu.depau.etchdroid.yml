@@ -116,7 +116,25 @@ Builds:
     gradle:
       - foss
 
+  - versionName: '2.0'
+    versionCode: 25
+    commit: 8edbcc9396236b731ea4a27e8b047f9d4399aee3
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/ETCHDROID_ENABLE_SENTRY/,/}$/d' {..,.}/build.gradle.kts
+
+  - versionName: '2.1'
+    versionCode: 26
+    commit: ef0457405438446d6a7a252d6352794cc6618ba3
+    subdir: app
+    gradle:
+      - foss
+    prebuild:
+      - sed -i -e '/Sentry and Crashlytics enabled/,+3d' build.gradle.kts
+      - sed -i -e '/ETCHDROID_ENABLE_SENTRY/,/}$/d' ../build.gradle.kts
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.9.rc3
-CurrentVersionCode: 23
+CurrentVersion: '2.1'
+CurrentVersionCode: 26

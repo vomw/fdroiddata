@@ -1,16 +1,19 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Uses transfer.sh which is not foss/libre.
+    en-US: The app depends on third-party cloud storage services and does not function
+      otherwise.
+    de: Die App ist auf Cloud-Speicherdienste von Drittanbietern angewiesen und funktioniert
+      andernfalls nicht.
 Categories:
+  - Cloud Storage & File Sync
   - Internet
 License: GPL-3.0-only
 AuthorName: Roozbeh Zarei
-AuthorEmail: roozbehzarei@proton.me
+WebSite: https://filester.roozbehzarei.com
 SourceCode: https://github.com/roozbehzarei/filester
 IssueTracker: https://github.com/roozbehzarei/filester/issues
 Changelog: https://github.com/roozbehzarei/filester/releases
-Donate: https://github.com/roozbehzarei/filester
-Bitcoin: bc1qwd7nufaddhvyzvtxllf3w7s9mypfwpg70uh3v9
+Donate: https://filester.roozbehzarei.com/donate.html
 
 AutoName: Filester
 
@@ -40,6 +43,8 @@ Builds:
     gradle:
       - yes
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - Tracking
 
   - versionName: 2.2.0
     versionCode: 5
@@ -52,6 +57,8 @@ Builds:
     gradle:
       - yes
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - Tracking
 
   - versionName: 2.3.1
     versionCode: 7
@@ -64,6 +71,9 @@ Builds:
     gradle:
       - yes
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - TetheredNet
+      - Tracking
 
   - versionName: 2.3.2
     versionCode: 8
@@ -72,6 +82,9 @@ Builds:
     gradle:
       - yes
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - TetheredNet
+      - Tracking
 
   - versionName: 2.3.3
     versionCode: 9
@@ -80,8 +93,59 @@ Builds:
     gradle:
       - yes
     prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - TetheredNet
+      - Tracking
+
+  - versionName: 2.3.4
+    versionCode: 10
+    commit: 5c5349023bc9bd7b62834842ead68a9e0ebf039b
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i -e '/gms/d' -e '/firebase/d' {..,.}/build.gradle.kts
+    antifeatures:
+      - TetheredNet
+      - Tracking
+
+  - versionName: 3.0.3
+    versionCode: 19
+    commit: cc9e3e89df6639ac0c8dfd32fb077bf6642245ad
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - docs
+    prebuild: sed -i -e '/gms/d' -e '/firebase/d' -e '/kotzilla/d' {..,.}/build.gradle.kts
+    gradleprops:
+      - isProprietaryDistribution=false
+
+  - versionName: 3.1.1
+    versionCode: 21
+    commit: f9eee2e5403c478d11bbb6bf73927db64c591ce9
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - docs
+    prebuild: sed -i -e '/gms/d' -e '/firebase/d' -e '/kotzilla/d' {..,.}/build.gradle.kts
+    gradleprops:
+      - isProprietaryDistribution=false
+
+  - versionName: 3.2.0
+    versionCode: 22
+    commit: bc6fff8645a42fdb017d78b5d5aa7d9571f9e627
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - docs
+    prebuild: sed -i -e '/gms/d' -e '/firebase/d' -e '/kotzilla/d' {..,.}/build.gradle.kts
+    gradleprops:
+      - isProprietaryDistribution=false
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 2.3.3
-CurrentVersionCode: 9
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: app/build.gradle.kts|versionCode = (\d+)|.|val appVersionName = "(.+)"
+CurrentVersion: 3.2.0
+CurrentVersionCode: 22

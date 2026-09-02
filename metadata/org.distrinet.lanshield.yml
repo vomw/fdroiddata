@@ -1,0 +1,67 @@
+Categories:
+  - Firewall
+  - Network Analyzer
+  - Security
+License: Apache-2.0
+AuthorName: JeroenRobben
+AuthorEmail: lanshield@cs.kuleuven.be
+WebSite: https://lanshield.eu
+SourceCode: https://github.com/DistriNet/lanshield
+IssueTracker: https://github.com/DistriNet/LANShield/issues
+
+AutoName: LANShield
+
+RepoType: git
+Repo: https://github.com/DistriNet/LANShield.git
+Binaries: https://lanshield.eu/static/releases/lanshield-v%v.apk
+
+Builds:
+  - versionName: '0.92'
+    versionCode: 13
+    commit: fdroid-release-v0.92
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: '0.93'
+    versionCode: 14
+    commit: fdroid-release-v0.93
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: '0.94'
+    versionCode: 16
+    commit: fdroid-release-v0.94
+    subdir: app
+    gradle:
+      - foss
+
+  - versionName: '0.95'
+    versionCode: 17
+    commit: b83e3d2cfb1aeb0f2ca24d69807b39d6f8c6e64f
+    subdir: app
+    gradle:
+      - foss
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: '0.96'
+    versionCode: 20
+    commit: 70b59148febee7ce1d59f595e1b54c8c3e589c58
+    subdir: app
+    gradle:
+      - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: a73707fd077d51670f7904a56e0f038a62e30b48bee3a655c3025e8648262b52
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '0.96'
+CurrentVersionCode: 20
