@@ -29,7 +29,7 @@ Builds:
 
   - versionName: 2.0.5
     versionCode: 1053
-    commit: cdd441b27f1ccc8b9a67bffb42d216e5f948010c
+    commit: c7b4ee66d08a9d70a8297cc395e7ef253c7c8f25
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -53,7 +53,7 @@ Builds:
 
   - versionName: 2.0.5
     versionCode: 2053
-    commit: cdd441b27f1ccc8b9a67bffb42d216e5f948010c
+    commit: c7b4ee66d08a9d70a8297cc395e7ef253c7c8f25
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -77,7 +77,7 @@ Builds:
 
   - versionName: 2.0.5
     versionCode: 4053
-    commit: cdd441b27f1ccc8b9a67bffb42d216e5f948010c
+    commit: c7b4ee66d08a9d70a8297cc395e7ef253c7c8f25
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -112,11 +112,23 @@ MaintainerNotes: |-
   the pubspec versionCode 51 the APKs carry 1051, 2051 and 4051. Measured on the published
   v2.0.3 binaries with androguard rather than derived: arm64-v8a=2051, armeabi-v7a=1051,
   x86_64=4051. The guide's snippet, which maps x86_64 to 3, would have declared 3051 and the
-  build would not have matched. The Builds entries are kept in ascending versionCode order
-  because checkupdates pairs zip(builds[-3:], sorted(vercodes)), so any other order would
-  attach the wrong output: to the wrong versionCode on the next auto-update.
+  build would not have matched.
+  .
+  AutoUpdateMode is None deliberately, and this scheme is why. fdroid rewritemeta sorts Builds
+  by versionCode, and abi*1000+versionCode makes consecutive versions INTERLEAVE once sorted:
+  1051, 1053, 2051, 2053, 4051, 4053. checkupdates pairs zip(builds[-3:], sorted(vercodes)),
+  so builds[-3:] then spans two versions and only two ABIs. Simulated for a future pubspec 55:
+  1055 would be attached to the arm64-v8a output and 2055 to the x86_64 one, and armeabi-v7a
+  would never be built again.
+  .
+  The quick-start guide's %c * 10 + n prevents exactly that, by keeping one version's three
+  codes adjacent so the sort groups them; 207 of the 254 multi-ABI VercodeOperation recipes
+  here use an adjacent scheme. Adopting it needs an upstream gradle change and a base
+  versionCode of at least 406, because %c * 10 + 3 has to stay above the 4053 already
+  published for x86_64. Until that is decided, build entries are added by hand rather than
+  auto-generated onto the wrong ABI.
 
-AutoUpdateMode: Version
+AutoUpdateMode: None
 UpdateCheckMode: Tags
 VercodeOperation:
   - 1000 + %c
