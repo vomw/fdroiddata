@@ -1,0 +1,153 @@
+Categories:
+  - Reading
+  - Science & Education
+  - Translation & Dictionary
+License: GPL-3.0-only
+AuthorName: Sakibul Hasan
+AuthorEmail: sakibul706@gmail.com
+SourceCode: https://github.com/wizsk/arabic_lexicons
+IssueTracker: https://github.com/wizsk/arabic_lexicons/issues
+
+AutoName: Arabic Lexicons
+
+RepoType: git
+Repo: https://github.com/wizsk/arabic_lexicons.git
+
+Builds:
+  - versionName: 3.3.0
+    versionCode: 3030001
+    commit: 74d54f32808ac725b57d8bc4253d43791022514f
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/wizsk/arabic_lexicons/releases/download/v%v/Arabic-Lexicons-v%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^\s*REQUIRED_FLUTTER_VERSION="(.*)"/\1/p' b/rel.sh)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - unzip -o assets/data/db/db.sqlite.zip -d assets/data/db/
+      - rm assets/data/db/db.sqlite.zip
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+    scandelete:
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export COMMIT=$(git rev-parse HEAD)
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --dart-define=APP_VERSION="$$VERSION$$" --dart-define=GIT_COMMIT="$COMMIT"
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+
+  - versionName: 3.3.0
+    versionCode: 3030002
+    commit: 74d54f32808ac725b57d8bc4253d43791022514f
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/wizsk/arabic_lexicons/releases/download/v%v/Arabic-Lexicons-v%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^\s*REQUIRED_FLUTTER_VERSION="(.*)"/\1/p' b/rel.sh)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - unzip -o assets/data/db/db.sqlite.zip -d assets/data/db/
+      - rm assets/data/db/db.sqlite.zip
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+    scandelete:
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export COMMIT=$(git rev-parse HEAD)
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --dart-define=APP_VERSION="$$VERSION$$" --dart-define=GIT_COMMIT="$COMMIT"
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+
+  - versionName: 3.3.0
+    versionCode: 3030003
+    commit: 74d54f32808ac725b57d8bc4253d43791022514f
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/wizsk/arabic_lexicons/releases/download/v%v/Arabic-Lexicons-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^\s*REQUIRED_FLUTTER_VERSION="(.*)"/\1/p' b/rel.sh)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - unzip -o assets/data/db/db.sqlite.zip -d assets/data/db/
+      - rm assets/data/db/db.sqlite.zip
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+    scandelete:
+      - .pub-cache
+    build:
+      - cd ..
+      - mv io.github.wizsk.arabic_lexicons /tmp/build
+      - pushd /tmp/build/
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export COMMIT=$(git rev-parse HEAD)
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --dart-define=APP_VERSION="$$VERSION$$" --dart-define=GIT_COMMIT="$COMMIT"
+      - popd
+      - mv /tmp/build io.github.wizsk.arabic_lexicons
+
+AllowedAPKSigningKeys: 324fc0e3f874d505e7130846cd2c8b03de78a0ec22e0362c11324bada54c3c77
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.3.0
+CurrentVersionCode: 3030003
