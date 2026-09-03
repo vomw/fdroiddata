@@ -1782,6 +1782,7 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm build-essential
+      - npm install -g cordova rspack
     output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
     rm:
       - src/plugins/iap
@@ -1800,7 +1801,7 @@ Builds:
     build:
       - npm run setup
       - node ./utils/config.js prod paid
-      - ./node_modules/.bin/rspack --mode production
+      - rspack --mode production
       - cordova build android --release -- --packageType=apk
 
 
