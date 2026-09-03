@@ -18,18 +18,17 @@ Binaries:
   https://github.com/silent-suite/silentsuite/releases/download/v%v/silentsuite-android-v%v.apk
 
 Builds:
-  - versionName: 0.5.4-beta
-    versionCode: 18
-    commit: 345c154fe4151fab82f2f541df022a0ca35d0338
+  - versionName: 0.5.5-beta
+    versionCode: 19
+    commit: 703103311fa3bf936d64ffd9fb468367d2944c83
     subdir: android/app
     sudo:
       - s=/etc/apt/sources.list.d
       - echo "deb https://deb.debian.org/debian bookworm main" > "$s/b.list"
-      - echo "deb https://deb.debian.org/debian bullseye main" > "$s/u.list"
       - apt-get update
       - apt-get install -y rustup build-essential binutils
+      - apt-get install -y ca-certificates curl
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - apt-get install -y -t bullseye openjdk-11-jdk-headless
       - ln -sf /home/vagrant/.cargo/bin/cargo /usr/local/bin/cargo
       - ln -sf /home/vagrant/.cargo/bin/rustc /usr/local/bin/rustc
       - ln -sf /home/vagrant/.cargo/bin/rustup /usr/local/bin/rustup
@@ -37,21 +36,26 @@ Builds:
       - yes
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - export CARGO_HOME="$HOME/.cargo"
-      - rustup default stable
-      - rustup target add aarch64-linux-android x86_64-linux-android
+      - r=/tmp/silentsuite-reproducible-build
+      - export CARGO_HOME="$r/cargo"
+      - export RUSTUP_HOME="$r/rustup"
+      - rustup toolchain install --profile minimal --no-self-update 1.98.0
+      - rustup target add --toolchain 1.98.0 aarch64-linux-android
+      - rustup target add --toolchain 1.98.0 x86_64-linux-android
     scanignore:
       - android/build.gradle
     build:
-      - export CARGO_HOME="$HOME/.cargo"
+      - unset RUSTFLAGS CARGO_ENCODED_RUSTFLAGS CFLAGS CXXFLAGS || true
+      - unset CPPFLAGS LDFLAGS JAVA_TOOL_OPTIONS _JAVA_OPTIONS || true
       - export ANDROID_NDK_HOME="$$NDK$$"
+      - r=/tmp/silentsuite-reproducible-build
+      - export PATH="$r/cargo/bin:$PATH"
+      - jdk="$(../scripts/reproducible-build-contract.sh provision-jdk)"
+      - test -x "$jdk/bin/javac"
+      - export SILENTSUITE_RELEASE_JDK_HOME="$jdk"
+      - export JAVA_HOME="$jdk"
+      - export PATH="$jdk/bin:$PATH"
       - ../scripts/build-etebase-client-16kb.sh
-      - j11=/usr/lib/jvm/java-11-openjdk-amd64
-      - j17=/usr/lib/jvm/java-17-openjdk-amd64
-      - test -x "$j11/bin/javac"
-      - test -x "$j17/bin/javac"
-      - export JAVA_HOME="$j17"
-      - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$j11"
       - (cd .. && scripts/build-conscrypt-android-r28.sh)
     ndk: 28.2.13676358
 
@@ -59,5 +63,5 @@ AllowedAPKSigningKeys: 8035a4ff1511e2045c579c905d26e93af6009b239e741ef78542ae04e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+(-beta)?$
-CurrentVersion: 0.5.4-beta
-CurrentVersionCode: 18
+CurrentVersion: 0.5.5-beta
+CurrentVersionCode: 19
