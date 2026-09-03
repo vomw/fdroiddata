@@ -399,9 +399,9 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
-  - versionName: 26.09.01
-    versionCode: 126
-    commit: b2ab0ea1a9892d767001d63969d6d8c9198a77f2
+  - versionName: 26.09.03
+    versionCode: 128
+    commit: 7b675e981ca8da4c44a5c1a574e5eb1bd686ffe2
     subdir: SlimSocial_for_Facebook
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
@@ -413,12 +413,7 @@ Builds:
       - flutterVersion=$(grep flutter\" .fvmrc | cut -d "\"" -f 4)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - sed -i -e '/in_app_review/d' -e '/in_app_purchase/d' pubspec.yaml
-      - sed -i -e '/^  in_app/,/^    version/d' pubspec.lock
-      - sed -i -e '/in_app/d' -e '/contribute/,/SettingsSection/d' -e '/Future<void>
-        buildPaymentWidget/,/^  }/d' -e '/_paymentSubscription/d' -e '/buildPaymentWidget/d'
-        lib/screens/settings_page.dart
-      - sed -i -e '/in_app/d' -e '/final review =/,+4d' lib/widgets/rating_dialog.dart
+      - bash ./scripts/fdroid_prepare.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get --enforce-lockfile
@@ -431,5 +426,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: SlimSocial_for_Facebook/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 26.09.01
-CurrentVersionCode: 126
+CurrentVersion: 26.09.03
+CurrentVersionCode: 128
