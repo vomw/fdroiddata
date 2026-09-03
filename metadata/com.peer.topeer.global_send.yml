@@ -1,0 +1,745 @@
+Categories:
+  - Connectivity
+  - File Transfer
+  - Internet
+  - Messaging
+License: GPL-3.0-or-later
+AuthorName: Peer Topeer
+AuthorEmail: quandang@disroot.org
+SourceCode: https://codeberg.org/quandang/global_send
+IssueTracker: https://codeberg.org/quandang/global_send/issues
+Changelog: https://codeberg.org/quandang/global_send/releases
+
+AutoName: Globalsend
+
+RepoType: git
+Repo: https://codeberg.org/quandang/global_send.git
+Binaries: 
+  https://codeberg.org/quandang/global_send/releases/download/v%v/global_send-%c-release.apk
+
+Builds:
+  - versionName: 0.2.1
+    versionCode: 21000
+    commit: 29944f2ec78b0fdcd513cfa77e3c4cfca56d1847
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.1
+    versionCode: 22000
+    commit: 29944f2ec78b0fdcd513cfa77e3c4cfca56d1847
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.1
+    versionCode: 24000
+    commit: 29944f2ec78b0fdcd513cfa77e3c4cfca56d1847
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.3
+    versionCode: 41000
+    commit: b5dcb76ada02cfb5aa39f6729de6fa38555020c2
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.3
+    versionCode: 42000
+    commit: b5dcb76ada02cfb5aa39f6729de6fa38555020c2
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.3
+    versionCode: 44000
+    commit: b5dcb76ada02cfb5aa39f6729de6fa38555020c2
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.5
+    versionCode: 61000
+    commit: 0cc07a9b9ff269e0038a2fb5cb012812b7916bda
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.5
+    versionCode: 62000
+    commit: 0cc07a9b9ff269e0038a2fb5cb012812b7916bda
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.5
+    versionCode: 64000
+    commit: 0cc07a9b9ff269e0038a2fb5cb012812b7916bda
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.7
+    versionCode: 71000
+    commit: 226e5dae99bdcd1a8780191f0c23bad9f56c1142
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.7
+    versionCode: 72000
+    commit: 226e5dae99bdcd1a8780191f0c23bad9f56c1142
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.7
+    versionCode: 74000
+    commit: 226e5dae99bdcd1a8780191f0c23bad9f56c1142
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.9
+    versionCode: 91000
+    commit: ef7649cb65f575f526dede2691703a0124e0abca
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - .zxing/src/zxing/test
+      - .zxing/src/zxing/wrappers/kn
+      - .zxing/src/zxing/zint/backend/tests
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.9
+    versionCode: 92000
+    commit: ef7649cb65f575f526dede2691703a0124e0abca
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - .zxing/src/zxing/test
+      - .zxing/src/zxing/wrappers/kn
+      - .zxing/src/zxing/zint/backend/tests
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-arm64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+  - versionName: 0.2.9
+    versionCode: 94000
+    commit: ef7649cb65f575f526dede2691703a0124e0abca
+    submodules: true
+    sudo:
+      - mkdir -p /home/quan
+      - chown -R vagrant /home/quan
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - macos
+      - linux
+      - windows
+      - .zxing/src/zxing/test
+      - .zxing/src/zxing/wrappers/kn
+      - .zxing/src/zxing/zint/backend/tests
+    prebuild:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo $id
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - .flutter
+    build:
+      - export repo=/home/quan/global_send
+      - export id=com.peer.topeer.global_send
+      - cd ..
+      - mv $id $repo
+      - pushd $repo
+      - export HOME=/home/quan
+      - rustup default 1.96.0
+      - cargo run --features generate-bindings --release --bin regen
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --split-per-abi --target-platform="android-x64"
+        --build-number $(($$VERCODE$$/10000*10000))
+      - popd
+      - mv $repo $id
+
+AllowedAPKSigningKeys: fd03dae4a870e0335099f7f835e1fe9b7b9c0349733cf8278dee695a7aede7c4
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10000 * %c + 1000
+  - 10000 * %c + 2000
+  - 10000 * %c + 4000
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.2.9
+CurrentVersionCode: 94000

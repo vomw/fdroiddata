@@ -1,5 +1,7 @@
 Categories:
   - Sports & Health
+  - Timer
+  - Workout
 License: MIT
 AuthorName: Bastian Block
 AuthorEmail: blockbasti99@gmail.com
@@ -13,59 +15,68 @@ RepoType: git
 Repo: https://github.com/blockbasti/just_another_workout_timer
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 1
-    commit: v1.0.1
+  - versionName: 1.11.2
+    versionCode: 20220317
+    commit: 65468c6ff176d5cb782644e7c107bdf61bdcf2a2
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
     output: build/app/outputs/apk/release/app-release-unsigned.apk
     srclibs:
-      - flutter@1.22.5
-    prebuild: echo "flutter.sdk=$$flutter$$" >> ../local.properties
+      - flutter@2.10.0
+    rm:
+      - android/app/proguard-rules.pro
+    prebuild: sed -i -e '/proguardFiles/d' android/app/build.gradle
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run intl_utils:generate
       - $$flutter$$/bin/flutter build apk
 
-  - versionName: 1.1.1
-    versionCode: 20210127
-    commit: v1.1.1
+  - versionName: 1.12.0
+    versionCode: 20230722
+    commit: 750a121a3971a154eacaae46d6605713f6fb8feb
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
     output: build/app/outputs/apk/release/app-release-unsigned.apk
     srclibs:
-      - flutter@1.22.5
-    prebuild: echo "flutter.sdk=$$flutter$$" >> ../local.properties
+      - flutter@3.10.6
+    rm:
+      - android/app/proguard-rules.pro
+    prebuild: sed -i -e '/proguardFiles/d' android/app/build.gradle
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter packages pub get
-      - $$flutter$$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
-      - $$flutter$$/bin/flutter build apk --build-number 20210127
-
-  - versionName: 1.1.1
-    versionCode: 20210128
-    commit: 5d7b536f670581f5b2aa58e76154ed858779f0bc
-    output: build/app/outputs/apk/release/app-release-unsigned.apk
-    srclibs:
-      - flutter@1.22.5
-    prebuild: echo "flutter.sdk=$$flutter$$" >> ../local.properties
-    build:
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter packages pub get
-      - $$flutter$$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
-      - $$flutter$$/bin/flutter build apk --build-number 20210127
-
-  - versionName: 1.2.0
-    versionCode: 20210205
-    commit: v1.2.0
-    output: build/app/outputs/apk/release/app-release-unsigned.apk
-    srclibs:
-      - flutter@1.22.6
-    prebuild: echo "flutter.sdk=$$flutter$$" >> ../local.properties
-    build:
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter packages pub get
-      - $$flutter$$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run intl_utils:generate
       - $$flutter$$/bin/flutter build apk
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: HTTP
-UpdateCheckData: https://raw.githubusercontent.com/blockbasti/just_another_workout_timer/main/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.2.0
-CurrentVersionCode: 20210128
+  - versionName: 1.13.0
+    versionCode: 20230929
+    commit: 83cdce8e066d0d5728b5c5b8b65e19560031a40c
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - flutter@3.10.6
+    rm:
+      - android/app/proguard-rules.pro
+    prebuild: sed -i -e '/proguardFiles/d' android/app/build.gradle
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter pub run flutter_oss_licenses:generate.dart
+      - $$flutter$$/bin/flutter pub run intl_utils:generate
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v.*$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.13.0
+CurrentVersionCode: 20230929

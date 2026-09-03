@@ -1,4 +1,5 @@
 Categories:
+  - Camera
   - Multimedia
 License: GPL-3.0-only
 AuthorName: Dozing Cat Software
@@ -125,10 +126,41 @@ Builds:
     gradle:
       - yes
 
-MaintainerNotes: The libvpx build is documented by upstream [https://github.com/dozingcat/VectorCamera/blob/master/README-libvpx.md
-    here].
+  - versionName: 1.6.0
+    versionCode: 13
+    commit: 5ebb5d7234b98f4b9258815a7ed951ee432759e7
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
 
-AutoUpdateMode: Version v%v
+  - versionName: 1.7.0
+    versionCode: 14
+    commit: v1.7.0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y libncurses5
+    gradle:
+      - yes
+
+  - versionName: 2.0.0
+    versionCode: 15
+    commit: v2.0.0
+    subdir: app
+    gradle:
+      - yes
+    ndk: 28.2.13676358
+
+MaintainerNotes: libncurses5 was needed by the RenderScript compiler, no longer used
+  in 2.0.0. The libvpx build (not needed in 1.5.0 and later) is documented by upstream
+  <a 
+  href="https://github.com/dozingcat/VectorCamera/blob/fa48daf8dc080fd03eb9311c0342b81b41f345e8/README-libvpx.md">here</a>.
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.5.0
-CurrentVersionCode: 12
+CurrentVersion: 2.0.0
+CurrentVersionCode: 15

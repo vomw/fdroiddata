@@ -1,0 +1,80 @@
+Categories:
+  - Multimedia
+  - Online Media Player
+License: GPL-3.0-only
+AuthorName: Jarne Demeulemeester
+AuthorEmail: jarnedemeulemeester@gmail.com
+AuthorWebSite: https://jdtech.dev/
+SourceCode: https://github.com/jarnedemeulemeester/findroid
+IssueTracker: https://github.com/jarnedemeulemeester/findroid/issues
+Translation: https://weblate.jdtech.dev/engage/findroid/
+Changelog: https://github.com/jarnedemeulemeester/findroid/releases
+
+AutoName: Findroid
+
+RepoType: git
+Repo: https://github.com/jarnedemeulemeester/findroid.git
+Binaries: 
+  https://github.com/jarnedemeulemeester/findroid/releases/download/v%v/findroid-v%v-libre-arm64-v8a.apk
+
+Builds:
+  - versionName: 0.15.2
+    versionCode: 28
+    commit: v0.15.2
+    subdir: app/phone
+    gradle:
+      - libre
+    output: build/outputs/apk/libre/release/findroid-v*-libre-arm64-v8a.apk
+    prebuild: cp -R ../../gradle ..
+
+  - versionName: 0.15.3
+    versionCode: 29
+    commit: 6dd799fb1f3c899375e254981a919603769e29dd
+    subdir: app/phone
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - libre
+    output: build/outputs/apk/libre/release/findroid-v*-libre-arm64-v8a.apk
+    prebuild: cp -R ../../gradle ..
+
+  - versionName: 1.0.1
+    versionCode: 31
+    commit: f35146a496ede04d338bf439aced84ed4192084f
+    subdir: app/phone
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - libre
+    output: build/outputs/apk/libre/release/findroid-v*-libre-arm64-v8a.apk
+
+  - versionName: 1.0.2
+    versionCode: 32
+    commit: e66f8fe699700ddadc99090cd539554870fd59f6
+    subdir: app/phone
+    gradle:
+      - libre
+    output: build/outputs/apk/libre/release/findroid-v*-libre-arm64-v8a.apk
+
+  - versionName: 1.1.0
+    versionCode: 33
+    commit: cee2e2a0ae2c86d485ef7650bb22484d68b65e0c
+    subdir: app/phone
+    gradle:
+      - libre
+    prebuild: sed -i -e 's/include(.*)/include("arm64-v8a")/' build.gradle.kts
+
+AllowedAPKSigningKeys: ecc12086dbddb5faa3e1b650d161fb623f5f24188992c1173339cd5a8b2f8689
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: 
+  buildSrc/src/main/kotlin/Versions.kt|APP_CODE\s=\s(\d+)|.|APP_NAME\s=\s"([\d.]+)"
+CurrentVersion: 1.1.0
+CurrentVersionCode: 33
