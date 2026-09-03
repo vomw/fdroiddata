@@ -1,0 +1,57 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on Cloudflare and Telegram's network.
+Categories:
+  - Connectivity
+  - Internet
+  - VPN & Proxy
+License: GPL-3.0-only
+AuthorName: amurcanov
+AuthorEmail: amurcanov@gmail.com
+SourceCode: https://github.com/amurcanov/tg-ws-proxy-android
+IssueTracker: https://github.com/amurcanov/tg-ws-proxy-android/issues
+
+AutoName: Telegram WS Proxy
+
+RepoType: git
+Repo: https://github.com/UjuiUjuMandan/tg-ws-proxy-android
+
+Builds:
+  - versionName: 1.2.3
+    versionCode: 123
+    commit: cce464495c51d3922731382a3807f03a9fa6ea6e
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup build-essential
+    gradle:
+      - universal
+    output: build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    scandelete:
+      - app/src/main/jniLibs
+    build:
+      - export RUST_VERSION=$(sed -n -E 's/channel = "(.*)"/\1/p' ../rust-toolchain.toml)
+      - rustup default $RUST_VERSION
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - export CARGO_NDK_VERSION=$(sed -n -E 's/^set "CARGO_NDK_VERSION=([^"[:space:]]+)"$/\1/p'
+        ../build_so.bat)
+      - cargo install --locked cargo-ndk@$CARGO_NDK_VERSION
+      - export ANDROID_NDK_VERSION=$(sed -n -E 's/^set "ANDROID_NDK_VERSION=([^"[:space:]]+)"$/\1/p'
+        ../build_so.bat)
+      - sdkmanager "ndk;$ANDROID_NDK_VERSION"
+      - export ANDROID_NDK_HOME=${ANDROID_SDK_ROOT:-$ANDROID_HOME}/ndk/$ANDROID_NDK_VERSION
+      - export NDK_HOME=$ANDROID_NDK_HOME
+      - export CARGO_HOME=$HOME/.cargo
+      - export BUILD_ROOT=$(cd .. && pwd)
+      - export RUSTFLAGS="--remap-path-prefix=$CARGO_HOME=/cargo --remap-path-prefix=$BUILD_ROOT=/build"
+      - pushd ..
+      - cargo ndk --platform 24 -t arm64-v8a -o app/src/main/jniLibs build --release
+        --locked
+      - cargo ndk --platform 21 -t armeabi-v7a -o app/src/main/jniLibs build --release
+        --locked
+      - popd
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.2.3
+CurrentVersionCode: 123
