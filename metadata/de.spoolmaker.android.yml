@@ -1,0 +1,34 @@
+Categories:
+  - Development
+License: GPL-3.0-or-later
+SourceCode: https://github.com/joker-mik/SpoolMakerAndroid
+IssueTracker: https://github.com/joker-mik/SpoolMakerAndroid/issues
+Changelog: https://github.com/joker-mik/SpoolMakerAndroid/releases
+
+AutoName: Spool Maker
+
+RepoType: git
+Repo: https://github.com/joker-mik/SpoolMakerAndroid.git
+Binaries: 
+  https://github.com/joker-mik/SpoolMakerAndroid/releases/download/v%v/SpoolMaker-%v.apk
+
+Builds:
+  - versionName: 1.2.1
+    versionCode: 30
+    commit: d7ce15c2a315b180e8517bf935f7dc506ff61186
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives --set java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+    prebuild: echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64" >> ../gradle.properties
+
+AllowedAPKSigningKeys: 61284f96a285d7af755f9a5593b786fd9b74686fa4616198efcee903c505d3eb
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.2.1
+CurrentVersionCode: 30
