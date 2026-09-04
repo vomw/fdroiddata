@@ -6,7 +6,7 @@ AuthorName: GnosiWorks
 AuthorEmail: gnosiworks@proton.me
 SourceCode: https://github.com/GnosiWorks/Kryfo
 IssueTracker: https://github.com/GnosiWorks/Kryfo/issues
-Changelog: https://github.com/GnosiWorks/Kryfo/blob/HEAD/CHANGELOG.md
+Changelog: https://github.com/GnosiWorks/Kryfo/blob/main/CHANGELOG.md
 
 AutoName: Kryfo
 
@@ -14,51 +14,99 @@ RepoType: git
 Repo: https://github.com/GnosiWorks/Kryfo.git
 
 Builds:
-  - versionName: 0.1.0-alpha
-    versionCode: 1
-    commit: 160f96812a21f6f09498a73ee524aa83e83c8860
+  - versionName: 0.2.0
+    versionCode: 22
+    commit: bb428755815821dacb2db9e52f70a4d7b9dbb3a8
     subdir: mobile
     sudo:
+      - echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list
       - apt-get update
-      - apt-get install -y --no-install-recommends ca-certificates curl golang-go
-      - curl -fsSL https://go.dev/dl/go1.25.0.src.tar.gz -o /tmp/go-src.tgz
-      - echo "4bd01e91297207bfa450ea40d4d5a93b1b531a5e438473b2a06e18e077227225  /tmp/go-src.tgz"
-        | sha256sum -c -
-      - tar -C /opt -xzf /tmp/go-src.tgz
-      - rm /tmp/go-src.tgz
-      - bash -c 'cd /opt/go/src && GOROOT_BOOTSTRAP=$(go env GOROOT) ./make.bash'
-      - chown -R vagrant /opt/go
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@3.41.7
+      - apt-get install -y --no-install-recommends -t trixie-backports golang-go
     rm:
       - mobile/ios
       - mobile/linux
       - mobile/macos
       - mobile/web
       - mobile/windows
+    srclibs:
+      - flutter@3.41.7
+      - go@go1.25.0
     prebuild:
+      - git -C $$go$$ checkout -f go1.25.0
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
-      - $$flutter$$/bin/cache
+      - mobile/.pub-cache
     scandelete:
-      - .pub-cache
+      - mobile/.pub-cache
     build:
-      - export PATH=/opt/go/bin:$PATH
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export PATH=$GOROOT/bin:$PATH
       - export ANDROID_NDK_HOME=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - export CGO_ENABLED=1
       - export GOFLAGS=-trimpath
       - export SOURCE_DATE_EPOCH=1700000000
       - export CGO_LDFLAGS="-Wl,--build-id=none"
       - cd ../engine && bash build.sh
       - cd ../mobile
-      - $$flutter$$/bin/flutter build apk --release --target-platform android-arm64
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
     ndk: r28b
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 
-AutoUpdateMode: Version v%v
+  - versionName: 0.2.0
+    versionCode: 23
+    commit: bb428755815821dacb2db9e52f70a4d7b9dbb3a8
+    subdir: mobile
+    sudo:
+      - echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list
+      - apt-get update
+      - apt-get install -y --no-install-recommends -t trixie-backports golang-go
+    rm:
+      - mobile/ios
+      - mobile/linux
+      - mobile/macos
+      - mobile/web
+      - mobile/windows
+    srclibs:
+      - flutter@3.41.7
+      - go@go1.25.0
+    prebuild:
+      - git -C $$go$$ checkout -f go1.25.0
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - mobile/.pub-cache
+    scandelete:
+      - mobile/.pub-cache
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export PATH=$GOROOT/bin:$PATH
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CGO_ENABLED=1
+      - export GOFLAGS=-trimpath
+      - export SOURCE_DATE_EPOCH=1700000000
+      - export CGO_LDFLAGS="-Wl,--build-id=none"
+      - cd ../engine && bash build.sh
+      - cd ../mobile
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+    ndk: r28b
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.1.0-alpha
-CurrentVersionCode: 1
+VercodeOperation:
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.2.0
+CurrentVersionCode: 23
