@@ -49,11 +49,11 @@ Builds:
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
+      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx-websocket.min.js.gz
+      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx.min.js.gz
     scandelete:
       - app/src/main/jniLibs
       - app/src/main/assets/mosh/terminfo.zip
-      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx-websocket.min.js.gz
-      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx.min.js.gz
       - third_party/mosh4android/src/fuzz/terminal_corpus
       - third_party/mosh4android/src/fuzz/terminal_parser_corpus
     build: "mkdir -p .fdroid/mosh-deps\nln -s $$go120mangossh$$ .fdroid/mosh-deps/go-bootstrap-1.20.14\n
@@ -80,13 +80,13 @@ MaintainerNotes: |-
   upstream-visible patch under tools/patches and the bridge sets no-support
   logging before startup. Generated PTY, Mosh, and terminfo files tracked by
   upstream are deleted by the scanner and rebuilt from the pinned sources.
-  The two narrow scanignore entries are BSD-3-Clause assets from the pinned
-  github.com/tailscale/web-client-prebuilt module. They are required by its
-  Go embed declaration and must remain byte-identical for reproducible builds.
-  The eventbus gzip assets are excluded from Android by upstream build tags,
-  and the Mosh fuzz corpora are not part of the client build, so those files
-  are deleted instead. The foojay resolver is removed because the build uses
-  the buildserver-provided JDK 17 and does not download a Java toolchain.
+  The four narrow scanignore entries are source-controlled gzip assets from
+  pinned Tailscale sources. They are required by Go embed declarations during
+  gomobile binding and must remain byte-identical for reproducible builds. The
+  eventbus debug server is excluded from Android by upstream build tags. The
+  Mosh fuzz corpora are not part of the client build, so those files are
+  deleted instead. The foojay resolver is removed because the build uses the
+  buildserver-provided JDK 17 and does not download a Java toolchain.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
