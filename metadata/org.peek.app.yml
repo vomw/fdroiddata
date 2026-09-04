@@ -1,0 +1,33 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Connects to third-party social platforms and media CDNs
+Categories:
+  - Internet
+License: GPL-3.0-only
+SourceCode: https://github.com/originalRecipe1/peek
+IssueTracker: https://github.com/originalRecipe1/peek/issues
+
+RepoType: git
+Repo: https://github.com/originalRecipe1/peek.git
+
+Builds:
+  - versionName: 0.1.0-experiment.2
+    versionCode: 2
+    commit: 046e0622b6647ead8ad13d21ee1b0fe56486f9bf
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y make zip
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - ./scripts/build_yt_dlp_from_source.sh
+      - ytdlp_file="$PWD/build/yt-dlp-source/yt-dlp"
+      - ytdlp_sha="$(sha256sum "$ytdlp_file" | awk '{print $1}')"
+      - gradle --offline --no-daemon assembleRelease -Ppeek.ytdlp.file="$ytdlp_file"
+        -Ppeek.ytdlp.sha256="$ytdlp_sha"
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+([-.+][0-9A-Za-z.]+)?$
+UpdateCheckData: app/build.gradle.kts|versionCode\s*=\s*(\d+)||v(.*)
+CurrentVersion: 0.1.0-experiment.2
+CurrentVersionCode: 2
