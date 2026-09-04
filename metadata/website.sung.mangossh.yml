@@ -41,7 +41,11 @@ Builds:
       - ncursesmangossh@79b9071f2be20a24c7be031655a5638f6032f29f
       - gmpmangossh@2bbd52703e5af82509773264bfbd20ff8464804f
       - nettlemangossh@b8c841dc3278dec0812365f02370b41ea9d4ddee
-    prebuild: sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
+    prebuild:
+      - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
+      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
+      - sed -i '/environment("ANDROID_SDK_ROOT", androidSdkPath)/a\        environment("JAVA_HOME",
+        "/usr/lib/jvm/java-17-openjdk-amd64")' app/build.gradle.kts
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
