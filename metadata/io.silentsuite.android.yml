@@ -36,6 +36,8 @@ Builds:
       - ln -sf /home/vagrant/.cargo/bin/rustup /usr/local/bin/rustup
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - sdkmanager 'cmake;3.22.1'
       - r=/tmp/silentsuite-reproducible-build
@@ -63,6 +65,10 @@ Builds:
       - export GRADLE_OPTS="-Dorg.gradle.java.installations.paths=$j11"
       - (cd .. && scripts/build-conscrypt-android-r28.sh)
     ndk: 28.2.13676358
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 8035a4ff1511e2045c579c905d26e93af6009b239e741ef78542ae04e7a7ca79
 
