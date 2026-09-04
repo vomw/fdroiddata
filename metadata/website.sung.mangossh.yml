@@ -36,6 +36,7 @@ Builds:
       - go124mangossh@7f36edc26d4e3becb6d9c9008ff00f260bb19055
       - go@c19862e5f8415b4f24b189d065ed739517c548ba
       - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
+      - abseil-cpp@4a2c63365eff8823a5221db86ef490e828306f9d
       - protobufmangossh@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
       - ncursesmangossh@79b9071f2be20a24c7be031655a5638f6032f29f
       - gmpmangossh@2bbd52703e5af82509773264bfbd20ff8464804f
@@ -54,7 +55,9 @@ Builds:
     build: "mkdir -p .fdroid/mosh-deps\nln -s $$go120mangossh$$ .fdroid/mosh-deps/go-bootstrap-1.20.14\n
       ln -s $$go122mangossh$$ .fdroid/mosh-deps/go-bootstrap-1.22.12\nln -s $$go124mangossh$$
       .fdroid/mosh-deps/go-bootstrap-1.24.6\nln -s $$zlib$$ .fdroid/mosh-deps/zlib\n
-      ln -s $$protobufmangossh$$ .fdroid/mosh-deps/protobuf\nln -s $$ncursesmangossh$$
+      rm -rf $$protobufmangossh$$/third_party/abseil-cpp\nln -s $$abseil-cpp$$
+      $$protobufmangossh$$/third_party/abseil-cpp\nln -s $$protobufmangossh$$ .fdroid/mosh-deps/protobuf\nln
+      -s $$ncursesmangossh$$
       .fdroid/mosh-deps/ncurses\nln -s $$gmpmangossh$$ .fdroid/mosh-deps/gmp\nln -s
       $$nettlemangossh$$ .fdroid/mosh-deps/nettle\nexport MANGOSSH_GO_SOURCE=$$go$$\n
       export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps\nexport MANGOSSH_GO_ROOT=$PWD/.tools/go/1.26.5\n
