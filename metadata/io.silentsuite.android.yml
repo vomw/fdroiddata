@@ -53,9 +53,8 @@ Builds:
       - export PATH="$jdk/bin:$PATH"
       - ../scripts/build-etebase-client-16kb.sh
       - printf 'sed -i "%s" "%s"\n' 's,JavaLanguageVersion.of(11),JavaLanguageVersion.of(17),'
-        '$conscrypt_source/build-logic/src/main/groovy/conventions.jvm.gradle'
-        's,jvmToolchain(11),jvmToolchain(17),' '$conscrypt_source/api-doclet/build.gradle'
-        > /tmp/silentsuite-jdk17-pins.sed
+        '$conscrypt_source/build-logic/src/main/groovy/conventions.jvm.gradle' 's,jvmToolchain(11),jvmToolchain(17),'
+        '$conscrypt_source/api-doclet/build.gradle' > /tmp/silentsuite-jdk17-pins.sed
       - sed -i '/clone_exact_commit ..BORINGSSL_REPOSITORY./r /tmp/silentsuite-jdk17-pins.sed'
         ../scripts/build-conscrypt-android-r28.sh
       - (cd .. && scripts/build-conscrypt-android-r28.sh)
