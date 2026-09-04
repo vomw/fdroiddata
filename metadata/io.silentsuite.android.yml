@@ -14,7 +14,8 @@ AutoName: SilentSuite
 
 RepoType: git
 Repo: https://github.com/silent-suite/silentsuite.git
-Binaries: https://github.com/silent-suite/silentsuite/releases/download/v%v/silentsuite-android-v%v.apk
+Binaries: 
+  https://github.com/silent-suite/silentsuite/releases/download/v%v/silentsuite-android-v%v.apk
 
 Builds:
   - versionName: 0.5.5-beta
@@ -52,8 +53,15 @@ Builds:
       - export JAVA_HOME="$jdk"
       - export PATH="$jdk/bin:$PATH"
       - ../scripts/build-etebase-client-16kb.sh
-      - sed -i '/clone_exact_commit "$BORINGSSL_REPOSITORY"/a sed -i "s/JavaLanguageVersion.of(11)/JavaLanguageVersion.of(17)/"
-        "$conscrypt_source/build-logic/src/main/groovy/conventions.jvm.gradle"' ../scripts/build-conscrypt-android-r28.sh
+      - h=../scripts/build-conscrypt-android-r28.sh
+      - p=/tmp/silentsuite-jdk17-pins.sed
+      - j='s,JavaLanguageVersion.of(11),JavaLanguageVersion.of(17),'
+      - t='s,jvmToolchain(11),jvmToolchain(17),'
+      - b='$conscrypt_source/build-logic/src/main/groovy'
+      - g="$b/conventions.jvm.gradle"
+      - d='$conscrypt_source/api-doclet/build.gradle'
+      - printf 'sed -i "%s" "%s"\n' "$j" "$g" "$t" "$d" > "$p"
+      - sed -i "/clone_exact_commit ..BORINGSSL_REPOSITORY./r $p" "$h"
       - (cd .. && scripts/build-conscrypt-android-r28.sh)
     ndk: 28.2.13676358
     postbuild:
