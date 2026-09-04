@@ -1,0 +1,42 @@
+Categories:
+  - Navigation
+License: MIT
+AuthorName: daguwar
+SourceCode: https://codeberg.org/daguwar/skeppoboj
+IssueTracker: https://codeberg.org/daguwar/skeppoboj/issues
+
+AutoName: Skeppoboj
+Summary: Open-source ship tracking using OpenStreetMap and AIS data
+Description: |-
+  Skeppoboj is an open-source ship tracking app built with Flutter.
+  It displays real-time vessel positions on OpenStreetMap using AIS data received
+  over WebSocket from a self-hosted relay server.
+
+  Features:
+  * OpenStreetMap view with vessel markers and course headings
+  * Color-coded vessel types (cargo, tanker, passenger, fishing, tug, etc.)
+  * Tap vessels to inspect details (speed, course, dimensions, destination, flag)
+  * Device GPS positioning without Google Play Services
+  * Compass indicator to re-orient map north
+  * Configurable self-hosted relay endpoint
+
+RepoType: git
+Repo: https://codeberg.org/daguwar/skeppoboj.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclib:
+      - flutter@stable
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
