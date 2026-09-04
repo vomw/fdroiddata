@@ -29,7 +29,8 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - git -C $$flutter$$ checkout -f $(sed -n -E "s/.*revision:\ \"(.*)\"/\1/p" .metadata)
+      - FLUTTER_REV=$(sed -n -E 's/.*revision:\ "(.*)"$/\1/p' .metadata)
+      - git -C $$flutter$$ checkout -f $FLUTTER_REV
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -37,8 +38,9 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --flavor community --dart-define=FLAVOR=community
-        --dart-define=OFFICIAL_BUILD=true --dart-define=ENABLE_SUPPORT_DEV=false
+      - $$flutter$$/bin/flutter build apk --release --flavor community
+        --dart-define=FLAVOR=community --dart-define=OFFICIAL_BUILD=true
+        --dart-define=ENABLE_SUPPORT_DEV=false
 
 AutoUpdateMode: None
 UpdateCheckMode: None
