@@ -21,11 +21,20 @@ Builds:
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.24.3
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
-      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
       - $$flutter$$/bin/flutter config --no-analytics
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --split-per-abi --release
+    build: 
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --release
 
 AllowedAPKSigningKeys: b39a74401dcd0091a6ef949b7e4f80a85b9770b47742b10feb662fa53ae9478a
 
