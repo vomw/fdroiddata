@@ -7,6 +7,8 @@ License: GPL-3.0-only
 SourceCode: https://github.com/originalRecipe1/peek
 IssueTracker: https://github.com/originalRecipe1/peek/issues
 
+AutoName: Peek
+
 RepoType: git
 Repo: https://github.com/originalRecipe1/peek.git
 
@@ -18,13 +20,14 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y make zip
+    gradle:
+      - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
     build:
       - ./scripts/build_yt_dlp_from_source.sh
-      - ytdlp_file="$PWD/build/yt-dlp-source/yt-dlp"
-      - ytdlp_sha="$(sha256sum "$ytdlp_file" | awk '{print $1}')"
-      - gradle --offline --no-daemon assembleRelease -Ppeek.ytdlp.file="$ytdlp_file"
-        -Ppeek.ytdlp.sha256="$ytdlp_sha"
+      - echo "peek.ytdlp.file=$PWD/build/yt-dlp-source/yt-dlp" >> gradle.properties
+      - echo "peek.ytdlp.sha256=$(sha256sum build/yt-dlp-source/yt-dlp | awk '{print
+        $1}')" >> gradle.properties
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+([-.+][0-9A-Za-z.]+)?$
