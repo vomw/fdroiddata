@@ -52,8 +52,8 @@ Builds:
       - export TGT=$(pwd)/src/main/assets/kpclientd
       - pushd $$katzenpost$$
       - go mod verify
-      - go build -trimpath -buildvcs=false -ldflags="-s -w -buildid= -extldflags=-Wl,--build-id=none"
-        -o $TGT ./cmd/kpclientd
+      - go build -buildmode=pie -trimpath -buildvcs=false -ldflags="-s -w -buildid=
+        -extldflags=-Wl,--build-id=none" -o $TGT ./cmd/kpclientd
       - popd
     ndk: 28.0.13004108
   - versionName: 1.0.0
@@ -93,18 +93,17 @@ Builds:
       - export TGT=$(pwd)/src/main/assets/kpclientd
       - pushd $$katzenpost$$
       - go mod verify
-      - go build -buildmode=pie -trimpath -buildvcs=false -ldflags="-s -w -buildid= -extldflags=-Wl,--build-id=none"
-        -o $TGT ./cmd/kpclientd
+      - go build -buildmode=pie -trimpath -buildvcs=false -ldflags="-s -w -buildid=
+        -extldflags=-Wl,--build-id=none" -o $TGT ./cmd/kpclientd
       - popd
     ndk: 28.0.13004108
 
 AllowedAPKSigningKeys: 75bc51fd4a73c608ef01c20aee91128e5ed57a02ee2c6438b98e0df9114aa571
 
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d\.]+-fdroid$
 VercodeOperation:
   - '%c'              # arm64
   - '%c + 40000000'   # amd64
-
-AutoUpdateMode: Version
-UpdateCheckMode: Tags ^v[\d\.]+-fdroid$
 CurrentVersion: 1.0.0
-CurrentVersionCode: 21000000
+CurrentVersionCode: 61000000
