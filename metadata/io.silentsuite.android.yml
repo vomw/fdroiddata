@@ -37,8 +37,9 @@ Builds:
       - r=/tmp/silentsuite-reproducible-build
       - export CARGO_HOME="$r/cargo"
       - export RUSTUP_HOME="$r/rustup"
-      - rustup default 1.98.0
-      - rustup target add aarch64-linux-android x86_64-linux-android
+      - rustup toolchain install --profile minimal --no-self-update 1.98.0
+      - rustup target add --toolchain 1.98.0 aarch64-linux-android
+      - rustup target add --toolchain 1.98.0 x86_64-linux-android
     scanignore:
       - android/build.gradle
     build:
