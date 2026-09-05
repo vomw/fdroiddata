@@ -16,7 +16,7 @@ Repo: https://github.com/GnosiWorks/Kryfo.git
 Builds:
   - versionName: 0.2.0
     versionCode: 22
-    commit: bac1a7b268331333682a5f89fea199060023d2ed
+    commit: 1494f880ed1762d9ad13e6dfbd651c3a6f0b51e8
     subdir: mobile
     sudo:
       - echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list
@@ -24,7 +24,7 @@ Builds:
       - apt-get install -y --no-install-recommends -t trixie-backports golang-go
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
-      - flutter@3.41.7
+      - flutter@stable
       - go@go1.25.0
     rm:
       - mobile/ios
@@ -33,8 +33,11 @@ Builds:
       - mobile/web
       - mobile/windows
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - sdkmanager "platforms;android-36" "build-tools;35.0.0"
       - git -C $$go$$ checkout -f go1.25.0
+      - 'flutterVersion=$(sed -n -E "s/^  flutter: ([0-9.]+)$/\1/p" pubspec.yaml)'
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -53,7 +56,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export CGO_ENABLED=1
       - export GOFLAGS=-trimpath
-      - export SOURCE_DATE_EPOCH=1700000000
       - export CGO_LDFLAGS="-Wl,--build-id=none"
       - cd ../engine && bash build.sh
       - cd ../mobile
@@ -62,7 +64,7 @@ Builds:
 
   - versionName: 0.2.0
     versionCode: 23
-    commit: bac1a7b268331333682a5f89fea199060023d2ed
+    commit: 1494f880ed1762d9ad13e6dfbd651c3a6f0b51e8
     subdir: mobile
     sudo:
       - echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list
@@ -70,7 +72,7 @@ Builds:
       - apt-get install -y --no-install-recommends -t trixie-backports golang-go
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
-      - flutter@3.41.7
+      - flutter@stable
       - go@go1.25.0
     rm:
       - mobile/ios
@@ -79,8 +81,11 @@ Builds:
       - mobile/web
       - mobile/windows
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - sdkmanager "platforms;android-36" "build-tools;35.0.0"
       - git -C $$go$$ checkout -f go1.25.0
+      - 'flutterVersion=$(sed -n -E "s/^  flutter: ([0-9.]+)$/\1/p" pubspec.yaml)'
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -99,7 +104,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export CGO_ENABLED=1
       - export GOFLAGS=-trimpath
-      - export SOURCE_DATE_EPOCH=1700000000
       - export CGO_LDFLAGS="-Wl,--build-id=none"
       - cd ../engine && bash build.sh
       - cd ../mobile
