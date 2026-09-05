@@ -1,15 +1,18 @@
 Categories:
-  - Internet
   - Game Helper
+  - Internet
 License: MIT
 AuthorName: Taracair
 AuthorEmail: TARACAIR@GMAIL.COM
 SourceCode: https://github.com/Taracair/BlowTorch2
 IssueTracker: https://github.com/Taracair/BlowTorch2/issues
 Changelog: https://github.com/Taracair/BlowTorch2/releases
+
 AutoName: BlowTorch 2
+
 RepoType: git
 Repo: https://github.com/Taracair/BlowTorch2.git
+
 Builds:
   - versionName: 2.4.3
     versionCode: 263
@@ -33,10 +36,13 @@ Builds:
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> ../gradle.properties
       - echo 'blowtorch.fdroid=true' >> ../gradle.properties
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
+    scandelete:
+      - LuaJIT-2.0.5/src/luajit
     build:
       - export NDK_HOME=$$NDK$$ ANDROID_HOME=$$SDK$$
       - cd .. && ./build_ndk_libraries.sh
     ndk: r26b
+
 MaintainerNotes: |
   Production flavor only (applicationId com.resurrection.blowtorch2).
   Do not enable btTest. Native LuaJIT is compiled by
@@ -52,6 +58,11 @@ MaintainerNotes: |
   on the image JDK 21, so sudo installs openjdk-17 from bookworm,
   pinned so the rest of the image stays Trixie.
 
+  LuaJIT-2.0.5/src/luajit is a leftover host/NDK binary in that tag
+  (gitignore lists it but git still tracks it). scandelete drops it
+  before the scanner; ./build_ndk_libraries.sh rebuilds LuaJIT from
+  the vendored C sources.
+
   MANAGE_EXTERNAL_STORAGE is opt-in UX for a visible /BlowTorch/
   folder. Connecting works from app storage without the grant.
   Launcher and in-session import/export/backup use SAF or app storage
@@ -63,6 +74,7 @@ MaintainerNotes: |
 
   F-Droid users should update via F-Droid. versionName lives on the
   production flavor; UpdateCheckData skips the btTest "*-test" name.
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: BT_Free/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([\d.]+)"
