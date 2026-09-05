@@ -20,7 +20,7 @@ Binaries:
 Builds:
   - versionName: 0.5.5-beta
     versionCode: 19
-    commit: 703103311fa3bf936d64ffd9fb468367d2944c83
+    commit: 2cb4a7e6e3c5ea23cfcd08c1c5a9907a5d3c2201
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > "/etc/apt/sources.list.d/b.list"
@@ -52,11 +52,6 @@ Builds:
       - export JAVA_HOME="$jdk"
       - export PATH="$jdk/bin:$PATH"
       - ../scripts/build-etebase-client-16kb.sh
-      - printf 'sed -i "%s" "%s"\n' 's,JavaLanguageVersion.of(11),JavaLanguageVersion.of(17),'
-        '$conscrypt_source/build-logic/src/main/groovy/conventions.jvm.gradle' 's,jvmToolchain(11),jvmToolchain(17),'
-        '$conscrypt_source/api-doclet/build.gradle' > /tmp/silentsuite-jdk17-pins.sed
-      - sed -i '/clone_exact_commit ..BORINGSSL_REPOSITORY./r /tmp/silentsuite-jdk17-pins.sed'
-        ../scripts/build-conscrypt-android-r28.sh
       - (cd .. && scripts/build-conscrypt-android-r28.sh)
     ndk: 28.2.13676358
     postbuild:
