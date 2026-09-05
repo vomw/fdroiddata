@@ -20,11 +20,9 @@ Builds:
     commit: aef417cd595433f3d3acfd17c91508f1f971e66a
     subdir: android/app
     sudo:
-      - curl -Lo node.tar.gz https://nodejs.org/download/release/v24.19.0/node-v24.19.0-linux-x64.tar.gz
-      - echo "f625d97cd707df4ff96254916fbc5ff014f09c09effe5a1e0ca8f6d41a8789d4 node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-      - corepack enable
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs node-corepack
     init:
       - cd ../..
       - pnpm install --frozen-lockfile
