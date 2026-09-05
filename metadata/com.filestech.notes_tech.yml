@@ -15,68 +15,125 @@ RepoType: git
 Repo: https://github.com/gitubpatrice/notes_tech.git
 
 Builds:
-  - versionName: 2.0.6
-    versionCode: 1054
-    commit: d133192203a527273e40b38aa9a39bc0db0d6d75
+  - versionName: 2.0.7
+    versionCode: 1055
+    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+    sudo:
+      - mkdir -p /home/runner/work/notes_tech/notes_tech
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-armeabi-v7a-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
       - flutterVersion=$(sed -n -E 's/flutter:\ (.+)/\1/p' pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.filestech.notes_tech
     scanignore:
       - .pub-cache/hosted/pub.dev/whisper_ggml_plus-1.5.2/assets/models/ggml-silero-v6.2.0.bin
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+        --obfuscate --split-debug-info=build/symbols
+      - popd
+      - mv $repo com.filestech.notes_tech
+    ndk: 28.2.13676358
 
-  - versionName: 2.0.6
-    versionCode: 2054
-    commit: d133192203a527273e40b38aa9a39bc0db0d6d75
+  - versionName: 2.0.7
+    versionCode: 2055
+    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+    sudo:
+      - mkdir -p /home/runner/work/notes_tech/notes_tech
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-arm64-v8a-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
       - flutterVersion=$(sed -n -E 's/flutter:\ (.+)/\1/p' pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.filestech.notes_tech
     scanignore:
       - .pub-cache/hosted/pub.dev/whisper_ggml_plus-1.5.2/assets/models/ggml-silero-v6.2.0.bin
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+        --obfuscate --split-debug-info=build/symbols
+      - popd
+      - mv $repo com.filestech.notes_tech
+    ndk: 28.2.13676358
 
-  - versionName: 2.0.6
-    versionCode: 4054
-    commit: d133192203a527273e40b38aa9a39bc0db0d6d75
+  - versionName: 2.0.7
+    versionCode: 4055
+    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+    sudo:
+      - mkdir -p /home/runner/work/notes_tech/notes_tech
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-x86_64-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
       - flutterVersion=$(sed -n -E 's/flutter:\ (.+)/\1/p' pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.filestech.notes_tech
     scanignore:
       - .pub-cache/hosted/pub.dev/whisper_ggml_plus-1.5.2/assets/models/ggml-silero-v6.2.0.bin
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/notes_tech/notes_tech/notes_tech
+      - cd ..
+      - mv com.filestech.notes_tech $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+        --obfuscate --split-debug-info=build/symbols
+      - popd
+      - mv $repo com.filestech.notes_tech
+    ndk: 28.2.13676358
 
 MaintainerNotes: |-
   gitubpatrice: THE APK CONTAINS A PRETRAINED BINARY, said here rather than left for you to
@@ -91,15 +148,22 @@ MaintainerNotes: |-
   .pub-cache in front of the scanner; running pub get inside build would hide it again, which
   is not a fix. Say the word and I will raise it with the package upstream.
   .
+  gitubpatrice: the build directory is moved to the upstream path because Flutter bakes
+  absolute paths into the native libraries. Measured on the published APKs by grepping the
+  zip: libapp.so carries <repo>/.dart_tool/..., and libwhisper.so carries
+  <repo>/.pub-cache/.../whisper_ggml_plus-1.5.2/..., since that package compiles its C sources
+  from the pub cache. Until 2.0.7 the second path was /home/runner/.pub-cache, the default
+  cache, which no recipe could reproduce while this template also wants PUB_CACHE inside the
+  build directory for the scanner. 2.0.7 sets PUB_CACHE to the repo-relative path in the
+  release workflow, so both now share one root and one move suffices here.
+  .
   gitubpatrice: the Flutter version is read from pubspec.yaml as the template does, and
   --enforce-lockfile needs it. srclibs/flutter.yml pins nothing, so flutter@stable is the
   branch tip at build time and a newer stable resolves different SDK-pinned packages than the
   lockfile came from; an attempt without the pin failed on "Unable to satisfy pubspec.yaml
-  using pubspec.lock", seven packages apart. 2.0.6 fixes the cause: the release workflow used
-  to build on whatever stable happened to be, 3.47.2 for 2.0.5, while the lockfile came from
-  3.44.9 and pub get ran unenforced, so the lockfile described nothing that shipped. The
-  pubspec constraint, the workflows' flutter-version, the lockfile and this recipe now all
-  name 3.47.2, and the workflows enforce the lockfile so drift fails loudly.
+  using pubspec.lock", seven packages apart. The pubspec constraint, the workflows'
+  flutter-version, the lockfile and this recipe all name 3.47.2. The NDK follows from it,
+  ndkVersion = flutter.ndkVersion, hence the explicit 28.2.13676358 here. JDK 17 upstream.
   .
   gitubpatrice: the ABI versionCodes are Flutter's own, ABI_VERSION[abi] * 1000 + versionCode,
   mapping armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was retired with x86 support
@@ -108,17 +172,8 @@ MaintainerNotes: |-
   --split-per-abi makes all three APKs each time to keep one: 12 Gradle runs and 57 minutes
   here, against 23 once each entry compiled only its own ABI. Only the current version is
   declared, for the same reason.
-  .
-  gitubpatrice: reproducible builds are NOT enabled, and that is measured rather than assumed.
-  The published APKs embed two absolute paths from the upstream runner:
-  /home/runner/work/notes_tech/notes_tech/notes_tech/... in libapp.so, and
-  /home/runner/.pub-cache/.../whisper_ggml_plus-1.5.2/... in libwhisper.so, which that package
-  compiles from source. A recipe can reproduce the first by moving the checkout. It cannot
-  reproduce the second, because this template wants PUB_CACHE inside the build directory so
-  the Dart packages get scanned while the upstream workflow uses the default cache; the two
-  requirements exclude each other. Enabling it needs an upstream change first -- PUB_CACHE set
-  to the same repo-relative path in the release workflow -- and the path dance here after. I
-  would rather submit without binary: than ship a configuration already measured to fail.
+
+AllowedAPKSigningKeys: ddb385dee3a416aad9fe5a46173e3684e0762dc433c7e8de6db48f64ede642e9
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -127,5 +182,5 @@ VercodeOperation:
   - 1000 * 2 + %c
   - 1000 * 4 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.6
-CurrentVersionCode: 4054
+CurrentVersion: 2.0.7
+CurrentVersionCode: 4055
