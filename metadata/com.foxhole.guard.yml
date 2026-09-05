@@ -22,14 +22,16 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends build-essential 
-        ca-certificates cmake ninja-build perl pkg-config rustup
+      - apt-get install -y --no-install-recommends build-essential ca-certificates
+        cmake ninja-build perl pkg-config rustup
     output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     srclibs:
       - FoxHoleCore@cd8bf71e950247d7bcebc8cd62142adef5c970fc
     prebuild:
-      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C 
-        $$FoxHoleCore$$ rev-parse HEAD)"
+      - test "$(tr -d '[:space:]' < config/foxcore-revision.txt)" = "$(git -C $$FoxHoleCore$$
+        rev-parse HEAD)"
+      - sed -i 's/^source_date_epoch=.*/source_date_epoch="$(git -C "$i2pd_dir" show
+        -s --format=%ct HEAD)"/' scripts/build-i2pd.sh
       - rustup set profile minimal
       - rustup default 1.97.1
       - export RUSTUP_TOOLCHAIN=1.97.1
@@ -44,17 +46,15 @@ Builds:
       - export FOXHOLE_NATIVE_OFFLINE=1
       - export I2PD_ABIS=arm64-v8a
       - export TOR_TRANSPORT_ABIS=arm64-v8a
-      - gradle --no-daemon --console=plain -Pfoxhole.splitApks=true 
-        -Pfoxhole.updateChannel=github -Pfoxhole.nativeOffline=true 
-        :app:assembleRelease
+      - gradle --no-daemon --console=plain -Pfoxhole.splitApks=true -Pfoxhole.updateChannel=github
+        -Pfoxhole.nativeOffline=true :app:assembleRelease
     ndk: 29.0.14206865
     gradleprops:
       - foxhole.splitApks=true
       - foxhole.updateChannel=github
       - foxhole.nativeOffline=true
 
-AllowedAPKSigningKeys: 
-  e59de2486084c38f3c77e9df0eb5eff9a4559f3c68024f1208e0e9c04b0df665
+AllowedAPKSigningKeys: e59de2486084c38f3c77e9df0eb5eff9a4559f3c68024f1208e0e9c04b0df665
 
 AutoUpdateMode: None
 UpdateCheckMode: Tags ^v[0-9].*$
