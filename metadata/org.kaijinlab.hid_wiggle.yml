@@ -1,0 +1,51 @@
+Categories:
+  - Development
+  - System
+License: GPL-3.0-only
+AuthorName: KaijinLab
+WebSite: https://neroteam.com
+SourceCode: https://github.com/iodn/hid-wiggle
+IssueTracker: https://github.com/iodn/hid-wiggle/issues
+Changelog: https://github.com/iodn/hid-wiggle/releases
+Liberapay: KaijinLab
+Bitcoin: bc1qtf79uecssueu4u4u86zct46vcs0vcd2cnmvw6f
+
+AutoName: HIDWiggle
+
+RequiresRoot: true
+
+RepoType: git
+Repo: https://github.com/iodn/hid-wiggle.git
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 2002
+    commit: 01ac4132c4cc956d15b6b98a61138723bda3c6e9
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PATH=$$flutter$$/bin:$PATH
+      - flutter config --no-analytics
+      - flutter pub get
+    build:
+      - export PATH=$$flutter$$/bin:$PATH
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - mkdir -p assets/db
+      - python3 tools/build_usbids_db.py
+      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: r28c
+
+MaintainerNotes: |
+  The USB IDs SQLite database is generated during the build by tools/build_usbids_db.py.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 2000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.2
+CurrentVersionCode: 2002
