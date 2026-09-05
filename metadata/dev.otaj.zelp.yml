@@ -30,10 +30,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y jq
-      - update-alternatives --auto java
-      - mkdir -p /home/runner/work/zelp /home/runner/.pub-cache /usr/local/lib/android
-      - ln -sfn /opt/android-sdk /usr/local/lib/android/sdk
-      - chown -R vagrant /home/runner /usr/local/lib/android
+      - mkdir -p /home/runner/work/zelp
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-prod-release.apk
     binary: https://github.com/otaj/zelp/releases/download/v%v/zelp-%v-armeabi-v7a.apk
     srclibs:
@@ -46,11 +44,7 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
-      - ln -sfn "$PUB_CACHE" .pub-cache
       - flutter config --no-analytics
       - flutter config --android-sdk "$ANDROID_SDK_ROOT"
       - flutter pub get --enforce-lockfile
@@ -61,9 +55,6 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
       - bash ./scripts/fdroid_build.sh android-arm
       - popd
@@ -75,10 +66,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y jq
-      - update-alternatives --auto java
-      - mkdir -p /home/runner/work/zelp /home/runner/.pub-cache /usr/local/lib/android
-      - ln -sfn /opt/android-sdk /usr/local/lib/android/sdk
-      - chown -R vagrant /home/runner /usr/local/lib/android
+      - mkdir -p /home/runner/work/zelp
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk
     binary: https://github.com/otaj/zelp/releases/download/v%v/zelp-%v-arm64-v8a.apk
     srclibs:
@@ -91,11 +80,7 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
-      - ln -sfn "$PUB_CACHE" .pub-cache
       - flutter config --no-analytics
       - flutter config --android-sdk "$ANDROID_SDK_ROOT"
       - flutter pub get --enforce-lockfile
@@ -106,9 +91,6 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
       - bash ./scripts/fdroid_build.sh android-arm64
       - popd
@@ -120,9 +102,8 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y jq
-      - mkdir -p /home/runner/work/zelp /home/runner/.pub-cache /usr/local/lib/android
-      - ln -sfn /opt/android-sdk /usr/local/lib/android/sdk
-      - chown -R vagrant /home/runner /usr/local/lib/android
+      - mkdir -p /home/runner/work/zelp
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-prod-release.apk
     binary: https://github.com/otaj/zelp/releases/download/v%v/zelp-%v-x86_64.apk
     srclibs:
@@ -135,11 +116,7 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
-      - ln -sfn "$PUB_CACHE" .pub-cache
       - flutter config --no-analytics
       - flutter config --android-sdk "$ANDROID_SDK_ROOT"
       - flutter pub get --enforce-lockfile
@@ -150,9 +127,6 @@ Builds:
       - cd ..
       - mv dev.otaj.zelp $repo
       - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-      - export ANDROID_HOME=/usr/local/lib/android/sdk
       - export PATH="$$flutter$$/bin:$PATH"
       - bash ./scripts/fdroid_build.sh android-x64
       - popd
@@ -167,11 +141,7 @@ MaintainerNotes: |-
   Flutter pin is jq -r .flutter .fvmrc (not FVM on the buildserver).
   scripts/fdroid_build.sh builds --flavor prod, one ABI per process.
   Binaries: https://github.com/otaj/zelp/releases/download/v%v/zelp-%v-<abi>.apk
-  Source path /home/runner/work/zelp/zelp and PUB_CACHE=/home/runner/.pub-cache
-  match GitHub Actions (ubuntu-latest + subosito/flutter-action).
-  SDK is symlinked to /usr/local/lib/android/sdk to match hosted runners.
-  pubspec has no +N, so AutoUpdateMode is None; bump Builds with the formula
-  above. Fastlane listing is in the source repo (en-US).
+  Fastlane listing is in the source repo (en-US).
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
