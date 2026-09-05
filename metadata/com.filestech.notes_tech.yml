@@ -19,7 +19,6 @@ Builds:
     versionCode: 1054
     commit: d133192203a527273e40b38aa9a39bc0db0d6d75
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-armeabi-v7a-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -35,13 +34,12 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm --obfuscate --split-debug-info=build/symbols
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
   - versionName: 2.0.6
     versionCode: 2054
     commit: d133192203a527273e40b38aa9a39bc0db0d6d75
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-arm64-v8a-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -57,13 +55,12 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64 --obfuscate --split-debug-info=build/symbols
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
   - versionName: 2.0.6
     versionCode: 4054
     commit: d133192203a527273e40b38aa9a39bc0db0d6d75
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/gitubpatrice/notes_tech/releases/download/v%v/notes-tech-x86_64-%v.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -79,55 +76,49 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64 --obfuscate --split-debug-info=build/symbols
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 MaintainerNotes: |-
-  gitubpatrice: THE APK CONTAINS A PRETRAINED BINARY, and it is easier to say so than to have
-  you find it: packages/whisper_ggml_plus/assets/models/ggml-silero-v6.2.0.bin, 864 kB, a
-  Silero voice-activity model. It is not this app's. It is a declared asset of
-  whisper_ggml_plus 1.5.2, a transitive dependency reached through files_tech_voice, and
-  Flutter bundles a package's declared assets whether the app uses them or not -- this app's
-  own code never references VAD or Silero. The package is MIT, the file is committed in the
-  open at github.com/DDULDDUCK/whisper_ggml_plus, and Silero VAD is MIT. Dropping it would
-  mean forking a third-party package over 864 kB of a 27 MB APK, so it is declared instead and
-  scanignore covers that one path. It surfaced only because pub get moved into prebuild, which
-  is what puts .pub-cache in front of the scanner; running pub get inside build would hide it
-  again, which is not a fix. Say the word and I will take it up with the package upstream.
+  gitubpatrice: THE APK CONTAINS A PRETRAINED BINARY, said here rather than left for you to
+  find: packages/whisper_ggml_plus/assets/models/ggml-silero-v6.2.0.bin, 864 kB, a Silero
+  voice-activity model. It is not this app's. It is a declared asset of whisper_ggml_plus
+  1.5.2, a transitive dependency reached through files_tech_voice, and Flutter bundles a
+  package's declared assets whether the app uses them or not; this app's own code never
+  references VAD or Silero. The package is MIT, the file is committed in the open at
+  github.com/DDULDDUCK/whisper_ggml_plus, and Silero VAD is MIT. Removing it would mean
+  forking a third-party package over 864 kB of a 27 MB APK, so scanignore covers that one
+  path instead. It surfaced only because pub get moved into prebuild, which is what puts
+  .pub-cache in front of the scanner; running pub get inside build would hide it again, which
+  is not a fix. Say the word and I will raise it with the package upstream.
   .
-  gitubpatrice: the Flutter version is read from pubspec.yaml as the template does.
+  gitubpatrice: the Flutter version is read from pubspec.yaml as the template does, and
   --enforce-lockfile needs it. srclibs/flutter.yml pins nothing, so flutter@stable is the
   branch tip at build time and a newer stable resolves different SDK-pinned packages than the
-  lockfile was generated with: an attempt without the pin failed on exactly that, "Unable to
-  satisfy pubspec.yaml using pubspec.lock", seven packages apart. 2.0.6 exists to fix the cause
-  rather than the symptom -- the release workflow used to build on whatever stable happened to
-  be, 3.47.2 for 2.0.5, while the committed lockfile came from 3.44.9 and pub get ran without
-  --enforce-lockfile, so the lockfile described nothing that shipped. environment: flutter:,
-  the workflows' flutter-version:, the lockfile and this recipe now all name 3.47.2, and the
-  workflows enforce the lockfile so drift fails instead of passing quietly.
+  lockfile came from; an attempt without the pin failed on "Unable to satisfy pubspec.yaml
+  using pubspec.lock", seven packages apart. 2.0.6 fixes the cause: the release workflow used
+  to build on whatever stable happened to be, 3.47.2 for 2.0.5, while the lockfile came from
+  3.44.9 and pub get ran unenforced, so the lockfile described nothing that shipped. The
+  pubspec constraint, the workflows' flutter-version, the lockfile and this recipe now all
+  name 3.47.2, and the workflows enforce the lockfile so drift fails loudly.
   .
   gitubpatrice: the ABI versionCodes are Flutter's own, ABI_VERSION[abi] * 1000 + versionCode,
-  and FlutterPluginConstants maps armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was
-  retired with x86 support in flutter#170191. Measured with androguard on published binaries
-  rather than derived. Each build line carries --target-platform: F-Droid builds every entry
-  independently and a bare --split-per-abi produces all three APKs each time to keep one, which
-  measured 12 Gradle runs and a 57-minute job against 23 minutes once each entry compiled only
-  its own ABI. Only the current version is declared, for the same reason.
+  mapping armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was retired with x86 support
+  in flutter#170191. Measured with androguard on the published binaries. Each build line
+  carries --target-platform because F-Droid builds every entry independently and a bare
+  --split-per-abi makes all three APKs each time to keep one: 12 Gradle runs and 57 minutes
+  here, against 23 once each entry compiled only its own ABI. Only the current version is
+  declared, for the same reason.
   .
-  gitubpatrice: one caveat on the scheme, offered rather than acted on. fdroid rewritemeta
-  sorts Builds by versionCode, and abi*1000+versionCode makes consecutive versions interleave
-  once sorted. checkupdates pairs zip(builds[-3:], sorted(vercodes)), so with two versions
-  present builds[-3:] would span two of them and only two ABIs; a simulation puts the next
-  armeabi-v7a code on the arm64-v8a output. Keeping one version in Builds avoids it. An
-  adjacent scheme such as %c * 10 + n does not have the property, but here it would push
-  arm64-v8a from 2054 down to 542 and break updates for installs already published.
-  .
-  gitubpatrice: builds up to 2.0.2 (50) tripped check apk with six com.google.android.play.core
-  classes, from this app's own -keep class io.flutter.** { *; } retaining
-  PlayStoreDeferredComponentManager and FlutterPlayStoreSplitApplication, whose field and method
-  signatures name Play Core types. Fixed in 2.0.3 by excluding those two classes; a
-  -checkdiscard now fails the build if they reappear. Measured the way scan_binary does it:
-  6 matches before, 0 after.
-AllowedAPKSigningKeys: ddb385dee3a416aad9fe5a46173e3684e0762dc433c7e8de6db48f64ede642e9
+  gitubpatrice: reproducible builds are NOT enabled, and that is measured rather than assumed.
+  The published APKs embed two absolute paths from the upstream runner:
+  /home/runner/work/notes_tech/notes_tech/notes_tech/... in libapp.so, and
+  /home/runner/.pub-cache/.../whisper_ggml_plus-1.5.2/... in libwhisper.so, which that package
+  compiles from source. A recipe can reproduce the first by moving the checkout. It cannot
+  reproduce the second, because this template wants PUB_CACHE inside the build directory so
+  the Dart packages get scanned while the upstream workflow uses the default cache; the two
+  requirements exclude each other. Enabling it needs an upstream change first -- PUB_CACHE set
+  to the same repo-relative path in the release workflow -- and the path dance here after. I
+  would rather submit without binary: than ship a configuration already measured to fail.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
