@@ -42,6 +42,7 @@ Builds:
       - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
     prebuild:
       - sed -i 's/^declare -a BOOTSTRAP_VERSIONS=.*/declare -a BOOTSTRAP_VERSIONS=("1.24.6")/' tools/build-fdroid-go.sh
+      - sed -i '/^go-bootstrap-1\.20\.14|/d; /^go-bootstrap-1\.22\.12|/d' tools/fdroid-sources.lock
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
       - sed -i '/compileSdk = 37/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
