@@ -2,7 +2,8 @@ Categories:
   - Remote Access
   - Security
 License: GPL-3.0-or-later
-WebSite: https://github.com/sunging/MangoSSH
+AuthorName: sunging
+AuthorWebSite: https://github.com/sunging
 SourceCode: https://github.com/sunging/MangoSSH
 IssueTracker: https://github.com/sunging/MangoSSH/issues
 Changelog: https://github.com/sunging/MangoSSH/releases
@@ -11,7 +12,7 @@ AutoName: MangoSSH
 
 RepoType: git
 Repo: https://github.com/sunging/MangoSSH.git
-Binaries: 
+Binaries:
   https://github.com/sunging/MangoSSH/releases/download/v%v/MangoSSH-v%v-fdroid.apk
 
 Builds:
@@ -31,16 +32,16 @@ Builds:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     srclibs:
-      - go120mangossh@90a870f1dc49bfcc6ffe95f80fbaf21875198e7a
-      - go122mangossh@5817e650946aaa0ac28956de96b3f9aa1de4b299
-      - go124mangossh@7f36edc26d4e3becb6d9c9008ff00f260bb19055
+      - go120@90a870f1dc49bfcc6ffe95f80fbaf21875198e7a
+      - go122@5817e650946aaa0ac28956de96b3f9aa1de4b299
+      - go124@7f36edc26d4e3becb6d9c9008ff00f260bb19055
       - go@c19862e5f8415b4f24b189d065ed739517c548ba
       - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
       - abseil-cpp@4a2c63365eff8823a5221db86ef490e828306f9d
-      - protobufmangossh@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
-      - ncursesmangossh@79b9071f2be20a24c7be031655a5638f6032f29f
-      - gmpmangossh@2bbd52703e5af82509773264bfbd20ff8464804f
-      - nettlemangossh@b8c841dc3278dec0812365f02370b41ea9d4ddee
+      - protobuf@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
+      - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
+      - gmp@2bbd52703e5af82509773264bfbd20ff8464804f
+      - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
     prebuild:
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
@@ -57,15 +58,22 @@ Builds:
       - app/src/main/assets/mosh/terminfo.zip
       - third_party/mosh4android/src/fuzz/terminal_corpus
       - third_party/mosh4android/src/fuzz/terminal_parser_corpus
-    build: "mkdir -p .fdroid/mosh-deps\nln -s $$go120mangossh$$ .fdroid/mosh-deps/go-bootstrap-1.20.14\n
-      ln -s $$go122mangossh$$ .fdroid/mosh-deps/go-bootstrap-1.22.12\nln -s $$go124mangossh$$
-      .fdroid/mosh-deps/go-bootstrap-1.24.6\nln -s $$zlib$$ .fdroid/mosh-deps/zlib\n
-      rm -rf $$protobufmangossh$$/third_party/abseil-cpp\nln -s $$abseil-cpp$$ $$protobufmangossh$$/third_party/abseil-cpp
-      \nln -s $$protobufmangossh$$ .fdroid/mosh-deps/protobuf\nln -s $$ncursesmangossh$$
-      .fdroid/mosh-deps/ncurses\nln -s $$gmpmangossh$$ .fdroid/mosh-deps/gmp\nln -s
-      $$nettlemangossh$$ .fdroid/mosh-deps/nettle\nexport MANGOSSH_GO_SOURCE=$$go$$\n
-      export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps\nexport MANGOSSH_GO_ROOT=$PWD/.tools/go/1.26.5\n
-      JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh"
+    build:
+      - mkdir -p .fdroid/mosh-deps
+      - ln -s $$go120$$ .fdroid/mosh-deps/go-bootstrap-1.20.14
+      - ln -s $$go122$$ .fdroid/mosh-deps/go-bootstrap-1.22.12
+      - ln -s $$go124$$ .fdroid/mosh-deps/go-bootstrap-1.24.6
+      - ln -s $$zlib$$ .fdroid/mosh-deps/zlib
+      - rm -rf $$protobuf$$/third_party/abseil-cpp
+      - ln -s $$abseil-cpp$$ $$protobuf$$/third_party/abseil-cpp
+      - ln -s $$protobuf$$ .fdroid/mosh-deps/protobuf
+      - ln -s $$ncurses$$ .fdroid/mosh-deps/ncurses
+      - ln -s $$gmp$$ .fdroid/mosh-deps/gmp
+      - ln -s $$nettle$$ .fdroid/mosh-deps/nettle
+      - export MANGOSSH_GO_SOURCE=$$go$$
+      - export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps
+      - export MANGOSSH_GO_ROOT=$PWD/.tools/go/1.26.5
+      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
     buildjni:
       - no
     ndk: r27d
