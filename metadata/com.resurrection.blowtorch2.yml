@@ -1,33 +1,31 @@
 Categories:
   - Internet
   - Game Helper
-
 License: MIT
-
 AuthorName: Taracair
 AuthorEmail: TARACAIR@GMAIL.COM
 SourceCode: https://github.com/Taracair/BlowTorch2
 IssueTracker: https://github.com/Taracair/BlowTorch2/issues
 Changelog: https://github.com/Taracair/BlowTorch2/releases
-
 AutoName: BlowTorch 2
-
 RepoType: git
 Repo: https://github.com/Taracair/BlowTorch2.git
-
 Builds:
-  - versionName: '2.4.3'
+  - versionName: 2.4.3
     versionCode: 263
     commit: aa17f4a92ad2d46677103b9e37b64ebebb52ecdf
     subdir: BT_Free
     sudo:
       - apt-get update || apt-get update
-      - apt-get install -y openjdk-17-jdk-headless gcc-multilib libc6-dev-i386 make
+      - echo 'deb http://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/bookworm.list
+      - printf 'Package: *\nPin: release n=bookworm\nPin-Priority: 100\n' > /etc/apt/preferences.d/bookworm
+      - apt-get update
+      - apt-get install -y gcc-multilib libc6-dev-i386 make
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
       - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
     gradle:
       - production
-    ndk: r26b
     prebuild:
       - sed -i -e '/^org.gradle.java.home=/d' ../gradle.properties
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> ../gradle.properties
@@ -36,7 +34,7 @@ Builds:
     build:
       - export NDK_HOME=$$NDK$$ ANDROID_HOME=$$SDK$$
       - cd .. && ./build_ndk_libraries.sh
-
+    ndk: r26b
 MaintainerNotes: |
   Production flavor only (applicationId com.resurrection.blowtorch2).
   Do not enable btTest. Native LuaJIT is compiled by
@@ -47,6 +45,10 @@ MaintainerNotes: |
   an Arch java.home; prebuild sed deletes it and writes the Debian path.
   blowtorch.fdroid=true makes the automatic GitHub update check default
   off in this APK; GitHub-signed builds leave it on.
+
+  Debian Trixie (buildserver) has no openjdk-17. Gradle 8.2 cannot run
+  on the image JDK 21, so sudo installs openjdk-17 from bookworm,
+  pinned so the rest of the image stays Trixie.
 
   MANAGE_EXTERNAL_STORAGE is opt-in UX for a visible /BlowTorch/
   folder. Connecting works from app storage without the grant.
@@ -59,9 +61,8 @@ MaintainerNotes: |
 
   F-Droid users should update via F-Droid. versionName lives on the
   production flavor; UpdateCheckData skips the btTest "*-test" name.
-
 AutoUpdateMode: Version
-UpdateCheckMode: 'Tags ^v[0-9.]+$'
+UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: BT_Free/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([\d.]+)"
-CurrentVersion: '2.4.3'
+CurrentVersion: 2.4.3
 CurrentVersionCode: 263
