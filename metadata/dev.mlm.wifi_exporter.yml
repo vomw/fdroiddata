@@ -69,9 +69,9 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size $PAGE_SIZE --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
-  - versionName: 0.4.2
-    versionCode: 16778242
-    commit: 30d079298e8e9962883b20db5118c02272521bcf
+  - versionName: 0.4.3
+    versionCode: 16778243
+    commit: df90c411f987aa7a218ad653e15497c282e13a6b
     sudo:
       - apt-get update
       - apt-get install -y gcc libc-dev rustup
@@ -79,12 +79,7 @@ Builds:
     srclibs:
       - reproducible-apk-tools@v0.3.0
     prebuild:
-      - export KOTLIN_VERSION=$(sed -E -n 's/.*kotlin-version.*"(.*)".*/\1/p' .github/workflows/release.yml)
-      - mkdir -p /tmp/kotlin
-      - mkdir -p $HOME/.cache/cargo-rapk/kotlin
-      - curl -fsSL -o /tmp/kotlin.zip 
-        "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
-      - unzip -q /tmp/kotlin.zip -d $HOME/.cache/cargo-rapk/kotlin
+      - export CARGO_RAPK_KOTLIN_VERSION=$(sed -E -n 's/.*kotlin-version.*"([^"]+)".*/\1/p' .github/workflows/release.yml)
       - export ANDROID_API=$(sed -E -n 's/.*android-api.*"(.*)".*/\1/p' .github/workflows/release.yml)
       - export ANDROID_BUILD_TOOLS=$(sed -E -n 's/.*android-build-tools.*"(.*)".*/\1/p'
         .github/workflows/release.yml | head -1)
@@ -111,5 +106,5 @@ AllowedAPKSigningKeys: 4aed2f691df64a7b0fea25a6b8c80183c6dc520e049dac0178defa1d6
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: Cargo.toml|version_code\s*=\s*([0-9]+)|Cargo.toml|version\s*=\s*"([^"]+)"
-CurrentVersion: 0.4.2
-CurrentVersionCode: 16778242
+CurrentVersion: 0.4.3
+CurrentVersionCode: 16778243
