@@ -27,11 +27,10 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; [ $((
-        $$VERCODE$$ % 10 )) -eq 3 ] && ABI=x86; [ $(( $$VERCODE$$ % 10 )) -eq 4 ]
-        && ABI=x86_64; jq --arg abi "$ABI" '(.expo.plugins[] | select(type == "array"
-        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = [$abi]'
-        app.json > app.json.tmp && mv app.json.tmp app.json
+      - jq '(.expo.plugins[] | select(type == "array"
+        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = ["armeabi-v7a"]'
+        app.json > app.json.tmp
+      - mv app.json.tmp app.json
       - sed -i "s/\(versionCode[^0-9]*\)[0-9]*/\1$$VERCODE$$/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
@@ -63,11 +62,10 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; [ $((
-        $$VERCODE$$ % 10 )) -eq 3 ] && ABI=x86; [ $(( $$VERCODE$$ % 10 )) -eq 4 ]
-        && ABI=x86_64; jq --arg abi "$ABI" '(.expo.plugins[] | select(type == "array"
-        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = [$abi]'
-        app.json > app.json.tmp && mv app.json.tmp app.json
+      - jq '(.expo.plugins[] | select(type == "array"
+        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = ["arm64-v8a"]'
+        app.json > app.json.tmp
+      - mv app.json.tmp app.json
       - sed -i "s/\(versionCode[^0-9]*\)[0-9]*/\1$$VERCODE$$/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
@@ -99,11 +97,10 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; [ $((
-        $$VERCODE$$ % 10 )) -eq 3 ] && ABI=x86; [ $(( $$VERCODE$$ % 10 )) -eq 4 ]
-        && ABI=x86_64; jq --arg abi "$ABI" '(.expo.plugins[] | select(type == "array"
-        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = [$abi]'
-        app.json > app.json.tmp && mv app.json.tmp app.json
+      - jq '(.expo.plugins[] | select(type == "array"
+        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = ["x86"]'
+        app.json > app.json.tmp
+      - mv app.json.tmp app.json
       - sed -i "s/\(versionCode[^0-9]*\)[0-9]*/\1$$VERCODE$$/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
@@ -135,11 +132,10 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci
-      - ABI=armeabi-v7a; [ $(( $$VERCODE$$ % 10 )) -eq 2 ] && ABI=arm64-v8a; [ $((
-        $$VERCODE$$ % 10 )) -eq 3 ] && ABI=x86; [ $(( $$VERCODE$$ % 10 )) -eq 4 ]
-        && ABI=x86_64; jq --arg abi "$ABI" '(.expo.plugins[] | select(type == "array"
-        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = [$abi]'
-        app.json > app.json.tmp && mv app.json.tmp app.json
+      - jq '(.expo.plugins[] | select(type == "array"
+        and .[0] == "expo-build-properties") | .[1].android.buildArchs) = ["x86_64"]'
+        app.json > app.json.tmp
+      - mv app.json.tmp app.json
       - sed -i "s/\(versionCode[^0-9]*\)[0-9]*/\1$$VERCODE$$/" app.json
       - npx expo prebuild --platform android --clean --no-install
       - bash scripts/patch-jdk21.sh
