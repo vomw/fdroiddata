@@ -18,7 +18,9 @@ Builds:
     sudo:
       - apt-get update || apt-get update
       - echo 'deb http://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/bookworm.list
-      - printf 'Package: *\nPin: release n=bookworm\nPin-Priority: 100\n' > /etc/apt/preferences.d/bookworm
+      - echo 'Package: openjdk-17-jdk-headless' > /etc/apt/preferences.d/bookworm-openjdk17
+      - echo 'Pin: release n=bookworm' >> /etc/apt/preferences.d/bookworm-openjdk17
+      - echo 'Pin-Priority: 500' >> /etc/apt/preferences.d/bookworm-openjdk17
       - apt-get update
       - apt-get install -y gcc-multilib libc6-dev-i386 make
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
