@@ -83,6 +83,11 @@ Builds:
 AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004b9373be
 
 MaintainerNotes: |-
+  Go 1.20.14, 1.22.12, and 1.24.6 are host-only bootstrap compilers, built
+  sequentially from source by tools/build-fdroid-go.sh starting with Debian's
+  golang-go. Each stage supplies GOROOT_BOOTSTRAP to the next stage, ending
+  with Go 1.26.5 for the Android tsnet build. Separate srclib names keep the
+  pinned Go source checkouts available simultaneously; they are not forks.
   The fdroid flavor has no self-update client, package-install permission,
   update FileProvider, or installer handoff. The embedded Tailscale source is
   vendored; its logtail identity and network upload are disabled by the
