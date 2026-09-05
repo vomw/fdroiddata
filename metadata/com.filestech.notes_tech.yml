@@ -21,10 +21,14 @@ Builds:
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
-    prebuild: $$flutter$$/bin/flutter config --no-analytics
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
   - versionName: 2.0.5
@@ -33,10 +37,14 @@ Builds:
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
-    prebuild: $$flutter$$/bin/flutter config --no-analytics
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
 
   - versionName: 2.0.5
@@ -45,10 +53,14 @@ Builds:
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
-    prebuild: $$flutter$$/bin/flutter config --no-analytics
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 MaintainerNotes: |-
@@ -58,59 +70,39 @@ MaintainerNotes: |-
   io.flutter.embedding.engine.deferredcomponents.PlayStoreDeferredComponentManager and
   io.flutter.embedding.android.FlutterPlayStoreSplitApplication. A field and a method
   signature on those classes name Play Core types, so R8 had to write those descriptors
-  into the dex even though no Play Core code was ever present.
+  into the dex even though no Play Core code was ever present. Fixed in 2.0.3 (51) by
+  excluding those two classes from the keep rule, and a -checkdiscard now fails the build if
+  they reappear. Measured the way scan_binary does it, dexdump through its own regex: 6
+  matches before, 0 after.
   .
-  It was not an excludable artifact: Play Core has never been a dependency of this app, and
-  exclude(group = "com.google.android.play") left the descriptors byte for byte identical.
-  Fixed in 2.0.3 (51) by excluding those two classes from the keep rule. Verified with the
-  same extraction scan_binary performs, dexdump piped through its regex: 6 matches before,
-  0 after, on the same build.
+  gitubpatrice: the ABI versionCodes are Flutter's own, ABI_VERSION[abi] * 1000 + versionCode,
+  and FlutterPluginConstants maps armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was
+  retired with x86 support in flutter#170191. Measured with androguard on the published 2.0.5
+  binaries rather than derived: 1053, 2053, 4053. A scheme mapping x86_64 to 3 would declare
+  4053 as 3053 and the build would not match.
   .
-  A -checkdiscard on both classes now fails the build if they ever reappear, so a Flutter
-  upgrade or a new plugin cannot silently reintroduce them. History in fdroiddata!37885.
+  Each build line carries --target-platform, as templates/build-flutter.yml prescribes.
+  F-Droid builds every entry independently and a bare --split-per-abi produces all three APKs
+  each time to keep one: measured here, that was 12 Gradle runs and a 57-minute job, against
+  23 minutes once each entry compiled only its own ABI. Only the current version is declared,
+  for the same reason -- on a New App merge request the CI diffs against upstream master, so
+  every entry is rebuilt on every push.
   .
-  gitubpatrice: the three ABI versionCodes are Flutter's own, not the scheme in the F-Droid
-  quick-start guide. flutter build apk --split-per-abi applies versionCodeOverride =
-  ABI_VERSION[abi] * 1000 + versionCode, and FlutterPluginConstants.ABI_VERSION maps
-  armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was retired with x86 support. So for
-  the pubspec versionCode 51 the APKs carry 1051, 2051 and 4051. Measured on the published
-  v2.0.3 binaries with androguard rather than derived: arm64-v8a=2051, armeabi-v7a=1051,
-  x86_64=4051. The guide's snippet, which maps x86_64 to 3, would have declared 3051 and the
-  build would not have matched.
-  .
-  Each build line carries --target-platform because F-Droid builds every entry independently.
-  Without it, all three entries run a full --split-per-abi build that produces all three APKs
-  and keeps one: measured on the 2.0.3 pipeline, 3 Gradle builds (568 s + 389 s + 365 s), 9 APKs
-  produced and 6 discarded, for a 30-minute job whose actual build work was 13 minutes. With
-  --target-platform each entry compiles only its own ABI. Values from Flutter's own mapping:
-  armeabi-v7a is android-arm, arm64-v8a is android-arm64, x86_64 is android-x64.
-  .
-  Only the current version is declared, for the same reason. The CI selects builds with
-  git diff TARGET_REF...SOURCE_REF, so on a New App merge request the whole Builds block counts
-  as changed and every entry is rebuilt on every push: the 2.0.3 and 2.0.5 entries together made
-  12 Gradle runs and a 57-minute job. Superseded versions are dropped rather than accumulated.
-  .
-  AutoUpdateMode is None deliberately, and this scheme is why. fdroid rewritemeta sorts Builds
-  by versionCode, and abi*1000+versionCode makes consecutive versions INTERLEAVE once sorted --
-  a 2.0.6 alongside this 2.0.5 would give 1053, 1055, 2053, 2055, 4053, 4055, which was measured
-  on the earlier 2.0.3+2.0.5 pair. checkupdates pairs zip(builds[-3:], sorted(vercodes)),
-  so builds[-3:] then spans two versions and only two ABIs. Simulated for a future pubspec 55:
-  1055 would be attached to the arm64-v8a output and 2055 to the x86_64 one, and armeabi-v7a
-  would never be built again.
-  .
-  The quick-start guide's %c * 10 + n prevents exactly that, by keeping one version's three
-  codes adjacent so the sort groups them; 207 of the 254 multi-ABI VercodeOperation recipes
-  here use an adjacent scheme. Adopting it needs an upstream gradle change and a base
-  versionCode of at least 406, because %c * 10 + 3 has to stay above the 4053 already
-  published for x86_64. Until that is decided, build entries are added by hand rather than
-  auto-generated onto the wrong ABI.
+  gitubpatrice: one caveat on this scheme, offered rather than acted on. fdroid rewritemeta
+  sorts Builds by versionCode, and abi*1000+versionCode makes consecutive versions interleave
+  once sorted: a 2.0.6 here would give 1053, 1055, 2053, 2055, 4053, 4055. checkupdates pairs
+  zip(builds[-3:], sorted(vercodes)), so builds[-3:] would span two versions and two ABIs, and
+  a simulation puts 1055 on the arm64-v8a output while armeabi-v7a stops being built. Keeping
+  a single version in Builds avoids it today. Adjacent schemes such as %c * 10 + n do not have
+  the property, but here they would push arm64-v8a from 2053 down to 532 and break updates for
+  installs already published.
 
-AutoUpdateMode: None
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 1000 + %c
-  - 2000 + %c
-  - 4000 + %c
+  - 1000 * 1 + %c
+  - 1000 * 2 + %c
+  - 1000 * 4 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.0.5
 CurrentVersionCode: 4053
