@@ -22,6 +22,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
+      - git -C $$flutter$$ checkout -f 3.44.9
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -38,6 +39,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
+      - git -C $$flutter$$ checkout -f 3.44.9
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -54,6 +56,7 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
+      - git -C $$flutter$$ checkout -f 3.44.9
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -80,6 +83,16 @@ MaintainerNotes: |-
   retired with x86 support in flutter#170191. Measured with androguard on the published 2.0.5
   binaries rather than derived: 1053, 2053, 4053. A scheme mapping x86_64 to 3 would declare
   4053 as 3053 and the build would not match.
+  .
+  gitubpatrice: the Flutter srclib is pinned to 3.44.9 because --enforce-lockfile needs it.
+  srclibs/flutter.yml pins nothing, so flutter@stable is the branch tip at build time, and a
+  newer stable resolves different SDK-pinned packages than the committed pubspec.lock was
+  generated with -- the first attempt failed on exactly that, "Unable to satisfy pubspec.yaml
+  using pubspec.lock", with test_core and vector_math among seven changed. 3.44.9 is the tag
+  the lockfile corresponds to. The two settings are a pair: dropping the pin means dropping
+  --enforce-lockfile with it. This is pinned by hand rather than read from pubspec.yaml as the
+  template does, because this app declares no flutter: constraint yet; once it does, the
+  extraction can replace the literal.
   .
   Each build line carries --target-platform, as templates/build-flutter.yml prescribes.
   F-Droid builds every entry independently and a bare --split-per-abi produces all three APKs
