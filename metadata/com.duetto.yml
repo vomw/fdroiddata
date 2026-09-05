@@ -1,8 +1,8 @@
 Categories:
-  - Connectivity
-  - Phone & SMS
+  - Voice & Video Chat
 License: GPL-3.0-or-later
 AuthorName: Paolo Benvenuto
+WebSite: https://gitlab.com/paolobenve/duetto
 SourceCode: https://gitlab.com/paolobenve/duetto
 IssueTracker: https://gitlab.com/paolobenve/duetto/-/issues
 Changelog: https://gitlab.com/paolobenve/duetto/-/blob/master/CHANGELOG.md
@@ -15,30 +15,27 @@ Binaries:
   https://gitlab.com/api/v4/projects/86073650/packages/generic/duetto/%v/duetto-%v-build%c.apk
 
 Builds:
-  - versionName: 0.9.8
-    versionCode: 274
-    commit: v0.9.8
+  - versionName: 0.9.10
+    versionCode: 281
+    commit: 867e4b04f11b3023f74a8cd32e8651d70f3ed838
     subdir: app/android/app
     sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v20.19.4/node-v20.19.4-linux-x64.tar.gz
-      - echo "d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560  node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - apt-get install -y npm
     init:
       - cd ../..
       - npm ci --no-audit --no-fund
     gradle:
       - yes
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - app/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - app/node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - app/node_modules/react-native-get-random-values/android/build.gradle
       - app/node_modules/react-native-svg/android/build.gradle
-      - app/node_modules/react-native/ReactAndroid/publish.gradle
     scandelete:
       - app/node_modules
 
@@ -46,5 +43,5 @@ AllowedAPKSigningKeys: f4ad697fca93635926457bca101bd893cbb2ff67fdb53c3181baa95bd
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 0.9.8
-CurrentVersionCode: 274
+CurrentVersion: 0.9.10
+CurrentVersionCode: 281
