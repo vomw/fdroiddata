@@ -12,13 +12,17 @@ AutoName: ErikrafT Drop
 RepoType: git
 Repo: https://github.com/ErikrafT/Drop-Android.git
 
-Binaries:
-  - https://github.com/erikraft/Drop-Android/releases/download/v%v/Drop-Android.apk
-
-AllowedAPKSigningKeys:
-  - 085E227B5902941CA3ABAC1A57B6E637AC5508E05009F5974DE242D0EBA983F6
+Builds:
+  - versionName: 10.0.5
+    versionCode: 22
+    commit: v10.0.5
+    subdir: app
+    gradle:
+      - mobileRelease
+    output: app/build/outputs/apk/mobile/release/Drop-Android.apk
+    prebuild: sed -i '/if (isReleaseTaskRequested && !hasCompleteSigningConfig)/,/^    }$/d' build.gradle
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 9.0.3
-CurrentVersionCode: 12
+CurrentVersion: 10.0.5
+CurrentVersionCode: 22
