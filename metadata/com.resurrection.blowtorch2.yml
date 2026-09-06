@@ -20,20 +20,11 @@ Builds:
     subdir: BT_Free
     sudo:
       - apt-get update || apt-get update
-      - echo 'deb http://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/bookworm.list
-      - "echo 'Package: openjdk-17-jdk-headless' > /etc/apt/preferences.d/bookworm-openjdk17"
-      - "echo 'Pin: release n=bookworm' >> /etc/apt/preferences.d/bookworm-openjdk17"
-      - "echo 'Pin-Priority: 500' >> /etc/apt/preferences.d/bookworm-openjdk17"
-      - apt-get update
       - apt-get install -y gcc-multilib libc6-dev-i386 make
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-      - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
     gradle:
       - production
     prebuild:
       - sed -i -e '/^org.gradle.java.home=/d' ../gradle.properties
-      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> ../gradle.properties
       - echo 'blowtorch.fdroid=true' >> ../gradle.properties
       - sdkmanager "platforms;android-36" "build-tools;36.0.0"
     scandelete:
@@ -50,13 +41,13 @@ MaintainerNotes: |
   LuaJIT trees are vendored; the script must not hit the network.
   HOST_CC="gcc -m32" needs gcc-multilib. Unsigned release unless
   BT_LOCAL_SIGN=1; F-Droid signs. gradle.properties may still contain
-  an Arch java.home; prebuild sed deletes it and writes the Debian path.
-  blowtorch.fdroid=true makes the automatic GitHub update check default
-  off in this APK; GitHub-signed builds leave it on.
+  a local java.home; prebuild sed deletes it so the image JDK 21 is
+  used. blowtorch.fdroid=true makes the automatic GitHub update check
+  default off in this APK; GitHub-signed builds leave it on.
 
-  Debian Trixie (buildserver) has no openjdk-17. Gradle 8.2 cannot run
-  on the image JDK 21, so sudo installs openjdk-17 from bookworm,
-  pinned so the rest of the image stays Trixie.
+  Gradle 8.2 + AGP 8.2.2 assembled on JDK 21 locally (Temurin 21).
+  The recipe uses the Trixie image JDK and does not install
+  openjdk-17 from bookworm.
 
   LuaJIT-2.0.5/src/luajit is a leftover host/NDK binary in that tag
   (gitignore lists it but git still tracks it). scandelete drops it
