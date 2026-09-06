@@ -28,21 +28,19 @@ Builds:
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export ANDROID_HOME=$$SDK$$
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no 
-        use_llvm=yes scu_build=yes accesskit=no"
+      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no use_llvm=yes scu_build=yes accesskit=no"
       - $SCONS target=editor platform=linuxbsd
-      - $SCONS target=template_release platform=android arch=arm64 
-        production=yes swappy=no generate_android_binaries=yes generate_apk=yes
+      - $SCONS target=template_release platform=android arch=arm64 production=yes swappy=no generate_android_binaries=yes generate_apk=yes
       - popd
       - mv $$Godot$$/bin/android_release.apk ./android_release.apk
-      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' 
-        export_presets.cfg
-      - sed -i -e '/custom_template\/release/s|=.*|="./android_release.apk"|' 
-        export_presets.cfg
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
+      - sed -i -e '/custom_template\/release/s|=.*|="./android_release.apk"|' export_presets.cfg
       - sed -i -e '/architectures\/arm64-v8a/s|=.*|=true|' export_presets.cfg
       - sed -i -e '/version\/code=/s|=.*|=8|' export_presets.cfg
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64.llvm --headless --export-release 
-        "Android" bin/PlayTable.apk
+      - sed -i -e '/gradle_build\/export_format/s|=.*|=0|' export_presets.cfg
+      - sed -i -e '/gradle_build\/min_sdk/s|=.*|=""|' export_presets.cfg
+      - sed -i -e '/gradle_build\/target_sdk/s|=.*|=""|' export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64.llvm --headless --export-release "Android" bin/PlayTable.apk
     ndk: r28b
 
 AutoUpdateMode: Version
