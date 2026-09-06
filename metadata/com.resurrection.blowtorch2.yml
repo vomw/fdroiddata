@@ -19,7 +19,7 @@ Builds:
     commit: aa17f4a92ad2d46677103b9e37b64ebebb52ecdf
     subdir: BT_Free
     sudo:
-      - apt-get update || apt-get update
+      - apt-get update
       - apt-get install -y gcc-multilib libc6-dev-i386 make
     gradle:
       - production
@@ -31,40 +31,9 @@ Builds:
       - LuaJIT-2.0.5/src/luajit
     build:
       - export NDK_HOME=$$NDK$$ ANDROID_HOME=$$SDK$$
-      - cd .. && ./build_ndk_libraries.sh
+      - cd ..
+      - ./build_ndk_libraries.sh
     ndk: r26b
-
-MaintainerNotes: |
-  Production flavor only (applicationId com.resurrection.blowtorch2).
-  Do not enable btTest. Native LuaJIT is compiled by
-  ./build_ndk_libraries.sh into BTLib/libs/ (not in git). Both
-  LuaJIT trees are vendored; the script must not hit the network.
-  HOST_CC="gcc -m32" needs gcc-multilib. Unsigned release unless
-  BT_LOCAL_SIGN=1; F-Droid signs. gradle.properties may still contain
-  a local java.home; prebuild sed deletes it so the image JDK 21 is
-  used. blowtorch.fdroid=true makes the automatic GitHub update check
-  default off in this APK; GitHub-signed builds leave it on.
-
-  Gradle 8.2 + AGP 8.2.2 assembled on JDK 21 locally (Temurin 21).
-  The recipe uses the Trixie image JDK and does not install
-  openjdk-17 from bookworm.
-
-  LuaJIT-2.0.5/src/luajit is a leftover host/NDK binary in that tag
-  (gitignore lists it but git still tracks it). scandelete drops it
-  before the scanner; ./build_ndk_libraries.sh rebuilds LuaJIT from
-  the vendored C sources.
-
-  MANAGE_EXTERNAL_STORAGE is opt-in UX for a visible /BlowTorch/
-  folder. Connecting works from app storage without the grant.
-  Launcher and in-session import/export/backup use SAF or app storage
-  without opening the All-files screen first. Overlay and
-  ignore-battery are opt-in at use. Foreground service type
-  specialUse keeps the MUD TCP session alive with the screen off.
-  usesCleartextTraffic is for telnet worlds the user adds.
-  See docs/FDROID_README.md.
-
-  F-Droid users should update via F-Droid. versionName lives on the
-  production flavor; UpdateCheckData skips the btTest "*-test" name.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
