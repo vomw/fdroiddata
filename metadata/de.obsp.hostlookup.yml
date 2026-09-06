@@ -34,10 +34,16 @@ Builds:
       - apt-get install -y gcc libc-dev rustup
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
     prebuild:
       - rustup default 1.95.0
       - rustup target add aarch64-linux-android x86_64-linux-android
     ndk: 28.2.13676358
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 9e3898a2aa7424df7c08938f0a4250e3b40751f22a12decfdb394590b8fbcc56
 
