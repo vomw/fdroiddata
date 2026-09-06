@@ -30,7 +30,7 @@ Builds:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no 
         use_llvm=yes scu_build=yes accesskit=no"
-      - $SCONS target=editor platform=linux
+      - $SCONS target=editor platform=linuxbsd
       - $SCONS target=template_release platform=android arch=arm64 
         production=yes swappy=no generate_android_binaries=yes generate_apk=yes
       - popd
@@ -41,7 +41,7 @@ Builds:
         export_presets.cfg
       - sed -i -e '/architectures\/arm64-v8a/s|=.*|=true|' export_presets.cfg
       - sed -i -e '/version\/code=/s|=.*|=8|' export_presets.cfg
-      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release 
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64.llvm --headless --export-release 
         "Android" bin/PlayTable.apk
     ndk: r28b
 
