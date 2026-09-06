@@ -1,0 +1,40 @@
+Categories:
+  - Cloud Storage & File Sync
+  - Internet
+License: MPL-2.0
+AuthorName: latec
+SourceCode: https://github.com/syncthing-android/syncthing-android
+IssueTracker: https://github.com/syncthing-android/syncthing-android/issues
+Changelog: https://github.com/syncthing-android/syncthing-android/releases
+
+Name: Syncthing Legacy
+AutoName: Syncthing
+Summary: Continuous file synchronization
+Description: |-
+  Syncthing replaces proprietary sync and cloud services with something
+  open, trustworthy and decentralized. Your data is your data alone and
+  you deserve to choose where it is stored, if it is shared with some
+  third party and how it's transmitted over the Internet.
+
+RepoType: git
+Repo: https://github.com/syncthing-android/syncthing-android.git
+
+Builds:
+  - versionName: 1.30.2026
+    versionCode: 4401
+    commit: 1.30.2026
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ libc-dev make
+      - apt-get install -y golang-go
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - export ndkversion=$(grep "ndkVersionShared" ../build.gradle.kts | cut -d '"' -f 4)
+      - sdkmanager "ndk;$ndkversion"
+      - export ANDROID_NDK_HOME=$$SDK$$/ndk/$ndkversion
+    scanignore:
+      - syncthing/src/github.com/syncthing/syncthing/lib/model/testdata
