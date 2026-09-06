@@ -1,0 +1,43 @@
+Categories:
+  - Office
+License: MIT
+AuthorName: REBELROOT
+WebSite: https://github.com/REBEL-ROOT/DocScannerPro
+SourceCode: https://github.com/REBEL-ROOT/DocScannerPro
+IssueTracker: https://github.com/REBEL-ROOT/DocScannerPro/issues
+Changelog: https://github.com/REBEL-ROOT/DocScannerPro/blob/main/CHANGELOG.md
+Donate: https://ko-fi.com/rebelroot
+
+AutoName: Doc Scanner Pro
+Summary: Offline document scanner and PDF toolkit
+Description: |
+  Doc Scanner Pro turns an Android device into a private local document
+  workstation. Capture and process paper documents, books, receipts,
+  identity cards and business cards entirely on the device.
+
+  Features include automatic document detection, perspective correction,
+  multi-page capture, book scanning, OCR (English + Hindi), searchable
+  PDFs, annotations, signatures, redaction, barcode scanning and PDF
+  utilities (merge, split, compress, images-to-PDF, password-protect).
+
+  The application does not request Internet access. Document contents
+  remain on the device unless the user explicitly exports or shares
+  them through Android.
+
+RepoType: git
+Repo: https://github.com/REBEL-ROOT/DocScannerPro.git
+
+Builds:
+  - versionName: 1.1
+    versionCode: 2
+    commit: v1.1
+    subdir: .
+    gradle: yes
+    srclibs:
+      - tesseract4android@4.9.0
+    build:
+      - pushd $$tesseract4android$$
+      - gradle --no-daemon :tesseract4android:publishToMavenLocal
+      - popd
+      - gradle -Pfdroid=true --no-daemon :app:assembleRelease
+    output: app/build/outputs/apk/release/app-release.apk
