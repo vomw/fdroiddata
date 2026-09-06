@@ -1,0 +1,51 @@
+Categories:
+  - Multimedia
+License: BSD-3-Clause
+SourceCode: https://github.com/nico-alvz/kasette
+IssueTracker: https://github.com/nico-alvz/kasette/issues
+Changelog: https://github.com/nico-alvz/kasette/blob/main/CHANGELOG.md
+
+AutoName: Kasette
+Summary: 100% offline, local music player
+Description: |
+    Kasette plays the music files already on your device. Import them once
+    and everything else (tags, cover art, playlists, playback) happens
+    locally, with no backend involved.
+
+    Features:
+
+    * Import local audio files (mp3, flac, m4a, ogg, opus, wav, aac)
+    * Client-side ID3/FLAC tag and embedded cover art parsing, no dependencies
+    * Playlists
+    * Light theme by default, with a dark mode and multiple accent colors
+    * Export/restore your whole library as a single backup file
+    * Background playback with lock screen and notification controls
+    * English and Latin American Spanish
+
+    100% local. No accounts, no servers, no analytics, no network requests.
+
+RepoType: git
+Repo: https://github.com/nico-alvz/kasette.git
+
+Builds:
+  - versionName: "1.2.1"
+    versionCode: 7
+    commit: v1.2.1
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    init:
+      - cd ../..
+      - npm ci
+      - npx cap sync android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: "1.2.1"
+CurrentVersionCode: 7
