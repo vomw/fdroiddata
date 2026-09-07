@@ -7,8 +7,7 @@ AuthorWebSite: https://trebuchetdynamics.com
 WebSite: https://fractal.trebuchetdynamics.com
 SourceCode: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge
 IssueTracker: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge/-/issues
-Changelog: 
-  https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge/-/blob/main/CHANGELOG.md
+Changelog: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge/-/blob/main/CHANGELOG.md
 
 AutoName: Fractal Forge
 
@@ -19,10 +18,8 @@ Builds:
   - versionName: 1.1.97
     versionCode: 971
     commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
-    timeout: 3600
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: 
-      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -59,11 +56,8 @@ Builds:
       - pushd $repo
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - export FDROID_BUILD=1
-      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
-      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
-      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
-        --build-name="$version_name" --build-number="$version_code"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
     ndk: r28c
@@ -71,10 +65,8 @@ Builds:
   - versionName: 1.1.97
     versionCode: 972
     commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
-    timeout: 3600
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: 
-      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -111,11 +103,8 @@ Builds:
       - pushd $repo
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - export FDROID_BUILD=1
-      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
-      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
-      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-        --build-name="$version_name" --build-number="$version_code"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
     ndk: r28c
@@ -123,10 +112,8 @@ Builds:
   - versionName: 1.1.97
     versionCode: 973
     commit: 6bc0b37e7f528bc06b2c93516dff90b60a35fded
-    timeout: 3600
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: 
-      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
+    binary: https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
     srclibs:
       - flutter@stable
     rm:
@@ -163,11 +150,8 @@ Builds:
       - pushd $repo
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - export FDROID_BUILD=1
-      - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
-      - version_name=$(sed -n 's/^versionName=//p' fdroid/version.properties)
-      - version_code=$(sed -n 's/^versionCode=//p' fdroid/version.properties)
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
-        --build-name="$version_name" --build-number="$version_code"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
       - popd
       - mv $repo com.trebuchetdynamics.fractal.forge
     ndk: r28c
