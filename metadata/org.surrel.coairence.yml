@@ -4,6 +4,7 @@ License: GPL-3.0-or-later
 AuthorName: GSurrel
 AuthorWebSite: https://gregoire.surrel.org
 SourceCode: https://github.com/gsurrel/coAIRence
+IssueTracker: https://github.com/gsurrel/coAIRence/issues
 
 AutoName: coAIRence
 
@@ -12,8 +13,29 @@ Repo: https://github.com/gsurrel/coAIRence.git
 
 Builds:
   - versionName: 0.2.0
-    versionCode: 13
-    commit: a736d6f8c474e2f375c908d6d52a310dac134811
+    versionCode: 11
+    commit: 7f7e99d3ca04082aeb2ed0614f794ce343086ce6
+    sudo:
+      - mkdir -p /upstream/
+      - chown -R vagrant /upstream/
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-prod-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export SKIP_KEYSTORE=true
+      - export NO_XIPH_LIBS=1
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi
+
+  - versionName: 0.2.0
+    versionCode: 12
+    commit: 7f7e99d3ca04082aeb2ed0614f794ce343086ce6
     sudo:
       - mkdir -p /upstream/
       - chown -R vagrant /upstream/
@@ -21,30 +43,37 @@ Builds:
     srclibs:
       - flutter@stable
     prebuild:
-      - export repo=/upstream/org.surrel.coairence
-      - export NO_XIPH_LIBS=1
-      - cd ..
-      - mv org.surrel.coairence $repo
-      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - popd
-      - mv $repo org.surrel.coairence
     scandelete:
       - .pub-cache
     build:
       - export SKIP_KEYSTORE=true
       - export NO_XIPH_LIBS=1
-      - export repo=/upstream/org.surrel.coairence
-      - cd ..
-      - mv org.surrel.coairence $repo
-      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi
-        --target-platform="android-arm64"
-      - popd
-      - mv $repo org.surrel.coairence
+
+  - versionName: 0.2.0
+    versionCode: 13
+    commit: 7f7e99d3ca04082aeb2ed0614f794ce343086ce6
+    sudo:
+      - mkdir -p /upstream/
+      - chown -R vagrant /upstream/
+    output: build/app/outputs/flutter-apk/app-x86_64-prod-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export SKIP_KEYSTORE=true
+      - export NO_XIPH_LIBS=1
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --flavor=prod --release --split-per-abi
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
