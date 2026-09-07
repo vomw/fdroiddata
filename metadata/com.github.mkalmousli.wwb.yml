@@ -12,7 +12,9 @@ Donate: https://ko-fi.com/mkalmousli
 AutoName: WayWayBack
 
 RepoType: git
-Repo: https://github.com/mkalmousli/wwb
+Repo: https://github.com/mkalmousli/wwb.git
+Binaries: 
+  https://github.com/mkalmousli/wwb/releases/download/v%v/wwb-%v-universal.apk
 
 Builds:
   - versionName: 1.0.0
@@ -32,7 +34,7 @@ Builds:
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - popd
       - mv $repo com.github.mkalmousli.wwb
     scandelete:
@@ -47,9 +49,6 @@ Builds:
       - popd
       - mv $repo com.github.mkalmousli.wwb
 
-# F-Droid rebuilds from source; if the result matches the signed APK on the
-# GitHub release (signatures stripped) it ships that one instead.
-Binaries: https://github.com/mkalmousli/wwb/releases/download/v%v/wwb-%v-universal.apk
 AllowedAPKSigningKeys: 2248c5fa900222741f2b94f0c9ed68c1590bdb27ae2ff5d72e3c5dc10601d9b9
 
 AutoUpdateMode: Version v%v
