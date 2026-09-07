@@ -44,6 +44,12 @@ Builds:
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 01d815e4f55f81f61ace0b29164d957fefc5293cf862c1637f2f215c751cedd3
 
