@@ -77,7 +77,7 @@ Builds:
 
   - versionName: 1.4.4
     versionCode: 10
-    commit: v1.4.4
+    commit: d60359a7b6e3ea8b141b764f88511d8a7e640a28
     output: build/app/outputs/flutter-apk/app-fdroid-release.apk
     srclibs:
       - flutter@3.47.1
@@ -87,8 +87,17 @@ Builds:
       - macos
       - test
       - web
-    build:
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get --enforce-lockfile
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --flavor fdroid
 
 AutoUpdateMode: Version
