@@ -102,9 +102,28 @@ Builds:
     scandelete:
       - plugin/js/src/main/assets/node_modules.zip
 
+  - versionName: 1.2.1
+    versionCode: 10201006
+    commit: 6ea57a92d9a8be8f1adfa81652e6a9e5195afbe9
+    subdir: app
+    sudo:
+      - export CPUS_MAX=4
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' -e 's|maven.aliyun.com/repository/public|jitpack.io|'
+        ../settings.gradle.kts
+      - sed -i -e '/curiousers/d' -e 's|maven.nariko.org/release|maven.google.com|'
+        ../*/build.gradle.kts
+    scandelete:
+      - plugin/js/src/main/assets/node_modules.zip
+
 AllowedAPKSigningKeys: a4dba642802705bdde367ad3c4ff623f0e25dfb275df22ae7b11b8f0edcb49a9
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[\d.]+$
-CurrentVersion: 1.2.0
-CurrentVersionCode: 10200040
+CurrentVersion: 1.2.1
+CurrentVersionCode: 10201006
