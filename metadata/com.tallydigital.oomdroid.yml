@@ -1,0 +1,47 @@
+AntiFeatures:
+  NonFreeDep:
+    en-US: Requires a legally owned Master of Orion v1.3 LBX set, which is proprietary
+Categories:
+  - Strategy Game
+License: GPL-2.0-only
+AuthorName: JamesSmartCell
+SourceCode: https://github.com/JamesSmartCell/android-1oom
+IssueTracker: https://github.com/JamesSmartCell/android-1oom/issues
+Changelog: https://github.com/JamesSmartCell/android-1oom/releases
+
+RepoType: git
+Repo: https://github.com/JamesSmartCell/android-1oom
+
+Builds:
+  - versionName: 1.0.4
+    versionCode: 5
+    commit: 5267bfc5fcfb450719164939909d38834a24cd7e
+    timeout: 10800
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake
+    gradle:
+      - yes
+    ndk: 27.2.12479018
+
+MaintainerNotes: |-
+  Native CMake build of the in-repo 1oom engine (src/) plus Android hw/os/audio
+  backends. No prebuilt .so files. NDK is pinned in app/build.gradle.kts to
+  27.2.12479018 (r27c). Gradle wrapper 9.5.0 has a distributionSha256Sum.
+
+  The APK does not contain Master of Orion LBX files. Users supply a legally
+  owned v1.3 set (including V11.LBX) via the SAF folder picker. No storage
+  permission is requested. The app is offline (no INTERNET permission).
+
+  Fastlane metadata lives in the app repo. First release is F-Droid-signed.
+  Reproducible / developer-signed was attempted (Binaries + AllowedAPKSigningKeys
+  against the GitHub APK). Two consecutive F-Droid CI builds of the same commit
+  do not produce the same APK digest (native CMake .so / zip), so signature
+  copy fails even when unpacked file lists match.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: app/build.gradle.kts|appVersionCode = (\d+)|.|appVersionName = "(.+)"
+CurrentVersion: 1.0.4
+CurrentVersionCode: 5
