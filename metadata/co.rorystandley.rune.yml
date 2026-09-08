@@ -25,6 +25,9 @@ Builds:
       - app/macos
       - app/linux
       - app/windows
+      - third_party/whisper.cpp/examples
+      - third_party/whisper.cpp/bindings
+      - third_party/whisper.cpp/models/for-tests-*.bin
     prebuild:
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
@@ -35,6 +38,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - packages/notes_core/pubspec.yaml
+      - app/assets/models/ggml-tiny.en-q5_1.bin
     scandelete:
       - app/.pub-cache
     build:
@@ -56,6 +60,9 @@ Builds:
       - app/macos
       - app/linux
       - app/windows
+      - third_party/whisper.cpp/examples
+      - third_party/whisper.cpp/bindings
+      - third_party/whisper.cpp/models/for-tests-*.bin
     prebuild:
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
@@ -66,6 +73,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - packages/notes_core/pubspec.yaml
+      - app/assets/models/ggml-tiny.en-q5_1.bin
     scandelete:
       - app/.pub-cache
     build:
@@ -87,6 +95,9 @@ Builds:
       - app/macos
       - app/linux
       - app/windows
+      - third_party/whisper.cpp/examples
+      - third_party/whisper.cpp/bindings
+      - third_party/whisper.cpp/models/for-tests-*.bin
     prebuild:
       - flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION:.*"([^"]*)".*/\1/p' ../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
@@ -97,6 +108,7 @@ Builds:
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scanignore:
       - packages/notes_core/pubspec.yaml
+      - app/assets/models/ggml-tiny.en-q5_1.bin
     scandelete:
       - app/.pub-cache
     build:
@@ -104,6 +116,18 @@ Builds:
       - export PUB_CACHE="$(pwd)/.pub-cache"
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
     ndk: 28.2.13676358
+
+MaintainerNotes: |
+  The bundled ggml-tiny.en-q5_1.bin is MIT-licensed Whisper model data, not
+  executable code. Its source revision and SHA-256 are documented upstream:
+  https://github.com/rorystandley/rune/blob/8a5830a12a719c3d7c47f2367eea442134ff5761/docs/transcription.md#pinned-inputs
+  https://github.com/openai/whisper#license
+
+  Unused whisper.cpp examples, language bindings and test models are removed.
+  The native library is built from the pinned submodule's C/C++ sources.
+
+  The R8 hook and ABI version mapping must remain in upstream release tags:
+  https://github.com/rorystandley/rune/pull/92
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
