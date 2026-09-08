@@ -1,0 +1,49 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Typing, prediction, autocorrect and learning are entirely offline. A set
+      of optional tools can reach third-party services (Google Translate, Brave Search,
+      GIPHY and KLIPY, Unsplash and Pexels, Open-Meteo, and whichever AI provider
+      you supply your own key for). Each is opt-in per tool and the keyboard is fully
+      usable with all of them untouched.
+Categories:
+  - Writing
+License: MIT
+AuthorName: Wasi Master
+AuthorWebSite: https://github.com/wasi-master
+WebSite: https://wmkeyboard.pages.dev
+SourceCode: https://github.com/wasi-master/wmkeyboard
+IssueTracker: https://github.com/wasi-master/wmkeyboard/issues
+Changelog: https://github.com/wasi-master/wmkeyboard/releases
+
+AutoName: WM Keyboard
+
+RepoType: git
+Repo: https://github.com/wasi-master/wmkeyboard.git
+
+Builds:
+  - versionName: 0.5.4
+    versionCode: 15
+    commit: v0.5.4
+    subdir: app
+    gradle:
+      - lite
+    prebuild:
+      - sed -i -e '/org.gradle.toolchains.foojay-resolver-convention/d' ../settings.gradle.kts
+      - sed -i -e '/libs.play.app.update/d' -e '/libs.play.feature.delivery/d' -e
+        '/libs.play.services.auth/d' build.gradle.kts
+      - sed -i -e '/^[[:space:]]*\.takeIf { it.storeFile?.exists() == true }$/d' build.gradle.kts
+      - sed -i -e '/jvmToolchain(17)/d' ../tools/dictc/build.gradle.kts
+    scandelete:
+      - core/intelligence/src/full/jniLibs
+      - feature/llm/src/main/jniLibs
+    gradleprops:
+      - wmkb.enablePlayStore=false
+      - wmkb.enableGms=false
+      - wmkb.enableFdroid=true
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: HTTP
+UpdateCheckData: 
+  https://raw.githubusercontent.com/wasi-master/wmkeyboard/main/gradle.properties|wmkb.versionCode=(\d+)|.|wmkb.versionName=(.+)
+CurrentVersion: 0.5.4
+CurrentVersionCode: 15
