@@ -1,6 +1,5 @@
 Categories:
-  - Security
-  - Writing
+  - Note
 License: GPL-3.0-or-later
 AuthorName: Rory Standley
 SourceCode: https://github.com/rorystandley/rune
@@ -13,10 +12,11 @@ RepoType: git
 Repo: https://github.com/rorystandley/rune.git
 
 Builds:
-  - versionName: 0.1.0
-    versionCode: 11
-    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
+  - versionName: 0.5.1
+    versionCode: 91
+    commit: 8a5830a12a719c3d7c47f2367eea442134ff5761
     subdir: app
+    submodules: true
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -43,10 +43,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
     ndk: 28.2.13676358
 
-  - versionName: 0.1.0
-    versionCode: 12
-    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
+  - versionName: 0.5.1
+    versionCode: 92
+    commit: 8a5830a12a719c3d7c47f2367eea442134ff5761
     subdir: app
+    submodules: true
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -73,10 +74,11 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
     ndk: 28.2.13676358
 
-  - versionName: 0.1.0
-    versionCode: 13
-    commit: dbe3144a3a1bc5fb9e59cdefcdf56440bf57d5b3
+  - versionName: 0.5.1
+    versionCode: 93
+    commit: 8a5830a12a719c3d7c47f2367eea442134ff5761
     subdir: app
+    submodules: true
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -103,7 +105,12 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
     ndk: 28.2.13676358
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 0.1.0
-CurrentVersionCode: 13
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.5.1
+CurrentVersionCode: 93
