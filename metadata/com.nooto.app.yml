@@ -9,26 +9,25 @@ IssueTracker: https://github.com/ClemPera/Nooto/issues
 RepoType: git
 Repo: https://github.com/ClemPera/Nooto
 Binaries: 
-  https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-universal-release.apk
+  https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-arm64-release.apk 
 
 Builds:
   - versionName: 0.2.0
     versionCode: 2000
-    commit: d0618b1ddc66a6c74ff30166d9b53933e283c898
+    commit: 7b2f01313dae7040aa5b2c0e20c53ea442f81667
     subdir: client
     sudo:
       - apt-get update
       - apt-get install -y rustup npm make build-essential wget
     init:
       - rustup default 1.98.0
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-        i686-linux-android
+      - rustup target add aarch64-linux-android
     output: 
-      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+      src-tauri/gen/android/app/build/outputs/apk/arm64/release/*.apk
     build:
       - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
       - npm install
-      - npm run tauri android build -- --apk
+      - npm run tauri android build -- --apk --split-per-abi --target aarch64
     ndk: 27.0.12077973
 
 AllowedAPKSigningKeys: 46ce9259dd8eba36470faaf0dcdcd1fc958b6d3c5f84f0303645603a5b86e8b0
