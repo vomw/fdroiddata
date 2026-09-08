@@ -152,7 +152,7 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - sdkmanager 'cmake;3.31.6'
+      - sdkmanager 'cmake;3.31.6' 'ndk;27.3.13750724'
       - sed -i -e 's/System.getenv("HERMES_RELEASE_TAG").orEmpty().trim()/"v$$VERSION$$"/'
         build.gradle.kts
       - sed -i -e 's/return if (osName.contains("windows")) "python" else "python3"/return
@@ -161,7 +161,7 @@ Builds:
       - android/settings.gradle.kts
     scandelete:
       - apps/bootstrap-installer/src-tauri/Cargo.toml
-    build: python3 ../../scripts/prepare_android_python_runtime.py prepare --output
+    build: ANDROID_NDK_HOME="/opt/android-sdk/ndk/27.3.13750724" python3 ../../scripts/prepare_android_python_runtime.py prepare --output
       "$HOME/.gradle/hermes-python-runtime" --work-dir "$HOME/hermes-python-build"
     ndk: 29.0.14206865
 
