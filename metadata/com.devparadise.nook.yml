@@ -11,8 +11,7 @@ AutoName: nook
 
 RepoType: git
 Repo: https://github.com/prit-007/nook.git
-Binaries: 
-  https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
+Binaries: https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
 
 Builds:
   - versionName: 0.8.7
@@ -22,8 +21,8 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make
-      - mkdir -p /home/runner/work/nook
-      - chown -R vagrant /home/runner
+      - mkdir -p /tmp/build
+      - chown -R vagrant /tmp
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
@@ -41,23 +40,21 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
@@ -68,7 +65,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
         --obfuscate --split-debug-info=build/symbols
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.8.7
@@ -78,10 +75,11 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make
-      - mkdir -p /home/runner/work/nook
-      - chown -R vagrant /home/runner
+      - mkdir -p /tmp/build
+      - chown -R vagrant /tmp
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
       - sqlcipher@v4.5.7
@@ -96,23 +94,21 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
@@ -123,7 +119,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
         --obfuscate --split-debug-info=build/symbols
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.8.7
@@ -133,10 +129,11 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make
-      - mkdir -p /home/runner/work/nook
-      - chown -R vagrant /home/runner
+      - mkdir -p /tmp/build
+      - chown -R vagrant /tmp
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
       - sqlcipher@v4.5.7
@@ -151,23 +148,21 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/runner/work/nook/nook
       - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
+      - mv com.devparadise.nook /tmp/build
+      - pushd /tmp/build
       - export PUB_CACHE=$(pwd)/.pub-cache
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
@@ -178,7 +173,7 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
         --obfuscate --split-debug-info=build/symbols
       - popd
-      - mv $repo com.devparadise.nook
+      - mv /tmp/build com.devparadise.nook
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
@@ -186,9 +181,9 @@ AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c * 10 + 1'
-  - '%c * 10 + 2'
-  - '%c * 10 + 3'
+  - 10*%c+1
+  - 10*%c+2
+  - 10*%c+3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.8.7
 CurrentVersionCode: 93
