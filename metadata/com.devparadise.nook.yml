@@ -6,22 +6,18 @@ SourceCode: https://github.com/prit-007/nook
 IssueTracker: https://github.com/prit-007/nook/issues
 Changelog: https://github.com/prit-007/nook/blob/main/CHANGELOG.md
 
-Binaries:
-  https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
-
 Name: Nook
 AutoName: nook
 
 RepoType: git
 Repo: https://github.com/prit-007/nook.git
-
-AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
+Binaries:
+  https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
 
 Builds:
   - versionName: 0.8.7
     versionCode: 91
     commit: 1c19db7a9dfdac4c30f8bc29ea2065e740c12cc9
-    binary: https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -29,6 +25,8 @@ Builds:
       - mkdir -p /home/runner/work/nook
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary:
+      https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
       - sqlcipher@v4.5.7
@@ -75,7 +73,6 @@ Builds:
   - versionName: 0.8.7
     versionCode: 92
     commit: 1c19db7a9dfdac4c30f8bc29ea2065e740c12cc9
-    binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -83,6 +80,7 @@ Builds:
       - mkdir -p /home/runner/work/nook
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
       - sqlcipher@v4.5.7
@@ -129,7 +127,6 @@ Builds:
   - versionName: 0.8.7
     versionCode: 93
     commit: 1c19db7a9dfdac4c30f8bc29ea2065e740c12cc9
-    binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -137,6 +134,7 @@ Builds:
       - mkdir -p /home/runner/work/nook
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
       - sqlcipher@v4.5.7
@@ -179,6 +177,8 @@ Builds:
         --obfuscate --split-debug-info=build/symbols
       - mv $repo com.devparadise.nook
     ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
