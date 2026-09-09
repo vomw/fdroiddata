@@ -1,0 +1,42 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Relies on E-Hentai.org and, relies on GitHub for downloading tag translations
+    zh-CN: 依赖于 E-Hentai.org 网站，同时依赖 GitHub 网站来下载标签翻译数据
+Categories:
+  - Multimedia
+  - Reading
+License: GPL-3.0-or-later
+AuthorName: UjuiUjuMandan
+SourceCode: https://github.com/UjuiUjuMandan/EhViewer-NekoInverter
+IssueTracker: https://github.com/UjuiUjuMandan/EhViewer-NekoInverter/issues
+Bitcoin: bc1qqfantsex9tu2ctzxkq5xjjs3qe8su4ukk44uxa
+Litecoin: ltc1qmm9mn5fp072qnmws84gmpwh46tm2yky90095de
+
+AutoName: EhViewer
+
+RepoType: git
+Repo: https://github.com/UjuiUjuMandan/EhViewer-NekoInverter
+Binaries: https://github.com/UjuiUjuMandan/EhViewer-NekoInverter/releases/download/ci/app-universal-release.apk
+
+Builds:
+  - versionName: 1.8.13
+    versionCode: 180014
+    commit: 49352d21510d2d1526cf9a103fc267857949fea5
+    subdir: EhViewer/app
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-universal-release.apk
+    build:
+      - pushd ../
+      - bash ../patches/apply.sh
+      - rm -rf .git
+      - mv ../.git ./
+      - popd
+
+AllowedAPKSigningKeys: 5d91dff13b6489a9cfadbb197b3e795eefc8c39f849c4543f32c160720fb40a6
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: EhViewer/app/build.gradle.kts|versionCode\s=\s(\d+)||
+CurrentVersion: 1.8.13
+CurrentVersionCode: 180014
