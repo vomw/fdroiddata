@@ -25,9 +25,15 @@ Builds:
     commit: 49352d21510d2d1526cf9a103fc267857949fea5
     subdir: EhViewer/app
     submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y curl
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release.apk
+    prebuild: curl -o src/main/res/raw/isrgrootx1 https://letsencrypt.org/certs/isrgrootx1.pem
+    scandelete:
+      - EhViewer/app/src/main/res/raw/isrgrootx1
     build:
       - pushd ../
       - bash ../patches/apply.sh
