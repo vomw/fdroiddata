@@ -11,13 +11,13 @@ AutoName: nook
 
 RepoType: git
 Repo: https://github.com/prit-007/nook.git
-Binaries:
+Binaries: 
   https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
 
 Builds:
   - versionName: 0.8.8
     versionCode: 101
-    commit: c50ca2dcddbf098e5abd84a169387751d29becd8
+    commit: aab709a6728e163a08ca9c6c8f904120bb018ccf
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -25,7 +25,7 @@ Builds:
       - mkdir -p /home/runner/work/nook
       - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary:
+    binary: 
       https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -41,7 +41,6 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      # Mirror CI build path (/home/runner/work/nook/nook) for reproducible builds.
       - cd ..
       - mv com.devparadise.nook /home/runner/work/nook/nook
       - pushd /home/runner/work/nook/nook
@@ -49,7 +48,6 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
-      # Patch jni linker flags: --build-id=none fixes libdartjni.so mismatch.
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
@@ -76,7 +74,7 @@ Builds:
 
   - versionName: 0.8.8
     versionCode: 102
-    commit: c50ca2dcddbf098e5abd84a169387751d29becd8
+    commit: aab709a6728e163a08ca9c6c8f904120bb018ccf
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -132,7 +130,7 @@ Builds:
 
   - versionName: 0.8.8
     versionCode: 103
-    commit: c50ca2dcddbf098e5abd84a169387751d29becd8
+    commit: aab709a6728e163a08ca9c6c8f904120bb018ccf
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
