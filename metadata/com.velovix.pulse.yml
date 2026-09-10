@@ -42,10 +42,11 @@ Builds:
       - sed -i '/jvmToolchain\|JavaVersion\|fromTarget/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
         node_modules/{react-native-reanimated,react-native-worklets}/android/build.gradle.kts
-        node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle - EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com
-        bunx expo prebuild -p android --no-install - sed -i "s/versionCode [0-9]\+/versionCode
-        $$VERCODE$$/" android/app/build.gradle - sed -i 's/versionName "[^"]*"/versionName
-        "$$VERSION$$"/' android/app/build.gradle
+        node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com bunx expo prebuild -p android
+        --no-install
+      - sed -i "s/versionCode [0-9]\+/versionCode $$VERCODE$$/" android/app/build.gradle
+      - sed -i 's/versionName "[^"]*"/versionName "$$VERSION$$"/' android/app/build.gradle
       - echo -e "\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s*"(.*)".*|\1|p'
