@@ -553,8 +553,9 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y golang-go make unzip
-    gradle:
-      - yes
+      - mkdir -p /home/runner/work/motd
+      - chown vagrant -R /home/runner
+    output: build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - go@go1.25.12
     rm:
@@ -580,12 +581,16 @@ Builds:
       - export LIBBOX_OUTPUT_DIR="$PWD/build/generated/libbox"
       - export LIBBOX_NDK_HOME="$$NDK$$"
       - export LIBBOX_PATCH_NDK_HOST_TOOLS=0
+      - export repo=/home/runner/work/motd
+      - cd ../..
+      - mv io.github.trevarj.motd $repo/motd
+      - pushd $repo/motd/app
       - ../third_party/sing-box/build-libbox.sh
+      - gradle assembleRelease -PmotdLibboxSource=true -PmotdLibboxAar=../third_party/sing-box/source/libbox.aar
+        -PmotdLibboxManifest=libs/libbox-v1.13.12.manifest
+      - popd
+      - mv $repo/motd io.github.trevarj.motd
     ndk: 28.2.13676358
-    gradleprops:
-      - motdLibboxSource=true
-      - motdLibboxAar=build/generated/libbox/libbox.aar
-      - motdLibboxManifest=build/generated/libbox/libbox-v1.13.12.manifest
 
 AllowedAPKSigningKeys: 4104a03bbc48942df8346fbd331f7761d13f68af4a2ff4d14f730e501ce728c3
 
