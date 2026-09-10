@@ -10,6 +10,7 @@ AutoName: PanOSP
 
 RepoType: git
 Repo: https://gitlab.com/gibdev-group/panosp.git
+Binaries: https://gitlab.com/api/v4/projects/85966669/packages/generic/panosp/%v/PanOSP-v%v.apk
 
 Builds:
   - versionName: 1.0.1
@@ -21,10 +22,16 @@ Builds:
 
   - versionName: 1.0.2
     versionCode: 3
-    commit: fe19707037b70131c8bcf9b130c3a79f2071c410
+    commit: ed002338e35830c8fe08d8a58709422c53afdcaa
     subdir: app
     gradle:
       - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.1
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
 
 AllowedAPKSigningKeys: 23f09bb9c0f8a71e9a58da93025c3061f1073aa0a3f059023d1e8ecc3144249b
 
