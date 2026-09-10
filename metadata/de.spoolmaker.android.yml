@@ -20,12 +20,13 @@ Builds:
     commit: 086b061eb347711b3b63a88f97a6c8f909b642af
     subdir: app
     sudo:
-      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y -t trixie openjdk-21-jdk-headless
-      - update-alternatives --auto java
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives --set java-1.17.0-openjdk-amd64
     gradle:
       - yes
+    prebuild: echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64" >> ../gradle.properties
 
 AllowedAPKSigningKeys: 61284f96a285d7af755f9a5593b786fd9b74686fa4616198efcee903c505d3eb
 
