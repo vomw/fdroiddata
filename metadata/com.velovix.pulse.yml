@@ -1,24 +1,16 @@
 AntiFeatures:
   NonFreeNet:
     en-US: Loads Cloudflare Turnstile, a proprietary CAPTCHA script, from a remote server during login and signup.
-
 Categories:
   - Development
-
 License: GPL-3.0-or-later
-
 AuthorName: Velovix
 AuthorEmail: info@velovix.com
-
 SourceCode: https://github.com/TheVelovix/pulse-app
-
 IssueTracker: https://github.com/TheVelovix/pulse-app/issues
-
 AutoName: Pulse Analytics
-
 RepoType: git
 Repo: https://github.com/TheVelovix/pulse-app.git
-
 Builds:
   - versionName: 1.0.0
     versionCode: 13
@@ -34,8 +26,6 @@ Builds:
       - cd ../..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},' -e '/"react-native-purchases":/d' -e '/"expo-dev-client":/d' package.json
       - bun install
-    gradle:
-      - yes
     srclibs:
       - react-native-skia@v2.6.2
     rm:
@@ -46,10 +36,10 @@ Builds:
       - EXPO_PUBLIC_BACKEND=https://api.pulse.velovix.com bunx expo prebuild -p android --no-install
       - echo -e "\norg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g" >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s"(.*)".*|\1|p' package.json)
-      - "[[$skiaVersion]]"
+      - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s*"(.*)".*|\1|p' package.json)
+      - "[[ $skiaVersion ]]"
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
-      - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm", "arm64"]/' -e 's/import { \$, mapKeys, runAsync }/import { $, runAsync }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
+      - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm64"]/' -e 's/import { \$, mapKeys, runAsync }/import { \$, runAsync }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
       - sed -i 's/ndk_api.*, *26/ndk_api", 24/' $$react-native-skia$$/packages/skia/scripts/skia-configuration.ts
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
@@ -70,18 +60,19 @@ Builds:
       - pushd $$react-native-skia$$/packages/skia
       - corepack enable
       - yarn
-      - yarn build-skia android-arm android-arm64 || yarn build-skia android-arm || yarn build-skia android-arm64
+      - yarn build-skia android-arm64
       - popd
       - mkdir -p ../../node_modules/@shopify/react-native-skia/libs/android
       - cp -r $$react-native-skia$$/packages/skia/libs/android/* ../../node_modules/@shopify/react-native-skia/libs/android/
     ndk: r27b
     gradleprops:
-      - reactNativeArchitectures=armeabi-v7a,arm64-v8a
+      - reactNativeArchitectures=arm64-v8a
       - expo.useLegacyPackaging=true
       - org.gradle.daemon=true
       - org.gradle.parallel=true
       - org.gradle.caching=true
-
+    arch:
+      - arm64-v8a
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: '|-(\d+)$|.|^fdroid-(.+)-\d+$'
