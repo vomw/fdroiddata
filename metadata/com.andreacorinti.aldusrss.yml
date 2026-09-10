@@ -13,17 +13,19 @@ RepoType: git
 Repo: https://github.com/andreacorinti/aldusrss
 
 Builds:
-  - versionName: '0.4.27'
+  - versionName: 0.4.27
     versionCode: 48
     commit: v0.4.27
     subdir: android/app
+    sudo:
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz
+      - echo "b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - rm node.tar.gz
     gradle:
       - yes
     prebuild:
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz
-      - echo "b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a  node.tar.gz" | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
-      - rm node.tar.gz
       - pushd ../..
       - npm ci
       - npm run build
@@ -34,5 +36,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
-CurrentVersion: '0.4.27'
+CurrentVersion: 0.4.27
 CurrentVersionCode: 48
