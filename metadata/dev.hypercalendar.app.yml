@@ -1,0 +1,46 @@
+Categories:
+  - Calendar & Agenda
+License: AGPL-3.0-only
+AuthorName: hypercal
+AuthorEmail: ticket.grapple368@passmail.net
+WebSite: https://hyper-calendar-7b58b2.gitlab.io
+SourceCode: https://gitlab.com/kreuz-com-group/hyper-calendar
+IssueTracker: https://gitlab.com/kreuz-com-group/hyper-calendar/-/issues
+
+AutoName: hypercal
+
+RepoType: git
+Repo: https://gitlab.com/kreuz-com-group/hyper-calendar.git
+
+Builds:
+  - versionName: 2.1.0
+    versionCode: 6
+    commit: v2.1.0
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils unzip build-essential emscripten binaryen
+        wabt
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  node.tar.xz"
+        | sha256sum -c -
+      - tar xJf node.tar.xz
+      - cp -a node-v24.21.0-linux-x64/. /usr/local/
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm ci
+      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
+      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
+    scanignore:
+      - android/app/src/main/assets/public/assets/sqlite3-*.wasm
+    scandelete:
+      - node_modules
+      - web/dist
+      - web/vendor
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.1.0
+CurrentVersionCode: 6
