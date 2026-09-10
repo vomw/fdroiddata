@@ -35,8 +35,12 @@ Builds:
     subdir: app
     gradle:
       - fdroid
+    srclibs:
+      - reproducible-apk-tools@v0.3.2
     scandelete:
       - app/src/full/assets/bergamot
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
 
 AllowedAPKSigningKeys: 88b0a8a6fb94ee73a454a0f92732bd408e92e51ec1e9556744e5f00556100977
 
