@@ -24,15 +24,11 @@ Builds:
         ninja-build tcl clang make git
       - mkdir -p /__w/nook
       - chown -R vagrant /__w
-      - rm -rf /opt/flutter
-      - git clone --depth 1 --branch 3.44.8 https://github.com/flutter/flutter.git
-        /opt/flutter
-      - /opt/flutter/bin/flutter precache --android
-      - chown -R vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
+      - flutter@3.44.8
       - sqlcipher@v4.5.7
     rm:
       - ios
@@ -41,26 +37,29 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
@@ -68,10 +67,9 @@ Builds:
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
       - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-arm
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
         --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.8.8
@@ -83,14 +81,10 @@ Builds:
         ninja-build tcl clang make git
       - mkdir -p /__w/nook
       - chown -R vagrant /__w
-      - rm -rf /opt/flutter
-      - git clone --depth 1 --branch 3.44.8 https://github.com/flutter/flutter.git
-        /opt/flutter
-      - /opt/flutter/bin/flutter precache --android
-      - chown -R vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
+      - flutter@3.44.8
       - sqlcipher@v4.5.7
     rm:
       - ios
@@ -99,26 +93,29 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
@@ -126,10 +123,9 @@ Builds:
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
       - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
         --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.8.8
@@ -141,14 +137,10 @@ Builds:
         ninja-build tcl clang make git
       - mkdir -p /__w/nook
       - chown -R vagrant /__w
-      - rm -rf /opt/flutter
-      - git clone --depth 1 --branch 3.44.8 https://github.com/flutter/flutter.git
-        /opt/flutter
-      - /opt/flutter/bin/flutter precache --android
-      - chown -R vagrant /opt/flutter
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
     srclibs:
+      - flutter@3.44.8
       - sqlcipher@v4.5.7
     rm:
       - ios
@@ -157,26 +149,29 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
-      - flutter config --no-analytics
-      - flutter pub get --enforce-lockfile
-      - dart run build_runner build --delete-conflicting-outputs
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
+      - export repo=/__w/nook/nook
       - cd ..
-      - mv com.devparadise.nook /__w/nook/nook
-      - pushd /__w/nook/nook
+      - mv com.devparadise.nook $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH="/opt/flutter/bin:$PATH"
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
@@ -184,10 +179,9 @@ Builds:
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
       - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-x64
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
         --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv /__w/nook/nook com.devparadise.nook
+      - mv $repo ../com.devparadise.nook
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
