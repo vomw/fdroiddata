@@ -1,0 +1,46 @@
+Categories:
+  - Finance Manager
+License: AGPL-3.0-only
+AuthorName: DowarDev
+WebSite: https://onespend.dowar.xyz
+SourceCode: https://gitlab.com/dowardev/onespend
+
+RepoType: git
+Repo: https://gitlab.com/dowardev/onespend.git
+
+Builds:
+  - versionName: 0.76.2
+    versionCode: 7602
+    commit: v0.76.2
+    subdir: front/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-alternatives --auto java
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz
+      - echo "b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install --global pnpm@latest-10
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    scandelete:
+      - front/node_modules
+    build:
+      - cd ../..
+      # Public backend/SSO endpoints baked into the F-Droid build.
+      # No secrets here: client ids and server URLs are public by nature.
+      - export VITE_API_URL=https://onespend-back.dowar.xyz
+      - export VITE_SSO_URL=https://auth.dowar.xyz/api
+      - export VITE_SSO_FRONTEND_URL=https://auth-panel.dowar.xyz
+      - export SSO_CLIENT_ID_NATIVE=onespend-android
+      - pnpm install --frozen-lockfile
+      - pnpm run build:native
+      - npx cap sync android
+      - cd android
+      - ./gradlew assembleRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: ^v(\d+\.\d+\.\d+)$
+CurrentVersion: 0.76.2
+CurrentVersionCode: 7602
