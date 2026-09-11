@@ -14,22 +14,21 @@ Builds:
   - versionName: 2.3.8
     versionCode: 21
     commit: 6694fa5733ec89d5ae4d332156f51ef0d89c844c
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y curl
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-      - apt-get install -y nodejs
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs
     init:
-      - cd ..
+      - cd ../..
       - npm install
       - npm run build
       - npx cap sync android
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild: sed -i "s/com.android.tools.build:gradle:9.0.1/com.android.tools.build:gradle:8.9.3/"
-      build.gradle
+      ../build.gradle
     scandelete:
       - stitch-skills.zip
       - node_modules
