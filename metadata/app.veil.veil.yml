@@ -8,6 +8,8 @@ SourceCode: https://github.com/veil-notes/app
 IssueTracker: https://github.com/veil-notes/app/issues
 Changelog: https://github.com/veil-notes/app/releases
 
+AutoName: Veil
+
 RepoType: git
 Repo: https://github.com/veil-notes/app.git
 
@@ -19,8 +21,7 @@ Builds:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary:
-      https://github.com/veil-notes/app/releases/download/v%v/app-fdroid-armeabi-v7a-release.apk
+    binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
       - flutter@3.41.6
       - openpgp-mobile@v1.13.0
@@ -36,66 +37,10 @@ Builds:
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
       - sed -i '/^org.gradle.daemon=/d' android/gradle.properties
       - sed -i '/^org.gradle.internal.instrumentation.agent=/d' android/gradle.properties
-      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false' 'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
+      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false'
+        'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - |
-        python3 - "$$flutter$$" <<'PY'
-        import json
-        import re
-        import shutil
-        import sys
-        from pathlib import Path
-        from urllib.parse import unquote, urljoin, urlparse
-
-        app = Path.cwd()
-        flutter = Path(sys.argv[1]).resolve()
-
-        def add_once(path, marker, addition):
-            text = path.read_text()
-            if addition in text:
-                return
-            assert text.count(marker) == 1, path
-            path.write_text(text.replace(marker, marker + addition, 1))
-
-        helper = flutter / 'packages/flutter_tools/gradle/src/main/kotlin/tasks/BaseFlutterTaskHelper.kt'
-        marker = "            baseFlutterTask.extraFrontEndOptions?.let {\n                args(\"--ExtraFrontEndOptions=$it\")\n            }\n"
-        addition = "            baseFlutterTask.fileSystemRoots?.takeIf { it.isNotEmpty() }?.let {\n                args(\"-dFileSystemRoots=${it.joinToString(\",\")}\")\n            }\n            baseFlutterTask.fileSystemScheme?.let {\n                args(\"-dFileSystemScheme=$it\")\n            }\n"
-        add_once(helper, marker, addition)
-
-        compile = flutter / 'packages/flutter_tools/lib/src/compile.dart'
-        source = compile.read_text()
-        if 'effectiveFileSystemRoots' not in source:
-            old = "    String? mainUri;\n    if (mainPath != null) {"
-            new = "    final List<String> effectiveFileSystemRoots = fileSystemRoots ?? _fileSystemRoots;\n"
-            new += "    final String? effectiveFileSystemScheme = fileSystemScheme ?? _fileSystemScheme;\n"
-            new += old
-            assert source.count(old) == 1, compile
-            source = source.replace(old, new, 1)
-        source = re.sub(
-            r'(?m)^(\s*)_fileSystemScheme,\n\1_fileSystemRoots,',
-            r'\1effectiveFileSystemScheme,\n\1effectiveFileSystemRoots,',
-            source,
-        )
-        compile.write_text(source)
-        shutil.rmtree(flutter / 'packages/flutter_tools/gradle/build', ignore_errors=True)
-
-        config_path = app / '.dart_tool/package_config.json'
-        config = json.loads(config_path.read_text())
-        config_dir = config_path.parent.resolve().as_uri() + '/'
-        jni_uri = next(p['rootUri'] for p in config['packages'] if p['name'] == 'jni')
-        jni_path = Path(unquote(urlparse(urljoin(config_dir, jni_uri)).path))
-        cmake = jni_path / 'src/CMakeLists.txt'
-        add_once(
-            cmake,
-            'target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")',
-            '\ntarget_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "-Wl,--build-id=none")',
-        )
-        for stale in (
-            flutter / 'bin/cache/flutter_tools.snapshot',
-            flutter / 'bin/cache/flutter_tools.stamp',
-        ):
-            stale.unlink(missing_ok=True)
-        PY
+      - python3 tool/fdroid/prepare_reproducible_build.py . "$$flutter$$"
     scandelete:
       - .pub-cache
     build:
@@ -108,8 +53,8 @@ Builds:
       - find . -type f -name '*.so' -print0 | xargs --null -I{} mv "{}" "$openpgp_dir/android/src/main/{}"
       - popd
       - popd
-      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$ - 1000 )) --split-per-abi --target-platform="android-arm"
-        --android-project-arg="filesystem-roots=$(pwd)"
+      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
+        - 1000 )) --split-per-abi --target-platform="android-arm" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
@@ -120,8 +65,7 @@ Builds:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary:
-      https://github.com/veil-notes/app/releases/download/v%v/app-fdroid-arm64-v8a-release.apk
+    binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
       - flutter@3.41.6
       - openpgp-mobile@v1.13.0
@@ -137,57 +81,10 @@ Builds:
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
       - sed -i '/^org.gradle.daemon=/d' android/gradle.properties
       - sed -i '/^org.gradle.internal.instrumentation.agent=/d' android/gradle.properties
-      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false' 'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
+      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false'
+        'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - |
-        python3 - "$$flutter$$" <<'PY'
-        import json
-        import re
-        import shutil
-        import sys
-        from pathlib import Path
-        from urllib.parse import unquote, urljoin, urlparse
-
-        app = Path.cwd()
-        flutter = Path(sys.argv[1]).resolve()
-
-        def add_once(path, marker, addition):
-            text = path.read_text()
-            if addition in text:
-                return
-            assert text.count(marker) == 1, path
-            path.write_text(text.replace(marker, marker + addition, 1))
-
-        helper = flutter / 'packages/flutter_tools/gradle/src/main/kotlin/tasks/BaseFlutterTaskHelper.kt'
-        marker = "            baseFlutterTask.extraFrontEndOptions?.let {\n                args(\"--ExtraFrontEndOptions=$it\")\n            }\n"
-        addition = "            baseFlutterTask.fileSystemRoots?.takeIf { it.isNotEmpty() }?.let {\n                args(\"-dFileSystemRoots=${it.joinToString(\",\")}\")\n            }\n            baseFlutterTask.fileSystemScheme?.let {\n                args(\"-dFileSystemScheme=$it\")\n            }\n"
-        add_once(helper, marker, addition)
-
-        compile = flutter / 'packages/flutter_tools/lib/src/compile.dart'
-        source = compile.read_text()
-        if 'effectiveFileSystemRoots' not in source:
-            old = "    String? mainUri;\n    if (mainPath != null) {"
-            new = "    final List<String> effectiveFileSystemRoots = fileSystemRoots ?? _fileSystemRoots;\n"
-            new += "    final String? effectiveFileSystemScheme = fileSystemScheme ?? _fileSystemScheme;\n"
-            new += old
-            assert source.count(old) == 1, compile
-            source = source.replace(old, new, 1)
-        source = re.sub(r'(?m)^(\s*)_fileSystemScheme,\n\1_fileSystemRoots,', r'\1effectiveFileSystemScheme,\n\1effectiveFileSystemRoots,', source)
-        compile.write_text(source)
-        shutil.rmtree(flutter / 'packages/flutter_tools/gradle/build', ignore_errors=True)
-        config_path = app / '.dart_tool/package_config.json'
-        config = json.loads(config_path.read_text())
-        config_dir = config_path.parent.resolve().as_uri() + '/'
-        jni_uri = next(p['rootUri'] for p in config['packages'] if p['name'] == 'jni')
-        jni_path = Path(unquote(urlparse(urljoin(config_dir, jni_uri)).path))
-        add_once(
-            jni_path / 'src/CMakeLists.txt',
-            'target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")',
-            '\ntarget_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "-Wl,--build-id=none")',
-        )
-        for stale in (flutter / 'bin/cache/flutter_tools.snapshot', flutter / 'bin/cache/flutter_tools.stamp'):
-            stale.unlink(missing_ok=True)
-        PY
+      - python3 tool/fdroid/prepare_reproducible_build.py . "$$flutter$$"
     scandelete:
       - .pub-cache
     build:
@@ -200,8 +97,8 @@ Builds:
       - find . -type f -name '*.so' -print0 | xargs --null -I{} mv "{}" "$openpgp_dir/android/src/main/{}"
       - popd
       - popd
-      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$ - 2000 )) --split-per-abi --target-platform="android-arm64"
-        --android-project-arg="filesystem-roots=$(pwd)"
+      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
+        - 2000 )) --split-per-abi --target-platform="android-arm64" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
@@ -212,8 +109,7 @@ Builds:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary:
-      https://github.com/veil-notes/app/releases/download/v%v/app-fdroid-x86_64-release.apk
+    binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
       - flutter@3.41.6
       - openpgp-mobile@v1.13.0
@@ -229,57 +125,10 @@ Builds:
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
       - sed -i '/^org.gradle.daemon=/d' android/gradle.properties
       - sed -i '/^org.gradle.internal.instrumentation.agent=/d' android/gradle.properties
-      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false' 'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
+      - printf '%s\n' 'org.gradle.jvmargs=-Djava.net.preferIPv4Stack=true' 'org.gradle.daemon=false'
+        'org.gradle.internal.instrumentation.agent=false' >> android/gradle.properties
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - |
-        python3 - "$$flutter$$" <<'PY'
-        import json
-        import re
-        import shutil
-        import sys
-        from pathlib import Path
-        from urllib.parse import unquote, urljoin, urlparse
-
-        app = Path.cwd()
-        flutter = Path(sys.argv[1]).resolve()
-
-        def add_once(path, marker, addition):
-            text = path.read_text()
-            if addition in text:
-                return
-            assert text.count(marker) == 1, path
-            path.write_text(text.replace(marker, marker + addition, 1))
-
-        helper = flutter / 'packages/flutter_tools/gradle/src/main/kotlin/tasks/BaseFlutterTaskHelper.kt'
-        marker = "            baseFlutterTask.extraFrontEndOptions?.let {\n                args(\"--ExtraFrontEndOptions=$it\")\n            }\n"
-        addition = "            baseFlutterTask.fileSystemRoots?.takeIf { it.isNotEmpty() }?.let {\n                args(\"-dFileSystemRoots=${it.joinToString(\",\")}\")\n            }\n            baseFlutterTask.fileSystemScheme?.let {\n                args(\"-dFileSystemScheme=$it\")\n            }\n"
-        add_once(helper, marker, addition)
-
-        compile = flutter / 'packages/flutter_tools/lib/src/compile.dart'
-        source = compile.read_text()
-        if 'effectiveFileSystemRoots' not in source:
-            old = "    String? mainUri;\n    if (mainPath != null) {"
-            new = "    final List<String> effectiveFileSystemRoots = fileSystemRoots ?? _fileSystemRoots;\n"
-            new += "    final String? effectiveFileSystemScheme = fileSystemScheme ?? _fileSystemScheme;\n"
-            new += old
-            assert source.count(old) == 1, compile
-            source = source.replace(old, new, 1)
-        source = re.sub(r'(?m)^(\s*)_fileSystemScheme,\n\1_fileSystemRoots,', r'\1effectiveFileSystemScheme,\n\1effectiveFileSystemRoots,', source)
-        compile.write_text(source)
-        shutil.rmtree(flutter / 'packages/flutter_tools/gradle/build', ignore_errors=True)
-        config_path = app / '.dart_tool/package_config.json'
-        config = json.loads(config_path.read_text())
-        config_dir = config_path.parent.resolve().as_uri() + '/'
-        jni_uri = next(p['rootUri'] for p in config['packages'] if p['name'] == 'jni')
-        jni_path = Path(unquote(urlparse(urljoin(config_dir, jni_uri)).path))
-        add_once(
-            jni_path / 'src/CMakeLists.txt',
-            'target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")',
-            '\ntarget_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "-Wl,--build-id=none")',
-        )
-        for stale in (flutter / 'bin/cache/flutter_tools.snapshot', flutter / 'bin/cache/flutter_tools.stamp'):
-            stale.unlink(missing_ok=True)
-        PY
+      - python3 tool/fdroid/prepare_reproducible_build.py . "$$flutter$$"
     scandelete:
       - .pub-cache
     build:
@@ -292,8 +141,8 @@ Builds:
       - find . -type f -name '*.so' -print0 | xargs --null -I{} mv "{}" "$openpgp_dir/android/src/main/{}"
       - popd
       - popd
-      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$ - 4000 )) --split-per-abi --target-platform="android-x64"
-        --android-project-arg="filesystem-roots=$(pwd)"
+      - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
+        - 4000 )) --split-per-abi --target-platform="android-x64" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
