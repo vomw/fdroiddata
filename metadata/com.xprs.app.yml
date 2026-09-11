@@ -15,19 +15,21 @@ RepoType: git
 Repo: https://github.com/xprs-dev/app.git
 
 Builds:
-  - versionName: 1.2.15
-    versionCode: 353
-    commit: bc86ce6caa3991f028616898ac56ee93b46adb9a
+  - versionName: 1.2.17
+    versionCode: 1000370
+    commit: 6480fdc3903c8c8c372a92515d544d7f35c417fd
     sudo:
       - apt-get update
       - apt-get install -y make clang-19 lld-19 llvm-19 wasi-libc libclang-rt-19-dev-wasm32
         libc++-19-dev-wasm32 libc++abi-19-dev-wasm32 meson ninja-build python3 rustup
         gcc libc-dev
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/xprs-dev/app/releases/download/v%v/xprs-%v-android-armeabi-v7a.apk
     srclibs:
       - flutter@stable
       - xprs-reticulum-dart@5ec49acdb6322cff20f7bf3f7f063c6e619f76fd
-      - xprs-wapps@7c14e24a469bddac1edb438f4c5217b90fce6016
+      - xprs-wapps@c51d0e09514c0f704869ca9c445aa108754b17cd
       - dav1d@1.4.3
     rm:
       - artwork
@@ -42,8 +44,9 @@ Builds:
       - flutterVersion=$(cat .flutter-version)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - git -C $$xprs-reticulum-dart$$ checkout -f $(cat .reticulum-dart-commit)
+      - git -C $$xprs-wapps$$ checkout -f $(cat .wapps-commit)
       - cp -r $$xprs-reticulum-dart$$ ../reticulum-dart
-      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' android/app/src/main/AndroidManifest.xml
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -53,13 +56,110 @@ Builds:
       - WASI_SYSROOT=/usr WASM_CLANG=clang-19 WASM_CLANGXX=clang++-19 WASM_AR=llvm-ar-19
         DAV1D_SRC=$$dav1d$$ python3 tool/build_bundled_wapps.py $$xprs-wapps$$
       - rustup default 1.89.0
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - rustup target add armv7-linux-androideabi
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --dart-define=SELF_UPDATE=false
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
     ndk: r28c
+
+  - versionName: 1.2.17
+    versionCode: 2000370
+    commit: 6480fdc3903c8c8c372a92515d544d7f35c417fd
+    sudo:
+      - apt-get update
+      - apt-get install -y make clang-19 lld-19 llvm-19 wasi-libc libclang-rt-19-dev-wasm32
+        libc++-19-dev-wasm32 libc++abi-19-dev-wasm32 meson ninja-build python3 rustup
+        gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/xprs-dev/app/releases/download/v%v/xprs-%v-android-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+      - xprs-reticulum-dart@5ec49acdb6322cff20f7bf3f7f063c6e619f76fd
+      - xprs-wapps@c51d0e09514c0f704869ca9c445aa108754b17cd
+      - dav1d@1.4.3
+    rm:
+      - artwork
+      - assets/editor/app-creator/app.wasm
+      - desktop
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - git -C $$xprs-reticulum-dart$$ checkout -f $(cat .reticulum-dart-commit)
+      - git -C $$xprs-wapps$$ checkout -f $(cat .wapps-commit)
+      - cp -r $$xprs-reticulum-dart$$ ../reticulum-dart
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - WASI_SYSROOT=/usr WASM_CLANG=clang-19 WASM_CLANGXX=clang++-19 WASM_AR=llvm-ar-19
+        DAV1D_SRC=$$dav1d$$ python3 tool/build_bundled_wapps.py $$xprs-wapps$$
+      - rustup default 1.89.0
+      - rustup target add aarch64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: r28c
+
+  - versionName: 1.2.17
+    versionCode: 4000370
+    commit: 6480fdc3903c8c8c372a92515d544d7f35c417fd
+    sudo:
+      - apt-get update
+      - apt-get install -y make clang-19 lld-19 llvm-19 wasi-libc libclang-rt-19-dev-wasm32
+        libc++-19-dev-wasm32 libc++abi-19-dev-wasm32 meson ninja-build python3 rustup
+        gcc libc-dev
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/xprs-dev/app/releases/download/v%v/xprs-%v-android-x86_64.apk
+    srclibs:
+      - flutter@stable
+      - xprs-reticulum-dart@5ec49acdb6322cff20f7bf3f7f063c6e619f76fd
+      - xprs-wapps@c51d0e09514c0f704869ca9c445aa108754b17cd
+      - dav1d@1.4.3
+    rm:
+      - artwork
+      - assets/editor/app-creator/app.wasm
+      - desktop
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - git -C $$xprs-reticulum-dart$$ checkout -f $(cat .reticulum-dart-commit)
+      - git -C $$xprs-wapps$$ checkout -f $(cat .wapps-commit)
+      - cp -r $$xprs-reticulum-dart$$ ../reticulum-dart
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - WASI_SYSROOT=/usr WASM_CLANG=clang-19 WASM_CLANGXX=clang++-19 WASM_AR=llvm-ar-19
+        DAV1D_SRC=$$dav1d$$ python3 tool/build_bundled_wapps.py $$xprs-wapps$$
+      - rustup default 1.89.0
+      - rustup target add x86_64-linux-android
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+    ndk: r28c
+
+AllowedAPKSigningKeys: 2a4b4625895e700839415a81c091d949699167abe03c22794376d18f2f7ec2d2
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+VercodeOperation:
+  - '%c + 1000000'
+  - '%c + 2000000'
+  - '%c + 4000000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.2.15
-CurrentVersionCode: 353
+CurrentVersion: 1.2.17
+CurrentVersionCode: 4000370
