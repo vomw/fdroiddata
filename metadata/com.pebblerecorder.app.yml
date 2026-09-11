@@ -1,18 +1,8 @@
-# Draft F-Droid build recipe for PebbleRecorder.
-#
-# This file is NOT consumed by this repo's own build - F-Droid recipes live in a separate repo
-# (https://gitlab.com/fdroid/fdroiddata) as metadata/<applicationId>.yml. To actually submit:
-#   1. Fork/clone gitlab.com/fdroid/fdroiddata.
-#   2. Copy this file to metadata/com.pebblerecorder.app.yml there.
-#   3. Open a merge request. See https://f-droid.org/docs/Submitting_to_F-Droid_Quick_Start_Guide/
-#
-# Only tags from v0.1.9 onward can be built as "fdroid" - the distribution product flavor didn't
-# exist before that. The fastlane metadata this recipe's Summary/Description/Changelog are
-# auto-picked-up from lives at the repo root (fastlane/metadata/android/en-US/) as of v0.1.12 -
-# the released fdroidserver only scans <repo>/fastlane, <repo>/src/<flavor>/fastlane and
-# <repo>/metadata, not the nested android/fastlane/ it sat in through v0.1.11. See android/CLAUDE.md's
-# "F-Droid" section for the full rationale.
-
+AntiFeatures:
+  NonFreeNet:
+    en-US: The optional, off-by-default transcription feature sends recordings to
+      Google's proprietary Gemini API when the user enables it and supplies their
+      own API key.
 Categories:
   - Multimedia
 License: GPL-3.0-only
@@ -23,47 +13,19 @@ Changelog: https://github.com/BigWebstas/PebbleRecorder/blob/main/README.md
 
 AutoName: PebbleRecorder
 
-# Gemini transcription is opt-in and off by default (see GeminiPrefs.kt / GeminiTranscriber.kt),
-# but it does talk to Google's non-free Gemini API when the user turns it on and supplies their
-# own API key.
-AntiFeatures:
-  NonFreeNet:
-    en-US: The optional, off-by-default transcription feature sends recordings to
-      Google's proprietary Gemini API when the user enables it and supplies their
-      own API key.
-
-# The reference binary for reproducible-build verification must be the "fdroid" flavor
-# specifically (no bundled watch.pbw) - F-Droid's from-source build produces that flavor, not
-# "github" (see the two flavors in android/CLAUDE.md). Every release from now on needs a
-# PebbleRecorder-vX.Y.Z-fdroid.apk asset attached alongside the usual github-flavor .apk/.pbw, or
-# this comparison fails with a content mismatch (confirmed - see fdroiddata MR !46830 review
-# history for the exact failure).
 RepoType: git
 Repo: https://github.com/BigWebstas/PebbleRecorder.git
 Binaries: 
   https://github.com/BigWebstas/PebbleRecorder/releases/download/v%v/PebbleRecorder-v%v-fdroid.apk
 
 Builds:
-  # F-Droid reviewers want the full commit hash here, not a tag/branch name (tags are mutable) -
-  # `git rev-parse vX.Y.Z^{commit}` (note the `^{commit}` dereference - `git tag -a` makes an
-  # annotated tag object, and a bare `git rev-parse vX.Y.Z` returns *that* object's hash, not the
-  # commit it points to).
   - versionName: 0.1.18
     versionCode: 19
     commit: 9b4abdbdafbf9434aaf3f25cca0e7d547a2dcd74
-    # subdir is the directory where the `build` dir is generated, i.e. the "app" Gradle module -
-    # android/app/build/... - so fdroidserver's default flavor scan finds
-    # <subdir>/build/outputs/apk/fdroid/release with no explicit `output:` needed. Gradle still
-    # picks up the root settings.gradle.kts by searching upward from here.
     subdir: android/app
     gradle:
       - fdroid
 
-# SHA-256 of the release signing cert (see android/CLAUDE.md / project-release-process memory) -
-# lets F-Droid's reproducible-build tooling verify a from-source rebuild matches the APK fetched
-# from Binaries: above and sign with our real key via apksigcopier, instead of F-Droid's own key.
-# AGP's "Dependency metadata" signing block must stay disabled (dependenciesInfo in
-# android/app/build.gradle.kts) - F-Droid's binary scanner rejects any extra signing block.
 AllowedAPKSigningKeys: 3c7b738a4be737b5ed376eb686f9d507d4779d715e6d73a0306e2d7b7203852c
 
 AutoUpdateMode: Version
