@@ -1,0 +1,38 @@
+Categories:
+  - Internet
+License: MIT
+AuthorName: messpy
+SourceCode: https://github.com/messpy/ollama-tasker-bridge
+IssueTracker: https://github.com/messpy/ollama-tasker-bridge/issues
+
+AutoName: AI Model Bridge
+Description: |-
+  Run local language and vision models on Android and use them from
+  Tasker or MacroDroid. Models can be managed in the app and local inference
+  is available without an Ollama account. Optional connections to Ollama
+  servers and Hugging Face are provided for remote models and downloads.
+
+RepoType: git
+Repo: https://github.com/messpy/ollama-tasker-bridge.git
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 3
+    commit: v1.0.2
+    submodules: true
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    ndk: r28c
+    prebuild:
+      - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/g' app/build.gradle.kts lib/build.gradle.kts
+      - sed -i 's/version = "3.28.3"/version = "3.22.1"/' lib/build.gradle.kts
+      - sed -i 's/cmake_minimum_required(VERSION 3.28.3)/cmake_minimum_required(VERSION 3.22.1)/' lib/src/main/cpp/CMakeLists.txt
+    scanignore:
+      - third_party/llama.cpp/docs/development/llama-star/idea-arch.key
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.2
+CurrentVersionCode: 3
