@@ -31,14 +31,14 @@ Builds:
       - web
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release 
-        --dart-define=FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
