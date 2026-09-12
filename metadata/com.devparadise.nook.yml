@@ -22,8 +22,8 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make git
-      - mkdir -p /__w/nook
-      - chown -R vagrant /__w
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
@@ -41,14 +41,15 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - ln -sfn $$flutter$$ /opt/flutter
       - export repo=/__w/nook/nook
       - cd ..
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - /opt/flutter/bin/flutter config --no-analytics
+      - /opt/flutter/bin/flutter pub get --enforce-lockfile
+      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
@@ -61,7 +62,7 @@ Builds:
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
+      - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
@@ -82,8 +83,8 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make git
-      - mkdir -p /__w/nook
-      - chown -R vagrant /__w
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
@@ -100,14 +101,15 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - ln -sfn $$flutter$$ /opt/flutter
       - export repo=/__w/nook/nook
       - cd ..
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - /opt/flutter/bin/flutter config --no-analytics
+      - /opt/flutter/bin/flutter pub get --enforce-lockfile
+      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
@@ -120,7 +122,7 @@ Builds:
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
+      - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
@@ -141,8 +143,8 @@ Builds:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
         ninja-build tcl clang make git
-      - mkdir -p /__w/nook
-      - chown -R vagrant /__w
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
     srclibs:
@@ -159,14 +161,15 @@ Builds:
         | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - ln -sfn $$flutter$$ /opt/flutter
       - export repo=/__w/nook/nook
       - cd ..
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+      - /opt/flutter/bin/flutter config --no-analytics
+      - /opt/flutter/bin/flutter pub get --enforce-lockfile
+      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
       - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
         $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
@@ -179,7 +182,7 @@ Builds:
       - mv com.devparadise.nook $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=$$flutter$$/bin:$PATH
+      - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
       - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
