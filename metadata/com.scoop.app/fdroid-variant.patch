@@ -1,0 +1,376 @@
+diff --git a/android/app/build.gradle.kts b/android/app/build.gradle.kts
+index 6b787f8..e228d99 100644
+--- a/android/app/build.gradle.kts
++++ b/android/app/build.gradle.kts
+@@ -58,6 +58,8 @@ android {
+ 
+     buildTypes {
+         release {
++            buildConfigField("boolean", "APP_SELF_UPDATE_ENABLED", "true")
++            buildConfigField("boolean", "MEDIA_ENGINE_SELF_UPDATE_ENABLED", "true")
+             // R8 minification here has silently broken reflection-based library internals before
+             // (see proguard-rules.pro) in a way debug builds never surface, since debug skips
+             // minification entirely. Debug installing and working is NOT sufficient signal that a
+@@ -81,7 +83,16 @@ android {
+                 }
+             }
+         }
++        create("fdroid") {
++            initWith(getByName("release"))
++            matchingFallbacks += listOf("release")
++            signingConfig = null
++            buildConfigField("boolean", "APP_SELF_UPDATE_ENABLED", "false")
++            buildConfigField("boolean", "MEDIA_ENGINE_SELF_UPDATE_ENABLED", "false")
++        }
+         debug {
++            buildConfigField("boolean", "APP_SELF_UPDATE_ENABLED", "true")
++            buildConfigField("boolean", "MEDIA_ENGINE_SELF_UPDATE_ENABLED", "true")
+             applicationIdSuffix = ".debug"
+             versionNameSuffix = "-debug"
+         }
+diff --git a/android/app/src/fdroid/AndroidManifest.xml b/android/app/src/fdroid/AndroidManifest.xml
+new file mode 100644
+index 0000000..34c3b7f
+--- /dev/null
++++ b/android/app/src/fdroid/AndroidManifest.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools">
++
++    <uses-permission
++        android:name="android.permission.REQUEST_INSTALL_PACKAGES"
++        tools:node="remove" />
++
++</manifest>
+diff --git a/android/app/src/fdroid/res/values/strings.xml b/android/app/src/fdroid/res/values/strings.xml
+new file mode 100644
+index 0000000..fc932d6
+--- /dev/null
++++ b/android/app/src/fdroid/res/values/strings.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="settings_misc_subtitle">Download prompts, incognito</string>
++</resources>
+diff --git a/android/app/src/main/java/com/scoop/app/ScoopApplication.kt b/android/app/src/main/java/com/scoop/app/ScoopApplication.kt
+index ecfad5d..db91622 100644
+--- a/android/app/src/main/java/com/scoop/app/ScoopApplication.kt
++++ b/android/app/src/main/java/com/scoop/app/ScoopApplication.kt
+@@ -44,7 +44,7 @@ class ScoopApplication : Application(), KoinComponent {
+         createNotificationChannel()
+ 
+         mediaEngineReadiness.startInitializing(applicationScope)
+-        updateChecker.clearStaleDownload()
++        if (BuildConfig.APP_SELF_UPDATE_ENABLED) updateChecker.clearStaleDownload()
+         sweepOldDownloadHistory()
+     }
+ 
+diff --git a/android/app/src/main/java/com/scoop/app/core/media/MediaEngineReadiness.kt b/android/app/src/main/java/com/scoop/app/core/media/MediaEngineReadiness.kt
+index 846dbdf..148f58c 100644
+--- a/android/app/src/main/java/com/scoop/app/core/media/MediaEngineReadiness.kt
++++ b/android/app/src/main/java/com/scoop/app/core/media/MediaEngineReadiness.kt
+@@ -2,6 +2,7 @@ package com.scoop.app.core.media
+ 
+ import android.content.Context
+ import android.util.Log
++import com.scoop.app.BuildConfig
+ import com.yausername.aria2c.Aria2c
+ import com.yausername.ffmpeg.FFmpeg
+ import com.yausername.youtubedl_android.YoutubeDL
+@@ -35,9 +36,11 @@ class MediaEngineReadiness(private val context: Context) {
+                 return@launch
+             }
+ 
+-            runCatching { YoutubeDL.getInstance().updateYoutubeDL(context) }
+-                .onSuccess { Log.i(TAG, "yt-dlp update check: $it") }
+-                .onFailure { Log.w(TAG, "yt-dlp self-update failed, continuing with the bundled version", it) }
++            if (BuildConfig.MEDIA_ENGINE_SELF_UPDATE_ENABLED) {
++                runCatching { YoutubeDL.getInstance().updateYoutubeDL(context) }
++                    .onSuccess { Log.i(TAG, "yt-dlp update check: $it") }
++                    .onFailure { Log.w(TAG, "yt-dlp self-update failed, continuing with the bundled version", it) }
++            }
+         }
+     }
+ 
+diff --git a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsMiscScreen.kt b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsMiscScreen.kt
+index e849b01..2f5664f 100644
+--- a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsMiscScreen.kt
++++ b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsMiscScreen.kt
+@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
++import com.scoop.app.BuildConfig
+ import com.scoop.app.R
+ import com.scoop.app.ui.common.SettingHubRow
+ import com.scoop.app.ui.common.SettingsScreenTitle
+@@ -37,16 +38,18 @@ fun SettingsMiscScreen(onBack: () -> Unit, viewModel: SettingsViewModel = koinVi
+     val snackbarHostState = remember { SnackbarHostState() }
+     val ytDlpUpdateState = viewModel.ytDlpUpdateState
+ 
+-    LaunchedEffect(ytDlpUpdateState) {
+-        val message =
+-            when (val state = ytDlpUpdateState) {
+-                is YtDlpUpdateState.Done -> state.message
+-                is YtDlpUpdateState.Error -> state.message
+-                else -> null
++    if (BuildConfig.MEDIA_ENGINE_SELF_UPDATE_ENABLED) {
++        LaunchedEffect(ytDlpUpdateState) {
++            val message =
++                when (val state = ytDlpUpdateState) {
++                    is YtDlpUpdateState.Done -> state.message
++                    is YtDlpUpdateState.Error -> state.message
++                    else -> null
++                }
++            if (message != null) {
++                snackbarHostState.showSnackbar(message)
++                viewModel.consumeYtDlpUpdateState()
+             }
+-        if (message != null) {
+-            snackbarHostState.showSnackbar(message)
+-            viewModel.consumeYtDlpUpdateState()
+         }
+     }
+ 
+@@ -63,23 +66,25 @@ fun SettingsMiscScreen(onBack: () -> Unit, viewModel: SettingsViewModel = koinVi
+         snackbarHost = { SnackbarHost(snackbarHostState) },
+     ) { innerPadding ->
+         LazyColumn(modifier = Modifier.padding(innerPadding)) {
+-            item {
+-                SettingHubRow(
+-                    title = stringResource(R.string.settings_update_ytdlp),
+-                    subtitle =
+-                        if (ytDlpUpdateState is YtDlpUpdateState.Checking) {
+-                            stringResource(R.string.settings_update_ytdlp_checking)
+-                        } else {
+-                            stringResource(R.string.settings_update_ytdlp_subtitle)
++            if (BuildConfig.MEDIA_ENGINE_SELF_UPDATE_ENABLED) {
++                item {
++                    SettingHubRow(
++                        title = stringResource(R.string.settings_update_ytdlp),
++                        subtitle =
++                            if (ytDlpUpdateState is YtDlpUpdateState.Checking) {
++                                stringResource(R.string.settings_update_ytdlp_checking)
++                            } else {
++                                stringResource(R.string.settings_update_ytdlp_subtitle)
++                            },
++                        leadingIcon = Icons.Outlined.Update,
++                        onClick = viewModel::checkForYtDlpUpdate,
++                        trailingContent = {
++                            if (ytDlpUpdateState is YtDlpUpdateState.Checking) {
++                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
++                            }
+                         },
+-                    leadingIcon = Icons.Outlined.Update,
+-                    onClick = viewModel::checkForYtDlpUpdate,
+-                    trailingContent = {
+-                        if (ytDlpUpdateState is YtDlpUpdateState.Checking) {
+-                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+-                        }
+-                    },
+-                )
++                    )
++                }
+             }
+             item {
+                 SettingHubRow(
+diff --git a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsScreen.kt b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsScreen.kt
+index b727b1a..eee26c5 100644
+--- a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsScreen.kt
++++ b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsScreen.kt
+@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
++import com.scoop.app.BuildConfig
+ import com.scoop.app.R
+ import com.scoop.app.core.update.UpdateCheckState
+ import com.scoop.app.ui.common.SettingHubRow
+@@ -86,21 +87,23 @@ fun SettingsHubScreen(
+     val snackbarHostState = remember { SnackbarHostState() }
+     val updateState = viewModel.updateState
+ 
+-    LaunchedEffect(updateState) {
+-        when (val state = updateState) {
+-            is UpdateCheckState.UpToDate -> {
+-                snackbarHostState.showSnackbar(context.getString(R.string.update_up_to_date))
+-                viewModel.consumeUpdateState()
+-            }
+-            is UpdateCheckState.Error -> {
+-                snackbarHostState.showSnackbar(state.message)
+-                viewModel.consumeUpdateState()
+-            }
+-            is UpdateCheckState.ReadyToInstall -> {
+-                FileShareUtils.installApk(context, state.filePath)
+-                viewModel.consumeUpdateState()
++    if (BuildConfig.APP_SELF_UPDATE_ENABLED) {
++        LaunchedEffect(updateState) {
++            when (val state = updateState) {
++                is UpdateCheckState.UpToDate -> {
++                    snackbarHostState.showSnackbar(context.getString(R.string.update_up_to_date))
++                    viewModel.consumeUpdateState()
++                }
++                is UpdateCheckState.Error -> {
++                    snackbarHostState.showSnackbar(state.message)
++                    viewModel.consumeUpdateState()
++                }
++                is UpdateCheckState.ReadyToInstall -> {
++                    FileShareUtils.installApk(context, state.filePath)
++                    viewModel.consumeUpdateState()
++                }
++                else -> Unit
+             }
+-            else -> Unit
+         }
+     }
+ 
+@@ -123,7 +126,7 @@ fun SettingsHubScreen(
+                 // list's own bounds (rather than just adding contentPadding, which only reserves
+                 // trailing scroll space and leaves the last row exactly where it was) keeps the
+                 // last row (About) from ending up underneath it.
+-                modifier = Modifier.padding(bottom = 96.dp),
++                modifier = Modifier.padding(bottom = if (BuildConfig.APP_SELF_UPDATE_ENABLED) 96.dp else 0.dp),
+                 contentPadding = PaddingValues(bottom = Spacing.md),
+             ) {
+                 item {
+@@ -192,59 +195,61 @@ fun SettingsHubScreen(
+                 }
+             }
+ 
+-            val updatePhase = updateState.phase
+-            val downloadProgress = (updateState as? UpdateCheckState.Downloading)?.progress ?: 0f
+-            val animatedProgress by animateFloatAsState(targetValue = downloadProgress, label = "update-progress")
++            if (BuildConfig.APP_SELF_UPDATE_ENABLED) {
++                val updatePhase = updateState.phase
++                val downloadProgress = (updateState as? UpdateCheckState.Downloading)?.progress ?: 0f
++                val animatedProgress by animateFloatAsState(targetValue = downloadProgress, label = "update-progress")
+ 
+-            ExtendedFloatingActionButton(
+-                onClick = viewModel::checkForUpdate,
+-                modifier =
+-                    Modifier.align(Alignment.BottomEnd)
+-                        .padding(24.dp)
+-                        .clip(FloatingActionButtonDefaults.extendedFabShape),
+-                elevation =
+-                    FloatingActionButtonDefaults.elevation(
+-                        defaultElevation = 0.dp,
+-                        pressedElevation = 0.dp,
+-                        focusedElevation = 0.dp,
+-                        hoveredElevation = 0.dp,
+-                    ),
+-                icon = {
+-                    AnimatedContent(
+-                        targetState = updatePhase,
+-                        label = "update-icon",
+-                        transitionSpec = {
+-                            (fadeIn(tween(200)) + scaleIn(tween(200), initialScale = 0.6f)) togetherWith
+-                                (fadeOut(tween(150)) + scaleOut(tween(150), targetScale = 0.6f))
+-                        },
+-                    ) { phase ->
+-                        when (phase) {
+-                            UpdatePhase.CHECKING -> CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+-                            UpdatePhase.DOWNLOADING ->
+-                                CircularProgressIndicator(progress = { animatedProgress }, modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+-                            UpdatePhase.IDLE -> Icon(Icons.Outlined.Update, contentDescription = null)
+-                        }
+-                    }
+-                },
+-                text = {
+-                    AnimatedContent(
+-                        targetState = updatePhase,
+-                        label = "update-text",
+-                        transitionSpec = {
+-                            (fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 3 }) togetherWith
+-                                (fadeOut(tween(150)) + slideOutVertically(tween(150)) { -it / 3 })
+-                        },
+-                    ) { phase ->
+-                        val label =
++                ExtendedFloatingActionButton(
++                    onClick = viewModel::checkForUpdate,
++                    modifier =
++                        Modifier.align(Alignment.BottomEnd)
++                            .padding(24.dp)
++                            .clip(FloatingActionButtonDefaults.extendedFabShape),
++                    elevation =
++                        FloatingActionButtonDefaults.elevation(
++                            defaultElevation = 0.dp,
++                            pressedElevation = 0.dp,
++                            focusedElevation = 0.dp,
++                            hoveredElevation = 0.dp,
++                        ),
++                    icon = {
++                        AnimatedContent(
++                            targetState = updatePhase,
++                            label = "update-icon",
++                            transitionSpec = {
++                                (fadeIn(tween(200)) + scaleIn(tween(200), initialScale = 0.6f)) togetherWith
++                                    (fadeOut(tween(150)) + scaleOut(tween(150), targetScale = 0.6f))
++                            },
++                        ) { phase ->
+                             when (phase) {
+-                                UpdatePhase.CHECKING -> stringResource(R.string.update_checking)
+-                                UpdatePhase.DOWNLOADING -> stringResource(R.string.update_downloading)
+-                                UpdatePhase.IDLE -> stringResource(R.string.action_check_for_update)
++                                UpdatePhase.CHECKING -> CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
++                                UpdatePhase.DOWNLOADING ->
++                                    CircularProgressIndicator(progress = { animatedProgress }, modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
++                                UpdatePhase.IDLE -> Icon(Icons.Outlined.Update, contentDescription = null)
+                             }
+-                        Text(label)
+-                    }
+-                },
+-            )
++                        }
++                    },
++                    text = {
++                        AnimatedContent(
++                            targetState = updatePhase,
++                            label = "update-text",
++                            transitionSpec = {
++                                (fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 3 }) togetherWith
++                                    (fadeOut(tween(150)) + slideOutVertically(tween(150)) { -it / 3 })
++                            },
++                        ) { phase ->
++                            val label =
++                                when (phase) {
++                                    UpdatePhase.CHECKING -> stringResource(R.string.update_checking)
++                                    UpdatePhase.DOWNLOADING -> stringResource(R.string.update_downloading)
++                                    UpdatePhase.IDLE -> stringResource(R.string.action_check_for_update)
++                                }
++                            Text(label)
++                        }
++                    },
++                )
++            }
+         }
+     }
+ }
+diff --git a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsViewModel.kt b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsViewModel.kt
+index 755278b..fff00ff 100644
+--- a/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsViewModel.kt
++++ b/android/app/src/main/java/com/scoop/app/ui/screen/settings/SettingsViewModel.kt
+@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.viewModelScope
++import com.scoop.app.BuildConfig
+ import com.scoop.app.R
+ import com.scoop.app.core.database.DownloadHistoryDao
+ import com.scoop.app.core.model.AccentPalette
+@@ -350,6 +351,7 @@ class SettingsViewModel(
+     }
+ 
+     fun checkForUpdate() {
++        if (!BuildConfig.APP_SELF_UPDATE_ENABLED) return
+         if (updateState is UpdateCheckState.Checking || updateState is UpdateCheckState.Downloading) return
+         updateState = UpdateCheckState.Checking
+         viewModelScope.launch {
+@@ -374,6 +376,7 @@ class SettingsViewModel(
+     }
+ 
+     fun checkForYtDlpUpdate() {
++        if (!BuildConfig.MEDIA_ENGINE_SELF_UPDATE_ENABLED) return
+         if (ytDlpUpdateState is YtDlpUpdateState.Checking) return
+         ytDlpUpdateState = YtDlpUpdateState.Checking
+         viewModelScope.launch {
