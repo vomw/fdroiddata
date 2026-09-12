@@ -1,11 +1,8 @@
 Categories:
   - Connectivity
-
 License: GPL-3.0-only
-
 AuthorName: ImL1s
 AuthorEmail: aa22306546@hotmail.com
-
 SourceCode: https://codeberg.org/ImL1s/telltale
 IssueTracker: https://github.com/ImL1s/telltale/issues
 Changelog: https://codeberg.org/ImL1s/telltale/releases
@@ -21,7 +18,7 @@ Builds:
     commit: 718092601fcbc0c66d632dab3ca4cd07ff55db8e
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
+      - apt-get install -y openjdk-21-jdk-headless
       - update-alternatives --auto java
     output: build/app/outputs/flutter-apk/app-field-release.apk
     srclibs:
@@ -33,7 +30,7 @@ Builds:
       - web
       - windows
     prebuild:
-      - export flutterVersion=$(sed -n -E "s/.*FLUTTER_VERSION: \"([0-9.]+)\"/\1/p" .github/workflows/release.yml | head -n1)
+      - export flutterVersion=$(sed -n -E 's/.*FLUTTER_VERSION: "([0-9.]+)"/\1/p' .github/workflows/release.yml | head -n1)
       - '[[ "$flutterVersion" == "3.47.0" ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
