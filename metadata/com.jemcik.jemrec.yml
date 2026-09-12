@@ -1,0 +1,45 @@
+Categories:
+  - Phone & SMS
+License: Apache-2.0
+AuthorName: Yevhen Yemchynskyi
+WebSite: https://jemcik.github.io/JemRec/
+SourceCode: https://github.com/jemcik/JemRec
+IssueTracker: https://github.com/jemcik/JemRec/issues
+Changelog: https://github.com/jemcik/JemRec/releases
+
+RepoType: git
+Repo: https://github.com/jemcik/JemRec.git
+
+# Reproducible: F-Droid builds the tag, compares against the APK on the GitHub
+# release byte for byte, and publishes the upstream-signed APK when they match.
+# That keeps one signing key across GitHub and F-Droid, so an install from
+# either upgrades in place from the other.
+Binaries: https://github.com/jemcik/JemRec/releases/download/%v/jemrec-%v.apk
+
+Builds:
+  - versionName: '0.5'
+    versionCode: 500
+    commit: '0.5'
+    subdir: app
+    # The shell-side daemon is compiled by shellserver/build.sh, which Gradle
+    # runs as part of preBuild: javac against platforms;android-36 and d8 from
+    # build-tools;36.0.0, both read by path. The app itself compiles against
+    # android-37, which the SDK repository names "android-37.0" - the bare
+    # name is tried second in case that ever changes back.
+    prebuild:
+      - sdkmanager "platforms;android-37.0" || sdkmanager "platforms;android-37"
+      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
+    gradle:
+      - yes
+
+# The project release certificate, as printed by
+# `apksigner verify --print-certs jemrec-<version>.apk`.
+AllowedAPKSigningKeys: 50aeab3630f0198ea3845db51413b1ad29582f78240fa2df6fe55ba8537afdf8
+
+# Tags are bare MAJOR.MINOR[.PATCH]. The version is in gradle.properties, which
+# the release workflow checks against the tag before it will publish.
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9]+\.[0-9]+(\.[0-9]+)?$
+UpdateCheckData: gradle.properties|jemrecVersionCode=(\d+)|gradle.properties|jemrecVersionName=(.+)
+CurrentVersion: '0.5'
+CurrentVersionCode: 500
