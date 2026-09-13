@@ -80,50 +80,6 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
     ndk: 28.2.13676358
 
-MaintainerNotes: |-
-  gitubpatrice: THE APK CONTAINS A PRETRAINED BINARY, said here rather than left for you to
-  find: packages/whisper_ggml_plus/assets/models/ggml-silero-v6.2.0.bin, 864 kB, a Silero
-  voice-activity model. It is not this app's. It is a declared asset of whisper_ggml_plus
-  1.5.2, a transitive dependency reached through files_tech_voice, and Flutter bundles a
-  package's declared assets whether the app uses them or not; this app's own code never
-  references VAD or Silero. The package is MIT, the file is committed in the open at
-  github.com/DDULDDUCK/whisper_ggml_plus, and Silero VAD is MIT. Removing it would mean
-  forking a third-party package over 864 kB of a 27 MB APK, so scanignore covers that one
-  path instead. It surfaced only because pub get moved into prebuild, which is what puts
-  .pub-cache in front of the scanner; running pub get inside build would hide it again, which
-  is not a fix. Say the word and I will raise it with the package upstream.
-  .
-  gitubpatrice: reproducible builds were attempted and are not enabled, and the measurement is
-  worth recording so nobody repeats it. With the build directory moved to the upstream path
-  and PUB_CACHE aligned by an upstream change in 2.0.7, the comparison came down to two files
-  out of the whole APK. libdartjni.so differed by exactly 20 bytes, its GNU build-id, with
-  identical content otherwise; a build-id is computed before stripping, over a binary that
-  still carries debug paths including the NDK's, and that path is /usr/local/lib/android/sdk
-  upstream against /opt/android-sdk here. libapp.so differed by 14 %, concentrated in the
-  first third, the Dart snapshot's code; its data sections matched exactly, which rules out
-  the obfuscation mapping. Neither is reachable from a recipe, so binary: is dropped rather
-  than left failing. Everything else in the APK matched byte for byte.
-  .
-  gitubpatrice: the Flutter version is read from pubspec.yaml as the template does, and
-  --enforce-lockfile needs it. srclibs/flutter.yml pins nothing, so flutter@stable is the
-  branch tip at build time and a newer stable resolves different SDK-pinned packages than the
-  lockfile came from; an attempt without the pin failed on "Unable to satisfy pubspec.yaml
-  using pubspec.lock", seven packages apart. The pubspec constraint, the workflows'
-  flutter-version, the lockfile and this recipe all name 3.47.2. The NDK follows from it,
-  ndkVersion = flutter.ndkVersion, hence the explicit 28.2.13676358.
-  .
-  gitubpatrice: the ABI versionCodes are versionCode * 10 + n, armeabi-v7a 1, arm64-v8a 2 and
-  x86_64 3, set since 2.0.8 by a block in android/app/build.gradle.kts, as asked on the MR.
-  Flutter's own --split-per-abi scheme, abi * 1000 + versionCode, interleaves two versions
-  once rewritemeta sorts the Builds, and checkupdates then pairs the last three entries with
-  the wrong ABI. The new codes are smaller than Flutter's, so the pubspec versionCode jumped
-  from 55 to 406 to keep installs from the GitHub releases updatable (2.0.7 shipped 4055).
-  Measured with androguard on the published 2.0.8 binaries. Each build line
-  carries --target-platform because F-Droid builds every entry independently and a bare
-  --split-per-abi makes all three APKs each time to keep one: 12 Gradle runs and 57 minutes
-  here, against 23 once each entry compiled only its own ABI. Only the current version is
-  declared, for the same reason.
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
