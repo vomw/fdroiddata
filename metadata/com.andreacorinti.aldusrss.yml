@@ -1,0 +1,61 @@
+Categories:
+  - Internet
+  - News
+License: MIT
+AuthorName: Andrea Corinti
+SourceCode: https://github.com/andreacorinti/aldusrss
+IssueTracker: https://github.com/andreacorinti/aldusrss/issues
+Changelog: https://github.com/andreacorinti/aldusrss/releases
+
+AutoName: AldusRSS
+
+RepoType: git
+Repo: https://github.com/andreacorinti/aldusrss
+
+Builds:
+  - versionName: 0.4.27
+    versionCode: 48
+    commit: 245c4a61fb116dbb2cb8925105268b7c3e081527
+    subdir: android/app
+    sudo:
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz
+      - echo "b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - rm node.tar.gz
+    gradle:
+      - yes
+    prebuild:
+      - pushd ../..
+      - npm ci
+      - npm run build
+      - npx cap sync android
+      - popd
+    scandelete:
+      - node_modules
+
+  - versionName: 0.4.28
+    versionCode: 49
+    commit: 9844ca0df680daf209f55f6d08d85f264385dd9d
+    subdir: android/app
+    sudo:
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz
+      - echo "b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - rm node.tar.gz
+    gradle:
+      - yes
+    prebuild:
+      - pushd ../..
+      - npm ci
+      - npm run build
+      - npx cap sync android
+      - popd
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 0.4.28
+CurrentVersionCode: 49
