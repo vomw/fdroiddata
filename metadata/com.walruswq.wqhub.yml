@@ -1,0 +1,47 @@
+Categories:
+  - Board Game
+License: BSD-3-Clause
+AuthorName: Alejandro Lopez del Huerto
+AuthorEmail: ale64bit@gmail.com
+WebSite: https://walruswq.com/WeiqiHub
+SourceCode: https://github.com/ale64bit/WeiqiHub
+IssueTracker: https://github.com/ale64bit/WeiqiHub/issues
+Donate: https://walruswq.com/donate
+
+AutoName: WeiqiHub
+
+RepoType: git
+Repo: https://github.com/ale64bit/WeiqiHub.git
+
+Builds:
+  - versionName: 0.1.13-b970bcc0
+    versionCode: 40
+    commit: b970bcc052b0273b29899947dfb9b0ede46ff63e
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      #- flutterVersion=$(sed -n -E "s/.*flutter:\ (.*)/\1/p" pubspec.yaml)
+      - flutterVersion=3.41.0
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags v.*[0-9]$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.13
+CurrentVersionCode: 40
