@@ -1,6 +1,5 @@
 Categories:
-  - Security
-  - Writing
+  - Note
 License: Apache-2.0
 AuthorName: Patrice Haltaya
 AuthorEmail: contact@files-tech.com
@@ -15,9 +14,9 @@ RepoType: git
 Repo: https://github.com/gitubpatrice/notes_tech.git
 
 Builds:
-  - versionName: 2.0.7
-    versionCode: 1055
-    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+  - versionName: 2.0.8
+    versionCode: 4061
+    commit: ca00570cc92db875ad8e419595308288a672593f
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -37,9 +36,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
     ndk: 28.2.13676358
 
-  - versionName: 2.0.7
-    versionCode: 2055
-    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+  - versionName: 2.0.8
+    versionCode: 4062
+    commit: ca00570cc92db875ad8e419595308288a672593f
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -59,9 +58,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
     ndk: 28.2.13676358
 
-  - versionName: 2.0.7
-    versionCode: 4055
-    commit: 83b19a22212c6f4e9c9283cb0e4fae0492983121
+  - versionName: 2.0.8
+    versionCode: 4063
+    commit: ca00570cc92db875ad8e419595308288a672593f
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -113,9 +112,13 @@ MaintainerNotes: |-
   flutter-version, the lockfile and this recipe all name 3.47.2. The NDK follows from it,
   ndkVersion = flutter.ndkVersion, hence the explicit 28.2.13676358.
   .
-  gitubpatrice: the ABI versionCodes are Flutter's own, ABI_VERSION[abi] * 1000 + versionCode,
-  mapping armeabi-v7a to 1, arm64-v8a to 2 and x86_64 to 4 -- 3 was retired with x86 support
-  in flutter#170191. Measured with androguard on the published binaries. Each build line
+  gitubpatrice: the ABI versionCodes are versionCode * 10 + n, armeabi-v7a 1, arm64-v8a 2 and
+  x86_64 3, set since 2.0.8 by a block in android/app/build.gradle.kts, as asked on the MR.
+  Flutter's own --split-per-abi scheme, abi * 1000 + versionCode, interleaves two versions
+  once rewritemeta sorts the Builds, and checkupdates then pairs the last three entries with
+  the wrong ABI. The new codes are smaller than Flutter's, so the pubspec versionCode jumped
+  from 55 to 406 to keep installs from the GitHub releases updatable (2.0.7 shipped 4055).
+  Measured with androguard on the published 2.0.8 binaries. Each build line
   carries --target-platform because F-Droid builds every entry independently and a bare
   --split-per-abi makes all three APKs each time to keep one: 12 Gradle runs and 57 minutes
   here, against 23 once each entry compiled only its own ABI. Only the current version is
@@ -124,9 +127,9 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 1000 * 1 + %c
-  - 1000 * 2 + %c
-  - 1000 * 4 + %c
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.0.7
-CurrentVersionCode: 4055
+CurrentVersion: 2.0.8
+CurrentVersionCode: 4063
