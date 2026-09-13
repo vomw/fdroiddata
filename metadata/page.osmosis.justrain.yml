@@ -1,0 +1,46 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: KUKARAF
+SourceCode: https://github.com/KUKARAF/justrain
+IssueTracker: https://github.com/KUKARAF/justrain/issues
+
+RepoType: git
+Repo: https://github.com/KUKARAF/justrain.git
+
+Builds:
+  - versionName: 8b5b0d9.00.02
+    versionCode: 26
+    commit: 8b5b0d9.00.02
+    sudo:
+      - apt-get update
+      - apt-get install -y python3 build-essential
+    output: 
+      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    srclibs:
+      - rustup@1.27.0
+    prebuild:
+      - export NDK_HOME=$$NDK$$
+      - export RANLIB=${NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib
+      - $$rustup$$/rustup-init.sh -y --default-toolchain stable --target 
+        aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+      - source $HOME/.cargo/env
+      - cargo install tauri-cli --version "^2" --locked
+      - cargo tauri android init
+      - cargo tauri icon src-tauri/icons/icon.png
+      - python3 .github/scripts/patch_gradle.py
+      - sed -i '/signingConfig = signingConfigs.getByName("release")/d' src-tauri/gen/android/app/build.gradle.kts
+      - python3 .github/scripts/patch_android.py
+      - echo "window.__JUSTRAIN_VERSION__ = '8b5b0d9.00.02';" > src/version.js
+    build:
+      - source $HOME/.cargo/env
+      - export NDK_HOME=$$NDK$$
+      - export TAURI_ANDROID_VERSION_CODE=26
+      - export TAURI_ANDROID_VERSION_NAME=8b5b0d9.00.02
+      - cargo tauri android build --apk
+    ndk: 27.0.12077973
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 8b5b0d9.00.02
+CurrentVersionCode: 26
