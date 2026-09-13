@@ -1,0 +1,44 @@
+Categories:
+  - Action Game
+License: CC0-1.0
+AuthorName: DerpBiscuit
+WebSite: https://gitlab.com/DerpBiscuit/astro-strike
+SourceCode: https://gitlab.com/DerpBiscuit/astro-strike
+IssueTracker: https://gitlab.com/DerpBiscuit/astro-strike/-/issues
+
+AutoName: Astro Strike
+
+RepoType: git
+Repo: https://gitlab.com/DerpBiscuit/astro-strike.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 5d8671366f9070c85e1244029f2ac956f5b6bdb6
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons g++
+    output: AstroStrike-fdroid.apk
+    srclibs:
+      - Godot@4.6.3-stable
+    build:
+      - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no"
+      - $SCONS target=editor platform=linuxbsd
+      - $SCONS target=template_release platform=android arch=arm64 production=yes
+        swappy=no generate_android_binaries=yes generate_apk=yes
+      - popd
+      - mv $$Godot$$/bin/android_release.apk ./android_release.apk
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --import
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64 --headless --export-release F-Droid
+        AstroStrike-fdroid.apk
+    ndk: r29
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: export_presets.cfg|version/code=(\d+)|.|version/name="([\d.]+)"
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
