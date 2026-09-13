@@ -14,19 +14,66 @@ RepoType: git
 Repo: https://github.com/JaredTweed/aradia.git
 
 Builds:
-  - versionName: 3.0.2
-    versionCode: 3
-    commit: v3.0.2
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 3.0.3
+    versionCode: 41
+    commit: v3.0.3
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
-      - flutter@3.35.3
+      - flutter@stable
     prebuild:
+      - git -C $$flutter$$ checkout -f $(cat flutter-version.txt)
       - sh tool/prepare_fdroid_build.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 3.0.2
-CurrentVersionCode: 3
+  - versionName: 3.0.3
+    versionCode: 42
+    commit: v3.0.3
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat flutter-version.txt)
+      - sh tool/prepare_fdroid_build.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 3.0.3
+    versionCode: 43
+    commit: v3.0.3
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat flutter-version.txt)
+      - sh tool/prepare_fdroid_build.sh
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.0.3
+CurrentVersionCode: 43
