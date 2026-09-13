@@ -1,0 +1,42 @@
+Categories:
+  - Internet
+License: AGPL-3.0-only
+AuthorName: Civic Report
+SourceCode: https://gitlab.com/civic-report/civic-report
+IssueTracker: https://gitlab.com/civic-report/civic-report/-/issues
+
+AutoName: Civic Report
+
+RepoType: git
+Repo: https://gitlab.com/civic-report/civic-report.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: abe5e7008c3745d313e04d6250e2025ef28abcc8
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - FLUTTER_VERSION=$(cat .flutter-version)
+      - '[[ $FLUTTER_VERSION ]]'
+      - git -C $$flutter$$ checkout -f $FLUTTER_VERSION
+      - cd ..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd app
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - server/internal/facedetect/facefinder
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(cd .. && pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --dart-define=API_BASE=https://api.civicreport.app
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
