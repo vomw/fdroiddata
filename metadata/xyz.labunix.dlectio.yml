@@ -6,6 +6,8 @@ AuthorEmail: lukas@labunix.xyz
 SourceCode: https://codeberg.org/labunix/dlectio
 IssueTracker: https://codeberg.org/labunix/dlectio/issues
 
+AutoName: dlectio
+
 RepoType: git
 Repo: https://codeberg.org/labunix/dlectio.git
 Binaries: https://codeberg.org/labunix/dlectio/releases/download/v%v/dlectio-%v.apk
@@ -38,8 +40,8 @@ Builds:
       - mkdir -p libs
       - pushd ../engine/lectio
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260730202154-c700fe717e6e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260813181013-1960c775504c
       - go mod download
-      - gomobile init
       - gomobile bind -target=android/arm64 -androidapi 26 -javapkg=xyz.labunix.dlectio.engine
         -tags fullbible -ldflags="-buildid=" -trimpath -o ../../app/libs/dlectio-engine.aar
         github.com/lukaszkasprzak/lectio/mobile
@@ -47,6 +49,7 @@ Builds:
     ndk: 26.1.10909125
     gradleprops:
       - abiTarget=arm64-v8a
+
   - versionName: 0.2.2
     versionCode: 41
     commit: v0.2.2
@@ -74,8 +77,8 @@ Builds:
       - mkdir -p libs
       - pushd ../engine/lectio
       - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260730202154-c700fe717e6e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260813181013-1960c775504c
       - go mod download
-      - gomobile init
       - gomobile bind -target=android/arm64 -androidapi 26 -javapkg=xyz.labunix.dlectio.engine
         -tags fullbible -ldflags="-buildid=" -trimpath -o ../../app/libs/dlectio-engine.aar
         github.com/lukaszkasprzak/lectio/mobile
@@ -90,6 +93,7 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 VercodeOperation:
   - 10*%c+1
-UpdateCheckData: app/build.gradle.kts|val baseVersionCode = (\d+)|.|versionName = "([^"]+)"
+UpdateCheckData: app/build.gradle.kts|val baseVersionCode = (\d+)|.|versionName =
+  "([^"]+)"
 CurrentVersion: 0.2.2
 CurrentVersionCode: 41
