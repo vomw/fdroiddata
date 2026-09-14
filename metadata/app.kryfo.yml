@@ -15,6 +15,55 @@ Repo: https://github.com/GnosiWorks/Kryfo.git
 
 Builds:
   - versionName: 0.2.7
+    versionCode: 91
+    commit: c5fb82c2f6193e6b4536c7ade4640cdb3c9661b6
+    subdir: mobile
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends -t trixie-backports golang-go
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+      - go@go1.25.0
+    rm:
+      - mobile/ios
+      - mobile/linux
+      - mobile/macos
+      - mobile/web
+      - mobile/windows
+    prebuild:
+      - sdkmanager "platforms;android-36" "platforms;android-35" "platforms;android-34"
+        "build-tools;36.0.0" "build-tools;35.0.0" "cmake;3.22.1"
+      - git -C $$go$$ checkout -f go1.25.0
+      - 'flutterVersion=$(sed -n -E "s/^  flutter: ([0-9.]+)$/\1/p" pubspec.yaml)'
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - mobile/.pub-cache
+      - engine/vendor/gitlab.com/yawning/edwards25519-extra/h2c/testdata
+      - engine/vendor/github.com/bytedance/sonic/testdata
+      - engine/vendor/github.com/alexballas/go-libtor/linux/tor/src/ext/equix/Cargo.toml
+    build:
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - export GOROOT=$$go$$
+      - export PATH=$GOROOT/bin:$PATH
+      - export ANDROID_NDK_HOME=$$NDK$$
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CGO_ENABLED=1
+      - export GOFLAGS=-trimpath
+      - export CGO_LDFLAGS="-Wl,--build-id=none"
+      - cd ../engine
+      - bash build.sh
+      - cd ../mobile
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+    ndk: r28c
+
+  - versionName: 0.2.7
     versionCode: 92
     commit: c5fb82c2f6193e6b4536c7ade4640cdb3c9661b6
     subdir: mobile
