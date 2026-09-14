@@ -1,0 +1,50 @@
+Categories:
+  - Navigation
+License: MIT
+AuthorName: daguwar
+SourceCode: https://codeberg.org/daguwar/skeppoboj
+IssueTracker: https://codeberg.org/daguwar/skeppoboj/issues
+
+RepoType: git
+Repo: https://codeberg.org/daguwar/skeppoboj.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 6d387d67d6e8a78506d248170c2022009be3bb05
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export repo=/upstream/path/skeppoboj
+      - cd ..
+      - mv org.codeberg.daguwar.skeppoboj $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - mv $repo org.codeberg.daguwar.skeppoboj
+    scanignore:
+      - .pub-cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/upstream/path/skeppoboj
+      - cd ..
+      - mv org.codeberg.daguwar.skeppoboj $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - mv $repo org.codeberg.daguwar.skeppoboj
+    output: build/app/outputs/flutter-apk/app-release.apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
