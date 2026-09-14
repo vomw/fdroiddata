@@ -5671,9 +5671,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --dart-define=cronetHttpNoPlay=true
     ndk: r25c
 
-  - versionName: 3.2.0-rc.1
-    versionCode: 3020001
-    commit: e3900d7109fa5cae18ca19df0a588aeffb37c908
+  - versionName: 3.2.0
+    versionCode: 3020099
+    commit: 1b6098c9dbfffe978bec2d414606ed7a4c8e019a
     subdir: mobile
     submodules: true
     sudo:
@@ -5695,6 +5695,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash ../open-api/bin/generate-dart-sdk.sh
       - sed -i -e "s/^\#f//" pubspec.yaml
       - sed -i -e 's/^\/\/f //' -e '/media3-datasource-cronet/s/$/{exclude group:"com.google.android.gms",module:"play-services-cronet"}/'
         -e '/def keyAliasVal = System/,+7d' -e '/def hasKeystore = file/,+8d' android/app/build.gradle
@@ -5739,7 +5740,7 @@ Builds:
     ndk: r25c
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: mobile/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 3.2.0-rc.1
-CurrentVersionCode: 3020001
+CurrentVersion: 3.2.0
+CurrentVersionCode: 3020099
