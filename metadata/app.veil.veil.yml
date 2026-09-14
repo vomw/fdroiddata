@@ -22,7 +22,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
       - openpgp-mobile@v1.13.0
     rm:
       - ios
@@ -31,6 +31,10 @@ Builds:
       - web
       - windows
     prebuild:
+      - "flutterVersion=$(sed -n 's/^[[:space:]]*flutter-version: \"\\([^\"]*\\)\"\
+        [[:space:]]*$/\\1/p' .github/workflows/android-release.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
@@ -66,7 +70,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
       - openpgp-mobile@v1.13.0
     rm:
       - ios
@@ -75,6 +79,10 @@ Builds:
       - web
       - windows
     prebuild:
+      - "flutterVersion=$(sed -n 's/^[[:space:]]*flutter-version: \"\\([^\"]*\\)\"\
+        [[:space:]]*$/\\1/p' .github/workflows/android-release.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
@@ -110,7 +118,7 @@ Builds:
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: https://github.com/veil-notes/app/releases/download/v%v/%c.apk
     srclibs:
-      - flutter@3.41.6
+      - flutter@stable
       - openpgp-mobile@v1.13.0
     rm:
       - ios
@@ -119,6 +127,10 @@ Builds:
       - web
       - windows
     prebuild:
+      - "flutterVersion=$(sed -n 's/^[[:space:]]*flutter-version: \"\\([^\"]*\\)\"\
+        [[:space:]]*$/\\1/p' .github/workflows/android-release.yml)"
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - sed -i '/^org.gradle.jvmargs=/d' android/gradle.properties
