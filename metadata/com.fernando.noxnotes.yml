@@ -1,0 +1,40 @@
+Categories:
+  - Note
+  - Writing
+License: MIT
+WebSite: https://github.com/fernandonavarro8700-cyber/noxnotes
+SourceCode: https://github.com/fernandonavarro8700-cyber/noxnotes
+IssueTracker: https://github.com/fernandonavarro8700-cyber/noxnotes/issues
+
+AutoName: NoxNotes
+Summary: Aplicación intuitiva para la gestión de notas rápidas
+Description: |-
+  NoxNotes es una aplicación personal e intuitiva para la gestión y registro de notas rápidas.
+
+  Características:
+  * Gestión de notas rápida.
+  * Interfaz limpia.
+  * Almacenamiento local.
+
+RepoType: git
+Repo: https://github.com/fernandonavarro8700-cyber/noxnotes
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10000
+    commit: ab014a86d7abe524332be592337bb02da4e7370b
+    sudo:
+      - apt-get update || true
+      - apt-get install -y nodejs npm
+      - npm install -g cordova
+    output: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - npm install
+      - sdkmanager "build-tools;36.0.0"
+      - cordova platform add android
+      - cordova build android --release -- --packageType=apk
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.0
+CurrentVersionCode: 10000
