@@ -17,9 +17,11 @@ Builds:
     commit: 9bb924da7646f623a368d7ed6fbfee431b9a74e9
     subdir: AIKeyboardMobile/android
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y npm openjdk-17-jdk-headless
-      - update-alternatives --auto java
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - apt-get install -y npm
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     init: cd .. && npm install --legacy-peer-deps
     gradle:
       - yes
