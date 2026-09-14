@@ -157,9 +157,9 @@ Builds:
     scandelete:
       - node_modules
 
-  - versionName: 1.12.1
-    versionCode: 24
-    commit: 5139c5ad2c07bdf4e9c90a27a561820ef089e118
+  - versionName: 1.13.1
+    versionCode: 26
+    commit: b4cba254423073fd406a98f45aef5dff4a73321c
     subdir: android/app
     sudo:
       - echo 'deb https://deb.debian.org/debian forky main' > /etc/apt/sources.list.d/forky.list
@@ -170,20 +170,16 @@ Builds:
       - npm ci
     gradle:
       - yes
-    srclibs:
-      - reproducible-apk-tools@v0.3.0
     prebuild:
       - cd ../..
       - npm run build
       - npx cap sync android
     scandelete:
       - node_modules
-    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
-      'assets/public/fonts/fonts.css' 'assets/public/robots.txt'
 
 AllowedAPKSigningKeys: 27e17d1fba157da6eacde58485aab56066200cc45ad00bd518d828367ec155e4
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
-CurrentVersion: 1.12.1
-CurrentVersionCode: 24
+CurrentVersion: 1.13.1
+CurrentVersionCode: 26
