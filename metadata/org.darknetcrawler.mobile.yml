@@ -12,6 +12,7 @@ AutoName: Ghost Search
 
 RepoType: git
 Repo: https://codeberg.org/sookoothaii/digital-spyglass-android.git
+Binaries: https://codeberg.org/sookoothaii/digital-spyglass-android/releases/download/v%v/ghost-v%v-release.apk
 
 Builds:
   - versionName: 1.0.1
@@ -37,38 +38,7 @@ Builds:
     scandelete:
       - node_modules
 
-MaintainerNotes: |-
-  Bun is used for JS dependency management and the Vite web build. The web
-  assets are built with `bun run build:mobile` and synced to Android with
-  `bunx cap sync android` before the Gradle build.
-
-  Node.js 22+ is required by Capacitor 8 CLI (`bunx cap sync android` fails
-  with "The Capacitor CLI requires NodeJS >=22.0.0" on older versions).
-  Debian's default nodejs is too old. We install nodejs from the Debian
-  "forky" repository which provides Node.js 24.x.
-
-  Debian forky's npm blocks package install scripts by default (allowScripts
-  policy), which left bun's wrapper without its binary. The postinstall is
-  explicitly allowed via `--allow-scripts=bun` on the global install.
-
-  The key files (key.properties, release-keystore.jks) are gitignored and
-  not in the repo, so no `rm:` is needed. F-Droid builds from a clean
-  checkout and signs with its own key.
-
-  iOS template tarballs and source-map WASM binaries are not needed for the
-  Android APK and should not be shipped as prebuilt binaries. They are
-  excluded from the scanner via scanignore, and the whole node_modules tree
-  is removed via scandelete instead of manual rm commands.
-
-  Summary, description, title, icon, screenshots, and changelogs are
-  provided via Fastlane structure in the app's own repository at
-  fastlane/metadata/android/en-US/ and will be pulled automatically.
-
-  Source moved from GitHub to Codeberg after GitHub account suspension.
-
-  v1.0.1 fixes F-Droid code quality findings: cleartext traffic denied
-  (Tor uses raw SOCKS5 sockets, not Android HTTP stack) and whatsNew
-  shortened to under 500 chars.
+AllowedAPKSigningKeys: 0295bf53d9abe8621e41510cdc1bd8dcaf992745621a6bcff33eeb6f3f870106
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
