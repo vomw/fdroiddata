@@ -1,0 +1,29 @@
+Categories:
+  - Multimedia
+License: Apache-2.0
+SourceCode: https://github.com/Saswata-Codes/stream-prime
+IssueTracker: https://github.com/Saswata-Codes/stream-prime/issues
+
+AutoName: Stream Prime
+
+RepoType: git
+Repo: https://github.com/Saswata-Codes/stream-prime
+
+Builds:
+  - versionName: '3.0'
+    versionCode: 13
+    commit: 28d405bb81acca0b28a6e387ebc3fbce35bb6872
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i.bak '/id("org.gradle.toolchains.foojay-resolver-convention")/d'
+      ../settings.gradle.kts && find .. -name "build.gradle.kts" -exec sed -i.bak
+      -E 's/jvmToolchain\([[:space:]]*17[[:space:]]*\)/compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17"))
+      }/g' {} +
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+(\.[0-9]+)*$
+UpdateCheckData: 
+  gradle/libs.versions.toml|versionCode\s*=\s*"(\d+)"|.|versionName\s*=\s*"([^"]+)"
+CurrentVersion: '3.0'
+CurrentVersionCode: 13
