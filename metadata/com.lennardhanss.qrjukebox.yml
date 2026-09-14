@@ -1,0 +1,33 @@
+Categories:
+  - Multimedia
+License: MIT
+SourceCode: https://github.com/lexygo/QRJukebox
+IssueTracker: https://github.com/lexygo/QRJukebox/issues
+
+AutoName: QR Jukebox
+
+RepoType: git
+Repo: https://github.com/lexygo/QRJukebox.git
+
+Builds:
+  - versionName: 1.0.11
+    versionCode: 9
+    commit: v1.0.11
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|\+([0-9]+)|pubspec.yaml|version:\s*([0-9.]+)
+CurrentVersion: 1.0.11
+CurrentVersionCode: 9
