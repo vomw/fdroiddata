@@ -1,0 +1,59 @@
+Categories:
+  - Time
+License: GPL-3.0-or-later
+SourceCode: https://gitlab.com/celebrate_1955/dateprism/dateprism
+IssueTracker: https://gitlab.com/celebrate_1955/dateprism/dateprism/-/issues
+Changelog: https://gitlab.com/celebrate_1955/dateprism/dateprism/-/blob/main/CHANGELOG.md
+Donate: https://www.paypal.com/ncp/payment/Y2237MMZFL2EY
+
+AutoName: DatePrism
+
+RepoType: git
+Repo: https://gitlab.com/celebrate_1955/dateprism/dateprism.git
+
+Builds:
+  - versionName: 3.3.2
+    versionCode: 3030200
+    commit: 9b12510f19637fc53a082f237f7c98c8526de881
+    subdir: build/dateprism/android/gradle/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ libc-dev make automake libltdl-dev libtool zlib1g-dev
+        libffi-dev libssl-dev
+    gradle:
+      - yes
+    srclibs:
+      - cpython@v3.13.11
+      - briefcase@v0.3.22
+      - toga@v0.4.7
+      - template@v0.3.22
+    build:
+      - pushd $$cpython$$
+      - ./configure --prefix=$HOME/.local
+      - make -j$(nproc)
+      - make install
+      - popd
+      - export PATH="$HOME/.local/bin:$PATH"
+      - pushd $$briefcase$$
+      - pip3 install --user .
+      - popd
+      - pushd $$toga$$
+      - pip3 install --user ./core ./android
+      - popd
+      - pushd $$template$$
+      - mkdir -p $HOME/.cookiecutters
+      - cp -a . $HOME/.cookiecutters/briefcase-android-gradle-template
+      - popd
+      - cd ../../../../..
+      - yes | briefcase create android || true
+      - grep "applicationId" build/dateprism/android/gradle/app/build.gradle
+      - sed -i 's/applicationId "com.rognie.dateprism.dateprism"/applicationId "com.rognie.dateprism"/'
+        build/dateprism/android/gradle/app/build.gradle
+      - grep "applicationId" build/dateprism/android/gradle/app/build.gradle
+      - briefcase build android
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckName: com.rognie.dateprism.dateprism
+CurrentVersion: 3.3.2
+CurrentVersionCode: 3030200
