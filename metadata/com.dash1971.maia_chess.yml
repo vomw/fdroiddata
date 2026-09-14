@@ -21,10 +21,12 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.47.1
+    sudo:
+      - apt-get update
+      - apt-get install -y git-lfs
+      - git lfs install  
     prebuild:
-      - rm assets/models/maia3-79m.onnx
-      - curl -sL -o assets/models/maia3-79m.onnx https://media.githubusercontent.com/media/Dash1971/maia-chess-android/$(git
-        rev-parse HEAD)/assets/models/maia3-79m.onnx
+      - git lfs pull
       - echo '3454b03ae78baa64a87b345fdb1a457265d912caec531039b074f07eda0d8010  assets/models/maia3-79m.onnx'
         | sha256sum -c -
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -46,10 +48,10 @@ AllowedAPKSigningKeys: cd6c07c4efacf52bcccb83009b522c1dcad4a171197505a486f0a58ed
 
 MaintainerNotes: |-
   The bundled AGPL-3.0 Maia-3 ONNX model is stored using Git LFS. The recipe
-  materializes it from the exact checked-out source and verifies its pinned
-  SHA-256 before building. Changes to the model hash or pinned Flutter version
-  require manual review. The guarded Flutter and Stockfish preparation steps
-  are required for deterministic, reproducible builds.
+  fetches it via `git lfs pull` and verifies its pinned SHA-256 before
+  building. Changes to the model hash or pinned Flutter version require
+  manual review. The guarded Flutter and Stockfish preparation steps are
+  required for deterministic, reproducible builds.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
