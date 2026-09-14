@@ -1,0 +1,40 @@
+Categories:
+  - Multimedia
+  - Internet
+License: GPL-3.0-or-later
+AuthorName: rsshir60
+SourceCode: https://github.com/rsshir60/BlackTube
+IssueTracker: https://github.com/rsshir60/BlackTube/issues
+Changelog: https://github.com/rsshir60/BlackTube/releases
+
+AutoName: BlackTube
+
+AntiFeatures:
+  - NonFreeNet
+
+RequiresRoot: false
+
+RepoType: git
+Repo: https://github.com/rsshir60/BlackTube
+
+Builds:
+  - versionName: 1.1.0-BlackTube
+    versionCode: 1100
+    commit: 9316f613959d1c2c62426149cc7f382f5720a667
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    rm:
+      - app/src/test
+      - doc/README.so.md
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    scanignore:
+      - NewPipeExtractor/extractor/build.gradle.kts
+    scandelete:
+      - app
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.1.0-BlackTube
+CurrentVersionCode: 1100
