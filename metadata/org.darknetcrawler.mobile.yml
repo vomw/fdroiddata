@@ -28,11 +28,6 @@ Builds:
       - bun install
       - bun run build:mobile
       - bunx cap sync android
-      - rm -f node_modules/source-map/lib/mappings.wasm
-      - rm -f node_modules/nitro/dist/node_modules/source-map/lib/mappings.wasm
-      - rm -f node_modules/@capacitor/cli/assets/ios-pods-template.tar.gz
-      - rm -f node_modules/@capacitor/cli/assets/ios-spm-template.tar.gz
-      - rm -f node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
     gradle:
       - yes
     scanignore:
@@ -56,9 +51,10 @@ MaintainerNotes: |-
   not in the repo, so no `rm:` is needed. F-Droid builds from a clean
   checkout and signs with its own key.
 
-  iOS template tarballs and source-map WASM binaries are removed from
-  node_modules after the web build since they are not needed for the
-  Android APK and should not be shipped as prebuilt binaries.
+  iOS template tarballs and source-map WASM binaries are not needed for the
+  Android APK and should not be shipped as prebuilt binaries. They are
+  excluded from the scanner via scanignore, and the whole node_modules tree
+  is removed via scandelete instead of manual rm commands.
 
   Summary, description, title, icon, screenshots, and changelogs are
   provided via Fastlane structure in the app's own repository at
