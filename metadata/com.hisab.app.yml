@@ -1,0 +1,72 @@
+Categories:
+  - Finance Manager
+License: MIT
+AuthorName: Bittu Prajapati
+AuthorEmail: contact.hisab.app@gmail.com
+WebSite: https://github.com/Bittu-the-coder/hisab
+SourceCode: https://github.com/Bittu-the-coder/hisab
+IssueTracker: https://github.com/Bittu-the-coder/hisab/issues
+Changelog: https://github.com/Bittu-the-coder/hisab/releases
+
+Name: Hisab
+Summary: Personal expense tracker with offline support and optional self-hosted backend
+Description: |-
+    Hisab is a personal expense tracker that works offline for expenses and balance.
+    The companion backend (MIT, on GitHub) can be self-hosted.
+    Use --dart-define=BASE_URL=<your-url> at build time to point to a custom server.
+
+RepoType: git
+Repo: https://github.com/Bittu-the-coder/hisab.git
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 11
+    commit: df137723191f94b1ca8021d4d0b7e8258042e236
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    scandelete:
+      - app/.pub-cache
+      - backend
+    build:
+      - $$flutter$$/bin/flutter config --android-sdk $ANDROID_HOME
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --dart-define=BASE_URL=https://hisab-api-sage.vercel.app/api
+
+  - versionName: 1.1.0
+    versionCode: 12
+    commit: df137723191f94b1ca8021d4d0b7e8258042e236
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    scandelete:
+      - app/.pub-cache
+      - backend
+    build:
+      - $$flutter$$/bin/flutter config --android-sdk $ANDROID_HOME
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --dart-define=BASE_URL=https://hisab-api-sage.vercel.app/api
+
+  - versionName: 1.1.0
+    versionCode: 13
+    commit: df137723191f94b1ca8021d4d0b7e8258042e236
+    subdir: app
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    scandelete:
+      - app/.pub-cache
+      - backend
+    build:
+      - $$flutter$$/bin/flutter config --android-sdk $ANDROID_HOME
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --dart-define=BASE_URL=https://hisab-api-sage.vercel.app/api
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation: ['%c1', '%c2', '%c3']
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.0
+CurrentVersionCode: 11
