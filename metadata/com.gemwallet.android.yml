@@ -454,9 +454,27 @@ Builds:
     build: NDK_PATH="$$NDK$$" reproducible/fdroid/build.sh
     ndk: 28.1.13356709
 
-  - versionName: 2.114.22
-    versionCode: 835
-    commit: 1f2e9d617dfcf468173e54549107b836ff572b5e
+  - versionName: 2.114.23
+    versionCode: 836
+    commit: a076901efab1c744191782d5e42002401a1e7ce3
+    timeout: 10800
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y make gcc libc-dev just
+    init: NDK_PATH="$$NDK$$" reproducible/fdroid/init.sh
+    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
+    rm:
+      - android/flavors/fcm
+      - android/flavors/google-review
+      - core/gemstone/android/settings.gradle.kts
+      - core/gemstone/tests/android/GemTest
+    build: NDK_PATH="$$NDK$$" reproducible/fdroid/build.sh
+    ndk: 28.1.13356709
+
+  - versionName: 2.114.27
+    versionCode: 840
+    commit: c86eaddeca2e31fd66b698e31bae01830c3711cf
     timeout: 10800
     subdir: android
     sudo:
@@ -476,5 +494,5 @@ AllowedAPKSigningKeys: b57d7024a923b36a3538e19ed2199ec1e2003b73601e9b0fd7d2affaa
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9]+\.[0-9]+\.[0-9]+$
-CurrentVersion: 2.114.22
-CurrentVersionCode: 835
+CurrentVersion: 2.114.27
+CurrentVersionCode: 840
