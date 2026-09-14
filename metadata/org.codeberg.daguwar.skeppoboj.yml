@@ -17,8 +17,6 @@ Builds:
     sudo:
       - mkdir -p /upstream/path
       - chown -R vagrant /upstream/path
-      - mkdir -p /opt/android-sdk/platforms
-      - ln -sf /opt/android-sdk/platforms/android-37.0 /opt/android-sdk/platforms/android-37
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -29,6 +27,7 @@ Builds:
       - web
       - windows
     prebuild:
+      - git -C $$flutter$$ checkout -f 3.47.2
       - export repo=/upstream/path/skeppoboj
       - cd ..
       - mv org.codeberg.daguwar.skeppoboj $repo
