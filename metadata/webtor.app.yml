@@ -31,9 +31,14 @@ Builds:
       - vendor/libdatachannel/deps/usrsctp/fuzzer
     prebuild:
       - sdkmanager "cmake;3.22.1"
+      - sed -i 's/--cross-compiling --shared/--cross-compiling --shared --without-inspector/' ../../scripts/vendor-node.sh
+      - sed -i 's/make -j.*/make -s -j$(nproc) V=0/' ../../scripts/vendor-node.sh
+      - sed -i 's/--parallel .*/--parallel $(nproc)/' ../../scripts/build-native-addons.sh
       - npm --prefix ../../engine ci --omit=optional --omit=dev --ignore-scripts
       - find ../../engine/node_modules -name '*.node' -delete
     build:
+      - export WEBTOR_BUILD_JOBS=$(nproc)
+      - export MAKEFLAGS="-j$(nproc) -s"
       - ANDROID_NDK_HOME=$$NDK$$ ../../scripts/vendor-node.sh $$NodejsMobile$$
       - ANDROID_HOME=$$SDK$$ ANDROID_NDK_HOME=$$NDK$$ ../../scripts/build-native-addons.sh
     ndk: r26b
