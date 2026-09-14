@@ -97,7 +97,21 @@ Builds:
       - sed -i -e '/secureProperties/d' build.gradle
       - echo -e "android.useAndroidX=true\nandroid.enableJetifier=true" > gradle.properties
 
+  - versionName: 12.1.2
+    versionCode: 26024
+    commit: fca3803fa21fbe6388fac8928a65dfd727035c0d
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y -t bullseye openjdk-11-jdk-headless
+      - update-java-alternatives -s java-1.11.0-openjdk-amd64
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/secureProperties/d' build.gradle
+      - echo -e "android.useAndroidX=true\nandroid.enableJetifier=true" > gradle.properties
+
 AutoUpdateMode: None
 UpdateCheckMode: RepoManifest
-CurrentVersion: 12.1.0-dev
-CurrentVersionCode: 26019
+CurrentVersion: 12.1.2-dev
+CurrentVersionCode: 26024
