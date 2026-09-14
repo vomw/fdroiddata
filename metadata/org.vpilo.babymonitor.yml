@@ -13,7 +13,8 @@ AutoName: Nanna Baby Monitor
 
 RepoType: git
 Repo: https://gitlab.com/vpilo/nanna-baby-monitor.git
-Binaries: https://gitlab.com/vpilo/nanna-baby-monitor/-/jobs/artifacts/%v/raw/org.vpilo.babymonitor-%v-release.apk?job=release:android
+Binaries:
+  https://gitlab.com/vpilo/nanna-baby-monitor/-/jobs/artifacts/%v/raw/org.vpilo.babymonitor-%v-release.apk?job=release:android
 
 Builds:
   - versionName: 5.1.0
@@ -22,18 +23,15 @@ Builds:
     subdir: appAndroid
     gradle:
       - yes
+    prebuild: sed -i '/foojay-resolver/d' ../settings.gradle.kts
     gradleprops:
       - babymonitor.release=true
-    scandelete:
-      - build-logic/build
-    # Foojay standardizes JDKs for normal users, which is nice. But it cannot be used with the scanner; so this kills it for fdroid builds.
-    # The resolved JDK21 should already be installed on the build server.
-    prebuild: sed -i '/foojay-resolver/d' ../settings.gradle.kts
 
 AllowedAPKSigningKeys: d88385ac833baf8e06da43236aa8e3ef9a517f011948b03cdb7f91cbe1e96152
 
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
-UpdateCheckData: https://gitlab.com/vpilo/nanna-baby-monitor/-/releases/permalink/latest/downloads/version.txt|versionCode=(\d+)|.|versionName=(.+)
+UpdateCheckData:
+  https://gitlab.com/vpilo/nanna-baby-monitor/-/releases/permalink/latest/downloads/version.txt|versionCode=(\d+)|.|versionName=(.+)
 CurrentVersion: 5.1.0
 CurrentVersionCode: 395
