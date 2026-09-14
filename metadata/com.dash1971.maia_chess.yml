@@ -45,17 +45,11 @@ Builds:
 AllowedAPKSigningKeys: cd6c07c4efacf52bcccb83009b522c1dcad4a171197505a486f0a58edb6f172e
 
 MaintainerNotes: |-
-  The bundled Maia-3 ONNX model is AGPL-3.0 licensed. Its immutable source,
-  checkpoint, conversion procedure, size, and hashes are documented upstream
-  in MODEL_PROVENANCE.md. The Git LFS pointer is replaced from the immutable
-  release commit and verified before building.
-  Version 2.1.2 must be built and independently reproduced on Linux before the
-  upstream APK is signed, avoiding host-specific macOS/Linux NDK output. Its
-  guarded Flutter 3.47.1 backport sorts resolution-aware asset variants before
-  generating AssetManifest.bin. The Stockfish 16 NNUE download is accepted only
-  when its complete SHA-256 matches the pinned upstream network. R8 removes the
-  unused Flutter Play Core bridge while explicit rules retain ONNX Runtime JNI
-  classes and members.
+  The bundled AGPL-3.0 Maia-3 ONNX model is stored using Git LFS. The recipe
+  materializes it from the exact checked-out source and verifies its pinned
+  SHA-256 before building. Changes to the model hash or pinned Flutter version
+  require manual review. The guarded Flutter and Stockfish preparation steps
+  are required for deterministic, reproducible builds.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
