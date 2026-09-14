@@ -13,46 +13,9 @@ Repo: https://codeberg.org/labunix/dlectio.git
 Binaries: https://codeberg.org/labunix/dlectio/releases/download/v%v/dlectio-%v.apk
 
 Builds:
-  - versionName: 0.2.1
-    versionCode: 31
-    commit: d2e4cefb23d32f45bc4f182a04e4bc495692f845
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y golang-go gcc libc-dev
-    gradle:
-      - yes
-    srclibs:
-      - go@go1.25.0
-    prebuild: sdkmanager "platforms;android-34" "build-tools;34.0.0"
-    scandelete:
-      - art
-      - engine/lectio/sources
-    build:
-      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH=$$go$$
-      - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
-      - mkdir -p libs
-      - pushd ../engine/lectio
-      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260730202154-c700fe717e6e
-      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260813181013-1960c775504c
-      - go mod download
-      - gomobile bind -target=android/arm64 -androidapi 26 -javapkg=xyz.labunix.dlectio.engine
-        -tags fullbible -ldflags="-buildid=" -trimpath -o ../../app/libs/dlectio-engine.aar
-        github.com/lukaszkasprzak/lectio/mobile
-      - popd
-    ndk: 26.1.10909125
-    gradleprops:
-      - abiTarget=arm64-v8a
-
   - versionName: 0.2.2
     versionCode: 41
-    commit: v0.2.2
+    commit: 9a99ed021b58e50247a68f0fd04c002c953dfbb5
     subdir: app
     submodules: true
     sudo:
