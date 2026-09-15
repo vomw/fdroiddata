@@ -4,8 +4,10 @@ Categories:
 License: MIT
 AuthorName: TV Viewer App
 AuthorEmail: tvviewerapp@proton.me
+AuthorWebSite: https://tv-viewer-app.github.io/tv_viewer/
 SourceCode: https://github.com/tv-viewer-app/tv_viewer
 IssueTracker: https://github.com/tv-viewer-app/tv_viewer/issues
+Changelog: https://github.com/tv-viewer-app/tv_viewer/blob/master/CHANGELOG.md
 
 AutoName: TV Viewer
 
@@ -13,31 +15,137 @@ RepoType: git
 Repo: https://github.com/tv-viewer-app/tv_viewer.git
 
 Builds:
-  - versionName: 2.20.10
-    versionCode: 118
-    commit: 1960d8fddd4ca8ed94c97e755afe0b9e3814f516
+  - versionName: 2.24.3
+    versionCode: 1371
+    commit: 2949087e268326017f2ceeb7bfdf0b7d5e6d05ad
     subdir: flutter_app
     sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-    output: build/app/outputs/flutter-apk/app-release.apk
+      - mkdir -p /home/runner/work/tv_viewer
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://github.com/tv-viewer-app/tv_viewer/releases/download/v%v/TV_Viewer_v%v_fdroid-armeabi-v7a.apk
     srclibs:
       - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
     prebuild:
+      - git -C $$flutter$$ checkout -q -f 3.44.4
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo app.tvviewer.player
     scandelete:
-      - flutter_app/.pub-cache
+      - .pub-cache
     build:
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+        --no-tree-shake-icons
+      - popd
+      - mv $repo app.tvviewer.player
+
+  - versionName: 2.24.3
+    versionCode: 1372
+    commit: 2949087e268326017f2ceeb7bfdf0b7d5e6d05ad
+    subdir: flutter_app
+    sudo:
+      - mkdir -p /home/runner/work/tv_viewer
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/tv-viewer-app/tv_viewer/releases/download/v%v/TV_Viewer_v%v_fdroid-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -q -f 3.44.4
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo app.tvviewer.player
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+        --no-tree-shake-icons
+      - popd
+      - mv $repo app.tvviewer.player
+
+  - versionName: 2.24.3
+    versionCode: 1373
+    commit: 2949087e268326017f2ceeb7bfdf0b7d5e6d05ad
+    subdir: flutter_app
+    sudo:
+      - mkdir -p /home/runner/work/tv_viewer
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/tv-viewer-app/tv_viewer/releases/download/v%v/TV_Viewer_v%v_fdroid-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -q -f 3.44.4
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo app.tvviewer.player
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/tv_viewer/tv_viewer
+      - cd ../..
+      - mv app.tvviewer.player $repo
+      - pushd $repo/flutter_app
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+        --no-tree-shake-icons
+      - popd
+      - mv $repo app.tvviewer.player
+
+AllowedAPKSigningKeys: adbe00e7fec3160156e4a3a97f0f024801f7bd98420ef5493dc06fa45aa4ca15
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: flutter_app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.20.10
-CurrentVersionCode: 118
+CurrentVersion: 2.24.3
+CurrentVersionCode: 1373
