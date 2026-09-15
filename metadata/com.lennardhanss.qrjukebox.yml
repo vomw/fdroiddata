@@ -5,18 +5,23 @@ SourceCode: https://github.com/lexygo/QRJukebox
 IssueTracker: https://github.com/lexygo/QRJukebox/issues
 
 AutoName: QR Jukebox
+AuthorName: Lennard Hanß
+AuthorEmail: l.qrjukebox@familie-hanss.de
 
 RepoType: git
 Repo: https://github.com/lexygo/QRJukebox.git
 
 Builds:
-  - versionName: 1.0.11
-    versionCode: 9
-    commit: v1.0.11
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.0.13
+    versionCode: 111  # 11*10 + 1 (armeabi-v7a)
+    commit: 884f2fd2448e3dd79fa17a3b04c2d3bf97a417bd
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
@@ -24,10 +29,48 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
+
+  - versionName: 1.0.13
+    versionCode: 112  # 11*10 + 2 (arm64-v8a)
+    commit: 884f2fd2448e3dd79fa17a3b04c2d3bf97a417bd
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
+
+  - versionName: 1.0.13
+    versionCode: 113  # 11*10 + 3 (x86_64)
+    commit: 884f2fd2448e3dd79fa17a3b04c2d3bf97a417bd
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|\+([0-9]+)|pubspec.yaml|version:\s*([0-9.]+)
-CurrentVersion: 1.0.11
-CurrentVersionCode: 9
+CurrentVersion: 1.0.13
+CurrentVersionCode: 113
