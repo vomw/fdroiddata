@@ -5693,12 +5693,12 @@ Builds:
       - sed -i -e 's/Xmx4096M/Xmx8G/' android/gradle.properties
       - export openapitoolsVersion=$(grep version ../open-api/openapitools.json | cut -d "\"" -f4)
       - '[[ $openapitoolsVersion ]]'
-      - wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
+      - curl -Lo openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - alias openapi-generator-cli='java -jar openapi-generator-cli-$openapitoolsVersion.jar'
+      - alias openapi-generator-cli='java -jar openapi-generator-cli.jar'
       - bash ../open-api/bin/generate-dart-sdk.sh
       - $$flutter$$/bin/dart run build_runner build
       - $$flutter$$/bin/dart run drift_dev make-migrations
