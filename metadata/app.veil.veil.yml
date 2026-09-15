@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/veil-notes/app.git
 
 Builds:
-  - versionName: 1.0.0-beta.7
-    versionCode: 8010
-    commit: 1a1e7e54f9d3f99153471a6233ab7bdb7e3d4ee3
+  - versionName: 1.0.0-beta.8
+    versionCode: 70111
+    commit: 9ad1272fdb11063f370f3201d3ff001bff0ac34b
     sudo:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
@@ -52,13 +52,13 @@ Builds:
       - popd
       - popd
       - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
-        - 1000 )) --split-per-abi --target-platform="android-arm" --android-project-arg="filesystem-roots=$(pwd)"
+        / 10 )) --split-per-abi --target-platform="android-arm" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
-  - versionName: 1.0.0-beta.7
-    versionCode: 9010
-    commit: 1a1e7e54f9d3f99153471a6233ab7bdb7e3d4ee3
+  - versionName: 1.0.0-beta.8
+    versionCode: 70112
+    commit: 9ad1272fdb11063f370f3201d3ff001bff0ac34b
     sudo:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
@@ -95,13 +95,13 @@ Builds:
       - popd
       - popd
       - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
-        - 2000 )) --split-per-abi --target-platform="android-arm64" --android-project-arg="filesystem-roots=$(pwd)"
+        / 10 )) --split-per-abi --target-platform="android-arm64" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
-  - versionName: 1.0.0-beta.7
-    versionCode: 11010
-    commit: 1a1e7e54f9d3f99153471a6233ab7bdb7e3d4ee3
+  - versionName: 1.0.0-beta.8
+    versionCode: 70113
+    commit: 9ad1272fdb11063f370f3201d3ff001bff0ac34b
     sudo:
       - apt-get update
       - apt-get install -y golang-go make gcc libc-dev
@@ -138,7 +138,7 @@ Builds:
       - popd
       - popd
       - $$flutter$$/bin/flutter build apk --release --build-number=$(( $$VERCODE$$
-        - 4000 )) --split-per-abi --target-platform="android-x64" --android-project-arg="filesystem-roots=$(pwd)"
+        / 10 )) --split-per-abi --target-platform="android-x64" --android-project-arg="filesystem-roots=$(pwd)"
         --android-project-arg=filesystem-scheme=org-dartlang-root
     ndk: 28.2.13676358
 
@@ -150,12 +150,8 @@ MaintainerNotes: |
   The repository keeps the existing application ID app.veil.veil so
   users can update existing installations without losing app-private data.
 
-  Beta.7 uses base 7010 and a shared native-build helper pinned to Go 1.24.1.
-  Beta.6 failed reproducibility because its native build used unpinned Go
-  and ineffective Makefile substitutions. The helper sets all flags directly.
-  Future releases must increase the base by at least 3001 so the three
-  newest version codes always belong to the same release. Upstream CI
-  enforces this because auto-updates clone the three highest-code builds.
+  Beta.8 uses base 7011 and version codes base * 10 + ABI (1, 2, 3).
+  Increment the base by at least one for each future release.
 
   The openpgp package contains Android native libraries. The build recipe
   replaces those libraries with bindings compiled from openpgp-mobile source.
@@ -167,9 +163,9 @@ MaintainerNotes: |
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$
 VercodeOperation:
-  - '%c + 1000'
-  - '%c + 2000'
-  - '%c + 4000'
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.0-beta.7
-CurrentVersionCode: 11010
+CurrentVersion: 1.0.0-beta.8
+CurrentVersionCode: 70113
