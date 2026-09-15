@@ -1,0 +1,62 @@
+Categories:
+  - Money
+  - Wallet
+License: GPL-3.0-only
+AuthorName: Bitcoin Wallet developers
+SourceCode: https://gitlab.com/bitcoin-wallet/bitcoin-wallet
+IssueTracker: https://gitlab.com/bitcoin-wallet/bitcoin-wallet/issues
+Translation: https://explore.transifex.com/bitcoin-wallet/bitcoin-wallet/
+Changelog: https://gitlab.com/bitcoin-wallet/bitcoin-wallet/-/raw/main/wallet/CHANGES
+Bitcoin: bc1qglkj2svuu3xsktup5xla8u2wjzlu8mfzk6509r
+
+AutoName: Bitcoin Wallet [signet]
+Description: |-
+  A Bitcoin wallet, allowing you to store, send and receive Bitcoins on your
+  device, both via QR codes and NFC. This is a test version of
+  https://f-droid.org/packages/de.schildbach.wallet that uses the Signet network, not the real
+  Bitcoin network.
+
+RepoType: git
+Repo: https://gitlab.com/bitcoin-wallet/bitcoin-wallet.git
+
+Builds:
+  - versionName: '11.04'
+    versionCode: 110400
+    commit: v11.04
+    subdir: wallet
+    sudo:
+      - rm /home/vagrant/gradlew-fdroid/gradlew-fdroid
+      - ln -s /usr/bin/gradle /home/vagrant/gradlew-fdroid/gradlew-fdroid
+      - ln -fs /usr/share/zoneinfo/CET /etc/localtime
+      - dpkg-reconfigure -f noninteractive tzdata
+      - apt-get update
+      - apt-get install -y gradle disorderfs
+    init:
+      - cd ../..
+      - mv corp.wallet.bitcoin.signet corp.wallet.bitcoin.signet_underlying
+      - mkdir corp.wallet.bitcoin.signet
+      - disorderfs --sort-dirents=yes --reverse-dirents=no corp.wallet.bitcoin.signet_underlying
+        corp.wallet.bitcoin.signet
+      - cd corp.wallet.bitcoin.signet/wallet
+    gradle:
+      - signet
+    binary: 
+      https://gitlab.com/-/project/36528/uploads/b0c8d96bc1cd9a3c71e4245d697a1f05/bitcoin-wallet-signet-release.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 58dcd8a0edf2a590683ba022d22a8dca5659aabf4728741a5c07af738d53db38
+
+MaintainerNotes: |-
+  When adding new versions, the build recipe must follow the reference build at
+  https://gitlab.com/bitcoin-wallet/bitcoin-wallet/blob/main/build.Containerfile
+  as closely as possible. Otherwise, reproducibility will likely break at some point.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: '11.04'
+CurrentVersionCode: 110400
