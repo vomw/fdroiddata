@@ -17,54 +17,22 @@ RepoType: git
 Repo: https://github.com/paterkleomenis/connected
 
 Builds:
-  - versionName: 3.2.4
-    versionCode: 30204
-    commit: 8536a3298faf9e6b3e3e6068cb8c3e994b3b7643
+  - versionName: 3.2.9
+    versionCode: 30209
+    commit: d769a6c52f4df591035cd503a4cf40fd9ed062ca
     subdir: android/app
     sudo:
-      - apt-get update || true
+      - apt-get update
       - apt-get install -y curl libclang-dev clang gcc libc-dev pkg-config libssl-dev
         perl make python3 build-essential rustup
     gradle:
-      - standalone
+      - sideload
     prebuild:
       - export PATH="$HOME/.cargo/bin:$PATH"
-      - rustup default stable
+      - rustup default 1.97.1
       - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
         i686-linux-android
       - cargo install cargo-ndk --locked
-    build:
-      - mkdir -p "$HOME/.gradle/init.d"
-      - "cat > \"$HOME/.gradle/init.d/unsigned.gradle\" <<'GRADLE_EOF'\nallprojects
-        {\n    afterEvaluate { p ->\n        if (p.plugins.hasPlugin(\"com.android.application\"\
-        ) || p.plugins.hasPlugin(\"com.android.library\")) {\n            if (p.android.hasProperty(\"\
-        buildTypes\")) {\n                p.android.buildTypes.configureEach { it.signingConfig
-        = null }\n            }\n        }\n    }\n}\nGRADLE_EOF\n"
-    ndk: r27c
-
-  - versionName: 3.2.7
-    versionCode: 30207
-    commit: 16df01a28c6f9084ac6a919de6ef42ff66a5b9e4
-    subdir: android/app
-    sudo:
-      - apt-get update || true
-      - apt-get install -y curl libclang-dev clang gcc libc-dev pkg-config libssl-dev
-        perl make python3 build-essential rustup
-    gradle:
-      - standalone
-    prebuild:
-      - export PATH="$HOME/.cargo/bin:$PATH"
-      - rustup default stable
-      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
-        i686-linux-android
-      - cargo install cargo-ndk --locked
-    build:
-      - mkdir -p "$HOME/.gradle/init.d"
-      - "cat > \"$HOME/.gradle/init.d/unsigned.gradle\" <<'GRADLE_EOF'\nallprojects
-        {\n    afterEvaluate { p ->\n        if (p.plugins.hasPlugin(\"com.android.application\"\
-        ) || p.plugins.hasPlugin(\"com.android.library\")) {\n            if (p.android.hasProperty(\"\
-        buildTypes\")) {\n                p.android.buildTypes.configureEach { it.signingConfig
-        = null }\n            }\n        }\n    }\n}\nGRADLE_EOF\n"
     ndk: r27c
 
 AutoUpdateMode: Version
@@ -72,5 +40,5 @@ UpdateCheckMode: Tags
 UpdateCheckName: ([0-9.]+)
 UpdateCheckData: android/app/build.gradle.kts|versionCode = ([0-9]+)|android/app/build.gradle.kts|versionName
   = "([0-9.]+)"
-CurrentVersion: 3.2.7
-CurrentVersionCode: 30207
+CurrentVersion: 3.2.9
+CurrentVersionCode: 30209
