@@ -92,9 +92,21 @@ Builds:
     gradle:
       - fdroid
 
+  - versionName: 0.14.1
+    versionCode: 140100
+    commit: 9cd907fa101eb2411618db9021af39aeaf78b7c0
+    subdir: app
+    sudo:
+      - export CPUS_MAX=16
+      - export CPUS=$(getconf _NPROCESSORS_ONLN)
+      - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
+        ; done
+    gradle:
+      - fdroid
+
 AllowedAPKSigningKeys: 668cdb5cd9deb1798e1b5a0ac126dba3b1b36b0da2062c64309aeb53cf8f964a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]
-CurrentVersion: 0.12.2
-CurrentVersionCode: 120200
+CurrentVersion: 0.14.1
+CurrentVersionCode: 140100
