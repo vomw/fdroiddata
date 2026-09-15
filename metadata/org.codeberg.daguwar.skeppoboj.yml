@@ -13,11 +13,12 @@ Repo: https://codeberg.org/daguwar/skeppoboj.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: 15e48df02b421dd9f375fa23c07a3c550383b414
+    commit: 20d8d0e704bb8b939fec2b714138e63a32f6b8e3
     sudo:
       - mkdir -p /upstream/path
       - chown -R vagrant /upstream/path
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://codeberg.org/daguwar/skeppoboj/releases/download/%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -27,7 +28,9 @@ Builds:
       - web
       - windows
     prebuild:
-      - git -C $$flutter$$ checkout -f 3.47.2
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/upstream/path/skeppoboj
       - cd ..
       - mv org.codeberg.daguwar.skeppoboj $repo
@@ -57,6 +60,8 @@ Builds:
         -Pforce-version-code-ignoring-abi=true
       - popd
       - mv $repo org.codeberg.daguwar.skeppoboj
+
+AllowedAPKSigningKeys: 057d90c2e1c7df61acf2924c803849b3b4a219d6cd25cff540f2414dafcb56f7
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
