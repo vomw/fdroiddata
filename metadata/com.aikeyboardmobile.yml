@@ -1,20 +1,37 @@
+Categories:
+  - Connectivity
+  - System
+License: MIT
+AuthorName: Aryan Kumar
+SourceCode: https://github.com/aryankumarx/replyfy
+IssueTracker: https://github.com/aryankumarx/replyfy/issues
+
+AutoName: Replyfy
+
+RepoType: git
+Repo: https://github.com/aryankumarx/replyfy.git
+
 Builds:
   - versionName: 1.4.0
     versionCode: 4
     commit: 113d4e82dadc84a07b23389e788af8a0126d9825
     subdir: AIKeyboardMobile/android
     sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - echo "deb https://deb.debian.org/debian sid main" >> /etc/apt/sources.list
       - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - apt-get install -y npm
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
-    init: cd .. && npm install --legacy-peer-deps
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
+      - apt-get install -y --no-install-recommends nodejs npm
+    init:
+      - cd .. && npm install --legacy-peer-deps
     gradle:
       - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
-      - AIKeyboardMobile/node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - AIKeyboardMobile/node_modules/react-native/ReactAndroid/publish.gradle
       - AIKeyboardMobile/node_modules/react-native-safe-area-context/android/build.gradle
     scandelete:
       - AIKeyboardMobile/node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.4.0
+CurrentVersionCode: 4
