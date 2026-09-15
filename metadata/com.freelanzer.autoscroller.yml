@@ -17,11 +17,11 @@ Builds:
     commit: 434bfd81763824a2d09196c769a2178bb1474843
     subdir: android/app
     gradle: yes
-    prebuild: -
-      printf "sdk.dir=%sn" "$ANDROID_HOME" > local.properties
+    prebuild: |-
+      printf "sdk.dir=%s\n" "${ANDROID_HOME}" > local.properties
       sed -i '/foojay-resolver/d' ../settings.gradle.kts
-      sed -i '/org.gradle.jvmargs/d' ../gradle.properties
-      sed -i '/org.gradle.configuration-cache/d' ../gradle.properties
+      sed -i '/org\.gradle\.jvmargs/d' ../gradle.properties
+      sed -i '/org\.gradle\.configuration-cache/d' ../gradle.properties
       echo "org.gradle.jvmargs=-Xmx2048m -XX:-UseContainerSupport -Xlog:disable" >> ../gradle.properties
       echo "org.gradle.configuration-cache=false" >> ../gradle.properties
 
