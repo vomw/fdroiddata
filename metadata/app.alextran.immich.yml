@@ -5671,9 +5671,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --dart-define=cronetHttpNoPlay=true
     ndk: r25c
 
-  - versionName: 3.2.0
-    versionCode: 3020099
-    commit: 1b6098c9dbfffe978bec2d414606ed7a4c8e019a
+  - versionName: 3.2.1
+    versionCode: 3020199
+    commit: 6420baac8307bb9ad14963578782fa0539947332
     subdir: mobile
     submodules: true
     sudo:
@@ -5691,11 +5691,21 @@ Builds:
       - web
     prebuild:
       - sed -i -e 's/Xmx4096M/Xmx8G/' android/gradle.properties
+      - export openapitoolsVersion=$(grep version ../open-api/openapitools.json | cut -d "\"" -f4)
+      - '[[ $openapitoolsVersion ]]'
+      - wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - alias openapi-generator-cli='java -jar openapi-generator-cli-$openapitoolsVersion.jar'
       - bash ../open-api/bin/generate-dart-sdk.sh
+      - $$flutter$$/bin/dart run build_runner build
+      - $$flutter$$/bin/dart run drift_dev make-migrations
+      - $$flutter$$/bin/dart run drift_dev schema generate --data-classes --companions drift_schemas/main/ test/drift/main/generated/
+      - ls pigeon/*.dart | xargs -n1 -P4 -I{} dart run pigeon --input {}
+      - $$flutter$$/bin/dart run easy_localization:generate -S ../i18n
+      - $$flutter$$/bin/dart run bin/generate_keys.dart
       - sed -i -e "s/^\#f//" pubspec.yaml
       - sed -i -e 's/^\/\/f //' -e '/media3-datasource-cronet/s/$/{exclude group:"com.google.android.gms",module:"play-services-cronet"}/'
         -e '/def keyAliasVal = System/,+7d' -e '/def hasKeystore = file/,+8d' android/app/build.gradle
@@ -5742,5 +5752,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: mobile/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 3.2.0
-CurrentVersionCode: 3020099
+CurrentVersion: 3.2.1
+CurrentVersionCode: 3020199
