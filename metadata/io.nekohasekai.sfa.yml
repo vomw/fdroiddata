@@ -3026,7 +3026,10 @@ Builds:
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y gcc libc-dev make golang-go ninja-build file xz-utils
+      - apt-get install -y gcc libc-dev make ninja-build file xz-utils
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky golang-go
       - export CPUS_MAX=16
       - export CPUS=$(getconf _NPROCESSORS_ONLN)
       - for (( c=$CPUS_MAX; c<$CPUS; c++ )) ; do echo 0 > /sys/devices/system/cpu/cpu$c/online
