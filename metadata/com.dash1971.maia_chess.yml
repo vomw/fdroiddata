@@ -23,10 +23,13 @@ Builds:
       - git lfs install
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.47.1
+      - flutter@stable
     prebuild:
       - git lfs pull
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - flutterVersion=$(sed -n -E 's/.*"flutter"\s*:\s*"([^"]+)".*/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - python3 tool/prepare_reproducible_flutter_sdk.py --flutter-root $$flutter$$
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -45,10 +48,12 @@ AllowedAPKSigningKeys: cd6c07c4efacf52bcccb83009b522c1dcad4a171197505a486f0a58ed
 
 MaintainerNotes: |-
   The bundled AGPL-3.0 Maia-3 ONNX model is stored using Git LFS. The recipe
-  fetches it via `git lfs pull` and verifies its pinned SHA-256 before
-  building. Changes to the model hash or pinned Flutter version require
-  manual review. The guarded Flutter and Stockfish preparation steps are
-  required for deterministic, reproducible builds.
+  runs `git lfs pull` and then `tool/verify_model.py`, which checks the
+  fetched model's size and SHA-256 against the value pinned in the upstream
+  source tree, before building. The Flutter version is extracted from the
+  upstream .fvmrc and checked out before the reproducibility patch runs. The
+  guarded Flutter and Stockfish preparation steps are required for
+  deterministic, reproducible builds.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
