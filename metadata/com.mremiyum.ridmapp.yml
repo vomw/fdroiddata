@@ -12,22 +12,24 @@ AutoName: Ridm
 
 RepoType: git
 Repo: https://github.com/mremiyum/ridm-app
-Binaries: https://github.com/mremiyum/ridm-app/releases/download/v%v/app-arm64-v8a-release.apk
+Binaries: 
+  https://github.com/mremiyum/ridm-app/releases/download/v%v/app-arm64-v8a-release.apk
 
 Builds:
   - versionName: 1.1.1
     versionCode: 11
     commit: 00b5a80d5997520e6f44cd4e3a1f3dd0d88df944
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y npm
     gradle:
       - yes
     prebuild:
-      - pushd ..
+      - cd ../..
       - npm install
-      - popd
+    scandelete:
+      - node_modules
 
 AllowedAPKSigningKeys: 2bc3970bc2272ac7a0dc34b727d10199b6505fda4c62e3c7342a388bea0173cc
 
