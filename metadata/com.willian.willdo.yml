@@ -1,5 +1,5 @@
 Categories:
-  - Time
+  - Task
 License: GPL-3.0-or-later
 AuthorName: Willian Ferreira
 AuthorEmail: adm@whats.men
@@ -9,6 +9,7 @@ IssueTracker: https://github.com/willf444/faz-agora/issues
 Donate: https://faz.whats.men/apoie
 
 AutoName: Faz agora!
+
 RepoType: git
 Repo: https://github.com/willf444/faz-agora.git
 
@@ -32,13 +33,16 @@ Builds:
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i -e '/installreferrer/d' node_modules/expo-application/android/build.gradle
-      - sed -i -e '/com.android.installreferrer.api/d' -e '/StringBuilder()/,/^      })/d'
+      - >-
+        sed -i -e '/com.android.installreferrer.api/d'
+        -e '/StringBuilder()/,/^      })/d'
         -e '/getInstallReferrerAsync/apromise.resolve("")'
         node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt
       - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
       - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - android/build.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
