@@ -9,29 +9,56 @@ SourceCode: https://github.com/soe1hom-arch/AFFT-Toolkit
 IssueTracker: https://github.com/soe1hom-arch/AFFT-Toolkit/issues
 
 AutoName: AFFT Toolkit
+Summary: Analyze, unpack and repack firmware on-device
+Description: |
+  AFFT Toolkit (Android Firmware Full Toolkit) lets you analyze, unpack and repack ROM firmware directly on your Android device — no PC or Termux required.
+
+  Features:
+  - Payload Dumper: unpack and repack payload.bin OTA firmware
+  - Super Image: unpack and repack sparse super.img images
+  - Filesystem: extract and repack EROFS and ext4 images
+  - Boot Family: unpack and repack 7 boot image types, including vendor_boot
+  - Firmware Analysis: project-based parsers with validation, health score and recommendations
+  - AFFT Manager: built-in file browser with search, copy, move, delete, rename and import
+  - Workspace Engine: every firmware task is a project with operation history and metadata
+
+  Everything runs on-device using metadata-only parsing, so even 8-10 GB firmware images are handled quickly. Available in English and Bahasa Indonesia.
 
 RepoType: git
 Repo: https://github.com/soe1hom-arch/AFFT-Toolkit.git
 
 Builds:
-  - versionName: 2.2.0
-    versionCode: 26080801
-    commit: 5df3ccbb99c7a105ac2a0ca2ea2600fe4972a177
+  - versionName: 2.3.0
+    versionCode: 26091501
+    commit: v2.3.0
     subdir: app
-    init: sed -i 's/versionCode = generateVersionCode()/versionCode = 26080801/' build.gradle.kts
+    init: sed -i 's/versionCode = generateVersionCode()/versionCode = 26091501/' build.gradle.kts
     gradle:
       - yes
     prebuild:
       - sed -i '/signingConfigs {/,/^    }/d' build.gradle.kts
       - sed -i '/signingConfig = signingConfigs.getByName("release")/d' build.gradle.kts
+    scanignore:
+      - src/main/assets/bin/payload-dumper-go
+      - src/main/jniLibs/arm64-v8a/libdebugfs.so
+      - src/main/jniLibs/arm64-v8a/libextract.erofs.so
+      - src/main/jniLibs/arm64-v8a/liblpmake.so
+      - src/main/jniLibs/arm64-v8a/liblpunpack.so
+      - src/main/jniLibs/arm64-v8a/libmagiskboot.so
+      - src/main/jniLibs/arm64-v8a/libmake_ext4fs.so
+      - src/main/jniLibs/arm64-v8a/libmkfs.erofs.so
+      - src/main/jniLibs/arm64-v8a/libpayload-dumper-go.so
+      - src/main/jniLibs/arm64-v8a/libsimg2img.so
 
 MaintainerNotes: |
   The versionCode is date-based (YYMMDDnn) and cannot be parsed by update
   checks, so it is pinned per build via 'init' and AutoUpdateMode is None.
-  Upstream now provides the app metadata in fastlane format and the recipe uses
-  the full source commit hash instead of a tag.
+  The app bundles prebuilt native binaries (scanignored): payload-dumper-go
+  (ssut/payload-dumper-go), magiskboot (topjohnwu/Magisk), and AOSP tools
+  (lpmake, lpunpack, simg2img, debugfs, make_ext4fs, mkfs.erofs, extract.erofs)
+  under app/src/main/jniLibs/arm64-v8a/ plus an asset copy of payload-dumper-go.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 2.2.0
-CurrentVersionCode: 26080801
+CurrentVersion: 2.3.0
+CurrentVersionCode: 26091501
