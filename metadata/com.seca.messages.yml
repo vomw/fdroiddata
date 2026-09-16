@@ -1,0 +1,47 @@
+Categories:
+  - Phone & SMS
+License: AGPL-3.0-or-later
+AuthorName: arditore
+AuthorEmail: arditore@tuta.io
+SourceCode: https://github.com/arditore/Seca
+IssueTracker: https://github.com/arditore/Seca/issues
+Changelog: https://github.com/arditore/Seca/releases
+
+AutoName: Seca Messages
+
+RepoType: git
+Repo: https://github.com/arditore/Seca.git
+
+Builds:
+  - versionName: 0.1.0-beta5
+    versionCode: 5
+    commit: v0.1.0-beta5
+    subdir: apps/messages
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends build-essential curl unzip protobuf-compiler
+        libprotobuf-dev cmake ninja-build clang libclang-dev pkg-config
+      - install -d -o vagrant -g vagrant /opt/rust
+      - sudo -u vagrant env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo
+        sh -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s --
+        -y --profile minimal --default-toolchain 1.98.1 --no-modify-path"
+    gradle:
+      - yes
+    srclibs:
+      - libsignal@v0.102.2
+    prebuild:
+      - export RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo PATH="/opt/rust/cargo/bin:$PATH"
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - cd $$libsignal$$/java && ANDROID_NDK_HOME=$$NDK$$ ./gradlew --no-daemon -PandroidArchs=aarch64,arm
+        :android:publishToMavenLocal :client:publishToMavenLocal
+    scanignore:
+      - settings.gradle.kts
+    ndk: 28.0.13004108
+    gradleprops:
+      - seca.libsignal.repo=mavenLocal
+      - seca.ndkVersion=28.0.13004108
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0-beta5
+CurrentVersionCode: 5
