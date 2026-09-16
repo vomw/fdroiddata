@@ -15,20 +15,23 @@ Builds:
   - versionName: 1.4.0
     versionCode: 4
     commit: 113d4e82dadc84a07b23389e788af8a0126d9825
-    subdir: AIKeyboardMobile/android
+    subdir: AIKeyboardMobile/android/app
     sudo:
-      - echo "deb https://deb.debian.org/debian sid main" >> /etc/apt/sources.list
       - apt-get update
-      - apt-get install -y --no-install-recommends nodejs npm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64 || update-java-alternatives -a || true
+      - apt-get install -y npm
     init:
-      - cd .. && npm install --legacy-peer-deps
+      - cd ../..
+      - npm install --legacy-peer-deps
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
     scanignore:
       - AIKeyboardMobile/node_modules/react-native/ReactAndroid/publish.gradle
       - AIKeyboardMobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - AIKeyboardMobile/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
     scandelete:
       - AIKeyboardMobile/node_modules
 
