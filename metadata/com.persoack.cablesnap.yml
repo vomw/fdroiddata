@@ -19,45 +19,20 @@ RepoType: git
 Repo: https://github.com/alankyshum/cablesnap.git
 
 Builds:
-  - versionName: 0.26.94
-    versionCode: 162001
-    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
+  - versionName: 0.26.118
+    versionCode: 186001
+    commit: 6b3b5f8e4b5443b190e186e7a45ab66e596693d8
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
-      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
-        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
-        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
-        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
-        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
-      - rm -f patches/@shopify+react-native-skia+2.6.2.patch
+      - node scripts/fdroid-prepare.js init
       - npm install
-      - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
-        const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
     prebuild:
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - node scripts/fdroid-prepare.js prebuild-deps
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
-      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
-        m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
-        fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
-      - sed -i '/play-services-wearable/d' android/wear/build.gradle.kts modules/expo-wearos-bridge/wear-template/build.gradle.kts
-        modules/expo-wearos-bridge/android/build.gradle
-      - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162001/' android/app/build.gradle
-      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
-        = true/' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - printf '\n' >> android/gradle.properties
-      - echo 'reactNativeArchitectures=armeabi-v7a' >> android/gradle.properties
-      - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
-        modules/expo-wearos-bridge/wear-template/build.gradle.kts
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - FDROID_VERCODE=$$VERCODE$$ FDROID_ARCH=armeabi-v7a node scripts/fdroid-prepare.js prebuild
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -72,45 +47,20 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.94
-    versionCode: 162002
-    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
+  - versionName: 0.26.118
+    versionCode: 186002
+    commit: 6b3b5f8e4b5443b190e186e7a45ab66e596693d8
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
-      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
-        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
-        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
-        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
-        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
-      - rm -f patches/@shopify+react-native-skia+2.6.2.patch
+      - node scripts/fdroid-prepare.js init
       - npm install
-      - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
-        const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
     prebuild:
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - node scripts/fdroid-prepare.js prebuild-deps
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
-      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
-        m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
-        fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
-      - sed -i '/play-services-wearable/d' android/wear/build.gradle.kts modules/expo-wearos-bridge/wear-template/build.gradle.kts
-        modules/expo-wearos-bridge/android/build.gradle
-      - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162002/' android/app/build.gradle
-      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
-        = true/' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - printf '\n' >> android/gradle.properties
-      - echo 'reactNativeArchitectures=arm64-v8a' >> android/gradle.properties
-      - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
-        modules/expo-wearos-bridge/wear-template/build.gradle.kts
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - FDROID_VERCODE=$$VERCODE$$ FDROID_ARCH=arm64-v8a node scripts/fdroid-prepare.js prebuild
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -125,45 +75,20 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.94
-    versionCode: 162003
-    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
+  - versionName: 0.26.118
+    versionCode: 186003
+    commit: 6b3b5f8e4b5443b190e186e7a45ab66e596693d8
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
-      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
-        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
-        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
-        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
-        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
-      - rm -f patches/@shopify+react-native-skia+2.6.2.patch
+      - node scripts/fdroid-prepare.js init
       - npm install
-      - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
-        const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
     prebuild:
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - node scripts/fdroid-prepare.js prebuild-deps
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
-      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
-        m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
-        fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
-      - sed -i '/play-services-wearable/d' android/wear/build.gradle.kts modules/expo-wearos-bridge/wear-template/build.gradle.kts
-        modules/expo-wearos-bridge/android/build.gradle
-      - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162003/' android/app/build.gradle
-      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
-        = true/' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - printf '\n' >> android/gradle.properties
-      - echo 'reactNativeArchitectures=x86' >> android/gradle.properties
-      - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
-        modules/expo-wearos-bridge/wear-template/build.gradle.kts
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - FDROID_VERCODE=$$VERCODE$$ FDROID_ARCH=x86 node scripts/fdroid-prepare.js prebuild
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -178,45 +103,20 @@ Builds:
       - CABLESNAP_FDROID=1 CI=true NODE_ENV=production SENTRY_DISABLE_AUTO_UPLOAD=true
         gradle --no-daemon assembleReleaseFdroid -x lintVitalAnalyzeRelease
 
-  - versionName: 0.26.94
-    versionCode: 162004
-    commit: 81c6c2aa2a71d90789ad9a8b863323af6421e449
+  - versionName: 0.26.118
+    versionCode: 186004
+    commit: 6b3b5f8e4b5443b190e186e7a45ab66e596693d8
     sudo:
       - apt-get update
       - apt-get install -y npm
     init:
-      - node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
-        delete p.dependencies["expo-dev-client"]; delete p.dependencies["victory-native"];
-        delete p.dependencies["@sentry/react-native"]; delete p.optionalDependencies["@shopify/react-native-skia"];
-        p.scripts.postinstall="npx --no-install patch-package"; p.expo=p.expo||{};
-        p.expo.autolinking=p.expo.autolinking||{}; p.expo.autolinking.android=p.expo.autolinking.android||{};
-        p.expo.autolinking.android.buildFromSource=[".*"]; fs.writeFileSync("package.json",JSON.stringify(p)+"\n");'
-      - rm -f patches/@shopify+react-native-skia+2.6.2.patch
+      - node scripts/fdroid-prepare.js init
       - npm install
-      - node -e 'const fs=require("fs"); const p="modules/expo-wearos-bridge/expo-module.config.json";
-        const c=JSON.parse(fs.readFileSync(p,"utf8")); c.platforms=[]; fs.writeFileSync(p,JSON.stringify(c)+"\n");'
     output: android/app/build/outputs/apk/releaseFdroid/*.apk
     prebuild:
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - node scripts/fdroid-prepare.js prebuild-deps
       - CABLESNAP_FDROID=1 CI=true npx expo prebuild -p android --clean
-      - CABLESNAP_FDROID=1 node -e 'const m=require("./plugins/with-wearos-module");
-        m.patchFdroidExpoDependencies(process.cwd()); 
-        m.patchFdroidLibrarySources(process.cwd(),{removeGeneratedArtifacts:false,rewriteSources:false});
-        m.patchFdroidAndroidGradleTree("android"); const fs=require("fs"); const p="android/app/build.gradle";
-        fs.writeFileSync(p,m.patchAppBuildGradle(fs.readFileSync(p,"utf8")));'
-      - sed -i '/play-services-wearable/d' android/wear/build.gradle.kts modules/expo-wearos-bridge/wear-template/build.gradle.kts
-        modules/expo-wearos-bridge/android/build.gradle
-      - rm -f public/canvaskit.wasm
-      - sed -i 's/^\([[:space:]]*\)versionCode 162$/\1versionCode 162004/' android/app/build.gradle
-      - sed -i -e 's/def enableSeparateBuildPerCPUArchitecture = false/def enableSeparateBuildPerCPUArchitecture
-        = true/' android/app/build.gradle
-      - sed -i '/reactNativeArchitectures=/d' android/gradle.properties
-      - printf '\n' >> android/gradle.properties
-      - echo 'reactNativeArchitectures=x86_64' >> android/gradle.properties
-      - sed -i -e '/jvmToolchain\|JavaVersion/s/17/21/' -e '/jvmTarget/s/17/21/' android/wear/build.gradle.kts
-        modules/expo-wearos-bridge/wear-template/build.gradle.kts
-      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - FDROID_VERCODE=$$VERCODE$$ FDROID_ARCH=x86_64 node scripts/fdroid-prepare.js prebuild
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
@@ -239,5 +139,5 @@ VercodeOperation:
   - 1000 * %c + 3
   - 1000 * %c + 4
 UpdateCheckData: app.config.ts|versionCode:\s*(\d+)|app.config.ts|version:\s*["']([^"']+)["']
-CurrentVersion: 0.26.94
-CurrentVersionCode: 162004
+CurrentVersion: 0.26.118
+CurrentVersionCode: 186004
