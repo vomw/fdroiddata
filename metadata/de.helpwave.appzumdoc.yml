@@ -9,10 +9,6 @@ SourceCode: https://github.com/helpwave/app-zum-doc
 IssueTracker: https://github.com/helpwave/app-zum-doc/issues
 Changelog: https://github.com/helpwave/app-zum-doc/releases
 AutoName: App zum Doc
-Summary: End-to-end encrypted patient portal
-Description: |-
-  Book appointments and send prescriptions, referrals and imaging requests
-  over an end-to-end encrypted channel between patient and practice.
 RepoType: git
 Repo: https://github.com/helpwave/app-zum-doc.git
 Binaries: https://github.com/helpwave/app-zum-doc/releases/download/android@%v/app-arm64-v8a-release.apk
@@ -36,11 +32,13 @@ Builds:
     output: android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     prebuild:
       - export CI=1 EXPO_NO_GIT_STATUS=1
-      - node -e "const fs=require('fs'); for (const f of ['package.json','../../package.json']) { const j=JSON.parse(fs.readFileSync(f,'utf8')); j.expo=Object.assign({},j.expo,{autolinking:{android:{buildFromSource:['.*']}}}); fs.writeFileSync(f, JSON.stringify(j,null,2)+'\n'); console.log(f, JSON.stringify(j.expo.autolinking)); }"
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json ../../package.json
       - npx expo prebuild --platform android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-      - node -e "const fs=require('fs'); const p='android/settings.gradle'; let s=fs.readFileSync(p,'utf8'); const pin='expoAutolinking.projectRoot = rootDir.parentFile'+String.fromCharCode(10)+'expoAutolinking.useExpoModules()'; if (!s.includes('expoAutolinking.projectRoot')) { s=s.replace('expoAutolinking.useExpoModules()',pin); fs.writeFileSync(p,s); } if (!s.includes('expoAutolinking.projectRoot')) { throw new Error('could not pin expoAutolinking.projectRoot in '+p); }"
-      - printf '%s\n' 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g' >> android/gradle.properties
+      - sed -i -e '/expoAutolinking.useExpoModules()/i expoAutolinking.projectRoot =
+        rootDir.parentFile' android/settings.gradle
+      - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g' >> android/gradle.properties
       - sdkmanager 'ndk;27.1.12297006' 'cmake;3.22.1'
     scanignore:
       - node_modules/react-native/sdks/hermesc
