@@ -22,6 +22,7 @@ Builds:
         build-essential po4a libzstd-dev
     gradle:
       - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     rm:
       - android-standalone/third_party/tor-android/settings.gradle.kts
       - android-standalone/third_party/tor-android/tor-android-binary/build.gradle.kts
@@ -34,7 +35,7 @@ Builds:
       - android-standalone/third_party/tor-android/external/zstd/tests
     prebuild:
       - mkdir -p gradle/wrapper
-      - printf '%s\n' 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
+      - echo 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
         > gradle/wrapper/gradle-wrapper.properties
     build:
       - ONIONDROP_OFFLINE=1 bash scripts/build-native-tor.sh arm64-v8a x86_64
