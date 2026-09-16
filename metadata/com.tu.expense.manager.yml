@@ -10,29 +10,34 @@ RepoType: git
 Repo: https://github.com/Jayachandran-jayy/TU-Expense-Manager
 
 Builds:
-  - versionName: 1.1.0
-    versionCode: 23
-    commit: v2.3.0
+  - versionName: 2.4.2
+    versionCode: 24
+    commit: 72e97753fddfb6131f0bf869d02ace61eaae98fc
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.47.0
+      - flutter@stable
     rm:
       - test
       - web
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
+        .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
-        false } }' >> android/app/build.gradle.kts
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
+        = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release 
+        --dart-define=FDROID_BUILD=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.1.0
-CurrentVersionCode: 23
+CurrentVersion: 2.4.2
+CurrentVersionCode: 24
