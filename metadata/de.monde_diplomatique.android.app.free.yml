@@ -144,14 +144,16 @@ Builds:
       - sed -i -e "s/'-j4'/'-j`nproc`'/" build.gradle
       - popd
     scandelete:
+      - thirdparty/mupdf-jni/libmupdf/resources/hyphen/hyph-all.zip
+      - thirdparty/mupdf-jni/libmupdf/resources/hyphen/hyph-std.zip
       - thirdparty/mupdf-jni/libmupdf/thirdparty
+      - thirdparty/mupdf-jni/libmupdf/platform/wasm/package.json
     build:
       - pushd ../thirdparty/mupdf-jni
       - make -C libmupdf generate
       - gradle assembleRelease publishReleasePublicationToMavenLocal
       - popd
       - export VERSION_IGNORES_DIRTY_TREE=true
-      - export SENTRY_ENVIRONMENT=fdroid
       - gradle assembleFreeLmdProductionUnminifiedRelease
 
 MaintainerNotes: Dynamic versionName and version code, so no autoupdates possible.
