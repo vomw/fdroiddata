@@ -16,7 +16,7 @@ Repo: https://gitlab.com/mk1104/neurosync-40hz-brain-waves.git
 Builds:
   - versionName: 1.2.1
     versionCode: 8
-    commit: a7cbbae1fcfed419d70d17565a135c69ff027cbb
+    commit: 48fbb9f04a8a1920286326eaf9263b443b523f41
     subdir: android/app
     sudo:
       - apt-get update
@@ -24,7 +24,8 @@ Builds:
     init:
       - npm install
       - npm run build
-      - npx cap sync android
+      - rm -rf android/app/src/main/assets/public
+      - cp -r dist android/app/src/main/assets/public
     gradle:
       - yes
 
