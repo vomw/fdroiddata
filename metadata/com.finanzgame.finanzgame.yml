@@ -1,44 +1,44 @@
-  Categories:
-    - Finance Manager
-    - Educational Game
-  License: GPL-3.0-or-later AND CC-BY-SA-4.0 AND CC-BY-4.0 AND CC0-1.0
-  AuthorName: neuerfokus
-  SourceCode: https://github.com/neuerfokus/finanzgame
-  IssueTracker: https://github.com/neuerfokus/finanzgame/issues
-  Changelog: https://github.com/neuerfokus/finanzgame/releases
-  Donate: https://ko-fi.com/finanzgame
+Categories:
+  - Educational Game
+  - Finance Manager
+License: GPL-3.0-or-later
+AuthorName: neuerfokus
+SourceCode: https://github.com/neuerfokus/finanzgame
+IssueTracker: https://github.com/neuerfokus/finanzgame/issues
+Changelog: https://github.com/neuerfokus/finanzgame/releases
+Donate: https://ko-fi.com/finanzgame
 
-  AutoName: Finanzgame
+AutoName: Finanzgame
 
-  RepoType: git
-  Repo: https://github.com/neuerfokus/finanzgame.git
+RepoType: git
+Repo: https://github.com/neuerfokus/finanzgame.git
 
-  Builds:
-    - versionName: 1.10.0
-      versionCode: 190
-      commit: 7daf07f1c58aff9e71ff0bcc9db3dc9fc3cac3db
-      sudo:
-        - apt-get update
-        - apt-get install -y curl unzip xz-utils
-      output: build/app/outputs/flutter-apk/app-release.apk
-      srclibs:
-        - flutter@stable
-      prebuild:
-        - flutterVersion=$(cat .flutter-version)
-        - '[[ $flutterVersion ]]'
-        - git -C $$flutter$$ checkout -f $flutterVersion
-        - export PUB_CACHE=$(pwd)/.pub-cache
-        - $$flutter$$/bin/flutter config --no-analytics
-        - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      scandelete:
-        - .pub-cache
-        - build
-      build:
-        - export PUB_CACHE=$(pwd)/.pub-cache
-        - $$flutter$$/bin/flutter build apk --release
+Builds:
+  - versionName: 1.10.0
+    versionCode: 190
+    commit: 7daf07f1c58aff9e71ff0bcc9db3dc9fc3cac3db
+    sudo:
+      - apt-get update
+      - apt-get install -y xz-utils
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+      - build
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
 
-  AutoUpdateMode: Version v%v+%c
-  UpdateCheckMode: Tags
-  UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-  CurrentVersion: 1.10.0
-  CurrentVersionCode: 190
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.10.0
+CurrentVersionCode: 190
