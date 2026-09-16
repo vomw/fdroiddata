@@ -1,0 +1,35 @@
+Categories:
+  - Connectivity
+  - Internet
+License: GPL-3.0-or-later
+WebSite: https://github.com/zenjan1/ipmsg-torrent
+SourceCode: https://github.com/zenjan1/ipmsg-torrent
+IssueTracker: https://github.com/zenjan1/ipmsg-torrent/issues
+Changelog: https://github.com/zenjan1/ipmsg-torrent/releases
+
+AutoName: IPMsg-Torrent
+
+RepoType: git
+Repo: https://github.com/zenjan1/ipmsg-torrent
+
+Builds:
+  - versionName: 2.4.0
+    versionCode: 2004000
+    commit: fa5c7fac94e96e2d74b24155c7749edf7d2a7c3a
+    subdir: ipmsg-torrent/crates/app/src-tauri/gen/android
+    sudo: apt-get install -y rustup
+    gradle:
+      - yes
+    prebuild:
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+      - cargo install tauri-cli --locked
+      - sed -i "s|https://mirrors.cloud.tencent.com/gradle/|https://services.gradle.org/distributions/|g" gradle/wrapper/gradle-wrapper.properties
+    scandelete:
+      - ipmsg-torrent/crates/app/src-tauri/target
+    build:
+      - export NDK_HOME=$$NDK$$
+      - gradle assembleRelease
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: ipmsg-torrent/crates/app/src-tauri/tauri.conf.json|"version"\s*:\s*"([^"]+)"|.|versionCode:\s*(\d+)
