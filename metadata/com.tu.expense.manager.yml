@@ -20,24 +20,22 @@ Builds:
       - test
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
-        .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
-        = false } }' >> android/app/build.gradle.kts
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
+        false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release 
-        --dart-define=FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-UpdateCheckData: pubspec.yaml|version:\\s.+\\+(\\d+)|.|version:\\s(.+)\\+
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 2.4.2
 CurrentVersionCode: 24
