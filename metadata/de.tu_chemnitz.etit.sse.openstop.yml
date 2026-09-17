@@ -41,6 +41,9 @@ Builds:
     prebuild:
       - "$(yq -y -i '.dependency_overrides.geolocator_android.git = {\"url\": \"https://github.com/Zverik/flutter-geolocator.git\"\
         , \"ref\": \"floss\", \"path\": \"geolocator_android\"}' pubspec.yaml)"
+      - "$(yq -y -i '.packages.geolocator_android = {\"dependency\": \"direct overridden\", \"description\": {\"path\": \"geolocator_android\"\
+        , \"ref\": \"floss\", \"resolved-ref\": \"e3991f9e63514933e96b57a8f839ad6511c4afc2\"\
+        , \"url\": \"https://github.com/Zverik/flutter-geolocator.git\"}, \"source\": \"git\", \"version\": \"4.6.2\"}' pubspec.lock)"
       - mkdir -p /home/runner/work/OpenStop/
       - cd ..
       - mv de.tu_chemnitz.etit.sse.openstop /home/runner/work/OpenStop/OpenStop
@@ -52,7 +55,7 @@ Builds:
       - git checkout -f $version
       - popd
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - popd
       - mv $HOME/work/OpenStop/OpenStop de.tu_chemnitz.etit.sse.openstop
     scandelete:
