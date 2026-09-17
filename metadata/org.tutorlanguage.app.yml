@@ -31,8 +31,9 @@ Builds:
       - flutterVersion=$(sed -n -E "s/^FLUTTER_VERSION=(.*)$/\1/p" ../tool/release/TOOLCHAIN.env)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache && $$flutter$$/bin/flutter config --no-analytics
-      - export PUB_CACHE=$(pwd)/.pub-cache && $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - app/.pub-cache
     build: export PUB_CACHE=$(pwd)/.pub-cache && $$flutter$$/bin/flutter build apk
