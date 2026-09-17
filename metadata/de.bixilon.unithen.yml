@@ -62,10 +62,47 @@ Builds:
     gradleprops:
       - fdroid=true
 
+  - versionName: '1.3'
+    versionCode: 6
+    commit: f77f4b9cf26c1085010b018d81cd59c596567f1b
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sudo apt-get update
+      - sudo apt-get install -y zip
+    scandelete:
+      - app/libs
+    build:
+      - git clone https://github.com/zxing-cpp/zxing-cpp.git
+      - cd zxing-cpp
+      - git checkout 7e51e7b16ce14e8cd9399e84fd2d854172e9d933
+      - sed -i '1s/^/set(ZXING_C_API OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_EXAMPLES OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_ENABLE_1D OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_ENABLE_AZTEC OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_ENABLE_DATAMATRIX OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_ENABLE_MAXICODE OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i '1s/^/set(ZXING_ENABLE_PDF417 OFF)\n/' wrappers/android/zxingcpp/src/main/cpp/CMakeLists.txt
+      - sed -i -e 's/#if 0/#if 1/g' core/src/TextEncoder.cpp
+      - sed -i -e 's/#if 0/#if 1/g' core/src/TextDecoder.cpp
+      - cd wrappers/android
+      - ./gradlew :zxingcpp:assembleRelease
+      - rm -rf /tmp/aar
+      - mkdir -p /tmp/aar
+      - unzip -q zxingcpp/build/outputs/aar/zxingcpp-release.aar -d /tmp/aar
+      - printf 
+        '\x93\x39\x43\x18\x5b\x21\x91\x5f\x3d\x27\x72\xfe\xa8\x2d\xf2\x8b\x8b\x74\xbf\xb0'
+        | dd of=/tmp/aar/jni/arm64-v8a/libzxingcpp_android.so bs=1 seek=$((0x2e0))
+        conv=notrunc
+      - (cd /tmp/aar && zip -qr "$OLDPWD/../../../libs/zxingcpp-release.aar" .)
+    gradleprops:
+      - fdroid=true
+
 AllowedAPKSigningKeys: f44dcdebfb54333fa205ff11eaa5aa1f47cde8217dd63a9fd979cd1fcf6d4241
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: fdroid.txt|\n(\d+)|.|v(.*)
-CurrentVersion: 1.2.2
-CurrentVersionCode: 5
+CurrentVersion: '1.3'
+CurrentVersionCode: 6
