@@ -24,17 +24,22 @@ Binaries:
   https://github.com/wangzhishou/OneBox/releases/download/%v/OneBox-%v-foss-universal-release.apk
 
 Builds:
-  - versionName: 1.3.9
-    versionCode: 139
-    commit: 97e2379333520f6ccd79252cb4ec3a6e187a3010
+  - versionName: 1.4.0
+    versionCode: 140
+    commit: c13baf07dea576e3bea7a52c3ee698964009033f
     subdir: app
     gradle:
       - foss
       - universal
     prebuild:
       - sed -i -e '/mirrors.cloud.tencent.com/d' -e '/maven.aliyun.com/d' -e '/foojay/d'
-        ../settings.gradle.kts ../build.gradle.kts ../build-logic/settings.gradle.kts
-      - sed -i -e 's/-Xmx16g/-Xmx8g/' ../gradle.properties
+        -e '/artifact.bytedance.com/,/^        }$/d' ../settings.gradle.kts ../build.gradle.kts
+        ../build-logic/settings.gradle.kts
+      - sed -i -e 's/gitVersion = "000"/gitVersion = "c13baf0"/' ../gradle/libs.versions.toml
+      - sed -i -e 's/-Xmx16g/-Xmx8g/' -e 's/-Xmx4g/-Xmx2g/' ../gradle.properties
+      - echo 'org.gradle.workers.max=4' >> ../gradle.properties
+      - echo 'subprojects { tasks.configureEach { if (name.startsWith("lintVital"))
+        enabled = false } }' >> ../build.gradle.kts
     scandelete:
       - core/weather/libs
       - web
@@ -45,5 +50,5 @@ AllowedAPKSigningKeys: d9fae06e908409d79e18b661e50fbf675727dd1c3c384a7867ed81aae
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*$
 UpdateCheckData: gradle/libs.versions.toml|versionCode = "(\d+)"|.|versionName = "([\d.]+)"
-CurrentVersion: 1.3.9
-CurrentVersionCode: 139
+CurrentVersion: 1.4.0
+CurrentVersionCode: 140
