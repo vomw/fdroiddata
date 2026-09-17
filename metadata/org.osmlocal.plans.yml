@@ -1,0 +1,41 @@
+Categories:
+  - Navigation
+  - Public Transport
+License: GPL-3.0-or-later
+AuthorName: Gris-S
+SourceCode: https://github.com/Gris-S/my-osm
+IssueTracker: https://github.com/Gris-S/my-osm/issues
+Changelog: https://github.com/Gris-S/my-osm/releases
+
+AutoName: MY OSM
+
+RepoType: git
+Repo: https://github.com/Gris-S/my-osm.git
+Binaries: https://github.com/Gris-S/my-osm/releases/download/v%v/MY-OSM-%v.apk
+
+Builds:
+  - versionName: 0.1.0-alpha.26
+    versionCode: 1000026
+    commit: v0.1.0-alpha.26
+    subdir: apk/android/app
+    sudo:
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v26.8.1/node-v26.8.1-linux-x64.tar.xz
+      - echo "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d  node.tar.xz"
+        | sha256sum -c -
+      - tar xJf node.tar.xz
+      - cp -a node-v26.8.1-linux-x64/. /usr/local/
+    gradle:
+      - yes
+    build:
+      - cd ../../..
+      - npm --prefix app ci
+      - npm --prefix apk ci
+      - OSM_TARGET=apk MYOSM_DIAGNOSTICS=0 npm --prefix app run build
+      - cd apk && npx cap sync android
+
+AllowedAPKSigningKeys: 0537bb84f0222e9e6892e06c478be29bcf0b95bb93ffc92e1cc48e518cada2c9
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0-alpha.26
+CurrentVersionCode: 1000026
