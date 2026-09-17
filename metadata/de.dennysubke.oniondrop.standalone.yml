@@ -34,9 +34,10 @@ Builds:
       - android-standalone/third_party/tor-android/external/openssl/tlslite-ng
       - android-standalone/third_party/tor-android/external/zstd/tests
     prebuild:
-      - mkdir -p gradle/wrapper
-      - echo 'distributionUrl=https\://services.gradle.org/distributions/gradle-8.11.1-bin.zip'
-        > gradle/wrapper/gradle-wrapper.properties
+      - p=gradle/wrapper
+      - mkdir -p "$p"
+      - url=https://services.gradle.org/distributions/gradle-8.11.1-bin.zip
+      - echo "distributionUrl=$url" > "$p/gradle-wrapper.properties"
     build:
       - ONIONDROP_OFFLINE=1 bash scripts/build-native-tor.sh arm64-v8a x86_64
       - python3 scripts/collect-native-licenses.py third_party/tor-android app/src/main/assets/licenses/native
