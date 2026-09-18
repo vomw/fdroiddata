@@ -5698,7 +5698,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e '/usage/aopenapi-generator-cli=$(java -jar openapi-generator-cli.jar)'  ../open-api/bin/generate-dart-sdk.sh
+      - sed -i -e 's/openapi-generator-cli/java -jar openapi-generator-cli.jar/g'  ../open-api/bin/generate-dart-sdk.sh
       - bash ../open-api/bin/generate-dart-sdk.sh
       - $$flutter$$/bin/dart run build_runner build
       - $$flutter$$/bin/dart run drift_dev make-migrations
