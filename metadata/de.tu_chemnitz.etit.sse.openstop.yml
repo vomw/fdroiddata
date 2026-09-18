@@ -475,6 +475,8 @@ Builds:
       - popd
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE:-$HOME/.pub-cache}/hosted/*/jni-*/src/CMakeLists.txt
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE:-$HOME/.pub-cache}/hosted/*/h3_*/bindings/cmake/android.cmake
       - popd
       - mv $HOME/work/OpenStop/OpenStop de.tu_chemnitz.etit.sse.openstop
     scandelete:
