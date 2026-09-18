@@ -39,6 +39,7 @@ Builds:
         *2) abi=arm64-v8a ;;
         *) echo \"Unsupported ABI version code: $$VERCODE$$\" >&2; exit 1 ;;
         esac && sed -i -E \"s/^        versionCode [0-9]+$/        versionCode $$VERCODE$$/\"
+        android/app/build.gradle && sed -i -E \"/^    defaultConfig \\{$/a\\        ndk { abiFilters '${abi}' }\"
         android/app/build.gradle && sed -i -E \"s/^reactNativeArchitectures=.*/reactNativeArchitectures=${abi}/\"
         android/gradle.properties"
     scanignore:
@@ -79,6 +80,7 @@ Builds:
         *2) abi=arm64-v8a ;;
         *) echo \"Unsupported ABI version code: $$VERCODE$$\" >&2; exit 1 ;;
         esac && sed -i -E \"s/^        versionCode [0-9]+$/        versionCode $$VERCODE$$/\"
+        android/app/build.gradle && sed -i -E \"/^    defaultConfig \\{$/a\\        ndk { abiFilters '${abi}' }\"
         android/app/build.gradle && sed -i -E \"s/^reactNativeArchitectures=.*/reactNativeArchitectures=${abi}/\"
         android/gradle.properties"
     scanignore:
