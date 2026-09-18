@@ -17,7 +17,7 @@ Changelog: https://github.com/Zverik/every_door/blob/HEAD/CHANGELOG.md
 AutoName: Every Door
 
 RepoType: git
-Repo: https://github.com/Zverik/every_door.git
+Repo: https://github.com/mpeter50/every_door.git
 
 Builds:
   - versionName: 3.0.0
@@ -755,6 +755,34 @@ Builds:
       - vendor/flutter/bin/flutter build apk --release --flavor prod --split-per-abi
         --target-platform=android-arm64
 
+  - versionName: 7.1.0
+    versionCode: 603
+    commit: 716fe5dd3216f132e0d2d0f188a5709ed3e962a1
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk
+    prebuild:
+      - pwd; ls -hal
+      - curl -L https://textual.ru/presets.db -o assets/presets.db
+      - echo '{}' > lib/l10n/app_zh.arb
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - vendor/flutter/bin/flutter config --no-analytics
+      - vendor/flutter/bin/flutter packages pub get
+      - vendor/flutter/bin/dart run build_runner build
+    scanignore:
+      - vendor/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - vendor/flutter
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - vendor/flutter/bin/flutter build apk --release --flavor prod --split-per-abi
+        --target-platform=android-arm64
+
 AutoUpdateMode: None
 UpdateCheckMode: None
 VercodeOperation:
@@ -762,5 +790,5 @@ VercodeOperation:
   - '%c*10+2'
   - '%c*10+3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 7.1.0
-CurrentVersionCode: 603
+CurrentVersion: 6.0.0
+CurrentVersionCode: 553
