@@ -5691,14 +5691,16 @@ Builds:
       - web
     prebuild:
       - sed -i -e 's/Xmx4096M/Xmx8G/' android/gradle.properties
-      - export openapitoolsVersion=$(grep version ../open-api/openapitools.json | cut -d "\"" -f4)
+      - export openapitoolsVersion=$(grep version ../open-api/openapitools.json |
+        cut -d "\"" -f4)
       - '[[ $openapitoolsVersion ]]'
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - pushd ../open-api
-      - curl -Lo openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
+      - curl -Lo openapi-generator-cli.jar 
+        https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
       - sed -i -e 's/openapi-generator-cli/java -jar openapi-generator-cli.jar/g'  ./bin/generate-dart-sdk.sh
       - bash ./bin/generate-dart-sdk.sh
       - popd
@@ -5710,7 +5712,8 @@ Builds:
       - sed -i -e '/androidx.work:work-runtime-ktx/s/2.+/2.11.2/' $PUB_CACHE/hosted/pub.dev/home_widget-*/android/build.gradle
       - $$flutter$$/bin/dart run build_runner build
       - $$flutter$$/bin/dart run drift_dev make-migrations
-      - $$flutter$$/bin/dart run drift_dev schema generate --data-classes --companions drift_schemas/main/ test/drift/main/generated/
+      - $$flutter$$/bin/dart run drift_dev schema generate --data-classes --companions
+        drift_schemas/main/ test/drift/main/generated/
       - ls pigeon/*.dart | xargs -n1 -P4 -I{} $$flutter$$/bin/dart run pigeon --input {}
       - $$flutter$$/bin/dart run easy_localization:generate -S ../i18n
       - $$flutter$$/bin/dart run bin/generate_keys.dart
