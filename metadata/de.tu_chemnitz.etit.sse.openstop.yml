@@ -440,9 +440,9 @@ Builds:
       - popd
       - mv $HOME/work/OpenStop/OpenStop de.tu_chemnitz.etit.sse.openstop
 
-  - versionName: 0.8.6
-    versionCode: 25
-    commit: ebd02fef8c2529ca5da7e9746117f75907cdee0c
+  - versionName: 0.8.7
+    versionCode: 26
+    commit: 0cc8a06f67b7eacf3161d944327c66eb4a407737
     sudo:
       - apt-get update
       - apt-get install -y jq python3-pip yq
@@ -456,13 +456,12 @@ Builds:
       - web
       - .github
     prebuild:
-      - "$(yq -y -i '.dependency_overrides.geolocator_android.git = {\"url\": \"https://github.com/Zverik/flutter-geolocator.git\"\
-        , \"ref\": \"floss\", \"path\": \"geolocator_android\"}' pubspec.yaml)"
-      - "$(yq -y -i '.packages.geolocator_android = {\"dependency\": \"direct overridden\"\
-        , \"description\": {\"path\": \"geolocator_android\", \"ref\": \"floss\",
-        \"resolved-ref\": \"e3991f9e63514933e96b57a8f839ad6511c4afc2\", \"url\": \"\
-        https://github.com/Zverik/flutter-geolocator.git\"}, \"source\": \"git\",
-        \"version\": \"4.6.2\"}' pubspec.lock)"
+      - yq -y -i '.dependency_overrides.geolocator_android.git = {"url":"https://github.com/Zverik/flutter-geolocator.git",
+        "ref":"floss", "path":"geolocator_android"}' pubspec.yaml
+      - yq -y -i '.packages.geolocator_android = {"dependency":"direct overridden",
+        "description":{"path":"geolocator_android", "ref":"floss", "resolved-ref":"e3991f9e63514933e96b57a8f839ad6511c4afc2",
+        "url":"https://github.com/Zverik/flutter-geolocator.git"}, "source":"git",
+        "version":"4.6.2"}' pubspec.lock
       - mkdir -p /home/runner/work/OpenStop/
       - cd ..
       - mv de.tu_chemnitz.etit.sse.openstop /home/runner/work/OpenStop/OpenStop
@@ -470,13 +469,12 @@ Builds:
       - pushd $HOME/work/OpenStop/OpenStop/
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export version="$(yq -r .environment.flutter pubspec.yaml)"
-      - pushd $$flutter$$
-      - git checkout -f $version
-      - popd
+      - '[[ $version ]]'
+      - git -C $$flutter$$ checkout -f $version
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE:-$HOME/.pub-cache}/hosted/*/jni-*/src/CMakeLists.txt
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE:-$HOME/.pub-cache}/hosted/*/h3_*/bindings/cmake/android.cmake
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
+        ${PUB_CACHE:-$HOME/.pub-cache}/hosted/*/{jni-*/src/CMakeLists.txt,h3_*/bindings/cmake/android.cmake}
       - popd
       - mv $HOME/work/OpenStop/OpenStop de.tu_chemnitz.etit.sse.openstop
     scandelete:
@@ -498,5 +496,5 @@ AllowedAPKSigningKeys: 0442746b76b1e5fcf1ef6eaabc03ddf99ad756b622179b75b72e7cd78
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.8.6
-CurrentVersionCode: 25
+CurrentVersion: 0.8.7
+CurrentVersionCode: 26
