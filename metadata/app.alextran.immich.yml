@@ -5671,9 +5671,9 @@ Builds:
       - $$flutter$$/bin/flutter build apk --release --dart-define=cronetHttpNoPlay=true
     ndk: r25c
 
-  - versionName: 3.2.1
-    versionCode: 3020199
-    commit: 6420baac8307bb9ad14963578782fa0539947332
+  - versionName: 3.2.2
+    versionCode: 3020299
+    commit: 60b51cb3bc909e72fe963f4dfb1947515cb9ab3b
     subdir: mobile
     submodules: true
     sudo:
@@ -5693,12 +5693,12 @@ Builds:
       - sed -i -e 's/Xmx4096M/Xmx8G/' android/gradle.properties
       - export openapitoolsVersion=$(grep version ../open-api/openapitools.json | cut -d "\"" -f4)
       - '[[ $openapitoolsVersion ]]'
-      - curl -Lo openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
+      - curl -Lo ../open-api/bin/openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/$openapitoolsVersion/openapi-generator-cli-$openapitoolsVersion.jar
       - export flutterVersion=$(sed -n -E "s/.*flutter:\s([0-9.]+)/\1/p" pubspec.yaml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - alias openapi-generator-cli='java -jar openapi-generator-cli.jar'
+      - sed -i -e '/usage/aopenapi-generator-cli=$(java -jar openapi-generator-cli.jar)' ../open-api/bin/generate-dart-sdk.sh
       - bash ../open-api/bin/generate-dart-sdk.sh
       - $$flutter$$/bin/dart run build_runner build
       - $$flutter$$/bin/dart run drift_dev make-migrations
@@ -5752,5 +5752,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[\d.]+$
 UpdateCheckData: mobile/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 3.2.1
-CurrentVersionCode: 3020199
+CurrentVersion: 3.2.2
+CurrentVersionCode: 3020299
