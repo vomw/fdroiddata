@@ -22,12 +22,15 @@ Builds:
     sudo:
       - apt-get update
       - apt-get install -y npm
-    java: 17
     gradle:
       - yes
     prebuild:
       - cd ../..
       - npm install
+      - find node_modules -type f -name "*.gradle*" -exec sed -i 's/JavaLanguageVersion.of(17)/JavaLanguageVersion.of(21)/g' {} +
+      - find node_modules -type f -name "*.gradle*" -exec sed -i 's/jvmTarget = "17"/jvmTarget = "21"/g' {} +
+      - find node_modules -type f -name "*.gradle.kts" -exec sed -i 's/jvmTarget.set("17")/jvmTarget.set("21")/g' {} +
+      - find node_modules -type f -name "*.gradle*" -exec sed -i 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' {} +
     scandelete:
       - node_modules
 
