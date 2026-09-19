@@ -16,7 +16,7 @@ Repo: https://github.com/mremiyum/ridm-app
 Builds:
   - versionName: 1.1.1
     versionCode: 11
-    commit: 00b5a80d5997520e6f44cd4e3a1f3dd0d88df944
+    commit: e6a4abc21d9419707af4d8d6699559ae0da7fc45
     subdir: android/app
     sudo:
       - apt-get update
@@ -45,6 +45,9 @@ Builds:
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
+    postbuild:
+      - ls ../build/generated/autolinking
+      - grep -o '"name":[^,]*' ../build/generated/autolinking/autolinking.json
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
