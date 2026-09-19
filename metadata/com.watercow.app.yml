@@ -5,22 +5,22 @@ AuthorName: Kishor
 SourceCode: https://github.com/kishor-23/Water-Cow
 IssueTracker: https://github.com/kishor-23/Water-Cow/issues
 
-Name: Water Cow
+AutoName: Water Cow
 
 RepoType: git
 Repo: https://github.com/kishor-23/Water-Cow.git
 
-Summary: Hydration tracking app with expressive cow mascot
-Description: |-
-  Water Cow is a feature-packed hydration tracking app with custom reminders,
-  expressive mascot reactions, custom notification sounds, and a native Android home screen widget.
-
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: 6538106350a0874c5e46097f7216dee1ba4600b3
+    commit: 380fb3b5d5e55f0de2db574a8e14d2a0fcf46416
     subdir: android/app
-    sudo: apt-get update && apt-get install -y openjdk-17-jdk-headless npm
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - apt-get install -y npm
     init:
       - cd ../..
       - npm ci --legacy-peer-deps
@@ -33,4 +33,3 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: 1.0.1
 CurrentVersionCode: 2
-
