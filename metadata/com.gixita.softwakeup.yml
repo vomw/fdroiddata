@@ -1,0 +1,60 @@
+Categories:
+  - Alarm Clock
+License: GPL-3.0-only
+AuthorName: Gixita (Kris Laermans)
+AuthorEmail: info@gixita.be
+SourceCode: https://git.gixita.be/gixita/soft_wakeup
+IssueTracker: https://git.gixita.be/gixita/soft_wakeup/issues
+Changelog: 
+  https://git.gixita.be/gixita/soft_wakeup/src/branch/main/fastlane/metadata/android/en-US/changelogs
+
+AutoName: SoftWakeup
+
+RepoType: git
+Repo: https://git.gixita.be/gixita/soft_wakeup.git
+Binaries: 
+  https://git.gixita.be/gixita/soft_wakeup/releases/download/v%v/soft_wakeup-foss.apk
+
+Builds:
+  - versionName: 1.0.5
+    versionCode: 6
+    commit: 65eb4b3ef779d12848df0839d8814ad994a59354
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - mv com.gixita.softwakeup /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - git -C $$flutter$$ checkout -f 3.44.8
+      - sed -i '/FlutterFire Configuration/,/FlutterFire Configuration/d' android/settings.gradle.kts
+      - sed -i 's/signingConfigs.getByName("debug")/null/' android/app/build.gradle.kts
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv /tmp/build com.gixita.softwakeup
+    scandelete:
+      - .pub-cache
+    build:
+      - cd ..
+      - mv com.gixita.softwakeup /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv /tmp/build com.gixita.softwakeup
+
+AllowedAPKSigningKeys: 622069efd70d5306178797a329d4b6ba1295538728d516c375cf0fa89b9dca98
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.5
+CurrentVersionCode: 6
