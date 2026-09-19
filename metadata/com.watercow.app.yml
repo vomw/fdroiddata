@@ -13,8 +13,8 @@ Repo: https://github.com/kishor-23/Water-Cow.git
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: 380fb3b5d5e55f0de2db574a8e14d2a0fcf46416
-    subdir: android/app
+    commit: 3368362f4631534abfe4c31944a55dfe60978d9e
+     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
@@ -26,9 +26,10 @@ Builds:
       - npm ci --legacy-peer-deps
     gradle:
       - yes
-    scandelete:
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    scanignore:
+      - android/build.gradle
       - node_modules
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: 1.0.1
