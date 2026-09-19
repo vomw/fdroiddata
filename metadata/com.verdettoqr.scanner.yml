@@ -13,33 +13,44 @@ Donate: https://verdettoqr.com/support
 
 RepoType: git
 Repo: https://gitlab.com/verdettoqr/verdetto-android.git
-Binaries: https://gitlab.com/verdettoqr/verdetto-android/-/releases/v%v/downloads/verdetto-%v-foss.apk
+Binaries: 
+  https://gitlab.com/verdettoqr/verdetto-android/-/releases/v%v/downloads/verdetto-%v-foss.apk
 
 Builds:
   - versionName: 1.0.1
     versionCode: 10001
     commit: v1.0.1
+    subdir: app
     submodules: true
     sudo:
       - apt-get update
       - apt-get install -y openjdk-21-jdk-headless
       - update-java-alternatives -s java-1.21.0-openjdk-amd64
+    gradle:
+      - foss
     srclibs:
       - rustup@1.29.1
-    init:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
-      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal --target aarch64-linux-android
     prebuild:
-      - cd core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
+      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
+      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
+      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
     scandelete:
       - gradle/wrapper/gradle-wrapper.jar
     ndk: 29.0.14206865
-    gradle:
-      - foss
 
 AllowedAPKSigningKeys: 840fc3541e2228bc4545452b9d15bc912d24314ae3a35f3a4f5feeb014e3784f
 
-AutoUpdateMode: Version v%v
-UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+MaintainerNotes: |-
+  The version name and code come from the tag alone: vX.Y.Z gives X.Y.Z and
+  X*10000+Y*100+Z through buildSrc (TagVersion.java), and no file in the tag
+  carries the code, so the Tags check finds none and both update modes are None;
+  new versions come as merge requests. The engine (core/, Rust) is built by the
+  app's Gradle task over the pinned NDK and toolchain; rustup comes from the
+  srclib in prebuild. The tag's GitLab release carries the APK built on Linux
+  and signed with the key in AllowedAPKSigningKeys.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
 CurrentVersion: 1.0.1
 CurrentVersionCode: 10001
