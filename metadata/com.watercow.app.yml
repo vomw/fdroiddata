@@ -21,14 +21,20 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - apt-get install -y npm
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     init:
       - cd ../..
       - npm ci --legacy-peer-deps
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
     gradle:
       - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
       - node_modules
+
+MaintainerNotes: Binary scanner detects `com/google/firebase` classes from firebase-stub srclib.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
