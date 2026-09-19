@@ -41,6 +41,31 @@ Builds:
       - tools/screens/fixtures/hot-fixture
     ndk: 29.0.14206865
 
+  - versionName: 1.0.2
+    versionCode: 10002
+    commit: v1.0.2
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless build-essential
+      - update-java-alternatives -s java-1.21.0-openjdk-amd64
+    gradle:
+      - foss
+    srclibs:
+      - rustup@1.29.1
+    prebuild:
+      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
+      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
+      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
+      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+    scanignore:
+      - app/src/main/assets/safety
+    scandelete:
+      - core/fixtures
+      - tools/screens/fixtures/hot-fixture
+    ndk: 29.0.14206865
+
 AllowedAPKSigningKeys: 840fc3541e2228bc4545452b9d15bc912d24314ae3a35f3a4f5feeb014e3784f
 
 MaintainerNotes: |-
@@ -59,5 +84,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 1.0.1
-CurrentVersionCode: 10001
+CurrentVersion: 1.0.2
+CurrentVersionCode: 10002
