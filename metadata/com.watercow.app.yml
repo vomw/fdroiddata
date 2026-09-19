@@ -5,23 +5,39 @@ AuthorName: Kishor
 SourceCode: https://github.com/kishor-23/Water-Cow
 IssueTracker: https://github.com/kishor-23/Water-Cow/issues
 
+AutoName: Water Cow
+Summary: Minimalist hydration tracker to build healthy daily water habits
+Description: |-
+  Water Cow is a clean, privacy-focused daily water intake and hydration tracker.
+
+  Features:
+  - Track your daily hydration progress
+  - Quick-log customizable intake presets
+  - Daily history and hydration streaks
+  - Works completely offline with zero tracking
+
 RepoType: git
 Repo: https://github.com/kishor-23/Water-Cow.git
 
 Builds:
   - versionName: 1.0.1
     versionCode: 2
-    commit: 6538106350a0874c5e46097f7216dee1ba4600b3
+    commit:3368362f4631534abfe4c31944a55dfe60978d9e
     subdir: android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - apt-get install -y npm
     init:
       - cd ../..
       - npm ci --legacy-peer-deps
     gradle:
       - yes
-    scandelete:
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    scanignore:
+      - android/build.gradle
       - node_modules
 
 AutoUpdateMode: Version
