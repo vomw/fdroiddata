@@ -1,0 +1,45 @@
+Categories:
+  - Multimedia
+  - Security
+License: GPL-3.0-or-later
+AuthorName: Verdetto
+AuthorEmail: support@verdettoqr.com
+AuthorWebSite: https://verdettoqr.com
+WebSite: https://verdettoqr.com
+SourceCode: https://gitlab.com/verdettoqr/verdetto-android
+IssueTracker: https://gitlab.com/verdettoqr/verdetto-android/-/issues
+Changelog: https://gitlab.com/verdettoqr/verdetto-android/-/releases
+Donate: https://verdettoqr.com/support
+
+RepoType: git
+Repo: https://gitlab.com/verdettoqr/verdetto-android.git
+Binaries: https://gitlab.com/verdettoqr/verdetto-android/-/releases/v%v/downloads/verdetto-%v-foss.apk
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 10001
+    commit: v1.0.1
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -s java-1.21.0-openjdk-amd64
+    srclibs:
+      - rustup@1.29.1
+    init:
+      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
+      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal --target aarch64-linux-android
+    prebuild:
+      - cd core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+    scandelete:
+      - gradle/wrapper/gradle-wrapper.jar
+    ndk: 29.0.14206865
+    gradle:
+      - foss
+
+AllowedAPKSigningKeys: 840fc3541e2228bc4545452b9d15bc912d24314ae3a35f3a4f5feeb014e3784f
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 1.0.1
+CurrentVersionCode: 10001
