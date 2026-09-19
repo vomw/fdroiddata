@@ -16,6 +16,9 @@ Builds:
   - versionName: 1.0.13
     versionCode: 111
     commit: 6a8d01c96abb8270646165942241980279deec43
+    sudo:
+      - mkdir -p /home/runner/work/QRJukebox
+      - chown -R vagrant /home/runner/work/QRJukebox
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/LEXYGO/QRJukebox/releases/download/v%v/QR_Jukebox_v%v_armv7.apk
@@ -26,19 +29,34 @@ Builds:
         | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
         --target-platform="android-arm"
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
 
   - versionName: 1.0.13
     versionCode: 112
     commit: 6a8d01c96abb8270646165942241980279deec43
+    sudo:
+      - mkdir -p /home/runner/work/QRJukebox
+      - chown -R vagrant /home/runner/work/QRJukebox
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/LEXYGO/QRJukebox/releases/download/v%v/QR_Jukebox_v%v_arm64v8a.apk
@@ -49,21 +67,37 @@ Builds:
         | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
         --target-platform="android-arm64"
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
 
   - versionName: 1.0.13
     versionCode: 113
     commit: 6a8d01c96abb8270646165942241980279deec43
+    sudo:
+      - mkdir -p /home/runner/work/QRJukebox
+      - chown -R vagrant /home/runner/work/QRJukebox
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/LEXYGO/QRJukebox/releases/download/v%v/QR_Jukebox_v%v_x86_64.apk
+    binary:
+      https://github.com/LEXYGO/QRJukebox/releases/download/v%v/QR_Jukebox_v%v_x86_64.apk
     srclibs:
       - flutter@stable
     prebuild:
@@ -71,15 +105,27 @@ Builds:
         | head -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/QRJukebox/QRJukebox
+      - cd ..
+      - mv com.lennardhanss.qrjukebox $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
         --target-platform="android-x64"
+      - cd -
+      - mv $repo com.lennardhanss.qrjukebox
 
 AllowedAPKSigningKeys: fb76cba47811826f8f9bce51a2683fb32fda2c90ca2e55200806f751e2f37e18
 
