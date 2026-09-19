@@ -10,7 +10,8 @@ AutoName: Gallery
 
 RepoType: git
 Repo: https://github.com/Soretake/PrismGallery.git
-Binaries: https://github.com/Soretake/PrismGallery/releases/download/v%v/PrismGallery-%v.apk
+Binaries: 
+  https://github.com/Soretake/PrismGallery/releases/download/v%v/PrismGallery-%v.apk
 
 Builds:
   - versionName: 1.0.1
@@ -19,6 +20,10 @@ Builds:
     subdir: app
     gradle:
       - yes
+    prebuild:
+      - cd ..
+      - J=-XX:ActiveProcessorCount=4
+      - echo org.gradle.jvmargs=-Xmx2g $J>>gradle.properties
 
 AllowedAPKSigningKeys: a566d99f3836c36e77bec4ea4462ac8fe6ff309f67f16497f087f8d03d9eef9f
 
