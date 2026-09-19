@@ -35,8 +35,11 @@ Builds:
       - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
       - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
       - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+    scanignore:
+      - app/src/main/assets/safety
     scandelete:
-      - gradle/wrapper/gradle-wrapper.jar
+      - core/fixtures
+      - tools/screens/fixtures/hot-fixture
     ndk: 29.0.14206865
 
 AllowedAPKSigningKeys: 840fc3541e2228bc4545452b9d15bc912d24314ae3a35f3a4f5feeb014e3784f
@@ -48,7 +51,12 @@ MaintainerNotes: |-
   new versions come as merge requests. The engine (core/, Rust) is built by the
   app's Gradle task over the pinned NDK and toolchain; rustup comes from the
   srclib in prebuild. The tag's GitLab release carries the APK built on Linux
-  and signed with the key in AllowedAPKSigningKeys.
+  and signed with the key in AllowedAPKSigningKeys. app/src/main/assets/safety
+  is data, not code (scanignore): the bundled link-list snapshot as gzipped text
+  tables and one binary table, list.bin, built from the public list repository
+  https://gitlab.com/verdettoqr/link-safety-list by its own tooling.
+  core/fixtures and tools/screens/fixtures/hot-fixture are test and rig data
+  the release build never reads (scandelete).
 
 AutoUpdateMode: None
 UpdateCheckMode: None
