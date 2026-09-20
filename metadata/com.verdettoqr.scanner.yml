@@ -18,74 +18,20 @@ Binaries:
   https://gitlab.com/verdettoqr/verdetto-android/-/releases/v%v/downloads/verdetto-%v-foss.apk
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 10001
-    commit: v1.0.1
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless build-essential
-      - update-java-alternatives -s java-1.21.0-openjdk-amd64
-    gradle:
-      - foss
-    srclibs:
-      - rustup@1.29.1
-    prebuild:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
-      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
-      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
-      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
-    scanignore:
-      - app/src/main/assets/safety
-    scandelete:
-      - core/fixtures
-      - tools/screens/fixtures/hot-fixture
-    ndk: 29.0.14206865
-
-  - versionName: 1.0.2
-    versionCode: 10002
-    commit: v1.0.2
-    subdir: app
-    submodules: true
-    sudo:
-      - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless build-essential
-      - update-java-alternatives -s java-1.21.0-openjdk-amd64
-    gradle:
-      - foss
-    srclibs:
-      - rustup@1.29.1
-    prebuild:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
-      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
-      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
-      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
-    scanignore:
-      - app/src/main/assets/safety
-    scandelete:
-      - core/fixtures
-      - tools/screens/fixtures/hot-fixture
-    ndk: 29.0.14206865
-
   - versionName: 1.0.3
     versionCode: 10003
-    commit: v1.0.3
+    commit: 1f3f209cb2d4371675f1d0a49ee4951d352eb165
     subdir: app
     submodules: true
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-21-jdk-headless build-essential
-      - update-java-alternatives -s java-1.21.0-openjdk-amd64
+      - apt-get install -y make gcc libc-dev rustup
     gradle:
       - foss
-    srclibs:
-      - rustup@1.29.1
     prebuild:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
-      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
-      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
-      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+      - rustup toolchain install 1.98.0 --profile minimal
+      - rustup target add aarch64-linux-android --toolchain 1.98.0
+      - cd ../core && cargo +1.98.0 fetch --locked
     scanignore:
       - app/src/main/assets/safety
     scandelete:
@@ -101,11 +47,12 @@ MaintainerNotes: |-
   carries app/version.properties with the same two values as plain text for the
   Tags check (UpdateCheckData); a release build refuses when the file and the
   tag differ. The engine (core/, Rust) is built by the app's Gradle task over
-  the pinned NDK and toolchain; rustup comes from the srclib in prebuild. Each
-  tag's GitLab release carries the APK built on Linux and signed with the key
-  in AllowedAPKSigningKeys. app/src/main/assets/safety is data, not code
-  (scanignore): the bundled link-list snapshot as gzipped text tables and one
-  binary table, list.bin, built from the public list repository
+  the pinned NDK and toolchain; rustup comes from Debian (sudo) and installs the
+  pinned toolchain in prebuild. Each tag's GitLab release carries the APK built
+  on Linux and signed with the key in AllowedAPKSigningKeys.
+  app/src/main/assets/safety is data, not code (scanignore): the bundled
+  link-list snapshot as gzipped text tables and one binary table, list.bin,
+  built from the public list repository
   https://gitlab.com/verdettoqr/link-safety-list by its own tooling.
   core/fixtures and tools/screens/fixtures/hot-fixture are test and rig data
   the release build never reads (scandelete).
