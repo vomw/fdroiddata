@@ -108,7 +108,22 @@ Builds:
     scandelete:
       - app/release
 
+  - versionName: '3.5'
+    versionCode: 35
+    commit: c85ce0fd97a7b2c7dda6a1f11fe7b5aa6d0e2bf7
+    subdir: app
+    gradle:
+      - fdroid
+    rm:
+      - wear
+      - release
+      - fdroid
+      - app/release
+      - app/libs
+    prebuild: sed -i -e '/wear/d' ../settings.gradle
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.3'
-CurrentVersionCode: 33
+UpdateCheckData: app/build.gradle|versionCode = (\d+)|.|appVersionName = '(.+)'
+CurrentVersion: '3.5'
+CurrentVersionCode: 35
