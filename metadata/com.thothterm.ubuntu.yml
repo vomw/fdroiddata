@@ -1,0 +1,51 @@
+Categories:
+  - Development
+  - System
+License: Apache-2.0
+AuthorName: Lord1Egypt
+SourceCode: https://github.com/Lord1Egypt/AndroidThothTerm
+IssueTracker: https://github.com/Lord1Egypt/AndroidThothTerm/issues
+Changelog: https://github.com/Lord1Egypt/AndroidThothTerm/releases
+
+AutoName: ThothTerm Ubuntu
+
+RepoType: git
+Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
+
+Builds:
+  - versionName: 0.1.2
+    versionCode: 102
+    commit: 06204c18410646c05ceeb2e1f430e3e3517e7021
+    subdir: term-ubuntu
+    submodules: true
+    gradle:
+      - fdroid
+    ndk: 23.2.8568313
+
+MaintainerNotes: |-
+  arm64-v8a only. minSdk 26, targetSdk 36.
+
+  The fdroid flavour packages no distribution binaries: no Ubuntu rootfs
+  archive and no .deb payload. tools/prepare-assets.sh, which stages those for
+  the separate full flavour, runs only for preFull*Build, so this build makes
+  no network requests of its own. The Ubuntu userland is downloaded on first
+  run only after an explicit user opt-in, from a URL and SHA-256 pinned in the
+  app's source, and is verified before extraction.
+
+  The PRoot runtime is compiled during the build by
+  term-ubuntu/tools/build-proot.sh from sources in the repository:
+  third_party/proot (termux/proot, tag v5.1.107.92) and
+  third_party/libandroid-shmem (termux/libandroid-shmem, tag v0.7) as
+  submodules, plus talloc 2.4.3's talloc.c and talloc.h vendored verbatim
+  because talloc has no git upstream. The script verifies both submodule
+  commits, downloads nothing, and asserts the link contract and 16 KB page
+  alignment of everything it produces. submodules: true is therefore required.
+
+  PRoot is GPL-2.0 and talloc is LGPL-3.0; the corresponding source is the
+  pinned submodules, the two patches in term-ubuntu/patches and the build
+  script, all carried by the tagged commit.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
+CurrentVersion: 0.1.2
+CurrentVersionCode: 102
