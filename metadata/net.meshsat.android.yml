@@ -12,16 +12,57 @@ AutoName: MeshSat
 
 RepoType: git
 Repo: https://github.com/meshsat/meshsat-android.git
-Binaries: 
-  https://github.com/meshsat/meshsat-android/releases/download/v%v/meshsat-android-%v-release.apk
 
 Builds:
-  - versionName: 2.14.5
-    versionCode: 76
-    commit: v2.14.5
+  - versionName: 2.14.7
+    versionCode: 781
+    commit: v2.14.7
     subdir: app
     gradle:
       - yes
+    output: 
+      build/outputs/apk/release/meshsat-android-$$VERSION$$-armeabi-v7a-$$VERCODE$$.apk
+    binary: 
+      https://github.com/meshsat/meshsat-android/releases/download/v%v/meshsat-android-%v-armeabi-v7a-%c.apk
+    scanignore:
+      - app/src/main/assets/codebook_v1.bin
+      - app/src/main/assets/corpus_index.bin
+
+  - versionName: 2.14.7
+    versionCode: 782
+    commit: v2.14.7
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/release/meshsat-android-$$VERSION$$-arm64-v8a-$$VERCODE$$.apk
+    binary: 
+      https://github.com/meshsat/meshsat-android/releases/download/v%v/meshsat-android-%v-arm64-v8a-%c.apk
+    scanignore:
+      - app/src/main/assets/codebook_v1.bin
+      - app/src/main/assets/corpus_index.bin
+
+  - versionName: 2.14.7
+    versionCode: 783
+    commit: v2.14.7
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/release/meshsat-android-$$VERSION$$-x86-$$VERCODE$$.apk
+    binary: 
+      https://github.com/meshsat/meshsat-android/releases/download/v%v/meshsat-android-%v-x86-%c.apk
+    scanignore:
+      - app/src/main/assets/codebook_v1.bin
+      - app/src/main/assets/corpus_index.bin
+
+  - versionName: 2.14.7
+    versionCode: 784
+    commit: v2.14.7
+    subdir: app
+    gradle:
+      - yes
+    output: build/outputs/apk/release/meshsat-android-$$VERSION$$-x86_64-$$VERCODE$$.apk
+    binary: 
+      https://github.com/meshsat/meshsat-android/releases/download/v%v/meshsat-android-%v-x86_64-%c.apk
     scanignore:
       - app/src/main/assets/codebook_v1.bin
       - app/src/main/assets/corpus_index.bin
@@ -30,5 +71,10 @@ AllowedAPKSigningKeys: 8ca78b6c33bd9796bb05f40fec2a0ab801e0297e7565960d42f5e6af8
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 2.14.5
-CurrentVersionCode: 76
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: 2.14.7
+CurrentVersionCode: 784
