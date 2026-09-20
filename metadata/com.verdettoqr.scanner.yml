@@ -66,23 +66,50 @@ Builds:
       - tools/screens/fixtures/hot-fixture
     ndk: 29.0.14206865
 
+  - versionName: 1.0.3
+    versionCode: 10003
+    commit: v1.0.3
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless build-essential
+      - update-java-alternatives -s java-1.21.0-openjdk-amd64
+    gradle:
+      - foss
+    srclibs:
+      - rustup@1.29.1
+    prebuild:
+      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain none
+      - $HOME/.cargo/bin/rustup toolchain install 1.98.0 --profile minimal
+      - $HOME/.cargo/bin/rustup target add aarch64-linux-android --toolchain 1.98.0
+      - cd ../core && $HOME/.cargo/bin/cargo +1.98.0 fetch --locked
+    scanignore:
+      - app/src/main/assets/safety
+    scandelete:
+      - core/fixtures
+      - tools/screens/fixtures/hot-fixture
+    ndk: 29.0.14206865
+
 AllowedAPKSigningKeys: 840fc3541e2228bc4545452b9d15bc912d24314ae3a35f3a4f5feeb014e3784f
 
 MaintainerNotes: |-
-  The version name and code come from the tag alone: vX.Y.Z gives X.Y.Z and
-  X*10000+Y*100+Z through buildSrc (TagVersion.java), and no file in the tag
-  carries the code, so the Tags check finds none and both update modes are None;
-  new versions come as merge requests. The engine (core/, Rust) is built by the
-  app's Gradle task over the pinned NDK and toolchain; rustup comes from the
-  srclib in prebuild. The tag's GitLab release carries the APK built on Linux
-  and signed with the key in AllowedAPKSigningKeys. app/src/main/assets/safety
-  is data, not code (scanignore): the bundled link-list snapshot as gzipped text
-  tables and one binary table, list.bin, built from the public list repository
+  The version name and code come from the tag: vX.Y.Z gives X.Y.Z and
+  X*10000+Y*100+Z through buildSrc (TagVersion.java). From 1.0.3 the tag also
+  carries app/version.properties with the same two values as plain text for the
+  Tags check (UpdateCheckData); a release build refuses when the file and the
+  tag differ. The engine (core/, Rust) is built by the app's Gradle task over
+  the pinned NDK and toolchain; rustup comes from the srclib in prebuild. Each
+  tag's GitLab release carries the APK built on Linux and signed with the key
+  in AllowedAPKSigningKeys. app/src/main/assets/safety is data, not code
+  (scanignore): the bundled link-list snapshot as gzipped text tables and one
+  binary table, list.bin, built from the public list repository
   https://gitlab.com/verdettoqr/link-safety-list by its own tooling.
   core/fixtures and tools/screens/fixtures/hot-fixture are test and rig data
   the release build never reads (scandelete).
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0.2
-CurrentVersionCode: 10002
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: app/version.properties|versionCode=(\d+)|.|versionName=(.+)
+CurrentVersion: 1.0.3
+CurrentVersionCode: 10003
