@@ -4,9 +4,7 @@ License: GPL-3.0-or-later
 AuthorName: Kishor
 SourceCode: https://github.com/kishor-23/Water-Cow
 IssueTracker: https://github.com/kishor-23/Water-Cow/issues
-
 AutoName: Water Cow
-
 RepoType: git
 Repo: https://github.com/kishor-23/Water-Cow.git
 
@@ -16,27 +14,31 @@ Builds:
     commit: 14582045a1726522c709141c39cb169a9ccfc997
     subdir: android/app
     sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
-      - apt-get install -y npm
+      - apt-get install npm
     init:
       - cd ../..
       - npm ci --legacy-peer-deps
-      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
-      - cp -a ../srclib/firebase-stub/firebase-messaging/src node_modules/expo-notifications/android
     gradle:
       - yes
-    output: build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    prebuild:
+      - cd ../..
+      - sed -i -e '/firebase/d' node_modules/expo-notifications/android/build.gradle
+      - cp -a $$firebase-stub$$/firebase-messaging/src node_modules/expo-notifications/android
+      - npx expo prebuild -p android --clean
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    output: build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+    scandelete:
       - node_modules
 
 MaintainerNotes: Binary scanner detects com/google/firebase classes from firebase-stub
   srclib.
-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: 1.0.1
