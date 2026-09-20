@@ -51,7 +51,43 @@ Builds:
     scandelete:
       - node_modules
 
+  - versionName: 2.9.1
+    versionCode: 11
+    commit: 1a5bf54bafd527df347c27c768246bd95722c548
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install npm
+      - npm install -g corepack
+    init:
+      - cd ../..
+      - corepack enable
+      - yarn
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/INTERNET/d' src/main/AndroidManifest.xml
+      - sed -i -e '/installreferrer/,+11d' ../../node_modules/react-native-device-info/android/build.gradle
+    scanignore:
+      - .yarn/install-state.gz
+      - .yarn/cache/*.zip
+      - node_modules/jsc-android
+      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/react-native-vector-icons/android/build.gradle
+      - node_modules/react-native-linear-gradient/android/build.gradle
+      - node_modules/react-native-localize/android/build.gradle
+      - node_modules/@react-native-masked-view/masked-view/android/build.gradle
+      - node_modules/react-native-device-info/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-idle-timer/android/build.gradle
+      - node_modules/@react-native-picker/picker/android/build.gradle
+      - node_modules/react-native-reanimated/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+    scandelete:
+      - node_modules
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 2.8.0
-CurrentVersionCode: 9
+CurrentVersion: 2.9.1
+CurrentVersionCode: 11
