@@ -14,7 +14,7 @@ Builds:
   - versionName: 1.0.1
     versionCode: 2
     commit: 7b724fa781b813d7126831f4172117659d064354
-    subdir: android/app
+    subdir: android
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
@@ -22,14 +22,12 @@ Builds:
       - update-java-alternatives -s java-1.17.0-openjdk-amd64
       - apt-get install -y npm
     init:
-      - cd ../..
-      - npm ci --legacy-peer-deps
+      - cd .. && npm ci --legacy-peer-deps
     gradle:
       - yes
-    scandelete:
-      - node_modules
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: 1.0.1
 CurrentVersionCode: 2
+
