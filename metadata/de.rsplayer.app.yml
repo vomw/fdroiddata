@@ -20,16 +20,14 @@ Builds:
     subdir: crates/desktop/gen/android/app
     sudo:
       - apt-get update
-      - apt-get install -y build-essential pkg-config libclang-dev libssl-dev 
-        nodejs npm binaryen rustup openjdk-21-jdk-headless
+      - apt-get install -y build-essential pkg-config libclang-dev libssl-dev
+      - apt-get install -y nodejs npm binaryen rustup openjdk-21-jdk-headless
     output: build/outputs/apk/universal/release/app-universal-release.apk
-    rm:
-      - dist
     build:
       - rustup default 1.98.1
       - export PATH="$HOME/.cargo/bin:$PATH"
-      - rustup target add aarch64-linux-android armv7-linux-androideabi 
-        x86_64-linux-android wasm32-unknown-unknown
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - rustup target add x86_64-linux-android wasm32-unknown-unknown
       - export NDK_HOME=$$NDK$$
       - cargo install cargo-make@0.37.24 --locked
       - cargo install dioxus-cli@0.7.10 --locked
@@ -38,12 +36,12 @@ Builds:
       - export RELEASE_VERSION=$$VERSION$$
       - cd ../../../../..
       - cargo make build_ui_release
-      - printf '#!/bin/sh\nexec gradlew-fdroid "$@"\n' > 
-        crates/desktop/gen/android/gradlew
-      - chmod +x crates/desktop/gen/android/gradlew
-      - cp crates/desktop/loading.html dist/web-ui/loading.html
-      - cd crates/desktop && cargo tauri android build --apk --target aarch64 
-        --target armv7 --target x86_64 --ci
+      - cd crates/desktop
+      - printf '#!/bin/sh\nexec gradlew-fdroid "$@"\n' > gen/android/gradlew
+      - chmod +x gen/android/gradlew
+      - cp loading.html ../../dist/web-ui/loading.html
+      - T="--target aarch64 --target armv7 --target x86_64"
+      - cargo tauri android build --apk --ci $T
     ndk: r28c
 
 AutoUpdateMode: Version
