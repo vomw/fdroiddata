@@ -1,0 +1,43 @@
+Categories:
+  - Educational Game
+  - Finance Manager
+License: GPL-3.0-or-later
+AuthorName: neuerfokus
+SourceCode: https://github.com/neuerfokus/finanzgame
+IssueTracker: https://github.com/neuerfokus/finanzgame/issues
+Changelog: https://github.com/neuerfokus/finanzgame/releases
+Donate: https://ko-fi.com/finanzgame
+
+AutoName: Finanzgame
+
+RepoType: git
+Repo: https://github.com/neuerfokus/finanzgame.git
+
+Builds:
+  - versionName: 1.10.0
+    versionCode: 192
+    commit: f32cb8e4f3526a3a06ddd702673d0672669ee1b8
+    sudo:
+      - apt-get update
+      - apt-get install -y xz-utils
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.10.0
+CurrentVersionCode: 192
