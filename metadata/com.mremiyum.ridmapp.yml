@@ -1,6 +1,5 @@
 Categories:
-  - Internet
-  - Multimedia
+  - Download
 License: MIT
 AuthorName: mremiyum
 SourceCode: https://github.com/mremiyum/ridm-app
@@ -40,6 +39,8 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - sed -i 's/MaxMetaspaceSize=512m/MaxMetaspaceSize=2048m/' android/gradle.properties
+      - sed -i '/^android.enableMinifyInReleaseBuilds/d' android/gradle.properties
+      - printf '\nandroid.enableMinifyInReleaseBuilds=true\n' >> android/gradle.properties
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
