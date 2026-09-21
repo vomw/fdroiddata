@@ -24,7 +24,10 @@ Builds:
     submodules: true
     gradle:
       - core
-    prebuild: sdkmanager 'cmake;3.31.6'
+    prebuild:
+      - sdkmanager 'cmake;3.31.6'
+      - sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' build.gradle.kts ../innertube/build.gradle.kts ../kugou/build.gradle.kts ../lrclib/build.gradle.kts
+      - sed -i 's/VERSION_17/VERSION_21/g; s/JVM_17/JVM_21/g' build.gradle.kts
     scandelete:
       - taglib
     ndk: 29.0.13113456
