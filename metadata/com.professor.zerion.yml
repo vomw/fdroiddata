@@ -175,15 +175,24 @@ Builds:
     rm:
       - libs/gradle-witness.jar
       - gradle/verification-metadata.xml
-    prebuild: sed -i "/include ':bramble-java'/d" ../settings.gradle
+    prebuild:
+      - sed -i "/include ':bramble-java'/d" ../settings.gradle
+      - sed -i '/^LIBS=$(find ${MB} -name/c\LIBS="${MB}/lib/libwallet_api.a ${MB}/lib/libwallet.a
+        ${MB}/external/db_drivers/liblmdb/liblmdb.a ${MB}/external/easylogging++/libeasylogging.a
+        ${MB}/external/randomx/librandomx.a ${MB}/contrib/epee/src/libepee.a ${MB}/src/multisig/libmultisig.a
+        ${MB}/src/cryptonote_basic/libcryptonote_format_utils_basic.a ${MB}/src/cryptonote_basic/libcryptonote_basic.a
+        ${MB}/src/mnemonics/libmnemonics.a ${MB}/src/libversion.a ${MB}/src/cryptonote_core/libcryptonote_core.a
+        ${MB}/src/blockchain_db/libblockchain_db.a ${MB}/src/ringct/libringct_basic.a
+        ${MB}/src/ringct/libringct.a ${MB}/src/blocks/libblocks.a ${MB}/src/checkpoints/libcheckpoints.a
+        ${MB}/src/crypto/libcncrypto.a ${MB}/src/hardforks/libhardforks.a ${MB}/src/device_trezor/libdevice_trezor.a
+        ${MB}/src/rpc/librpc_base.a ${MB}/src/device/libdevice.a ${MB}/src/net/libnet.a
+        ${MB}/src/common/libcommon.a"' ../packaging/monero-android/build-monero-android.sh
+      - grep -q '^LIBS="${MB}/lib/libwallet_api.a ' ../packaging/monero-android/build-monero-android.sh
     build:
       - ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh > /tmp/libzmonero-build.log
         2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
-      - nproc; cmake --version | head -n 1; git -C /build/monero rev-parse HEAD; sha256sum
-        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-18 /build/deps/*/lib/*.a
-        /build/monero/build/*/lib/*.a /build/monero/build/*/src/*/*.a /build/monero/build/*/external/*/*.a
-        /build/monero/build/*/contrib/epee/src/*.a /build/out/*/libzmonero.so /build/src/*/*.tar.*
-        || true
+      - find /build/monero/build/arm64-v8a /build/monero/build/armeabi-v7a -name '*.a'
+        -exec sha256sum {} +; sha256sum /build/out/*/libzmonero.so
     ndk: r27b
     gradleprops:
       - fdroid
