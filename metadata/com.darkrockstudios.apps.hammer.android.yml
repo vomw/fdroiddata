@@ -781,8 +781,23 @@ Builds:
     gradleprops:
       - fdroid=true
 
+  - versionName: 3.10.0
+    versionCode: 310010000
+    commit: 533e487aa93bd9ae5e74d4782555e4c7aac73626
+    subdir: android
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/val isRelease = .*/val isRelease = true/' ../buildSrc/src/main/java/versioncode.kt
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '\#intellij-repository#d' ../build.gradle.kts
+    scanignore:
+      - common/src/commonMain/resources/raw/alice_in_wonderland_zip
+    gradleprops:
+      - fdroid=true
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^fdroid-(\d+)$
 UpdateCheckData: '|^fdroid-(\d+)$|gradle/libs.versions.toml|app = "([\d.]+)"'
-CurrentVersion: 3.9.4
-CurrentVersionCode: 309050000
+CurrentVersion: 3.10.0
+CurrentVersionCode: 310010000
