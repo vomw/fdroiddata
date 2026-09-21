@@ -11,9 +11,9 @@ RepoType: git
 Repo: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile.git
 
 Builds:
-  - versionName: 1.4.5
-    versionCode: 10405
-    commit: 84de9788771342af7a42fdeb8c0fdea128cd92ae
+  - versionName: 1.7.0
+    versionCode: 10700
+    commit: 1.7.0
     timeout: 14400
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -24,16 +24,12 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - npm -g install yarn
     init: yarn install
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));const
-        dev=['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface'];for(const
-        d of dev){delete (p.dependencies||{})[d];delete (p.devDependencies||{})[d];}p.expo=p.expo||{};const
-        a=p.expo.autolinking=p.expo.autolinking||{};const an=a.android=a.android||{};an.buildFromSource=['.*'];an.exclude=[...new
-        Set([...(an.exclude||[]),...dev])];fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
-      - rm -rf node_modules/expo-dev-client node_modules/expo-dev-launcher node_modules/expo-dev-menu
-        node_modules/expo-dev-menu-interface
+      - FIREBASE_STUB_DIR=$$firebase-stub$$ ./fdroid/prepare.sh
       - yarn expo prebuild --platform android --no-install
       - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - echo "" >> android/gradle.properties
@@ -53,56 +49,7 @@ Builds:
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/react-native-svg/android/build.gradle
-    scandelete:
-      - node_modules
-      - .yarn/install-state.gz
-    build:
-      - cd android
-      - gradle assembleRelease --stacktrace --console=plain 2>&1
-    ndk: r27b
-
-  - versionName: 1.5.0
-    versionCode: 10500
-    commit: 5858f0013e270c3ce33c66a6b260f5bd21e3c567
-    timeout: 14400
-    sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - sysctl fs.inotify.max_user_watches=524288
-      - apt-get install -y -t forky nodejs npm
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - npm -g install yarn
-    init: yarn install
-    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
-    prebuild:
-      - sdkmanager 'cmake;3.22.1'
-      - node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));const
-        dev=['expo-dev-client','expo-dev-launcher','expo-dev-menu','expo-dev-menu-interface'];for(const
-        d of dev){delete (p.dependencies||{})[d];delete (p.devDependencies||{})[d];}p.expo=p.expo||{};const
-        a=p.expo.autolinking=p.expo.autolinking||{};const an=a.android=a.android||{};an.buildFromSource=['.*'];an.exclude=[...new
-        Set([...(an.exclude||[]),...dev])];fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
-      - rm -rf node_modules/expo-dev-client node_modules/expo-dev-launcher node_modules/expo-dev-menu
-        node_modules/expo-dev-menu-interface
-      - yarn expo prebuild --platform android --no-install
-      - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
-      - echo "" >> android/gradle.properties
-      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
-        >> android/gradle.properties
-      - echo "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
-        >> android/gradle.properties
-      - echo "org.gradle.workers.max=2" >> android/gradle.properties
-      - echo "org.gradle.parallel=false" >> android/gradle.properties
-      - echo "reactNativeArchitectures=arm64-v8a,armeabi-v7a" >> android/gradle.properties
-    scanignore:
-      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
-      - node_modules/@react-native-masked-view/masked-view/android/build.gradle
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
-      - node_modules/react-native/ReactAndroid/publish.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
     scandelete:
       - node_modules
       - .yarn/install-state.gz
@@ -114,5 +61,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]+$
 UpdateCheckData: app.config.ts|versionCode = (\d+)|package.json|"version":\s*"([^"]+)"
-CurrentVersion: 1.5.0
-CurrentVersionCode: 10500
+CurrentVersion: 1.7.0
+CurrentVersionCode: 10700
