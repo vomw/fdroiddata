@@ -188,9 +188,8 @@ Builds:
         ${MB}/src/rpc/librpc_base.a ${MB}/src/device/libdevice.a ${MB}/src/net/libnet.a
         ${MB}/src/common/libcommon.a"' ../packaging/monero-android/build-monero-android.sh
       - grep -q '^LIBS="${MB}/lib/libwallet_api.a ' ../packaging/monero-android/build-monero-android.sh
-    build:
-      - ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh > /tmp/libzmonero-build.log
-        2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
+    build: ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh >
+      /tmp/libzmonero-build.log 2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
     ndk: r27b
     gradleprops:
       - fdroid
