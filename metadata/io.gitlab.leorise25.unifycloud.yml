@@ -1,13 +1,12 @@
 Categories:
-  - System
-  - Connectivity
+  - Cloud Storage & File Sync
+  - File Manager
 License: GPL-3.0-only
 AuthorName: LeoRise
 SourceCode: https://gitlab.com/leorise25/unifycloud
 IssueTracker: https://gitlab.com/leorise25/unifycloud/-/issues
 
 AutoName: UnifyCloud
-Summary: Multi-cloud storage manager with client-side E2E encryption and auto-sync
 Description: |-
   UnifyCloud is a fast, secure, and privacy-respecting multi-cloud storage manager
   and synchronization tool built with Flutter and Rclone.
@@ -24,17 +23,23 @@ RepoType: git
 Repo: https://gitlab.com/leorise25/unifycloud.git
 
 Builds:
-  - versionName: 1.0.0
+  - versionName: '1.0.0'
     versionCode: 1
     commit: v1.0.0
-    subdir: .
     output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.24.3
     prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - bash scripts/build_go_android.sh
     build:
-      - flutter build apk --release
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0.0'
 CurrentVersionCode: 1
