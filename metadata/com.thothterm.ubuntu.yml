@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.1.2
-    versionCode: 102
-    commit: 06204c18410646c05ceeb2e1f430e3e3517e7021
+  - versionName: 0.1.7
+    versionCode: 107
+    commit: af3b72f622229b41ef735edf43a84ffdd4773f70
     subdir: term-ubuntu
     submodules: true
     gradle:
@@ -45,7 +45,16 @@ MaintainerNotes: |-
   pinned submodules, the two patches in term-ubuntu/patches and the build
   script, all carried by the tagged commit.
 
+  Release builds are minified. minifyEnabled is on with
+  proguard-android-optimize.txt plus term-ubuntu/proguard-rules.pro, which
+  contains two keep rules and nothing else: the native library registers its
+  methods with RegisterNatives against the literal class names
+  com/thothterm/TermIO$Native and com/thothterm/Process$Native, so those two
+  classes and their native methods must keep their names. There is no
+  -dontobfuscate, -dontshrink, wildcard keep or blanket -dontwarn, R8 emits no
+  warnings, and resource shrinking is off.
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
-CurrentVersion: 0.1.2
-CurrentVersionCode: 102
+CurrentVersion: 0.1.7
+CurrentVersionCode: 107
