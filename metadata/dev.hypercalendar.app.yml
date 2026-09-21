@@ -27,9 +27,17 @@ Builds:
       - apt-get install -y curl unzip build-essential emscripten binaryen wabt
     gradle:
       - yes
-    build:
+    prebuild:
       - cd ../..
       - npm ci
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - node_modules/@esbuild/linux-x64/bin/esbuild
+      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
+    scandelete:
+      - node_modules
+    build:
+      - cd ../..
       - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
       - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
 
