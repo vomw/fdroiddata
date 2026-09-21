@@ -156,9 +156,47 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 3.0.11
+    versionCode: 31100
+    commit: v3.0.11
+    subdir: zerion-android
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends ca-certificates curl unzip git
+        build-essential cmake pkg-config libtool automake autoconf gperf python3 file
+        xz-utils
+      - mkdir -p /build
+      - chown vagrant:vagrant /build
+    gradle:
+      - official
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - libs/gradle-witness.jar
+      - gradle/verification-metadata.xml
+    prebuild: sed -i "/include ':bramble-java'/d" ../settings.gradle
+    build:
+      - ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh > /tmp/libzmonero-build.log
+        2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
+      - nproc; cmake --version | head -n 1; git -C /build/monero rev-parse HEAD; sha256sum
+        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-18 /build/deps/*/lib/*.a
+        /build/monero/build/*/lib/*.a /build/monero/build/*/src/*/*.a /build/monero/build/*/external/*/*.a
+        /build/monero/build/*/contrib/epee/src/*.a /build/out/*/libzmonero.so /build/src/*/*.tar.*
+        || true
+    ndk: r27b
+    gradleprops:
+      - fdroid
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+        'assets/i2p/certificates/reseed/*.crt' 'assets/i2p/certificates/ssl/*.crt'
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: d7fdb11125890d133ae89d8ba4f4331d9045e21ef01d9899a7cdee6888f704c8
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 3.0.3
-CurrentVersionCode: 30300
+CurrentVersion: 3.0.11
+CurrentVersionCode: 31100
