@@ -10,13 +10,11 @@ AutoName: Nooto
 
 RepoType: git
 Repo: https://github.com/ClemPera/Nooto
-Binaries: 
-  https://github.com/ClemPera/Nooto/releases/download/client-v%v/app-arm64-release.apk
 
 Builds:
-  - versionName: 0.2.0
-    versionCode: 2000
-    commit: f43aa1927e9397acf5d2adfa4958765f37e716b6
+  - versionName: 0.2.1
+    versionCode: 2001
+    commit: cb76f3b8225368a283222a359815443a5b6e3612
     subdir: client
     sudo:
       - apt-get update
@@ -27,15 +25,14 @@ Builds:
     output: src-tauri/gen/android/app/build/outputs/apk/arm64/release/*.apk
     build:
       - export RUSTFLAGS="--remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$PWD=/build"
+      - export TARGET_RANLIB="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib"
       - npm install
       - npm run tauri android build -- --apk --split-per-abi --target aarch64
     ndk: 27.0.12077973
-
-AllowedAPKSigningKeys: 46ce9259dd8eba36470faaf0dcdcd1fc958b6d3c5f84f0303645603a5b86e8b0
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^client-v[0-9.]+$
 UpdateCheckData: 
   client/src-tauri/gen/android/app/tauri.properties|tauri\.android\.versionCode=(\d+)|.|tauri\.android\.versionName=(.+)
-CurrentVersion: 0.2.0
-CurrentVersionCode: 2000
+CurrentVersion: 0.2.1
+CurrentVersionCode: 2001
