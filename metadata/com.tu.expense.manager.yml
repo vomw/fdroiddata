@@ -15,6 +15,9 @@ Builds:
   - versionName: 2.5.1
     versionCode: 291
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
+    sudo:
+      - mkdir -p /home/runner/work/TU-Expense-Manager
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-x86_64-release.apk
@@ -24,26 +27,38 @@ Builds:
       - test
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
-        .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
-        = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.tu.expense.manager
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
-        --target-platform="android-x64"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
+        $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-x64"
+      - popd
+      - mv $repo com.tu.expense.manager
+    ndk: 28.2.13676358
 
   - versionName: 2.5.1
     versionCode: 292
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
+    sudo:
+      - mkdir -p /home/runner/work/TU-Expense-Manager
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-armeabi-v7a-release.apk
@@ -53,26 +68,38 @@ Builds:
       - test
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
-        .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
-        = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.tu.expense.manager
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
-        --target-platform="android-arm"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
+        $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm"
+      - popd
+      - mv $repo com.tu.expense.manager
+    ndk: 28.2.13676358
 
   - versionName: 2.5.1
     versionCode: 293
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
+    sudo:
+      - mkdir -p /home/runner/work/TU-Expense-Manager
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-arm64-v8a-release.apk
@@ -82,25 +109,33 @@ Builds:
       - test
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
-        .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
-        = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.tu.expense.manager
     scandelete:
       - .pub-cache
     build:
+      - export repo=/home/runner/work/TU-Expense-Manager/TU-Expense-Manager
+      - cd ..
+      - mv com.tu.expense.manager $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
-        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
-        --target-platform="android-arm64"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
+        $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm64"
+      - popd
+      - mv $repo com.tu.expense.manager
+    ndk: 28.2.13676358
 
-AllowedAPKSigningKeys: 
-  5d455ad97b3a6a2e4283370771c54c43affdadf7ee648b68fcef8d90d6c9cb80
+AllowedAPKSigningKeys: 5d455ad97b3a6a2e4283370771c54c43affdadf7ee648b68fcef8d90d6c9cb80
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
