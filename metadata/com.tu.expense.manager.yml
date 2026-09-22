@@ -17,6 +17,7 @@ Builds:
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
     sudo:
       - mkdir -p /home/runner/work/TU-Expense-Manager
+      - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
@@ -34,9 +35,11 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cp -a /home/runner/.pub-cache .pub-cache
       - popd
       - mv $repo com.tu.expense.manager
     scandelete:
@@ -46,7 +49,10 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - rm -rf /home/runner/.pub-cache
+      - cp -a .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-x64"
       - popd
@@ -58,6 +64,7 @@ Builds:
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
     sudo:
       - mkdir -p /home/runner/work/TU-Expense-Manager
+      - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
@@ -75,9 +82,11 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cp -a /home/runner/.pub-cache .pub-cache
       - popd
       - mv $repo com.tu.expense.manager
     scandelete:
@@ -87,7 +96,10 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - rm -rf /home/runner/.pub-cache
+      - cp -a .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm"
       - popd
@@ -99,6 +111,7 @@ Builds:
     commit: e965f2eb0ddbe956b18e5bd72a82d247f80f5a36
     sudo:
       - mkdir -p /home/runner/work/TU-Expense-Manager
+      - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
@@ -116,9 +129,11 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - cp -a /home/runner/.pub-cache .pub-cache
       - popd
       - mv $repo com.tu.expense.manager
     scandelete:
@@ -128,7 +143,10 @@ Builds:
       - cd ..
       - mv com.tu.expense.manager $repo
       - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export HOME=/home/runner
+      - rm -rf /home/runner/.pub-cache
+      - cp -a .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm64"
       - popd
