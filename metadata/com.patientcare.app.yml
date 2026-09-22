@@ -1,0 +1,44 @@
+Categories:
+  - Health Manager
+License: AGPL-3.0-only
+AuthorName: Ranjith Raj
+AuthorEmail: ranjithraj@riseup.net
+SourceCode: https://gitlab.com/ranjithraj/patient-care
+IssueTracker: https://gitlab.com/ranjithraj/patient-care/-/issues
+Changelog: https://gitlab.com/ranjithraj/patient-care/-/blob/main/CHANGELOG.md
+
+AutoName: Patient Care
+
+RepoType: git
+Repo: https://gitlab.com/ranjithraj/patient-care.git
+Binaries: 
+  https://gitlab.com/ranjithraj/patient-care/-/releases/v%v/downloads/patient-care-%v.apk
+
+Builds:
+  - versionName: 1.0.0-beta.1
+    versionCode: 1
+    commit: fcba3cee05cfc1b27c8509298f202676beb4f88e
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm ci --ignore-scripts
+      - npm run build
+      - npx cap sync android
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules
+
+AllowedAPKSigningKeys: 4e5a8fb84722316d87fd6fbc36358437ba35a6c3e657919eae474aebe92fda7a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: android/app/build.gradle|versionCode\s(\d+)|.|versionName\s"([^"]+)"
+CurrentVersion: 1.0.0-beta.1
+CurrentVersionCode: 1
