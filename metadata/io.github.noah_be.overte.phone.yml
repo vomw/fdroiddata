@@ -20,11 +20,24 @@ Builds:
     timeout: 43200
     subdir: android/phone
     sudo:
-      - cd build/io.github.noah_be.overte.phone
-      - sh android/phone/fdroid/submission/provision.sh --fdroid-buildserver
+      - cd /tmp
+      - printf '%s\n' 'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20260904T000000Z/
+        unstable main' > /etc/apt/sources.list.d/overte-fdroid.list
+      - "printf '%s\\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 90'
+        > /etc/apt/preferences.d/overte-fdroid"
+      - apt-get update
+      - apt-get install -y --no-install-recommends ca-certificates cmake=3.31.6-2
+        git make patch perl python3-pip python3-venv tar xz-utils util-linux iproute2
+      - apt-get install -y --no-install-recommends -t unstable gcc-15=15.3.0-3 g++-15=15.3.0-3
+        ninja-build=1.13.2-1 openjdk-17-jdk-headless=17.0.20.1+1-1
+      - update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 150
+      - update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 150
     output: apps/phoneInterface/build/outputs/apk/release/*.apk
-    prebuild: sdkmanager --sdk_root $$SDK$$ 'platforms;android-36' 'build-tools;35.0.0'
-      'build-tools;36.0.0' 'cmake;3.31.6' 'cmdline-tools;22.0'
+    prebuild:
+      - python3 -m venv "$HOME/.overte-fdroid/conan"
+      - '"$HOME/.overte-fdroid/conan/bin/pip" install --no-cache-dir conan==2.25.2'
+      - sdkmanager --sdk_root $$SDK$$ 'platforms;android-36' 'build-tools;35.0.0'
+        'build-tools;36.0.0' 'cmake;3.31.6' 'cmdline-tools;22.0'
     scandelete:
       - android/common/tests/javascript/package.json
       - scripts/communityScripts/libraries/materialdesignicons/package.json
@@ -35,7 +48,7 @@ Builds:
       - tools/nitpick/AppDataHighFidelity/domain-server/entities/models.json.gz
       - unpublishedScripts/marketplace/doppleganger-attachments/package.json
     build:
-      - export PATH=/opt/overte-fdroid/conan/bin:$PATH
+      - export PATH="$HOME/.overte-fdroid/conan/bin:$PATH"
       - python3 fdroid/submission/build.py --commit $$COMMIT$$ --version-code $$VERCODE$$
         --version-name $$VERSION$$ --sdk $$SDK$$ --work-dir "$PWD/../../../.overte-phone-fdroid-build"
     ndk: 27.3.13750724
@@ -60,10 +73,17 @@ MaintainerNotes: |
   been adjusted equivalently since the VM test, without changing build inputs.
   Standard F-Droid signing is requested; bit-for-bit reproducibility against
   a separately published upstream APK has not been qualified.
-  Keep automatic updates disabled until Android-only release tags are defined.
+  Automatic updates use android-phone-v<versionName>+<versionCode> tags only.
+  For example android-phone-v0.1.0+1 selects versionName 0.1.0 and versionCode 1.
+  Increase versionCode for each new Android release; iOS/Pico tags are ignored.
+  The initial tag android-phone-v0.1.0+1 points to the qualified source commit.
+  System package provisioning is inlined here; no app repository script runs as root.
+  Conan 2.25.2 is installed in the build user home without sudo.
+  These provisioning changes have not yet completed a full CI build.
   Do not use the local Android debug signing certificate as an upstream release key.
 
-AutoUpdateMode: None
-UpdateCheckMode: None
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^android-phone-v[0-9]+\.[0-9]+\.[0-9]+\+[1-9][0-9]*$
+UpdateCheckData: '|\+([0-9]+)$||^android-phone-v([0-9]+\.[0-9]+\.[0-9]+)\+'
 CurrentVersion: 0.1.0
 CurrentVersionCode: 1
