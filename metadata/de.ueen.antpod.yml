@@ -1,0 +1,67 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: ueen
+WebSite: https://antpod.eu
+SourceCode: https://github.com/ueen/antpod
+IssueTracker: https://github.com/ueen/antpod/issues
+Changelog: https://github.com/ueen/antpod/releases
+
+AutoName: AntPod
+
+RepoType: git
+Repo: https://github.com/ueen/antpod
+Binaries: https://github.com/ueen/antpod/releases/download/v%v/antpod-%v-arm64.apk
+
+Builds:
+  - versionName: 0.9.7
+    versionCode: 17
+    commit: 7510cd937acf3d34ff802a5c7e91b9877080ed7e
+    sudo:
+      - mkdir -p /home/runner/work/antpod
+      - chown -R vagrant /home/runner
+    init: sed -i -e '/signingConfig =/,+2d' android/app/build.gradle.kts
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/antpod/antpod
+      - cd ..
+      - mv de.ueen.antpod $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo de.ueen.antpod
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/antpod/antpod
+      - cd ..
+      - mv de.ueen.antpod $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
+      - popd
+      - mv $repo de.ueen.antpod
+    ndk: 27.0.12077973
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 5809c3253dda0ff5a72b78305f06d7678505098caf74da7e4340107df3d9030f
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.9.7
+CurrentVersionCode: 17
