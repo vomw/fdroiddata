@@ -14,9 +14,9 @@ RepoType: git
 Repo: https://github.com/andreas-aichele/immich-geotagger.git
 
 Builds:
-  - versionName: 1.0.4
-    versionCode: 10000041
-    commit: e18e089dda2c3264dfe5f9d5f7c37a74362d4307
+  - versionName: 1.0.5
+    versionCode: 10000051
+    commit: 618a7ebf25c0a39f2dac2b0ce59ac851c770dd46
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary: 
       https://github.com/andreas-aichele/immich-geotagger/releases/download/v%v/immich-geotagger-v%v-android-armeabi-v7a.apk
@@ -24,18 +24,28 @@ Builds:
       - flutter@stable
     prebuild:
       - git -C $$flutter$$ checkout -f 3.47.5
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
     scandelete:
       - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
 
-  - versionName: 1.0.4
-    versionCode: 10000042
-    commit: e18e089dda2c3264dfe5f9d5f7c37a74362d4307
+  - versionName: 1.0.5
+    versionCode: 10000052
+    commit: 618a7ebf25c0a39f2dac2b0ce59ac851c770dd46
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary: 
       https://github.com/andreas-aichele/immich-geotagger/releases/download/v%v/immich-geotagger-v%v-android-arm64-v8a.apk
@@ -43,18 +53,28 @@ Builds:
       - flutter@stable
     prebuild:
       - git -C $$flutter$$ checkout -f 3.47.5
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
     scandelete:
       - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
 
-  - versionName: 1.0.4
-    versionCode: 10000043
-    commit: e18e089dda2c3264dfe5f9d5f7c37a74362d4307
+  - versionName: 1.0.5
+    versionCode: 10000053
+    commit: 618a7ebf25c0a39f2dac2b0ce59ac851c770dd46
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary: 
       https://github.com/andreas-aichele/immich-geotagger/releases/download/v%v/immich-geotagger-v%v-android-x86_64.apk
@@ -62,14 +82,24 @@ Builds:
       - flutter@stable
     prebuild:
       - git -C $$flutter$$ checkout -f 3.47.5
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
     scandelete:
       - .pub-cache
     build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - cd ..
+      - mv io.github.andreasaichele.immichgeotagger /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=/tmp/build/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv /tmp/build io.github.andreasaichele.immichgeotagger
 
 AllowedAPKSigningKeys: 9d74ab093523f7591d61e28c01c3cacc0101dae612cabd9eb66aafcf5d19ce6f
 
@@ -80,5 +110,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.4
-CurrentVersionCode: 10000043
+CurrentVersion: 1.0.5
+CurrentVersionCode: 10000053
