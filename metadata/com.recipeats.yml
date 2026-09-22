@@ -1,0 +1,36 @@
+Categories:
+  - Reading
+License: Unlicense
+AuthorName: ReciPeats
+AuthorEmail: ReciPeatsOrg@gmail.com
+WebSite: https://recipeats.org/
+SourceCode: https://gitlab.com/recipeats/recipeats
+IssueTracker: https://gitlab.com/recipeats/recipeats/-/issues
+Changelog: https://gitlab.com/recipeats/recipeats/-/tags
+
+AutoName: Recipeats
+
+RepoType: git
+Repo: https://gitlab.com/recipeats/recipeats.git
+
+Builds:
+  - versionName: 1.10.10
+    versionCode: 49
+    commit: 8c7ec6c4de093b888e61688b436bd28a358fce27
+    subdir: RecipeatsApp
+    sudo:
+      - apt-get update
+      - apt-get install -y hugo
+    gradle:
+      - fdroid
+    prebuild:
+      - cd ..
+      - hugo --minify --baseURL https://recipeats.org/
+      - rm -f LICENSE README.md
+    scandelete:
+      - mockups
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.10.10
+CurrentVersionCode: 49
