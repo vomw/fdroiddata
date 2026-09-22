@@ -1,0 +1,137 @@
+Categories:
+  - Sports & Health
+  - Workout
+License: MIT
+AuthorName: Laptop Coder
+SourceCode: https://github.com/laptop-coder/push-through
+IssueTracker: https://github.com/laptop-coder/push-through/issues
+
+AutoName: Push Through! Workouts
+
+RepoType: git
+Repo: https://github.com/laptop-coder/push-through
+
+Builds:
+  - versionName: 0.10.4
+    versionCode: 61
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    subdir: app
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter config --no-analytics
+      - ../.flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+    build:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+
+  - versionName: 0.10.4
+    versionCode: 62
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    subdir: app
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter config --no-analytics
+      - ../.flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+    build:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+
+  - versionName: 0.10.4
+    versionCode: 63
+    commit: 747fc3a2afc3fee855b23c10ef26e67901b81db0
+    subdir: app
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/push-through/push-through
+      - chown -R vagrant /home/runner/work/push-through
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - app/ios
+      - app/linux
+      - app/macos
+      - app/windows
+    prebuild:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter config --no-analytics
+      - ../.flutter/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .flutter
+    build:
+      - export repo=/home/runner/work/push-through/push-through
+      - cd ../..
+      - cp -a io.github.laptop_coder.push_through/. $repo
+      - rm -rf io.github.laptop_coder.push_through
+      - pushd $repo/app
+      - ../.flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo io.github.laptop_coder.push_through
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: app/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.10.4
+CurrentVersionCode: 61
