@@ -1,0 +1,49 @@
+Categories:
+  - Multimedia
+  - Reading
+License: AGPL-3.0-only
+AuthorName: equwal
+WebSite: https://subread.space
+SourceCode: https://github.com/equwal/subread-android
+IssueTracker: https://github.com/equwal/subread-android/issues
+Changelog: https://github.com/equwal/subread-android/releases
+Donate: https://ko-fi.com/truex
+
+AutoName: SubRead
+
+RepoType: git
+Repo: https://github.com/equwal/subread-android.git
+
+Builds:
+  - versionName: 0.9.1
+    versionCode: 11
+    commit: 2fdbdbb3e1585db5e0bc3468fe7fbefa72672428
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build
+    gradle:
+      - yes
+    scanignore:
+      - app/src/main/assets/models/ggml-tiny-q8_0.bin
+    scandelete:
+      - core/src/test/resources/aozora/789_ruby_5639.zip
+      - third_party/whisper.cpp/bindings
+      - third_party/whisper.cpp/examples
+      - third_party/whisper.cpp/models
+    ndk: 29.0.14206865
+
+MaintainerNotes: |-
+  app/src/main/assets/models/ggml-tiny-q8_0.bin is the OpenAI Whisper "tiny"
+  speech model (MIT), converted to the ggml format with
+  third_party/whisper.cpp/models/convert-pt-to-ggml.py and quantized with
+  whisper.cpp's quantize tool. It is data, not code. The app has no network
+  permission, so it cannot download the model at run time.
+  third_party/whisper.cpp/{bindings,examples,models} are not part of the build:
+  app/src/main/cpp/CMakeLists.txt sets WHISPER_BUILD_EXAMPLES=OFF.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.9.1
+CurrentVersionCode: 11
