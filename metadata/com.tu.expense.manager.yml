@@ -19,9 +19,12 @@ Builds:
       - mkdir -p /home/runner/work/TU-Expense-Manager
       - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
+      - if [ ! -L /opt/android-sdk ]; then mkdir -p /usr/local/lib/android && mv /opt/android-sdk
+        /usr/local/lib/android/sdk && ln -sfn /usr/local/lib/android/sdk /opt/android-sdk;
+        fi
+      - chown -R vagrant /usr/local/lib/android
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: 
-      https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-x86_64-release.apk
+    binary: https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -37,7 +40,10 @@ Builds:
       - pushd $repo
       - export HOME=/home/runner
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cp -a /home/runner/.pub-cache .pub-cache
       - popd
@@ -53,6 +59,14 @@ Builds:
       - rm -rf /home/runner/.pub-cache
       - cp -a .pub-cache /home/runner/.pub-cache
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+      - export ANDROID_NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - sed -i -E 's|/opt/android-sdk|/usr/local/lib/android/sdk|g' android/local.properties
+        || true
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-x64"
       - popd
@@ -66,9 +80,12 @@ Builds:
       - mkdir -p /home/runner/work/TU-Expense-Manager
       - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
+      - if [ ! -L /opt/android-sdk ]; then mkdir -p /usr/local/lib/android && mv /opt/android-sdk
+        /usr/local/lib/android/sdk && ln -sfn /usr/local/lib/android/sdk /opt/android-sdk;
+        fi
+      - chown -R vagrant /usr/local/lib/android
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: 
-      https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-armeabi-v7a-release.apk
+    binary: https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -84,7 +101,10 @@ Builds:
       - pushd $repo
       - export HOME=/home/runner
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cp -a /home/runner/.pub-cache .pub-cache
       - popd
@@ -100,6 +120,14 @@ Builds:
       - rm -rf /home/runner/.pub-cache
       - cp -a .pub-cache /home/runner/.pub-cache
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+      - export ANDROID_NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - sed -i -E 's|/opt/android-sdk|/usr/local/lib/android/sdk|g' android/local.properties
+        || true
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm"
       - popd
@@ -113,9 +141,12 @@ Builds:
       - mkdir -p /home/runner/work/TU-Expense-Manager
       - mkdir -p /home/runner/.pub-cache
       - chown -R vagrant /home/runner
+      - if [ ! -L /opt/android-sdk ]; then mkdir -p /usr/local/lib/android && mv /opt/android-sdk
+        /usr/local/lib/android/sdk && ln -sfn /usr/local/lib/android/sdk /opt/android-sdk;
+        fi
+      - chown -R vagrant /usr/local/lib/android
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: 
-      https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-arm64-v8a-release.apk
+    binary: https://github.com/Jayachandran-jayy/TU-Expense-Manager/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
@@ -131,7 +162,10 @@ Builds:
       - pushd $repo
       - export HOME=/home/runner
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
       - cp -a /home/runner/.pub-cache .pub-cache
       - popd
@@ -147,6 +181,14 @@ Builds:
       - rm -rf /home/runner/.pub-cache
       - cp -a .pub-cache /home/runner/.pub-cache
       - export PUB_CACHE=/home/runner/.pub-cache
+      - export ANDROID_HOME=/usr/local/lib/android/sdk
+      - export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+      - export ANDROID_NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - export NDK=/usr/local/lib/android/sdk/ndk/28.2.13676358
+      - sed -i -E 's|/opt/android-sdk|/usr/local/lib/android/sdk|g' android/local.properties
+        || true
+      - $$flutter$$/bin/flutter config --android-sdk /usr/local/lib/android/sdk
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --build-number
         $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ --target-platform="android-arm64"
       - popd
