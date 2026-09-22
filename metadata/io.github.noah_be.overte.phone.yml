@@ -1,0 +1,69 @@
+Categories:
+  - Internet
+  - Social Network
+  - Voice & Video Chat
+License: Apache-2.0
+AuthorName: Noah Frank
+AuthorWebSite: https://github.com/noah-be
+SourceCode: https://github.com/noah-be/overte
+IssueTracker: https://github.com/noah-be/overte/issues
+
+AutoName: Overte Mobile (Unofficial)
+
+RepoType: git
+Repo: https://github.com/noah-be/overte.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: 24075d829f6d3b5bdb694cf13b6494979689be85
+    timeout: 14400
+    subdir: android/phone
+    sudo:
+      - cd build/io.github.noah_be.overte.phone
+      - sh android/phone/fdroid/submission/provision.sh --fdroid-buildserver
+    output: apps/phoneInterface/build/outputs/apk/release/*.apk
+    prebuild: sdkmanager --sdk_root $$SDK$$ 'platforms;android-36' 'build-tools;35.0.0'
+      'build-tools;36.0.0' 'cmake;3.31.6' 'cmdline-tools;22.0'
+    scandelete:
+      - android/common/tests/javascript/package.json
+      - scripts/communityScripts/libraries/materialdesignicons/package.json
+      - scripts/developer/tests/unit_tests/package.json
+      - tests-manual/entities/packet.bin
+      - tests/mocha/package.json
+      - tools/nitpick/AppDataHighFidelity/assignment-client/entities/models.json.gz
+      - tools/nitpick/AppDataHighFidelity/domain-server/entities/models.json.gz
+      - unpublishedScripts/marketplace/doppleganger-attachments/package.json
+    build:
+      - export PATH=/opt/overte-fdroid/conan/bin:$PATH
+      - python3 fdroid/submission/build.py --commit $$COMMIT$$ --version-code $$VERCODE$$
+        --version-name $$VERSION$$ --sdk $$SDK$$ --work-dir "$PWD/../../../.overte-phone-fdroid-build"
+    ndk: 27.3.13750724
+
+MaintainerNotes: |
+  Unofficial Android Phone fork maintained by Noah Frank; not an official Overte release.
+  All native dependencies are built from the locked public source closure.
+  Acquisition precedes network-isolated compilation; no Conan binaries are used.
+  Gradle 8.13 is obtained from its official distribution with its pinned SHA-256.
+  F-Droid removes the checked-in wrapper; the build does not require that wrapper.
+  scandelete is restricted to unused test data and npm package manifests. The
+  referenced JavaScript, icons, licenses and runtime assets remain untouched.
+  Requires SDK 36, Build-Tools 35.0.0 and 36.0.0 and SDK CMake 3.31.6, plus the listed NDK.
+  Command-line Tools 22.0 supply apkanalyzer for the release APK checks.
+  A clean F-Droid VM build, source scan and APK scan passed for this exact commit
+  on 2026-09-22. The commit is publicly fetchable and integrated into android-phone.
+  The locally test-signed candidate passed automated and maintainer phone checks.
+  Qualification record:
+  https://github.com/noah-be/overte/blob/8957906bca390343b08438462c6dfde92ff42854/android/phone/fdroid/submission/VALIDATION.md
+  Store text and graphics are imported from android/phone/fastlane in the source.
+  subdir selects that directory; script, output and work-directory paths have
+  been adjusted equivalently since the VM test, without changing build inputs.
+  Standard F-Droid signing is requested; bit-for-bit reproducibility against
+  a separately published upstream APK has not been qualified.
+  Keep automatic updates disabled until Android-only release tags are defined.
+  Do not use the local Android debug signing certificate as an upstream release key.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
