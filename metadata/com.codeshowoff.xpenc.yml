@@ -1,0 +1,24 @@
+Categories:
+  - Finance
+  - Money
+License: MIT
+SourceCode: https://github.com/CodeShowOff/XPENC
+IssueTracker: https://github.com/CodeShowOff/XPENC/issues
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10
+    commit: v1.0.0
+    sudo:
+      - apt-get update || true
+    srclibs:
+      - flutter@3.10.8
+    rm:
+      - pubspec.lock
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm,android-arm64,android-x64 --split-per-abi
