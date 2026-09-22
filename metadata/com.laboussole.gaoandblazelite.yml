@@ -12,28 +12,28 @@ Repo: https://forge.apps.education.fr/gaoblazelite/appligaoblazelite.git
 Builds:
   - versionName: 2.4.1
     versionCode: 8
-    disable: Candidate recipe; Linux source scan and build must pass before enabling
     commit: 986af8a4b24c17adb2d6e3ea5cb54dea357d9ae0
     sudo:
       - apt-get update
       - apt-get install -y openjdk-17-jdk-headless curl xz-utils unzip
       - curl -Lo node.tar.xz https://nodejs.org/dist/v22.22.0/node-v22.22.0-linux-x64.tar.xz
-      - echo '9aa8e9d2298ab68c600bd6fb86a6c13bce11a4eca1ba9b39d79fa021755d7c37  node.tar.xz' | sha256sum -c -
+      - echo '9aa8e9d2298ab68c600bd6fb86a6c13bce11a4eca1ba9b39d79fa021755d7c37  node.tar.xz'
+        | sha256sum -c -
       - tar xf node.tar.xz --strip-components=1 -C /usr/local
       - npm install -g yarn@1.22.22
       - curl -Lo gradle.zip https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
-      - echo 'b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06  gradle.zip' | sha256sum -c -
+      - echo 'b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06  gradle.zip'
+        | sha256sum -c -
       - unzip -q gradle.zip -d /opt/gao-gradle
-    init:
-      - yarn install --frozen-lockfile --non-interactive
+    init: yarn install --frozen-lockfile --non-interactive
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     rm:
       - apk
     prebuild:
       - node scripts/prepare-fdroid.cjs
-      - GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 CI=1 NODE_ENV=production node_modules/.bin/expo prebuild --platform android --no-install
+      - GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 CI=1
+        NODE_ENV=production node_modules/.bin/expo prebuild --platform android --no-install
     scanignore:
-      # Local React Native Maven lookups, not remote proprietary repositories.
       - node_modules/@react-native-masked-view/masked-view/android/build.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
       - node_modules/expo-dev-launcher/android/build.gradle
@@ -44,24 +44,26 @@ Builds:
       - node_modules/react-native-screens/android/build.gradle
       - node_modules/react-native-webview/android/build.gradle
       - node_modules/react-native/ReactAndroid/publish.gradle
-      # MIT Hermes compiler: build tool only, not bundled in the APK.
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
     scandelete:
-      # Delete scanner-detected unused platform binaries; never ignore their contents.
       - node_modules
     build:
-      - export GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 NODE_ENV=production CI=1
+      - export GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1
+        NODE_ENV=production CI=1
       - cd android
-      - /opt/gao-gradle/gradle-9.3.1/bin/gradle --no-daemon --no-watch-fs --max-workers=4 '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1536m' -PreactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64 assembleRelease
+      - /opt/gao-gradle/gradle-9.3.1/bin/gradle --no-daemon --no-watch-fs --max-workers=4
+        '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1536m' -PreactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64
+        assembleRelease
     ndk: 27.1.12297006
 
 MaintainerNotes: |-
-    Initial packaging request: https://gitlab.com/fdroid/rfp/-/work_items/4434
-    expo-location replaced with MIT react-native-get-location (Android LocationManager).
-    expo-camera scanner sources and ML Kit dependencies removed via a versioned patch.
-    Barcode scanning is not used by the game. Expo OTA disabled for this build channel.
-    Source scanner exceptions must be reviewed individually; none are blanket-ignored.
-    Source pinned to the published candidate commit; enable after Linux recipe validation.
+  Initial packaging request: https://gitlab.com/fdroid/rfp/-/work_items/4434
+  expo-location replaced with MIT react-native-get-location (Android LocationManager).
+  expo-camera scanner sources and ML Kit dependencies removed via a versioned patch.
+  Barcode scanning is not used by the game. Expo OTA disabled for this build channel.
+  Source scanner exceptions must be reviewed individually; none are blanket-ignored.
+  Candidate pinned to the published source commit; MR stays draft pending CI validation.
+  Local Maven exceptions point to free libraries; Hermes is an MIT build tool only.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
