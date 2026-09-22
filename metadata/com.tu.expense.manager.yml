@@ -12,32 +12,93 @@ RepoType: git
 Repo: https://github.com/Jayachandran-jayy/TU-Expense-Manager
 
 Builds:
-  - versionName: 2.4.3
-    versionCode: 25
-    commit: 5b1365bd5bd60b6ec6bae4d2f8d44ba1b84f17ff
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 2.4.4
+    versionCode: 261
+    commit: 042463af6e0115375469599e687236eba0da692f
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     rm:
       - test
       - web
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
+        .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle =
-        false } }' >> android/app/build.gradle.kts
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
+        = false } }' >> android/app/build.gradle.kts
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID_BUILD=true
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
+        --target-platform="android-x64" --dart-define=FDROID_BUILD=true
+
+  - versionName: 2.4.4
+    versionCode: 262
+    commit: 042463af6e0115375469599e687236eba0da692f
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - test
+      - web
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
+        .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
+        = false } }' >> android/app/build.gradle.kts
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
+        --target-platform="android-arm" --dart-define=FDROID_BUILD=true
+
+  - versionName: 2.4.4
+    versionCode: 263
+    commit: 042463af6e0115375469599e687236eba0da692f
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - test
+      - web
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ (.*)/\1/p" 
+        .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - echo 'android { dependenciesInfo { includeInApk = false; includeInBundle
+        = false } }' >> android/app/build.gradle.kts
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --build-number $(( $$VERCODE$$/10 )) --build-name=$$VERSION$$ 
+        --target-platform="android-arm64" --dart-define=FDROID_BUILD=true
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.4.3
-CurrentVersionCode: 25
+CurrentVersion: 2.4.4
+CurrentVersionCode: 263
