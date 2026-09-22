@@ -1,0 +1,43 @@
+Categories:
+  - Radio
+License: GPL-3.0-or-later
+AuthorName: Sebastian Palencsar
+AuthorEmail: hello@linuxcommand.dev
+WebSite: https://github.com/spalencsar/bearwave-android
+SourceCode: https://github.com/spalencsar/bearwave-android
+IssueTracker: https://github.com/spalencsar/bearwave-android/issues
+Changelog: https://github.com/spalencsar/bearwave-android/blob/main/CHANGELOG.md
+
+AutoName: bearwave
+
+RepoType: git
+Repo: https://github.com/spalencsar/bearwave-android.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: 3829c9d46177a42db66f5f02d87a598d68164e1e
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - test
+    prebuild:
+      - flutterVersion=$(cat .flutter-version)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - echo "android.dependency.metadatainformation=false" >> android/gradle.properties
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
