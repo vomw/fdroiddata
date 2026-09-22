@@ -1,0 +1,40 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: Nomadcxx
+SourceCode: https://github.com/Nomadcxx/Nightshelf
+IssueTracker: https://github.com/Nomadcxx/Nightshelf/issues
+Changelog: https://github.com/Nomadcxx/Nightshelf/releases
+
+AutoName: Nightshelf
+
+RepoType: git
+Repo: https://github.com/Nomadcxx/Nightshelf.git
+Binaries: https://github.com/Nomadcxx/Nightshelf/releases/download/v%v/nightshelf-v%v.apk
+
+Builds:
+  - versionName: 0.1.5-beta
+    versionCode: 6
+    commit: 44db0a0ebfc4e266bd00856b60174b21da8c95d3
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./node_modules/.bin/nuxt generate
+      - npx cap sync android
+    scandelete:
+      - node_modules
+
+AllowedAPKSigningKeys: dc0cb43a701f85bfd81654aeb0dec815ca860a044f13a5fc84f21485356bf550
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.5-beta
+CurrentVersionCode: 6
