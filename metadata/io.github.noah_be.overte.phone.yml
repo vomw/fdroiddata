@@ -16,22 +16,15 @@ Repo: https://github.com/noah-be/overte.git
 Builds:
   - versionName: 0.1.0
     versionCode: 1
-    commit: 24075d829f6d3b5bdb694cf13b6494979689be85
+    commit: 4058c64200eb0668683fe3d01eb4e56e687cd077
     timeout: 43200
     subdir: android/phone
     sudo:
       - cd /tmp
-      - printf '%s\n' 'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20260904T000000Z/
-        unstable main' > /etc/apt/sources.list.d/overte-fdroid.list
-      - "printf '%s\\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 90'
-        > /etc/apt/preferences.d/overte-fdroid"
       - apt-get update
-      - apt-get install -y --no-install-recommends ca-certificates cmake=3.31.6-2
-        git make patch perl python3-pip python3-venv tar xz-utils util-linux iproute2
-      - apt-get install -y --no-install-recommends -t unstable gcc-15=15.3.0-3 g++-15=15.3.0-3
-        ninja-build=1.13.2-1 openjdk-17-jdk-headless=17.0.20.1+1-1
-      - update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 150
-      - update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 150
+      - apt-get install -y --no-install-recommends ca-certificates gcc g++ cmake ninja-build
+        openjdk-21-jdk-headless git make patch perl python3-pip python3-venv tar xz-utils
+        util-linux iproute2
     output: apps/phoneInterface/build/outputs/apk/release/*.apk
     prebuild:
       - python3 -m venv "$HOME/.overte-fdroid/conan"
@@ -63,11 +56,10 @@ MaintainerNotes: |
   referenced JavaScript, icons, licenses and runtime assets remain untouched.
   Requires SDK 36, Build-Tools 35.0.0 and 36.0.0 and SDK CMake 3.31.6, plus the listed NDK.
   Command-line Tools 22.0 supply apkanalyzer for the release APK checks.
-  A clean F-Droid VM build, source scan and APK scan passed for this exact commit
-  on 2026-09-22. The commit is publicly fetchable and integrated into android-phone.
-  The locally test-signed candidate passed automated and maintainer phone checks.
-  Qualification record:
-  https://github.com/noah-be/overte/blob/8957906bca390343b08438462c6dfde92ff42854/android/phone/fdroid/submission/VALIDATION.md
+  Uses the standard Debian trixie GCC/G++, CMake, Ninja and OpenJDK 21 packages.
+  No snapshot, unstable repository, exact Debian package pin or compiler
+  alternatives override is required. The new toolchain needs a full clean build;
+  the earlier successful GCC 15/OpenJDK 17 build does not qualify this recipe.
   Store text and graphics are imported from android/phone/fastlane in the source.
   subdir selects that directory; script, output and work-directory paths have
   been adjusted equivalently since the VM test, without changing build inputs.
@@ -76,10 +68,11 @@ MaintainerNotes: |
   Automatic updates use android-phone-v<versionName>+<versionCode> tags only.
   For example android-phone-v0.1.0+1 selects versionName 0.1.0 and versionCode 1.
   Increase versionCode for each new Android release; iOS/Pico tags are ignored.
-  The initial tag android-phone-v0.1.0+1 points to the qualified source commit.
+  The existing android-phone-v0.1.0+1 tag still points to the earlier toolchain.
+  This candidate uses a full commit for CI; coordinate a new release tag after validation.
   System package provisioning is inlined here; no app repository script runs as root.
   Conan 2.25.2 is installed in the build user home without sudo.
-  These provisioning changes have not yet completed a full CI build.
+  These standard-toolchain changes have not yet completed a full CI build.
   Do not use the local Android debug signing certificate as an upstream release key.
 
 AutoUpdateMode: Version
