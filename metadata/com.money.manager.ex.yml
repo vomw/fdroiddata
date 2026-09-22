@@ -12,6 +12,8 @@ AutoName: Money Manager Ex
 
 RepoType: git
 Repo: https://github.com/moneymanagerex/android-money-manager-ex.git
+Binaries: 
+  https://github.com/moneymanagerex/android-money-manager-ex/releases/download/%v/ammx-%v-fdroid-release.apk
 
 Builds:
   - versionName: 2024.01.13
@@ -814,6 +816,7 @@ Builds:
 
   - versionName: 5.5.12
     versionCode: 1117
+    disable: Non-reproducible, skipping in favor of 5.5.13
     commit: 3893a10d8bb606540c15dfdbbe61646ba5e2c34f
     subdir: app
     gradle:
@@ -824,7 +827,21 @@ Builds:
       - sed -i -e '/foojay/d' ../settings.gradle
       - sed -i -e '/if (signingConfigs.release.storeFile/,+1d' build.gradle
 
+  - versionName: 5.5.13
+    versionCode: 1118
+    commit: 9c33652dfcc9346b8ce7cc9cc0f9e18c0cf7a3cc
+    subdir: app
+    gradle:
+      - fdroid
+    rm:
+      - scripts
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle
+      - sed -i -e '/if (signingConfigs.release.storeFile/,+1d' build.gradle
+
+AllowedAPKSigningKeys: e88fc4af5a6ff316271d03c3cff5324a48c782c732b5ffaf1f6ec0369daa57cb
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*$
-CurrentVersion: 5.5.12
-CurrentVersionCode: 1117
+CurrentVersion: 5.5.13
+CurrentVersionCode: 1118
