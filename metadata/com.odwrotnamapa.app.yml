@@ -1,0 +1,39 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Street view uses Mapillary, a service owned by Meta, to display street-level
+      photos. This feature is optional - the app works fully without it.
+Categories:
+  - Navigation
+License: MIT
+AuthorName: Odwrotna Mapa
+AuthorEmail: odwrotnamapa@protonmail.com
+SourceCode: https://github.com/odwrotnamapa/odwrotnamapa
+IssueTracker: https://github.com/odwrotnamapa/odwrotnamapa/issues
+
+AutoName: Odwrotna Mapa
+
+RepoType: git
+Repo: https://github.com/odwrotnamapa/odwrotnamapa.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 443604a918a42c98eea09fac730c2915542a26eb
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npm install
+      - npm run cap:sync
+      - sed -i "/foojay/d" android/settings.gradle
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1
