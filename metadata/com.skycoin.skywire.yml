@@ -1,0 +1,47 @@
+Categories:
+  - Connectivity
+  - Internet
+License: AGPL-3.0-only
+AuthorName: Skycoin
+WebSite: https://www.skycoin.com
+SourceCode: https://github.com/skycoin/skywire
+IssueTracker: https://github.com/skycoin/skywire/issues
+Changelog: https://github.com/skycoin/skywire/releases
+
+AutoName: Skywire
+
+RepoType: git
+Repo: https://github.com/skycoin/skywire.git
+
+Builds:
+  - versionName: 0.0.4
+    versionCode: 4
+    commit: fdroid-v0.0.4
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go make
+    gradle:
+      - yes
+    scanignore:
+      - pkg/pty/term.html.gz
+      - pkg/router/policy/wasm/presets/bundle.wasm
+    scandelete:
+      - pkg/geoip/GeoLite2-City.mmdb.gz
+      - pkg/wasmhv/execwasm/blob
+      - docs/examples/routing-policies/wasm
+      - vendor/github.com/blang/semver/package.json
+      - vendor/github.com/go-redis/redis/v8/package.json
+    build:
+      - cd ../..
+      - export GOTOOLCHAIN=auto GOPROXY=https://proxy.golang.org,direct GOSUMDB=sum.golang.org
+      - ANDROID_NDK_HOME=$$NDK$$ make android-mobile-ndk
+    ndk: r27c
+    gradleprops:
+      - skywireFdroid=true
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^fdroid-v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: android/version.properties|(?m)^versionCode=(\d+)$|android/version.properties|(?m)^versionName=(\S+)$
+CurrentVersion: 0.0.4
+CurrentVersionCode: 4
