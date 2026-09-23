@@ -11,12 +11,13 @@ RepoType: git
 Repo: https://github.com/BenediktBurger/cycle-app.git
 
 Builds:
-  - versionName: 0.2.1
-    versionCode: 31
-    commit: 978dbc5b9ee19ff0aedfc03594a603013f0e034a
+  # TODO: set the real commit hash once v0.2.2 is tagged (CI builds it).
+  - versionName: 0.2.2
+    versionCode: 41
+    commit: 2d905494d9a70dc0e67f7330ff20fe67691458e6
     sudo:
-      - mkdir -p /home/benediktb/Repositories
-      - chown -R vagrant /home/benediktb/Repositories
+      - mkdir -p /home/runner/work/cycle-app
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     binary:
       https://github.com/BenediktBurger/cycle-app/releases/download/v%v/cycle-app-%v-armeabi-v7a.apk
@@ -29,7 +30,7 @@ Builds:
       - flutterVersion=$(grep -v '^#' tool/flutter-version | tail -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
@@ -40,20 +41,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
       - mv $repo $rootdir
 
-  - versionName: 0.2.1
-    versionCode: 32
-    commit: 978dbc5b9ee19ff0aedfc03594a603013f0e034a
+  - versionName: 0.2.2
+    versionCode: 42
+    commit: 2d905494d9a70dc0e67f7330ff20fe67691458e6
     sudo:
-      - mkdir -p /home/benediktb/Repositories
-      - chown -R vagrant /home/benediktb/Repositories
+      - mkdir -p /home/runner/work/cycle-app
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     binary:
       https://github.com/BenediktBurger/cycle-app/releases/download/v%v/cycle-app-%v-arm64-v8a.apk
@@ -66,7 +67,7 @@ Builds:
       - flutterVersion=$(grep -v '^#' tool/flutter-version | tail -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
@@ -77,20 +78,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
       - mv $repo $rootdir
 
-  - versionName: 0.2.1
-    versionCode: 33
-    commit: 978dbc5b9ee19ff0aedfc03594a603013f0e034a
+  - versionName: 0.2.2
+    versionCode: 43
+    commit: 2d905494d9a70dc0e67f7330ff20fe67691458e6
     sudo:
-      - mkdir -p /home/benediktb/Repositories
-      - chown -R vagrant /home/benediktb/Repositories
+      - mkdir -p /home/runner/work/cycle-app
+      - chown -R vagrant /home/runner/work
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     binary:
       https://github.com/BenediktBurger/cycle-app/releases/download/v%v/cycle-app-%v-x86_64.apk
@@ -103,7 +104,7 @@ Builds:
       - flutterVersion=$(grep -v '^#' tool/flutter-version | tail -n 1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
@@ -114,12 +115,12 @@ Builds:
     scandelete:
       - .pub-cache
     build:
-      - export repo=/home/benediktb/Repositories/cycle-app
+      - export repo=/home/runner/work/cycle-app/cycle-app
       - export rootdir=$PWD
       - mv $rootdir $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi
       - mv $repo $rootdir
 
 AllowedAPKSigningKeys: 0aa5749804b8ed9e3c207f851b5902775d762207d60c2485a26b5d75eff5355b
@@ -131,5 +132,5 @@ VercodeOperation:
   - '%c * 10 + 2'
   - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.2.1
-CurrentVersionCode: 33
+CurrentVersion: 0.2.2
+CurrentVersionCode: 43
