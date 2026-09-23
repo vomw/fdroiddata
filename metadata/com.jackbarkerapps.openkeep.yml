@@ -1,79 +1,45 @@
-# fdroiddata build recipe draft for Open Keep.
-# NOT part of the Open Keep repo -- this belongs in a fork of
-# https://gitlab.com/fdroid/fdroiddata, as metadata/com.jackbarkerapps.openkeep.yml
-#
-# Before opening the MR, run locally (via fdroidserver, https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools/):
-#   fdroid lint com.jackbarkerapps.openkeep
-#   fdroid build --verbose com.jackbarkerapps.openkeep:50
-#
-# Lines marked "VERIFY" below are the ones most likely to need adjusting once
-# you can actually run `fdroid build` -- I could not confirm these against a
-# working real-world example, only against F-Droid's written docs.
-
+AntiFeatures:
+  Tracking:
+    en-US: Signs in anonymously to Supabase to count active users and time occasional
+      feedback prompts.
 Categories:
   - Writing
   - Security
-
-License: AGPL-3.0-only   # VERIFY: package.json says "AGPL-3.0" (SPDX-ambiguous). Change to
-                          # AGPL-3.0-or-later if that's what you actually intend -- check
-                          # whether you want downstream users locked to v3 exactly or free
-                          # to use later AGPL versions.
-
+License: AGPL-3.0-only
+AuthorName: Jack Barker
+WebSite: https://openkeep.net
 SourceCode: https://github.com/HotshotJacko1/Open-Keep
 IssueTracker: https://github.com/HotshotJacko1/Open-Keep/issues
 Changelog: https://github.com/HotshotJacko1/Open-Keep/blob/main/public/CHANGELOG.md
-WebSite: https://openkeep.net
+
+AutoName: Open Keep
 
 RepoType: git
 Repo: https://github.com/HotshotJacko1/Open-Keep.git
 
-AutoUpdateMode: Version %v
-UpdateCheckMode: Tags ^v   # VERIFY: your tags are "v5.0.4" (versionName has no "v" prefix).
-                            # This pattern should strip the "v" automatically, but confirm
-                            # with `fdroid checkupdates com.jackbarkerapps.openkeep` once the
-                            # app is in the repo -- worth getting right since every future
-                            # release should just need a new `git tag vX.Y.Z` + push, nothing
-                            # in this file touched again.
-
-CurrentVersion: '5.0.4'
-CurrentVersionCode: 50
-
 Builds:
-  - versionName: '5.0.4'
+  - versionName: 5.0.4
     versionCode: 50
-    commit: v5.0.4
+    commit: 3fc78828bc65d9c08459ac81e25f73417fb95359
     subdir: android
-
-    # VERIFY -- the part with real uncertainty: F-Droid's build VM needs Node >=22 to run
-    # the Capacitor CLI (the exact same "Capacitor CLI requires NodeJS >=22.0.0" error the
-    # GitHub Actions workflow hit until it was bumped from Node 20 to 22). Whatever Node
-    # ships on F-Droid's build image may or may not already satisfy that -- this sudo step
-    # installs a known-good Node 22 via NodeSource rather than assuming. If F-Droid's image
-    # already has Node >=22, this step is harmless but unnecessary; if it doesn't, this is
-    # required, and the exact install command may need to change to match their actual base
-    # image (Debian version) -- confirm via `fdroid build --verbose`.
     sudo:
-      - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-      - apt-get install -y nodejs
-
-    # Runs from the repo root (before `subdir` takes effect for the Gradle step below):
-    # installs JS deps with the pinned pnpm version, builds the web assets for the GMS-free
-    # "fdroid" flavor, then copies them into the Android project the same way the release
-    # workflow does (npx cap sync android).
+      - apt-get update
+      - apt-get install -y curl xz-utils
+      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.xz
+      - echo "d60acfe00a2932254bb0ad20e01b0d74397a0875595de719654b214f4b03f307  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - tar xJf /tmp/node.tar.xz -C /opt
+      - ln -s /opt/node-v22.23.2-linux-x64/bin/* /usr/local/bin/
+    gradle:
+      - fdroid
+    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     prebuild:
-      - corepack enable
+      - cd ..
       - corepack pnpm install --frozen-lockfile
       - VITE_APP_FLAVOR=fdroid corepack pnpm run build
       - corepack pnpm exec cap sync android
 
-    gradle:
-      - fdroid
-
-    output: app/build/outputs/apk/fdroid/release/app-fdroid-release.apk
-
-AntiFeatures:
-  # None needed: the "fdroid" flavor genuinely ships zero Google Play Services / proprietary
-  # tracking code (verified locally -- gradle.beforeProject hook in android/build.gradle
-  # excludes it, plus a JS-level guard in src/hooks/use-google-drive.ts that refuses to call
-  # SocialLogin.initialize() at all in this flavor). OneDrive and Dropbox sync use plain
-  # browser OAuth with no proprietary SDK, so no NonFreeNet tag either.
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 5.0.4
+CurrentVersionCode: 50
