@@ -1,0 +1,1827 @@
+Categories:
+  - Audiobook
+License: GPL-3.0-or-later
+AuthorName: Likhith Praveen K
+AuthorEmail: lpkatlagunta@gmail.com
+SourceCode: https://github.com/likhithpraveenk/storii
+IssueTracker: https://github.com/likhithpraveenk/storii/issues
+Changelog: https://github.com/likhithpraveenk/storii/releases
+
+Name: Storii - audiobookshelf client
+AutoName: Storii
+
+RepoType: git
+Repo: https://github.com/likhithpraveenk/storii
+
+Builds:
+  - versionName: 0.5.13
+    versionCode: 5031
+    commit: b5a60b4293e9986ab0d20186ebd5de10ba2dd155
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.5.13
+    versionCode: 5032
+    commit: b5a60b4293e9986ab0d20186ebd5de10ba2dd155
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.5.13
+    versionCode: 5033
+    commit: b5a60b4293e9986ab0d20186ebd5de10ba2dd155
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.5.14
+    versionCode: 5041
+    commit: a48442d08eb31c62e31f3bd8a2a8dc469161890c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.5.14
+    versionCode: 5042
+    commit: a48442d08eb31c62e31f3bd8a2a8dc469161890c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.5.14
+    versionCode: 5043
+    commit: a48442d08eb31c62e31f3bd8a2a8dc469161890c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.0
+    versionCode: 5051
+    commit: fa3fb6f22c474366633d5fe7e17108e3118c21ad
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.0
+    versionCode: 5052
+    commit: fa3fb6f22c474366633d5fe7e17108e3118c21ad
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.0
+    versionCode: 5053
+    commit: fa3fb6f22c474366633d5fe7e17108e3118c21ad
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.2
+    versionCode: 5071
+    commit: e23342c771a98b93ee040915c1a4ce12eb365e6c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.2
+    versionCode: 5072
+    commit: e23342c771a98b93ee040915c1a4ce12eb365e6c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.2
+    versionCode: 5073
+    commit: e23342c771a98b93ee040915c1a4ce12eb365e6c
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.3
+    versionCode: 5081
+    commit: 4907f23fdd7f9d49d85013a1ee847f77ce46279a
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.3
+    versionCode: 5082
+    commit: 4907f23fdd7f9d49d85013a1ee847f77ce46279a
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.6.3
+    versionCode: 5083
+    commit: 4907f23fdd7f9d49d85013a1ee847f77ce46279a
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.0
+    versionCode: 5091
+    commit: 5d5a41c8387e1b93ff81f0f9321b302cc36d1fcc
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.0
+    versionCode: 5092
+    commit: 5d5a41c8387e1b93ff81f0f9321b302cc36d1fcc
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.0
+    versionCode: 5093
+    commit: 5d5a41c8387e1b93ff81f0f9321b302cc36d1fcc
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.1
+    versionCode: 5101
+    commit: 2a9832d3d0205bf0b76fa7bd38bbb476cfc0a4c2
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.1
+    versionCode: 5102
+    commit: 2a9832d3d0205bf0b76fa7bd38bbb476cfc0a4c2
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.1
+    versionCode: 5103
+    commit: 2a9832d3d0205bf0b76fa7bd38bbb476cfc0a4c2
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.2
+    versionCode: 5111
+    commit: 537503f54aace9b8c01e15d95cde813b164ec375
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.2
+    versionCode: 5112
+    commit: 537503f54aace9b8c01e15d95cde813b164ec375
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.2
+    versionCode: 5113
+    commit: 537503f54aace9b8c01e15d95cde813b164ec375
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.3
+    versionCode: 5121
+    commit: cef9f425917c0a586f8fd5ba04a53d28d7241808
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.3
+    versionCode: 5122
+    commit: cef9f425917c0a586f8fd5ba04a53d28d7241808
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.7.3
+    versionCode: 5123
+    commit: cef9f425917c0a586f8fd5ba04a53d28d7241808
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.0
+    versionCode: 5131
+    commit: ce88964126a6ac6d3e48591f6b6c2e001d1c3a0d
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.0
+    versionCode: 5132
+    commit: ce88964126a6ac6d3e48591f6b6c2e001d1c3a0d
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.0
+    versionCode: 5133
+    commit: ce88964126a6ac6d3e48591f6b6c2e001d1c3a0d
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.1
+    versionCode: 5141
+    commit: 641ad79c7c94da0920a34b8059dae09e2da5d2ed
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.1
+    versionCode: 5142
+    commit: 641ad79c7c94da0920a34b8059dae09e2da5d2ed
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.8.1
+    versionCode: 5143
+    commit: 641ad79c7c94da0920a34b8059dae09e2da5d2ed
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.0
+    versionCode: 5151
+    commit: 9f636c8dc7bf22bb1682e76ea7254b234e0117df
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.0
+    versionCode: 5152
+    commit: 9f636c8dc7bf22bb1682e76ea7254b234e0117df
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.0
+    versionCode: 5153
+    commit: 9f636c8dc7bf22bb1682e76ea7254b234e0117df
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.2
+    versionCode: 5171
+    commit: 0fcc77183444616665a88404270a82ad4ba0f071
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.2
+    versionCode: 5172
+    commit: 0fcc77183444616665a88404270a82ad4ba0f071
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.9.2
+    versionCode: 5173
+    commit: 0fcc77183444616665a88404270a82ad4ba0f071
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.0
+    versionCode: 5181
+    commit: 98e88c0873eadec7f1084971444a28ffb88ccee7
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.0
+    versionCode: 5182
+    commit: 98e88c0873eadec7f1084971444a28ffb88ccee7
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.0
+    versionCode: 5183
+    commit: 98e88c0873eadec7f1084971444a28ffb88ccee7
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.1
+    versionCode: 5191
+    commit: 153f7bcb0f716194c3e8cedd4498f828122a38ee
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-armeabi.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.1
+    versionCode: 5192
+    commit: 153f7bcb0f716194c3e8cedd4498f828122a38ee
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-arm64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+  - versionName: 0.10.1
+    versionCode: 5193
+    commit: 153f7bcb0f716194c3e8cedd4498f828122a38ee
+    sudo:
+      - mkdir -p /home/runner/work/storii
+      - chown -R vagrant /home/runner/work
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/likhithpraveenk/storii/releases/download/v%v/storii-v%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^[[:space:]]*flutter:[[:space:]]+([0-9]+\.[0-9]+\.[0-9]+)/\1/p'
+        pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/storii/storii
+      - cd ..
+      - mv com.likhithpraveenk.storii $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo com.likhithpraveenk.storii
+
+AllowedAPKSigningKeys: 94732296445ca0c2511fac8a6f744b87fed67ced37d16428ef88985e0ba8676a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.10.1
+CurrentVersionCode: 5193
