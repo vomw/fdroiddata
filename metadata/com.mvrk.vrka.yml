@@ -41,7 +41,9 @@ Builds:
       - pushd $$MozFennec$$
       - rustup default stable || true
       - rustup target add aarch64-linux-android || true
-      - ln -sf $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-objdump /usr/local/bin/llvm-objdump
+      - export PATH="$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
+      - echo "INPUT(-lunwind)" > 
+        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
         || true
       - echo "ac_add_options --enable-project=mobile/android" > .mozconfig
       - echo "ac_add_options --target=aarch64-linux-android" >> .mozconfig
