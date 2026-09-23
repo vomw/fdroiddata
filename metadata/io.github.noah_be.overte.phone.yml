@@ -12,6 +12,8 @@ AutoName: Overte Mobile (Unofficial)
 
 RepoType: git
 Repo: https://github.com/noah-be/overte.git
+Binaries: 
+  https://github.com/noah-be/overte/releases/download/android-phone-release-v%v+%c/overte-mobile-%v-%c.apk
 
 Builds:
   - versionName: 0.1.0
@@ -46,6 +48,8 @@ Builds:
         --version-name $$VERSION$$ --sdk $$SDK$$ --work-dir "$PWD/../../../.overte-phone-fdroid-build"
     ndk: 27.3.13750724
 
+AllowedAPKSigningKeys: b62fd8f9a4ce7202a370245adb7726108f76f62dc54a3f62a0c4f24a0c4b192b
+
 MaintainerNotes: |
   Unofficial Android Phone fork maintained by Noah Frank; not an official Overte release.
   All native dependencies are built from the locked public source closure.
@@ -58,29 +62,26 @@ MaintainerNotes: |
   Command-line Tools 22.0 supply apkanalyzer for the release APK checks.
   Uses the standard Debian trixie GCC/G++, CMake, Ninja and OpenJDK 21 packages.
   No snapshot, unstable repository, exact Debian package pin or compiler
-  alternatives override is required. The new toolchain needs a full clean build;
-  the earlier successful GCC 15/OpenJDK 17 build does not qualify this recipe.
+  alternatives override is required.
   Store text and graphics are imported from android/phone/fastlane in the source.
   subdir selects that directory; script, output and work-directory paths have
   been adjusted equivalently since the VM test, without changing build inputs.
-  Upstream-signed reproducible publication is planned as requested in review.
-  The reference APK URL and signing fingerprint will follow local validation
-  and maintainer release-key setup; neither is configured in this candidate.
-  Automatic updates use android-phone-v<versionName>+<versionCode> tags only.
-  For example android-phone-v0.1.0+1 selects versionName 0.1.0 and versionCode 1.
-  Increase versionCode for each new Android release; iOS/Pico tags are ignored.
-  The existing android-phone-v0.1.0+1 tag still points to the earlier toolchain.
-  This candidate uses a full commit for CI; coordinate a new release tag after validation.
+  Uses the maintainer-signed reference APK after reproducible-build verification.
+  Clean pipelines 2874021829 and 2874493130 passed all nine jobs and produced
+  byte-identical unsigned APKs. Signature-copy verification of the signed
+  reference against the independent second build passed with apksigcopier 1.1.1.
+  These jobs used the local project runner; official F-Droid verification remains
+  required. Build timestamps, embedded paths and Scribe date comments are bound
+  to deterministic inputs by the isolated submission build instructions.
+  Automatic updates use android-phone-release-v<versionName>+<versionCode> tags.
+  The earlier android-phone-v0.1.0+1 tag predates the qualified source and is
+  excluded from update checks. iOS/Pico tags are also excluded.
+  Increase versionCode for each new Android release.
   System package provisioning is inlined here; no app repository script runs as root.
   Conan 2.25.2 is installed in the build user home without sudo.
-  Standard-toolchain builds passed in jobs 16664209585 and 16666614920.
-  This candidate additionally normalizes build timestamps and embedded paths;
-  independent clean rebuild comparison is in progress. Signing metadata will
-  be added after reproducibility is established and a release key is configured.
-  Do not use the local Android debug signing certificate as an upstream release key.
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^android-phone-v[0-9]+\.[0-9]+\.[0-9]+\+[1-9][0-9]*$
-UpdateCheckData: '|\+([0-9]+)$||^android-phone-v([0-9]+\.[0-9]+\.[0-9]+)\+'
+UpdateCheckMode: Tags ^android-phone-release-v[0-9]+\.[0-9]+\.[0-9]+\+[1-9][0-9]*$
+UpdateCheckData: '|\+([0-9]+)$||^android-phone-release-v([0-9]+\.[0-9]+\.[0-9]+)\+'
 CurrentVersion: 0.1.0
 CurrentVersionCode: 1
