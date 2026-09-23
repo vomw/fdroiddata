@@ -16,11 +16,13 @@ AutoName: Open Keep
 
 RepoType: git
 Repo: https://github.com/HotshotJacko1/Open-Keep.git
+Binaries: 
+  https://github.com/HotshotJacko1/Open-Keep/releases/download/v%v/OpenKeep-%v-fdroid.apk
 
 Builds:
-  - versionName: 5.0.4
-    versionCode: 50
-    commit: 3fc78828bc65d9c08459ac81e25f73417fb95359
+  - versionName: 5.0.5
+    versionCode: 51
+    commit: fb5748658a0b9821121afb4f9da1d57b03021e69
     subdir: android
     sudo:
       - apt-get update
@@ -33,13 +35,24 @@ Builds:
     gradle:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
+    rm:
+      - SQLCipher_Framework
+      - SQLCipher.xcframework.zip
     prebuild:
       - cd ..
+      - export VITE_APP_FLAVOR=fdroid
       - corepack pnpm install --frozen-lockfile
-      - VITE_APP_FLAVOR=fdroid corepack pnpm run build
+      - corepack pnpm run build
       - corepack pnpm exec cap sync android
+    scandelete:
+      - node_modules/.pnpm/@capgo+capacitor-social-login@*
+      - node_modules/.pnpm/@sentry+cli-linux-x64@*
+      - node_modules/.pnpm/@capacitor+cli@*/node_modules/@capacitor/cli/assets
+      - node_modules/.pnpm/jszip@*/node_modules/jszip/.jekyll-metadata
+
+AllowedAPKSigningKeys: ec67602c9990e039b8c089ca17c141931678c252bed5bc7c53d4218f1eded730
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: 5.0.4
-CurrentVersionCode: 50
+CurrentVersion: 5.0.5
+CurrentVersionCode: 51
