@@ -1,0 +1,39 @@
+Categories:
+  - System
+License: GPL-3.0-only
+AuthorName: GT610
+AuthorEmail: myddz1005@outlook.com
+AuthorWebSite: https://gt610.dpdns.org
+SourceCode: https://github.com/GT-610/lunadial
+IssueTracker: https://github.com/GT-610/lunadial/issues
+Donate: https://gt610.dpdns.org/sponsor
+
+AutoName: LunaDial
+
+RepoType: git
+Repo: https://github.com/GT-610/lunadial.git
+
+Builds:
+  - versionName: 0.4.2
+    versionCode: 3
+    commit: v0.4.2
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.47.0
+      - export PUB_CACHE=/home/vagrant/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - bash scripts/release/patch-jni-build-id.sh
+    build:
+      - export PUB_CACHE=/home/vagrant/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AllowedAPKSigningKeys: f0bb1f0c9c93188df103523dc936b0202d6a956d4de18c76bfde060dc1b415e0
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.4.2
+CurrentVersionCode: 3
