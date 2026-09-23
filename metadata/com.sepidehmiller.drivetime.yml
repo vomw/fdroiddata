@@ -20,6 +20,12 @@ Builds:
     subdir: app
     gradle:
       - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$i
 
 AllowedAPKSigningKeys: 7b5836870028e20326f6c229eceec5bb04c308396ad789d679df2d7198ea1fc6
 
