@@ -39,10 +39,22 @@ Builds:
     versionCode: 40503
     commit: 596d9cd0e9554311cce7b1465bdae36141de0795
     subdir: app
+    timeout: 14400
+    srclibs:
+      - MozFennec@FIREFOX-ANDROID_153_0_4_RELEASE
     patch:
       - 0001-fdroid-build.patch
+    prebuild:
+      - sed -i 's|maven { url = uri("https://maven.mozilla.org/maven2/") }|mavenLocal()|'
+        ../settings.gradle.kts
+      - pushd $$MozFennec$$
+      - ./mach build
+      - ./gradlew -x javadocDebug geckoview:publishDebugPublicationToMavenLocal
+      - popd
     gradle:
       - assembleRelease
+    gradleprops:
+      - configuration-cache=false
     output: build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
       - settings.gradle.kts
