@@ -36,6 +36,12 @@ Builds:
       - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
       - npx expo prebuild -p android --clean
       - |-
+        cat >> android/gradle.properties <<'EOF'
+        org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8
+        org.gradle.workers.max=2
+        kotlin.compiler.execution.strategy=in-process
+        EOF
+      - |-
         python3 - <<'PY'
         from pathlib import Path
         root = str(Path.cwd())
