@@ -1,0 +1,42 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Speech recognition, and the optional text post-processing, are sent to
+      a cloud API that the user configures (Groq, OpenAI, Mistral, Anthropic, or any
+      OpenAI-compatible endpoint) using the user's own API key. The app ships no speech
+      engine of its own.
+Categories:
+  - Keyboard & IME
+  - Speech Recognizer
+License: MIT
+AuthorName: rustemar
+AuthorEmail: hukutu4.eth@gmail.com
+SourceCode: https://github.com/rustemar/voice-keyboard
+IssueTracker: https://github.com/rustemar/voice-keyboard/issues
+Changelog: https://github.com/rustemar/voice-keyboard/releases
+
+AutoName: Voice Keyboard
+
+RepoType: git
+Repo: https://github.com/rustemar/voice-keyboard.git
+Binaries: 
+  https://github.com/rustemar/voice-keyboard/releases/download/v%v/VoiceKeyboard.apk
+
+Builds:
+  - versionName: 1.9.1
+    versionCode: 52
+    commit: 02ff1a4bfa626744dfed42b55741f5c55e80060a
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: 59799188ebba74894b1b41928a3a8456221461d12f80899784dba7579ba7a988
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.9.1
+CurrentVersionCode: 52
