@@ -1,0 +1,37 @@
+Categories:
+  - Note
+  - OCR
+License: GPL-3.0-only
+AuthorName: MaxDac
+SourceCode: https://github.com/MaxDac/fpink
+IssueTracker: https://github.com/MaxDac/fpink/issues
+Changelog: https://github.com/MaxDac/fpink/releases
+
+RepoType: git
+Repo: https://github.com/MaxDac/fpink.git
+
+Builds:
+  - versionName: 0.1.0-preview.6
+    versionCode: 6
+    commit: 7461c40b4b69353c6d082fa3790f3240a16dcc99
+    sudo:
+      - apt-get update
+      - apt-get install -y binutils cmake g++ gcc git make python3
+    gradle:
+      - foss
+    output: app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+    rm:
+      - recognition/paddle/native/arm64-v8a/libpaddle_light_api_shared.so
+    prebuild: bash -x recognition/paddle/scripts/build-runtime.sh fetch
+    build: NDK_ROOT=$$NDK$$ bash -x recognition/paddle/scripts/build-runtime.sh build
+    ndk: 28.2.13676358
+    gradleprops:
+      - requireReleaseVersion
+      - releaseVersionName=0.1.0-preview.6
+      - releaseVersionCode=6
+      - paddleRuntimeBuiltFromSource
+
+AutoUpdateMode: None
+UpdateCheckMode: Static
+CurrentVersion: 0.1.0-preview.6
+CurrentVersionCode: 6
