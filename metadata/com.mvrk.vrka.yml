@@ -43,6 +43,10 @@ Builds:
       - mkdir -p $$SDK$$/cmdline-tools/20.0/bin
       - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager
       - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/avdmanager
+      - mkdir -p $$SDK$$/emulator
+      - ln -sf $(which true) $$SDK$$/emulator/emulator
+      - mkdir -p "$HOME/.mozbuild"
+      - touch "$HOME/.mozbuild/bundletool.jar"
       - sdkmanager "build-tools;37.0.0" "platforms;android-37.0" 2>/dev/null || true
       - if [ ! -d $$SDK$$/platforms/android-37.0 ]; then latest_platform=$(ls -d $$SDK$$/platforms/android-*
         2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_platform" ]; then ln
@@ -56,7 +60,9 @@ Builds:
       - cargo install --version 0.29.4 cbindgen
       - export PATH="$HOME/.cargo/bin:$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
       - export CBINDGEN="$HOME/.cargo/bin/cbindgen"
-      - echo "INPUT(-lunwind)" > $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
+      - export ANDROID_BUNDLETOOL_PATH="$HOME/.mozbuild/bundletool.jar"
+      - echo "INPUT(-lunwind)" > 
+        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
         || true
       - echo "ac_add_options --enable-project=mobile/android" > .mozconfig
       - echo "ac_add_options --target=aarch64-linux-android" >> .mozconfig
