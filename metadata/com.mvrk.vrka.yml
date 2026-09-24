@@ -39,11 +39,10 @@ Builds:
     prebuild:
       - sed -i 's|maven { url = uri("https://maven.mozilla.org/maven2/") }|mavenLocal()|'
         ../settings.gradle.kts
-      - mkdir -p $$SDK$$/cmdline-tools
-      - ln -sf $$SDK$$/cmdline-tools/latest $$SDK$$/cmdline-tools/20.0 2>/dev/null || true
-      - if [ ! -f $$SDK$$/cmdline-tools/20.0/bin/sdkmanager ]; then mkdir -p $$SDK$$/cmdline-tools/20.0/bin
-        && ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager 2>/dev/null
-        || true; fi
+      - rm -rf $$SDK$$/cmdline-tools/20.0
+      - mkdir -p $$SDK$$/cmdline-tools/20.0/bin
+      - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager
+      - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/avdmanager
       - sdkmanager "build-tools;37.0.0" "platforms;android-37.0" 2>/dev/null || true
       - if [ ! -d $$SDK$$/platforms/android-37.0 ]; then latest_platform=$(ls -d $$SDK$$/platforms/android-*
         2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_platform" ]; then ln
