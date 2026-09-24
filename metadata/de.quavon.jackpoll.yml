@@ -1,0 +1,50 @@
+Categories:
+  - Internet
+  - Science & Education
+License: MIT
+AuthorName: Quavon Development
+AuthorEmail: contact@quavon.de
+WebSite: https://jackpoll.org
+SourceCode: https://github.com/jackpoll-org/jackpoll
+IssueTracker: https://github.com/jackpoll-org/jackpoll/issues
+
+AutoName: Jackpoll
+
+RepoType: git
+Repo: https://github.com/jackpoll-org/jackpoll.git
+Binaries: https://github.com/jackpoll-org/jackpoll/releases/download/v%v/jackpoll-%v.apk
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: 30616aa934af4c785936734e96c7cccaf92dac32
+    subdir: apps/frontend/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils
+      - curl -fsSLO https://nodejs.org/dist/v22.23.3/node-v22.23.3-linux-x64.tar.xz
+      - echo "df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de  node-v22.23.3-linux-x64.tar.xz"
+        | sha256sum -c -
+      - tar -xJf node-v22.23.3-linux-x64.tar.xz -C /opt
+      - ln -s /opt/node-v22.23.3-linux-x64/bin/* /usr/local/bin/
+      - corepack enable --install-directory /usr/local/bin
+    gradle:
+      - fdroid
+    prebuild:
+      - cd ../..
+      - export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - pnpm install --frozen-lockfile --ignore-scripts --store-dir /tmp/pnpm-store
+      - pnpm exec cap sync android
+    scandelete:
+      - apps/frontend/node_modules/.pnpm/@capacitor+push-notifications@*
+      - apps/frontend/node_modules/.pnpm/@capacitor+cli@*/node_modules/@capacitor/cli/assets
+      - apps/frontend/node_modules/.pnpm/next@*/node_modules/next/dist/compiled
+      - apps/frontend/node_modules/.pnpm/@trapezedev+gradle-parse@*
+      - apps/frontend/node_modules/.pnpm/@img+sharp-libvips-*
+
+AllowedAPKSigningKeys: 879d9185bb491834aea31c81c7f29308c317ea255920bb778947378c33974998
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
