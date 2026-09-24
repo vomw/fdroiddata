@@ -10,11 +10,13 @@ Changelog:
 
 RepoType: git
 Repo: https://github.com/Double77x/radioscout.git
+Binaries: 
+  https://github.com/Double77x/radioscout/releases/download/fdroid-reference-0.3.6-306/radioscout-fdroid-0.3.6-306.apk
 
 Builds:
   - versionName: 0.3.6
     versionCode: 306
-    commit: e733642a0c4f11d09c8e4eb44129eaf6e2c03399
+    commit: 2e022f5093fc48e4fb8410df394f47d40773a2b5
     subdir: android
     sudo:
       - apt-get update
@@ -30,8 +32,11 @@ Builds:
     output: app/build/outputs/apk/release/radioscout-release.apk
     build:
       - cd ..
+      - export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+      - export TZ=UTC
       - pnpm install --frozen-lockfile
       - VITE_DISTRIBUTION=fdroid pnpm build
+      - node scripts/normalize-ssr-timestamps.mjs dist/client
       - VITE_DISTRIBUTION=fdroid npx cap sync android
       - cd android
       - sed -i '/capgo-capacitor-updater/d' capacitor.settings.gradle
@@ -41,10 +46,17 @@ Builds:
         a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
     postbuild: rm -rf ../node_modules
 
+AllowedAPKSigningKeys: 
+  31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
+
 MaintainerNotes: |-
   The web bundle must be built with VITE_DISTRIBUTION=fdroid. That build flag
   disables both the Capgo OTA path and the GitHub APK update prompt so F-Droid
   remains the only update channel for this build.
+
+  The signed F-Droid reference APK is published from the source repository's
+  fdroid-reference-0.3.6-306 release and is used for reproducible-build
+  verification.
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
