@@ -39,14 +39,25 @@ Builds:
     prebuild:
       - sed -i 's|maven { url = uri("https://maven.mozilla.org/maven2/") }|mavenLocal()|'
         ../settings.gradle.kts
+      - mkdir -p $$SDK$$/cmdline-tools
+      - ln -sf $$SDK$$/cmdline-tools/latest $$SDK$$/cmdline-tools/20.0 2>/dev/null || true
+      - if [ ! -f $$SDK$$/cmdline-tools/20.0/bin/sdkmanager ]; then mkdir -p $$SDK$$/cmdline-tools/20.0/bin
+        && ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager 2>/dev/null
+        || true; fi
+      - sdkmanager "build-tools;37.0.0" "platforms;android-37.0" 2>/dev/null || true
+      - if [ ! -d $$SDK$$/platforms/android-37.0 ]; then latest_platform=$(ls -d $$SDK$$/platforms/android-*
+        2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_platform" ]; then ln
+        -sf "$latest_platform" $$SDK$$/platforms/android-37.0; fi; fi
+      - if [ ! -d $$SDK$$/build-tools/37.0.0 ]; then latest_bt=$(ls -d $$SDK$$/build-tools/*
+        2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_bt" ]; then ln -sf "$latest_bt"
+        $$SDK$$/build-tools/37.0.0; fi; fi
       - pushd $$MozFennec$$
       - rustup default stable || true
       - rustup target add aarch64-linux-android || true
       - cargo install --version 0.29.4 cbindgen
       - export PATH="$HOME/.cargo/bin:$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
       - export CBINDGEN="$HOME/.cargo/bin/cbindgen"
-      - echo "INPUT(-lunwind)" > 
-        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
+      - echo "INPUT(-lunwind)" > $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
         || true
       - echo "ac_add_options --enable-project=mobile/android" > .mozconfig
       - echo "ac_add_options --target=aarch64-linux-android" >> .mozconfig
