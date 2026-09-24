@@ -22,14 +22,14 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y golang-go make curl
-      - curl -fsSLo /tmp/tinygo.deb 
-        https://github.com/tinygo-org/tinygo/releases/download/v0.42.0/tinygo_0.42.0_amd64.deb
-      - echo "2082c4762fea6d5cc4cd1f4a243eaacf07b12f576717d4c6b74828bd163cb563  /tmp/tinygo.deb"
-        | sha256sum -c -
-      - apt-get install -y /tmp/tinygo.deb
+      - apt-get install -y make
+      - apt-get install -y -t trixie-backports golang-go
+      - apt-get install -y g++ llvm-19-dev libclang-19-dev clang-19 lld-19 binaryen
     gradle:
       - yes
+    srclibs:
+      - go@go1.26.4
+      - tinygo@bdc4a21af007d8f059b5cefe5644b7ee7bda5b2d
     rm:
       - pkg/router/policy/wasm/presets/bundle.wasm
     scanignore:
@@ -42,7 +42,21 @@ Builds:
       - vendor/github.com/go-redis/redis/v8/package.json
     build:
       - cd ../..
-      - export GOTOOLCHAIN=auto GOPROXY=https://proxy.golang.org,direct GOSUMDB=sum.golang.org
+      - git -C $$go$$ checkout -q -f "go$(sed -n 's/^go //p' go.mod)"
+      - (cd $$go$$/src && ./make.bash)
+      - export PATH="$$go$$/bin:$PATH" GOTOOLCHAIN=local
+      - go version
+      - git -C $$tinygo$$ submodule update --init lib/wasi-libc
+      - git init -q $$tinygo$$/llvm-project
+      - git -C $$tinygo$$/llvm-project sparse-checkout set compiler-rt/lib/builtins
+      - git -C $$tinygo$$/llvm-project fetch -q --depth=1 --filter=blob:none https://github.com/tinygo-org/llvm-project
+        "$(cat $$tinygo$$/llvm-version.txt)"
+      - git -C $$tinygo$$/llvm-project checkout -q FETCH_HEAD
+      - (cd $$tinygo$$ && GOPROXY=https://proxy.golang.org,direct GOSUMDB=sum.golang.org
+        go build -tags=llvm19 -o build/tinygo .)
+      - export PATH="$$tinygo$$/build:$PATH"
+      - tinygo version
+      - export GOPROXY=off
       - make bundle-wasm
       - ANDROID_NDK_HOME=$$NDK$$ make android-mobile-ndk
     ndk: r27c
