@@ -12,27 +12,36 @@ Repo: https://forge.apps.education.fr/gaoblazelite/appligaoblazelite.git
 Builds:
   - versionName: 2.4.1
     versionCode: 8
-    commit: 986af8a4b24c17adb2d6e3ea5cb54dea357d9ae0
+    commit: 763c35391bb156520575b9e31d8da6124212925c
+    subdir: android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless curl xz-utils unzip
-      - curl -Lo node.tar.xz https://nodejs.org/dist/v22.22.0/node-v22.22.0-linux-x64.tar.xz
-      - echo '9aa8e9d2298ab68c600bd6fb86a6c13bce11a4eca1ba9b39d79fa021755d7c37  node.tar.xz'
-        | sha256sum -c -
-      - tar xf node.tar.xz --strip-components=1 -C /usr/local
+      - apt-get install -y openjdk-21-jdk-headless
+      - apt-get install -y -t forky nodejs npm
       - npm install -g yarn@1.22.22
-      - curl -Lo gradle.zip https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
-      - echo 'b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06  gradle.zip'
-        | sha256sum -c -
-      - unzip -q gradle.zip -d /opt/gao-gradle
-    init: yarn install --frozen-lockfile --non-interactive
-    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+      - update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+      - update-alternatives --set javac /usr/lib/jvm/java-21-openjdk-amd64/bin/javac
+    init:
+      - cd ../..
+      - yarn install --frozen-lockfile --non-interactive
+    gradle:
+      - yes
     rm:
       - apk
     prebuild:
+      - cd ../..
       - node scripts/prepare-fdroid.cjs
-      - GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 CI=1
-        NODE_ENV=production node_modules/.bin/expo prebuild --platform android --no-install
+      - sed -i 's/const isFdroidCandidate = .*;/const isFdroidCandidate = true;/'
+        app.config.ts
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 CI=1 NODE_ENV=production node_modules/.bin/expo
+        prebuild --platform android --no-install
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - printf '\norg.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64\norg.gradle.jvmargs=-Xmx4096m
+        -XX:MaxMetaspaceSize=1536m\norg.gradle.workers.max=4\norg.gradle.daemon=false\norg.gradle.vfs.watch=false\n'
+        >> android/gradle.properties
     scanignore:
       - node_modules/@react-native-masked-view/masked-view/android/build.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
@@ -47,14 +56,9 @@ Builds:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
     scandelete:
       - node_modules
-    build:
-      - export GAO_BUILD_CHANNEL=fdroid-candidate EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1
-        NODE_ENV=production CI=1
-      - cd android
-      - /opt/gao-gradle/gradle-9.3.1/bin/gradle --no-daemon --no-watch-fs --max-workers=4
-        '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1536m' -PreactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64
-        assembleRelease
     ndk: 27.1.12297006
+    gradleprops:
+      - reactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64
 
 MaintainerNotes: |-
   Initial packaging request: https://gitlab.com/fdroid/rfp/-/work_items/4434
@@ -64,6 +68,9 @@ MaintainerNotes: |-
   Source scanner exceptions must be reviewed individually; none are blanket-ignored.
   Candidate pinned to the published source commit; MR stays draft pending CI validation.
   Local Maven exceptions point to free libraries; Hermes is an MIT build tool only.
+  Android app placeholder allows subdir lookup before Expo generates native sources.
+  Candidate config is forced in this recipe to keep OTA disabled during JS bundling.
+  Node comes from Debian Forky; Gradle is provided by the F-Droid build environment.
 
 AutoUpdateMode: None
 UpdateCheckMode: None
