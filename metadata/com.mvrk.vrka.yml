@@ -45,8 +45,9 @@ Builds:
       - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/avdmanager
       - mkdir -p $$SDK$$/emulator
       - ln -sf $(which true) $$SDK$$/emulator/emulator
-      - mkdir -p "$HOME/.mozbuild"
+      - mkdir -p "$HOME/.mozbuild/jdk"
       - touch "$HOME/.mozbuild/bundletool.jar"
+      - ln -sf /usr/lib/jvm/java-17-openjdk-amd64 "$HOME/.mozbuild/jdk/jdk-17.0.18+8"
       - sdkmanager "build-tools;37.0.0" "platforms;android-37.0" 2>/dev/null || true
       - if [ ! -d $$SDK$$/platforms/android-37.0 ]; then latest_platform=$(ls -d $$SDK$$/platforms/android-*
         2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_platform" ]; then ln
@@ -69,6 +70,8 @@ Builds:
       - echo "ac_add_options --host=x86_64-unknown-linux-gnu" >> .mozconfig
       - echo "ac_add_options --with-android-ndk=\"$$NDK$$\"" >> .mozconfig
       - echo "ac_add_options --with-android-sdk=\"$$SDK$$\"" >> .mozconfig
+      - echo "ac_add_options --with-java-bin-path=/usr/lib/jvm/java-17-openjdk-amd64/bin"
+        >> .mozconfig
       - echo "ac_add_options --without-wasm-sandboxed-libraries" >> .mozconfig
       - echo "ac_add_options --enable-release" >> .mozconfig
       - echo "ac_add_options --enable-update-channel=release" >> .mozconfig
