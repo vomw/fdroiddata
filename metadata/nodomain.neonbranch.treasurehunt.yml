@@ -18,41 +18,6 @@ RepoType: git
 Repo: https://codeberg.org/neonbranch/treasurehunt.git
 
 Builds:
-  - versionName: 0.6.3
-    versionCode: 80
-    commit: 313b4e2012b8a9c69563c3f8da94907b1edac23d
-    sudo:
-      - mkdir -p /home/daniel/AndroidStudioProjects
-      - chown -R vagrant /home/daniel
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - web
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/^\s+flutter:\s*([0-9.]+)/\1/p" pubspec.yaml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - cd ..
-      - mv nodomain.neonbranch.treasurehunt /home/daniel/AndroidStudioProjects/schatzsuche
-      - pushd /home/daniel/AndroidStudioProjects/schatzsuche
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - popd
-      - mv /home/daniel/AndroidStudioProjects/schatzsuche nodomain.neonbranch.treasurehunt
-    scandelete:
-      - .pub-cache
-    build:
-      - cd ..
-      - mv nodomain.neonbranch.treasurehunt /home/daniel/AndroidStudioProjects/schatzsuche
-      - pushd /home/daniel/AndroidStudioProjects/schatzsuche
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
-        --no-shrink
-      - popd
-      - mv /home/daniel/AndroidStudioProjects/schatzsuche nodomain.neonbranch.treasurehunt
-
   - versionName: 0.7.1
     versionCode: 82
     commit: 4166825977f33e9c6ced9b98e26e2101719ff705
