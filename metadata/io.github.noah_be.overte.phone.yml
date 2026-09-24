@@ -16,9 +16,9 @@ Binaries:
   https://github.com/noah-be/overte/releases/download/android-phone-release-v%v+%c/overte-mobile-%v-%c.apk
 
 Builds:
-  - versionName: 0.1.0
-    versionCode: 1
-    commit: ea17e0b185a0dd9b17888251276cc068150633d4
+  - versionName: 0.1.1
+    versionCode: 2
+    commit: 0cd1790d2d194668e613083c47969f32a0837586
     timeout: 43200
     subdir: android/phone
     sudo:
@@ -67,7 +67,11 @@ MaintainerNotes: |
   subdir selects that directory; script, output and work-directory paths have
   been adjusted equivalently since the VM test, without changing build inputs.
   Uses the maintainer-signed reference APK after reproducible-build verification.
-  Clean pipelines 2874021829 and 2874493130 passed all nine jobs and produced
+  Version 0.1.1 enables R8 and builds Node/V8 in Release mode. Identical shader
+  and resource payloads share storage; runtime resource paths are retained.
+  Qt Creator designer files are excluded and unsigned ZIP compression improved.
+  The optimized APK passed release smoke and manual testing on a Pixel 8 Pro.
+  Clean pipelines 2876564924 and 2878182735 passed all twelve jobs and produced
   byte-identical unsigned APKs. Signature-copy verification of the signed
   reference against the independent second build passed with apksigcopier 1.1.1.
   These jobs used the local project runner; official F-Droid verification remains
@@ -83,5 +87,5 @@ MaintainerNotes: |
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^android-phone-release-v[0-9]+\.[0-9]+\.[0-9]+\+[1-9][0-9]*$
 UpdateCheckData: '|\+([0-9]+)$||^android-phone-release-v([0-9]+\.[0-9]+\.[0-9]+)\+'
-CurrentVersion: 0.1.0
-CurrentVersionCode: 1
+CurrentVersion: 0.1.1
+CurrentVersionCode: 2
