@@ -1,0 +1,34 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional DeepSeek hints use a third-party service with a user-provided
+      API key. Local preset hints work offline.
+Categories:
+  - Game Helper
+  - Party Game
+License: Apache-2.0
+AuthorName: WingSword
+AuthorEmail: YvesSword@outlook.com
+SourceCode: https://github.com/WingSword/YiGameCopilotX
+IssueTracker: https://github.com/WingSword/YiGameCopilotX/issues
+
+AutoName: 桌游助手
+
+RepoType: git
+Repo: https://github.com/WingSword/YiGameCopilotX.git
+
+Builds:
+  - versionName: '1.6'
+    versionCode: 10
+    commit: e5129ab22ed6dc2c7baf7d5fd69225c3557ae4bd
+    subdir: composeApp
+    gradle:
+      - fdroid
+    prebuild:
+      - sed -i '\|maven.aliyun.com/repository/|d' ../settings.gradle.kts
+      - sed -i 's|mirrors.huaweicloud.com/gradle|services.gradle.org/distributions|'
+        ../gradle/wrapper/gradle-wrapper.properties
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+(?:\.[0-9]+)?$
+CurrentVersion: '1.6'
+CurrentVersionCode: 10
