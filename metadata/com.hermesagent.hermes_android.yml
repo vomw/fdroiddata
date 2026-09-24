@@ -11,7 +11,8 @@ AutoName: Hermes Android
 
 RepoType: git
 Repo: https://github.com/rusty4444/hermes-android
-Binaries: https://github.com/rusty4444/hermes-android/releases/download/v%v/app-arm64-v8a-release.apk
+Binaries: 
+  https://github.com/rusty4444/hermes-android/releases/download/v%v/app-arm64-v8a-release.apk
 
 Builds:
   - versionName: 2.1.5
@@ -22,13 +23,15 @@ Builds:
       - rm -rf /home/runner/work/hermes-android/hermes-android
       - chown vagrant -R /home/runner/work
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/rusty4444/hermes-android/releases/download/v%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/rusty4444/hermes-android/releases/download/v%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" 
+        .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export repo=/home/runner/work/hermes-android/hermes-android
@@ -48,9 +51,10 @@ Builds:
       - mv com.hermesagent.hermes_android $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
-        --split-debug-info=symbols
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
+        .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-arm" --split-debug-info=symbols
       - popd
       - mv $repo com.hermesagent.hermes_android
 
@@ -62,13 +66,15 @@ Builds:
       - rm -rf /home/runner/work/hermes-android/hermes-android
       - chown vagrant -R /home/runner/work
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/rusty4444/hermes-android/releases/download/v%v/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/rusty4444/hermes-android/releases/download/v%v/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" 
+        .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export repo=/home/runner/work/hermes-android/hermes-android
@@ -88,9 +94,10 @@ Builds:
       - mv com.hermesagent.hermes_android $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-        --split-debug-info=symbols
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
+        .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-arm64" --split-debug-info=symbols
       - popd
       - mv $repo com.hermesagent.hermes_android
 
@@ -102,13 +109,15 @@ Builds:
       - rm -rf /home/runner/work/hermes-android/hermes-android
       - chown vagrant -R /home/runner/work
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/rusty4444/hermes-android/releases/download/v%v/app-x86_64-release.apk
+    binary: 
+      https://github.com/rusty4444/hermes-android/releases/download/v%v/app-x86_64-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" 
+        .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export repo=/home/runner/work/hermes-android/hermes-android
@@ -128,13 +137,15 @@ Builds:
       - mv com.hermesagent.hermes_android $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
-        --split-debug-info=symbols
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' 
+        .pub-cache/hosted/pub.dev/jni-1.0.0/src/CMakeLists.txt
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-x64" --split-debug-info=symbols
       - popd
       - mv $repo com.hermesagent.hermes_android
 
-AllowedAPKSigningKeys: 475baf431b16d050c8f658ac838783b273f7c10bba06ed1d16bb0a4239f592fb
+AllowedAPKSigningKeys: 
+  475baf431b16d050c8f658ac838783b273f7c10bba06ed1d16bb0a4239f592fb
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
