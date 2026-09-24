@@ -18,25 +18,32 @@ Repo: https://github.com/skycoin/skywire.git
 Builds:
   - versionName: 0.0.5
     versionCode: 5
-    commit: fdroid-v0.0.5
+    commit: e8a4d78b1e32a81d8ed599e9b0e9d5af2bdaaf11
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y golang-go make
+      - apt-get install -y golang-go make curl
+      - curl -fsSLo /tmp/tinygo.deb 
+        https://github.com/tinygo-org/tinygo/releases/download/v0.42.0/tinygo_0.42.0_amd64.deb
+      - echo "2082c4762fea6d5cc4cd1f4a243eaacf07b12f576717d4c6b74828bd163cb563  /tmp/tinygo.deb"
+        | sha256sum -c -
+      - apt-get install -y /tmp/tinygo.deb
     gradle:
       - yes
+    rm:
+      - pkg/router/policy/wasm/presets/bundle.wasm
     scanignore:
       - pkg/pty/term.html.gz
-      - pkg/router/policy/wasm/presets/bundle.wasm
     scandelete:
       - pkg/geoip/GeoLite2-City.mmdb.gz
       - pkg/wasmhv/execwasm/blob
-      - docs/examples/routing-policies/wasm
+      - docs/examples/routing-policies/wasm/*/*.wasm
       - vendor/github.com/blang/semver/package.json
       - vendor/github.com/go-redis/redis/v8/package.json
     build:
       - cd ../..
       - export GOTOOLCHAIN=auto GOPROXY=https://proxy.golang.org,direct GOSUMDB=sum.golang.org
+      - make bundle-wasm
       - ANDROID_NDK_HOME=$$NDK$$ make android-mobile-ndk
     ndk: r27c
     gradleprops:
