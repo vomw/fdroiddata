@@ -1,0 +1,56 @@
+Categories:
+  - Internet
+License: MIT
+AuthorName: Jon Staab
+AuthorWebSite: https://flotilla.social
+WebSite: https://app.flotilla.social
+SourceCode: https://gitea.coracle.social/coracle/flotilla
+IssueTracker: https://gitea.coracle.social/coracle/flotilla/issues
+Changelog: https://gitea.coracle.social/coracle/flotilla/src/branch/master/CHANGELOG.md
+
+AutoName: Flotilla
+
+RepoType: git
+Repo: https://gitea.coracle.social/coracle/flotilla.git
+Binaries: https://gitea.coracle.social/api/packages/coracle/generic/flotilla-fdroid/%v/flotilla-fdroid-%v.apk
+
+Builds:
+  - versionName: 1.11.2
+    versionCode: 55
+    commit: 95cbb9b6f736df21199185ac4c8dc5c841e2c1b1
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-alternatives --auto java
+      - curl -Lo node.tar.gz https://nodejs.org/dist/v22.23.3/node-v22.23.3-linux-x64.tar.gz
+      - echo "1084aa36196bba4c3a5e69a1ee388a6e4ff729dad09445fbcd434b28fe3c24af  node.tar.gz"
+        | sha256sum -c -
+      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - rm node.tar.gz
+      - corepack enable
+    gradle:
+      - fdroid
+    prebuild: ../../scripts/fdroid/prepare.sh
+    scanignore:
+      - node_modules
+    build: ../../scripts/fdroid/build.sh
+
+AllowedAPKSigningKeys: 6daf683e1ca83a4cd88573e9739e2aa944c85d56154e344230557cffed4ad78c
+
+MaintainerNotes: |-
+  scripts/fdroid/prepare.sh removes Firebase, Google Services, Plausible and the ACINQ
+  native secp256k1 library, then installs dependencies, so it runs as prebuild ahead of
+  the scanner. node_modules holds FLOSS build tools (esbuild, sharp), hence scanignore.
+  Capacitor needs JDK 21, and Node comes from nodejs.org at a pinned checksum to match
+  the lts/jod in .nvmrc.
+
+  Builds are reproducible: upstream's release workflow runs this recipe in the
+  buildserver-trixie image (scripts/fdroid/reproduce.sh) and publishes that apk, signed
+  with the distribution key, at Binaries.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: android/app/build.gradle|(?m)^\s*versionCode\s+(\d+)\s*$|.|(?m)^\s*versionName\s+"([^"]+)"\s*$
+CurrentVersion: 1.11.2
+CurrentVersionCode: 55
