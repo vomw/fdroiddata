@@ -1,0 +1,52 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: Double77x
+WebSite: https://radioscout.pages.dev
+SourceCode: https://github.com/Double77x/radioscout
+IssueTracker: https://github.com/Double77x/radioscout/issues
+Changelog: 
+  https://github.com/Double77x/radioscout/blob/main/src/pages/Changelog.tsx
+
+RepoType: git
+Repo: https://github.com/Double77x/radioscout.git
+
+Builds:
+  - versionName: 0.3.6
+    versionCode: 306
+    commit: e733642a0c4f11d09c8e4eb44129eaf6e2c03399
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y ca-certificates curl
+      - curl -Lo /tmp/node.tar.gz 
+        https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64.tar.gz
+      - echo "badb3fe6a61b85e1352ca6564dc56b8b7bd5ecd5c474c52acc21dd0cdd586f35 
+        /tmp/node.tar.gz" | sha256sum -c -
+      - tar xzf /tmp/node.tar.gz --strip-components=1 -C /usr/local/
+      - npm install --global pnpm@10.34.5
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/radioscout-release.apk
+    build:
+      - cd ..
+      - pnpm install --frozen-lockfile
+      - VITE_DISTRIBUTION=fdroid pnpm build
+      - VITE_DISTRIBUTION=fdroid npx cap sync android
+      - cd android
+      - sed -i '/capgo-capacitor-updater/d' capacitor.settings.gradle
+      - sed -i '/capgo-capacitor-updater/d' app/capacitor.build.gradle
+      - node -e "const fs=require('fs');const 
+        p='app/src/main/assets/capacitor.plugins.json';const 
+        a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
+    postbuild: rm -rf ../node_modules
+
+MaintainerNotes: |-
+  The web bundle must be built with VITE_DISTRIBUTION=fdroid. That build flag
+  disables both the Capgo OTA path and the GitHub APK update prompt so F-Droid
+  remains the only update channel for this build.
+
+AutoUpdateMode: None
+UpdateCheckMode: Static
+CurrentVersion: 0.3.6
+CurrentVersionCode: 306
