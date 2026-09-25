@@ -1,0 +1,71 @@
+# F-Droid metadata for Screen Time Locker (com.vortex.timelock).
+#
+# This is the file F-Droid's "fdroiddata" repository expects at
+# metadata/com.vortex.timelock.yml. It is kept here so the submission is
+# self-contained; copy it into your fdroiddata fork when opening the merge
+# request (see fdroid/README.md).
+#
+# Build source: https://gitlab.com/emirofcordoba/screentime-locker
+#   The v6.3.2 tag on that repository holds the Gradle build tree that
+#   F-Droid compiles. The historical standalone-build sources live at
+#   https://github.com/emirofcordoba/screentime-locker .
+#
+# The in-repo fastlane bundle under fastlane/metadata/android/ supplies the
+# title, short/full description, changelog and images, so those are not
+# repeated here.
+
+Categories:
+  - System
+  - Security
+
+License: MIT
+AuthorName: Emir of Cordoba
+
+SourceCode: https://gitlab.com/emirofcordoba/screentime-locker
+IssueTracker: https://gitlab.com/emirofcordoba/screentime-locker/-/issues
+Changelog: https://gitlab.com/emirofcordoba/screentime-locker/-/blob/HEAD/CHANGELOG.md
+
+AutoName: Screen Time Locker
+
+RepoType: git
+Repo: https://gitlab.com/emirofcordoba/screentime-locker.git
+
+Builds:
+  - versionName: 6.3.2
+    versionCode: 16
+    commit: v6.3.2
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 6.3.2
+CurrentVersionCode: 16
+
+MaintainerNotes: |
+  Screen Time Locker is a screen-time lock that turns itself into the Device
+  Owner so it can enforce a kiosk lock at budget exhaustion. That is the app's
+  entire purpose; Device Admin / Device Owner is required by design and is not
+  an anti-feature.
+
+  * Build source is the author's own GitLab repository
+    (https://gitlab.com/emirofcordoba/screentime-locker). The GitHub project
+    (https://github.com/emirofcordoba/screentime-locker) holds the older
+    standalone-build tree; the Gradle tree this build uses is tagged v6.3.2 on
+    GitLab.
+  * Plain Gradle, single :app module. No submodules, no NDK.
+  * No prebuilt binaries ship in the tree. Kotlin comes from the Kotlin Gradle
+    plugin; the Shizuku client comes from
+    dev.rikka.shizuku:{api,aidl,shared,provider}:13.1.5 on Maven Central
+    (Apache-2.0, compiled from source upstream). The only tracked binary is
+    gradle/wrapper/gradle-wrapper.jar, and the Gradle wrapper distribution is
+    pinned with distributionSha256Sum in gradle-wrapper.properties.
+  * No signing key ships in the repository; F-Droid signs the release APK.
+  * No network code, no INTERNET permission, no analytics and no ads.
+  * Shizuku is an optional, FOSS integration: the app also works through a
+    single adb command, and merely declares itself as a Shizuku client
+    (moe.shizuku.manager.permission.API_V23). It is never used as the app name
+    or applicationId.
+  * versionCode/versionName are owned by app/build.gradle (defaultConfig).
+  * AutoUpdateMode uses the "Version v%v" pattern because release tags are
+    v-prefixed (e.g. v6.3.2 -> 6.3.2).
