@@ -1,15 +1,14 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Uses the PLLABS backend, which is not included in the released client
-      source, and may load organizer-selected SoundCloud content.
-    es: Usa el backend de PLLABS, no incluido en las fuentes publicadas del 
-      cliente, y puede cargar contenido de SoundCloud elegido por el 
-      organizador.
+    en-US: Uses the PLLABS backend, which is not included in the released client source,
+      and may load organizer-selected SoundCloud content.
+    es: Usa el backend de PLLABS, no incluido en las fuentes publicadas del cliente,
+      y puede cargar contenido de SoundCloud elegido por el organizador.
   TetheredNet:
-    en-US: The production client is tied to the PLLABS server; selecting another
-      server requires changing the source.
-    es: El cliente de producción depende del servidor de PLLABS; elegir otro 
-      servidor requiere cambiar el código.
+    en-US: The production client is tied to the PLLABS server; selecting another server
+      requires changing the source.
+    es: El cliente de producción depende del servidor de PLLABS; elegir otro servidor
+      requiere cambiar el código.
 Categories:
   - Internet
 License: GPL-3.0-only
@@ -30,6 +29,10 @@ Builds:
     srclibs:
       - flutter@3.38.4
     prebuild:
+      - sdkmanager 'platforms;android-37.0'
+      - test -e $$SDK$$/platforms/android-37 || ln -s $$SDK$$/platforms/android-37.0
+        $$SDK$$/platforms/android-37
+      - test -f $$SDK$$/platforms/android-37/android.jar
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
