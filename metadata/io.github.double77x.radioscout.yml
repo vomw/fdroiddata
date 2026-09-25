@@ -33,7 +33,12 @@ Builds:
       - pnpm install --frozen-lockfile
       - VITE_DISTRIBUTION=fdroid pnpm build
       - node scripts/normalize-ssr-timestamps.mjs dist/client
+      - mv capacitor.config.ts capacitor.config.ts.fdroid
+      - node -e "const 
+        fs=require('fs');fs.writeFileSync('capacitor.config.json',JSON.stringify({appId:'io.github.double77x.radioscout',appName:'RadioScout',webDir:'dist/client',backgroundColor:'#eef1eb',android:{allowMixedContent:false},server:{androidScheme:'https',cleartext:false},plugins:{SplashScreen:{launchShowDuration:0},Keyboard:{resize:'body',resizeOnFullScreen:true},CapacitorUpdater:{autoUpdate:false,statsUrl:''}}},null,2))"
       - VITE_DISTRIBUTION=fdroid npx cap sync android
+      - rm capacitor.config.json
+      - mv capacitor.config.ts.fdroid capacitor.config.ts
       - cd android
       - sed -i '/capgo-capacitor-updater/d' capacitor.settings.gradle
       - sed -i '/capgo-capacitor-updater/d' app/capacitor.build.gradle
