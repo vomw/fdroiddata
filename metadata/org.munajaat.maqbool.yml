@@ -24,12 +24,9 @@ Builds:
     gradle:
       - yes
     prebuild:
-      - wget -q https://dl.google.com/android/repository/platform-37.0_r02.zip -O /tmp/p37.zip
-      - echo "ed8ebf7f8822a4de5686d427f237d2fa30ff7410  /tmp/p37.zip" | sha1sum -c -
-      - unzip -q /tmp/p37.zip -d "$ANDROID_HOME/platforms"
+      - sdkmanager --channel=3 "platforms;android-37.0"
       - cd "$ANDROID_HOME/platforms"
-      - mv android-37.0 android-37
-      - sed -i -e 's/=37\.0$/=37/' -e '/CodeName=$/d' android-37/source.properties
+      - sed -i -e 's/=37\.0$/=37/' -e '/CodeName=$/d' android-37.0/source.properties
 
 AllowedAPKSigningKeys: 444dce87d61886face33cc733ad73e2e8993ba91fbb52358a8cc0bd418686971
 
