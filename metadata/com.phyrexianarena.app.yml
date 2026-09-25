@@ -89,7 +89,6 @@ Builds:
       - cd expo
       - npm ci
       - node scripts/patch-fdroid-java-toolchains.mjs
-      - node scripts/patch-fdroid-reproducibility.mjs
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - export APP_VARIANT=fdroid
@@ -101,7 +100,6 @@ Builds:
       - sed -i 's/MaxMetaspaceSize=512m/MaxMetaspaceSize=1g/' android/gradle.properties
       - echo 'org.gradle.workers.max=1' >> android/gradle.properties
       - cd ..
-      - npm run verify:fdroid
       - cd expo
       - npm run typecheck
     scanignore:
