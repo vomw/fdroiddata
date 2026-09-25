@@ -24,20 +24,26 @@ RepoType: git
 Repo: https://github.com/cyberbuddhy/ArchiveTunaApp
 
 Builds:
-  - versionName: 0.2.0-beta.5
-    versionCode: 6
-    commit: v0.2.0-beta.5
-    timeout: 7200
+  - versionName: 0.2.0-beta.6
+    versionCode: 7
+    commit: v0.2.0-beta.6
+    subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y nodejs npm
-    prebuild:
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+    init:
+      - cd ../..
       - npm ci
       - npm run build
       - npx cap sync android
     gradle:
-      - release
+      - yes
+    scandelete:
+      - node_modules
 
-# AntiFeatures: none expected (MIT deps only, no GMS/tracking).
-# Auto-update intentionally left manual for the first acceptance; add
-# AutoUpdateMode once reviewers confirm tag/version parsing.
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.0-beta.6
+CurrentVersionCode: 7
