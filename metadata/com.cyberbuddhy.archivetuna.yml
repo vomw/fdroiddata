@@ -1,0 +1,43 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: cyberbuddhy
+WebSite: https://github.com/cyberbuddhy/ArchiveTunaApp
+SourceCode: https://github.com/cyberbuddhy/ArchiveTunaApp
+IssueTracker: https://github.com/cyberbuddhy/ArchiveTunaApp/issues
+Changelog: https://github.com/cyberbuddhy/ArchiveTunaApp/releases
+AutoName: ArchiveTuna
+
+Summary: Spotify-style streaming for Archive.org live music
+Description: |
+  ArchiveTuna streams the Archive.org audio collection: live concert taper
+  recordings, 78 RPM shellac transfers, netlabels, and general audio.
+
+  Local-first: vault library, playlists, tier lists, listen history, and
+  offline pins live on-device. No account, no advertising, no tracking.
+
+  Features: archive-wide search with filters, curated discovery shelves,
+  track radio, offline pinning, sleep timer, 10-band EQ, background
+  playback with notification controls, and share links.
+
+RepoType: git
+Repo: https://github.com/cyberbuddhy/ArchiveTunaApp
+
+Builds:
+  - versionName: 0.2.0-beta.5
+    versionCode: 6
+    commit: v0.2.0-beta.5
+    timeout: 7200
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    prebuild:
+      - npm ci
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - release
+
+# AntiFeatures: none expected (MIT deps only, no GMS/tracking).
+# Auto-update intentionally left manual for the first acceptance; add
+# AutoUpdateMode once reviewers confirm tag/version parsing.
