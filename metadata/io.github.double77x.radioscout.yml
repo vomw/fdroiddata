@@ -17,7 +17,7 @@ Builds:
   - versionName: 0.3.6
     versionCode: 306
     commit: 2e022f5093fc48e4fb8410df394f47d40773a2b5
-    subdir: android
+    subdir: android/app
     sudo:
       - apt-get update
       - apt-get install -y ca-certificates curl
@@ -29,9 +29,8 @@ Builds:
       - npm install --global pnpm@10.34.5
     gradle:
       - yes
-    output: app/build/outputs/apk/release/radioscout-release.apk
     build:
-      - cd ..
+      - cd ../..
       - export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
       - export TZ=UTC
       - pnpm install --frozen-lockfile
@@ -44,7 +43,7 @@ Builds:
       - node -e "const fs=require('fs');const 
         p='app/src/main/assets/capacitor.plugins.json';const 
         a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
-    postbuild: rm -rf ../node_modules
+    postbuild: rm -rf ../../node_modules
 
 AllowedAPKSigningKeys: 
   31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
