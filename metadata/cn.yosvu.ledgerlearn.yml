@@ -36,11 +36,11 @@ Repo: https://github.com/Maicarons/ledgerlearn
 
 Builds:
   - versionName: 0.3.1
-    versionCode: 5
+    versionCode: 50
     commit: f72c9dcc9a1d4a113f65361e6b31e2e8f1351f5c
     srclibs:
       - flutter@stable
-    output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     rm:
       - ios
       - linux
@@ -58,9 +58,61 @@ Builds:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+  - versionName: 0.3.1
+    versionCode: 51
+    commit: f72c9dcc9a1d4a113f65361e6b31e2e8f1351f5c
+    srclibs:
+      - flutter@stable
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.41.9
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+  - versionName: 0.3.1
+    versionCode: 52
+    commit: f72c9dcc9a1d4a113f65361e6b31e2e8f1351f5c
+    srclibs:
+      - flutter@stable
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f 3.41.9
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 0'
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
 CurrentVersion: 0.3.1
-CurrentVersionCode: 5
+CurrentVersionCode: 50
