@@ -3516,7 +3516,13 @@ Builds:
       - cp jniLibs/arm64-v8a/libxwayland_wrapper.so ../core/wayland/src/main/jniLibs/arm64-v8a/
       - cp jniLibs/arm64-v8a/libbenchmark_gles.so ../core/wayland/src/main/jniLibs/arm64-v8a/
       - bash build-wayvnc-shim.sh arm64-v8a
+      - ABI=arm64-v8a ./build-virgl-android.sh
+      - cp jniLibs/arm64-v8a/libvirgl_test_server.so ../core/wayland/src/main/jniLibs/arm64-v8a/
+      - cp jniLibs/arm64-v8a/libvirgl_render_server.so ../core/wayland/src/main/jniLibs/arm64-v8a/
       - popd
+      - echo "skipWaylandNatives=true" >> ../gradle.properties
+      - echo "skipFfmpegNatives=true" >> ../gradle.properties
+      - echo "noLintVital=true" >> ../gradle.properties
     ndk: 29.0.14206865
 
 AutoUpdateMode: Version
