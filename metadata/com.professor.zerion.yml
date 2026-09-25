@@ -207,9 +207,8 @@ Builds:
     subdir: zerion-android
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends ca-certificates curl unzip git
-        build-essential cmake pkg-config libtool automake autoconf gperf python3 file
-        xz-utils make patch perl
+      - apt-get install -y g++ libc-dev cmake pkg-config libtool automake autoconf
+        gperf file xz-utils lbzip2 make patch perl
       - mkdir -p /build
       - chown vagrant:vagrant /build
     gradle:
@@ -219,8 +218,8 @@ Builds:
     rm:
       - gradle/verification-metadata.xml
     build:
-      - ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh >
-        /tmp/libzmonero-build.log 2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
+      - ANDROID_NDK_HOME=$$NDK$$ ../packaging/monero-android/fdroid-build.sh > /tmp/libzmonero-build.log
+        2>&1 || (tail -n 300 /tmp/libzmonero-build.log; false)
       - NDK_CACHE=/build ../packaging/tor-android/fdroid-build.sh > /tmp/libtor-build.log
         2>&1 || (tail -n 300 /tmp/libtor-build.log; false)
     ndk: r27b
