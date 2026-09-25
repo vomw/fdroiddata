@@ -997,6 +997,11 @@ Builds:
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - export GOMODCACHE=$(pwd)/.gomodcache
       - export GOFLAGS=-mod=mod
+      - export CRONET_REF=$(grep -oE 'cronet-go v[0-9.]+-[0-9]{14}-[0-9a-f]{12}' $$sing-box-lx$$/go.mod
+        | grep -oE '[0-9a-f]{12}$')
+      - '[[ $CRONET_REF ]]'
+      - git -C $$cronet-go$$ checkout -q -f $CRONET_REF
+      - git -C $$cronet-go$$ submodule update --init --recursive
       - go mod download github.com/sagernet/cronet-go/lib/android_arm
       - pushd $$cronet-go$$
       - for arch in arm; do go run ./cmd/build-naive --target=android/$arch build
@@ -1087,6 +1092,11 @@ Builds:
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - export GOMODCACHE=$(pwd)/.gomodcache
       - export GOFLAGS=-mod=mod
+      - export CRONET_REF=$(grep -oE 'cronet-go v[0-9.]+-[0-9]{14}-[0-9a-f]{12}' $$sing-box-lx$$/go.mod
+        | grep -oE '[0-9a-f]{12}$')
+      - '[[ $CRONET_REF ]]'
+      - git -C $$cronet-go$$ checkout -q -f $CRONET_REF
+      - git -C $$cronet-go$$ submodule update --init --recursive
       - go mod download github.com/sagernet/cronet-go/lib/android_arm64
       - pushd $$cronet-go$$
       - for arch in arm64; do go run ./cmd/build-naive --target=android/$arch build
@@ -1177,6 +1187,11 @@ Builds:
       - export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
       - export GOMODCACHE=$(pwd)/.gomodcache
       - export GOFLAGS=-mod=mod
+      - export CRONET_REF=$(grep -oE 'cronet-go v[0-9.]+-[0-9]{14}-[0-9a-f]{12}' $$sing-box-lx$$/go.mod
+        | grep -oE '[0-9a-f]{12}$')
+      - '[[ $CRONET_REF ]]'
+      - git -C $$cronet-go$$ checkout -q -f $CRONET_REF
+      - git -C $$cronet-go$$ submodule update --init --recursive
       - go mod download github.com/sagernet/cronet-go/lib/android_amd64
       - pushd $$cronet-go$$
       - for arch in amd64; do go run ./cmd/build-naive --target=android/$arch build
