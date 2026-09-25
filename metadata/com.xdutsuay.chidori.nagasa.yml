@@ -1,0 +1,61 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads GGUF model files from Hugging Face; optional tools may reach DuckDuckGo or arbitrary HTTPS URLs when enabled.
+Categories:
+  - AI Chat
+  - Development
+License: MIT
+AuthorName: Kaustubh Tripathi
+SourceCode: https://github.com/xdutsuay/chidori-nagasa
+IssueTracker: https://github.com/xdutsuay/chidori-nagasa/issues
+Changelog: https://github.com/xdutsuay/chidori-nagasa/releases
+
+AutoName: chidori-nagasa
+Name: chidori-nagasa
+Summary: On-device LLM chat and LAN companion for the chidori desktop IDE.
+Description: |-
+    chidori-nagasa is an Android companion for the chidori desktop IDE. It runs
+    GGUF language models on-device for private offline chat, and can pair with a
+    chidori desktop on your LAN to monitor runs and chat through the desktop's
+    models.
+
+    On-device:
+    * Offline inference with curated and custom GGUF models
+    * Vision input for capable models (Gemma, Qwen, Ministral, and others)
+    * Markdown replies, reasoning "thinking" sections, chat history
+    * Optional tools (web search, fetch, JavaScript) — off by default
+    * Background downloads with resume; SAF storage for large models
+
+    Companion:
+    * Pair over LAN via mDNS or manual host:port
+    * Monitor coordinator status and Ask / Agent / Plan / Debug runs
+    * Remote chat through the paired desktop
+    * Opt-in phone-as-inference-node foreground service
+
+    No accounts, ads, or analytics. Model catalog downloads use Hugging Face.
+    Companion traffic uses cleartext HTTP on the LAN (protocol v1).
+
+    MIT-licensed. Inference powered by llama.cpp.
+
+RepoType: git
+Repo: https://github.com/xdutsuay/chidori-nagasa.git
+
+Builds:
+  - versionName: 2.2.0
+    versionCode: 20200000
+    commit: v2.2.0
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y ninja-build
+      - sdkmanager 'ndk;27.2.12479018' 'cmake;3.31.6'
+    gradle:
+      - yes
+    prebuild: echo 'ggmlVulkan=off' >> ../gradle.properties
+    ndk: 27.2.12479018
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.2.0
+CurrentVersionCode: 20200000
