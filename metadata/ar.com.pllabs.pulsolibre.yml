@@ -84,12 +84,87 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - "printf '%s\\n' '\"\"\"Read-only SDK package diagnostics. Never read licenses
+        or environment dumps.\"\"\"' 'import hashlib' 'import json' 'import os' 'from
+        pathlib import Path' 'import sys' 'import xml.etree.ElementTree as ET' ''
+        'sdk = Path(sys.argv[1])' 'fields = {\"Pkg.Revision\", \"Pkg.Desc\", \"AndroidVersion.ApiLevel\"\
+        , \"AndroidVersion.CodeName\", \"AndroidVersion.ExtensionLevel\", \"AndroidVersion.IsBaseSdk\"\
+        , \"Layoutlib.Api\"}' 'for relative in [\"platforms/android-37.0\", \"platform-tools\"\
+        , \"build-tools/31.0.0\", \"build-tools/35.0.0\"]:' '    folder = sdk / relative'
+        '    result = {\"sdk_relative_path\": relative, \"exists\": folder.is_dir(),
+        \"readable\": os.access(folder, os.R_OK), \"searchable\": os.access(folder,
+        os.X_OK)}' '    props = folder / \"source.properties\"' '    if props.is_file():'
+        '        result[\"source_properties\"] = {key: value for line in props.read_text(encoding=\"\
+        utf-8\").splitlines() if \"=\" in line for key, value in [line.split(\"=\"\
+        , 1)] if key in fields}' '    descriptor = folder / \"package.xml\"' '   \
+        \ result[\"package_xml_exists\"] = descriptor.is_file()' '    if descriptor.is_file():'
+        '        package = ET.parse(descriptor).getroot().find(\"localPackage\")'
+        '        details = package.find(\"type-details\")' '        result.update({\"\
+        package_xml_sha256\": hashlib.sha256(descriptor.read_bytes()).hexdigest(),
+        \"package_attributes\": package.attrib, \"type_attributes\": details.attrib,
+        \"namespaces\": dict(value for _, value in ET.iterparse(descriptor, events=[\"\
+        start-ns\"])), \"type_fields\": [{\"tag\": node.tag, \"text\": node.text,
+        \"attributes\": node.attrib} for node in details], \"revision\": {node.tag:
+        node.text for node in package.find(\"revision\")}, \"dependencies\": [{\"\
+        attributes\": dependency.attrib, \"min_revision\": {node.tag: node.text for
+        node in dependency.find(\"min-revision\")} if dependency.find(\"min-revision\"\
+        ) is not None else {}} for dependency in package.findall(\"dependencies/dependency\"\
+        )], \"codename_present\": details.find(\"codename\") is not None, \"codename\"\
+        : details.findtext(\"codename\")})' '    result[\"metadata_permissions\"]
+        = {name: {\"readable\": os.access(folder / name, os.R_OK), \"mode\": oct((folder
+        / name).stat().st_mode & 0o777)} for name in [\"source.properties\", \"package.xml\"\
+        ] if (folder / name).is_file()}' '    for name in [\"android.jar\", \"adb\"\
+        , \"adb.exe\", \"core-lambda-stubs.jar\"]:' '        file = folder / name'
+        '        if file.is_file():' '            result.setdefault(\"files\", {})[name]
+        = {\"bytes\": file.stat().st_size, \"readable\": os.access(file, os.R_OK),
+        \"executable\": os.access(file, os.X_OK), \"sha256\": hashlib.sha256(file.read_bytes()).hexdigest()}'
+        '    print(\"SDK_PACKAGE=\" + json.dumps(result))' > .fdroid-sdk37-diagnostic.py"
+      - python3 .fdroid-sdk37-diagnostic.py $$SDK$$
+      - "printf '%s\\n' '// Read-only observer: no SDK, task, dependency, signing
+        or compiler changes.' 'gradle.projectsEvaluated {' '    def app = gradle.rootProject.findProject(\"\
+        :app\")' '    if (app == null || !app.plugins.hasPlugin(\"com.android.application\"\
+        )) return' '    def plugin = app.plugins.getPlugin(\"com.android.application\"\
+        )' '    def loader = plugin.class.classLoader' '    def names = [\"com.android.build.gradle.AppPlugin\"\
+        , \"com.android.Version\", \"com.android.sdklib.AndroidVersion\", \"com.android.sdklib.repository.AndroidSdkHandler\"\
+        , \"com.android.sdklib.repository.targets.AndroidTargetManager\", \"com.android.repository.api.RepoManager\"\
+        , \"com.android.repository.impl.manager.RepoManagerImpl\", \"com.android.sdklib.AndroidTargetHash\"\
+        ]' '    def classes = names.collect { name ->' '        try {' '         \
+        \   def klass = Class.forName(name, false, loader)' '            def url =
+        klass.protectionDomain?.codeSource?.location' '            def file = url?.protocol
+        == \"file\" ? new File(url.toURI()) : null' '            def hash = file?.isFile()
+        ? java.security.MessageDigest.getInstance(\"SHA-256\").digest(file.bytes).encodeHex().toString()
+        : null' '            [className:name, jar:file?.name, bytes:file?.isFile()
+        ? file.length() : null, sha256:hash]' '        } catch (Throwable error) {'
+        '            [className:name, error:error.class.simpleName]' '        }' '\
+        \    }' '    def repositories = { handler -> handler.collect { repo ->' '\
+        \        def entry = [name:repo.name, type:repo.class.simpleName]' '     \
+        \   if (repo.hasProperty(\"url\")) { entry.scheme = repo.url.scheme; entry.host
+        = repo.url.host }' '        entry' '    } }' '    def selectedSdk' '    try
+        { selectedSdk = [path:app.extensions.getByName(\"android\").sdkDirectory.canonicalPath]
+        }' '    catch (Throwable error) { selectedSdk = [error:error.class.simpleName]
+        }' '    def localProperties = new Properties()' '    def localFile = new File(gradle.rootProject.projectDir,
+        \"local.properties\")' '    if (localFile.isFile()) localFile.withInputStream
+        { localProperties.load(it) }' '    def allowedProperties = [\"sdk.dir\", \"\
+        flutter.sdk\"].collectEntries { key -> [(key):localProperties.getProperty(key)]
+        }' '    def result = [javaVersion:System.getProperty(\"java.version\"), javaVendor:System.getProperty(\"\
+        java.vendor\"), gradleVersion:gradle.gradleVersion, agp:Class.forName(\"com.android.Version\"\
+        , false, loader).getField(\"ANDROID_GRADLE_PLUGIN_VERSION\").get(null), compileSdk:app.extensions.getByName(\"\
+        android\").compileSdkVersion, sdkDirectory:selectedSdk, localProperties:allowedProperties,
+        classSources:classes, appliedInitScriptNames:gradle.startParameter.allInitScripts.collect
+        { it.name }, projectRepositories:repositories(app.repositories), buildscriptRepositories:repositories(app.buildscript.repositories)]'
+        '    println(\"SDK_CONTEXT=\" + groovy.json.JsonOutput.toJson(result))' '\
+        \    // Let the original build perform SDK resolution. Do not swallow its
+        error,' '    // request a different target, or make extra repository/network
+        calls here.' '}' > .fdroid-sdk37-diagnostic.init.gradle"
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export ORG_GRADLE_PROJECT_fdroidUnsigned=true
-      - $$flutter$$/bin/flutter build apk --release --target lib/main.dart
+      - ( test "${GRADLE_USER_HOME:-}" = /home/vagrant/.gradle; observer="$GRADLE_USER_HOME/init.d/pulso-sdk37-diagnostic.gradle";
+        test ! -e "$observer"; mkdir -p "$GRADLE_USER_HOME/init.d"; trap 'rm -f --
+        "$observer"' EXIT; cp .fdroid-sdk37-diagnostic.init.gradle "$observer"; $$flutter$$/bin/flutter
+        build apk --release --target lib/main.dart )
     ndk: 28.2.13676358
 
 MaintainerNotes: |-
