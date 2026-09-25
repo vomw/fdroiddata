@@ -16,9 +16,9 @@ Binaries:
   https://github.com/noah-be/overte/releases/download/android-phone-release-v%v+%c/overte-mobile-%v-%c.apk
 
 Builds:
-  - versionName: 0.1.1
-    versionCode: 2
-    commit: 0cd1790d2d194668e613083c47969f32a0837586
+  - versionName: 0.1.2
+    versionCode: 3
+    commit: cd08e500d73d661c6050a8f3ad4c45921c03770c
     timeout: 43200
     subdir: android/phone
     sudo:
@@ -67,16 +67,22 @@ MaintainerNotes: |
   subdir selects that directory; script, output and work-directory paths have
   been adjusted equivalently since the VM test, without changing build inputs.
   Uses the maintainer-signed reference APK after reproducible-build verification.
-  Version 0.1.1 enables R8 and builds Node/V8 in Release mode. Identical shader
-  and resource payloads share storage; runtime resource paths are retained.
-  Qt Creator designer files are excluded and unsigned ZIP compression improved.
-  The optimized APK passed release smoke and manual testing on a Pixel 8 Pro.
-  Clean pipelines 2876564924 and 2878182735 passed all twelve jobs and produced
-  byte-identical unsigned APKs. Signature-copy verification of the signed
-  reference against the independent second build passed with apksigcopier 1.1.1.
-  These jobs used the local project runner; official F-Droid verification remains
-  required. Build timestamps, embedded paths and Scribe date comments are bound
-  to deterministic inputs by the isolated submission build instructions.
+  R8, Node/V8 Release mode and resource/ZIP optimizations from 0.1.1 are retained.
+  Version 0.1.2 fixes default/empty microphone selection and native editor-focus
+  teardown. Two independent clean local container builds with separate empty
+  caches produced byte-identical unsigned APKs (185216979 bytes), SHA-256
+  f52b26c1761149972b00b65e3ddad0615489240b70b74310fe3885c607fa0167.
+  These were local qualification builds, not official F-Droid infrastructure builds.
+  The final clean APK, signed with a local test key and verified after installation,
+  passed microphone level, Phone-to-PC voice and mute/unmute checks. Go To text
+  entry, keyboard dismissal and Back gestures worked on retries, but one native
+  Qt/QML crash occurred. Its cause is unknown and retries do not establish a fix:
+  https://github.com/noah-be/overte/issues/933
+  Regranting microphone permission through Android Settings requires an app restart.
+  Earlier denial/regrant tests used a diagnostic artifact, not this final APK.
+  Official F-Droid verification and acceptance remain pending.
+  Build timestamps, embedded paths and Scribe date comments are bound to
+  deterministic inputs by the isolated submission build instructions.
   Automatic updates use android-phone-release-v<versionName>+<versionCode> tags.
   The earlier android-phone-v0.1.0+1 tag predates the qualified source and is
   excluded from update checks. iOS/Pico tags are also excluded.
@@ -87,5 +93,5 @@ MaintainerNotes: |
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^android-phone-release-v[0-9]+\.[0-9]+\.[0-9]+\+[1-9][0-9]*$
 UpdateCheckData: '|\+([0-9]+)$||^android-phone-release-v([0-9]+\.[0-9]+\.[0-9]+)\+'
-CurrentVersion: 0.1.1
-CurrentVersionCode: 2
+CurrentVersion: 0.1.2
+CurrentVersionCode: 3
