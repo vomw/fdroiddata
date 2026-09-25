@@ -1,4 +1,5 @@
 Categories:
+  - Mental Health
   - Multimedia
   - Note
   - Writing
@@ -3645,6 +3646,1248 @@ Builds:
       - popd
       - mv $repo com.demizo.daily_you
 
+  - versionName: 2.26.0
+    versionCode: 20260001
+    commit: aa151ec60d4f92b317db422575f7c01ef733eca3
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.0
+    versionCode: 20260002
+    commit: aa151ec60d4f92b317db422575f7c01ef733eca3
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.0
+    versionCode: 20260003
+    commit: aa151ec60d4f92b317db422575f7c01ef733eca3
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.2
+    versionCode: 20260021
+    commit: 0355d8408f8cea28e0bddaf84d07158665479065
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.2
+    versionCode: 20260022
+    commit: 0355d8408f8cea28e0bddaf84d07158665479065
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.2
+    versionCode: 20260023
+    commit: 0355d8408f8cea28e0bddaf84d07158665479065
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.3
+    versionCode: 20260031
+    commit: f14da5e87ddf7d6b5fab490484b14b99be99e7b0
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.3
+    versionCode: 20260032
+    commit: f14da5e87ddf7d6b5fab490484b14b99be99e7b0
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 2.26.3
+    versionCode: 20260033
+    commit: f14da5e87ddf7d6b5fab490484b14b99be99e7b0
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.0.0
+    versionCode: 30000001
+    commit: 2425a8898e4af6847a0523c3c68fbe36f4af89fa
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.0.0
+    versionCode: 30000002
+    commit: 2425a8898e4af6847a0523c3c68fbe36f4af89fa
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.0.0
+    versionCode: 30000003
+    commit: 2425a8898e4af6847a0523c3c68fbe36f4af89fa
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.1.0
+    versionCode: 30010001
+    commit: 8f12d2e020893b22b02f2742e90b60ccf0f7aef6
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.1.0
+    versionCode: 30010002
+    commit: 8f12d2e020893b22b02f2742e90b60ccf0f7aef6
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.1.0
+    versionCode: 30010003
+    commit: 8f12d2e020893b22b02f2742e90b60ccf0f7aef6
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.0
+    versionCode: 30020001
+    commit: ca531cbc1332ae57cfd21c0330f4b5a846573124
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.0
+    versionCode: 30020002
+    commit: ca531cbc1332ae57cfd21c0330f4b5a846573124
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.0
+    versionCode: 30020003
+    commit: ca531cbc1332ae57cfd21c0330f4b5a846573124
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.1
+    versionCode: 30020011
+    commit: e8e100963258a111d0dc67e65493b4dbc6e78f7d
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.1
+    versionCode: 30020012
+    commit: e8e100963258a111d0dc67e65493b4dbc6e78f7d
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.2.1
+    versionCode: 30020013
+    commit: e8e100963258a111d0dc67e65493b4dbc6e78f7d
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.3.0
+    versionCode: 30030001
+    commit: 39483e2e75aa39f9e829a6683f02b9af2fa1e492
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.3.0
+    versionCode: 30030002
+    commit: 39483e2e75aa39f9e829a6683f02b9af2fa1e492
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.3.0
+    versionCode: 30030003
+    commit: 39483e2e75aa39f9e829a6683f02b9af2fa1e492
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.4.0
+    versionCode: 30040001
+    commit: 2074f2db5e76392f5577f0f56df3ea7e2cad4d2c
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-armeabi-v7a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.4.0
+    versionCode: 30040002
+    commit: 2074f2db5e76392f5577f0f56df3ea7e2cad4d2c
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-arm64-v8a-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
+  - versionName: 3.4.0
+    versionCode: 30040003
+    commit: 2074f2db5e76392f5577f0f56df3ea7e2cad4d2c
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - mkdir -p /home/demizo/Documents/Repos
+      - chown -R vagrant /home/demizo
+    output: build/app/outputs/flutter-apk/app-x86_64-fdroid-release.apk
+    binary: 
+      https://github.com/Demizo/Daily_You/releases/download/v%v/daily-you-x86_64-v%v.apk
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter config --no-analytics
+      - submodules/flutter/bin/flutter packages pub get --enforce-lockfile
+      - sed -i -e 's/-Wl,/-Wl,--build-id=none,/' $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo com.demizo.daily_you
+    scanignore:
+      - submodules/flutter/bin/cache
+    scandelete:
+      - .pub-cache
+      - submodules/flutter
+    build:
+      - export repo=/home/demizo/Documents/Repos/Daily_You
+      - cd ..
+      - mv com.demizo.daily_you $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - submodules/flutter/bin/flutter build apk --flavor fdroid --release --split-per-abi
+        --target-platform="android-x64"
+      - popd
+      - mv $repo com.demizo.daily_you
+
 AllowedAPKSigningKeys: b9a1e2b7dd6305030ed3a77012d6017f31df24b40e958f6d105f32a6e51a2cde
 
 AutoUpdateMode: Version
@@ -3654,5 +4897,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 2.25.0
-CurrentVersionCode: 20250003
+CurrentVersion: 3.4.0
+CurrentVersionCode: 30040003

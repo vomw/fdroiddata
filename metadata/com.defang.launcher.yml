@@ -1,0 +1,92 @@
+Categories:
+  - Launcher
+License: GPL-3.0-only
+AuthorName: Scandiking
+SourceCode: https://github.com/Scandiking/Defang
+IssueTracker: https://github.com/Scandiking/Defang/issues
+Changelog: https://github.com/Scandiking/Defang/releases
+
+AutoName: Defang
+
+RepoType: git
+Repo: https://github.com/Scandiking/Defang.git
+Binaries: https://github.com/Scandiking/Defang/releases/download/v%v/defang-v%v.apk
+
+Builds:
+  - versionName: 0.1.4
+    versionCode: 5
+    commit: 4a36f9adf334c8e2b5800f72acda76558e9c5b73
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.5
+    versionCode: 6
+    commit: 9d308103615d18dd857ab964902248fa9f76b917
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.7
+    versionCode: 8
+    commit: c8c9daaa17ed3eb48493fe0bd38528e2e23dfe01
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.10
+    versionCode: 11
+    commit: e39ceefe6239403e01836442d961ca095f0e82b3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.11
+    versionCode: 12
+    commit: 4aa4d5364089c5a5924d3d5bf42598bb60c8c974
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.14
+    versionCode: 15
+    commit: ff5a1e3d9550ba63f7031509c6030dbadff777f8
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.15
+    versionCode: 16
+    commit: bc2d6267f9025059f6202f0a8bb203fbe873993d
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 0.1.17
+    versionCode: 18
+    commit: 3733f04b250f5c44b9ed7d0ca7e1adec7a246040
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'assets/com.defang.launcher.data.local.db.DefangDatabase/*.json'
+
+  - versionName: 0.1.19
+    versionCode: 20
+    commit: 4371e3b9b2834604034c3c0be7a62ac88eb219b0
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign --page-size 16
+      fix-newlines $$OUT$$ 'assets/com.defang.launcher.data.local.db.DefangDatabase/*.json'
+
+AllowedAPKSigningKeys: 7f3cffb2d584ffdb19d6667b335129c4466d8d0884aa966cacf016bb2b5123b0
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 0.1.19
+CurrentVersionCode: 20

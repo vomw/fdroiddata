@@ -1,0 +1,41 @@
+Categories:
+  - Casual Game
+License: GPL-3.0-only
+AuthorName: Kris
+SourceCode: https://codeberg.org/KrisKS/LCDPet
+IssueTracker: https://codeberg.org/KrisKS/LCDPet/issues
+
+AutoName: LCDPet
+
+RepoType: git
+Repo: https://codeberg.org/KrisKS/LCDPet.git
+Binaries: https://codeberg.org/KrisKS/LCDPet/releases/download/v%v/LCDPet-v%v.apk
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: e758605c3caae835f463adb296f2013ce71aa8f3
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: '1.1'
+    versionCode: 2
+    commit: fe566ab88b3634af5a5193ef30c8586383a8cf46
+    subdir: app
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    prebuild: git reset --soft HEAD~1
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 318fbad00b0de8b10f3d1bb684d2648a7878a0d63133993fdd10d506e0e442d4
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.1'
+CurrentVersionCode: 2
