@@ -1,0 +1,49 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads the speech-recognition model (~238 MB) from HuggingFace on first
+      run. On-device recognition only, no voice data ever leaves the device.
+Categories:
+  - Keyboard & IME
+License: MIT
+AuthorName: xieguaiwu
+AuthorEmail: xieguaiwu@163.com
+SourceCode: https://github.com/xieguaiwu/roar
+IssueTracker: https://github.com/xieguaiwu/roar/issues
+Changelog: https://github.com/xieguaiwu/roar/releases
+
+AutoName: Roar 粵語
+
+RepoType: git
+Repo: https://github.com/xieguaiwu/roar
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: ff3f22ed22e579f3efedff3d23adafba8714310d
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y wget build-essential cmake g++ zip unzip
+    gradle:
+      - yes
+    srclibs:
+      - sherpa_onnx@v1.13.6
+    prebuild: mkdir -p libs
+    build:
+      - pushd $$sherpa_onnx$$
+      - export SHERPA_ONNX_ENABLE_JNI=ON SHERPA_ONNX_ENABLE_C_API=OFF
+      - ./build-android-arm64-v8a.sh
+      - popd
+      - J=$$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/src/main/jniLibs
+      - mkdir -p $J/arm64-v8a
+      - cp $$sherpa_onnx$$/build-android-arm64-v8a/install/lib/lib*.so $J/arm64-v8a/
+      - gradle -p $$sherpa_onnx$$/android/SherpaOnnxAar :sherpa_onnx:assembleRelease
+      - cp 
+        $$sherpa_onnx$$/android/SherpaOnnxAar/sherpa_onnx/build/outputs/aar/sherpa_onnx-release.aar
+        libs/sherpa-onnx-1.13.6.aar
+    ndk: r27c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d.]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
