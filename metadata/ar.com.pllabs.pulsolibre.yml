@@ -30,9 +30,57 @@ Builds:
       - flutter@3.38.4
     prebuild:
       - sdkmanager 'platforms;android-37.0'
-      - test -e $$SDK$$/platforms/android-37 || ln -s $$SDK$$/platforms/android-37.0
-        $$SDK$$/platforms/android-37
-      - test -f $$SDK$$/platforms/android-37/android.jar
+      - dpkg-query --show sdkmanager
+      - "printf '%s\\n' '\"\"\"Restore missing typed SDK metadata; never change platform
+        APIs or existing XML.\"\"\"' 'import hashlib' 'import json' 'from pathlib
+        import Path' 'import sys' 'import xml.etree.ElementTree as ET' '' 'platform
+        = Path(sys.argv[1])' 'sdk = platform.parent.parent' 'print(json.dumps({\"\
+        sdk_packages\": {kind: sorted(path.name for path in (sdk / kind).iterdir())
+        if (sdk / kind).is_dir() else [] for kind in [\"platforms\", \"build-tools\"\
+        ]}}))' 'props = dict(line.split(\"=\", 1) for line in (platform / \"source.properties\"\
+        ).read_text().splitlines() if \"=\" in line and not line.lstrip().startswith(\"\
+        #\"))' 'print(json.dumps({\"platform_source_properties\": props, \"package_xml_present\"\
+        : (platform / \"package.xml\").is_file()}))' 'expected = {\"AndroidVersion.ApiLevel\"\
+        : \"37.0\", \"Pkg.Revision\": \"2\", \"AndroidVersion.ExtensionLevel\": \"\
+        22\", \"AndroidVersion.IsBaseSdk\": \"true\"}' 'assert all(props.get(key)
+        == value for key, value in expected.items()), \"Unexpected SDK metadata; refusing
+        to normalize\"' 'jar = platform / \"android.jar\"' 'before = hashlib.sha256(jar.read_bytes()).hexdigest()'
+        'file = platform / \"package.xml\"' 'created = not file.exists()' 'if created:'
+        '    import sdkmanager' '    ET.register_namespace(\"common\", \"http://schemas.android.com/repository/android/common/02\"\
+        )' '    ET.register_namespace(\"xsi\", \"http://www.w3.org/2001/XMLSchema-instance\"\
+        )' '    root = ET.Element(\"{http://schemas.android.com/repository/android/common/02}repository\"\
+        , {\"xmlns:sdk\": \"http://schemas.android.com/sdk/android/repo/repository2/03\"\
+        })' '    ET.SubElement(root, \"license\", {\"id\": \"android-sdk-license\"\
+        , \"type\": \"text\"}).text = sdkmanager.ANDROID_SDK_LICENSE' '    package
+        = ET.SubElement(root, \"localPackage\", {\"path\": \"platforms;android-37.0\"\
+        , \"obsolete\": \"false\"})' '    details = ET.SubElement(package, \"type-details\"\
+        , {\"{http://www.w3.org/2001/XMLSchema-instance}type\": \"sdk:platformDetailsType\"\
+        })' '    for key, value in [(\"api-level\", \"37.0\"), (\"codename\", \"\"\
+        ), (\"extension-level\", \"22\"), (\"base-extension\", \"true\")]:' '    \
+        \    ET.SubElement(details, key).text = value' '    ET.SubElement(details,
+        \"layoutlib\", {\"api\": \"15\"})' '    ET.SubElement(ET.SubElement(package,
+        \"revision\"), \"major\").text = \"2\"' '    ET.SubElement(package, \"display-name\"\
+        ).text = \"Android SDK Platform 37.0\"' '    ET.SubElement(package, \"uses-license\"\
+        , {\"ref\": \"android-sdk-license\"})' '    with file.open(\"xb\") as output:'
+        '        output.write(ET.tostring(root, encoding=\"utf-8\", xml_declaration=True))'
+        'assert before == hashlib.sha256(jar.read_bytes()).hexdigest(), \"Platform
+        binary changed\"' 'root = ET.parse(file).getroot()' 'package = root.find(\"\
+        localPackage\")' 'assert package is not None and package.get(\"path\") ==
+        \"platforms;android-37.0\", \"Unexpected package path\"' 'details = package.find(\"\
+        type-details\")' 'kind = details.get(\"{http://www.w3.org/2001/XMLSchema-instance}type\"\
+        , \"\")' 'namespaces = dict(value for _, value in ET.iterparse(file, events=[\"\
+        start-ns\"]))' 'assert kind.endswith(\":platformDetailsType\") and namespaces.get(kind.split(\"\
+        :\")[0]) == \"http://schemas.android.com/sdk/android/repo/repository2/03\"\
+        , \"Untyped platform metadata\"' 'assert details.find(\"layoutlib\").get(\"\
+        api\") == \"15\", \"Unexpected layoutlib API\"' 'fields = {node.tag.rsplit(\"\
+        }\", 1)[-1]: node.text for node in package.iter() if node.tag.rsplit(\"}\"\
+        , 1)[-1] in (\"api-level\", \"extension-level\", \"base-extension\", \"major\"\
+        )}' 'assert all(fields.get(key) == value for key, value in {\"api-level\"
+        : \"37.0\", \"extension-level\": \"22\", \"base-extension\": \"true\", \"\
+        major\": \"2\"}.items()), \"Existing package metadata differs; refusing to
+        replace it\"' 'print(json.dumps({\"sdk37_metadata_created\": created, \"platform_fields\"\
+        : fields, \"android_jar_sha256\": before}))' > .fdroid-sdk37-metadata.py"
+      - python3 .fdroid-sdk37-metadata.py $$SDK$$/platforms/android-37.0
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -45,10 +93,12 @@ Builds:
     ndk: 28.2.13676358
 
 MaintainerNotes: |-
-  Initial inclusion recipe. Local unsigned build, analyze and 103 tests pass.
-  The full Linux F-Droid build and CI pipeline remain pending.
   Source root contains pubspec.yaml. Flutter 3.38.4 / Dart 3.10.3, Java 17,
   compile SDK 37, target SDK 36, min SDK 24, NDK 28.2.13676358 are required.
+  Some SDK installers omit typed platform metadata. Prebuild registers the
+  installed SDK 37.0 revision 2 only when package.xml is missing, preserving
+  its API level, platform binaries and source.properties. Existing metadata
+  is validated rather than replaced.
   The unsigned Gradle opt-in keeps the production ID and API, skips private
   signing configuration, and must not use PULSO_LOCAL_TEST. The export contains
   only selected brand assets and is not byte-identical to the signed web APK.
