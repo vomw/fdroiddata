@@ -1,0 +1,78 @@
+# F-Droid metadata (Metadata Format v2) — MSI / Master System Inspector
+# Repo: https://github.com/finndevv/msi-project
+#
+# STATUS: the native rebuild (vendored proot/talloc/android-shmem source +
+# CMakeLists.txt, no more prebuilt .so in jniLibs/) is a real fix and clears
+# the biggest F-Droid blocker. Two items below still need action on your
+# side before this can be submitted — see "BEFORE YOU SUBMIT" at the bottom.
+
+Categories:
+  - System
+    - Security
+
+    License: GPL-3.0-only
+    # Bundled third-party components keep their own upstream licenses
+    # (this is fine — they are separate programs invoked at runtime, not
+    # statically linked into the app's own GPL-3.0 code):
+    #   app/src/main/native/proot          -> GPL-2.0-only  (Termux fork)
+    #   app/src/main/native/talloc         -> LGPL-3.0-or-later
+    #   app/src/main/native/android-shmem  -> BSD-3-Clause
+
+    AuthorName: finndev
+    SourceCode: https://github.com/finndevv/msi-project
+    IssueTracker: https://github.com/finndevv/msi-project/issues
+    Changelog: https://github.com/finndevv/msi-project/releases
+
+    # The Alpine minirootfs archives are still bundled as prebuilt binary
+    # assets (app/src/main/assets/alpine/*.tgz) rather than built from source
+    # or fetched at first run only. Keep this until that's resolved (see below).
+    AntiFeatures:
+      - NonFreeAssets
+
+      RepoType: git
+      Repo: https://github.com/finndevv/msi-project.git
+
+      Builds:
+        - versionName: '4.0.0'
+            versionCode: 40000
+                commit: v4.0.0
+                    subdir: app
+                        gradle:
+                              - yes
+                                  ndk: true
+                                      # Remove the committed keystore before the build; F-Droid signs the
+                                          # APK with its own key regardless, and the store/key password is
+                                              # hardcoded in app/build.gradle.kts (security risk in a public repo).
+                                                  rm:
+                                                        - keystore
+
+                                                        AutoUpdateMode: Version
+                                                        UpdateCheckMode: Tags
+                                                        CurrentVersion: '4.0.0'
+                                                        CurrentVersionCode: 40000
+
+                                                        # =============================================================================
+                                                        # BEFORE YOU SUBMIT
+                                                        # =============================================================================
+                                                        #
+                                                        # 1) REMOVE THE KEYSTORE + HARDCODED PASSWORD FROM THE REPO
+                                                        #    keystore/msi-release.keystore is committed, and README.md documents
+                                                        #    its password in plain text ("msi2024master"). F-Droid's build server
+                                                        #    ignores your signingConfig and re-signs with its own key, so this
+                                                        #    file serves no purpose for F-Droid and is a real credential leak for
+                                                        #    anyone who forks/clones the repo. Delete the file and the signingConfig
+                                                        #    block (or at least stop hardcoding the password — read it from an
+                                                        #    untracked local.properties / env var instead), then force-push or
+                                                        #    rotate the keystore if it was ever used to sign a release you care about.
+                                                        #
+                                                        # 2) ALPINE MINIROOTFS STILL BUNDLED AS A BINARY ASSET
+                                                        #    app/src/main/assets/alpine/*.tgz (~10 MB) are official Alpine binary
+                                                        #    releases, not source — same category problem the .so files had.
+                                                        #    Your own README says runtime re-download from dl-cdn.alpinelinux.org
+                                                        #    is already supported; making that the ONLY path (fetch + verify
+                                                        #    .sha256 on first run, ship no .tgz in the APK) removes the last
+                                                        #    prebuilt-binary blocker and lets you drop the NonFreeAssets
+                                                        #    AntiFeature above entirely.
+                                                        #
+                                                        # Once 1-2 are done, this file should be ready to submit as-is.
+                                                        
