@@ -19,13 +19,10 @@ Builds:
     commit: 2e022f5093fc48e4fb8410df394f47d40773a2b5
     subdir: android/app
     sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > 
+        /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y ca-certificates curl
-      - curl -Lo /tmp/node.tar.gz 
-        https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64.tar.gz
-      - echo "badb3fe6a61b85e1352ca6564dc56b8b7bd5ecd5c474c52acc21dd0cdd586f35 
-        /tmp/node.tar.gz" | sha256sum -c -
-      - tar xzf /tmp/node.tar.gz --strip-components=1 -C /usr/local/
+      - apt-get install -y -t forky npm
       - npm install --global pnpm@10.34.5
     gradle:
       - yes
@@ -43,7 +40,6 @@ Builds:
       - node -e "const fs=require('fs');const 
         p='app/src/main/assets/capacitor.plugins.json';const 
         a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
-    postbuild: rm -rf ../../node_modules
 
 AllowedAPKSigningKeys: 
   31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
