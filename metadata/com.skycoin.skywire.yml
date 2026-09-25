@@ -14,6 +14,8 @@ AutoName: Skywire
 
 RepoType: git
 Repo: https://github.com/skycoin/skywire.git
+Binaries: 
+  https://github.com/skycoin/skywire/releases/download/mobile-v%v/skywire-%v-fdroid.apk
 
 Builds:
   - versionName: 0.0.5
@@ -58,10 +60,13 @@ Builds:
       - tinygo version
       - export GOPROXY=off
       - make bundle-wasm
-      - ANDROID_NDK_HOME=$$NDK$$ make android-mobile-ndk
+      - ANDROID_NDK_HOME=$$NDK$$ make android-mobile-ndk DATE="$(TZ=UTC git log -1
+        --format=%cd --date=format-local:%Y-%m-%dT%H:%M:%SZ)"
     ndk: r27c
     gradleprops:
       - skywireFdroid=true
+
+AllowedAPKSigningKeys: 8b960eab847e8acc3e21e641b1d708d8415754971f53bb1caaee2998f267037d
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^fdroid-v[0-9]+\.[0-9]+\.[0-9]+$
