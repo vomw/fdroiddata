@@ -16,68 +16,6 @@ Binaries:
   https://github.com/sunging/MangoSSH/releases/download/v%v/MangoSSH-v%v-fdroid.apk
 
 Builds:
-  - versionName: 0.4.2
-    versionCode: 4002
-    commit: a7426895f929b48ad486275ca710f4b54d92f089
-    timeout: 14400
-    submodules: true
-    sudo:
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - echo "deb https://deb.debian.org/debian trixie-backports main" > /etc/apt/sources.list.d/trixie-backports.list
-      - apt-get update
-      - apt-get install -y autoconf automake binutils bison build-essential cmake
-        gettext git gperf libtool ninja-build pkg-config rsync texinfo unzip zip
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - apt-get install -y -t trixie-backports golang-go
-    gradle:
-      - fdroid
-    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
-    srclibs:
-      - go@e3336a22ad3f0a90bd252c95d8b5544e02674205
-      - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
-      - abseil-cpp@4a2c63365eff8823a5221db86ef490e828306f9d
-      - protobuf@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
-      - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
-      - gmp@2bbd52703e5af82509773264bfbd20ff8464804f
-      - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
-    prebuild:
-      - sed -i 's/^declare -a BOOTSTRAP_VERSIONS=.*/declare -a BOOTSTRAP_VERSIONS=()/'
-        tools/build-fdroid-go.sh
-      - sed -i '/^go-bootstrap-/d' tools/fdroid-sources.lock
-      - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
-      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
-      - sed -i '/compileSdk = 37/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
-      - sed -i '/environment("ANDROID_SDK_ROOT", androidSdkPath)/a\        environment("JAVA_HOME",
-        "/usr/lib/jvm/java-17-openjdk-amd64")' app/build.gradle.kts
-    scanignore:
-      - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
-      - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
-      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx-websocket.min.js.gz
-      - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx.min.js.gz
-    scandelete:
-      - app/src/main/jniLibs
-      - app/src/main/assets/mosh/terminfo.zip
-      - third_party/mosh4android/src/fuzz/terminal_corpus
-      - third_party/mosh4android/src/fuzz/terminal_parser_corpus
-    build:
-      - mkdir -p .fdroid/mosh-deps
-      - ln -s $$zlib$$ .fdroid/mosh-deps/zlib
-      - rm -rf $$protobuf$$/third_party/abseil-cpp
-      - ln -s $$abseil-cpp$$ $$protobuf$$/third_party/abseil-cpp
-      - ln -s $$protobuf$$ .fdroid/mosh-deps/protobuf
-      - ln -s $$ncurses$$ .fdroid/mosh-deps/ncurses
-      - ln -s $$gmp$$ .fdroid/mosh-deps/gmp
-      - ln -s $$nettle$$ .fdroid/mosh-deps/nettle
-      - export MANGOSSH_GO_SOURCE=$$go$$
-      - export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps
-      - export MANGOSSH_GO_ROOT=$PWD/.tools/go/1.26.7
-      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
-    buildjni:
-      - no
-    ndk: r27d
-    gradleprops:
-      - mangosshOfflineBuild=true
-
   - versionName: 0.5.1
     versionCode: 5001
     commit: 2eee2315625d1733e22ab48e50df114a81dfe754
@@ -152,23 +90,6 @@ MaintainerNotes: |-
   tsnet and its vendored dependencies are still compiled from source offline.
   The upstream no-GMP Mosh patch disables Nettle public-key and mini-GMP
   support. The 0.5.1 build therefore no longer needs the GMP srclib.
-  The following source-built Go and GMP notes apply to the retained 0.4.2
-  build only; its reproducibly verified recipe is unchanged.
-  Only protobuf, ncurses, nettle, and gmp need new srclib definitions.
-  The go, zlib, and abseil-cpp definitions already exist in fdroiddata.
-  Protobuf supplies both the host protoc and the Android library; its pinned
-  Abseil checkout is required by both builds. Ncurses supplies the Android
-  terminal library and the matching host tic for reproducible terminfo.
-  Nettle supplies Mosh AES. GMP is not linked directly by Mosh, but the tagged
-  native script builds GMP and enables Nettle public-key support by default.
-  Removing GMP therefore needs an upstream build change and binary comparison,
-  not just deleting its srclib entry from this reproducible-build recipe.
-  golang-go from trixie-backports provides the host bootstrap compiler.
-  The prebuild commands remove the tagged upstream intermediate bootstrap
-  stages and their source-lock entries. Only the final Go 1.26.7 is built
-  from its pinned source for Android tsnet; its source verification and
-  minimum bootstrap version check remain enabled.
-  For both versions:
   The fdroid flavor has no self-update client, package-install permission,
   update FileProvider, or installer handoff. The embedded Tailscale source is
   vendored; its logtail identity and network upload are disabled by the
