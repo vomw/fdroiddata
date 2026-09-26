@@ -26,9 +26,21 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 1.1.0
+    versionCode: 2
+    commit: a3a65d6d67da8932f2a6e3e15b0a2f643a04da86
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+
 AllowedAPKSigningKeys: 03bd539e7e649d11c7d0ce67aece3fcc05bfc9257a23694c2178082396695218
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+UpdateCheckMode: Tags ^v[\d.]+$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.0
+CurrentVersionCode: 2
