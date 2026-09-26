@@ -15,110 +15,6 @@ Binaries:
   https://gitlab.com/api/v4/projects/84857751/packages/generic/hyper-calendar-android/%v/hyper-calendar-%v.apk
 
 Builds:
-  - versionName: 2.1.1
-    versionCode: 7
-    commit: 28671a13e0bab7bb1174995bee8bdbcc1811a4a9
-    subdir: android/app
-    sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
-      - apt-get update
-      - apt-get install -y -t forky nodejs npm libc6-dev
-      - apt-get install -y curl unzip build-essential emscripten binaryen wabt
-    gradle:
-      - yes
-    prebuild:
-      - cd ../..
-      - npm ci
-    scanignore:
-      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - node_modules/@esbuild/linux-x64/bin/esbuild
-      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
-    scandelete:
-      - node_modules
-    build:
-      - cd ../..
-      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
-      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
-
-  - versionName: 2.1.2
-    versionCode: 8
-    commit: 97f23394bfcb469d12bbd3012d2f1716884c43ca
-    subdir: android/app
-    sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
-      - apt-get update
-      - apt-get install -y -t forky nodejs npm libc6-dev
-      - apt-get install -y curl unzip build-essential emscripten binaryen wabt
-    gradle:
-      - yes
-    prebuild:
-      - cd ../..
-      - npm ci
-    scanignore:
-      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - node_modules/@esbuild/linux-x64/bin/esbuild
-      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
-    scandelete:
-      - node_modules
-    build:
-      - cd ../..
-      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
-      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
-
-  - versionName: 2.1.3
-    versionCode: 9
-    commit: 9aa5e36de22186dd250ac940c100984f1e2a3b0f
-    subdir: android/app
-    sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
-      - apt-get update
-      - apt-get install -y -t forky nodejs npm libc6-dev
-      - apt-get install -y curl unzip build-essential emscripten binaryen wabt
-    gradle:
-      - yes
-    prebuild:
-      - cd ../..
-      - npm ci
-    scanignore:
-      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - node_modules/@esbuild/linux-x64/bin/esbuild
-      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
-    scandelete:
-      - node_modules
-    build:
-      - cd ../..
-      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
-      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
-
-  - versionName: 2.1.4
-    versionCode: 10
-    commit: 80b420b01d79e69508ab2bc9fa6779c7be713ad9
-    subdir: android/app
-    sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
-      - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
-      - apt-get update
-      - apt-get install -y -t forky nodejs npm libc6-dev
-      - apt-get install -y curl unzip build-essential emscripten binaryen wabt
-    gradle:
-      - yes
-    prebuild:
-      - cd ../..
-      - npm ci
-    scanignore:
-      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - node_modules/@esbuild/linux-x64/bin/esbuild
-      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
-    scandelete:
-      - node_modules
-    build:
-      - cd ../..
-      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
-      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
-
   - versionName: 2.1.5
     versionCode: 11
     commit: ff16d3ae5a9d0770e2c07375932bdc428b8e4337
@@ -128,20 +24,22 @@ Builds:
       - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
       - apt-get update
       - apt-get install -y -t forky nodejs npm libc6-dev
-      - apt-get install -y curl unzip build-essential emscripten binaryen wabt
+      - apt-get install -y curl unzip build-essential emscripten binaryen wabt golang-go
     gradle:
       - yes
+    srclibs:
+      - esbuild@v0.28.2
     prebuild:
       - cd ../..
       - npm ci
     scanignore:
       - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
-      - node_modules/@esbuild/linux-x64/bin/esbuild
-      - node_modules/workbox-build/node_modules/source-map/lib/mappings.wasm
     scandelete:
       - node_modules
     build:
       - cd ../..
+      - make -C $$esbuild$$ esbuild
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/esbuild
       - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
       - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
 
