@@ -22,6 +22,15 @@ Builds:
       - fdroid
     ndk: 23.2.8568313
 
+  - versionName: 0.2.0
+    versionCode: 200
+    commit: 2ae7732572867a82af40acd58da5cb0038f95282
+    subdir: term-ubuntu
+    submodules: true
+    gradle:
+      - fdroid
+    ndk: 23.2.8568313
+
 MaintainerNotes: |-
   arm64-v8a only. minSdk 26, targetSdk 36.
 
@@ -42,8 +51,21 @@ MaintainerNotes: |-
   alignment of everything it produces. submodules: true is therefore required.
 
   PRoot is GPL-2.0 and talloc is LGPL-3.0; the corresponding source is the
-  pinned submodules, the two patches in term-ubuntu/patches and the build
+  pinned submodules, the four patches in term-ubuntu/patches and the build
   script, all carried by the tagged commit.
+
+  0.2.0 adds LAN Mode: an HTTP/WebSocket server, off by default, that a user
+  turns on to use the terminal from a browser on the same Wi-Fi or Ethernet
+  network, after pairing with a one-time PIN. It binds only a private (RFC
+  1918) LAN address, uses no external service, relay or tracking, and serves
+  only assets packaged in the APK. The browser terminal's JavaScript
+  (term-ubuntu/src/main/assets/lan/xterm.js) is xterm.js 6.0.0, its fit
+  addon and bidi-js 1.0.3, bundled unminified from their sources by
+  term-ubuntu/lan-web/build.mjs from npm packages pinned by sha512 in
+  term-ubuntu/lan-web/package-lock.json. `npm ci --ignore-scripts && node
+  build.mjs --check` in that directory reproduces the committed files byte
+  for byte; the Gradle build does not run Node. The web font is Cascadia
+  Mono (SIL OFL 1.1). Provenance is in term-ubuntu/lan-web/README.md.
 
   Release builds are minified. minifyEnabled is on with
   proguard-android-optimize.txt plus term-ubuntu/proguard-rules.pro, which
@@ -56,5 +78,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
-CurrentVersion: 0.1.7
-CurrentVersionCode: 107
+CurrentVersion: 0.2.0
+CurrentVersionCode: 200
