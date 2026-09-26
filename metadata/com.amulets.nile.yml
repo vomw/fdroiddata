@@ -1,5 +1,5 @@
 Categories:
-  - Games
+  - Puzzle Game
 License: GPL-3.0-or-later
 AuthorName: Faience Games
 WebSite: https://amuletsofanubis.com
@@ -11,12 +11,13 @@ AutoName: Amulets of Anubis
 
 RepoType: git
 Repo: https://github.com/faiencegames/amulets-of-anubis.git
-Binaries: https://github.com/faiencegames/amulets-of-anubis/releases/download/v%v/amulets-of-anubis-%v-android.apk
+Binaries: 
+  https://github.com/faiencegames/amulets-of-anubis/releases/download/v%v/amulets-of-anubis-%v-android.apk
 
 Builds:
-  - versionName: 0.9.3
-    versionCode: 903
-    commit: f4d376bc78fc394da26cc3a14286b672769a6bf6
+  - versionName: 0.9.5
+    versionCode: 905
+    commit: 7fe46ada78063d282caccede3a7cbd7ae3da8d67
     sudo:
       - apt-get update
       - apt-get install -y zip
@@ -24,7 +25,7 @@ Builds:
     rm:
       - platforms/desktop/package.json
       - tools/perf/package.json
-      - tools/screenshots/package.json
+      - engine/tools/screenshots/package.json
     prebuild: sdkmanager 'build-tools;35.0.0' 'platforms;android-35'
     build: ANDROID_SDK=$$SDK$$ ANDROID_UNSIGNED=1 ./build.sh android
 
@@ -32,6 +33,7 @@ AllowedAPKSigningKeys: 416bde2fbb8c651f41972f96f045b2dbd956fa5ecfa2f04ae79558e81
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
-UpdateCheckData: platforms/android/AndroidManifest.xml|android:versionCode="(\d+)"|platforms/android/AndroidManifest.xml|android:versionName="([^"]+)"
-CurrentVersion: 0.9.3
-CurrentVersionCode: 903
+UpdateCheckData: 
+  platforms/android/AndroidManifest.xml|android:versionCode="(\d+)"|platforms/android/AndroidManifest.xml|android:versionName="([^"]+)"
+CurrentVersion: 0.9.5
+CurrentVersionCode: 905
