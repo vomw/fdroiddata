@@ -1,0 +1,17 @@
+--- a/build.gradle
++++ b/build.gradle
+@@ -202,6 +202,14 @@
+ 	}
+ }
+ 
++// The legacy native library must exist before Gradle snapshots JNI inputs.
++// Depending on Java compilation alone does not order native library merging.
++tasks.configureEach {
++	if (name.startsWith("merge") && name.endsWith("JniLibFolders")) {
++		dependsOn(tasks.named("cleanupDuplicatesInCore"))
++	}
++}
++
+ afterEvaluate {
+ 	android.applicationVariants.configureEach { variant ->
+ 		if (variant.name.contains('Opengldebug')) {
