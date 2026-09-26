@@ -28,11 +28,11 @@ Builds:
         curl gettext git gperf libtool ninja-build pkg-config rsync texinfo unzip
         zip
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - curl -fLo /tmp/mangossh-go1.26.7.tar.gz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo "ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  /tmp/mangossh-go1.26.7.tar.gz"
+      - curl -fLo /tmp/go1.26.7.linux-amd64.tar.gz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - echo "ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  /tmp/go1.26.7.linux-amd64.tar.gz"
         | sha256sum -c -
-      - mkdir -p /opt/mangossh-go-1.26.7
-      - tar -xzf /tmp/mangossh-go1.26.7.tar.gz --strip-components=1 -C /opt/mangossh-go-1.26.7
+      - mkdir -p /opt/go
+      - tar -xzf /tmp/go1.26.7.linux-amd64.tar.gz --strip-components=1 -C /opt/go
     gradle:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
@@ -70,9 +70,9 @@ Builds:
       - ln -s $$ncurses$$ .fdroid/mosh-deps/ncurses
       - ln -s $$nettle$$ .fdroid/mosh-deps/nettle
       - export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps
-      - export MANGOSSH_GO_ROOT=/opt/mangossh-go-1.26.7
+      - export MANGOSSH_GO_ROOT=/opt/go
       - mkdir -p .tools/go
-      - ln -s /opt/mangossh-go-1.26.7 .tools/go/1.26.7
+      - ln -s /opt/go .tools/go/1.26.7
       - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
     buildjni:
       - no
