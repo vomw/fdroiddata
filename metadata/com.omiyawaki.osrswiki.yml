@@ -35,14 +35,6 @@ Builds:
         | sha256sum -c -
       - unzip -o -j map_floors.zip -d src/main/assets
       - rm -f map_floors.zip
-      - echo '8abc2cbe5c25cbdb70ac00d763d6560b7544a1befa7546d7cc67205273e22cea  src/main/assets/map_floor_0.mbtiles'
-        | sha256sum -c -
-      - echo '130a98d27f069d76c2b902968c7c62892ca9046d5172103506d0487984b45e07  src/main/assets/map_floor_1.mbtiles'
-        | sha256sum -c -
-      - echo '43f1fbf54377d39c5523884fc8d406adbec48178c46bede05000388116e7e36b  src/main/assets/map_floor_2.mbtiles'
-        | sha256sum -c -
-      - echo '208fd6907e9746ec849cc7f51ae09bb9cf037b3b4eca044b825d19af676a8b05  src/main/assets/map_floor_3.mbtiles'
-        | sha256sum -c -
 
 AllowedAPKSigningKeys: 27bd896eeefe8f1e831d3113ddb159c637af4f76fb9ef161caceba18d57f1f43
 
@@ -55,9 +47,10 @@ MaintainerNotes: |-
   F-Droid gradle: [foss] with subdir app runs assembleFossRelease.
 
   Map mbtiles are immutable release assets (not in git). prebuild downloads
-  the pinned set from osrswiki/osrswiki-tooling map-assets-v1-949feadd10f7
-  into src/main/assets and sha256-checks them (same pins as
-  map-assets-manifest.json / ./scripts/fetch-map-assets.sh materialize).
+  a single pinned map_floors.zip from osrswiki/osrswiki-tooling
+  map-assets-v1-949feadd10f7, verifies the zip sha256, and unpacks the
+  four map_floor_*.mbtiles into src/main/assets (zip pin is enough; no
+  per-member re-check).
 
   Reproducible: Binaries from GitHub Releases (v%v/app-foss-release.apk)
   with AllowedAPKSigningKeys.
