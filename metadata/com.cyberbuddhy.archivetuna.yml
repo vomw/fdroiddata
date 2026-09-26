@@ -1,0 +1,49 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: cyberbuddhy
+WebSite: https://github.com/cyberbuddhy/ArchiveTunaApp
+SourceCode: https://github.com/cyberbuddhy/ArchiveTunaApp
+IssueTracker: https://github.com/cyberbuddhy/ArchiveTunaApp/issues
+Changelog: https://github.com/cyberbuddhy/ArchiveTunaApp/releases
+AutoName: ArchiveTuna
+
+Summary: Spotify-style streaming for Archive.org live music
+Description: |
+  ArchiveTuna streams the Archive.org audio collection: live concert taper
+  recordings, 78 RPM shellac transfers, netlabels, and general audio.
+
+  Local-first: vault library, playlists, tier lists, listen history, and
+  offline pins live on-device. No account, no advertising, no tracking.
+
+  Features: archive-wide search with filters, curated discovery shelves,
+  track radio, offline pinning, sleep timer, 10-band EQ, background
+  playback with notification controls, and share links.
+
+RepoType: git
+Repo: https://github.com/cyberbuddhy/ArchiveTunaApp
+
+Builds:
+  - versionName: 0.2.0-beta.6
+    versionCode: 7
+    commit: v0.2.0-beta.6
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+    init:
+      - cd ../..
+      - npm ci
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.0-beta.6
+CurrentVersionCode: 7
