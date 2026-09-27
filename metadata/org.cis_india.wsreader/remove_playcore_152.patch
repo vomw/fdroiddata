@@ -1,0 +1,138 @@
+diff --git a/app/build.gradle b/app/build.gradle
+index 1a99273..3fe5fcf 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -205,8 +205,6 @@ dependencies {
+     implementation 'androidx.media3:media3-session:1.5.1'
+ 
+     implementation("com.getkeepsafe.taptargetview:taptargetview:1.13.3")
+-    implementation("com.google.android.play:app-update:2.1.0")
+-    implementation("com.google.android.play:app-update-ktx:2.1.0")
+ 
+     //implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.1.21"))
+ }
+diff --git a/app/src/main/java/org/cis_india/wsreader/MainActivity.kt b/app/src/main/java/org/cis_india/wsreader/MainActivity.kt
+index 7bd26d6..8e49e32 100644
+--- a/app/src/main/java/org/cis_india/wsreader/MainActivity.kt
++++ b/app/src/main/java/org/cis_india/wsreader/MainActivity.kt
+@@ -17,11 +17,8 @@
+ package org.cis_india.wsreader
+ 
+ import android.os.Bundle
+-import android.widget.Toast
+ import androidx.activity.compose.setContent
+ import androidx.activity.enableEdgeToEdge
+-import androidx.activity.result.ActivityResult
+-import androidx.activity.result.contract.ActivityResultContracts
+ import androidx.appcompat.app.AppCompatActivity
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.material3.MaterialTheme
+@@ -38,29 +35,15 @@ import org.cis_india.wsreader.ui.theme.AdjustEdgeToEdge
+ import org.cis_india.wsreader.ui.theme.WikisourceReaderTheme
+ import dagger.hilt.android.AndroidEntryPoint
+ import androidx.navigation.NavController
+-import com.google.android.play.core.appupdate.AppUpdateManager
+-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+-import com.google.android.play.core.appupdate.AppUpdateOptions
+-import com.google.android.play.core.install.InstallStateUpdatedListener
+-import com.google.android.play.core.install.model.AppUpdateType
+-import com.google.android.play.core.install.model.InstallStatus
+-import com.google.android.play.core.install.model.UpdateAvailability
+ 
+ 
+ @AndroidEntryPoint
+ class MainActivity : AppCompatActivity() {
+-    private lateinit var appUpdateManager: AppUpdateManager
+     private lateinit var networkObserver: NetworkObserver
+     lateinit var settingsViewModel: SettingsViewModel
+     private lateinit var mainViewModel: MainViewModel
+     private lateinit var navController: NavController
+ 
+-    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+-        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+-            popupSnackbarForCompleteUpdate()
+-        }
+-    }
+-
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+ 
+@@ -75,11 +58,6 @@ class MainActivity : AppCompatActivity() {
+ 
+         enableEdgeToEdge() // enable edge to edge for the activity.
+ 
+-        appUpdateManager = AppUpdateManagerFactory.create(this)
+-
+-        appUpdateManager.registerListener(installStateUpdatedListener)
+-        checkUpdates()
+-
+         setContent {
+             WikisourceReaderTheme(settingsViewModel = settingsViewModel) {
+                 AdjustEdgeToEdge(
+@@ -106,64 +84,7 @@ class MainActivity : AppCompatActivity() {
+         }
+     }
+ 
+-    private fun checkUpdates(){
+-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+-
+-                appUpdateManager.startUpdateFlowForResult(
+-                    // Pass the intent that is returned by 'getAppUpdateInfo()'.
+-                    appUpdateInfo,
+-                    // an activity result launcher registered via registerForActivityResult
+-                    activityResultLauncher,
+-                    // Or pass 'AppUpdateType.FLEXIBLE' to newBuilder() for
+-                    // flexible updates.
+-                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build())
+-            }
+-        }
+-    }
+-
+-
+-    private val activityResultLauncher = registerForActivityResult(
+-        ActivityResultContracts.StartIntentSenderForResult()
+-    ){ result : ActivityResult ->
+-
+-        if (result.resultCode != RESULT_OK) {
+-            println("Update flow failed! Result code: " + result.resultCode);
+-            // If the update is canceled or fails,
+-            // you can request to start the update again.
+-        }
+-
+-    }
+-
+-    private fun popupSnackbarForCompleteUpdate() {
+-        // Since you are using Compose, you might prefer calling a function in your
+-        // MainViewModel to show a Compose Snackbar, but here is a standard one:
+-        Toast.makeText(
+-            this,
+-            "An update has just been downloaded.",
+-            Toast.LENGTH_LONG
+-        ).show()
+-
+-        appUpdateManager.completeUpdate()
+-    }
+-
+-    override fun onResume() {
+-        super.onResume()
+-        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+-            if (info.installStatus() == InstallStatus.DOWNLOADED) {
+-                popupSnackbarForCompleteUpdate()
+-            }
+-        }
+-    }
+-
+-    override fun onDestroy() {
+-        super.onDestroy()
+-        appUpdateManager.unregisterListener(installStateUpdatedListener)
+-    }
+-
+     override fun onPause() {
+         super.onPause()
+     }
+-}
+\ No newline at end of file
++}
