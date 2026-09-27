@@ -32,6 +32,11 @@ Builds:
       - echo "df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de  /tmp/node.tar.xz"
         | sha256sum -c -
       - tar xJf /tmp/node.tar.xz -C /usr/local --strip-components=1
+      - curl -Lo /tmp/jdk17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17
+      - tar xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17 --strip-components=1
     gradle:
       - yes
     srclibs:
@@ -39,7 +44,6 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci --no-audit --no-fund
-      - sed -i -e '/jvmToolchain(17)/d' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - rm -rf node_modules/hermes-compiler/hermesc node_modules/fb-dotslash/bin
       - cmake -S $$hermes$$ -B $$hermes$$/build -G Ninja -DCMAKE_BUILD_TYPE=Release
       - cmake --build $$hermes$$/build --target hermesc
