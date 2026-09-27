@@ -16,9 +16,9 @@ Binaries:
   https://github.com/sunging/MangoSSH/releases/download/v%v/MangoSSH-v%v-fdroid.apk
 
 Builds:
-  - versionName: 0.5.1
-    versionCode: 5001
-    commit: 2eee2315625d1733e22ab48e50df114a81dfe754
+  - versionName: 0.5.2
+    versionCode: 5002
+    commit: d9f225234d39064fa16adfd88b92f11e4a3a12c3
     timeout: 14400
     submodules: true
     sudo:
@@ -40,9 +40,6 @@ Builds:
       - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
       - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
     prebuild:
-      - sed -i '/MANGOSSH_GO_SOURCE/d; /build-fdroid-go.sh/d' tools/prepare-fdroid-native.sh
-        tools/verify-fdroid-sources.sh
-      - sed -i '/^go|/d; /^go-bootstrap-/d' tools/fdroid-sources.lock
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
       - sed -i '/compileSdk = 37/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
@@ -87,14 +84,13 @@ AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004
 
 MaintainerNotes: |-
   Go 1.26.7 is built from the standard go srclib using Debian trixie-backports
-  Go as GOROOT_BOOTSTRAP. Only the final Go version is built from source;
-  the preparation commands bypass the release tag's multi-stage bootstrap
-  chain. The source-built toolchain is exposed through .tools/go/1.26.7 for
-  the separate Gradle phase. Directly using Debian Go 1.26.8 changes all four
-  tsnet ABI libraries, so the release's Go 1.26.7 version is retained.
+  Go as GOROOT_BOOTSTRAP. Only the final Go version is built from source.
+  The source-built toolchain is exposed through .tools/go/1.26.7 for the
+  separate Gradle phase. Upstream validates the preinstalled toolchain
+  without downloading it; no bootstrap-script patches are needed.
   tsnet and its vendored dependencies are compiled from source offline.
   The upstream no-GMP Mosh patch disables Nettle public-key and mini-GMP
-  support. The 0.5.1 build therefore no longer needs the GMP srclib.
+  support, so the build does not need the GMP srclib.
   The fdroid flavor has no self-update client, package-install permission,
   update FileProvider, or installer handoff. The embedded Tailscale source is
   vendored; its logtail identity and network upload are disabled by the
@@ -112,5 +108,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: version-code.txt|^(\d+)$||^v([0-9]+\.[0-9]+\.[0-9]+)$
-CurrentVersion: 0.5.1
-CurrentVersionCode: 5001
+CurrentVersion: 0.5.2
+CurrentVersionCode: 5002
