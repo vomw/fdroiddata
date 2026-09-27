@@ -15,9 +15,9 @@ Binaries:
   https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
 
 Builds:
-  - versionName: 0.9.2
-    versionCode: 131
-    commit: 6ddf94468ff5aaa526a7c3619eed0964b96b1b57
+  - versionName: 0.9.4
+    versionCode: 161
+    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -66,7 +66,21 @@ Builds:
       - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
+      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
+        -o /tmp/openssl.tar.gz
+      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
+        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
+        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
+        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
+        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
+        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
+        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
+        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
+        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
+        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
+        done )
+      - export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
       - dart run tool/patch_appflowy_editor.dart
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
@@ -78,9 +92,9 @@ Builds:
       - mv $repo com.devparadise.nook
     ndk: 28.2.13676358
 
-  - versionName: 0.9.2
-    versionCode: 132
-    commit: 6ddf94468ff5aaa526a7c3619eed0964b96b1b57
+  - versionName: 0.9.4
+    versionCode: 162
+    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -128,7 +142,21 @@ Builds:
       - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
+      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
+        -o /tmp/openssl.tar.gz
+      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
+        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
+        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
+        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
+        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
+        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
+        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
+        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
+        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
+        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
+        done )
+      - export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
       - dart run tool/patch_appflowy_editor.dart
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
@@ -140,9 +168,9 @@ Builds:
       - mv $repo com.devparadise.nook
     ndk: 28.2.13676358
 
-  - versionName: 0.9.2
-    versionCode: 133
-    commit: 6ddf94468ff5aaa526a7c3619eed0964b96b1b57
+  - versionName: 0.9.4
+    versionCode: 163
+    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -190,7 +218,21 @@ Builds:
       - export PATH=/opt/flutter/bin:$PATH
       - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
         && make sqlite3.c)
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$
+      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
+        -o /tmp/openssl.tar.gz
+      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
+        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
+        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
+        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
+        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
+        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
+        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
+        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
+        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
+        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
+        done )
+      - export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
       - dart run tool/patch_appflowy_editor.dart
       - dart run tool/patch_talker_flutter.dart
       - dart run tool/patch_mdns_dart.dart
@@ -211,5 +253,5 @@ VercodeOperation:
   - 10*%c+2
   - 10*%c+3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.9.2
-CurrentVersionCode: 133
+CurrentVersion: 0.9.4
+CurrentVersionCode: 163
