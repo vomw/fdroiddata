@@ -1,0 +1,80 @@
+Categories:
+  - Development
+  - System
+License: Apache-2.0
+AuthorName: Lord1Egypt
+SourceCode: https://github.com/Lord1Egypt/AndroidThothTerm
+IssueTracker: https://github.com/Lord1Egypt/AndroidThothTerm/issues
+Changelog: https://github.com/Lord1Egypt/AndroidThothTerm/releases
+
+AutoName: ThothTerm Trixie
+
+RepoType: git
+Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 100
+    commit: 9774ef78e3fa96e063a6f1b819b223a1079d07e1
+    subdir: garden-debian
+    submodules: true
+    gradle:
+      - fdroid
+    ndk: 23.2.8568313
+
+MaintainerNotes: |-
+  ThothTerm Trixie is an independent app that runs a Debian GNU/Linux 13
+  (trixie) environment under PRoot. It is not affiliated with or endorsed by
+  the Debian Project; "Debian" appears only as a factual description of the
+  guest. The package id com.thothterm.debian names the guest distribution.
+
+  arm64-v8a only. minSdk 26, targetSdk 36. A separate app from ThothTerm
+  Ubuntu (com.thothterm.ubuntu); both are built on the same code, which lives
+  in garden-common/.
+
+  The fdroid flavour packages no distribution binaries. The full flavour's
+  rootfs staging task runs only for preFull*Build, so this build makes no
+  network requests of its own. On first run the app downloads the Debian
+  userland only after an explicit opt-in, from the project's GitHub release
+  debian-rootfs-trixie-arm64-f6520ff1c6ee, and refuses it unless its size and
+  SHA-256 match garden-debian/src/main/assets/garden/distro.properties
+  (62445701 bytes, sha256
+  f6520ff1c6eeb28ead2d175e6733da4c970459a291b1bd60f992f1655c5d0677).
+
+  That archive is not a Debian-published file: Debian publishes no minimal
+  rootfs tarball. It is built by garden-debian/rootfs/build-rootfs.sh with
+  debuerreotype from snapshot.debian.org (packages verified against
+  debian-archive-keyring), unmodified Debian packages only, and is
+  reproducible byte for byte: four runs gave the same SHA-256. Provenance,
+  package list and build manifest: docs/garden/debian/ROOTFS_PROVENANCE.md and
+  the release assets. The same model as UserLAnd (tech.ula).
+
+  The PRoot runtime is compiled during the build by
+  garden-common/tools/build-proot.sh from sources in the repository:
+  third_party/proot (termux/proot, tag v5.1.107.92) and
+  third_party/libandroid-shmem (termux/libandroid-shmem, tag v0.7) as
+  submodules, plus talloc 2.4.3's talloc.c and talloc.h vendored verbatim. The
+  script verifies both submodule commits, downloads nothing, and checks 16 KB
+  page alignment. submodules: true is therefore required. PRoot is GPL-2.0 and
+  talloc LGPL-3.0; the corresponding source is the pinned submodules, the four
+  patches in garden-common/patches and the build script, all in the tagged
+  commit.
+
+  LAN Mode is an HTTP/WebSocket server, off by default, that the user turns on
+  to use the terminal from a browser on the same Wi-Fi or Ethernet network
+  after pairing with a one-time PIN. It binds only a private LAN address, uses
+  no external service, and serves only assets packaged in the APK
+  (garden-common/src/main/assets/lan). Its xterm.js bundle is built unminified
+  from npm packages pinned by sha512 by garden-common/lan-web/build.mjs;
+  `npm ci --ignore-scripts && node build.mjs --check` reproduces the committed
+  files. The Gradle build does not run Node.
+
+  Release builds are minified with proguard-android-optimize.txt plus
+  garden-common/consumer-rules.pro, which holds two keep rules only: the native
+  library registers its methods by the literal class names
+  com/thothterm/TermIO$Native and com/thothterm/Process$Native.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^trixie-v[0-9.]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 100
