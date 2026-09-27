@@ -1,0 +1,86 @@
+Categories:
+  - Local Media Player
+  - Multimedia
+License: AGPL-3.0-or-later
+AuthorName: ZHINFINITY
+SourceCode: https://github.com/ZHINFINITY/Mpv-infinity
+IssueTracker: https://github.com/ZHINFINITY/Mpv-infinity/issues
+Changelog: https://github.com/ZHINFINITY/Mpv-infinity/commits/fdroid-source-build
+
+AutoName: Mpv∞
+
+RepoType: git
+Repo: https://github.com/ZHINFINITY/Mpv-infinity.git
+
+Builds:
+  - versionName: 1.0.4
+    versionCode: 1512
+    commit: e190231e5927034efd49a91f55705a63d1671d67
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf automake libtool gettext meson ninja-build nasm
+        make pkg-config python3-jsonschema python3-jinja2
+    gradle:
+      - store
+    output: build/outputs/apk/store/release/app-store-arm64-v8a-release-unsigned.apk
+    srclibs:
+      - mbedtls@mbedtls-3.6.2
+      - dav1d@52b9d3d3ec525f5a20849145fa0e879d585f4911
+      - FFmpeg@507a51fbe9732f0f6f12f43ce12431e8faa834b7
+      - libxml2@v2.13.5
+      - freetype2@VER-2-13-3
+      - fribidi@v1.0.16
+      - harfbuzz@10.1.0
+      - libunibreak@libunibreak_6_1
+      - libass@b2fe9d8770678a7b5271387d38c20657ebf3429a
+      - libplacebo@22ee762e8e0890fc54068beb670310f0edce7263
+      - mpv@d82701962f99051a18d65c215b70d41ebadd9a22
+    extlibs:
+      - lua-5.2.4.tar.gz
+    prebuild:
+      - mkdir -p ../mpv-source/buildscripts/sdk
+      - ln -s $$NDK$$ ../mpv-source/buildscripts/sdk/android-ndk-r27c
+      - mkdir -p ../mpv-source/buildscripts/deps
+      - rm -rf ../mpv-source/buildscripts/deps/mbedtls ../mpv-source/buildscripts/deps/dav1d
+        ../mpv-source/buildscripts/deps/ffmpeg ../mpv-source/buildscripts/deps/libxml2
+        ../mpv-source/buildscripts/deps/freetype2 ../mpv-source/buildscripts/deps/fribidi
+        ../mpv-source/buildscripts/deps/harfbuzz ../mpv-source/buildscripts/deps/unibreak
+        ../mpv-source/buildscripts/deps/libass ../mpv-source/buildscripts/deps/libplacebo
+        ../mpv-source/buildscripts/deps/mpv ../mpv-source/buildscripts/deps/lua
+      - cp -r $$mbedtls$$ ../mpv-source/buildscripts/deps/mbedtls
+      - cp -r $$dav1d$$ ../mpv-source/buildscripts/deps/dav1d
+      - cp -r $$FFmpeg$$ ../mpv-source/buildscripts/deps/ffmpeg
+      - cp -r $$libxml2$$ ../mpv-source/buildscripts/deps/libxml2
+      - cp -r $$freetype2$$ ../mpv-source/buildscripts/deps/freetype2
+      - cp -r $$fribidi$$ ../mpv-source/buildscripts/deps/fribidi
+      - cp -r $$harfbuzz$$ ../mpv-source/buildscripts/deps/harfbuzz
+      - cp -r $$libunibreak$$ ../mpv-source/buildscripts/deps/unibreak
+      - cp -r $$libass$$ ../mpv-source/buildscripts/deps/libass
+      - cp -r $$libplacebo$$ ../mpv-source/buildscripts/deps/libplacebo
+      - cp -r $$mpv$$ ../mpv-source/buildscripts/deps/mpv
+      - mkdir -p ../mpv-source/buildscripts/deps/lua
+      - tar -xzf libs/lua-5.2.4.tar.gz --strip-components=1 -C ../mpv-source/buildscripts/deps/lua
+      - cd ../mpv-source/buildscripts/deps/unibreak && ./bootstrap
+      - cd ../ffmpeg && git apply ../../patches/ffmpeg_force_mpegts.patch
+    scanignore:
+      - app/src/main/jniLibs/arm64-v8a/libpython.so
+      - app/src/main/assets/ytdl/python313.zip
+    scandelete:
+      - mpv-source/buildscripts/deps/mbedtls/programs/fuzz/corpuses
+      - mpv-source/buildscripts/deps/mbedtls/framework/data_files
+      - mpv-source/buildscripts/deps/harfbuzz/src/wasm
+      - mpv-source/buildscripts/deps/libplacebo/3rdparty/jinja/tests
+      - mpv-source/buildscripts/deps/libplacebo/3rdparty/glad/example/rust
+      - mpv-source/buildscripts/deps/libplacebo/3rdparty/glad/glad/generator/rust/templates
+    build:
+      - cd ../mpv-source/buildscripts
+      - ./fdroid-build.sh
+    ndk: r27c
+    gradleprops:
+      - arm64Only=true
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.4
+CurrentVersionCode: 1512
