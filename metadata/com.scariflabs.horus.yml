@@ -11,8 +11,7 @@ License: MIT
 AuthorName: Scarif Labs
 SourceCode: https://github.com/scarif-labs/horus
 IssueTracker: https://github.com/scarif-labs/horus/issues
-Changelog: 
-  https://github.com/scarif-labs/horus/tree/HEAD/fastlane/metadata/android/en-US/changelogs
+Changelog: https://github.com/scarif-labs/horus/tree/HEAD/fastlane/metadata/android/en-US/changelogs
 
 AutoName: Horus
 
@@ -39,6 +38,7 @@ Builds:
     prebuild:
       - cd ../..
       - npm ci --no-audit --no-fund
+      - sed -i -e '/jvmToolchain(17)/d' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
       - rm -rf node_modules/hermes-compiler/hermesc node_modules/fb-dotslash/bin
       - cmake -S $$hermes$$ -B $$hermes$$/build -G Ninja -DCMAKE_BUILD_TYPE=Release
       - cmake --build $$hermes$$/build --target hermesc
