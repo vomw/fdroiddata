@@ -28,15 +28,12 @@ Builds:
         curl gettext git gperf libtool ninja-build pkg-config rsync texinfo unzip
         zip
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - curl -fLo /tmp/go1.26.7.linux-amd64.tar.gz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo "ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  /tmp/go1.26.7.linux-amd64.tar.gz"
-        | sha256sum -c -
-      - mkdir -p /opt/go
-      - tar -xzf /tmp/go1.26.7.linux-amd64.tar.gz --strip-components=1 -C /opt/go
+      - apt-get install -y -t trixie-backports golang-go
     gradle:
       - fdroid
     output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     srclibs:
+      - go@go1.26.7
       - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
       - abseil-cpp@4a2c63365eff8823a5221db86ef490e828306f9d
       - protobuf@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
@@ -62,6 +59,12 @@ Builds:
       - third_party/mosh4android/src/fuzz/terminal_corpus
       - third_party/mosh4android/src/fuzz/terminal_parser_corpus
     build:
+      - export GOTOOLCHAIN=local
+      - export GOROOT_BOOTSTRAP=$(go env GOROOT)
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - test "$(GOTOOLCHAIN=local $$go$$/bin/go version)" = "go version go1.26.7 linux/amd64"
       - mkdir -p .fdroid/mosh-deps
       - ln -s $$zlib$$ .fdroid/mosh-deps/zlib
       - rm -rf $$protobuf$$/third_party/abseil-cpp
@@ -70,9 +73,9 @@ Builds:
       - ln -s $$ncurses$$ .fdroid/mosh-deps/ncurses
       - ln -s $$nettle$$ .fdroid/mosh-deps/nettle
       - export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps
-      - export MANGOSSH_GO_ROOT=/opt/go
+      - export MANGOSSH_GO_ROOT=$$go$$
       - mkdir -p .tools/go
-      - ln -s /opt/go .tools/go/1.26.7
+      - ln -s $$go$$ .tools/go/1.26.7
       - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
     buildjni:
       - no
@@ -83,11 +86,13 @@ Builds:
 AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004b9373be
 
 MaintainerNotes: |-
-  Since 0.5.1, Go 1.26.7 uses the checksum-pinned official Linux amd64
-  toolchain. Trixie-backports currently provides Go 1.26.8 instead, which
-  does not match the upstream release compiler. The preparation commands
-  bypass the tagged Go compiler bootstrap and its source-only requirements;
-  tsnet and its vendored dependencies are still compiled from source offline.
+  Go 1.26.7 is built from the standard go srclib using Debian trixie-backports
+  Go as GOROOT_BOOTSTRAP. Only the final Go version is built from source;
+  the preparation commands bypass the release tag's multi-stage bootstrap
+  chain. The source-built toolchain is exposed through .tools/go/1.26.7 for
+  the separate Gradle phase. Directly using Debian Go 1.26.8 changes all four
+  tsnet ABI libraries, so the release's Go 1.26.7 version is retained.
+  tsnet and its vendored dependencies are compiled from source offline.
   The upstream no-GMP Mosh patch disables Nettle public-key and mini-GMP
   support. The 0.5.1 build therefore no longer needs the GMP srclib.
   The fdroid flavor has no self-update client, package-install permission,
