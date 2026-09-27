@@ -17,7 +17,7 @@ Binaries:
 Builds:
   - versionName: 0.9.4
     versionCode: 161
-    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -37,64 +37,23 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
-        | head -1)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - rm -rf /opt/flutter
-      - mv $$flutter$$ /opt/flutter
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - /opt/flutter/bin/flutter config --no-analytics
-      - /opt/flutter/bin/flutter pub get --enforce-lockfile
-      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
-      - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.devparadise.nook
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; tool/ci/android_prebuild.sh
+      - cd ..; mv $repo com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=/opt/flutter/bin:$PATH
-      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c)
-      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
-        -o /tmp/openssl.tar.gz
-      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
-        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
-        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
-        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
-        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
-        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
-        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
-        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
-        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
-        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
-        done )
-      - export NOOK_OPENSSL_DIR=/opt/openssl-android
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run tool/patch_sqlite3_android_log.dart
-      - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-arm
-        --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv $repo com.devparadise.nook
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; export
+        NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-arm
+      - cd ..; mv $repo com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.9.4
     versionCode: 162
-    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -113,64 +72,23 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
-        | head -1)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - rm -rf /opt/flutter
-      - mv $$flutter$$ /opt/flutter
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - /opt/flutter/bin/flutter config --no-analytics
-      - /opt/flutter/bin/flutter pub get --enforce-lockfile
-      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
-      - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.devparadise.nook
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; tool/ci/android_prebuild.sh
+      - cd ..; mv $repo com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=/opt/flutter/bin:$PATH
-      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c)
-      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
-        -o /tmp/openssl.tar.gz
-      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
-        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
-        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
-        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
-        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
-        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
-        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
-        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
-        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
-        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
-        done )
-      - export NOOK_OPENSSL_DIR=/opt/openssl-android
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run tool/patch_sqlite3_android_log.dart
-      - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-arm64
-        --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv $repo com.devparadise.nook
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; export
+        NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-arm64
+      - cd ..; mv $repo com.devparadise.nook
     ndk: 28.2.13676358
 
   - versionName: 0.9.4
     versionCode: 163
-    commit: e58eefb8f35589971b697a7be9dd3fa56693e2d7
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
     sudo:
       - apt-get update
       - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
@@ -189,59 +107,18 @@ Builds:
       - web
       - windows
     prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/ci.yml
-        | head -1)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - rm -rf /opt/flutter
-      - mv $$flutter$$ /opt/flutter
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - /opt/flutter/bin/flutter config --no-analytics
-      - /opt/flutter/bin/flutter pub get --enforce-lockfile
-      - /opt/flutter/bin/dart run build_runner build --delete-conflicting-outputs
-      - sed -i 's/-Wl,-z,max-page-size=16384/-Wl,-z,max-page-size=16384,--build-id=none/'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.devparadise.nook
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; tool/ci/android_prebuild.sh
+      - cd ..; mv $repo com.devparadise.nook
     scandelete:
       - .pub-cache
     build:
-      - export repo=/__w/nook/nook
-      - cd ..
-      - mv com.devparadise.nook $repo
-      - pushd $repo
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - export PATH=/opt/flutter/bin:$PATH
-      - (cd $$sqlcipher$$ && ./configure --enable-tempstore=yes --with-crypto-lib=none
-        && make sqlite3.c)
-      - OPENSSL_VERSION=3.4.1; curl -fSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz
-        -o /tmp/openssl.tar.gz
-      - ( NDK=${ANDROID_HOME:-/opt/android-sdk}/ndk/28.2.13676358; TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64;
-        export ANDROID_NDK_ROOT=$NDK; export PATH=$TOOLCHAIN/bin:$PATH; test -f $NDK/source.properties;
-        test -x $TOOLCHAIN/bin/aarch64-linux-android21-clang; for T in android-arm64
-        android-arm android-x86_64; do rm -rf /opt/openssl-$OPENSSL_VERSION /opt/openssl-android/$T;
-        tar xzf /tmp/openssl.tar.gz -C /opt; (cd /opt/openssl-$OPENSSL_VERSION &&
-        ./Configure $T -D__ANDROID_API__=21 no-shared no-tests no-ui-console && make
-        build_libs -j$(nproc)); mkdir -p /opt/openssl-android/$T/lib /opt/openssl-android/$T/include;
-        cp /opt/openssl-$OPENSSL_VERSION/libcrypto.a /opt/openssl-android/$T/lib/;
-        cp -r /opt/openssl-$OPENSSL_VERSION/include/openssl /opt/openssl-android/$T/include/;
-        test -f /opt/openssl-android/$T/lib/libcrypto.a; test -f /opt/openssl-android/$T/include/openssl/rand.h;
-        done )
-      - export NOOK_OPENSSL_DIR=/opt/openssl-android
-      - dart run tool/patch_fdroid_sqlite.dart $$sqlcipher$$ /opt/openssl-android
-      - dart run tool/patch_appflowy_editor.dart
-      - dart run tool/patch_talker_flutter.dart
-      - dart run tool/patch_mdns_dart.dart
-      - dart run tool/patch_sqlite3_android_log.dart
-      - export SOURCE_DATE_EPOCH=0
-      - flutter build apk --release --split-per-abi --target-platform=android-x64
-        --obfuscate --split-debug-info=build/symbols
-      - popd
-      - mv $repo com.devparadise.nook
+      - export repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo; cd $repo;
+        export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH; export
+        NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-x64
+      - cd ..; mv $repo com.devparadise.nook
     ndk: 28.2.13676358
 
 AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
