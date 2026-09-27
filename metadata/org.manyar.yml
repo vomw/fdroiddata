@@ -1,0 +1,36 @@
+Categories:
+  - Diet
+  - Shopping List
+License: GPL-3.0-only
+AuthorName: Felipe Borja
+AuthorEmail: manyar.app@proton.me
+SourceCode: https://gitlab.com/manyar-app/manyar
+IssueTracker: https://gitlab.com/manyar-app/manyar/-/issues
+
+AutoName: manyar
+
+RepoType: git
+Repo: https://gitlab.com/manyar-app/manyar.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: 09e0e9178b4a65aff5a124b6caa819047d822984
+    output: build/app/outputs/flutter-apk/app-release.apk
+    binary: 
+      https://gitlab.com/-/project/85496408/uploads/d9f488a74e61b1d04f040bdea2d1e35a/app-release.apk
+    srclibs:
+      - flutter@3.24.3
+    build:
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+
+AllowedAPKSigningKeys: b39a74401dcd0091a6ef949b7e4f80a85b9770b47742b10feb662fa53ae9478a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v.*$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
