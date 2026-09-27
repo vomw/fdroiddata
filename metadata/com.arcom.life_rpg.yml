@@ -30,8 +30,12 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" \) -delete
+    scandelete:
+      - .pub-cache/hosted/pub.dev/archive-*/_out
+      - .pub-cache/hosted/pub.dev/riverpod-*/extension/devtools
+      - .pub-cache/hosted/pub.dev/audioplayers-*/example
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
@@ -53,8 +57,12 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" \) -delete
+    scandelete:
+      - .pub-cache/hosted/pub.dev/archive-*/_out
+      - .pub-cache/hosted/pub.dev/riverpod-*/extension/devtools
+      - .pub-cache/hosted/pub.dev/audioplayers-*/example
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
@@ -76,8 +84,12 @@ Builds:
       - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" \) -delete
+    scandelete:
+      - .pub-cache/hosted/pub.dev/archive-*/_out
+      - .pub-cache/hosted/pub.dev/riverpod-*/extension/devtools
+      - .pub-cache/hosted/pub.dev/audioplayers-*/example
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
