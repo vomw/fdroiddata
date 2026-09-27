@@ -1,0 +1,98 @@
+Categories:
+  - Reading
+License: GPL-3.0-or-later
+AuthorName: JLeo0001
+SourceCode: https://github.com/JLeo0001/SCP-Flutter
+IssueTracker: https://github.com/JLeo0001/SCP-Flutter/issues
+Changelog: https://github.com/JLeo0001/SCP-Flutter/releases
+
+AutoName: SCP基金会
+
+RepoType: git
+Repo: https://github.com/JLeo0001/SCP-Flutter.git
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 21
+    commit: v1.0.2
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - assets/scp.db
+      - assets/tags_cache.db
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 1.0.2
+    versionCode: 22
+    commit: v1.0.2
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - assets/scp.db
+      - assets/tags_cache.db
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 1.0.2
+    versionCode: 24
+    commit: v1.0.2
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    scanignore:
+      - assets/scp.db
+      - assets/tags_cache.db
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 4
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.2
+CurrentVersionCode: 24
