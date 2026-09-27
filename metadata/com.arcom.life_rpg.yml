@@ -28,9 +28,11 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-    build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
 
   - versionName: 0.5.0
@@ -48,9 +50,11 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-    build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
   - versionName: 0.5.0
@@ -68,9 +72,11 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-    build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find .pub-cache/ -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
 AutoUpdateMode: Version
