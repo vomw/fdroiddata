@@ -14,22 +14,64 @@ AutoName: ASComplete
 
 RepoType: git
 Repo: https://codeberg.org/Patkek/ASComplete
-Binaries: 
-  https://codeberg.org/patkek/ascomplete/releases/download/v%v/ascomplete-%v-app-universal-release.apk
 
 Builds:
-  - versionName: 0.2.0
-    versionCode: 2
-    commit: d80473f2fa0913ca4e6b76be69bc9d02ddf2179b
+  - versionName: 0.3.0
+    versionCode: 31
+    commit: v0.3.0
     subdir: app
     gradle:
       - yes
-    output: build/outputs/apk/release/app-universal-release-unsigned.apk
+    gradleprops:
+      - buildAbi=armeabi-v7a
+    output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    binary: https://codeberg.org/patkek/ascomplete/releases/download/v%v/ascomplete-%v-app-armeabi-v7a-release.apk
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 0.3.0
+    versionCode: 32
+    commit: v0.3.0
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - buildAbi=arm64-v8a
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    binary: https://codeberg.org/patkek/ascomplete/releases/download/v%v/ascomplete-%v-app-arm64-v8a-release.apk
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 0.3.0
+    versionCode: 33
+    commit: v0.3.0
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - buildAbi=x86
+    output: build/outputs/apk/release/app-x86-release-unsigned.apk
+    binary: https://codeberg.org/patkek/ascomplete/releases/download/v%v/ascomplete-%v-app-x86-release.apk
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+
+  - versionName: 0.3.0
+    versionCode: 34
+    commit: v0.3.0
+    subdir: app
+    gradle:
+      - yes
+    gradleprops:
+      - buildAbi=x86_64
+    output: build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    binary: https://codeberg.org/patkek/ascomplete/releases/download/v%v/ascomplete-%v-app-x86_64-release.apk
     prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
 
 AllowedAPKSigningKeys: df02addabdbf11ccbe31e7f0ba8fccc254231a928df5e0543804569dd5cc72da
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.2.0
-CurrentVersionCode: 2
+VercodeOperation:
+  - '10 * %c + 1'
+  - '10 * %c + 2'
+  - '10 * %c + 3'
+  - '10 * %c + 4'
+CurrentVersion: 0.3.0
+CurrentVersionCode: 34
