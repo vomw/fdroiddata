@@ -13,18 +13,9 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.1.0
-    versionCode: 100
-    commit: 9774ef78e3fa96e063a6f1b819b223a1079d07e1
-    subdir: garden-debian
-    submodules: true
-    gradle:
-      - fdroid
-    ndk: 23.2.8568313
-
-  - versionName: 0.1.1
-    versionCode: 101
-    commit: a67bda8df46dc7475761c090b792d02c1ea862bc
+  - versionName: 0.2.0
+    versionCode: 200
+    commit: a2030f2e07ed3e81e5f3dcc003d3c3289f664235
     subdir: garden-debian
     submodules: true
     gradle:
@@ -65,7 +56,7 @@ MaintainerNotes: |-
   submodules, plus talloc 2.4.3's talloc.c and talloc.h vendored verbatim. The
   script verifies both submodule commits, downloads nothing, and checks 16 KB
   page alignment. submodules: true is therefore required. PRoot is GPL-2.0 and
-  talloc LGPL-3.0; the corresponding source is the pinned submodules, the four
+  talloc LGPL-3.0; the corresponding source is the pinned submodules, the five
   patches in garden-common/patches and the build script, all in the tagged
   commit.
 
@@ -78,6 +69,15 @@ MaintainerNotes: |-
   `npm ci --ignore-scripts && node build.mjs --check` reproduces the committed
   files. The Gradle build does not run Node.
 
+  0.2.0 adds uploads into the terminal's current directory: on the phone
+  through the Storage Access Framework (no storage permission), and in LAN
+  Mode through four authenticated endpoints on the same local server
+  (/api/upload/begin, file, finish, cancel), behind the same PIN pairing,
+  token, Host and Origin checks. The browser side uses only native file
+  inputs and XMLHttpRequest; no JavaScript dependency was added. PRoot patch
+  0005 lets the kernel follow the guest's working directory so the app can
+  read it from /proc. The downloadable Debian environment is unchanged.
+
   Release builds are minified with proguard-android-optimize.txt plus
   garden-common/consumer-rules.pro, which holds two keep rules only: the native
   library registers its methods by the literal class names
@@ -85,5 +85,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^trixie-v[0-9.]+$
-CurrentVersion: 0.1.1
-CurrentVersionCode: 101
+CurrentVersion: 0.2.0
+CurrentVersionCode: 200
