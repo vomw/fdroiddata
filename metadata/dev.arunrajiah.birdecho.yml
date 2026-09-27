@@ -1,0 +1,133 @@
+Categories:
+  - Science & Education
+  - Internet
+License: MIT
+AuthorName: Arun Rajiah
+AuthorWebSite: https://github.com/arunrajiah
+WebSite: https://github.com/arunrajiah/birdecho
+SourceCode: https://github.com/arunrajiah/birdecho
+IssueTracker: https://github.com/arunrajiah/birdecho/issues
+Changelog: https://github.com/arunrajiah/birdecho/blob/HEAD/CHANGELOG.md
+
+AutoName: BirdEcho
+Summary: Companion app for BirdNET-Pi, BirdNET-Go and BirdWeather stations
+Description: |-
+  BirdEcho connects to your backyard bird-detection station (BirdNET-Pi,
+  BirdNET-Go or BirdWeather) and shows you live detections, species histories,
+  audio playback and statistics, all from your phone.
+
+  Features:
+
+  * Real-time detection feed with confidence scores, auto-refreshed every 60 s
+  * Per-sighting audio playback and shareable image cards
+  * Species browser with detection history and per-species recent sightings
+  * 14-day detection bar chart and headline stats (total, today, unique species)
+  * CSV export of detections from the Stats tab
+  * Offline cache: the last 24 hours of detections are readable without a network connection
+  * Favorites and user-defined rare species, with local notifications (once per species per day)
+  * Dark mode and station-timezone timestamps
+  * Multi-station: save any number of stations and switch between them in Settings
+  * Android home-screen widget showing the latest detection and today's count
+  * Station locations with one-tap hand-off to your maps app
+  * BirdNET-Pi and BirdNET-Go direct: connects over your LAN via HTTP, no cloud account required
+  * BirdWeather: connects via the hosted BirdWeather API (free account required)
+
+  BirdEcho is not a bird-identification app. It does not access your microphone
+  or run any detection model. It surfaces what your existing station has already detected.
+
+  The BirdWeather API token is stored in the Android Keystore. BirdNET-Pi and
+  BirdNET-Go connections require no token.
+
+  Compared with the GitHub release, this build has no in-app updater (F-Droid
+  provides updates), no Sentry SDK and no Google Maps view; the Map tab shows a
+  station list that opens locations in your maps app instead.
+
+RepoType: git
+Repo: https://github.com/arunrajiah/birdecho.git
+
+Builds:
+  - versionName: 0.9.2
+    versionCode: 32
+    commit: v0.9.2
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y g++ make python3
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  node.tar.xz" | sha256sum -c -
+      - tar xJf node.tar.xz
+      - cp -a node-v24.21.0-linux-x64/. /usr/local/
+      - npm install -g pnpm@10
+    init:
+      - cd ../.. && pnpm install --frozen-lockfile
+      - cd ../.. && node scripts/fdroid-prepare.mjs
+      - cd ../.. && EXPO_PUBLIC_FDROID=1 CI=1 npx expo prebuild --platform android --clean --no-install
+    prebuild:
+      - sed -i '/signingConfig signingConfigs/d' build.gradle
+      - sed -i '/projectId/d' ../../app.config.ts
+    gradle:
+      - yes
+    rm:
+      - node_modules/.pnpm/react-native-maps@*/node_modules/react-native-maps/android
+      - node_modules/.pnpm/@sentry+react-native@*/node_modules/@sentry/react-native/android
+      - node_modules/.pnpm/@sentry+cli-*/node_modules/@sentry/cli-*/bin
+      - node_modules/.pnpm/expo-*/node_modules/expo-*/local-maven-repo
+      - node_modules/.pnpm/expo@*/node_modules/expo/template.tgz
+      - node_modules/.pnpm/react-native@*/node_modules/react-native/React/I18n
+      - node_modules/.pnpm/react-native@*/node_modules/react-native/sdks/hermesc/osx-bin
+      - node_modules/.pnpm/react-native@*/node_modules/react-native/sdks/hermesc/win64-bin
+      - node_modules/.pnpm/react-native-svg@*/node_modules/react-native-svg/android/.gradle
+    scanignore:
+      - node_modules/.pnpm/react-native@*/node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/.pnpm/react-native@*/node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/.pnpm/@react-native-async-storage+async-storage@*/node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/.pnpm/expo-modules-autolinking@*/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/.pnpm/expo-modules-core@*/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/.pnpm/react-native-safe-area-context@*/node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/.pnpm/react-native-screens@*/node_modules/react-native-screens/android/build.gradle
+      - node_modules/.pnpm/react-native-svg@*/node_modules/react-native-svg/android/build.gradle
+      - node_modules/.pnpm/react-native-view-shot@*/node_modules/react-native-view-shot/android/build.gradle
+
+MaintainerNotes: |-
+  Expo SDK 54 / React Native 0.81 app. android/ is not committed; init: generates
+  it with `npx expo prebuild`, so subdir points at android/app.
+
+  Node 24 LTS and pnpm 10 are required. Node is downloaded in sudo: because
+  Debian's packaged Node is too old. Bump the tarball URL and SHA-256 together.
+
+  scripts/fdroid-prepare.mjs (in the app repo) rewrites package.json's Expo
+  autolinking config so that:
+  * react-native-maps (depends on Google Play Services) and @sentry/react-native
+    (ships prebuilt stub jars) are not linked. The JS side only loads the map
+    module when a Google Maps key was baked in at prebuild (never the case here)
+    and Sentry is a no-op without a DSN, so neither native module is needed.
+  * every expo-* module is compiled from source instead of the prebuilt AARs that
+    Expo SDK 54 ships in node_modules/expo-*/local-maven-repo (deleted in rm:).
+
+  expo-application (transitive via expo-notifications) is patched by the repo's
+  pnpm patch (patches/expo-application@7.0.8.patch) to drop the proprietary
+  com.android.installreferrer dependency. pnpm install applies it.
+
+  EXPO_PUBLIC_FDROID=1 makes app.config.ts drop the in-app GitHub-Releases updater
+  and the REQUEST_INSTALL_PACKAGES permission.
+
+  expo-notifications is patched the same way (patches/expo-notifications@0.32.16.patch)
+  to remove Firebase Cloud Messaging. BirdEcho only uses local notifications.
+
+  pnpm stores packages under node_modules/.pnpm/<name>@<version>_<hash>/ and
+  symlinks them into node_modules/, so rm: and scanignore: use that layout.
+
+  scanignore: hermesc/linux64-bin/hermesc is the Hermes bytecode compiler that
+  ships with the react-native npm package. It only runs on the build host to
+  compile the JS bundle; nothing from it ends up in the APK. The remaining
+  entries are library build.gradle files that reference maven repo paths through
+  Gradle variables (${...}, $rootDir/..) which the scanner cannot resolve; those
+  directories do not exist in RN 0.81 and are unused.
+
+  android:usesCleartextTraffic is true so the app can reach BirdNET-Pi/Go
+  stations over plain HTTP on the user's LAN.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.9.2
+CurrentVersionCode: 32
