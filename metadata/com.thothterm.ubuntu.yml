@@ -13,27 +13,9 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.1.7
-    versionCode: 107
-    commit: af3b72f622229b41ef735edf43a84ffdd4773f70
-    subdir: term-ubuntu
-    submodules: true
-    gradle:
-      - fdroid
-    ndk: 23.2.8568313
-
-  - versionName: 0.2.0
-    versionCode: 200
-    commit: 2ae7732572867a82af40acd58da5cb0038f95282
-    subdir: term-ubuntu
-    submodules: true
-    gradle:
-      - fdroid
-    ndk: 23.2.8568313
-
-  - versionName: 0.2.1
-    versionCode: 201
-    commit: 7eb41fdf23cfed8ac5c24011a9e1406126eee6ec
+  - versionName: 0.3.0
+    versionCode: 300
+    commit: 19cf7881a4c4dc511a128cf4d3d29e3c47530b6a
     subdir: term-ubuntu
     submodules: true
     gradle:
@@ -60,7 +42,7 @@ MaintainerNotes: |-
   alignment of everything it produces. submodules: true is therefore required.
 
   PRoot is GPL-2.0 and talloc is LGPL-3.0; the corresponding source is the
-  pinned submodules, the four patches in term-ubuntu/patches and the build
+  pinned submodules, the five patches in term-ubuntu/patches and the build
   script, all carried by the tagged commit.
 
   0.2.0 adds LAN Mode: an HTTP/WebSocket server, off by default, that a user
@@ -76,6 +58,15 @@ MaintainerNotes: |-
   for byte; the Gradle build does not run Node. The web font is Cascadia
   Mono (SIL OFL 1.1). Provenance is in term-ubuntu/lan-web/README.md.
 
+  0.3.0 adds uploads into the terminal's current directory: on the phone
+  through the Storage Access Framework (no storage permission), and in LAN
+  Mode through four authenticated endpoints on the same local server
+  (/api/upload/begin, file, finish, cancel), behind the same PIN pairing,
+  token, Host and Origin checks. The browser side uses only native file
+  inputs and XMLHttpRequest; no JavaScript dependency was added. PRoot patch
+  0005 lets the kernel follow the guest's working directory so the app can
+  read it from /proc.
+
   Release builds are minified. minifyEnabled is on with
   proguard-android-optimize.txt plus term-ubuntu/proguard-rules.pro, which
   contains two keep rules and nothing else: the native library registers its
@@ -87,5 +78,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
-CurrentVersion: 0.2.1
-CurrentVersionCode: 201
+CurrentVersion: 0.3.0
+CurrentVersionCode: 300
