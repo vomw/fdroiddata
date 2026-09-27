@@ -20,13 +20,12 @@ AutoName: OneBox
 
 RepoType: git
 Repo: https://github.com/wangzhishou/OneBox.git
-Binaries: 
-  https://github.com/wangzhishou/OneBox/releases/download/%v/OneBox-%v-foss-universal-release.apk
+Binaries: https://github.com/wangzhishou/OneBox/releases/download/%v/OneBox-%v-foss-universal-release.apk
 
 Builds:
-  - versionName: 1.4.0
-    versionCode: 140
-    commit: c13baf07dea576e3bea7a52c3ee698964009033f
+  - versionName: 1.4.1
+    versionCode: 141
+    commit: e747bcc85107a44e2e183814c1c565b0fd58537a
     subdir: app
     gradle:
       - foss
@@ -35,14 +34,15 @@ Builds:
       - sed -i -e '/mirrors.cloud.tencent.com/d' -e '/maven.aliyun.com/d' -e '/foojay/d'
         -e '/artifact.bytedance.com/,/^        }$/d' ../settings.gradle.kts ../build.gradle.kts
         ../build-logic/settings.gradle.kts
-      - sed -i -e 's/gitVersion = "000"/gitVersion = "c13baf0"/' ../gradle/libs.versions.toml
-      - sed -i -e 's/-Xmx16g/-Xmx8g/' -e 's/-Xmx4g/-Xmx2g/' ../gradle.properties
+      - sed -i -e 's/gitVersion = "000"/gitVersion = "e747bcc"/' ../gradle/libs.versions.toml
+      - sed -i -e 's/-Xmx16g/-Xmx10g/' -e 's/-Xmx4g/-Xmx2g/' ../gradle.properties
       - echo 'org.gradle.workers.max=4' >> ../gradle.properties
       - echo 'subprojects { tasks.configureEach { if (name.startsWith("lintVital"))
         enabled = false } }' >> ../build.gradle.kts
     scandelete:
       - core/weather/libs
       - web
+      - build-logic/convention/build
     ndk: 28.1.13356709
 
 AllowedAPKSigningKeys: d9fae06e908409d79e18b661e50fbf675727dd1c3c384a7867ed81aae824c5ff
@@ -50,5 +50,5 @@ AllowedAPKSigningKeys: d9fae06e908409d79e18b661e50fbf675727dd1c3c384a7867ed81aae
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9.]*$
 UpdateCheckData: gradle/libs.versions.toml|versionCode = "(\d+)"|.|versionName = "([\d.]+)"
-CurrentVersion: 1.4.0
-CurrentVersionCode: 140
+CurrentVersion: 1.4.1
+CurrentVersionCode: 141
