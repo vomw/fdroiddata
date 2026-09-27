@@ -1,0 +1,82 @@
+
+Categories:
+  - Internet
+  - Connectivity
+License: AGPL-3.0-only
+AuthorName: homodian
+WebSite: https://git.homodian.net
+SourceCode: https://git.homodian.net/Sapiens_homo/yggproxy
+IssueTracker: https://git.homodian.net/Sapiens_homo/yggproxy/issues
+
+AutoName: Ygg Proxy
+Summary: Yggdrasil mesh SOCKS5/HTTP proxy without VPN
+Description: |-
+  Runs an embedded Yggdrasil node and serves SOCKS5 and HTTP (CONNECT)
+  proxies on the device (or on the LAN) instead of a VPN tunnel.
+  No TUN interface / VPN slot / root needed.
+
+  • SOCKS5 + HTTP CONNECT proxy on 127.0.0.1 or all interfaces
+    (gateway mode for other devices, incl. old iOS 7/9/12 devices)
+  • &lt;publickey&gt;.pk.ygg name resolution, optional in-mesh DNS server
+  • Optional proxy authentication (recommended on public networks)
+  • Port forwarding both ways (yggstack-style local/remote mappings)
+  • LAN multicast peer discovery + manual peer lists
+  • Foreground service with a persistent node identity
+
+  Yggdrasil core v0.5.14 (LGPLv3 with linking exception);
+  netstack/SOCKS built on yggstack primitives (same license) with gVisor.
+  Licensed AGPL-3.0-only.
+
+RepoType: git
+Repo: https://git.homodian.net/Sapiens_homo/yggproxy.git
+
+Builds:
+  - versionName: 0.5.14
+    versionCode: 514
+    commit: v0.5.14
+    subdir: android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    # Builds the native gomobile AAR (yggproxy/mobileproxy) BEFORE the Java
+    # build, following the same custom-build pattern as other native-code
+    # apps on F-Droid (wget toolchain + sha256 check + pinned go deps).
+    build:
+      - export GOPATH="$PWD/.go-work"
+      - export GOMODCACHE="$GOPATH/pkg/mod"
+      - export GOPROXY="https://proxy.golang.org,direct"
+      - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
+      - wget -O go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz' | shasum -c -
+      - tar xf go.tgz
+      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export ANDROID_NDK_HOME="$ANDROID_NDK"
+      - cd ../yggproxy
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260908204917-8b95e45f8d3e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260908204917-8b95e45f8d3e
+      - gomobile bind -v -target android -androidapi 21 -tags mobile -o ../android/app/libs/yggproxy.aar
+        -ldflags "-s -w -checklinkname=0" ./mobileproxy
+    rm:
+      - .go-work
+    ndk: r26b
+
+MaintainerNotes: |
+  Gradle release signing is intentionally conditional: without
+  android/keystore.properties and without a debug keystore, the release
+  build naturally stays unsigned (see android/app/build.gradle.kts), so the
+  expected output path above holds on the buildserver.
+
+  Toolchain pins (mirrors flake.nix):
+    - Go 1.26.7 (wget tarball, sha256 verified)
+    - NDK r26b via the metadata ndk: field -> $ANDROID_NDK
+    - gomobile/gobind @ x/mobile pseudo-version pinned in yggproxy/go.mod
+  Modest memory is needed for gomobile across 4 ABIs (~2-4 GB RAM).
+
+  Local hermetic tests for the proxy core exist but are not part of the
+  F-Droid build: yggproxy/mobileproxy/proxy_test.go (A<->B mesh loop, no
+  network) plus android instrumented tests.
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+CurrentVersion: 0.5.14
+CurrentVersionCode: 514
