@@ -1,0 +1,66 @@
+Categories:
+  - Multimedia
+License: Apache-2.0
+AuthorName: MagStudios
+AuthorEmail: soportemagstudiosoficial@gmail.com
+WebSite: https://magstudiosweb.vercel.app/
+SourceCode: https://github.com/MagStudios-repo/MagPlayerPlus
+IssueTracker: https://github.com/MagStudios-repo/MagPlayerPlus/issues
+Changelog: https://github.com/MagStudios-repo/MagPlayerPlus/releases
+
+AutoName: MagPlayer+
+
+RepoType: git
+Repo: https://github.com/MagStudios-repo/MagPlayerPlus.git
+
+Builds:
+  - versionName: 0.1.1
+    versionCode: 21
+    commit: f1df4e1c0fe757441f36f91ed7997688f2ff430d
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/MagStudios-repo/MagPlayerPlus/releases/download/v0.1.1/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi || (cd android && ./gradlew app:assembleRelease --stacktrace --console=plain)
+
+  - versionName: 0.1.1
+    versionCode: 22
+    commit: f1df4e1c0fe757441f36f91ed7997688f2ff430d
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/MagStudios-repo/MagPlayerPlus/releases/download/v0.1.1/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi || (cd android && ./gradlew app:assembleRelease --stacktrace --console=plain)
+
+  - versionName: 0.1.1
+    versionCode: 23
+    commit: f1df4e1c0fe757441f36f91ed7997688f2ff430d
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/MagStudios-repo/MagPlayerPlus/releases/download/v0.1.1/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi || (cd android && ./gradlew app:assembleRelease --stacktrace --console=plain)
+
+AllowedAPKSigningKeys: 6f0afd35c066974ec1504d9d619bb2c3005c45090bdb1b8fab7f2b1e3ea0696b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.1
+CurrentVersionCode: 23
