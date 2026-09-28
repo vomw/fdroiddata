@@ -24,9 +24,9 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - npm -g install yarn
     init: yarn install
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
-    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
       - FIREBASE_STUB_DIR=$$firebase-stub$$ ./scripts/fdroid-prepare.sh
@@ -35,8 +35,7 @@ Builds:
       - echo "" >> android/gradle.properties
       - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
         >> android/gradle.properties
-      - echo "org.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8"
-        >> android/gradle.properties
+      - echo "org.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8" >> android/gradle.properties
       - echo "org.gradle.workers.max=2" >> android/gradle.properties
       - echo "org.gradle.parallel=false" >> android/gradle.properties
       - echo "reactNativeArchitectures=arm64-v8a,armeabi-v7a" >> android/gradle.properties
