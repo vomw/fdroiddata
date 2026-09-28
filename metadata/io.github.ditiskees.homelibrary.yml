@@ -9,7 +9,7 @@ Changelog: https://github.com/DitisKees/homelibrary-app/tags
 
 RepoType: git
 Repo: https://github.com/DitisKees/homelibrary-app.git
-Binaries:
+Binaries: 
   https://github.com/DitisKees/homelibrary-app/releases/download/v%v/HomeLibrary-%v.apk
 
 Builds:
@@ -35,17 +35,15 @@ Builds:
       - echo 'kotlin.compiler.execution.strategy=in-process' >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
     build:
       - cd android/app
       - gradle assembleRelease
     ndk: r27b
-    postbuild:
-      - python3 scripts/normalize-fdroid-apk-build-ids.py $$OUT$$
+    postbuild: python3 scripts/normalize-fdroid-apk-build-ids.py $OUT$
 
 AllowedAPKSigningKeys: 99115557adc7601e8d71adbf8884b0d359ab3f720cbec10c17828c36b7bdd813
 
