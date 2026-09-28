@@ -1,0 +1,114 @@
+Categories:
+  - Science & Education
+License: GPL-3.0-only
+AuthorName: Maicarons
+SourceCode: https://github.com/Maicarons/ledgerlearn
+IssueTracker: https://github.com/Maicarons/ledgerlearn/issues
+Changelog: https://github.com/Maicarons/ledgerlearn/releases
+
+RepoType: git
+Repo: https://github.com/Maicarons/ledgerlearn
+
+Builds:
+  - versionName: 0.8.2
+    versionCode: 120
+    commit: aa649a6d02774589d402cd8c5492db35ed808c39
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(grep -m1 flutter-version .github/workflows/release.yml | sed -E "s/.*flutter-version:[[:space:]]+'?([^'\"[:space:]]+)'?.*/\1/")
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ fetch --tags --force origin
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    ndk: r28c
+  - versionName: 0.8.2
+    versionCode: 121
+    commit: aa649a6d02774589d402cd8c5492db35ed808c39
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(grep -m1 flutter-version .github/workflows/release.yml | sed -E "s/.*flutter-version:[[:space:]]+'?([^'\"[:space:]]+)'?.*/\1/")
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ fetch --tags --force origin
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    ndk: r28c
+  - versionName: 0.8.2
+    versionCode: 122
+    commit: aa649a6d02774589d402cd8c5492db35ed808c39
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives -a
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(grep -m1 flutter-version .github/workflows/release.yml | sed -E "s/.*flutter-version:[[:space:]]+'?([^'\"[:space:]]+)'?.*/\1/")
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ fetch --tags --force origin
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - .flutter/bin/cache
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    ndk: r28c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.8.2
+CurrentVersionCode: 120
