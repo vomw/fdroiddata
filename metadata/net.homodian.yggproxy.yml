@@ -12,9 +12,90 @@ RepoType: git
 Repo: https://git.homodian.net/Sapiens_homo/yggproxy.git
 
 Builds:
-  - versionName: 0.5.14
-    versionCode: 514
-    commit: 4f84df5a5d65c81d304081988be1c27f4bb13163
+  - versionName: 0.5.14.1
+    versionCode: 51410
+    commit: 676a0ab2bd92b76f1e6bcead46bffbc1e9c5cd77
+    subdir: android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - export GOPATH="$PWD/.go-work"
+      - export GOMODCACHE="$GOPATH/pkg/mod"
+      - export GOPROXY="https://proxy.golang.org,direct"
+      - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
+      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
+        | sha256sum -c -
+      - tar xf go.tgz
+      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export ANDROID_NDK_HOME="$ANDROID_NDK"
+      - sdkmanager "platforms;android-21"
+      - mkdir -p ../android/app/libs
+      - cd ../yggproxy
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260908204917-8b95e45f8d3e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260908204917-8b95e45f8d3e
+      - gomobile bind -v -target android -androidapi 21 -tags mobile -o ../android/app/libs/yggproxy.aar
+        -ldflags "-s -w -checklinkname=0" ./mobileproxy
+    ndk: r26b
+
+  - versionName: 0.5.14.1
+    versionCode: 51411
+    commit: 676a0ab2bd92b76f1e6bcead46bffbc1e9c5cd77
+    subdir: android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - export GOPATH="$PWD/.go-work"
+      - export GOMODCACHE="$GOPATH/pkg/mod"
+      - export GOPROXY="https://proxy.golang.org,direct"
+      - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
+      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
+        | sha256sum -c -
+      - tar xf go.tgz
+      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export ANDROID_NDK_HOME="$ANDROID_NDK"
+      - sdkmanager "platforms;android-21"
+      - mkdir -p ../android/app/libs
+      - cd ../yggproxy
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260908204917-8b95e45f8d3e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260908204917-8b95e45f8d3e
+      - gomobile bind -v -target android -androidapi 21 -tags mobile -o ../android/app/libs/yggproxy.aar
+        -ldflags "-s -w -checklinkname=0" ./mobileproxy
+    ndk: r26b
+
+  - versionName: 0.5.14.1
+    versionCode: 51412
+    commit: 676a0ab2bd92b76f1e6bcead46bffbc1e9c5cd77
+    subdir: android
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - export GOPATH="$PWD/.go-work"
+      - export GOMODCACHE="$GOPATH/pkg/mod"
+      - export GOPROXY="https://proxy.golang.org,direct"
+      - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
+      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
+        | sha256sum -c -
+      - tar xf go.tgz
+      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export ANDROID_NDK_HOME="$ANDROID_NDK"
+      - sdkmanager "platforms;android-21"
+      - mkdir -p ../android/app/libs
+      - cd ../yggproxy
+      - go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260908204917-8b95e45f8d3e
+      - go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260908204917-8b95e45f8d3e
+      - gomobile bind -v -target android -androidapi 21 -tags mobile -o ../android/app/libs/yggproxy.aar
+        -ldflags "-s -w -checklinkname=0" ./mobileproxy
+    ndk: r26b
+
+  - versionName: 0.5.14.1
+    versionCode: 51413
+    commit: 676a0ab2bd92b76f1e6bcead46bffbc1e9c5cd77
     subdir: android
     gradle:
       - yes
@@ -63,5 +144,5 @@ MaintainerNotes: |
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.5.14
-CurrentVersionCode: 514
+CurrentVersion: 0.5.14.1
+CurrentVersionCode: 51413
