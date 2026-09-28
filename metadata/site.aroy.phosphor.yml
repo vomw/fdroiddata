@@ -1,0 +1,40 @@
+Categories:
+  - Graphics
+  - Multimedia
+License: MIT
+AuthorName: Anish Roy
+AuthorEmail: hello@anishroy.dev
+WebSite: https://phosphor.aroy.site
+SourceCode: https://github.com/pshycodr/phosphor-cam
+IssueTracker: https://github.com/pshycodr/phosphor-cam/issues
+
+AutoName: Phosphor Cam
+
+RepoType: git
+Repo: https://github.com/pshycodr/phosphor-cam.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl unzip
+      - curl -fsSL https://bun.sh | bash
+      - ln -s /root/.bun/bin/bun /usr/local/bin/bun
+    init:
+      - cd ../..
+      - bun install --frozen-lockfile --no-scripts
+      - bun run build
+      - bunx cap sync android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/
+
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
