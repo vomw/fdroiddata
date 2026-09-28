@@ -1,0 +1,137 @@
+Categories:
+  - Note
+License: GPL-3.0-or-later
+AuthorName: Prit Vasani
+SourceCode: https://github.com/prit-007/nook
+IssueTracker: https://github.com/prit-007/nook/issues
+Changelog: https://github.com/prit-007/nook/blob/main/CHANGELOG.md
+
+Name: Nook
+AutoName: nook
+
+RepoType: git
+Repo: https://github.com/prit-007/nook.git
+Binaries: 
+  https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
+
+Builds:
+  - versionName: 0.9.4
+    versionCode: 161
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
+        ninja-build tcl clang make git
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/prit-007/nook/releases/download/v%v/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@3.44.8
+      - sqlcipher@v4.5.7
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        tool/ci/android_prebuild.sh
+      - mv $repo "$orig"
+    scandelete:
+      - .pub-cache
+    build:
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-arm
+      - mv $repo "$orig"
+    ndk: 28.2.13676358
+
+  - versionName: 0.9.4
+    versionCode: 162
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
+        ninja-build tcl clang make git
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://github.com/prit-007/nook/releases/download/v%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.44.8
+      - sqlcipher@v4.5.7
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        tool/ci/android_prebuild.sh
+      - mv $repo "$orig"
+    scandelete:
+      - .pub-cache
+    build:
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-arm64
+      - mv $repo "$orig"
+    ndk: 28.2.13676358
+
+  - versionName: 0.9.4
+    versionCode: 163
+    commit: 580c2ff3a555443c0009b9938df210b75f438ef2
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends cmake libglu1-mesa libsecret-1-dev
+        ninja-build tcl clang make git
+      - mkdir -p /__w/nook /opt
+      - chown -R vagrant /__w /opt
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://github.com/prit-007/nook/releases/download/v%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.44.8
+      - sqlcipher@v4.5.7
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - tool/ci/fdroid_flutter_setup.sh $$flutter$$
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        tool/ci/android_prebuild.sh
+      - mv $repo "$orig"
+    scandelete:
+      - .pub-cache
+    build:
+      - export orig=$(pwd) repo=/__w/nook/nook; cd ..; mv com.devparadise.nook $repo;
+        cd $repo; export PUB_CACHE=$(pwd)/.pub-cache; export PATH=/opt/flutter/bin:$PATH;
+        export NOOK_OPENSSL_DIR=/opt/openssl-android
+      - tool/ci/android_build.sh $$sqlcipher$$ android-x64
+      - mv $repo "$orig"
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: ac5db2de5393b71f9a9995a3351f470cbca0d856503e8e0ed25bbb118b602624
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10*%c+1
+  - 10*%c+2
+  - 10*%c+3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.9.4
+CurrentVersionCode: 163
