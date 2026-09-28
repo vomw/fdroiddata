@@ -32,6 +32,7 @@ Builds:
       - CI=1 NODE_ENV=production npm run postinstall
       - node -e 'const fs=require("fs");const 
         p=require("./package.json");p.expo.autolinking.android.buildFromSource=[".*"];fs.writeFileSync("package.json",JSON.stringify(p,null,2)+"\n")'
+      - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
       - CI=1 NODE_ENV=production npm run android:prebuild -- --template ./node_modules/expo/template.tgz
       - sed -i 's/-XX:MaxMetaspaceSize=512m/-XX:MaxMetaspaceSize=1g/' android/gradle.properties
       - sed -i '/signingConfig signingConfigs.debug/d' android/app/build.gradle
@@ -39,6 +40,7 @@ Builds:
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/@react-native-masked-view/masked-view/android/build.gradle
       - node_modules/react-native-get-random-values/android/build.gradle
