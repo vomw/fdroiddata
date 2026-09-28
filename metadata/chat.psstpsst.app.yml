@@ -19,10 +19,14 @@ Builds:
     versionCode: 7
     commit: 474d471a3106c593e7cfbd26465415864a0c6dba
     sudo:
-      - echo 'deb https://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/bookworm.list
+      - echo 'deb https://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/psstpsst-bookworm.list
+      - echo 'deb https://security.debian.org/debian-security bookworm-security main'
+        >> /etc/apt/sources.list.d/psstpsst-bookworm.list
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless ca-certificates
+      - test "$(dpkg-query -W -f='${Version}' openjdk-17-jdk-headless)" = '17.0.20.1+1-1~deb12u1'
       - echo 'deb https://deb.debian.org/debian forky main' > /etc/apt/sources.list.d/psstpsst-forky.list
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
       - apt-get install -y -t forky nodejs npm
     init:
       - sdkmanager 'platforms;android-36' 'build-tools;35.0.0' 'build-tools;36.0.0'
@@ -52,6 +56,8 @@ Builds:
     scandelete:
       - node_modules
     build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export PATH=$JAVA_HOME/bin:$PATH
       - cd android
       - CI=1 NODE_ENV=production EXPO_PUBLIC_APP_ENV=production gradle :app:assembleRelease
         --no-daemon --max-workers=2 -PreactNativeDevServerIp=127.0.0.1
