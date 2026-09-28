@@ -1,0 +1,64 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Uses the PLLABS backend, which is not included in the released client source,
+      and may load organizer-selected SoundCloud content.
+    es: Usa el backend de PLLABS, no incluido en las fuentes publicadas del cliente,
+      y puede cargar contenido de SoundCloud elegido por el organizador.
+  TetheredNet:
+    en-US: The production client is tied to the PLLABS server; selecting another server
+      requires changing the source.
+    es: El cliente de producción depende del servidor de PLLABS; elegir otro servidor
+      requiere cambiar el código.
+Categories:
+  - Internet
+License: GPL-3.0-only
+AuthorName: PLLABS
+AuthorWebSite: https://pllabs.com.ar/
+WebSite: https://pllabs.com.ar/pulso-libre/
+SourceCode: https://github.com/mrgabi88-lang/pulso-libre
+IssueTracker: https://github.com/mrgabi88-lang/pulso-libre/issues
+
+RepoType: git
+Repo: https://github.com/mrgabi88-lang/pulso-libre.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 11
+    commit: c7d977f90fb0ef53f85018fe5a359b7b6c79e2f8
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.38.4
+    prebuild:
+      - sdkmanager 'platform-tools' 'build-tools;35.0.0' 'platforms;android-37.0'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export ORG_GRADLE_PROJECT_fdroidUnsigned=true
+      - $$flutter$$/bin/flutter build apk --release --target lib/main.dart
+    ndk: 28.2.13676358
+
+MaintainerNotes: |-
+  Source root contains pubspec.yaml. Flutter 3.38.4 / Dart 3.10.3, Java 17,
+  compile SDK 37, target SDK 36, min SDK 24, NDK 28.2.13676358 are required.
+  Preinstall platform-tools, Build Tools 35.0.0 and platform 37.0 before
+  starting Gradle. AGP 8.11.1 needs Build Tools ready for its direct SDK
+  loader; automatic installation can fall back to a target lookup that
+  fails for android-37. This does not alter the platform API or binaries.
+  The unsigned Gradle opt-in keeps the production ID and API, skips private
+  signing configuration, and must not use PULSO_LOCAL_TEST. The export contains
+  only selected brand assets and is not byte-identical to the signed web APK.
+  There is intentionally no upstream binary or signing-key verification field.
+  Reproducible builds are not enabled: the current signed web APK includes a
+  different resource tree. A build signed by F-Droid cannot update that APK.
+  Auto updates remain manual until the first F-Droid recipe/toolchain is proven.
+  Flutter uses the official fixed-version srclib; an upstream submodule and ABI
+  splits are deferred for review without changing the existing versionCode 11.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.0
+CurrentVersionCode: 11
