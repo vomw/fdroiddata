@@ -43,6 +43,12 @@ Builds:
         { *** toLeakAwareBuffer(...); }' '-keepclassmembers class io.netty.buffer.AdvancedLeakAwareByteBuf
         { *** touch(...); *** recordLeakNonRefCountingOperation(...); }' '-keepclassmembers
         class io.netty.util.ReferenceCountUtil { *** touch(...); }' >> proguard-rules.pro
+      - printf '%s\n' '-keep @interface io.netty.channel.ChannelHandler$Sharable'
+        '-keep,allowshrinking,allowobfuscation,allowoptimization @io.netty.channel.ChannelHandler$Sharable
+        class *' >> proguard-rules.pro
+      - printf '%s\n' '-keepattributes Signature' '-keep,allowshrinking,allowobfuscation
+        class io.netty.handler.codec.MessageToByteEncoder' '-keep,allowshrinking,allowobfuscation
+        class * extends io.netty.handler.codec.MessageToByteEncoder' >> proguard-rules.pro
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+(?:\.[0-9]+)?$
