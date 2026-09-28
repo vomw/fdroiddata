@@ -36,6 +36,7 @@ Builds:
     output: build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - MozFennec@FIREFOX-ANDROID_153_0_4_RELEASE
+      - gmscore@v0.3.16.252432
     prebuild:
       - sed -i 's|maven { url = uri("https://maven.mozilla.org/maven2/") }|mavenLocal()|'
         ../settings.gradle.kts
@@ -55,17 +56,23 @@ Builds:
       - if [ ! -d $$SDK$$/build-tools/37.0.0 ]; then latest_bt=$(ls -d $$SDK$$/build-tools/*
         2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_bt" ]; then ln -sf "$latest_bt"
         $$SDK$$/build-tools/37.0.0; fi; fi
+      - pushd $$gmscore$$
+      - gradle -x javaDocReleaseGeneration :play-services-base:publishToMavenLocal
+        :play-services-basement:publishToMavenLocal :play-services-fido:publishToMavenLocal
+        :play-services-tasks:publishToMavenLocal
+      - popd
       - pushd $$MozFennec$$
-      - sed -i '/play.services.fido/d' mobile/android/geckoview/build.gradle
+      - sed -i 's|libs.play.services.fido|"org.microg.gms:play-services-fido:0.3.16.252432"|'
+        mobile/android/geckoview/build.gradle
+      - echo "repositories { mavenLocal() }" >> mobile/android/geckoview/build.gradle
       - rustup default stable || true
       - rustup target add aarch64-linux-android || true
       - cargo install --version 0.29.4 cbindgen
       - export PATH="$HOME/.cargo/bin:$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
       - export CBINDGEN="$HOME/.cargo/bin/cbindgen"
       - export ANDROID_BUNDLETOOL_PATH="$HOME/.mozbuild/bundletool.jar"
-      - echo "INPUT(-lunwind)" > 
-        $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a
-        || true
+      - LIBGCC=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a;
+        echo "INPUT(-lunwind)" > "$LIBGCC" || true
       - echo "ac_add_options --enable-project=mobile/android" > .mozconfig
       - echo "ac_add_options --target=aarch64-linux-android" >> .mozconfig
       - echo "ac_add_options --host=x86_64-unknown-linux-gnu" >> .mozconfig
