@@ -1,0 +1,40 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: SuperDaveLab
+WebSite: https://ebb.superdavelab.com/
+SourceCode: https://github.com/SuperDaveOrg/Ebb
+IssueTracker: https://github.com/SuperDaveOrg/Ebb/issues
+Changelog: https://github.com/SuperDaveOrg/Ebb/blob/HEAD/CHANGELOG.md
+
+AutoName: Ebb
+
+RepoType: git
+Repo: https://github.com/SuperDaveOrg/Ebb.git
+Binaries: https://github.com/SuperDaveOrg/Ebb/releases/download/v%v/ebb-%v.apk
+
+Builds:
+  - versionName: 0.4.0
+    versionCode: 400
+    commit: v0.4.0
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.47.5
+    build:
+      - export SRC="$PWD" PUB_CACHE=/tmp/ebb-build/.pub-cache
+      - rm -rf /tmp/ebb-build
+      - cp -a "$SRC" /tmp/ebb-build
+      - cd /tmp/ebb-build
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/flutter build apk --release
+      - mkdir -p "$SRC/build/app/outputs/flutter-apk"
+      - cp build/app/outputs/flutter-apk/app-release.apk "$SRC/build/app/outputs/flutter-apk/"
+
+AllowedAPKSigningKeys: e3ab0f9706f4607d2c3372dd5a42a53a647e60fe1078e3e399d3ef60c80d431c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.4.0
+CurrentVersionCode: 400
