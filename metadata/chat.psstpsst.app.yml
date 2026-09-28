@@ -33,6 +33,7 @@ Builds:
       - node -e 'const fs=require("fs");const 
         p=require("./package.json");p.expo.autolinking.android.buildFromSource=[".*"];fs.writeFileSync("package.json",JSON.stringify(p,null,2)+"\n")'
       - CI=1 NODE_ENV=production npm run android:prebuild -- --template ./node_modules/expo/template.tgz
+      - sed -i 's/-XX:MaxMetaspaceSize=512m/-XX:MaxMetaspaceSize=1g/' android/gradle.properties
       - sed -i '/signingConfig signingConfigs.debug/d' android/app/build.gradle
       - rm android/app/debug.keystore
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
