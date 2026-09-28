@@ -41,9 +41,9 @@ Builds:
       - export GOMODCACHE="$GOPATH/pkg/mod"
       - export GOPROXY="https://proxy.golang.org,direct"
       - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
-      - wget -O go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
+      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
       - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
-        | shasum -c -
+        | sha256sum -c -
       - tar xf go.tgz
       - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
       - export ANDROID_NDK_HOME="$ANDROID_NDK"
@@ -62,8 +62,9 @@ MaintainerNotes: |
 
   The build block compiles the native gomobile AAR (yggproxy/mobileproxy)
   BEFORE the gradle build, following the same custom-build pattern as other
-  native-code apps on F-Droid (wget toolchain + sha256 check + pinned go
-  deps).
+  native-code apps on F-Droid (curl toolchain download + sha256 check +
+  pinned go deps; note the buildserver image must use curl and sha256sum,
+  wget is purged from it).
 
   Toolchain pins (mirrors flake.nix):
     - Go 1.26.7 (wget tarball, sha256 verified)
