@@ -329,7 +329,38 @@ Builds:
       - popd
     ndk: r25c
 
+  - versionName: 0.6.7
+    versionCode: 26
+    commit: 4b40fc93255baeb7ced803da25c3c84acb7b98ee
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build
+    gradle:
+      - yes
+    srclibs:
+      - opencv@4.12.0
+    prebuild:
+      - sed -i -e "s:^opencvsdk=.*:opencvsdk=$$opencv$$/build/install/:" ../gradle.properties
+      - sed -i -e '/JavaLanguageVersion/s/17/21/' ../build.gradle
+    build:
+      - pushd $$opencv$$
+      - mkdir -p build
+      - cd build
+      - cmake -GNinja -DBUILD_ANDROID_EXAMPLES='OFF' -DINSTALL_ANDROID_EXAMPLES='OFF'
+        -DBUILD_DOCS='OFF' -DBUILD_TESTS='OFF' -DBUILD_EXAMPLES='OFF' -DANDROID_ABI='arm64-v8a'
+        -DANDROID_TOOLCHAIN='clang' -DANDROID_PLATFORM_ID='3' -DBUILD_PERF_TESTS='OFF'
+        -DINSTALL_CREATE_DISTRIB='ON' -DANDROID_STL='c++_shared' -DWITH_TBB='OFF'
+        -DANDROID_GRADLE_PLUGIN_VERSION='8.2.2' -DWITH_OPENCL='OFF' -DCMAKE_TOOLCHAIN_FILE="$$NDK$$/build/cmake/android.toolchain.cmake"
+        -DGRADLE_VERSION='8.2' -DWITH_IPP='OFF' -DANDROID_PROJECTS_BUILD_TYPE='GRADLE'
+        -DBUILD_KOTLIN_EXTENSIONS='OFF' ..
+      - ninja opencv_modules
+      - ninja install/strip
+      - popd
+    ndk: 29.0.14206865
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.6.4f
-CurrentVersionCode: 23
+CurrentVersion: 0.6.7
+CurrentVersionCode: 26
