@@ -33,8 +33,8 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.44.1
-    prebuild: "cd ../../\n$$flutter$$ --version\ndart pub global activate melos\ndart pub global run melos bootstrap\n"
-    build: "$$flutter$$ build apk --release --build-name=$$VERSION$$ --build-number=$$VERCODE$$\n"
+    prebuild: "cd ../../\nexport PATH=\"$$flutter$$/bin:$PATH\"\nflutter config --no-analytics\nflutter --version\ndart pub global activate melos\ndart pub global run melos bootstrap\n"
+    build: "export PATH=\"$$flutter$$/bin:$PATH\"\nflutter build apk --release --build-name=$$VERSION$$ --build-number=$$VERCODE$$\n"
 
 AutoUpdateMode: None
 UpdateCheckMode: None
