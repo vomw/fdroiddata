@@ -78,7 +78,7 @@ Builds:
 
   - versionName: 9.0.1
     versionCode: 90001
-    commit: cf4d8d4ad96be4e05c30574b297a7f0714754947
+    commit: 84fe4e3122647b4cbfa3c72622ffaa6c8462d60a
     subdir: expo
     sudo:
       - apt-get update
@@ -89,6 +89,7 @@ Builds:
       - cd expo
       - npm ci
       - node scripts/patch-fdroid-java-toolchains.mjs
+      - node scripts/patch-fdroid-reproducibility.mjs
     output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
       - export APP_VARIANT=fdroid
@@ -100,6 +101,7 @@ Builds:
       - sed -i 's/MaxMetaspaceSize=512m/MaxMetaspaceSize=1g/' android/gradle.properties
       - echo 'org.gradle.workers.max=1' >> android/gradle.properties
       - cd ..
+      - npm run verify:fdroid
       - cd expo
       - npm run typecheck
     scanignore:
@@ -116,7 +118,6 @@ Builds:
       - expo/node_modules/react-native-view-shot/android/build.gradle
       - expo/node_modules/react-native-webview/android/build.gradle
       - expo/node_modules/react-native/ReactAndroid/publish.gradle
-      - expo/node_modules
     build:
       - export APP_VARIANT=fdroid
       - export EXPO_PUBLIC_FDROID_BUILD=true
@@ -125,6 +126,9 @@ Builds:
       - cd android
       - gradle :app:assembleRelease -PfdroidBuild=true -PreactNativeArchitectures=arm64-v8a
         -PreactNativeDevServerIp=localhost --no-daemon --console=plain
+      - cd ../..
+      - rm -rf node_modules
+      - rm -rf expo/node_modules
 
 AllowedAPKSigningKeys: 5d25e32cdf901becfba81adf93189e1d755e50a90b897efa21da4c2ab3002106
 
