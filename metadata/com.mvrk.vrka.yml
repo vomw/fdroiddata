@@ -32,7 +32,7 @@ Builds:
     patch:
       - 0001-fdroid-build.patch
     gradle:
-      - assembleRelease
+      - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
     srclibs:
       - MozFennec@FIREFOX-ANDROID_153_0_4_RELEASE
@@ -56,6 +56,7 @@ Builds:
         2>/dev/null | sort -V | tail -n 1); if [ -n "$latest_bt" ]; then ln -sf "$latest_bt"
         $$SDK$$/build-tools/37.0.0; fi; fi
       - pushd $$MozFennec$$
+      - sed -i '/play.services.fido/d' mobile/android/geckoview/build.gradle
       - rustup default stable || true
       - rustup target add aarch64-linux-android || true
       - cargo install --version 0.29.4 cbindgen
@@ -94,7 +95,7 @@ Builds:
         echo "mk_add_options MOZ_MAKE_FLAGS=\"-j$JOBS\"" >> .mozconfig; echo "mk_add_options
         MOZ_PARALLEL_BUILD=$JOBS" >> .mozconfig; echo "export CARGO_BUILD_JOBS=$JOBS"
         >> .mozconfig; ./mach build -j$JOBS
-      - ./gradlew -x javadocDebug geckoview:publishDebugPublicationToMavenLocal
+      - gradle -x javadocDebug geckoview:publishDebugPublicationToMavenLocal
       - popd
     scanignore:
       - settings.gradle.kts
