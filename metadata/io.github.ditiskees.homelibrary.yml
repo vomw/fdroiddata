@@ -1,6 +1,6 @@
 Categories:
-  - Reading
   - Inventory
+  - Reading
 License: GPL-3.0-or-later
 AuthorName: Kees van 't Slot
 SourceCode: https://github.com/DitisKees/homelibrary-app
@@ -9,54 +9,52 @@ Changelog: https://github.com/DitisKees/homelibrary-app/tags
 
 RepoType: git
 Repo: https://github.com/DitisKees/homelibrary-app.git
-Binaries: https://github.com/DitisKees/homelibrary-app/releases/download/v%v/HomeLibrary-%v.apk
+Binaries:
+  https://github.com/DitisKees/homelibrary-app/releases/download/v%v/HomeLibrary-%v.apk
 
 Builds:
   - versionName: 1.0.6
     versionCode: 7
     commit: b403bcd997cf87e77b6768936f3c5cf24cbd3402
-    subdir: android/app
-    ndk: r27b
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
     init:
-      - cd ../..
       - node --version
       - npm --version
       - npm ci
-    gradle:
-      - yes
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ../..
       - sed -i -e 's/"node":\ ">=22.13.0 <23"/"node":\ ">=22.13.0"/' package.json
       - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
       - npx expo prebuild -p android --clean
-      - |-
-        cat >> android/gradle.properties <<'EOF'
-        org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8
-        org.gradle.workers.max=2
-        kotlin.compiler.execution.strategy=in-process
-        EOF
+      - echo 'org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8'
+        >> android/gradle.properties
+      - echo 'org.gradle.workers.max=2' >> android/gradle.properties
+      - echo 'kotlin.compiler.execution.strategy=in-process' >> android/gradle.properties
       - sed -i -e '/signingConfig /d' android/app/build.gradle
-    postbuild:
-      - cd ../..
-      - python3 scripts/normalize-fdroid-apk-build-ids.py android/app/build/outputs/apk/release/app-release-unsigned.apk
     scanignore:
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
+    build:
+      - cd android/app
+      - gradle assembleRelease
+    ndk: r27b
+    postbuild:
+      - python3 scripts/normalize-fdroid-apk-build-ids.py $$OUT$$
 
 AllowedAPKSigningKeys: 99115557adc7601e8d71adbf8884b0d359ab3f720cbec10c17828c36b7bdd813
 
 MaintainerNotes: |-
-  HomeLibrary uses Expo/React Native and does not commit android/. The recipe
-  follows templates/build-react-native.yml: npm dependencies are installed during
-  init, Expo prebuild generates the Android project, signingConfig is removed,
-  and F-Droid invokes Gradle directly.
+  HomeLibrary uses Expo/React Native and does not commit android/. Expo prebuild
+  therefore generates the Android project after checkout. Because fdroidserver
+  validates subdir before init/prebuild, this build follows existing generated
+  Expo recipes in fdroiddata: no subdir is declared, output points to the
+  generated APK, and the build command runs Gradle from android/app.
 
   Node.js/npm are installed from Debian forky as requested by the F-Droid
   maintainer. Forky currently provides a newer Node.js than the source tag's
@@ -83,6 +81,6 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
-UpdateCheckData: 'app.json|"versionCode":\s*(\d+)|app.json|"version":\s*"([\d.]+)"'
+UpdateCheckData: app.json|"versionCode":\s*(\d+)|app.json|"version":\s*"([\d.]+)"
 CurrentVersion: 1.0.6
 CurrentVersionCode: 7
