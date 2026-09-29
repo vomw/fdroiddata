@@ -42,9 +42,9 @@ Builds:
     prebuild:
       - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
       - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
-      - sed -i '/compileSdk = 37/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
+      - sed -i '/^android {/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
       - sed -i '/environment("ANDROID_SDK_ROOT", androidSdkPath)/a\        environment("JAVA_HOME",
-        "/usr/lib/jvm/java-17-openjdk-amd64")' app/build.gradle.kts
+        System.getProperty("java.home"))' app/build.gradle.kts
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
