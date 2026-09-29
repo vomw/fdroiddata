@@ -1023,9 +1023,41 @@ Builds:
       - $$flutter$$/bin/flutter build apk -t lib/entrypoints/android/main_fdroid.dart
     ndk: r28c
 
+  - versionName: 4.24.0
+    versionCode: 1614
+    commit: 803e08850746f6ac3d3ec7c73b1f246d04ce941a
+    subdir: packages/smooth_app
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - packages/smooth_app/ios
+      - packages/scanner/ml_kit
+      - packages/app_store/google_play
+      - packages/app_store/apple_app_store
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat ../../flutter-version.txt)
+      - sed -i -e '/ml_kit/d' -e '/apple_/d' -e '/google_play/d' -e 's/version:.*/version:\
+        $$VERSION$$+$$VERCODE$$/' -e '/mobile_scanner/d' pubspec.yaml
+      - sed -i -e 's|app_flutter/smoothie.db|smoothie.db|' android/app/src/main/res/xml/backup_scheme.xml
+      - pushd android
+      - grep -rli 'org.openfoodfacts.scanner' * | xargs -i@ sed -i 's/org.openfoodfacts.scanner/openfoodfacts.github.scrachx.openfood/g'
+        @
+      - popd
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - packages/smooth_app/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH=$$flutter$$/bin:$$flutter$$/bin/cache/dart-sdk/bin/:$PATH
+      - $$flutter$$/bin/flutter build apk -t lib/entrypoints/android/main_fdroid.dart
+    ndk: r28c
+
 AutoUpdateMode: Version v%v
 UpdateCheckMode: HTTP
 UpdateCheckData: 
   https://github.com/openfoodfacts/smooth-app/releases/latest/download/version-code.txt|(\d+)|https://github.com/openfoodfacts/smooth-app/releases/latest|releases/tag/v([\d.]+)
-CurrentVersion: 4.23.0
-CurrentVersionCode: 1576
+CurrentVersion: 4.24.0
+CurrentVersionCode: 1614
