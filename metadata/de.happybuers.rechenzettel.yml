@@ -17,12 +17,37 @@ Builds:
     versionCode: 32
     commit: 673aafdf2c6be1887497460845697a489429b74b
     output: build/app/outputs/flutter-apk/app-release.apk
+    sudo:
+      - mkdir -p /builds/DaWasch
+      - chown -R vagrant /builds
     srclibs:
       - flutter@stable
+    rm:
+      - ios
     prebuild:
+      - flutterVersion=$(sed -n -E "s/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*(.*)$/\1/p" .gitlab-ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/builds/DaWasch/rechenzettel-app
+      - cd ..
+      - mv de.happybuers.rechenzettel $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo de.happybuers.rechenzettel
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/builds/DaWasch/rechenzettel-app
+      - cd ..
+      - mv de.happybuers.rechenzettel $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo de.happybuers.rechenzettel
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
