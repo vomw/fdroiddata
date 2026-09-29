@@ -1,0 +1,36 @@
+Categories:
+  - Connectivity
+  - System
+License: GPL-3.0-only
+AuthorName: Anchor Software
+WebSite: https://anchor-software.org
+SourceCode: https://github.com/anchor-software-org/anchor
+IssueTracker: https://github.com/anchor-software-org/anchor/issues
+Changelog: https://github.com/anchor-software-org/anchor/releases
+
+AutoName: anchor
+
+RepoType: git
+Repo: https://github.com/anchor-software-org/anchor.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 100
+    commit: f5144a7949e65d31720974fc77892825e5824b91
+    subdir: anchor
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y protobuf-compiler cmake ninja-build
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    build: ../scripts/build-android-native.sh $$NDK$$
+    ndk: 30.0.16138531
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9]+(?:\.[0-9]+)*$
+UpdateCheckData: anchor/app/build.gradle.kts|versionCode = 
+  ([0-9]+)|.|versionName = "([^"]+)"
+CurrentVersion: 1.0.0
+CurrentVersionCode: 100
