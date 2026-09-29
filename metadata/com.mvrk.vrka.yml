@@ -17,7 +17,7 @@ Repo: https://github.com/MaverickRox/VRKA-Android.git
 Builds:
   - versionName: 4.5.3
     versionCode: 40503
-    commit: 596d9cd0e9554311cce7b1465bdae36141de0795
+    commit: 869c8e14940a06ecc7473ad7a687067e4be8e8ee
     timeout: 36000
     subdir: app
     sudo:
@@ -29,8 +29,6 @@ Builds:
         ninja-build bzip2 libffi-dev libsqlite3-dev binutils-dev clang lld llvm nodejs
         libssl-dev zlib1g-dev rustup nasm
       - rm -f /usr/bin/cbindgen /bin/cbindgen
-    patch:
-      - 0001-fdroid-build.patch
     gradle:
       - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
@@ -38,6 +36,9 @@ Builds:
       - MozFennec@FIREFOX-ANDROID_153_0_4_RELEASE
       - gmscore@v0.3.16.252432
     prebuild:
+      - sed -i 's/hasCredentials.set(hasReleaseSigning)/hasCredentials.set(true)/'
+        build.gradle.kts
+      - sed -i 's/geckoview-arm64-v8a/geckoview-omni-arm64-v8a/' build.gradle.kts
       - rm -rf $$SDK$$/cmdline-tools/20.0
       - mkdir -p $$SDK$$/cmdline-tools/20.0/bin
       - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager
