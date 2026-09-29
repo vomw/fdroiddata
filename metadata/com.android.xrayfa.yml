@@ -2224,10 +2224,10 @@ Builds:
       - cp libv2ray.aar ../app/libs/
     ndk: r28c
 
-  - versionName: 1.7.0
-    versionCode: 34001
-    commit: 141833aff4e3a438d00e50dd6c09173df5007f30
-    subdir: app
+  
+  - versionName: 1.7.1
+    versionCode: 35001
+    commit: COMMIT
     submodules: true
     sudo:
       - apt-get update
@@ -2235,54 +2235,19 @@ Builds:
       - apt-get install -y -t trixie-backports golang-go
     gradle:
       - yes
-    output: build/outputs/apk/release/XrayFA-armeabi-v7a-release-unsigned.apk
-    binary: 
-      https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-armeabi-v7a-release.apk
+    output: androidApp/build/outputs/apk/release/XrayFA-armeabi-v7a-release-unsigned.apk
+    binary: https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-armeabi-v7a-release.apk
     srclibs:
       - go@go1.26.2
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
-        '\r')
-      - GEO_IP_VERSION=$(grep "^GEO_IP_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - GEO_SITE_VERSION=$(grep "^GEO_SITE_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - LIB_ASSETS_DIR="../AndroidLibXrayLite/assets"
-      - curl -Lo $LIB_ASSETS_DIR/geoip.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_IP_VERSION}/geoip.dat"
-      - curl -Lo $LIB_ASSETS_DIR/geosite.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_SITE_VERSION}/geosite.dat"
-      - git -C $$go$$ checkout -f "go${GO_VER}"
-      - sed -i -e 's/include("armeabi-v7a".*/include("armeabi-v7a")/' -e '/isUniversalApk/s/true/false/'
-        build.gradle.kts
+      - bash scripts/fdroid.sh prebuild armeabi-v7a
     build:
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$PATH"
-      - export PATH="$GOPATH/bin:$PATH"
-      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath"
-      - export CGO_LDFLAGS="-Wl,--build-id=none"
-      - go install golang.org/x/mobile/cmd/gomobile@latest
-      - cd ../AndroidLibXrayLite
-      - gomobile init
-      - go mod tidy -v
-      - CURRENT_PATH=$(pwd)
-      - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -target=android/arm -ldflags="-s
-        -w -buildid= -checklinkname=0" ./
-      - mkdir -p ../app/libs
-      - cp libv2ray.aar ../app/libs/
+      - bash scripts/fdroid.sh bind armeabi-v7a $$go$$
     ndk: r28c
 
-  - versionName: 1.7.0
-    versionCode: 34002
-    commit: 141833aff4e3a438d00e50dd6c09173df5007f30
-    subdir: app
+  - versionName: 1.7.1
+    versionCode: 35002
+    commit: COMMIT
     submodules: true
     sudo:
       - apt-get update
@@ -2290,54 +2255,19 @@ Builds:
       - apt-get install -y -t trixie-backports golang-go
     gradle:
       - yes
-    output: build/outputs/apk/release/XrayFA-arm64-v8a-release-unsigned.apk
-    binary: 
-      https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-arm64-v8a-release.apk
+    output: androidApp/build/outputs/apk/release/XrayFA-arm64-v8a-release-unsigned.apk
+    binary: https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-arm64-v8a-release.apk
     srclibs:
       - go@go1.26.2
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
-        '\r')
-      - GEO_IP_VERSION=$(grep "^GEO_IP_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - GEO_SITE_VERSION=$(grep "^GEO_SITE_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - LIB_ASSETS_DIR="../AndroidLibXrayLite/assets"
-      - curl -Lo $LIB_ASSETS_DIR/geoip.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_IP_VERSION}/geoip.dat"
-      - curl -Lo $LIB_ASSETS_DIR/geosite.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_SITE_VERSION}/geosite.dat"
-      - git -C $$go$$ checkout -f "go${GO_VER}"
-      - sed -i -e 's/include("armeabi-v7a".*/include("arm64-v8a")/' -e '/isUniversalApk/s/true/false/'
-        build.gradle.kts
+      - bash scripts/fdroid.sh prebuild arm64-v8a
     build:
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$PATH"
-      - export PATH="$GOPATH/bin:$PATH"
-      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath"
-      - export CGO_LDFLAGS="-Wl,--build-id=none"
-      - go install golang.org/x/mobile/cmd/gomobile@latest
-      - cd ../AndroidLibXrayLite
-      - gomobile init
-      - go mod tidy -v
-      - CURRENT_PATH=$(pwd)
-      - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -target=android/arm64 -ldflags="-s
-        -w -buildid= -checklinkname=0" ./
-      - mkdir -p ../app/libs
-      - cp libv2ray.aar ../app/libs/
+      - bash scripts/fdroid.sh bind arm64-v8a $$go$$
     ndk: r28c
 
-  - versionName: 1.7.0
-    versionCode: 34003
-    commit: 141833aff4e3a438d00e50dd6c09173df5007f30
-    subdir: app
+  - versionName: 1.7.1
+    versionCode: 35003
+    commit: COMMIT
     submodules: true
     sudo:
       - apt-get update
@@ -2345,53 +2275,19 @@ Builds:
       - apt-get install -y -t trixie-backports golang-go
     gradle:
       - yes
-    output: build/outputs/apk/release/XrayFA-x86-release-unsigned.apk
+    output: androidApp/build/outputs/apk/release/XrayFA-x86-release-unsigned.apk
     binary: https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-x86-release.apk
     srclibs:
       - go@go1.26.2
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
-        '\r')
-      - GEO_IP_VERSION=$(grep "^GEO_IP_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - GEO_SITE_VERSION=$(grep "^GEO_SITE_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - LIB_ASSETS_DIR="../AndroidLibXrayLite/assets"
-      - curl -Lo $LIB_ASSETS_DIR/geoip.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_IP_VERSION}/geoip.dat"
-      - curl -Lo $LIB_ASSETS_DIR/geosite.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_SITE_VERSION}/geosite.dat"
-      - git -C $$go$$ checkout -f "go${GO_VER}"
-      - sed -i -e 's/include("armeabi-v7a".*/include("x86")/' -e '/isUniversalApk/s/true/false/'
-        build.gradle.kts
+      - bash scripts/fdroid.sh prebuild x86
     build:
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$PATH"
-      - export PATH="$GOPATH/bin:$PATH"
-      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath"
-      - export CGO_LDFLAGS="-Wl,--build-id=none"
-      - go install golang.org/x/mobile/cmd/gomobile@latest
-      - cd ../AndroidLibXrayLite
-      - gomobile init
-      - go mod tidy -v
-      - CURRENT_PATH=$(pwd)
-      - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -target=android/386 -ldflags="-s
-        -w -buildid= -checklinkname=0" ./
-      - mkdir -p ../app/libs
-      - cp libv2ray.aar ../app/libs/
+      - bash scripts/fdroid.sh bind x86 $$go$$
     ndk: r28c
 
-  - versionName: 1.7.0
-    versionCode: 34004
-    commit: 141833aff4e3a438d00e50dd6c09173df5007f30
-    subdir: app
+  - versionName: 1.7.1
+    versionCode: 35004
+    commit: COMMIT
     submodules: true
     sudo:
       - apt-get update
@@ -2399,47 +2295,14 @@ Builds:
       - apt-get install -y -t trixie-backports golang-go
     gradle:
       - yes
-    output: build/outputs/apk/release/XrayFA-x86_64-release-unsigned.apk
+    output: androidApp/build/outputs/apk/release/XrayFA-x86_64-release-unsigned.apk
     binary: https://github.com/Q7DF1/XrayFA/releases/download/v%v/XrayFA-x86_64-release.apk
     srclibs:
       - go@go1.26.2
     prebuild:
-      - sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - GO_VER=$(grep "^GO_VERSION=" ../gradle.properties | cut -d'=' -f2 | tr -d
-        '\r')
-      - GEO_IP_VERSION=$(grep "^GEO_IP_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - GEO_SITE_VERSION=$(grep "^GEO_SITE_VERSION=" ../gradle.properties | cut -d'='
-        -f2 | tr -d '\r')
-      - LIB_ASSETS_DIR="../AndroidLibXrayLite/assets"
-      - curl -Lo $LIB_ASSETS_DIR/geoip.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_IP_VERSION}/geoip.dat"
-      - curl -Lo $LIB_ASSETS_DIR/geosite.dat 
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEO_SITE_VERSION}/geosite.dat"
-      - git -C $$go$$ checkout -f "go${GO_VER}"
-      - sed -i -e 's/include("armeabi-v7a".*/include("x86_64")/' -e '/isUniversalApk/s/true/false/'
-        build.gradle.kts
+      - bash scripts/fdroid.sh prebuild x86_64
     build:
-      - pushd $$go$$/src
-      - ./make.bash
-      - popd
-      - export GOROOT=$$go$$
-      - export GOPATH="$HOME/go"
-      - export PATH="$GOROOT/bin:$PATH"
-      - export PATH="$GOPATH/bin:$PATH"
-      - export GOFLAGS="-modcacherw -buildvcs=false -trimpath"
-      - export CGO_LDFLAGS="-Wl,--build-id=none"
-      - go install golang.org/x/mobile/cmd/gomobile@latest
-      - cd ../AndroidLibXrayLite
-      - gomobile init
-      - go mod tidy -v
-      - CURRENT_PATH=$(pwd)
-      - export CGO_CFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - export CGO_CXXFLAGS="-ffile-prefix-map=$CURRENT_PATH=."
-      - gomobile bind -v -trimpath -androidapi 21 -target=android/amd64 -ldflags="-s
-        -w -buildid= -checklinkname=0" ./
-      - mkdir -p ../app/libs
-      - cp libv2ray.aar ../app/libs/
+      - bash scripts/fdroid.sh bind x86_64 $$go$$
     ndk: r28c
 
 AllowedAPKSigningKeys: f62d348b1ea01b9b286326a6db58807df2315b3a04fc71291a3b97c9cc907381
@@ -2452,5 +2315,5 @@ VercodeOperation:
   - 1000 * %c + 3
   - 1000 * %c + 4
 UpdateCheckData: gradle.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=([\d.]+)
-CurrentVersion: 1.7.0
-CurrentVersionCode: 34004
+CurrentVersion: 1.7.1
+CurrentVersionCode: 35004
