@@ -16,19 +16,20 @@ Builds:
     versionCode: 51410
     commit: b52d185a5188334fdcd4969f0559914c46d0ef91
     subdir: android
+    sudo: apt-get update && apt-get install -y golang-go golang-1.24-golang
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
+    srclibs:
+      - go@go1.26.7
     build:
       - export GOPATH="$PWD/.go-work"
       - export GOMODCACHE="$GOPATH/pkg/mod"
       - export GOPROXY="https://proxy.golang.org,direct"
+      - export GOBIN="$GOPATH/bin"
       - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
-      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
-        | sha256sum -c -
-      - tar xf go.tgz
-      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.24
+      - export PATH="$$go$$/bin:$GOPATH/bin:$PATH"
+      - (cd "$$go$$/src" && ./make.bash)
       - export ANDROID_NDK_HOME="$ANDROID_NDK"
       - sdkmanager "platforms;android-21"
       - mkdir -p ../android/app/libs
@@ -43,19 +44,20 @@ Builds:
     versionCode: 51411
     commit: b52d185a5188334fdcd4969f0559914c46d0ef91
     subdir: android
+    sudo: apt-get update && apt-get install -y golang-go golang-1.24-golang
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    srclibs:
+      - go@go1.26.7
     build:
       - export GOPATH="$PWD/.go-work"
       - export GOMODCACHE="$GOPATH/pkg/mod"
       - export GOPROXY="https://proxy.golang.org,direct"
+      - export GOBIN="$GOPATH/bin"
       - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
-      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
-        | sha256sum -c -
-      - tar xf go.tgz
-      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.24
+      - export PATH="$$go$$/bin:$GOPATH/bin:$PATH"
+      - (cd "$$go$$/src" && ./make.bash)
       - export ANDROID_NDK_HOME="$ANDROID_NDK"
       - sdkmanager "platforms;android-21"
       - mkdir -p ../android/app/libs
@@ -70,19 +72,20 @@ Builds:
     versionCode: 51412
     commit: b52d185a5188334fdcd4969f0559914c46d0ef91
     subdir: android
+    sudo: apt-get update && apt-get install -y golang-go golang-1.24-golang
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-x86-release-unsigned.apk
+    srclibs:
+      - go@go1.26.7
     build:
       - export GOPATH="$PWD/.go-work"
       - export GOMODCACHE="$GOPATH/pkg/mod"
       - export GOPROXY="https://proxy.golang.org,direct"
+      - export GOBIN="$GOPATH/bin"
       - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
-      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
-        | sha256sum -c -
-      - tar xf go.tgz
-      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.24
+      - export PATH="$$go$$/bin:$GOPATH/bin:$PATH"
+      - (cd "$$go$$/src" && ./make.bash)
       - export ANDROID_NDK_HOME="$ANDROID_NDK"
       - sdkmanager "platforms;android-21"
       - mkdir -p ../android/app/libs
@@ -97,19 +100,20 @@ Builds:
     versionCode: 51413
     commit: b52d185a5188334fdcd4969f0559914c46d0ef91
     subdir: android
+    sudo: apt-get update && apt-get install -y golang-go golang-1.24-golang
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-x86_64-release-unsigned.apk
+    srclibs:
+      - go@go1.26.7
     build:
       - export GOPATH="$PWD/.go-work"
       - export GOMODCACHE="$GOPATH/pkg/mod"
       - export GOPROXY="https://proxy.golang.org,direct"
+      - export GOBIN="$GOPATH/bin"
       - mkdir -p "$GOPATH/pkg/gomobile" "$GOMODCACHE"
-      - curl -sfL -o go.tgz https://go.dev/dl/go1.26.7.linux-amd64.tar.gz
-      - echo 'ffb5f8de10c62550dfddab66b36b57030721e0a44a3218e9e1181d7b59f121ca  go.tgz'
-        | sha256sum -c -
-      - tar xf go.tgz
-      - export PATH="$PWD/go/bin:$GOPATH/bin:$PATH"
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.24
+      - export PATH="$$go$$/bin:$GOPATH/bin:$PATH"
+      - (cd "$$go$$/src" && ./make.bash)
       - export ANDROID_NDK_HOME="$ANDROID_NDK"
       - sdkmanager "platforms;android-21"
       - mkdir -p ../android/app/libs
@@ -119,28 +123,6 @@ Builds:
       - gomobile bind -v -target android -androidapi 21 -tags mobile -o ../android/app/libs/yggproxy.aar
         -ldflags "-s -w -checklinkname=0" ./mobileproxy
     ndk: r26b
-
-MaintainerNotes: |
-  Gradle release signing is intentionally conditional: without
-  android/keystore.properties and without a debug keystore, the release
-  build naturally stays unsigned (see android/app/build.gradle.kts), so the
-  expected output path above holds on the buildserver.
-
-  The build block compiles the native gomobile AAR (yggproxy/mobileproxy)
-  BEFORE the gradle build, following the same custom-build pattern as other
-  native-code apps on F-Droid (curl toolchain download + sha256 check +
-  pinned go deps; note the buildserver image must use curl and sha256sum,
-  wget is purged from it).
-
-  Toolchain pins (mirrors flake.nix):
-    - Go 1.26.7 (wget tarball, sha256 verified)
-    - NDK r26b via the metadata ndk: field -> $ANDROID_NDK
-    - gomobile/gobind @ x/mobile pseudo-version pinned in yggproxy/go.mod
-  Modest memory is needed for gomobile across 4 ABIs (~2-4 GB RAM).
-
-  Local hermetic tests for the proxy core exist but are not part of the
-  F-Droid build: yggproxy/mobileproxy/proxy_test.go (A<->B mesh loop, no
-  network) plus android instrumented tests.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
