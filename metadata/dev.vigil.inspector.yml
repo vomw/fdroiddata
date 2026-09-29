@@ -1,0 +1,43 @@
+Categories:
+  - Firewall
+  - Network Analyzer
+  - Security
+License: Apache-2.0
+AuthorName: H3xano
+SourceCode: https://github.com/H3xano/vigil
+IssueTracker: https://github.com/H3xano/vigil/issues
+Changelog: https://github.com/H3xano/vigil/blob/HEAD/CHANGELOG.md
+
+AutoName: vigil
+
+RepoType: git
+Repo: https://github.com/H3xano/vigil.git
+Binaries: https://github.com/H3xano/vigil/releases/download/v%v/vigil-%v.apk
+
+Builds:
+  - versionName: 0.5.1
+    versionCode: 501
+    commit: c76d714dc353a52b62e2d5289d280341383d9b20
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl
+    gradle:
+      - yes
+    srclibs:
+      - rustup@1.29.1
+    prebuild:
+      - $$rustup$$/rustup-init.sh -y --no-modify-path --profile minimal --default-toolchain
+        1.98.1 --target aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
+      - $HOME/.cargo/bin/cargo install cargo-ndk --version 4.1.2 --locked
+      - cd ../../core && $HOME/.cargo/bin/cargo fetch --locked
+    ndk: 27.2.12479018
+    gradleprops:
+      - vigil.unsignedRelease=true
+
+AllowedAPKSigningKeys: dc7a34daa313cc62305c3bfe00bb85e7998bed5f082ea6a8e157f72ca38db3bc
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v\d+\.\d+\.\d+$
+CurrentVersion: 0.5.1
+CurrentVersionCode: 501
