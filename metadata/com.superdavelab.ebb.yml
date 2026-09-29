@@ -16,20 +16,32 @@ Binaries: https://github.com/SuperDaveOrg/Ebb/releases/download/v%v/ebb-%v.apk
 Builds:
   - versionName: 0.4.0
     versionCode: 400
-    commit: v0.4.0
+    commit: fcd179b890f6470dbc5e062c62a9350948179e6a
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.47.5
-    build:
-      - export SRC="$PWD" PUB_CACHE=/tmp/ebb-build/.pub-cache
-      - rm -rf /tmp/ebb-build
-      - cp -a "$SRC" /tmp/ebb-build
-      - cd /tmp/ebb-build
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ \"(.*)\"/\1/p" .github/workflows/ci.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/ebb-build
+      - cd ..
+      - mv com.superdavelab.ebb $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - mv $repo com.superdavelab.ebb
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/ebb-build
+      - cd ..
+      - mv com.superdavelab.ebb $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
-      - mkdir -p "$SRC/build/app/outputs/flutter-apk"
-      - cp build/app/outputs/flutter-apk/app-release.apk "$SRC/build/app/outputs/flutter-apk/"
+      - mv $repo com.superdavelab.ebb
 
 AllowedAPKSigningKeys: e3ab0f9706f4607d2c3372dd5a42a53a647e60fe1078e3e399d3ef60c80d431c
 
