@@ -23,16 +23,12 @@ variables:
     description: push with `git push -o ci.variable="CI_ENABLE_MERGE_REQUEST_PIPELINES=false"` to disable merge request pipelines (e.g., to use self-hosted runners)
     value: "true"
 
-# Install fdroidserver from git using a pinned SHA1 commit ID as the
-# root of trust. fsckObjects is enabled to verify all new commits
-# pulled in on top of that root of trust. The pinned commit ID can be
-# updated to any newer version in master as needed, but is not required.
 .install_fdroid_server: &install_fdroid_server
   - rm -rf $fdroidserver
-  - git clone --shallow-since=2026-07-13 https://gitlab.com/fdroid/fdroidserver.git $fdroidserver
-  - git -C $fdroidserver config transfer.fsckObjects true
-  - git -C $fdroidserver checkout -B master a35fdfddd9c66823987a410566a6101186e39c84
-  - git -C $fdroidserver pull origin master --ff-only
+  - mkdir $fdroidserver
+  - git ls-remote https://gitlab.com/fdroid/fdroidserver.git master
+  - curl --silent https://gitlab.com/fdroid/fdroidserver/-/archive/master/fdroidserver-master.tar.gz
+        | tar -xz --directory=$fdroidserver --strip-components=1
   - export PATH="$fdroidserver:$PATH"
   - export PYTHONPATH="$fdroidserver:$fdroidserver/examples"
   - export PYTHONUNBUFFERED=true
@@ -391,13 +387,7 @@ fdroid build:
     # buildserver VM host, while here it is basically in the
     # buildserver VM.
     # https://gitlab.com/fdroid/fdroid-bootstrap-buildserver/-/merge_requests/30
-    - git -C /tmp/ clone https://gitlab.com/fdroid/fdroid-bootstrap-buildserver.git
-    # use a fixed commit ID to provide cryptographic verification that we got the right file
-    - git -C /tmp/fdroid-bootstrap-buildserver config transfer.fsckObjects true
-    - git -C /tmp/fdroid-bootstrap-buildserver checkout -B master b33507043e6750065745dd2d8c35d3bb5c633c11
-    - git -C /tmp/fdroid-bootstrap-buildserver pull origin master --ff-only
-    - cp ../fdroid-bootstrap-buildserver/roles/production_hardening/files/gitconfig
-        $CI_PROJECT_DIR/../.gitconfig
+    - curl --silent 'https://gitlab.com/fdroid/fdroid-bootstrap-buildserver/-/raw/master/roles/production_hardening/files/gitconfig' >> $CI_PROJECT_DIR/../.gitconfig
 
     - for d in logs tmp unsigned $home_vagrant/.android $home_vagrant/.gradle $home_vagrant/metadata; do
           test -d $d || mkdir $d;
