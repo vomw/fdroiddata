@@ -103,29 +103,6 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
 
-  - versionName: 1.5.0
-    versionCode: 7
-    commit: fe960869a6555d4b591401db441fa20fd0c5dd24
-    subdir: clients/app
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - clients/app/linux
-      - clients/app/web
-    prebuild:
-      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../../.github/workflows/release.yml)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-    scandelete:
-      - clients/app/.pub-cache
-    build:
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --target-platform=android-arm64
-
   - versionName: 1.5.5
     versionCode: 8
     commit: 58b324c1d2894d75cec959b64575da6b1da7b297
@@ -140,6 +117,7 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" ../../.github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - sed -i -e '/signingConfig = if/,+4d' build.gradle.kts
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
