@@ -1,0 +1,82 @@
+Categories:
+  - Cloud Storage & File Sync
+License: AGPL-3.0-only
+AuthorName: junkerderprovinz
+WebSite: https://github.com/junkerderprovinz/arrowloop
+SourceCode: https://github.com/junkerderprovinz/arrowloop
+IssueTracker: https://github.com/junkerderprovinz/arrowloop/issues
+Changelog: https://github.com/junkerderprovinz/arrowloop/releases
+Donate: https://buymeacoffee.com/junkerderprovinz
+
+AutoName: ArrowLoop
+
+RepoType: git
+Repo: https://github.com/junkerderprovinz/arrowloop.git
+
+Builds:
+  - versionName: 1.5.1
+    versionCode: 10501
+    commit: d4b2f0144bdf117a6025199cf006a42dd1a98b01
+    subdir: mobile/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends xz-utils
+      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - tar -xJf /tmp/node.tar.xz -C /opt
+      - ln -s /opt/node-v24.21.0-linux-x64/bin/node /opt/node-v24.21.0-linux-x64/bin/npm
+        /opt/node-v24.21.0-linux-x64/bin/npx /usr/local/bin/
+      - curl -Lo /tmp/go.tar.gz https://go.dev/dl/go1.27.1.linux-amd64.tar.gz
+      - echo "63d339f0da5ab53635a56f2490a7984dfe12dfcff22ad749f63edaf590168445  /tmp/go.tar.gz"
+        | sha256sum -c -
+      - tar -xzf /tmp/go.tar.gz -C /opt
+      - ln -s /opt/go/bin/go /usr/local/bin/go
+    init:
+      - cd ../../..
+      - npm --prefix web ci
+      - npm --prefix mobile ci
+      - find mobile/node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - cd ../../..
+      - npm --prefix web run build
+      - cd mobile
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json
+      - find node_modules -type f \( -name "*.gradle" -o -name "*.gradle.kts" -o -name
+        "*.kt" \) -exec sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g'
+        -e 's/jvmToolchain(17)/jvmToolchain(21)/g' -e 's/JvmTarget.fromTarget("17")/JvmTarget.fromTarget("21")/g'
+        -e 's/JvmTarget.JVM_17/JvmTarget.JVM_21/g' -e "s/jvmTarget = '17'/jvmTarget = '21'/g" {} +
+      - ARROWLOOP_ENGINE_AFTER_PREBUILD=1 npx expo prebuild -p android --clean
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+      - sed -i -e 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=1024m/'
+        android/gradle.properties
+      - printf '\norg.gradle.workers.max=2\n' >> android/gradle.properties
+    scanignore:
+      - mobile/node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - mobile/node_modules/react-native-pager-view/android/build.gradle
+      - mobile/node_modules/react-native-safe-area-context/android/build.gradle
+      - mobile/node_modules/react-native-screens/android/build.gradle
+      - mobile/node_modules/react-native-svg/android/build.gradle
+      - mobile/node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - mobile/node_modules
+      - web/node_modules
+    build:
+      - cd ../../..
+      - mkdir -p mobile/android/app/src/main/jniLibs/arm64-v8a
+      - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w -X
+        github.com/junkerderprovinz/arrowloop/internal/boot.Version=$$VERSION$$"
+        -o mobile/android/app/src/main/jniLibs/arm64-v8a/libarrowloop.so ./cmd/arrowloop
+    gradleprops:
+      - reactNativeArchitectures=arm64-v8a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: mobile/app.json|"versionCode":\s*(\d+)|.|"version":\s*"([\d.]+)"
+CurrentVersion: 1.5.1
+CurrentVersionCode: 10501
