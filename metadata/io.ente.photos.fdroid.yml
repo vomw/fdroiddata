@@ -7143,14 +7143,10 @@ Builds:
       - ./autogen.sh -s
       - ./dist-build/android-armv7-a.sh
       - ./dist-build/android-armv8-a.sh
-      - ./dist-build/android-x86.sh
-      - ./dist-build/android-x86_64.sh
       - popd
       - flutter_sodium=$(echo .pub-cache/git/flutter_sodium-*/android/src/main/jniLibs)
       - cp $$libsodium$$/libsodium-android-armv7-a/lib/libsodium.so $flutter_sodium/armeabi-v7a/
-      - cp $$libsodium$$/libsodium-android-westmere/lib/libsodium.so $flutter_sodium/x86_64/
       - cp $$libsodium$$/libsodium-android-armv8-a+crypto/lib/libsodium.so $flutter_sodium/arm64-v8a/
-      - cp $$libsodium$$/libsodium-android-i686/lib/libsodium.so $flutter_sodium/x86/
       - pushd $$media-kit-libmpv-android-video-build-preddit$$/buildscripts
       - export PATH=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
       - mkdir sdk
@@ -7167,8 +7163,22 @@ Builds:
         300 /tmp/ente-ffmpeg-kit.log; exit 1; }
       - mv prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar ./flutter/flutter/android/
       - popd
+      - rm -f /tmp/ente-media-kit.log /tmp/ente-ffmpeg-kit.log
       - $$flutter$$/bin/flutter build apk --flavor fdroid -t lib/main.dart --dart-define=cronetHttpNoPlay=true
         --target-platform android-arm,android-arm64
+      - apk=build/app/outputs/flutter-apk/app-fdroid-release.apk
+      - jar tf "$apk" > /tmp/ente-apk-files.txt
+      - grep -q '^lib/armeabi-v7a/' /tmp/ente-apk-files.txt
+      - grep -q '^lib/arm64-v8a/' /tmp/ente-apk-files.txt
+      - if grep -Eq '^lib/(x86|x86_64)/' /tmp/ente-apk-files.txt; then exit 1;
+        fi
+      - sha256sum "$apk" > .fdroid-apk.sha256
+      - mv "$apk" .fdroid-output.apk
+      - rm -rf build
+      - mkdir -p build/app/outputs/flutter-apk
+      - mv .fdroid-output.apk "$apk"
+      - sha256sum -c .fdroid-apk.sha256
+      - rm -f .fdroid-apk.sha256 /tmp/ente-apk-files.txt
     ndk: 28.2.13676358
     antifeatures:
       NonFreeNet:
