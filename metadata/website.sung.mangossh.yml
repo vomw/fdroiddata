@@ -16,9 +16,9 @@ Binaries:
   https://github.com/sunging/MangoSSH/releases/download/v%v/MangoSSH-v%v-fdroid.apk
 
 Builds:
-  - versionName: 0.5.2
-    versionCode: 5002
-    commit: d9f225234d39064fa16adfd88b92f11e4a3a12c3
+  - versionName: 0.5.3
+    versionCode: 5003
+    commit: bb9bc5f2a586bbc5c5cc4a829572a378aa1adbf2
     timeout: 14400
     submodules: true
     sudo:
@@ -39,13 +39,7 @@ Builds:
       - protobuf@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
       - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
       - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
-    prebuild:
-      - sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' settings.gradle.kts
-      - rm -f gradle/gradle-daemon-jvm.properties
-      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
-      - sed -i '/^android {/a\    ndkVersion = "27.3.13750724"' app/build.gradle.kts
-      - sed -i '/environment("ANDROID_SDK_ROOT", androidSdkPath)/a\        environment("JAVA_HOME",
-        System.getProperty("java.home"))' app/build.gradle.kts
+    prebuild: echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
@@ -83,5 +77,5 @@ AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: version-code.txt|^(\d+)$||^v([0-9]+\.[0-9]+\.[0-9]+)$
-CurrentVersion: 0.5.2
-CurrentVersionCode: 5002
+CurrentVersion: 0.5.3
+CurrentVersionCode: 5003
