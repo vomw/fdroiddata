@@ -1,31 +1,6 @@
-# Bozza di metadata per la sottomissione a F-Droid (fdroiddata).
-#
-# QUESTO FILE NON VIENE LETTO DA F-DROID DA QUI: è solo una bozza di
-# lavoro tenuta nel repo dell'app per comodità. Per la sottomissione vera
-# va copiato (con nome invariato) dentro un fork di
-# https://gitlab.com/fdroid/fdroiddata, in metadata/com.hackalendar.hackalendar.yml,
-# e proposto con una merge request — quel passaggio richiede un account
-# GitLab personale e va fatto dall'autore del progetto, non è automatizzabile.
-#
-# Prima di sottomettere (tag v0.1.0 già creato, `commit:` sotto è già il suo
-# hash completo — vedi CONTRIBUTING.md di fdroiddata, il tag da solo non è
-# accettato):
-#  - verificare che il build funzioni localmente con
-#    `fdroid build --verbose com.hackalendar.hackalendar` prima di aprire la
-#    merge request (i reviewer di F-Droid lo richiedono);
-#  - verificare che compileSdk 37 (android/app/build.gradle.kts, richiesto da
-#    receive_sharing_intent) sia disponibile nel build server di F-Droid al
-#    momento della sottomissione: se il server ha un Android SDK meno recente
-#    potrebbe servire un passo `sdkmanager "platforms;android-37"` in più in
-#    `prebuild` (vedi il commento nel blocco Builds sotto) — non verificabile
-#    da qui, va controllato nella issue/MR aprendo una build di prova.
-#
-# Struttura basata sulla ricetta reale e funzionante di un'altra app Flutter
-# già su F-Droid (wger, metadata/de.wger.flutter.yml in fdroiddata), adattata
-# a Hackalendar.
-
 Categories:
-  - Time
+  - Calendar & Agenda
+  - Task
 License: MPL-2.0
 AuthorName: Cristian Rossi
 AuthorEmail: cristian.cmd.r@gmail.com
@@ -38,29 +13,12 @@ RepoType: git
 Repo: https://gitlab.com/Rekcah/hackalendar.git
 
 Builds:
-  - versionName: '0.1.0'
+  - versionName: 0.1.0
     versionCode: 1
-    # Hash completo del commit taggato v0.1.0 (fdroiddata richiede l'hash
-    # pieno qui, mai un tag o un branch — vedi il template di merge request
-    # "App inclusion.md": "The commit field should be the full hash").
     commit: f549716e3ed38e565c8d4e1a4aeb1db76374c503
-    sudo:
-      # android/app/build.gradle.kts richiede esplicitamente JDK 17
-      # (sourceCompatibility/targetCompatibility): il container di build
-      # di F-Droid potrebbe avere di default una versione diversa.
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
-      - update-java-alternatives -a
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      # Versione Flutter usata in sviluppo (vedi `flutter --version`) — va
-      # allineata a quella con cui la versione taggata è stata effettivamente
-      # testata/compilata, non lasciata "stable" generico (build non
-      # riproducibile altrimenti).
       - flutter@3.47.5
-    # L'app è Android-only in pratica (vedi README): questi progetti
-    # piattaforma non sono necessari alla build e vanno rimossi per ridurre
-    # la superficie scansionata/costruita.
     rm:
       - ios
       - linux
@@ -71,29 +29,14 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-      # Se il passo di build fallisce per SDK non trovato, decommentare e
-      # adattare (vedi nota in testa al file):
-      # - export PATH=${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin:${PATH}
-      # - yes | sdkmanager --licenses
-      # - sdkmanager "platforms;android-37"
     scandelete:
       - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk
 
-# Le versioni successive vanno aggiunte come nuove voci nella stessa lista
-# Builds (mai sovrascrivendo quelle esistenti): F-Droid ricostruisce da zero
-# ogni versione taggata, il changelog/le vecchie versioni restano scaricabili.
-
 AutoUpdateMode: Version
-# "Tags": F-Droid controlla i tag git per nuove versioni da proporre in
-# automatico (via un bot che apre una MR) — richiede comunque revisione
-# manuale prima del merge.
 UpdateCheckMode: Tags
-# Estrae versionCode/versionName direttamente da pubspec.yaml (formato
-# "version: X.Y.Z+N" usato da questo progetto), niente da tenere
-# sincronizzato a mano oltre al tag.
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: '0.1.0'
+CurrentVersion: 0.1.0
 CurrentVersionCode: 1
