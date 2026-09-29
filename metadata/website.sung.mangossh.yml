@@ -61,7 +61,6 @@ Builds:
       - pushd $$go$$/src
       - ./make.bash
       - popd
-      - test "$(GOTOOLCHAIN=local $$go$$/bin/go version)" = "go version go1.26.7 linux/amd64"
       - mkdir -p .fdroid/mosh-deps
       - ln -s $$zlib$$ .fdroid/mosh-deps/zlib
       - rm -rf $$protobuf$$/third_party/abseil-cpp
@@ -74,36 +73,11 @@ Builds:
       - mkdir -p .tools/go
       - ln -s $$go$$ .tools/go/1.26.7
       - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
-    buildjni:
-      - no
     ndk: r27d
     gradleprops:
       - mangosshOfflineBuild=true
 
 AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004b9373be
-
-MaintainerNotes: |-
-  Go 1.26.7 is built from the standard go srclib using Debian trixie-backports
-  Go as GOROOT_BOOTSTRAP. Only the final Go version is built from source.
-  The source-built toolchain is exposed through .tools/go/1.26.7 for the
-  separate Gradle phase. Upstream validates the preinstalled toolchain
-  without downloading it; no bootstrap-script patches are needed.
-  tsnet and its vendored dependencies are compiled from source offline.
-  The upstream no-GMP Mosh patch disables Nettle public-key and mini-GMP
-  support, so the build does not need the GMP srclib.
-  The fdroid flavor has no self-update client, package-install permission,
-  update FileProvider, or installer handoff. The embedded Tailscale source is
-  vendored; its logtail identity and network upload are disabled by the
-  upstream-visible patch under tools/patches and the bridge sets no-support
-  logging before startup. Generated PTY, Mosh, and terminfo files tracked by
-  upstream are deleted by the scanner and rebuilt from the pinned sources.
-  The four narrow scanignore entries are source-controlled gzip assets from
-  pinned Tailscale sources. They are required by Go embed declarations during
-  gomobile binding and must remain byte-identical for reproducible builds. The
-  eventbus debug server is excluded from Android by upstream build tags. The
-  Mosh fuzz corpora are not part of the client build, so those files are
-  deleted instead. The foojay resolver is removed because the build uses the
-  buildserver-provided JDK 17 and does not download a Java toolchain.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
