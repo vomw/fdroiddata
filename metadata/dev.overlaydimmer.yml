@@ -14,16 +14,19 @@ RepoType: git
 Repo: https://github.com/MadeinTaly/overlay-dimmer.git
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 4
-    commit: ee36922e6d5443ffa448febece38be77653805c9
+  - versionName: 1.0.2
+    versionCode: 5
+    commit: e7992c3574db7d2743bb8a29d25b579b3fe91d16
     sudo:
       - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless dalvik-exchange aapt zipalign android-sdk-platform-23
+      - apt-get install -y openjdk-21-jdk-headless
     output: build/aligned.apk
-    build: SIGN=0 ./build.sh
+    build:
+      - sdkmanager 'platforms;android-28' 'build-tools;34.0.0'
+      - SIGN=0 ANDROID_JAR=$$SDK$$/platforms/android-28/android.jar BUILD_TOOLS=$$SDK$$/build-tools/34.0.0
+        ./build.sh
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.1
-CurrentVersionCode: 4
+CurrentVersion: 1.0.2
+CurrentVersionCode: 5
