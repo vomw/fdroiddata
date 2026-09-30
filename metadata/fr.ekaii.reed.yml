@@ -1,0 +1,59 @@
+# Reed is built reproducibly and signed by the developer; F-Droid ships that signed APK
+# (Binaries + AllowedAPKSigningKeys) only when its own rebuild reproduces it bit for bit.
+Categories:
+  - Internet
+  - Security
+License: MPL-2.0
+AuthorName: ekaii
+AuthorEmail: security@ekaii.fr
+WebSite: https://reed.ekaii.fr
+SourceCode: https://forgejo.ekaii.fr/exo/reed
+IssueTracker: https://forgejo.ekaii.fr/exo/reed/issues
+Changelog: https://forgejo.ekaii.fr/exo/reed/releases
+AutoName: Reed
+Summary: Anonymous, end-to-end encrypted messenger
+Description: |-
+  Reed is an anonymous, end-to-end encrypted messenger with one audited core on every platform.
+  No phone number, no account, no address book upload. Messages travel as ciphertext through a
+  relay you can host yourself; the relay stores ciphertext for at most seven days and keeps client
+  addresses in memory only for rate limiting. Post-quantum key agreement, forward secrecy, and a
+  recovery phrase instead of a server-side identity.
+
+  This build uses UnifiedPush for content-free wake-ups (install a distributor such as ntfy or
+  Sunup) and contains no Google code. It is signed by the developer; F-Droid publishes it when
+  its own rebuild reproduces the same bytes.
+
+RepoType: git
+Repo: https://forgejo.ekaii.fr/exo/reed.git
+
+Binaries: https://forgejo.ekaii.fr/exo/reed/releases/download/v%v/reed-v%v-universal.apk
+
+Builds:
+  - versionName: 0.3.0
+    versionCode: 6
+    commit: v0.3.0
+    subdir: apps/android
+    timeout: 14400
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup
+    gradle:
+      - foss
+    output: app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+    prebuild:
+      - export CARGO_HOME=$HOME/.cargo RUSTUP_HOME=$HOME/.rustup
+      - rustup default 1.97.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    build:
+      - export CARGO_HOME=$HOME/.cargo RUSTUP_HOME=$HOME/.rustup
+      - export ANDROID_HOME=$$SDK$$ ANDROID_NDK_HOME=$$NDK$$
+      - cd ../.. && cargo install --locked cargo-ndk --version 4.1.2
+      - cd ../.. && cargo xtask android --release-repro --abis arm64-v8a,armeabi-v7a --no-kotlin
+    ndk: r27c
+
+AllowedAPKSigningKeys: 52c1d0ef5f1ca2ab8baa3c21fbf14240b9088d2a3e734b05b79e86b5f5ed5d2c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 0.3.0
+CurrentVersionCode: 6
