@@ -14,24 +14,14 @@ RepoType: git
 Repo: https://github.com/junkerderprovinz/arrowloop.git
 
 Builds:
-  - versionName: 1.5.1
-    versionCode: 10501
-    commit: d4b2f0144bdf117a6025199cf006a42dd1a98b01
+  - versionName: 1.5.2
+    versionCode: 10502
+    commit: 52f32c8974258cb47eaa5962614bfc561bb0fc79
     subdir: mobile/android/app
     sudo:
       - apt-get update
-      - apt-get install -y --no-install-recommends xz-utils
-      - curl -Lo /tmp/node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
-      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  /tmp/node.tar.xz"
-        | sha256sum -c -
-      - tar -xJf /tmp/node.tar.xz -C /opt
-      - ln -s /opt/node-v24.21.0-linux-x64/bin/node /opt/node-v24.21.0-linux-x64/bin/npm
-        /opt/node-v24.21.0-linux-x64/bin/npx /usr/local/bin/
-      - curl -Lo /tmp/go.tar.gz https://go.dev/dl/go1.27.1.linux-amd64.tar.gz
-      - echo "63d339f0da5ab53635a56f2490a7984dfe12dfcff22ad749f63edaf590168445  /tmp/go.tar.gz"
-        | sha256sum -c -
-      - tar -xzf /tmp/go.tar.gz -C /opt
-      - ln -s /opt/go/bin/go /usr/local/bin/go
+      - apt-get install -y nodejs npm
+      - apt-get install -y -t trixie-backports golang-1.27-go
     init:
       - cd ../../..
       - npm --prefix web ci
@@ -71,14 +61,14 @@ Builds:
     build:
       - cd ../../..
       - mkdir -p mobile/android/app/src/main/jniLibs/arm64-v8a
-      - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w -X
-        github.com/junkerderprovinz/arrowloop/internal/boot.Version=$$VERSION$$" -o
-        mobile/android/app/src/main/jniLibs/arm64-v8a/libarrowloop.so ./cmd/arrowloop
+      - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 /usr/lib/go-1.27/bin/go build -trimpath
+        -ldflags="-s -w -X github.com/junkerderprovinz/arrowloop/internal/boot.Version=$$VERSION$$"
+        -o mobile/android/app/src/main/jniLibs/arm64-v8a/libarrowloop.so ./cmd/arrowloop
     gradleprops:
       - reactNativeArchitectures=arm64-v8a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: mobile/app.json|"versionCode":\s*(\d+)|.|"version":\s*"([\d.]+)"
-CurrentVersion: 1.5.1
-CurrentVersionCode: 10501
+CurrentVersion: 1.5.2
+CurrentVersionCode: 10502
