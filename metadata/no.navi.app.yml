@@ -36,23 +36,35 @@ Builds:
     prebuild:
       - rustup default 1.88.0
       - rustup target add aarch64-linux-android x86_64-linux-android
-      - "export PATH=\"$HOME/.cargo/bin:$PATH\"\nNDK=\"$$NDK$$\"\ntest -n \"$NDK\"\
-        \ && test -d \"$NDK\"\nCLANG_PRE=\"$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin\"\
-        \nmkdir -p ../.cargo\nprintf '%s\\n' \\\n  '[target.x86_64-linux-android]'
-        \\\n  \"linker = \\\"$CLANG_PRE/x86_64-linux-android34-clang\\\"\" \\\n  'rustflags
-        = [\"-C\", \"link-arg=-lc++_shared\"]' \\\n  '' \\\n  '[target.aarch64-linux-android]'
-        \\\n  \"linker = \\\"$CLANG_PRE/aarch64-linux-android34-clang\\\"\" \\\n \
-        \ 'rustflags = [\"-C\", \"link-arg=-lc++_shared\"]' \\\n  > ../.cargo/config.toml\n
-        rm -f ../app/src/main/jniLibs/*/libnavi.so\nprintf 'sdk.dir=%s\\nndk.dir=%s\\\
-        n' \"$$SDK$$\" \"$$NDK$$\" > ../local.properties\n"
-    build: "export PATH=\"$HOME/.cargo/bin:$PATH\"\ncommand -v cargo\nexport ANDROID_NDK_HOME=\"\
-      $$NDK$$\"\nexport ANDROID_HOME=\"$$SDK$$\"\nif ! [[ \"${SOURCE_DATE_EPOCH:-}\"\
-      \ =~ ^[0-9]+$ ]]; then\n  export SOURCE_DATE_EPOCH=\"$(git -C .. log -1 --pretty=%ct)\"\
-      \nfi\ntest ! -e ../app/src/main/jniLibs/arm64-v8a/libnavi.so\ntest ! -e ../app/src/main/jniLibs/x86_64/libnavi.so\n
-      ../scripts/build-android-native.sh aarch64-linux-android release\n../scripts/build-android-native.sh
-      x86_64-linux-android release\ntest -f ../app/src/main/jniLibs/arm64-v8a/libnavi.so\n
-      test -f ../app/src/main/jniLibs/x86_64/libnavi.so\nsha256sum ../app/src/main/jniLibs/arm64-v8a/libnavi.so
-      \\\n  ../app/src/main/jniLibs/x86_64/libnavi.so\ngradle assembleRelease\n"
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - NDK="$$NDK$$"
+      - test -n "$NDK"
+      - test -d "$NDK"
+      - CLANG_PRE="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
+      - mkdir -p ../.cargo
+      - echo '[target.x86_64-linux-android]' > ../.cargo/config.toml
+      - echo "linker = \"$CLANG_PRE/x86_64-linux-android34-clang\"" >> ../.cargo/config.toml
+      - echo 'rustflags = ["-C", "link-arg=-lc++_shared"]' >> ../.cargo/config.toml
+      - echo '[target.aarch64-linux-android]' >> ../.cargo/config.toml
+      - echo "linker = \"$CLANG_PRE/aarch64-linux-android34-clang\"" >> ../.cargo/config.toml
+      - echo 'rustflags = ["-C", "link-arg=-lc++_shared"]' >> ../.cargo/config.toml
+      - rm -f ../app/src/main/jniLibs/*/libnavi.so
+      - printf 'sdk.dir=%s\nndk.dir=%s\n' "$$SDK$$" "$$NDK$$" > ../local.properties
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - command -v cargo
+      - export ANDROID_NDK_HOME="$$NDK$$"
+      - export ANDROID_HOME="$$SDK$$"
+      - if ! [[ "${SOURCE_DATE_EPOCH:-}" =~ ^[0-9]+$ ]]; then export SOURCE_DATE_EPOCH="$(git
+        -C .. log -1 --pretty=%ct)"; fi
+      - test ! -e ../app/src/main/jniLibs/arm64-v8a/libnavi.so
+      - test ! -e ../app/src/main/jniLibs/x86_64/libnavi.so
+      - ../scripts/build-android-native.sh aarch64-linux-android release
+      - ../scripts/build-android-native.sh x86_64-linux-android release
+      - test -f ../app/src/main/jniLibs/arm64-v8a/libnavi.so
+      - test -f ../app/src/main/jniLibs/x86_64/libnavi.so
+      - sha256sum ../app/src/main/jniLibs/arm64-v8a/libnavi.so ../app/src/main/jniLibs/x86_64/libnavi.so
+      - gradle assembleRelease
     ndk: r27c
 
 MaintainerNotes: |
