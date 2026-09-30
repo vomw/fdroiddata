@@ -36,7 +36,8 @@ Builds:
       - cd ../../..
       - npm --prefix web ci
       - npm --prefix mobile ci
-      - find mobile/node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+      - find mobile/node_modules -type d -name local-maven-repo -prune -exec rm -rf
+        {} +
     gradle:
       - yes
     output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
@@ -49,7 +50,8 @@ Builds:
       - find node_modules -type f \( -name "*.gradle" -o -name "*.gradle.kts" -o -name
         "*.kt" \) -exec sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g'
         -e 's/jvmToolchain(17)/jvmToolchain(21)/g' -e 's/JvmTarget.fromTarget("17")/JvmTarget.fromTarget("21")/g'
-        -e 's/JvmTarget.JVM_17/JvmTarget.JVM_21/g' -e "s/jvmTarget = '17'/jvmTarget = '21'/g" {} +
+        -e 's/JvmTarget.JVM_17/JvmTarget.JVM_21/g' -e "s/jvmTarget = '17'/jvmTarget
+        = '21'/g" {} +
       - ARROWLOOP_ENGINE_AFTER_PREBUILD=1 npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - sed -i -e 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=1024m/'
@@ -70,8 +72,8 @@ Builds:
       - cd ../../..
       - mkdir -p mobile/android/app/src/main/jniLibs/arm64-v8a
       - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w -X
-        github.com/junkerderprovinz/arrowloop/internal/boot.Version=$$VERSION$$"
-        -o mobile/android/app/src/main/jniLibs/arm64-v8a/libarrowloop.so ./cmd/arrowloop
+        github.com/junkerderprovinz/arrowloop/internal/boot.Version=$$VERSION$$" -o
+        mobile/android/app/src/main/jniLibs/arm64-v8a/libarrowloop.so ./cmd/arrowloop
     gradleprops:
       - reactNativeArchitectures=arm64-v8a
 
