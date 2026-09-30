@@ -13,19 +13,20 @@ RepoType: git
 Repo: https://gitlab.com/DaWasch/rechenzettel-app.git
 
 Builds:
-  - versionName: 0.1.32
-    versionCode: 32
-    commit: 673aafdf2c6be1887497460845697a489429b74b
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 0.1.36
+    versionCode: 36
+    commit: be1cdeeb3d179bd99cc94bfde204b4ef87e55297
     sudo:
       - mkdir -p /builds/DaWasch
       - chown -R vagrant /builds
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     rm:
       - ios
     prebuild:
-      - flutterVersion=$(sed -n -E "s/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*(.*)$/\1/p" .gitlab-ci.yml)
+      - flutterVersion=$(sed -n -E "s/^[[:space:]]*FLUTTER_VERSION:[[:space:]]*(.*)$/\1/p"
+        .gitlab-ci.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export repo=/builds/DaWasch/rechenzettel-app
@@ -52,5 +53,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 0.1.32
-CurrentVersionCode: 32
+CurrentVersion: 0.1.36
+CurrentVersionCode: 36
