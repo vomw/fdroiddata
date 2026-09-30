@@ -10,9 +10,9 @@ RepoType: git
 Repo: https://forge.apps.education.fr/gaoblazelite/appligaoblazelite.git
 
 Builds:
-  - versionName: 2.4.1
-    versionCode: 8
-    commit: 763c35391bb156520575b9e31d8da6124212925c
+  - versionName: 2.4.2
+    versionCode: 9
+    commit: 79e12acb529d8e9831eb203ec54c1eb3a0af600b
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -35,6 +35,7 @@ Builds:
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
       - EXPO_NO_TELEMETRY=1 EXPO_NO_DOTENV=1 CI=1 NODE_ENV=production node_modules/.bin/expo
         prebuild --platform android --no-install
+      - node scripts/clean-generated-react-assets.cjs
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - printf '%s\n' '' org.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64 'org.gradle.jvmargs=-Xmx4096m
         -XX:MaxMetaspaceSize=1536m' org.gradle.workers.max=4 org.gradle.daemon=false
@@ -57,6 +58,7 @@ Builds:
     gradleprops:
       - android.enableMinifyInReleaseBuilds=true
       - android.enableShrinkResourcesInReleaseBuilds=true
+      - expo.useLegacyPackaging=true
       - reactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64
 
 MaintainerNotes: |-
@@ -65,7 +67,13 @@ MaintainerNotes: |-
   expo-camera scanner sources and ML Kit dependencies removed via a versioned patch.
   Barcode scanning is not used by the game. Expo OTA disabled for this build channel.
   Source scanner exceptions must be reviewed individually; none are blanket-ignored.
-  Release pinned to the tagged source commit; R8 and resource shrinking enabled.
+  Release pinned to the source commit; R8 and resource shrinking enabled.
+  Native libraries compressed; all three configured ABIs retained in one APK.
+  Game media downloads are opt-in, SHA-256 checked and stored persistently offline.
+  Media URLs point to immutable commit 763c353 in this same source repository.
+  Only PNG/GIF/OGG/MP4 content is downloaded; no code or executable updates.
+  Android video uses the existing system WebView; no extra playback dependency.
+  All six subtitle languages are preserved; Expo Video remains on iOS/web only.
   Local Maven exceptions point to free libraries; Hermes is an MIT build tool only.
   Android app placeholder allows subdir lookup before Expo generates native sources.
   Candidate config is forced in this recipe to keep OTA disabled during JS bundling.
@@ -73,5 +81,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: None
 UpdateCheckMode: None
-CurrentVersion: 2.4.1
-CurrentVersionCode: 8
+CurrentVersion: 2.4.2
+CurrentVersionCode: 9
