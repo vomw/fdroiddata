@@ -21,16 +21,14 @@ Builds:
     subdir: android/app
     sudo:
       - apt-get update
-      - apt-get install -y curl
+      - apt-get install -y rustup
     gradle:
       - yes
-    srclibs:
-      - rustup@1.29.1
     prebuild:
-      - $$rustup$$/rustup-init.sh -y --no-modify-path --profile minimal --default-toolchain
-        1.98.1 --target aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
-      - $HOME/.cargo/bin/cargo install cargo-ndk --version 4.1.2 --locked
-      - cd ../../core && $HOME/.cargo/bin/cargo fetch --locked
+      - rustup toolchain install 1.98.1 --profile minimal --target aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
+      - rustup default 1.98.1
+      - cargo install cargo-ndk --version 4.1.2 --locked
+      - cd ../../core && cargo fetch --locked
     ndk: 27.2.12479018
     gradleprops:
       - vigil.unsignedRelease=true
