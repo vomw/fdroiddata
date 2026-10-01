@@ -38,6 +38,7 @@ variables:
   - export PYTHONUNBUFFERED=true
   # avoid error from the env var in config.yml
   - export serverwebroot=/tmp
+  - mkdir -p $serverwebroot/repo/status  # suppress status deploy error messages
 
 .install_fdroid_server_deb: &install_fdroid_server_deb
   - apt-get --allow-releaseinfo-change update
@@ -350,6 +351,7 @@ fdroid build:
   artifacts:
     name: "${CI_PROJECT_PATH}_${CI_JOB_STAGE}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}"
     paths:
+      - build/
       - repo/
       - unsigned/
       - tmp/
@@ -862,6 +864,9 @@ PUBLISH:
           - config.yml
           - config/*.yml
           - config/*/*.yml
+  needs:
+    - job: fdroid update
+      optional: true
   script:
     - apt-get update
     - apt-get -qy upgrade
@@ -890,13 +895,75 @@ PUBLISH:
         $CI_PROJECT_DIR/unsigned/info.guardianproject.urzip_100.apk
     - cp $fdroidserver/tests/metadata/info.guardianproject.urzip.yml
         $CI_PROJECT_DIR/metadata/
+    # Move unsigned indexes from "fdroid update" job elsewhere to
+    # simulate the signpkg.sh stage, which just signs APKs.
+    - |
+      if ls repo/index*.* repo/entry*.*; then
+          tmpdir=$(mktemp -d)
+          mv repo/index*.* repo/entry*.* $tmpdir/
+      fi
 
     # run signpkg.sh
     - fdroid publish --verbose
     - fdroid gpgsign --verbose
     - rsync --progress repo/* $serverwebroot/
 
+    # Move unsigned indexes from "fdroid update" back into place to
+    # emulate the signindex.sh stage, which just signs index files.
+    - test -n "$tmpdir" && mv $tmpdir/*.* repo/
+    - ls -l repo || true
+
     # run signindex.sh
     - fdroid gpgsign --verbose
     - fdroid signindex --verbose
     - rsync --stats repo/* $serverwebroot/
+
+
+# Simulate production run of `fdroid update`.
+fdroid update:
+  image: debian:bookworm-slim
+  stage: test
+  needs:
+    - job: fdroid build
+      optional: true
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - config.yml
+        - config/*.yml
+        - config/*/*.yml
+        - metadata/**/*
+        - srclibs/**/*
+  artifacts:
+    name: "${CI_PROJECT_PATH}_${CI_JOB_STAGE}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}"
+    paths:
+      - "*/entry*.*"
+      - "*/index*.*"
+      - repo/
+      - unsigned/
+    when: always
+  before_script:
+    - echo "deb http://deb.debian.org/debian/ bookworm-backports main"
+        >> /etc/apt/sources.list.d/backports.list
+    - apt-get update
+    - apt-get -qy dist-upgrade
+    - apt-get -qy install --no-install-recommends -t bookworm-backports curl fdroidserver git
+    - export fdroidserver=$CI_PROJECT_DIR/fdroidserver
+    - *install_fdroid_server
+  script:
+    - *set_up_test_keystore
+    # When "fdroid build" uses --test, then APKs end up in tmp/.
+    # "fdroid publish" signs APKs from unsigned/.
+    - mkdir -p $CI_PROJECT_DIR/unsigned
+    - for f in tmp/*.apk; do test -f $f || continue; echo $f; mv -i $f unsigned/; done
+    - fdroid publish --verbose
+    - |
+      if ls repo/*.apk; then
+          echo 'Using APK(s) from "fdroid build" job'
+      else
+          echo 'Using test APK(s) from fdroidserver'
+          cp --no-clobber $fdroidserver/tests/metadata/*.yml metadata/
+          cp --no-clobber $fdroidserver/tests/repo/*.apk repo/
+      fi
+    - test -d build && ls -l build/
+    - fdroid update --pretty --nosign
