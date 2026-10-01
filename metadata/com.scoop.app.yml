@@ -1,0 +1,44 @@
+Categories:
+  - Download
+License: GPL-3.0-only
+AuthorName: Vaibhav Sen
+WebSite: https://vabxsen.github.io/Scoop/
+SourceCode: https://github.com/vabxsen/Scoop
+IssueTracker: https://github.com/vabxsen/Scoop/issues
+Changelog: https://github.com/vabxsen/Scoop/releases
+
+AutoName: Scoop
+
+RepoType: git
+Repo: https://github.com/vabxsen/Scoop.git
+
+Builds:
+  - versionName: 1.2.8
+    versionCode: 29
+    commit: f30ffeb82398c534eaacf8f2d5445aefe8d94884
+    subdir: android
+    patch:
+      - fdroid-variant.patch
+    gradle:
+      - fdroid
+    output: app/build/outputs/apk/fdroid/app-fdroid-unsigned.apk
+    scanignore:
+      - android/app/src/main/assets/gallery/runtime.zip
+
+MaintainerNotes: |-
+  The fdroid variant disables Scoop's GitHub APK updater and yt-dlp self-update,
+  and removes REQUEST_INSTALL_PACKAGES. Media extraction and image, video, and
+  audio downloads remain available.
+
+  android/app/src/main/assets/gallery/runtime.zip contains pure-Python packages.
+  It is generated deterministically by android/scripts/bundle_gallery.py from
+  the hash-pinned FLOSS PyPI wheels listed in
+  android/scripts/gallery-packages.json. It contains no native executables.
+
+  AutoUpdateMode is intentionally disabled because each new build block must use
+  a refreshed downstream patch until the fdroid variant is maintained upstream.
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.2.8
+CurrentVersionCode: 29
