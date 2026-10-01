@@ -14,9 +14,9 @@ RepoType: git
 Repo: https://github.com/junkerderprovinz/knightloader.git
 
 Builds:
-  - versionName: 1.6.0
-    versionCode: 10600
-    commit: c70b5ea714299a9f3b10ca75fafa683ad4659896
+  - versionName: 1.6.1
+    versionCode: 10601
+    commit: 1438d8a867d5bad4434b7b05a6365620a60da92b
     subdir: mobile/android/app
     sudo:
       - apt-get update
@@ -31,7 +31,7 @@ Builds:
     prebuild:
       - cd ../..
       - node -e 'const fs = require("fs"); const p = JSON.parse(fs.readFileSync("package.json"));
-        p.expo.autolinking.android.buildFromSource = [".*"]; fs.writeFileSync("package.json",
+        p.expo = {autolinking:{android:{buildFromSource:[".*"]}}}; fs.writeFileSync("package.json",
         JSON.stringify(p, null, 2))'
       - find node_modules -type f \( -name "*.gradle" -o -name "*.gradle.kts" -o -name
         "*.kt" \) -exec sed -i -e 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g'
@@ -58,5 +58,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: mobile/app.json|"versionCode":\s*(\d+)|.|"version":\s*"([\d.]+)"
-CurrentVersion: 1.6.0
-CurrentVersionCode: 10600
+CurrentVersion: 1.6.1
+CurrentVersionCode: 10601
