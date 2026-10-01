@@ -8,12 +8,12 @@ AutoUpdateMode: Version %v
 UpdateCheckMode: Tags
 
 RepoType: git
-Repo: https://gitlab.com/sandrinococo/bikeye.git
+Repo: https://gitlab.com/sandrinococo/bikeye
 
 Builds:
-  - versionName: 1.0.0-alpha
+  - versionName: 1.0.0
     versionCode: 1
-    commit: v.1.0.alpha
+    commit: v.1.0
     subdir: app
-    gradle:
-      - yes
+    script:
+      - bash tool\build.sh -Environment PROD -Release
