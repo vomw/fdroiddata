@@ -1,0 +1,30 @@
+Categories:
+  - Inventory
+License: AGPL-3.0-only
+AuthorName: ankek
+SourceCode: https://github.com/ankek/household-objects-android
+IssueTracker: https://github.com/ankek/household-objects-android/issues
+Changelog: https://github.com/ankek/household-objects-android/releases
+
+AutoName: HHO
+
+RepoType: git
+Repo: https://github.com/ankek/household-objects-android.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: android-app/app
+    gradle:
+      - foss
+    rm:
+      - android-app/app/src/gms
+      - android-app/app/src/testGms
+    prebuild: sed -i -e '/mlkit/d' build.gradle.kts ../gradle/libs.versions.toml
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: android-app/app/build.gradle.kts|versionCode\s*=\s*(\d+)|.|ClientVersion\.validate\("([^"]+)"\)
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
