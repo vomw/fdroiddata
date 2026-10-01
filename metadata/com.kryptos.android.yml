@@ -1,0 +1,196 @@
+Categories:
+  - Messaging
+  - Text Encryption
+License: AGPL-3.0-only
+AuthorName: datakeeper
+AuthorEmail: datakeepers@proton.me
+WebSite: https://datakeeper.pages.dev/kryptos
+SourceCode: https://github.com/swisslite/Kryptos
+IssueTracker: https://github.com/swisslite/Kryptos/issues
+Changelog: https://github.com/swisslite/Kryptos/releases
+Donate: https://datakeeper.pages.dev/kryptos/donate
+Bitcoin: bc1qwsnex9q5ux88fnt93udn2xmf8752mnx4km2rvm
+
+AutoName: Kryptos
+
+RepoType: git
+Repo: https://github.com/swisslite/Kryptos.git
+Binaries: https://github.com/swisslite/Kryptos/releases/download/v%v/Kryptos.apk
+
+Builds:
+  - versionName: 2.1.1
+    versionCode: 6
+    commit: e744c2a73a0049a52e7c8cd8d67b24e9af8ed746
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 26.1.10909125
+
+  - versionName: '2.3'
+    versionCode: 8
+    commit: 46c3eb61c382caa5de53dea5b64c49594e040050
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 26.1.10909125
+
+  - versionName: 2.3.1
+    versionCode: 9
+    commit: 66bcc87fc1aaca95a1b20d548cb57905d85dea52
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 26.1.10909125
+
+  - versionName: 2.3.2
+    versionCode: 10
+    commit: 5e76a7579d3cebd50361c8d4b803656adf51e0c5
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 26.1.10909125
+
+  - versionName: 2.3.3
+    versionCode: 11
+    commit: 57cf890189588163a8a0af9d032b4499feeae84e
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 26.1.10909125
+
+  - versionName: '2.4'
+    versionCode: 13
+    commit: f87569344dad3c374dc8bc27954b63dcb564e2ec
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake build-essential clang libclang-dev
+      - apt-get install -y protobuf-compiler libprotobuf-dev
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - sed -i 's/ndkVersion = "30.0.16248370"/ndkVersion = "28.0.13004108"/' android/app/build.gradle.kts
+        android/libsignal/build.gradle.kts
+      - ./scripts/setup-libsignal.sh
+      - cd ThirdParty/libsignal
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - ThirdParty/ObjectivePGP
+      - ThirdParty/libsignal/rust/attest/fuzz/seeds
+    build:
+      - export PROTOC=/usr/bin/protoc
+      - cd ../../ThirdParty/libsignal
+      - export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+      - export CFLAGS="-ffile-prefix-map=$PWD=."
+      - export CXXFLAGS="-ffile-prefix-map=$PWD=."
+      - export RUSTFLAGS="-C link-arg=-Wl,--build-id=none"
+      - ./java/build_jni.sh android-arm64 android-arm
+    ndk: 28.0.13004108
+
+AllowedAPKSigningKeys: 6470246992edc4a44478d40cb84fcb2bb08138162794c4ae951f5d4b8faf8e54
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '2.4'
+CurrentVersionCode: 13
