@@ -34,6 +34,24 @@ Builds:
       - scripts/fdroid/build-wasm.sh
       - npm run build
       - node scripts/fdroid/cap-sync.cjs sync android
+  - versionName: '1.8'
+    versionCode: 10800
+    commit: 438f412c164cc188d3a5656851c4d7254c059375
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends python3 make patch gcc libc6-dev
+        curl unzip pkg-config libatomic1 perl libdigest-sha3-perl xz-utils bzip2 cmake
+        ragel libtool libtool-bin itstool python3-ply gettext autopoint automake autoconf
+        m4 gperf licensecheck gawk nodejs npm
+    gradle:
+      - yes
+    build:
+      - cd ../..
+      - npm ci
+      - scripts/fdroid/build-wasm.sh
+      - npm run build
+      - node scripts/fdroid/cap-sync.cjs sync android
 
 AllowedAPKSigningKeys: 764e7ec37f86865288d4826095d4c649010d911653fd00ba016e037e5a663261
 
@@ -41,5 +59,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^fdroid-
 UpdateCheckData: android/app/build.gradle|fdroidVersionCode = (\d+)|.|versionName
   "(.*)"
-CurrentVersion: '1.7'
-CurrentVersionCode: 10700
+CurrentVersion: '1.8'
+CurrentVersionCode: 10800
