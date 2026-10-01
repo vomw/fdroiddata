@@ -119,10 +119,27 @@ Builds:
     postbuild: $$reproducible-apk-tools$$/inplace-fix.py --page-size 16 fix-newlines
       '$$OUT$$' 'META-INF/services/*'
 
+  - versionName: 7.8.0
+    versionCode: 7080001
+    commit: b617e7009e8cd9aa2832cfdf674a7800cf21e5a1
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - other
+    prebuild:
+      - sed -i -e '/implementation/d' ../flavor-google/build.gradle.kts
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+      - sed -i -e '/GoogleServices/,+5d' build.gradle.kts
+
 AllowedAPKSigningKeys: efa5cfcab9669ddc2535bb40c8470395db587e8bff5a7adfcddd8e2266f159f0
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9\.]+$
 UpdateCheckData: gradle/libs.versions.toml|versionCode\s=\s"(\d+)"|.|versionName\s=\s"(.+)"
-CurrentVersion: 7.7.0
-CurrentVersionCode: 7070000
+CurrentVersion: 7.8.0
+CurrentVersionCode: 7080001
