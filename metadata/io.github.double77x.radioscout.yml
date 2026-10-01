@@ -11,19 +11,19 @@ Changelog:
 RepoType: git
 Repo: https://github.com/Double77x/radioscout.git
 Binaries: 
-  https://github.com/Double77x/radioscout/releases/download/fdroid-reference-0.3.6-306/radioscout-fdroid-0.3.6-306.apk
+  https://github.com/Double77x/radioscout/releases/download/fdroid-reference-0.3.7-307/radioscout-fdroid-0.3.7-307.apk
 
 Builds:
-  - versionName: 0.3.6
-    versionCode: 306
-    commit: 2e022f5093fc48e4fb8410df394f47d40773a2b5
+  - versionName: 0.3.7
+    versionCode: 307
+    commit: 9e43f1edaeee4220f97b2a3c806579eac61bd34d
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > 
         /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
-      - npm install --global pnpm@10.34.5
+      - npm install --global pnpm@12.8.1
     gradle:
       - yes
     build:
@@ -31,7 +31,7 @@ Builds:
       - export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
       - export TZ=UTC
       - pnpm install --frozen-lockfile
-      - VITE_DISTRIBUTION=fdroid pnpm build
+      - VITE_DISTRIBUTION=fdroid pnpm exec vp run build
       - node scripts/normalize-ssr-timestamps.mjs dist/client
       - mv capacitor.config.ts capacitor.config.ts.fdroid
       - node -e "const 
@@ -55,10 +55,10 @@ MaintainerNotes: |-
   remains the only update channel for this build.
 
   The signed F-Droid reference APK is published from the source repository's
-  fdroid-reference-0.3.6-306 release and is used for reproducible-build
+  fdroid-reference-0.3.7-307 release and is used for reproducible-build
   verification.
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
-CurrentVersion: 0.3.6
-CurrentVersionCode: 306
+CurrentVersion: 0.3.7
+CurrentVersionCode: 307
