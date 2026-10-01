@@ -306,9 +306,29 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 3.0.0
+    versionCode: 30000
+    commit: eb4b240f554837a6607099ef9a3815a55c7b6090
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/jvmToolchain/s/17/21/' ../*/build.gradle.kts
+
+  - versionName: 3.0.2
+    versionCode: 30002
+    commit: 9141c99d2f83e029de625bf613efd71fab0ca5d2
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e '/jvmToolchain/s/17/21/' ../*/build.gradle.kts
+
 AutoUpdateMode: Version %v
 UpdateCheckMode: HTTP
 UpdateCheckData: 
   https://api.github.com/repos/rosuH/EasyWatermark/releases/latest|EasyWatermark-[\d.]+-(\d+)-signed.apk|.|EasyWatermark-([\d.]+)-\d+-signed.apk
-CurrentVersion: 2.10.0
-CurrentVersionCode: 21000
+CurrentVersion: 3.0.2
+CurrentVersionCode: 30002

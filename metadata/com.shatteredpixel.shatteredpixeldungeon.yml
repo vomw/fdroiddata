@@ -8,26 +8,6 @@ Translation: https://explore.transifex.com/shattered-pixel/shattered-pixel-dunge
 Donate: https://www.patreon.com/ShatteredPixel
 
 AutoName: Shattered Pixel Dungeon
-Description: |-
-  <b>NOTE:</b> This release of Shattered Pixel Dungeon is not maintained or supported by the original developer. It may receive updates on a delay, and is not compatible with official updates. The developer recommends that you download Shattered Pixel Dungeon from an official channel, such as its Github releases page: https://github.com/00-Evan/shattered-pixel-dungeon/releases
-
-  <b>Shattered Pixel Dungeon</b> is a traditional roguelike dungeon crawler RPG that's simple to get into but hard to master! Every game is a unique challenge, with five different heroes, randomized levels and enemies, and hundreds of items to collect and use. ShatteredPD is also updated once every two or three months, so there's always something new.
-
-  <b>Choose Your Hero</b>
-
-  Each of ShatteredPD's five playable heroes has their own unique mechanics and gameplay style. Cut down foes as the durable Warrior or deadly Duelist, fry your enemies as the arcane Mage, or use terrain to your advantage as the stealthy Rogue or the markswoman Huntress!
-
-  <b>Explore the Dungeon</b>
-
-  ShatteredPD's dungeon is procedurally generated with random layouts, room types, items, traps, and enemies. In each game you'll find equipment and collect or craft consumable items to power you up or help you out in a pinch. There is a huge variety to what you might see from run to run and region to region.
-
-  <b>Succeed or Die Trying</b>
-
-  The Dungeon is filled with enemies, traps, hazards, and bosses intent on ending your run! Battle hostile wildlife in the sewers and caves, mad thieves and guards in the prison, occult servants in the fallen dwarven city, and maybe something even worse further down...
-
-  <b>A Decade in the Making</b>
-
-  ShatteredPD is based on the open source code of Pixel Dungeon by Watabou (first released in late 2012). It started in 2014 as a project to rebalance Pixel Dungeon but has steadily grown into its own game over the last 8 years! https://f-droid.org/packages/com.watabou.pixeldungeon
 
 RepoType: git
 Repo: https://github.com/00-Evan/shattered-pixel-dungeon
@@ -1564,8 +1544,52 @@ Builds:
       - ios
     prebuild: sed -i -e '/ios/d' -e '/desktop/d' ../settings.gradle
 
+  - versionName: 4.0.0
+    versionCode: 911
+    commit: b959535378274404d1609118250a69fa24e53319
+    subdir: android
+    gradle:
+      - yes
+    rm:
+      - desktop
+      - ios
+    prebuild:
+      - sed -i -e '/ios/d' -e '/desktop/d' ../settings.gradle
+      - sed -i -e 's/appVersionCode = .*/appVersionCode = $$VERCODE$$/' ../build.gradle
+
+  - versionName: 4.0.0
+    versionCode: 912
+    commit: b959535378274404d1609118250a69fa24e53319
+    subdir: android
+    gradle:
+      - yes
+    binary: 
+      https://github.com/00-Evan/shattered-pixel-dungeon/releases/download/v%v/ShatteredPD-v%v-Android.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.2
+    rm:
+      - desktop
+      - ios
+    prebuild: sed -i -e '/ios/d' -e '/desktop/d' ../settings.gradle
+    postbuild:
+      - $$reproducible-apk-tools$$/inplace-fix.py fix-newlines "$$OUT$$" 'assets/gdx/*.atlas'
+        'assets/gdx/*.json' 'assets/messages/actors/*.properties' 'assets/messages/items/*.properties'
+        'assets/messages/journal/*.properties' 'assets/messages/levels/*.properties'
+        'assets/messages/misc/*.properties' 'assets/messages/plants/*.properties'
+        'assets/messages/scenes/*.properties' 'assets/messages/ui/*.properties' 'assets/messages/windows/*.properties'
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys:
+  - 92a8d7a96447565aed749b12b03251842d65a7354ba67dc2443f4224d772f61c
+  - d45f760b89608b4b253a3b160dc2707f1ff4e8dd8ca4d2e8e1b81c2c72d81753
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v.*$
+VercodeOperation:
+  - '%c - 1'
+  - '%c'
 UpdateCheckData: build.gradle|appVersionCode = (\d+)|.|appVersionName = ['"](.*)['"]
-CurrentVersion: 3.3.8
-CurrentVersionCode: 896
+CurrentVersion: 4.0.0
+CurrentVersionCode: 912
