@@ -1,0 +1,33 @@
+Categories:
+  - Internet
+  - Multimedia
+  - System
+License: MIT
+AuthorName: Sebastian Coden
+AuthorWebSite: https://github.com/sebacoden
+SourceCode: https://github.com/sebacoden/autoScroll
+IssueTracker: https://github.com/sebacoden/autoScroll/issues
+
+AutoName: AutoScroller
+
+RepoType: git
+Repo: https://github.com/sebacoden/autoScroll
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: 434bfd81763824a2d09196c769a2178bb1474843
+    subdir: android/app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i '/foojay-resolver/d' ../settings.gradle.kts
+      - sed -i '/org\.gradle\.jvmargs/d' ../gradle.properties
+      - sed -i '/org\.gradle\.configuration-cache/d' ../gradle.properties
+      - echo "org.gradle.jvmargs=-Xmx2048m -XX:-UseContainerSupport -Xlog:disable"
+        >> ../gradle.properties
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
