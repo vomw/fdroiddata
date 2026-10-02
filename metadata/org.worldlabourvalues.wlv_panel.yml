@@ -1,0 +1,67 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: The app depends on the WLVD service at worldlabourvalues.org and does not
+      provide a setting to use an alternative server instance.
+Categories:
+  - Science & Education
+License: GPL-3.0-only
+AuthorName: Rodrigo Borges
+WebSite: https://worldlabourvalues.org
+SourceCode: https://github.com/DistintiveLab/wlvapp
+IssueTracker: https://github.com/DistintiveLab/wlvapp/issues
+Changelog: https://github.com/DistintiveLab/wlvapp/releases
+
+AutoName: WLVD
+
+RepoType: git
+Repo: https://github.com/DistintiveLab/wlvapp.git
+Binaries: https://github.com/DistintiveLab/wlvapp/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 3
+    commit: ee77776ac1a16331b665f357ea8ff6c80230834f
+    sudo:
+      - mkdir -p /media/usb1/Development
+      - chown -R vagrant /media/usb1/Development
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/media/usb1/Development/wlvapp
+      - cd ..
+      - mv org.worldlabourvalues.wlv_panel $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - popd
+      - mv $repo org.worldlabourvalues.wlv_panel
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/media/usb1/Development/wlvapp
+      - cd ..
+      - mv org.worldlabourvalues.wlv_panel $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv $repo org.worldlabourvalues.wlv_panel
+
+AllowedAPKSigningKeys: 8113742912dae26687174bd47bc898a5f03dfeb900063737b82e3ce4353b7435
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.2
+CurrentVersionCode: 3
