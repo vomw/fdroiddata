@@ -1,11 +1,11 @@
 Categories:
   - Internet
-
 License: Apache-2.0
-
 WebSite: https://evilplaguedoctor.github.io/weave.html
 SourceCode: https://github.com/EvilPlagueDoctor/Weave
 IssueTracker: https://github.com/EvilPlagueDoctor/Weave/issues
+
+AutoName: Weave
 
 RepoType: git
 Repo: https://github.com/EvilPlagueDoctor/Weave.git
@@ -15,31 +15,28 @@ Builds:
     versionCode: 44
     commit: 8c90e179d091b0c8e50c113077d935ec8a5db140
     subdir: Android/Source
-
-    output: app/build/outputs/apk/release/Weave-release.apk
-
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev
     gradle:
       - yes
-
-    gradleprops:
-      - weaveFdroidBuild=true
-
+    output: app/build/outputs/apk/release/Weave-release.apk
     srclibs:
       - rustup@1.28.2
-
     prebuild:
       - sdkmanager "platforms;android-36.1" "build-tools;36.1.0"
-      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.97.1 --target aarch64-linux-android --target x86_64-linux-android
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.97.1 --target aarch64-linux-android
+        --target x86_64-linux-android
       - source ~/.cargo/env
       - cargo install cargo-ndk@4.1.2 --locked
       - cargo fetch --locked --manifest-path native/veilknit-daemon/Cargo.toml
       - sed -i -e "s|\"cargo\",|\"$(which cargo)\",|" app/build.gradle.kts
-
     scanignore:
       - Android/Source/app/src/main/assets/content_filter/image_safety_xs.onnx
       - Android/Source/app/src/main/assets/content_filter/toxic_minilm_int8.onnx
-
-    ndk: 28.2.13676358
+    ndk: r28c
+    gradleprops:
+      - weaveFdroidBuild=true
 
 MaintainerNotes: |-
   Weave includes two pre-trained ONNX models used exclusively for local
@@ -64,6 +61,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-
 CurrentVersion: 0.11.6-startup-tips
 CurrentVersionCode: 44
