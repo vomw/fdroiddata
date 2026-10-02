@@ -25,18 +25,13 @@ Builds:
       - yes
     prebuild:
       - cd ../..
-      # Build expo libs from source
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
-      # Build with JDK 21
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
         node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      # Generate android files if it's not generated
       - npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
-      # Add other build.gradle files here is local maven repo for react-native is used
-      # Binaries for react-native, JSC and Hermes can be ignored currently
       - node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
