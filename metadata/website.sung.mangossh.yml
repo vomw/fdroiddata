@@ -16,17 +16,17 @@ Binaries:
   https://github.com/sunging/MangoSSH/releases/download/v%v/MangoSSH-v%v-fdroid.apk
 
 Builds:
-  - versionName: 0.5.3
-    versionCode: 5003
-    commit: bb9bc5f2a586bbc5c5cc4a829572a378aa1adbf2
+  - versionName: 0.6.1
+    versionCode: 6001
+    commit: 5948512cbcdb7fde3a645b4671d9f5daa0ed818d
     timeout: 14400
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
       - apt-get install -y autoconf automake binutils bison build-essential cmake
-        curl gettext git gperf libtool ninja-build pkg-config rsync texinfo unzip
-        zip
+        curl gettext git gperf libtool ninja-build pkg-config python3 rsync texinfo
+        unzip zip
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
       - apt-get install -y -t trixie-backports golang-go
     gradle:
@@ -35,19 +35,17 @@ Builds:
     srclibs:
       - go@go1.26.7
       - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
-      - abseil-cpp@4a2c63365eff8823a5221db86ef490e828306f9d
       - protobuf@796e49f6ca82f763d1087d2ff7355d2f0d7b71b1
       - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
       - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
-    prebuild: echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
+    prebuild:
+      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
+      - sdkmanager 'cmake;3.22.1' 'platforms;android-26'
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-DVk8gqX9.css.gz
       - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx-websocket.min.js.gz
       - native/tsnetbridge/vendor/tailscale.com/util/eventbus/assets/htmx.min.js.gz
-    scandelete:
-      - app/src/main/jniLibs
-      - app/src/main/assets/mosh/terminfo.zip
       - third_party/mosh4android/src/fuzz/terminal_corpus
       - third_party/mosh4android/src/fuzz/terminal_parser_corpus
     build:
@@ -56,18 +54,14 @@ Builds:
       - pushd $$go$$/src
       - ./make.bash
       - popd
-      - mkdir -p .fdroid/mosh-deps
-      - ln -s $$zlib$$ .fdroid/mosh-deps/zlib
-      - rm -rf $$protobuf$$/third_party/abseil-cpp
-      - ln -s $$abseil-cpp$$ $$protobuf$$/third_party/abseil-cpp
-      - ln -s $$protobuf$$ .fdroid/mosh-deps/protobuf
-      - ln -s $$ncurses$$ .fdroid/mosh-deps/ncurses
-      - ln -s $$nettle$$ .fdroid/mosh-deps/nettle
-      - export MANGOSSH_MOSH_DEPS_DIR=$PWD/.fdroid/mosh-deps
-      - export MANGOSSH_GO_ROOT=$$go$$
+      - mkdir -p .fdroid/sources
+      - ln -s $$zlib$$ .fdroid/sources/zlib
+      - ln -s $$protobuf$$ .fdroid/sources/protobuf
+      - ln -s $$ncurses$$ .fdroid/sources/ncurses
+      - ln -s $$nettle$$ .fdroid/sources/nettle
       - mkdir -p .tools/go
       - ln -s $$go$$ .tools/go/1.26.7
-      - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 bash tools/prepare-fdroid-native.sh
+      - python3 tools/native/build.py verify-sources
     ndk: r27d
     gradleprops:
       - mangosshOfflineBuild=true
@@ -77,5 +71,5 @@ AllowedAPKSigningKeys: 6ad86ccb0026c60606b016a643fb5f90c090035591c2c734d0fd66004
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: version-code.txt|^(\d+)$||^v([0-9]+\.[0-9]+\.[0-9]+)$
-CurrentVersion: 0.5.3
-CurrentVersionCode: 5003
+CurrentVersion: 0.6.1
+CurrentVersionCode: 6001
