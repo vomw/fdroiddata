@@ -49,9 +49,12 @@ Builds:
     subdir: app
     sudo:
       - apt-get update
-      - apt-get install -y make gawk
+      - apt-get install -y make gawk git gcc libc-dev rustup
     gradle:
       - yes
+    prebuild:
+      - rustup default stable
+      - rustup target add aarch64-linux-android x86_64-linux-android
     scandelete:
       - app/src/main/jniLibs
     build: ../scripts/build_native_libs.sh $$NDK$$
