@@ -1,6 +1,6 @@
 Categories:
-  - Internet
-  - System
+  - Cloud Storage & File Sync
+  - File Manager
 License: GPL-3.0-only
 AuthorName: LeoRise
 SourceCode: https://gitlab.com/leorise25/unifycloud
@@ -14,7 +14,7 @@ Repo: https://gitlab.com/leorise25/unifycloud.git
 Builds:
   - versionName: 1.0.0
     versionCode: 11
-    commit: 7cd2a0a9158c219a32c8f33c1ab8a36fb8ee48d7
+    commit: c51a2c38b3f4c986c9f2b2583416bfa609d3e2b6
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
@@ -25,6 +25,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -39,7 +42,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 12
-    commit: 7cd2a0a9158c219a32c8f33c1ab8a36fb8ee48d7
+    commit: c51a2c38b3f4c986c9f2b2583416bfa609d3e2b6
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@stable
@@ -50,6 +53,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
@@ -64,7 +70,7 @@ Builds:
 
   - versionName: 1.0.0
     versionCode: 13
-    commit: 7cd2a0a9158c219a32c8f33c1ab8a36fb8ee48d7
+    commit: c51a2c38b3f4c986c9f2b2583416bfa609d3e2b6
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@stable
@@ -75,6 +81,9 @@ Builds:
       - web
       - windows
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
