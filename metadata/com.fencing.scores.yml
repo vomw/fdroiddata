@@ -15,14 +15,19 @@ Repo: https://github.com/leodp/Fencing_scores.git
 Builds:
   - versionName: '2.24'
     versionCode: 14
-    commit: 6bc434026f098a1d55e13ade630d836e06762431
+    commit: 85a51de207e74ae99a630b9b018deaeb93b8c386
     subdir: app
     gradle:
       - yes
     binary: https://github.com/leodp/Fencing_scores/raw/v%v/Fence.apk
-    prebuild: python3 -c 'from pathlib import Path; [p.write_bytes(p.read_bytes().replace(b"\r\n",
-      b"\n").replace(b"\n", b"\r\n")) for p in Path("src/main/assets").rglob("*")
-      if p.is_file() and p.suffix in {".txt", ".json"}]'
+    prebuild: sed -i -e 's/versionCode 13/versionCode 14/' -e 's/versionName "2.23"/versionName
+      "2.24"/' build.gradle; python3 -c 'from pathlib import Path; q=chr(39); p=Path("../build.gradle");
+      s=p.read_text(); s=s.replace("classpath "+q+"com.android.tools.build:gradle:9.0.1"+q,
+      group "+q+"com.google.testing.platform"+q+"\n            exclude group "+q+"io.opencensus"+q+"\n        }");
+      "classpath("+q+"com.android.tools.build:gradle:9.0.1"+q+") {\n            exclude group: "+q+"com.google.testing.platform"+q+"\n            exclude group: "+q+"io.opencensus"+q+"\n        }");
+      p.write_text(s); [p.write_bytes(p.read_bytes().replace(b"\r\n", b"\n").replace(b"\n",
+      b"\r\n")) for p in Path("src/main/assets").rglob("*") if p.is_file() and p.suffix
+      in {".txt", ".json"}]'
 
 AllowedAPKSigningKeys: a3bcecf7319175da3b75a899b238c210dfce01f7b3f4b9f1d97404dde9de5126
 
