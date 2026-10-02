@@ -1,3 +1,7 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Offers integrations with proprietary AI services. Users provide their own
+      accounts and can configure other compatible endpoints.
 Categories:
   - Development
   - Internet
@@ -16,11 +20,11 @@ Repo: https://github.com/LeenHawk/gproxy.git
 Builds:
   - versionName: 4.0.3
     versionCode: 4000003
-    commit: fa1b8d032fbea444fc74686cb8d6ee238b33f18a
+    commit: 829676486d31299d78506ab9243ffdda6bb48ef6
     sudo:
       - apt-get update
-      - apt-get install -y clang cmake libclang-dev make pkg-config ninja-build openjdk-21-jdk-headless
-        python3 unzip xz-utils
+      - apt-get install -y clang cmake g++ libclang-dev make pkg-config ninja-build
+        openjdk-21-jdk-headless python3 unzip xz-utils
     output: dist/mobile/fdroid/aarch64/gproxy-fdroid-aarch64.apk
     srclibs:
       - rustup@1.28.2
@@ -29,10 +33,6 @@ Builds:
       - export ANDROID_HOME=$$SDK$$ ANDROID_NDK_HOME=$$NDK$$
       - bash scripts/mobile/fdroid-build.sh
     ndk: 30.0.15729638
-    antifeatures:
-      NonFreeNet:
-        en-US: Offers integrations with proprietary AI services. Users provide their
-          own accounts and can configure other compatible endpoints.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
