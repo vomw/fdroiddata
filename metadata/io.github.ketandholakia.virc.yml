@@ -1,0 +1,45 @@
+# VIRC (Vittix IRC Chat Client) — fdroiddata build recipe
+#
+# How to use:
+#   1. Copy this file to metadata/io.github.ketandholakia.virc.yml in a fork of
+#      https://gitlab.com/fdroid/fdroiddata
+#   2. Open a merge request. See fdroid/PUBLISHING.md for the full walkthrough.
+#
+# Modeled on other Flutter recipes (e.g. fr.emersion.goguma) and kept in sync
+# with the app repo: version 1.0.0+1, built with Flutter 3.44.0.
+
+Categories:
+  - Internet
+  - Messaging
+License: GPL-3.0-or-later
+AuthorName: Ketan Dholakia
+SourceCode: https://github.com/ketandholakia/vittixIRC
+IssueTracker: https://github.com/ketandholakia/vittixIRC/issues
+Changelog: https://github.com/ketandholakia/vittixIRC/releases
+
+AutoName: VIRC
+
+RepoType: git
+Repo: https://github.com/ketandholakia/vittixIRC.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0    # tag must exist in the repo before submitting
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.44.0
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
