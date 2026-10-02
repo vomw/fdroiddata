@@ -20,14 +20,9 @@ Builds:
     versionCode: 17
     commit: 3bc3e19f21c3dcddbf468e306b7b7c3725b4482a
     subdir: magnolie-notes/app
-    sudo:
-      - echo 'deb https://deb.debian.org/debian bookworm main' > /etc/apt/sources.list.d/magnolie-jdk17.list
-      - echo 'deb https://security.debian.org/debian-security bookworm-security main'
-        >> /etc/apt/sources.list.d/magnolie-jdk17.list
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
     gradle:
       - yes
+    prebuild: sed -i 's/jvmToolchain(17)/jvmToolchain(21)/' build.gradle.kts
     gradleprops:
       - magnolieFdroid=true
 
