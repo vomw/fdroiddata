@@ -1,6 +1,6 @@
 # Staging copy for the separate fdroiddata merge request.
-# Replace the commit value with the full SHA of the final v1.1.0 release commit
-# after the branch has been merged to main and the tag has been pushed.
+# F-Droid release tags must be created from commits on main. Development tags
+# should use a different prefix so the tag update check ignores them.
 
 Categories:
   - Inventory
@@ -23,17 +23,14 @@ Repo: https://github.com/domai-tb/OpenPlants
 Builds:
   - versionName: '1.1.0'
     versionCode: 31
-    commit: 391b3688b0e4df09a931ec692443c9ed78bba5bc
+    commit: 18cd6807155876802b553aff2df16c790497e6c9
     forcevercode: true
+    sudo: apt-get update && apt-get install -y python3-venv
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.41.4
     rm:
       - ios
-      - linux
-      - macos
-      - web
-      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -41,22 +38,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - ./scripts/run_export.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
 
   - versionName: '1.1.0'
     versionCode: 32
-    commit: 391b3688b0e4df09a931ec692443c9ed78bba5bc
+    commit: 18cd6807155876802b553aff2df16c790497e6c9
     forcevercode: true
+    sudo: apt-get update && apt-get install -y python3-venv
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.41.4
     rm:
       - ios
-      - linux
-      - macos
-      - web
-      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -64,22 +59,20 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - ./scripts/run_export.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
 
   - versionName: '1.1.0'
     versionCode: 33
-    commit: 391b3688b0e4df09a931ec692443c9ed78bba5bc
+    commit: 18cd6807155876802b553aff2df16c790497e6c9
     forcevercode: true
+    sudo: apt-get update && apt-get install -y python3-venv
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     srclibs:
       - flutter@3.41.4
     rm:
       - ios
-      - linux
-      - macos
-      - web
-      - windows
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
@@ -87,11 +80,12 @@ Builds:
     scandelete:
       - .pub-cache
     build:
+      - ./scripts/run_export.sh
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: 'Tags ^v[0-9]+\.[0-9]+\.[0-9]+$'
 VercodeOperation:
   - '%c * 10 + 1'
   - '%c * 10 + 2'
