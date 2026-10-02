@@ -20,6 +20,7 @@ Builds:
     versionCode: 6002
     commit: 9ae8edefaa4b424b1d92ca74d3db098df9e85c09
     timeout: 14400
+    subdir: app
     submodules: true
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
@@ -31,7 +32,6 @@ Builds:
       - apt-get install -y -t trixie-backports golang-go
     gradle:
       - fdroid
-    output: app/build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     srclibs:
       - go@go1.26.7
       - zlib@51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf
@@ -39,7 +39,7 @@ Builds:
       - ncurses@79b9071f2be20a24c7be031655a5638f6032f29f
       - nettle@b8c841dc3278dec0812365f02370b41ea9d4ddee
     prebuild:
-      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> gradle.properties
+      - echo 'org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64' >> ../gradle.properties
       - sdkmanager 'cmake;3.22.1' 'platforms;android-26'
     scanignore:
       - native/tsnetbridge/vendor/github.com/tailscale/web-client-prebuilt/build/assets/index-BbZBz4S-.js.gz
@@ -49,6 +49,7 @@ Builds:
       - third_party/mosh4android/src/fuzz/terminal_corpus
       - third_party/mosh4android/src/fuzz/terminal_parser_corpus
     build:
+      - cd ..
       - export GOTOOLCHAIN=local
       - export GOROOT_BOOTSTRAP=$(go env GOROOT)
       - pushd $$go$$/src
