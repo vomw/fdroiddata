@@ -15,13 +15,12 @@ Repo: https://github.com/leodp/Fencing_scores.git
 Builds:
   - versionName: '2.24'
     versionCode: 14
-    commit: 85a51de207e74ae99a630b9b018deaeb93b8c386
+    commit: 87c76644762da574cf37e73e74c16e938069d6b3
     subdir: app
     gradle:
       - yes
     binary: https://github.com/leodp/Fencing_scores/raw/v%v/Fence.apk
-    prebuild: sed -i -e 's/versionCode 13/versionCode 14/' -e 's/versionName "2.23"/versionName
-      "2.24"/' build.gradle; python3 -c 'from pathlib import Path; [p.write_bytes(p.read_bytes().replace(b"\r\n",
+    prebuild: python3 -c 'from pathlib import Path; [p.write_bytes(p.read_bytes().replace(b"\r\n",
       b"\n").replace(b"\n", b"\r\n")) for p in Path("src/main/assets").rglob("*")
       if p.is_file() and p.suffix in {".txt", ".json"}]'
 
