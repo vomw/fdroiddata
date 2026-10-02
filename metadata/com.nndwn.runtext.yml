@@ -31,8 +31,8 @@ Builds:
     prebuild:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
       - sed -i -e 's/getByName("release")/getByName("debug")/' build.gradle.kts
-      - printf '\nandroid { dependenciesInfo { includeInApk = false } }\n' >> 
-        build.gradle.kts
+      - f=build.gradle.kts
+      - sed -i '$aandroid { dependenciesInfo { includeInApk = false } }' $f
     novcheck: true
 
 AutoUpdateMode: Version
