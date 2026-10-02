@@ -23,10 +23,11 @@ Builds:
   - versionName: 3.2.3
     versionCode: 3002003
     commit: cd2e5f197a3b2fd09cf2bbef30b5cbf0c8ca3ed3
+    subdir: packages/mobile
     sudo:
       - apt-get update
       - apt-get install -y make gcc g++ libc-dev pkg-config libssl-dev openjdk-21-jdk-headless
-    output: Counted-unsigned.apk
+    output: ../../Counted-unsigned.apk
     srclibs:
       - rustup@1.29.1
     prebuild:
@@ -37,6 +38,7 @@ Builds:
     build:
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ANDROID_NDK_HOME=$$NDK$$
       - source $HOME/.cargo/env
+      - cd ../..
       - cargo fetch --locked
       - make -f packages/mobile/android.mk android-fdroid-apk
     ndk: 25.2.9519653
