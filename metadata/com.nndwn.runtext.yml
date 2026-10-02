@@ -28,7 +28,11 @@ Builds:
       - foss
     rm:
       - app/src/playstore
-    prebuild: sed -i -e '/foojay/d' ../settings.gradle.kts
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 
+        's/signingConfigs.getByName("release")/signingConfigs.getByName("debug")/'
+        build.gradle.kts
     novcheck: true
 
 AutoUpdateMode: Version
