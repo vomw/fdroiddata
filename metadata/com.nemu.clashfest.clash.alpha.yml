@@ -9,22 +9,6 @@ IssueTracker: https://github.com/Nemu-x/ClashFest/issues
 Changelog: https://github.com/Nemu-x/ClashFest/releases
 
 Name: ClashFest
-Summary: Rule-based proxy client on the mihomo core
-Description: |-
-  ClashFest is a rule-based proxy / VPN client for Android built on the mihomo
-  (Clash.Meta) core. Paste or scan a subscription link, tap Connect, done. The
-  subscription stays untouched; everything you change in the app lives in a
-  separate layer on top of it.
-
-  Protocols come from the mihomo core (VLESS with REALITY / XHTTP / Vision,
-  VMess, Trojan, Shadowsocks, Hysteria2, TUIC, WireGuard, SSH, mieru and more).
-  Per-app routing, rule sets, custom rules, a DNS and hosts editor, inline proxy
-  groups with latency tests, live connections and logs. Hardened by default:
-  local listeners are closed and geo databases are only fetched from trusted
-  mirrors.
-
-  No analytics, no tracking, no developer server. Traffic goes to the servers of
-  the operator you chose.
 
 RepoType: git
 Repo: https://github.com/Nemu-x/ClashFest.git
@@ -44,8 +28,10 @@ Builds:
       - curl -Lso go.tar.gz https://go.dev/dl/go1.26.8.linux-amd64.tar.gz
       - echo "d0f743b33e8d8945e6b1f432edd15785c70507121d6e2a723b21285eddf8b57b  go.tar.gz" | sha256sum -c -
       - tar xzf go.tar.gz --strip-components=1 -C /usr/local/
-      - curl -Lso pidfd.patch https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
-      - curl -Lso futex.patch https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
+      - curl -Lso pidfd.patch
+        https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
+      - curl -Lso futex.patch
+        https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
       - patch -p1 -d /usr/local < pidfd.patch
       - patch -p1 -d /usr/local < futex.patch
     init:
