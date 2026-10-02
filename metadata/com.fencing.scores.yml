@@ -21,13 +21,13 @@ Builds:
       - yes
     binary: https://github.com/leodp/Fencing_scores/raw/v%v/Fence.apk
     prebuild: "sed -i -e 's/versionCode 13/versionCode 14/' -e 's/versionName \"2.23\"\
-      /versionName \"2.24\"/' build.gradle\nsed -i -e \"/classpath 'com.android.tools.build:gradle:9.0.1'/c\\\
-      \\        classpath('com.android.tools.build:gradle:9.0.1') {\" -e \"/classpath('com.android.tools.build:gradle:9.0.1')\
-      \ {/a\\\\            exclude group: 'com.google.testing.platform'\" -e \"/exclude\
-      \ group: 'com.google.testing.platform'/a\\\\            exclude group: 'io.opencensus'\"\
-      \ -e \"/exclude group: 'io.opencensus'/a\\\\        }\" ../build.gradle\nfind\
-      \ src/main/assets -type f \\( -name '*.txt' -o -name '*.json' \\) -exec sed\
-      \ -i 's/$/\\r/' {} +\n"
+      /versionName \"2.24\"/' build.gradle\npython3 -c \"from pathlib import Path;\
+      \ p=Path('../build.gradle'); s=p.read_text(); old=\\\"classpath 'com.android.tools.build:gradle:9.0.1'\\\
+      \"; new=\\\"classpath('com.android.tools.build:gradle:9.0.1') {\\\"+chr(10)+\\\
+      \"            exclude group: 'com.google.testing.platform'\\\"+chr(10)+\\\"\
+      \            exclude group: 'io.opencensus'\\\"+chr(10)+\\\"        }\\\"; assert\
+      \ old in s; p.write_text(s.replace(old,new,1))\"\nfind src/main/assets -type\
+      \ f \\( -name '*.txt' -o -name '*.json' \\) -exec sed -i 's/$/\\r/' {} +\n"
 
 AllowedAPKSigningKeys: a3bcecf7319175da3b75a899b238c210dfce01f7b3f4b9f1d97404dde9de5126
 
