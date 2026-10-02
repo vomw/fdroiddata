@@ -18,13 +18,13 @@ Builds:
       - apt-get update
       - apt-get install -y nodejs npm
     init:
-      - cd ../..
+      - cd ..
       - npm install --legacy-peer-deps
     gradle:
       - yes
-    output: android/app/build/outputs/apk/release/app-release.apk
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ../..
+      - cd ..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
         package.json
       - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
