@@ -21,8 +21,9 @@ Builds:
       - yes
     binary: https://github.com/leodp/Fencing_scores/raw/v%v/Fence.apk
     prebuild: sed -i -e 's/versionCode 13/versionCode 14/' -e 's/versionName "2.23"/versionName
-      "2.24"/' build.gradle; find src/main/assets -type f -exec sed -i -e 's/\r$//'
-      -e 's/$/\r/' {} +
+      "2.24"/' build.gradle; python3 -c 'from pathlib import Path; [p.write_bytes(p.read_bytes().replace(b"\r\n",
+      b"\n").replace(b"\n", b"\r\n")) for p in Path("src/main/assets").rglob("*")
+      if p.is_file() and p.suffix in {".txt", ".json"}]'
 
 AllowedAPKSigningKeys: a3bcecf7319175da3b75a899b238c210dfce01f7b3f4b9f1d97404dde9de5126
 
