@@ -1,0 +1,69 @@
+Categories:
+  - Internet
+
+License: Apache-2.0
+
+WebSite: https://evilplaguedoctor.github.io/weave.html
+SourceCode: https://github.com/EvilPlagueDoctor/Weave
+IssueTracker: https://github.com/EvilPlagueDoctor/Weave/issues
+
+RepoType: git
+Repo: https://github.com/EvilPlagueDoctor/Weave.git
+
+Builds:
+  - versionName: 0.11.6-startup-tips
+    versionCode: 44
+    commit: 8c90e179d091b0c8e50c113077d935ec8a5db140
+    subdir: Android/Source
+
+    output: app/build/outputs/apk/release/Weave-release.apk
+
+    gradle:
+      - yes
+
+    gradleprops:
+      - weaveFdroidBuild=true
+
+    srclibs:
+      - rustup@1.28.2
+
+    prebuild:
+      - sdkmanager "platforms;android-36.1" "build-tools;36.1.0"
+      - $$rustup$$/rustup-init.sh -y --default-toolchain 1.97.1 --target aarch64-linux-android --target x86_64-linux-android
+      - source ~/.cargo/env
+      - cargo install cargo-ndk@4.1.2 --locked
+      - cargo fetch --locked --manifest-path native/veilknit-daemon/Cargo.toml
+      - sed -i -e "s|\"cargo\",|\"$(which cargo)\",|" app/build.gradle.kts
+
+    scanignore:
+      - Android/Source/app/src/main/assets/content_filter/image_safety_xs.onnx
+      - Android/Source/app/src/main/assets/content_filter/toxic_minilm_int8.onnx
+
+    ndk: 28.2.13676358
+
+MaintainerNotes: |-
+  Weave includes two pre-trained ONNX models used exclusively for local
+  on-device content filtering.
+
+  image_safety_xs.onnx:
+  upstream: OwenElliott/image-safety-classifier-xs
+  license: MIT
+  revision: 606ad3dfd6a023215e3ab0797040437cc365977b
+  SHA-256: 8c28c49d9075f3ad15ebdc2961f02d5b3f99be944815b848b49c9f0e6f3fb689
+
+  toxic_minilm_int8.onnx and vocab.txt:
+  upstream: minuva/MiniLMv2-toxic-jigsaw-onnx
+  license: Apache-2.0
+  revision: edeaa44a3eed98842d1139619bfb5dc55fafcfad
+
+  toxic_minilm_int8.onnx SHA-256:
+  bcd9dfb48cad802ac8f7cd789e1294f1f0b22d532797bd41f5a11694e3c269a0
+
+  vocab.txt SHA-256:
+  07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+
+CurrentVersion: 0.11.6-startup-tips
+CurrentVersionCode: 44
