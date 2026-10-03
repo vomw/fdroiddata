@@ -26,18 +26,15 @@ Builds:
     subdir: packages/mobile
     sudo:
       - apt-get update
-      - apt-get install -y make gcc g++ libc-dev pkg-config libssl-dev openjdk-21-jdk-headless
+      - apt-get install -y make gcc g++ libc-dev pkg-config libssl-dev rustup
     output: ../../Counted-unsigned.apk
-    srclibs:
-      - rustup@1.29.1
     prebuild:
-      - $$rustup$$/rustup-init.sh -y --profile minimal --default-toolchain 1.98.1
-        --target aarch64-linux-android
-      - source $HOME/.cargo/env
+      - rustup toolchain install 1.98.1 --profile minimal --target aarch64-linux-android
+      - rustup default 1.98.1
       - cargo install dioxus-cli --version 0.7.10 --locked
     build:
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ANDROID_NDK_HOME=$$NDK$$
-      - source $HOME/.cargo/env
+        PATH=$HOME/.cargo/bin:$PATH
       - cd ../..
       - cargo fetch --locked
       - make -f packages/mobile/android.mk android-fdroid-apk
