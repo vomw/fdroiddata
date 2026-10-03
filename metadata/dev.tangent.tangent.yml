@@ -20,10 +20,24 @@ Builds:
     subdir: client
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.27.1
-    build:
+      - flutter@stable
+    rm:
+      - client/ios
+      - client/linux
+      - client/macos
+      - client/web
+      - client/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - client/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
 
 AutoUpdateMode: Version
