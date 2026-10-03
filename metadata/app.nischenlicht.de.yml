@@ -1,0 +1,42 @@
+Categories:
+  - Religion
+License: MIT
+AuthorName: Robert Bartha
+SourceCode: https://gitlab.com/papewas/nischenlicht-app
+IssueTracker: https://gitlab.com/papewas/nischenlicht-app/-/issues
+
+AutoName: NischenLicht
+
+RepoType: git
+Repo: https://gitlab.com/papewas/nischenlicht-app.git
+Binaries: 
+  https://gitlab.com/papewas/nischenlicht-app/-/releases/v%v/downloads/nischenlicht-v%v.apk
+
+Builds:
+  - versionName: 4.0.1
+    versionCode: 40001
+    commit: cfa52a11240bdac9e32960ea23c0cbc2de695c60
+    subdir: android
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+    init:
+      - cd ..
+      - npm ci
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+    scandelete:
+      - node_modules/
+    build:
+      - mkdir -p build/outputs
+      - ln -s ../../app/build/outputs/apk build/outputs/apk
+
+AllowedAPKSigningKeys: 90627eba6ee38b0ea090a0b7cf34e3e6c8b42a93f7c4bce90ef5d080583e1b68
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 4.0.1
+CurrentVersionCode: 40001
