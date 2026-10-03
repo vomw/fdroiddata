@@ -14,14 +14,6 @@ Changelog: https://github.com/LILSYNNOFFICIAL/BLUENOTE/releases
 
 Name: BlueNote
 AutoName: BlueNote
-Summary: Local-first notes, tasks, habits and personal organization
-Description: |-
-  BlueNote is a local-first personal organization app for notes, tasks,
-  habits, OCR, and related personal information.
-
-  The F-Droid build uses the dedicated F-Droid product flavor and does not
-  use the Google Play release signing configuration or Firebase integration.
-  The web application is bundled into the Android WebView at build time.
 
 RepoType: git
 Repo: https://github.com/LILSYNNOFFICIAL/BLUENOTE.git
@@ -31,9 +23,6 @@ Builds:
     versionCode: 3
     commit: 59fb76b38666e5f5a54d3c21a7d41726d58f8d07
     subdir: android/app
-    sudo:
-      - apt-get update
-      - apt-get install -y nodejs npm
     init:
       - cd ../..
       - npm install --legacy-peer-deps --no-fund --no-audit
@@ -42,11 +31,10 @@ Builds:
       - cp -r dist/* android/app/src/main/assets/public/
     gradle:
       - fdroid
-    output: build/outputs/apk/fdroid/release/app-fdroid-release-unsigned.apk
     scandelete:
       - node_modules
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckMode: Tags ^v[0-9]+\\.[0-9]+\\.[0-9]+$
 CurrentVersion: 1.0.2-fdroid
 CurrentVersionCode: 3
