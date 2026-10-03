@@ -1,0 +1,157 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Price data, swap availability and routing, and Wallet Link use functions.vizor.cash;
+      wallet synchronization uses the user-selected lightwalletd host.
+  TetheredNet:
+    en-US: Optional price, swap, and Wallet Link features depend on the fixed functions.vizor.cash
+      service.
+Categories:
+  - Wallet
+License: Apache-2.0
+AuthorName: Chainapsis Inc.
+WebSite: https://vizor.cash
+SourceCode: https://github.com/chainapsis/vizor-wallet
+IssueTracker: https://github.com/chainapsis/vizor-wallet/issues
+Changelog: https://github.com/chainapsis/vizor-wallet-mobile-releases/releases
+
+AutoName: Vizor
+
+RepoType: git
+Repo: https://github.com/chainapsis/vizor-wallet.git
+
+Builds:
+  - versionName: 0.0.48
+    versionCode: 481999
+    commit: d20aa05e5eea369a286a8646c3a0902327b6fd17
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/chainapsis/vizor-wallet-mobile-releases/releases/download/v%v/Vizor-android-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f d3b14c876900e553bc736ca19295fc09e3853e8e
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CARGO_HOME=/tmp/vizor-android-reproducible/cargo-home
+      - install -d -m 700 /tmp/vizor-android-reproducible $PUB_CACHE $CARGO_HOME
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - rustup set profile minimal
+      - rustup toolchain install 1.98.0
+      - rustup default 1.98.0
+      - rustup target add --toolchain 1.98.0 armv7-linux-androideabi aarch64-linux-android
+        x86_64-linux-android
+      - cargo fetch --locked --manifest-path rust/Cargo.toml
+    scandelete:
+      - .pub-cache
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - install -d -m 700 /tmp/vizor-android-reproducible/pub-cache
+      - cp -a $PUB_CACHE/. /tmp/vizor-android-reproducible/pub-cache/
+      - FLUTTER_BIN=$$flutter$$/bin/flutter ./scripts/build-android-fdroid.sh --version
+        $$VERSION$$ --expected-abi armeabi-v7a --expected-version-code $$VERCODE$$
+    ndk: 28.2.13676358
+
+  - versionName: 0.0.48
+    versionCode: 482999
+    commit: d20aa05e5eea369a286a8646c3a0902327b6fd17
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/chainapsis/vizor-wallet-mobile-releases/releases/download/v%v/Vizor-android.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f d3b14c876900e553bc736ca19295fc09e3853e8e
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CARGO_HOME=/tmp/vizor-android-reproducible/cargo-home
+      - install -d -m 700 /tmp/vizor-android-reproducible $PUB_CACHE $CARGO_HOME
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - rustup set profile minimal
+      - rustup toolchain install 1.98.0
+      - rustup default 1.98.0
+      - rustup target add --toolchain 1.98.0 armv7-linux-androideabi aarch64-linux-android
+        x86_64-linux-android
+      - cargo fetch --locked --manifest-path rust/Cargo.toml
+    scandelete:
+      - .pub-cache
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - install -d -m 700 /tmp/vizor-android-reproducible/pub-cache
+      - cp -a $PUB_CACHE/. /tmp/vizor-android-reproducible/pub-cache/
+      - FLUTTER_BIN=$$flutter$$/bin/flutter ./scripts/build-android-fdroid.sh --version
+        $$VERSION$$ --expected-abi arm64-v8a --expected-version-code $$VERCODE$$
+    ndk: 28.2.13676358
+
+  - versionName: 0.0.48
+    versionCode: 484999
+    commit: d20aa05e5eea369a286a8646c3a0902327b6fd17
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/chainapsis/vizor-wallet-mobile-releases/releases/download/v%v/Vizor-android-x86_64.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - git -C $$flutter$$ checkout -f d3b14c876900e553bc736ca19295fc09e3853e8e
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export CARGO_HOME=/tmp/vizor-android-reproducible/cargo-home
+      - install -d -m 700 /tmp/vizor-android-reproducible $PUB_CACHE $CARGO_HOME
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - rustup set profile minimal
+      - rustup toolchain install 1.98.0
+      - rustup default 1.98.0
+      - rustup target add --toolchain 1.98.0 armv7-linux-androideabi aarch64-linux-android
+        x86_64-linux-android
+      - cargo fetch --locked --manifest-path rust/Cargo.toml
+    scandelete:
+      - .pub-cache
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - install -d -m 700 /tmp/vizor-android-reproducible/pub-cache
+      - cp -a $PUB_CACHE/. /tmp/vizor-android-reproducible/pub-cache/
+      - FLUTTER_BIN=$$flutter$$/bin/flutter ./scripts/build-android-fdroid.sh --version
+        $$VERSION$$ --expected-abi x86_64 --expected-version-code $$VERCODE$$
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 07a32dd9f58a0e3beaf0c30db08138b606e661235d0a6c790c597b5d99b0ffc7
+
+AutoUpdateMode: Version mobile/v%v
+UpdateCheckMode: HTTP
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
+UpdateCheckData: 
+  https://github.com/chainapsis/vizor-wallet-mobile-releases/releases/latest/download/Vizor-android-metadata.json|"versionCodeBase":\s*([0-9]+)|.|"versionName":\s*"([^"]+)"
+CurrentVersion: 0.0.48
+CurrentVersionCode: 484999
