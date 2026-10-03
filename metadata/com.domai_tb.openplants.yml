@@ -30,15 +30,27 @@ Builds:
     rm:
       - ios
     prebuild:
-      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export REPO=/tmp/com.domai_tb.openplants
+      - cd ..
+      - mv com.domai_tb.openplants "$REPO"
+      - pushd "$REPO"
+      - export PUB_CACHE="$REPO/.pub-cache"
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv "$REPO" com.domai_tb.openplants
     scandelete:
       - .pub-cache
     build:
+      - export REPO=/tmp/com.domai_tb.openplants
+      - cd ..
+      - mv com.domai_tb.openplants "$REPO"
+      - pushd "$REPO"
+      - export PUB_CACHE="$REPO/.pub-cache"
       - ./scripts/run_export.sh
-      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
+      - popd
+      - mv "$REPO" com.domai_tb.openplants
 
 AllowedAPKSigningKeys: 89f6989461547845d61ad1b2254db9d9e3799cda7b7cf47d65ab4147396a4110
 
