@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.2.0
-    versionCode: 200
-    commit: a2030f2e07ed3e81e5f3dcc003d3c3289f664235
+  - versionName: 0.2.1
+    versionCode: 201
+    commit: 54a965fc5663d487089c7ca4bddaecccefe26343
     subdir: garden-debian
     submodules: true
     gradle:
@@ -56,7 +56,7 @@ MaintainerNotes: |-
   submodules, plus talloc 2.4.3's talloc.c and talloc.h vendored verbatim. The
   script verifies both submodule commits, downloads nothing, and checks 16 KB
   page alignment. submodules: true is therefore required. PRoot is GPL-2.0 and
-  talloc LGPL-3.0; the corresponding source is the pinned submodules, the five
+  talloc LGPL-3.0; the corresponding source is the pinned submodules, the eight
   patches in garden-common/patches and the build script, all in the tagged
   commit.
 
@@ -78,6 +78,13 @@ MaintainerNotes: |-
   0005 lets the kernel follow the guest's working directory so the app can
   read it from /proc. The downloadable Debian environment is unchanged.
 
+  0.2.1 changes behaviour only inside the app and its PRoot runtime: the
+  terminal opens once the system is extracted, and sudo is installed in the
+  background afterwards; PRoot patch 0006 translates fchmodat2, 0007 finds a
+  new process whose pid the kernel did not report (or stops the session), and
+  0008 keeps the guest owner on faked hard links. No new permission,
+  dependency or network request.
+
   Release builds are minified with proguard-android-optimize.txt plus
   garden-common/consumer-rules.pro, which holds two keep rules only: the native
   library registers its methods by the literal class names
@@ -85,5 +92,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^trixie-v[0-9.]+$
-CurrentVersion: 0.2.0
-CurrentVersionCode: 200
+CurrentVersion: 0.2.1
+CurrentVersionCode: 201
