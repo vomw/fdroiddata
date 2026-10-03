@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.3.0
-    versionCode: 300
-    commit: 19cf7881a4c4dc511a128cf4d3d29e3c47530b6a
+  - versionName: 0.3.1
+    versionCode: 301
+    commit: 54a965fc5663d487089c7ca4bddaecccefe26343
     subdir: term-ubuntu
     submodules: true
     gradle:
@@ -42,7 +42,7 @@ MaintainerNotes: |-
   alignment of everything it produces. submodules: true is therefore required.
 
   PRoot is GPL-2.0 and talloc is LGPL-3.0; the corresponding source is the
-  pinned submodules, the five patches in term-ubuntu/patches and the build
+  pinned submodules, the eight patches in term-ubuntu/patches and the build
   script, all carried by the tagged commit.
 
   0.2.0 adds LAN Mode: an HTTP/WebSocket server, off by default, that a user
@@ -67,6 +67,13 @@ MaintainerNotes: |-
   0005 lets the kernel follow the guest's working directory so the app can
   read it from /proc.
 
+  0.3.1 changes behaviour only inside the app and its PRoot runtime: the
+  terminal opens once the system is extracted, and sudo is installed in the
+  background afterwards instead of on the setup screen; PRoot patch 0006
+  translates fchmodat2, 0007 finds a new process whose pid the kernel did not
+  report (or stops the session), and 0008 keeps the guest owner on faked hard
+  links. No new permission, dependency or network request.
+
   Release builds are minified. minifyEnabled is on with
   proguard-android-optimize.txt plus term-ubuntu/proguard-rules.pro, which
   contains two keep rules and nothing else: the native library registers its
@@ -78,5 +85,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
-CurrentVersion: 0.3.0
-CurrentVersionCode: 300
+CurrentVersion: 0.3.1
+CurrentVersionCode: 301
