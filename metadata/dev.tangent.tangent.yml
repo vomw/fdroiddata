@@ -1,6 +1,6 @@
 Categories:
-  - Writing
   - Multimedia
+  - Writing
 License: AGPL-3.0-or-later
 AuthorName: GyratingSeaCow
 SourceCode: https://github.com/GyratingSeaCow/tangent
@@ -22,13 +22,11 @@ Builds:
     srclibs:
       - flutter@stable
     rm:
-      - client/ios
       - client/linux
-      - client/macos
-      - client/web
       - client/windows
     prebuild:
-      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml | head -1)
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml
+        | head -1)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
@@ -43,6 +41,5 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9.]+$
 UpdateCheckData: client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-
 CurrentVersion: 1.48.0
 CurrentVersionCode: 63
