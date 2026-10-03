@@ -1,10 +1,8 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: SynSound depends on the proprietary Base44-hosted network service for its
-      cloud-connected sound analysis functionality.
+    en-US: SynSound depends on the proprietary Base44-hosted network service for its cloud-connected sound analysis functionality.
   TetheredNet:
-    en-US: The app's network service endpoint is fixed to the SynSound Base44 service
-      and cannot be replaced through an app setting.
+    en-US: The app's network service endpoint is fixed to the SynSound Base44 service and cannot be replaced through an app setting.
 Categories:
   - Internet
   - Multimedia
@@ -14,21 +12,41 @@ AuthorEmail: synovamedia@gmail.com
 SourceCode: https://github.com/Neurosyn-Dev/SYNSOUND
 IssueTracker: https://github.com/Neurosyn-Dev/SYNSOUND/issues
 
+Name: SynSound
 AutoName: SynSound
+Summary: WebView client for the SynSound hosted sound service
+Description: |-
+  SynSound for Android is a lightweight WebView client for the hosted SynSound web service.
+  The current Android APK loads the SynSound web application from the fixed Base44 service endpoint.
+
+  The native Android layer provides the application shell, microphone permission handling,
+  WebView integration, file selection and downloads, session persistence, navigation,
+  and network/error recovery.
+
+  The repository also contains a native SDK, but the current Android activity does not
+  start its monitoring service or native visualization components. Those native SDK
+  components are therefore not represented as features of this Android APK.
+
+  The hosted web service is proprietary and network-dependent. No claim is made that
+  microphone audio remains on-device when microphone access is granted to the hosted service.
+
+  No ads. No tracking. No analytics SDKs.
 
 RepoType: git
 Repo: https://github.com/Neurosyn-Dev/SYNSOUND
 
 Builds:
-  - versionName: 1.0.1
-    versionCode: 2
-    commit: ef2ec8b71c3eaecd428ece02c4872ee0d94ad203
+  - versionName: 1.0.2
+    versionCode: 3
+    commit: 7e9bc855fcebf1621d0863dadddf01e02ca35a10
     subdir: app
     gradle:
       - yes
-    prebuild: sed -i '/^plugins {$/,/^}$/d' ../settings.gradle.kts
+    scandelete:
+      - .gradle
+      - .artifacts
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.1
-CurrentVersionCode: 2
+CurrentVersion: 1.0.2
+CurrentVersionCode: 3
