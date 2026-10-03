@@ -1,0 +1,40 @@
+Categories:
+  - Messaging
+  - Voice & Video Chat
+License: GPL-3.0-only
+AuthorName: PanzerPeter
+SourceCode: https://github.com/PanzerPeter/Nearside
+IssueTracker: https://github.com/PanzerPeter/Nearside/issues
+Changelog: https://github.com/PanzerPeter/Nearside/blob/HEAD/CHANGELOG.md
+
+AutoName: Nearside
+
+RepoType: git
+Repo: https://github.com/PanzerPeter/Nearside.git
+
+Builds:
+  - versionName: 1.19.0
+    versionCode: 48
+    commit: f44870bfc4a84d107b800c6f5e8dcf7ccea94667
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    init:
+      - cd ../..
+      - npm ci
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/fdroid-prebuild.sh
+    scandelete:
+      - node_modules/
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.19.0
+CurrentVersionCode: 48
