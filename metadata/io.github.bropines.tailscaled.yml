@@ -24,10 +24,6 @@ Builds:
       - apt-get update
       - apt-get install -y make patch curl
       - apt-get install -y -t trixie-backports golang-go
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     output: build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk
@@ -35,7 +31,10 @@ Builds:
       https://github.com/bropines/tailsocks/releases/download/v%v/TailSocks-v%v-armeabi-v7a-release.apk
     srclibs:
       - go@go1.26.6
-    prebuild: sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+    prebuild:
+      - sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+      - sed -i '1i import org.jetbrains.kotlin.gradle.dsl.JvmTarget' build.gradle.kts
+      - sed -i 's/jvmToolchain(17)/compilerOptions.jvmTarget = JvmTarget.JVM_17/' build.gradle.kts
     scanignore:
       - app/src/main/jni/hev-socks5-tunnel/third-part/wintun
     build:
@@ -64,10 +63,6 @@ Builds:
       - apt-get update
       - apt-get install -y make patch curl
       - apt-get install -y -t trixie-backports golang-go
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     output: build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
@@ -75,7 +70,10 @@ Builds:
       https://github.com/bropines/tailsocks/releases/download/v%v/TailSocks-v%v-arm64-v8a-release.apk
     srclibs:
       - go@go1.26.6
-    prebuild: sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+    prebuild:
+      - sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+      - sed -i '1i import org.jetbrains.kotlin.gradle.dsl.JvmTarget' build.gradle.kts
+      - sed -i 's/jvmToolchain(17)/compilerOptions.jvmTarget = JvmTarget.JVM_17/' build.gradle.kts
     scanignore:
       - app/src/main/jni/hev-socks5-tunnel/third-part/wintun
     build:
@@ -104,10 +102,6 @@ Builds:
       - apt-get update
       - apt-get install -y make patch curl
       - apt-get install -y -t trixie-backports golang-go
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     output: build/outputs/apk/release/app-x86-release-unsigned.apk
@@ -115,7 +109,10 @@ Builds:
       https://github.com/bropines/tailsocks/releases/download/v%v/TailSocks-v%v-x86-release.apk
     srclibs:
       - go@go1.26.6
-    prebuild: sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+    prebuild:
+      - sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+      - sed -i '1i import org.jetbrains.kotlin.gradle.dsl.JvmTarget' build.gradle.kts
+      - sed -i 's/jvmToolchain(17)/compilerOptions.jvmTarget = JvmTarget.JVM_17/' build.gradle.kts
     scanignore:
       - app/src/main/jni/hev-socks5-tunnel/third-part/wintun
     build:
@@ -144,10 +141,6 @@ Builds:
       - apt-get update
       - apt-get install -y make patch curl
       - apt-get install -y -t trixie-backports golang-go
-      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
-      - apt-get update
-      - apt-get install -y -t bookworm openjdk-17-jdk-headless
-      - update-java-alternatives -s java-1.17.0-openjdk-amd64
     gradle:
       - yes
     output: build/outputs/apk/release/app-x86_64-release-unsigned.apk
@@ -155,7 +148,10 @@ Builds:
       https://github.com/bropines/tailsocks/releases/download/v%v/TailSocks-v%v-x86_64-release.apk
     srclibs:
       - go@go1.26.6
-    prebuild: sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+    prebuild:
+      - sdkmanager 'platforms;android-37.0' 'platforms;android-36' 'build-tools;35.0.0'
+      - sed -i '1i import org.jetbrains.kotlin.gradle.dsl.JvmTarget' build.gradle.kts
+      - sed -i 's/jvmToolchain(17)/compilerOptions.jvmTarget = JvmTarget.JVM_17/' build.gradle.kts
     scanignore:
       - app/src/main/jni/hev-socks5-tunnel/third-part/wintun
     build:
