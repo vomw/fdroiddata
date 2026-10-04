@@ -1,9 +1,6 @@
 Categories:
   - Calendar & Agenda
-  - Habit Tracker
   - Inventory
-  - Note
-  - Notification
   - Schedule
   - Task
 License: AGPL-3.0-only
@@ -26,10 +23,13 @@ Builds:
     sudo: apt-get update && apt-get install -y python3-venv
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@3.41.4
+      - flutter@stable
     rm:
       - ios
     prebuild:
+      - flutterVersion=$(sed -n -E 's/.*"flutter":[[:space:]]*"([^"]+)".*/\1/p' .fvmrc)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export REPO=/tmp/com.domai_tb.openplants
       - cd ..
       - mv com.domai_tb.openplants "$REPO"
@@ -40,6 +40,7 @@ Builds:
       - popd
       - mv "$REPO" com.domai_tb.openplants
     scandelete:
+      - .flutter
       - .pub-cache
     build:
       - export REPO=/tmp/com.domai_tb.openplants
