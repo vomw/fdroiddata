@@ -24,13 +24,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky golang-go
-      - curl -Lso pidfd.patch 
+      - curl -Lso /tmp/pidfd 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
-      - curl -Lso futex.patch 
+      - curl -Lso /tmp/futex 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
-      - GOSRC=$(readlink -f $(go env GOROOT)/src)
-      - patch -p1 -d $GOSRC/.. < pidfd.patch
-      - patch -p1 -d $GOSRC/.. < futex.patch
+      - cd $(readlink -f $(go env GOROOT)/src)/..
+      - patch -Rsfp1 --dry-run < /tmp/pidfd || patch -p1 < /tmp/pidfd
+      - patch -Rsfp1 --dry-run < /tmp/futex || patch -p1 < /tmp/futex
     init: cp /etc/ssl/certs/ca-certificates.crt ../core/src/foss/golang/clash/component/ca/ca-certificates.crt
     gradle:
       - alpha
@@ -61,13 +61,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky golang-go
-      - curl -Lso pidfd.patch 
+      - curl -Lso /tmp/pidfd 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
-      - curl -Lso futex.patch 
+      - curl -Lso /tmp/futex 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
-      - GOSRC=$(readlink -f $(go env GOROOT)/src)
-      - patch -p1 -d $GOSRC/.. < pidfd.patch
-      - patch -p1 -d $GOSRC/.. < futex.patch
+      - cd $(readlink -f $(go env GOROOT)/src)/..
+      - patch -Rsfp1 --dry-run < /tmp/pidfd || patch -p1 < /tmp/pidfd
+      - patch -Rsfp1 --dry-run < /tmp/futex || patch -p1 < /tmp/futex
     init: cp /etc/ssl/certs/ca-certificates.crt ../core/src/foss/golang/clash/component/ca/ca-certificates.crt
     gradle:
       - alpha
@@ -98,13 +98,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky golang-go
-      - curl -Lso pidfd.patch 
+      - curl -Lso /tmp/pidfd 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
-      - curl -Lso futex.patch 
+      - curl -Lso /tmp/futex 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
-      - GOSRC=$(readlink -f $(go env GOROOT)/src)
-      - patch -p1 -d $GOSRC/.. < pidfd.patch
-      - patch -p1 -d $GOSRC/.. < futex.patch
+      - cd $(readlink -f $(go env GOROOT)/src)/..
+      - patch -Rsfp1 --dry-run < /tmp/pidfd || patch -p1 < /tmp/pidfd
+      - patch -Rsfp1 --dry-run < /tmp/futex || patch -p1 < /tmp/futex
     init: cp /etc/ssl/certs/ca-certificates.crt ../core/src/foss/golang/clash/component/ca/ca-certificates.crt
     gradle:
       - alpha
@@ -135,13 +135,13 @@ Builds:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky golang-go
-      - curl -Lso pidfd.patch 
+      - curl -Lso /tmp/pidfd 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/disable_pidfd_on_android.patch
-      - curl -Lso futex.patch 
+      - curl -Lso /tmp/futex 
         https://raw.githubusercontent.com/Nemu-x/ClashFest/db67160fafa2b5763c601ff5a19337764b7d0e0c/.github/patch/remove_64bits_syscall_on_32bit_linux.patch
-      - GOSRC=$(readlink -f $(go env GOROOT)/src)
-      - patch -p1 -d $GOSRC/.. < pidfd.patch
-      - patch -p1 -d $GOSRC/.. < futex.patch
+      - cd $(readlink -f $(go env GOROOT)/src)/..
+      - patch -Rsfp1 --dry-run < /tmp/pidfd || patch -p1 < /tmp/pidfd
+      - patch -Rsfp1 --dry-run < /tmp/futex || patch -p1 < /tmp/futex
     init: cp /etc/ssl/certs/ca-certificates.crt ../core/src/foss/golang/clash/component/ca/ca-certificates.crt
     gradle:
       - alpha
