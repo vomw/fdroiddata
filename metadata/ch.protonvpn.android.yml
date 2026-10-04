@@ -3834,8 +3834,42 @@ Builds:
     gradleprops:
       - buildUniversalApk
 
+  - versionName: 5.20.39.0
+    versionCode: 605203900
+    commit: fab7c252296ee8fe8a68e057c7f7beb8a17ad5c3
+    subdir: app
+    gradle:
+      - production
+      - vanilla
+      - openSource
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e 's/java.net.URI/uri/' -e 's|storage.googleapis.com/r8-releases|maven.google.com|'
+        ../settings.gradle.kts
+      - sed -i -e '/ignoredFlavors/s/openSource/productionVanillaOpenSource/' build.gradle
+    scandelete:
+      - ci
+    gradleprops:
+      - buildUniversalApk
+
+  - versionName: 5.20.57.0
+    versionCode: 605205700
+    commit: fd1cb1dd108888e57b36ce8d7cc1dcdc25517c61
+    subdir: app
+    gradle:
+      - production
+      - vanilla
+      - openSource
+    prebuild:
+      - sed -i -e '/triple/d' -e '/^play\ {/,/^}/d' build.gradle
+      - sed -i -e 's/java.net.URI/uri/' -e 's|storage.googleapis.com/r8-releases|maven.google.com|'
+        ../settings.gradle.kts
+      - sed -i -e '/ignoredFlavors/s/openSource/productionVanillaOpenSource/' build.gradle
+    gradleprops:
+      - buildUniversalApk
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: metadata/version_fdroid.txt|versionCode=(\d+)|.|versionName=(.*)
-CurrentVersion: 5.20.21.0
-CurrentVersionCode: 605202100
+CurrentVersion: 5.20.57.0
+CurrentVersionCode: 605205700
