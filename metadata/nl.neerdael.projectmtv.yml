@@ -22,11 +22,17 @@ Builds:
     sudo: sdkmanager 'cmake;3.22.1'
     gradle:
       - yes
+    prebuild:
+      - sed -i -e '/^def baseVersionName/s/".*"/"$$VERSION$$"/' build.gradle
+      - sed -i -e '/^def baseVersionCode/s/[0-9]*$/$$VERCODE$$/' build.gradle
     ndk: 27.3.13750724
 
 AllowedAPKSigningKeys: ee51370f485325d703adbca4d811989d90e044da6181f7629965e6add03cfcef
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
+UpdateCheckMode: Tags ^v2\.2\.\d+$
+VercodeOperation:
+  - '%c + 38'
+UpdateCheckData: '|\.(\d+)$|.|^v(.+)$'
 CurrentVersion: 2.2.4
 CurrentVersionCode: 42
