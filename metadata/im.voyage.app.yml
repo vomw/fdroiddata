@@ -29,15 +29,11 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
     gradle:
       - yes
+    prebuild: sed -i 'd' ../gradle/jvm-publish.gradle
     output: build/outputs/apk/release/voyage-universal-release-unsigned.apk
-    scanignore:
-      - gradle/jvm-publish.gradle
     ndk: 23.2.8568313
     gradleprops:
       - org.gradle.caching=false
-
-MaintainerNotes: gradle/jvm-publish.gradle only configures publishing JVM SDK modules
-  and is unused by the APK build, so the scanner ignores it.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9]{8}$
