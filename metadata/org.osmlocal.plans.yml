@@ -1,0 +1,58 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Esri imagery abroad; optional TomTom, Mapillary, PRIM, Météo-France
+  TetheredNet:
+    en-US: OpenFreeMap, Photon, Nominatim, OSRM, Overpass and Transitous
+Categories:
+  - Navigation
+  - Public Transport
+License: GPL-3.0-or-later
+AuthorName: Gris-S
+SourceCode: https://github.com/Gris-S/my-osm
+IssueTracker: https://github.com/Gris-S/my-osm/issues
+Changelog: https://github.com/Gris-S/my-osm/releases
+
+AutoName: MY OSM
+
+RepoType: git
+Repo: https://github.com/Gris-S/my-osm.git
+Binaries: https://github.com/Gris-S/my-osm/releases/download/v%v/MY-OSM-%v.apk
+
+Builds:
+  - versionName: 0.1.0-alpha.87
+    versionCode: 1000087
+    commit: 314070049251b78ee1165b3bd7076be612b59afd
+    subdir: apk/android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    gradle:
+      - yes
+    prebuild:
+      - cd ../../..
+      - npm --prefix app ci
+      - npm --prefix apk ci
+    scanignore:
+      - apk/node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - app/node_modules/three/examples
+      - app/node_modules/source-map/lib/mappings.wasm
+      - app/node_modules/long/dist/long.min.js.gz
+      - apk/node_modules/@capacitor/cli/assets
+    build:
+      - cd ../../..
+      - OSM_TARGET=apk MYOSM_DIAGNOSTICS=0 npm --prefix app run build
+      - cd apk
+      - npx cap sync android
+
+AllowedAPKSigningKeys: 0537bb84f0222e9e6892e06c478be29bcf0b95bb93ffc92e1cc48e518cada2c9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]
+VercodeOperation:
+  - 1000000 + %c
+UpdateCheckData: 
+  app/package.json|"version":\s*"0\.1\.0-alpha\.(\d+)"|app/package.json|"version":\s*"([^"]+)"
+CurrentVersion: 0.1.0-alpha.87
+CurrentVersionCode: 1000087
