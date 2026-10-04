@@ -23,12 +23,10 @@ Builds:
     ndk: 23.2.8568313
 
 MaintainerNotes: |-
-  ThothTerm Resolute (formerly ThothTerm Ubuntu; the package id is unchanged)
-  runs an Ubuntu 26.04 LTS ARM64 userland under PRoot. Ubuntu is a trademark
-  of Canonical Ltd and the Canonical IP policy does not allow it in a software
-  title, so the app is named after the release's code name and says in the app
-  and the store text that it is not affiliated with or endorsed by Canonical
-  (docs/branding/ubuntu/TRADEMARK.md).
+  ThothTerm Resolute (formerly ThothTerm Ubuntu; package id unchanged) runs an
+  Ubuntu 26.04 LTS userland under PRoot. Canonical's IP policy bars "Ubuntu" in
+  a software title, so the app is named after the release's code name and is
+  not affiliated with Canonical (docs/branding/ubuntu/TRADEMARK.md).
 
   arm64-v8a only. minSdk 26, targetSdk 36.
 
@@ -37,12 +35,10 @@ MaintainerNotes: |-
   the separate full flavour, runs only for preFull*Build, so this build makes
   no network requests of its own. The Ubuntu userland is downloaded on first
   run only after an explicit user opt-in, from a URL and SHA-256 pinned in the
-  app's source, and is verified before extraction. Two downloads happen, both
-  named on the consent screen and in the store description before anything is
-  fetched: the base system image from cdimage.ubuntu.com (SHA-256 pinned), then,
-  in the background after the terminal has opened, the package lists and sudo
-  from archive.ubuntu.com and security.ubuntu.com through apt, which verifies
-  them against Ubuntu's archive keys.
+  app's source, and is verified before extraction. Two downloads, both named
+  before anything is fetched: the base image from cdimage.ubuntu.com, then, in
+  the background, the package lists and sudo from archive.ubuntu.com and
+  security.ubuntu.com through apt, which verifies them against Ubuntu's keys.
 
   The PRoot runtime is compiled during the build by
   term-ubuntu/tools/build-proot.sh from sources in the repository:
@@ -79,12 +75,10 @@ MaintainerNotes: |-
   0005 lets the kernel follow the guest's working directory so the app can
   read it from /proc.
 
-  0.3.1 changes behaviour only inside the app and its PRoot runtime: the
-  terminal opens once the system is extracted, and sudo is installed in the
-  background afterwards instead of on the setup screen; PRoot patch 0006
-  translates fchmodat2, 0007 finds a new process whose pid the kernel did not
-  report (or stops the session), and 0008 keeps the guest owner on faked hard
-  links. No new permission, dependency or network request.
+  0.3.1 and 0.3.2 change only the app and its PRoot runtime (patches 0006 to
+  0008; setup steps run in the background and a timed-out one is killed). No
+  new permission, dependency or network request; 0.3.2 removes every legacy
+  externally reachable component, so only the launcher is exported.
 
   Release builds are minified. minifyEnabled is on with
   proguard-android-optimize.txt plus term-ubuntu/proguard-rules.pro, which
