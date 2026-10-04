@@ -1,6 +1,7 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Loads Cloudflare Turnstile, a proprietary CAPTCHA script, from a remote
+    en-US:
+      Loads Cloudflare Turnstile, a proprietary CAPTCHA script, from a remote
       server during login and signup.
 Categories:
   - Development
@@ -28,7 +29,7 @@ Builds:
     init:
       - cd ../..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        -e '/"react-native-purchases":/d' -e '/"expo-dev-client":/d' package.json
+        -e '/"expo-dev-client":/d' package.json
       - bun install
     gradle:
       - yes
@@ -50,7 +51,7 @@ Builds:
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s*"(.*)".*|\1|p'
         package.json)
-      - '[[ $skiaVersion ]]'
+      - "[[ $skiaVersion ]]"
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm"]/' -e 's/import
         { \$, mapKeys, runAsync }/import { \$, runAsync }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
@@ -100,7 +101,7 @@ Builds:
     init:
       - cd ../..
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        -e '/"react-native-purchases":/d' -e '/"expo-dev-client":/d' package.json
+        -e '/"expo-dev-client":/d' package.json
       - bun install
     gradle:
       - yes
@@ -122,7 +123,7 @@ Builds:
       - sed -i -e '/signingConfig /d' android/app/build.gradle
       - export skiaVersion=$(sed -n -E 's|.*"@shopify/react-native-skia":\s*"(.*)".*|\1|p'
         package.json)
-      - '[[ $skiaVersion ]]'
+      - "[[ $skiaVersion ]]"
       - git -C $$react-native-skia$$ checkout -f "v$skiaVersion"
       - sed -i -e 's/mapKeys(configuration.targets) as string\[\]/["arm64"]/' -e 's/import
         { \$, mapKeys, runAsync }/import { \$, runAsync }/' $$react-native-skia$$/packages/skia/scripts/build-skia.ts
