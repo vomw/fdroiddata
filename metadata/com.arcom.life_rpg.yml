@@ -24,11 +24,11 @@ Builds:
       - linux
       - windows
     prebuild:
-      - flutterVersion=3.44.9
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
@@ -47,11 +47,11 @@ Builds:
       - linux
       - windows
     prebuild:
-      - flutterVersion=3.44.9
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
@@ -70,11 +70,11 @@ Builds:
       - linux
       - windows
     prebuild:
-      - flutterVersion=3.44.9
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
-      - $$flutter$$/bin/flutter config --no-analytics
       - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
@@ -85,9 +85,9 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - 10 * %c + 1
-  - 10 * %c + 2
-  - 10 * %c + 3
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.5.0
 CurrentVersionCode: 13
