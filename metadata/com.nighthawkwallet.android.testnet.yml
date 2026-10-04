@@ -1,0 +1,54 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Syncs via a remote lightwalletd endpoint (default Studio ngrok TLS)
+Categories:
+  - Wallet
+License: MIT
+AuthorName: Nighthawk Apps
+AuthorEmail: nighthawkwallet@protonmail.com
+WebSite: https://nighthawkwallet.com/
+SourceCode: https://github.com/nighthawk-apps/nighthawk-android-wallet
+IssueTracker: https://github.com/nighthawk-apps/nighthawk-android-wallet/issues
+Changelog: https://github.com/nighthawk-apps/nighthawk-android-wallet/releases
+
+AutoName: Nighthawk (Testnet)
+
+RepoType: git
+Repo: https://github.com/nighthawk-apps/nighthawk-android-wallet.git
+
+Builds:
+  - versionName: 3.00.013
+    versionCode: 30001813
+    commit: 9e381c469391783dece434beade8f0d777848b5d
+    timeout: 14400
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup cmake protobuf-compiler pkg-config python3 python-is-python3
+        build-essential libssl-dev libclang-dev liblzma-dev libasound2-dev
+    gradle:
+      - darkfitestnet
+    prebuild:
+      - mkdir -p ../third_party/darkfi/.cargo ../rust/.cargo
+      - RX="$(cd ../third_party/RandomX && pwd)"; printf '%s\n' '[patch."https://codeberg.org/darkrenaissance/RandomX"]'
+        "randomx = { path = \"$RX\" }" | tee ../third_party/darkfi/.cargo/config.toml
+        ../rust/.cargo/config.toml
+      - cp ../docs/upstream/RandomX.Cargo.lock ../third_party/RandomX/Cargo.lock
+    scandelete:
+      - third_party/darkfi/fuzz
+    build:
+      - rustup default 1.91.0
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - cargo install cargo-ndk@4.1.2 --locked
+      - PATH="$HOME/.cargo/bin:$PATH" FDROID_BUILD=1 MOBILE_FFI_ABIS="arm64-v8a armeabi-v7a
+        x86_64 x86" ANDROID_NDK_HOME=$$NDK$$ ANDROID_NDK_ROOT=$$NDK$$ ../scripts/build-darkfi-mobile-ffi-android.sh
+    ndk: r26b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v3\.
+UpdateCheckData: 
+  gradle.properties|WALLET_VERSION_CODE\s*=\s*(\d+)|.|WALLET_VERSION_NAME\s*=\s*([\d.]+)
+CurrentVersion: 3.00.013
+CurrentVersionCode: 30001813
