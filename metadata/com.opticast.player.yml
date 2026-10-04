@@ -11,23 +11,21 @@ Categories:
       RepoType: git
       Repo: https://github.com/opticastplayer-dev/opticast.git
 
-      Binaries:
-        - project/native/prebuilt/opticast-mpv-runtime.aar
+      Builds:
+        - versionName: 2.6.120
+            versionCode: 169
+                commit: cafbd10f4c4a0f55260c525ecd844ae52fcc5191
+                    subdir: project
+                        gradle:
+                              - yes
+                                  scanignore:
+                                        - project/native/prebuilt/opticast-mpv-runtime.aar
+                                            prebuild:
+                                                  - echo "Prebuilt AAR is source-built, see project/native/ for build scripts and corresponding-sources"
+                                                        - ls -lh project/native/prebuilt/opticast-mpv-runtime.aar
 
-        Builds:
-          - versionName: 2.6.120
-              versionCode: 169
-                  commit: cafbd10f4c4a0f55260c525ecd844ae52fcc5191
-                      subdir: project
-                          gradle:
-                                - yes
-                                    prebuild:
-                                          - echo "Prebuilt AAR is source-built, see project/native/ for build scripts and corresponding-sources"
-                                                - ls -lh project/native/prebuilt/opticast-mpv-runtime.aar
-                                                      - unzip -l project/native/prebuilt/opticast-mpv-runtime.aar | grep libmpv || true
-
-                                                      AutoUpdateMode: Version v%v
-                                                      UpdateCheckMode: Tags
-                                                      CurrentVersion: 2.6.120
-                                                      CurrentVersionCode: 169
-                                                      
+                                                        AutoUpdateMode: Version v%v
+                                                        UpdateCheckMode: Tags
+                                                        CurrentVersion: 2.6.120
+                                                        CurrentVersionCode: 169
+                                                                 
