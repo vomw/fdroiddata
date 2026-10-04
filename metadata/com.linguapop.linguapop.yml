@@ -1,0 +1,102 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Articles are fetched from NHK and the Mainichi Shimbun, dictionary entries
+      from Jisho, and optional machine translation from Google Translate. All are
+      non-free network services. The app has no accounts and no telemetry, and makes
+      no request that the user did not ask for.
+Categories:
+  - News
+  - Reading
+  - Science & Education
+License: GPL-3.0-or-later
+AuthorName: Serge Kamel
+SourceCode: https://github.com/Faultless/linguapop
+IssueTracker: https://github.com/Faultless/linguapop/issues
+Changelog: https://github.com/Faultless/linguapop/releases
+
+AutoName: LinguaPop
+
+RepoType: git
+Repo: https://github.com/Faultless/linguapop.git
+
+Builds:
+  - versionName: 7.4.1
+    versionCode: 2111
+    commit: e717ad547370528fc26308be1fe0d3cf2c2e625a
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/Faultless/linguapop/releases/download/v%v/linguapop-%v-armeabi-v7a.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat FLUTTER_VERSION)
+      - sed -i -e '/FDROID-STRIP/d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - assets/ipadic
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+    ndk: 28.2.13676358
+
+  - versionName: 7.4.1
+    versionCode: 2112
+    commit: e717ad547370528fc26308be1fe0d3cf2c2e625a
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/Faultless/linguapop/releases/download/v%v/linguapop-%v-arm64-v8a.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat FLUTTER_VERSION)
+      - sed -i -e '/FDROID-STRIP/d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - assets/ipadic
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+    ndk: 28.2.13676358
+
+  - versionName: 7.4.1
+    versionCode: 2113
+    commit: e717ad547370528fc26308be1fe0d3cf2c2e625a
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/Faultless/linguapop/releases/download/v%v/linguapop-%v-x86_64.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - git -C $$flutter$$ checkout -f $(cat FLUTTER_VERSION)
+      - sed -i -e '/FDROID-STRIP/d' android/app/build.gradle.kts
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scanignore:
+      - assets/ipadic
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 401fd4fd5793147f2e39f5ca7078aa21fc98165709c4336b36289479eeabedc9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v.*$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 7.4.1
+CurrentVersionCode: 2113
