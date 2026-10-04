@@ -40,6 +40,8 @@ Builds:
     build:
       - npm ci
       - APEX_SKIP_SIGNING=1 npx expo prebuild -p android --clean
+      - sed -i "s/^  implementation 'com.android.installreferrer/  compileOnly 'com.android.installreferrer/"
+        node_modules/expo-application/android/build.gradle
       - cd android && APEX_SKIP_SIGNING=1 NODE_ENV=production sh gradlew assembleRelease
         -PapexFdroid=true
     ndk: 27.1.12297006
