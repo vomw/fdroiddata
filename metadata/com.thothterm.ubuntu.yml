@@ -7,15 +7,15 @@ SourceCode: https://github.com/Lord1Egypt/AndroidThothTerm
 IssueTracker: https://github.com/Lord1Egypt/AndroidThothTerm/issues
 Changelog: https://github.com/Lord1Egypt/AndroidThothTerm/releases
 
-AutoName: ThothTerm Ubuntu
+AutoName: ThothTerm Resolute
 
 RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.3.1
-    versionCode: 301
-    commit: 54a965fc5663d487089c7ca4bddaecccefe26343
+  - versionName: 0.3.2
+    versionCode: 302
+    commit: 760d54eea299f6db00f8cea4510f38764fe583f7
     subdir: term-ubuntu
     submodules: true
     gradle:
@@ -23,6 +23,13 @@ Builds:
     ndk: 23.2.8568313
 
 MaintainerNotes: |-
+  ThothTerm Resolute (formerly ThothTerm Ubuntu; the package id is unchanged)
+  runs an Ubuntu 26.04 LTS ARM64 userland under PRoot. Ubuntu is a trademark
+  of Canonical Ltd and the Canonical IP policy does not allow it in a software
+  title, so the app is named after the release's code name and says in the app
+  and the store text that it is not affiliated with or endorsed by Canonical
+  (docs/branding/ubuntu/TRADEMARK.md).
+
   arm64-v8a only. minSdk 26, targetSdk 36.
 
   The fdroid flavour packages no distribution binaries: no Ubuntu rootfs
@@ -30,7 +37,12 @@ MaintainerNotes: |-
   the separate full flavour, runs only for preFull*Build, so this build makes
   no network requests of its own. The Ubuntu userland is downloaded on first
   run only after an explicit user opt-in, from a URL and SHA-256 pinned in the
-  app's source, and is verified before extraction.
+  app's source, and is verified before extraction. Two downloads happen, both
+  named on the consent screen and in the store description before anything is
+  fetched: the base system image from cdimage.ubuntu.com (SHA-256 pinned), then,
+  in the background after the terminal has opened, the package lists and sudo
+  from archive.ubuntu.com and security.ubuntu.com through apt, which verifies
+  them against Ubuntu's archive keys.
 
   The PRoot runtime is compiled during the build by
   term-ubuntu/tools/build-proot.sh from sources in the repository:
@@ -86,5 +98,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
 UpdateCheckData: term-ubuntu/build.gradle|versionCode\s+(\d+)|.|versionName\s+'([^']+)'
-CurrentVersion: 0.3.1
-CurrentVersionCode: 301
+CurrentVersion: 0.3.2
+CurrentVersionCode: 302
