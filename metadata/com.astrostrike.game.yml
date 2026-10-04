@@ -23,6 +23,11 @@ Builds:
       - Godot@4.6.3-stable
     build:
       - pushd $$Godot$$
+      - sed -i "/^    buildTypes {/a\        release { minifyEnabled true; proguardFiles
+        getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }" platform/android/java/app/build.gradle
+      - printf '%s\n' '-keep class com.godot.** { *; }' '-keep class org.godotengine.**
+        { *; }' > platform/android/java/app/proguard-rules.pro
       - export ANDROID_NDK_ROOT=$$NDK$$
       - export ANDROID_HOME=$$SDK$$
       - export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
