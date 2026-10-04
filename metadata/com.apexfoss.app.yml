@@ -41,7 +41,7 @@ Builds:
       - npm ci
       - APEX_SKIP_SIGNING=1 npx expo prebuild -p android --clean
       - echo "allprojects {" > apex-fdroid-excludes.init.gradle
-      - echo 'configurations.matching({it.name == "releaseRuntimeClasspath"}).all({exclude([group:"com.android.installreferrer"])})'
+      - echo 'configurations.all({exclude(group:"com.android.installreferrer")})'
         >> apex-fdroid-excludes.init.gradle
       - echo "}" >> apex-fdroid-excludes.init.gradle
       - cd android && APEX_SKIP_SIGNING=1 NODE_ENV=production sh gradlew -I ../apex-fdroid-excludes.init.gradle
