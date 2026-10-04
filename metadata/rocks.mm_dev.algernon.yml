@@ -1,0 +1,119 @@
+Categories:
+  - Local Media Player
+License: GPL-3.0-only
+AuthorName: mm-dev
+SourceCode: https://codeberg.org/mm-dev/algernon
+IssueTracker: https://codeberg.org/mm-dev/algernon/issues
+Bitcoin: bc1qtd03k9fnulmxrgwsrruvp053rgal905em2c0cq
+
+AutoName: algernon
+
+RepoType: git
+Repo: https://codeberg.org/mm-dev/algernon.git
+
+Builds:
+  - versionName: 0.0.9
+    versionCode: 11
+    commit: c253030dcd5ad5d8106fe1b013e1b4991bc6e005
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - 000-ASSETS
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^  flutter:\ "(.*)"/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash fdroid/build.sh $$NDK$$
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+    ndk: 27.0.12077973
+
+  - versionName: 0.0.9
+    versionCode: 12
+    commit: c253030dcd5ad5d8106fe1b013e1b4991bc6e005
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - 000-ASSETS
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^  flutter:\ "(.*)"/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash fdroid/build.sh $$NDK$$
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+    ndk: 27.0.12077973
+
+  - versionName: 0.0.9
+    versionCode: 13
+    commit: c253030dcd5ad5d8106fe1b013e1b4991bc6e005
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - 000-ASSETS
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/^  flutter:\ "(.*)"/\1/p' pubspec.yaml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - bash fdroid/build.sh $$NDK$$
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    ndk: 27.0.12077973
+
+MaintainerNotes: |-
+  - Real-time audio goes through `flutter_soloud`, which bridges Flutter to
+    the SoLoud (C++) engine via Dart FFI.
+  - `flutter_soloud` ships precompiled Xiph libraries (Ogg/Vorbis/FLAC/Opus).
+    To avoid prebuilt binaries, `fdroid/build.sh` (in this app's own repo)
+    compiles them from source via NDK/CMake instead, for all four ABIs,
+    since `flutter_soloud`'s Gradle module builds native code for all ABIs
+    regardless of which one a given build entry targets.
+  - `fdroid/build.sh` also handles picking `android-24` vs `android-21` per
+    ABI: Bionic doesn't expose `ftello`/`fseeko` (needed by FLAC) below API
+    24 on 32-bit targets (`armeabi-v7a`, `x86`).
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.0.9
+CurrentVersionCode: 13
