@@ -14,135 +14,9 @@ RepoType: git
 Repo: https://github.com/by-architect/KarakeepMobile.git
 
 Builds:
-  - versionName: 0.1.2
-    versionCode: 31
-    commit: 69a14c4baeb4888dc5d16ff5a01062410d2c8897
-    subdir: apps/flutter
-    sudo:
-      - mkdir -p /home/runner/work/KarakeepMobile
-      - chown -R vagrant /home/runner
-    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: 
-      https://github.com/by-architect/KarakeepMobile/releases/download/v%v/linkstow-%v-armeabi-v7a.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - apps/flutter/ios
-    prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p'
-        .fvmrc)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e '/^cmake_minimum_required/a add_link_options("LINKER:--build-id=none")'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.byarchitect.linkstow
-    scandelete:
-      - apps/flutter/.pub-cache
-    build:
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
-      - popd
-      - mv $repo com.byarchitect.linkstow
-
-  - versionName: 0.1.2
-    versionCode: 32
-    commit: 69a14c4baeb4888dc5d16ff5a01062410d2c8897
-    subdir: apps/flutter
-    sudo:
-      - mkdir -p /home/runner/work/KarakeepMobile
-      - chown -R vagrant /home/runner
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: 
-      https://github.com/by-architect/KarakeepMobile/releases/download/v%v/linkstow-%v-arm64-v8a.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - apps/flutter/ios
-    prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p'
-        .fvmrc)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e '/^cmake_minimum_required/a add_link_options("LINKER:--build-id=none")'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.byarchitect.linkstow
-    scandelete:
-      - apps/flutter/.pub-cache
-    build:
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
-      - popd
-      - mv $repo com.byarchitect.linkstow
-
-  - versionName: 0.1.2
-    versionCode: 33
-    commit: 69a14c4baeb4888dc5d16ff5a01062410d2c8897
-    subdir: apps/flutter
-    sudo:
-      - mkdir -p /home/runner/work/KarakeepMobile
-      - chown -R vagrant /home/runner
-    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: 
-      https://github.com/by-architect/KarakeepMobile/releases/download/v%v/linkstow-%v-x86_64.apk
-    srclibs:
-      - flutter@stable
-    rm:
-      - apps/flutter/ios
-    prebuild:
-      - flutterVersion=$(sed -n -E 's/.*"flutter"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p'
-        .fvmrc)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i -e '/^cmake_minimum_required/a add_link_options("LINKER:--build-id=none")'
-        $PUB_CACHE/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo com.byarchitect.linkstow
-    scandelete:
-      - apps/flutter/.pub-cache
-    build:
-      - export repo=/home/runner/work/KarakeepMobile/KarakeepMobile
-      - cd ../../..
-      - mv com.byarchitect.linkstow $repo
-      - pushd $repo/apps/flutter
-      - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
-      - popd
-      - mv $repo com.byarchitect.linkstow
-
   - versionName: 1.3.1
     versionCode: 51
-    commit: v1.3.1
+    commit: 6123a3c58386e7ec09c8a354dff1f35ecbf06541
     subdir: apps/flutter
     sudo:
       - mkdir -p /home/runner/work/KarakeepMobile
@@ -184,7 +58,7 @@ Builds:
 
   - versionName: 1.3.1
     versionCode: 52
-    commit: v1.3.1
+    commit: 6123a3c58386e7ec09c8a354dff1f35ecbf06541
     subdir: apps/flutter
     sudo:
       - mkdir -p /home/runner/work/KarakeepMobile
@@ -226,7 +100,7 @@ Builds:
 
   - versionName: 1.3.1
     versionCode: 53
-    commit: v1.3.1
+    commit: 6123a3c58386e7ec09c8a354dff1f35ecbf06541
     subdir: apps/flutter
     sudo:
       - mkdir -p /home/runner/work/KarakeepMobile
