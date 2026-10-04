@@ -40,10 +40,12 @@ Builds:
     build:
       - npm ci
       - APEX_SKIP_SIGNING=1 npx expo prebuild -p android --clean
-      - sed -i "s/^  implementation 'com.android.installreferrer/  compileOnly 'com.android.installreferrer/"
-        node_modules/expo-application/android/build.gradle
-      - cd android && APEX_SKIP_SIGNING=1 NODE_ENV=production sh gradlew assembleRelease
-        -PapexFdroid=true
+      - echo "allprojects {" > apex-fdroid-excludes.init.gradle
+      - echo 'configurations.matching({it.name.endsWith("ReleaseRuntimeClasspath")}).all({exclude([group:"com.android.installreferrer"])})'
+        >> apex-fdroid-excludes.init.gradle
+      - echo "}" >> apex-fdroid-excludes.init.gradle
+      - cd android && APEX_SKIP_SIGNING=1 NODE_ENV=production sh gradlew -I ../apex-fdroid-excludes.init.gradle
+        assembleRelease -PapexFdroid=true
     ndk: 27.1.12297006
 
 AutoUpdateMode: Version
