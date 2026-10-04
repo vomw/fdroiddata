@@ -23,27 +23,39 @@ Builds:
       - ios
       - linux
       - windows
+      - macos
+      - web
     prebuild:
-      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/release.yml)"
+      - flutterVersion=$(sed -n -E "s/.*flutter-version: '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d' {} +
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -type d -name "example" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "extension" -exec rm -rf {} +
-      - find .pub-cache/ -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
-      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" -o -name "*.zip" -o -name "*.gz" -o -name "*.tgz" -o -name "*.ttf" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" \) -delete
-      - find .pub-cache/ -type f -path "*/example/*" -delete
-      - find .pub-cache/ -type f -path "*/devtools/*" -delete
-      - find .pub-cache/ -type f -path "*/extension/*" -delete
-      - find .pub-cache/ -type f -name "*.class" -path "*/com/google/android/play/*" -delete
-      - find .pub-cache/ -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type d -name "example" -exec rm -rf {} +
+      - find .pub-cache -type d -name "devtools" -exec rm -rf {} +
+      - find .pub-cache -type d -name "_out" -exec rm -rf {} +
+      - find .pub-cache -type d -name "extension" -exec rm -rf {} +
+      - find .pub-cache -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache -type f -name "*.bin" -delete
+      - find .pub-cache -type f -name "*.wasm" -delete
+      - find .pub-cache -type f -name "*.zip" -delete
+      - find .pub-cache -type f -name "*.gz" -delete
+      - find .pub-cache -type f -name "*.tgz" -delete
+      - find .pub-cache -type f -name "*.ttf" -delete
+      - find .pub-cache -type f -name "*.png" -delete
+      - find .pub-cache -type f -name "*.jpg" -delete
+      - find .pub-cache -type f -name "*.jpeg" -delete
+      - find .pub-cache -type f -name "*.gif" -delete
+      - find .pub-cache -type f -path "*/example/*" -delete
+      - find .pub-cache -type f -path "*/devtools/*" -delete
+      - find .pub-cache -type f -path "*/extension/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/*" -delete
+      - find .pub-cache -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type f -path "*/play/core/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/core/*" -delete
+      - sed -i '/android {/a\    packagingOptions {\n        exclude("com/google/android/play/core/**")\n    }' android/app/build.gradle.kts
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
@@ -58,27 +70,39 @@ Builds:
       - ios
       - linux
       - windows
+      - macos
+      - web
     prebuild:
-      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/release.yml)"
+      - flutterVersion=$(sed -n -E "s/.*flutter-version: '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d' {} +
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -type d -name "example" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "extension" -exec rm -rf {} +
-      - find .pub-cache/ -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
-      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" -o -name "*.zip" -o -name "*.gz" -o -name "*.tgz" -o -name "*.ttf" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" \) -delete
-      - find .pub-cache/ -type f -path "*/example/*" -delete
-      - find .pub-cache/ -type f -path "*/devtools/*" -delete
-      - find .pub-cache/ -type f -path "*/extension/*" -delete
-      - find .pub-cache/ -type f -name "*.class" -path "*/com/google/android/play/*" -delete
-      - find .pub-cache/ -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type d -name "example" -exec rm -rf {} +
+      - find .pub-cache -type d -name "devtools" -exec rm -rf {} +
+      - find .pub-cache -type d -name "_out" -exec rm -rf {} +
+      - find .pub-cache -type d -name "extension" -exec rm -rf {} +
+      - find .pub-cache -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache -type f -name "*.bin" -delete
+      - find .pub-cache -type f -name "*.wasm" -delete
+      - find .pub-cache -type f -name "*.zip" -delete
+      - find .pub-cache -type f -name "*.gz" -delete
+      - find .pub-cache -type f -name "*.tgz" -delete
+      - find .pub-cache -type f -name "*.ttf" -delete
+      - find .pub-cache -type f -name "*.png" -delete
+      - find .pub-cache -type f -name "*.jpg" -delete
+      - find .pub-cache -type f -name "*.jpeg" -delete
+      - find .pub-cache -type f -name "*.gif" -delete
+      - find .pub-cache -type f -path "*/example/*" -delete
+      - find .pub-cache -type f -path "*/devtools/*" -delete
+      - find .pub-cache -type f -path "*/extension/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/*" -delete
+      - find .pub-cache -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type f -path "*/play/core/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/core/*" -delete
+      - sed -i '/android {/a\    packagingOptions {\n        exclude("com/google/android/play/core/**")\n    }' android/app/build.gradle.kts
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
@@ -93,27 +117,39 @@ Builds:
       - ios
       - linux
       - windows
+      - macos
+      - web
     prebuild:
-      - "flutterVersion=$(sed -n -E \"s/.*flutter-version: '(.*)'/\\1/p\" .github/workflows/release.yml)"
+      - flutterVersion=$(sed -n -E "s/.*flutter-version: '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
+      - find $$flutter$$ -type f -name "*.gradle*" -exec sed -i '/com.google.android.play/d' {} +
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - find .pub-cache/ -type d -name "example" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "devtools" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "_out" -exec rm -rf {} +
-      - find .pub-cache/ -type d -name "extension" -exec rm -rf {} +
-      - find .pub-cache/ -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d'
-        {} +
-      - find .pub-cache/ -type f \( -name "*.bin" -o -name "*.wasm" -o -name "*.zip" -o -name "*.gz" -o -name "*.tgz" -o -name "*.ttf" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" \) -delete
-      - find .pub-cache/ -type f -path "*/example/*" -delete
-      - find .pub-cache/ -type f -path "*/devtools/*" -delete
-      - find .pub-cache/ -type f -path "*/extension/*" -delete
-      - find .pub-cache/ -type f -name "*.class" -path "*/com/google/android/play/*" -delete
-      - find .pub-cache/ -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type d -name "example" -exec rm -rf {} +
+      - find .pub-cache -type d -name "devtools" -exec rm -rf {} +
+      - find .pub-cache -type d -name "_out" -exec rm -rf {} +
+      - find .pub-cache -type d -name "extension" -exec rm -rf {} +
+      - find .pub-cache -type f -name "build.gradle*" -exec sed -i '/com.google.android.play/d' {} +
+      - find .pub-cache -type f -name "*.bin" -delete
+      - find .pub-cache -type f -name "*.wasm" -delete
+      - find .pub-cache -type f -name "*.zip" -delete
+      - find .pub-cache -type f -name "*.gz" -delete
+      - find .pub-cache -type f -name "*.tgz" -delete
+      - find .pub-cache -type f -name "*.ttf" -delete
+      - find .pub-cache -type f -name "*.png" -delete
+      - find .pub-cache -type f -name "*.jpg" -delete
+      - find .pub-cache -type f -name "*.jpeg" -delete
+      - find .pub-cache -type f -name "*.gif" -delete
+      - find .pub-cache -type f -path "*/example/*" -delete
+      - find .pub-cache -type f -path "*/devtools/*" -delete
+      - find .pub-cache -type f -path "*/extension/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/*" -delete
+      - find .pub-cache -type f -name "*.jar" -path "*/play/*" -delete
+      - find .pub-cache -type f -path "*/play/core/*" -delete
+      - find .pub-cache -type f -name "*.class" -path "*/com/google/android/play/core/*" -delete
+      - sed -i '/android {/a\    packagingOptions {\n        exclude("com/google/android/play/core/**")\n    }' android/app/build.gradle.kts
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
