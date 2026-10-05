@@ -17,8 +17,13 @@ Builds:
     versionCode: 13
     commit: 45da0a6162ce7ab193d36727c1ac70e95821a851
     subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
     gradle:
       - unicode
+    prebuild: sed -i -e '/foojay/d' ../settings.gradle
     output: build/outputs/apk/unicode/release/app-unicode-release-unsigned.apk
     binary: https://github.com/xzunk/Foxkeyboard/releases/download/V1.1.3/fox1.1.3.apk
 
