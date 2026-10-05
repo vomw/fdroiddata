@@ -133,6 +133,7 @@ Builds:
       - echo "deb https://deb.debian.org/debian sid main" > /etc/apt/sources.list.d/sid.list
       - apt-get update
       - apt-get install -y -t sid openjdk-8-jdk-headless
+      - update-java-alternatives --set java-1.8.0-openjdk-amd64
     gradle:
       - yes
     prebuild:
@@ -141,7 +142,6 @@ Builds:
       - export ANDROID_BUILD_TOOLS=`sed -n "s,.*buildToolsVersion\s*'\([0-9][0-9.]*\)'.*,\1,p"
         build.gradle`
       - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" "platforms;android-${ANDROID_COMPILE_SDK}"
-      - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 gradle assembleRelease
 
 MaintainerNotes: |-
   Updating from the old FDroidPrivilegedExtension.apk to the new name
