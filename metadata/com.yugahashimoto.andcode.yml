@@ -37,17 +37,18 @@ Builds:
         rsync scons tar unzip wget xz-utils zip zstd
       - mkdir -p /data/data /tmp/andcode-termux-build
       - chown -R vagrant /data /tmp/andcode-termux-build
-    srclibs:
-      - TermuxPackages@2a342d4bd78454dd20760e1fded33939f1712b2d
     gradle:
       - fdroid
+    srclibs:
+      - TermuxPackages@2a342d4bd78454dd20760e1fded33939f1712b2d
     prebuild:
       - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
-      - export REPO_ROOT=$(git rev-parse --show-toplevel); TERMUX_PACKAGES_DIR=$$TermuxPackages$$ NDK=$$NDK$$ ANDROID_HOME=$$SDK$$ bash "$REPO_ROOT/scripts/build_android_runtime_native_debs.sh"
+      - export REPO_ROOT=$(git rev-parse --show-toplevel); TERMUX_PACKAGES_DIR=$$TermuxPackages$$
+        NDK=$$NDK$$ ANDROID_HOME=$$SDK$$ bash "$REPO_ROOT/scripts/build_android_runtime_native_debs.sh"
+    ndk: r29
     gradleprops:
       - andcode.fdroidBuild=true
       - andcode.sourceNativeLibs=true
-    ndk: r29
 
 AllowedAPKSigningKeys: f036e07002d8c2e6a5a64000f1211398d4831ff37cf280456a9a26d2f12617df
 
