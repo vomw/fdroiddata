@@ -13,13 +13,30 @@ RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
 
 Builds:
-  - versionName: 0.2.2
-    versionCode: 202
-    commit: 760d54eea299f6db00f8cea4510f38764fe583f7
+  - versionName: 0.3.0
+    versionCode: 300
+    commit: c941eab52d0d4cd5233bc11c376f507b44cc0a98
     subdir: garden-debian
     submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-go
     gradle:
       - fdroid
+    srclibs:
+      - go@go1.26.8
+    build:
+      - git -C $$go$$ checkout -qf go1.24.6
+      - pushd $$go$$/src
+      - ./make.bash
+      - popd
+      - cp -a $$go$$ $HOME/go-bootstrap
+      - git -C $$go$$ clean -qfdx
+      - git -C $$go$$ checkout -qf go1.26.8
+      - pushd $$go$$/src
+      - GOROOT_BOOTSTRAP=$HOME/go-bootstrap ./make.bash
+      - popd
+      - echo "thothtermGoRoot=$$go$$" >> ../gradle.properties
     ndk: 23.2.8568313
 
 MaintainerNotes: |-
@@ -85,6 +102,47 @@ MaintainerNotes: |-
   0008 keeps the guest owner on faked hard links. No new permission,
   dependency or network request.
 
+  0.3.0 adds ThothDock, a Docker-compatible userspace container engine, to
+  the app. It runs in the app's own process context beside PRoot and speaks
+  the Docker Engine API 1.41 on an owner-only (mode 0600) Unix socket that is
+  bound into the Debian environment, so the unmodified Docker command line
+  works in the terminal. There is no dockerd, containerd or runc anywhere in
+  the app or the guest. Containers are userspace environments, not a security
+  boundary.
+
+  Both programs it ships are built from source in this build, from submodules
+  pinned in the tagged commit, and nothing is downloaded: the daemon
+  (third_party/thothdock, github.com/Lord1Egypt/ThothDock v0.1.0, Apache-2.0,
+  one dependency, golang.org/x/sys, vendored) becomes libthothdock.so, and the
+  Docker CLI (third_party/docker-cli, github.com/docker/cli tag v29.8.1,
+  commit 4a63305d, Apache-2.0, unmodified, built with its own vendor/ tree,
+  client only) becomes libdocker.so. Both are statically linked arm64 Go
+  binaries built with -trimpath and an empty build id by
+  garden-common/tools/stage-thothdock.sh; their SHA-256 values are in
+  assets/thothdock/components.properties and in the release notes. Provenance
+  of every native file is in THIRD_PARTY_NOTICES.md.
+
+  Toolchain: the build needs Go 1.26 (docker/cli's vendor.mod requires it).
+  Debian trixie only has Go 1.24.4 and Go 1.26 needs a 1.24.6 bootstrap, so the
+  recipe builds Go 1.24.6 and then Go 1.26.8 from the go srclib with make.bash,
+  using Debian's golang-go only as the first bootstrap, and points Gradle at it
+  with -PthothtermGoRoot (gradle.properties, written in build:). Go never
+  downloads another toolchain (GOTOOLCHAIN=local) and no Go module is fetched.
+
+  The scanner prints two warnings for third_party/docker-cli/cli/command/
+  container/testdata/utf16.env and utf16be.env: they are UTF-16 text fixtures
+  from Docker's tests, not executables, and are not packaged.
+
+  Network behaviour: ThothDock downloads container images only when the user
+  runs docker pull or docker run in the terminal (HTTPS only, digest-verified);
+  nothing is fetched in the background and the build adds no automatic
+  download. The Debian download described above is unchanged.
+
+  Reproducibility: the unsigned release APK built by this recipe is
+  byte-identical to the one built on GitHub Actions and on a developer machine
+  (evidence: docs/garden/thothdock-rc1/reproducibility-rc1.txt). Reproducible
+  Builds is still not enabled because no upstream release key exists.
+
   Release builds are minified with proguard-android-optimize.txt plus
   garden-common/consumer-rules.pro, which holds two keep rules only: the native
   library registers its methods by the literal class names
@@ -92,5 +150,5 @@ MaintainerNotes: |-
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^trixie-v[0-9.]+$
-CurrentVersion: 0.2.2
-CurrentVersionCode: 202
+CurrentVersion: 0.3.0
+CurrentVersionCode: 300
