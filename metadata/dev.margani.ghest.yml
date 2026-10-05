@@ -1,0 +1,41 @@
+Categories:
+  - Finance Manager
+License: GPL-3.0-only
+AuthorName: margani
+SourceCode: https://github.com/margani/ghest
+IssueTracker: https://github.com/margani/ghest/issues
+Changelog: https://github.com/margani/ghest/releases
+
+AutoName: Ghest
+
+RepoType: git
+Repo: https://github.com/margani/ghest.git
+Binaries: https://github.com/margani/ghest/releases/download/v%v/ghest-%v.apk
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 4
+    commit: fdafbddad330c9a47c5f200eb88497c3d0b1406b
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl xz-utils
+      - curl -fsSLo /tmp/node.tar.xz https://nodejs.org/dist/v22.23.3/node-v22.23.3-linux-x64.tar.xz
+      - echo 'df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de  /tmp/node.tar.xz'
+        | sha256sum -c -
+      - tar xJf /tmp/node.tar.xz -C /opt
+      - ln -s /opt/node-v22.23.3-linux-x64/bin/node /opt/node-v22.23.3-linux-x64/bin/npm
+        /opt/node-v22.23.3-linux-x64/bin/npx /usr/local/bin/
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    prebuild: cd ../.. && npm run vendor && npx cap sync android
+    scanignore:
+      - node_modules
+
+AllowedAPKSigningKeys: 6c52a1c4c46fe3767cd3f09b89749d91602527d23f19c941d936677ed6cef5f0
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.3
+CurrentVersionCode: 4
