@@ -1,11 +1,18 @@
+AntiFeatures:
+  - NonFreeNet
 Categories:
   - Writing
 License: MIT
 AuthorName: Aryan Kumar
+AuthorEmail: aryankumar4112004@gmail.com
+AuthorWebSite: https://replyfy.me
 SourceCode: https://github.com/aryankumarx/replyfy
 IssueTracker: https://github.com/aryankumarx/replyfy/issues
 
 AutoName: Replyfy
+Summary: AI keyboard and floating bubble reply assistant for messaging apps
+Description: |-
+  Replyfy is an open-source keyboard and floating assistant overlay that generates context-aware replies for your messaging apps using Gemini 2.5 Flash.
 
 RepoType: git
 Repo: https://github.com/aryankumarx/replyfy.git
@@ -14,28 +21,15 @@ Builds:
   - versionName: 1.4.1
     versionCode: 5
     commit: v1.4.1
-    subdir: AIKeyboardMobile/android/app
-    sudo:
-      - apt-get update
-      - apt-get install -y npm
-    init:
-      - cd ../..
-      - npm install --legacy-peer-deps
+    subdir: AIKeyboardMobile/android
     gradle:
       - yes
     prebuild:
-      - cd ../..
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-    scanignore:
-      - AIKeyboardMobile/node_modules/react-native/ReactAndroid/publish.gradle
-      - AIKeyboardMobile/node_modules/react-native-safe-area-context/android/build.gradle
-      - AIKeyboardMobile/node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - cd ..
+      - npm ci
+      - npm run bundle:android
     scandelete:
       - AIKeyboardMobile/node_modules
-
-AntiFeatures:
-  - NonFreeNet
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
