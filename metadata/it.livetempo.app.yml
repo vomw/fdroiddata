@@ -1,11 +1,10 @@
 AntiFeatures:
   NonFreeNet:
-    en-US: Uses Firebase Authentication and Cloud Firestore as its account/sync backend,
-      loaded from www.gstatic.com at startup. The optional playlist-import feature
-      also calls the YouTube Data API (googleapis.com) when the user imports a YouTube
-      playlist.
+    en-US: Uses Firebase Authentication and Cloud Firestore as its account/sync backend.
+      The optional playlist-import feature also calls the YouTube Data API (googleapis.com)
+      when the user imports a YouTube playlist.
 Categories:
-  - Multimedia
+  - Music Practice Tool
 License: MIT
 AuthorName: danmigdev
 SourceCode: https://github.com/danmigdev/live_tempo
@@ -87,9 +86,26 @@ Builds:
       - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
       - node_modules/@capacitor/cli/assets/android-template.tar.gz
 
+  - versionName: 1.1.1
+    versionCode: 10
+    commit: 6500c7a3c478e7479923679cf0f448cb2adae4ac
+    subdir: android/app
+    sudo: apt-get install -y nodejs npm
+    init:
+      - cd ../..
+      - npm ci
+      - rm -f node_modules/@capacitor/cli/assets/ios-pods-template.tar.gz node_modules/@capacitor/cli/assets/ios-spm-template.tar.gz
+        node_modules/@capacitor/cli/assets/capacitor-cordova-ios-plugins.tar.gz
+      - npx cap sync android
+    gradle:
+      - yes
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+      - node_modules/@capacitor/cli/assets/android-template.tar.gz
+
 AllowedAPKSigningKeys: 072c84d73f2492380c42cf4a96d51e0f1cf874779a929dc0bfbc679828549e09
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.1.0
-CurrentVersionCode: 9
+CurrentVersion: 1.1.1
+CurrentVersionCode: 10
