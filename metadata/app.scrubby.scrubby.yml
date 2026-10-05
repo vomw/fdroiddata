@@ -13,16 +13,17 @@ RepoType: git
 Repo: https://github.com/brandonp2412/Scrubby.git
 
 Builds:
-  - versionName: 1.0.27
-    versionCode: 1028
-    commit: e37a10e33d04e2dc3daae74e76b09d6d6997e1e2
+  - versionName: 1.0.28
+    versionCode: 1029
+    commit: 88e77d2998b741152fd013e44d1750a10bb475a8
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    binary: https://github.com/brandonp2412/Scrubby/releases/download/%v/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/Scrubby
-      - chown -R vagrant /home/runner
     rm:
       - ios
       - linux
@@ -33,13 +34,17 @@ Builds:
       - export repo=/home/runner/work/Scrubby/Scrubby
       - mv app.scrubby.scrubby $repo
       - pushd $repo
-      - flutterVersion=$(sed -n -E "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" .github/workflows/ci.yml | head -n1)
+      - flutterVersion=$(sed -n -E 
+        "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" 
+        .github/workflows/ci.yml | head -n1)
       - '[[ $flutterVersion ]] || exit 1'
       - git -C $$flutter$$ checkout -f "$flutterVersion"
       - export PUB_CACHE=/home/runner/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i 's|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},arm64-v8a>:-Wl,--build-id=0x968739be302481fb0ff7f3bb1d11e4492d81127c>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},armeabi-v7a>:-Wl,--build-id=0x09753a9caf8e159f2a00eeb687e6d81e3198263a>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},x86_64>:-Wl,--build-id=0x110e98b8efa692ef084a25bde06ce29b10d54f49>")|' "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - sed -i 
+        's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
       - popd
       - mv $repo app.scrubby.scrubby
     build:
@@ -48,90 +53,106 @@ Builds:
       - mv app.scrubby.scrubby $repo
       - pushd $repo
       - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
-      - popd
-      - mv $repo app.scrubby.scrubby
-    ndk: r28c
-  - versionName: 1.0.27
-    versionCode: 2028
-    commit: e37a10e33d04e2dc3daae74e76b09d6d6997e1e2
-    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    binary: https://github.com/brandonp2412/Scrubby/releases/download/%v/app-arm64-v8a-release.apk
-    srclibs:
-      - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/Scrubby
-      - chown -R vagrant /home/runner
-    rm:
-      - ios
-      - linux
-      - web
-      - windows
-    prebuild:
-      - cd ..
-      - export repo=/home/runner/work/Scrubby/Scrubby
-      - mv app.scrubby.scrubby $repo
-      - pushd $repo
-      - flutterVersion=$(sed -n -E "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" .github/workflows/ci.yml | head -n1)
-      - '[[ $flutterVersion ]] || exit 1'
-      - git -C $$flutter$$ checkout -f "$flutterVersion"
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i 's|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},arm64-v8a>:-Wl,--build-id=0x968739be302481fb0ff7f3bb1d11e4492d81127c>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},armeabi-v7a>:-Wl,--build-id=0x09753a9caf8e159f2a00eeb687e6d81e3198263a>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},x86_64>:-Wl,--build-id=0x110e98b8efa692ef084a25bde06ce29b10d54f49>")|' "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo app.scrubby.scrubby
-    build:
-      - cd ..
-      - export repo=/home/runner/work/Scrubby/Scrubby
-      - mv app.scrubby.scrubby $repo
-      - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-      - popd
-      - mv $repo app.scrubby.scrubby
-    ndk: r28c
-  - versionName: 1.0.27
-    versionCode: 4028
-    commit: e37a10e33d04e2dc3daae74e76b09d6d6997e1e2
-    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
-    binary: https://github.com/brandonp2412/Scrubby/releases/download/%v/app-x86_64-release.apk
-    srclibs:
-      - flutter@stable
-    sudo:
-      - mkdir -p /home/runner/work/Scrubby
-      - chown -R vagrant /home/runner
-    rm:
-      - ios
-      - linux
-      - web
-      - windows
-    prebuild:
-      - cd ..
-      - export repo=/home/runner/work/Scrubby/Scrubby
-      - mv app.scrubby.scrubby $repo
-      - pushd $repo
-      - flutterVersion=$(sed -n -E "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" .github/workflows/ci.yml | head -n1)
-      - '[[ $flutterVersion ]] || exit 1'
-      - git -C $$flutter$$ checkout -f "$flutterVersion"
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get --enforce-lockfile
-      - sed -i 's|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384")|target_link_options(jni PRIVATE "-Wl,-z,max-page-size=16384" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},arm64-v8a>:-Wl,--build-id=0x968739be302481fb0ff7f3bb1d11e4492d81127c>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},armeabi-v7a>:-Wl,--build-id=0x09753a9caf8e159f2a00eeb687e6d81e3198263a>" "$<$<STREQUAL:${CMAKE_ANDROID_ARCH_ABI},x86_64>:-Wl,--build-id=0x110e98b8efa692ef084a25bde06ce29b10d54f49>")|' "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
-      - popd
-      - mv $repo app.scrubby.scrubby
-    build:
-      - cd ..
-      - export repo=/home/runner/work/Scrubby/Scrubby
-      - mv app.scrubby.scrubby $repo
-      - pushd $repo
-      - export PUB_CACHE=/home/runner/.pub-cache
-      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-arm"
       - popd
       - mv $repo app.scrubby.scrubby
     ndk: r28c
 
-AllowedAPKSigningKeys: 011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
+  - versionName: 1.0.28
+    versionCode: 2029
+    commit: 88e77d2998b741152fd013e44d1750a10bb475a8
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - flutterVersion=$(sed -n -E 
+        "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" 
+        .github/workflows/ci.yml | head -n1)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i 
+        's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo app.scrubby.scrubby
+    build:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-arm64"
+      - popd
+      - mv $repo app.scrubby.scrubby
+    ndk: r28c
+
+  - versionName: 1.0.28
+    versionCode: 4029
+    commit: 88e77d2998b741152fd013e44d1750a10bb475a8
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - flutterVersion=$(sed -n -E 
+        "s/^[[:space:]]*flutter-version:[[:space:]]*([0-9.]+).*/\1/p" 
+        .github/workflows/ci.yml | head -n1)
+      - '[[ $flutterVersion ]] || exit 1'
+      - git -C $$flutter$$ checkout -f "$flutterVersion"
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i 
+        's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo app.scrubby.scrubby
+    build:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi 
+        --target-platform="android-x64"
+      - popd
+      - mv $repo app.scrubby.scrubby
+    ndk: r28c
+
+AllowedAPKSigningKeys: 
+  011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
@@ -140,5 +161,5 @@ VercodeOperation:
   - '%c + 2000'
   - '%c + 4000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.27
-CurrentVersionCode: 4028
+CurrentVersion: 1.0.28
+CurrentVersionCode: 4029
