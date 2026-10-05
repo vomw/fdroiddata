@@ -1,0 +1,93 @@
+Categories:
+  - Task
+  - Timer
+License: GPL-3.0-or-later
+AuthorName: Rômulo Fernandes Evangelista
+SourceCode: https://github.com/romulofer/foxtimer
+IssueTracker: https://github.com/romulofer/foxtimer/issues
+Changelog: https://github.com/romulofer/foxtimer/releases
+
+AutoName: FoxTimer
+
+RepoType: git
+Repo: https://github.com/romulofer/foxtimer.git
+
+Builds:
+  - versionName: 1.5.1
+    versionCode: 1012
+    commit: 43cb9a7a5232e729fe6f6ede5796f06b11baa21a
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@3.48.0-0.5.pre
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+    ndk: 28.2.13676358
+
+  - versionName: 1.5.1
+    versionCode: 2012
+    commit: 43cb9a7a5232e729fe6f6ede5796f06b11baa21a
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.48.0-0.5.pre
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+    ndk: 28.2.13676358
+
+  - versionName: 1.5.1
+    versionCode: 4012
+    commit: 43cb9a7a5232e729fe6f6ede5796f06b11baa21a
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@3.48.0-0.5.pre
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+    ndk: 28.2.13676358
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.5.1
+CurrentVersionCode: 4012
