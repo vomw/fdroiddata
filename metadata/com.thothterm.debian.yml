@@ -11,6 +11,8 @@ AutoName: ThothTerm Trixie
 
 RepoType: git
 Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
+Binaries: 
+  https://github.com/Lord1Egypt/AndroidThothTerm/releases/download/trixie-v%v/ThothTerm-Trixie-v%v.apk
 
 Builds:
   - versionName: 0.3.0
@@ -38,6 +40,9 @@ Builds:
       - popd
       - echo "thothtermGoRoot=$$go$$" >> ../gradle.properties
     ndk: 23.2.8568313
+
+AllowedAPKSigningKeys: 
+  ca326f0676474f7de4813cd27ec8c618767926790be5e6936c4c112e2bab5ca6
 
 MaintainerNotes: |-
   ThothTerm Trixie is an independent app that runs a Debian GNU/Linux 13
@@ -91,8 +96,11 @@ MaintainerNotes: |-
   garden-common/consumer-rules.pro (two keep rules: the native library
   registers methods by the literal class names com/thothterm/TermIO$Native and
   com/thothterm/Process$Native). The unsigned release APK is byte-identical
-  across a local build, GitHub Actions and this recipe on the buildserver;
-  Reproducible Builds is not enabled because no upstream release key exists.
+  across a local build, GitHub Actions and this recipe on the buildserver.
+  Reproducible Builds is enabled: the upstream APK is that unsigned build signed
+  with apksigner (v2+v3, alignment preserved) using the dedicated ThothTerm Trixie
+  key (certificate SHA-256 in AllowedAPKSigningKeys); the private key is never
+  shared with F-Droid.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^trixie-v[0-9.]+$
