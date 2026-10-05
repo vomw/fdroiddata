@@ -1878,6 +1878,7 @@ Builds:
       - sed -i -E -e "/go_version/s/[0-9.]+/$(go version | sed -n -E 's/.*go([0-9.]+).*/\1/p')/"
         $$protoncore$$/gopenpgp/build-config.json
       - sed -i -e '/app-update/d;/app-review/d' ../gradle/libs.versions.toml
+      - sed -i -e '/libs.android.installreferrer/d' ../pass/install-referrer/impl/build.gradle.kts
       - export PROTOBUF_TAG=$(sed -n -e 's/^val PROTOBUF_TAG = "\(.*\)".*/\1/p' ../settings.gradle.kts)
       - '[[ $PROTOBUF_TAG ]]'
       - git -C $$proton-pass-contents-proto-definition$$ checkout -f $PROTOBUF_TAG
