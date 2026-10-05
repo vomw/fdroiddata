@@ -1,0 +1,41 @@
+Categories:
+  - Market & Price
+  - OCR
+  - Shopping List
+License: GPL-3.0-or-later
+AuthorName: Amniscient, LLC
+AuthorEmail: amnibro7@gmail.com
+WebSite: https://amni-scient.com
+SourceCode: https://github.com/Amnibro/Amni-Price
+IssueTracker: https://github.com/Amnibro/Amni-Price/issues
+Changelog: https://github.com/Amnibro/Amni-Price/releases
+
+AutoName: Amni-Price
+
+RepoType: git
+Repo: https://github.com/Amnibro/Amni-Price.git
+Binaries: https://github.com/Amnibro/Amni-Price/releases/download/v%v/amni-price-%v-foss.apk
+
+Builds:
+  - versionName: 0.4.1
+    versionCode: 6
+    commit: 50b30c58b2e54c017fe5ea5cfdb6a1408aab90db
+    subdir: app
+    submodules: true
+    gradle:
+      - fdroid
+    rm:
+      - app/src/play
+      - external/Tesseract4Android/sample
+      - external/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog/fuzzing
+    prebuild:
+      - sed -i -e '/playImplementation/d' build.gradle.kts
+      - sed -i -e '/mlkit/d' -e '/play-services/d' ../gradle/libs.versions.toml
+    ndk: r27c
+
+AllowedAPKSigningKeys: b71b25def4d3b993281ae57c22e24ee270bfb5528e9ab9ed93e6f6ffdaf2f2dd
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.4.1
+CurrentVersionCode: 6
