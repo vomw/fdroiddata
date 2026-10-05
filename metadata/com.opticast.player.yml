@@ -5,9 +5,12 @@ AuthorName: OptiCast Project
 WebSite: https://opticastplayer-dev.github.io/opticast/
 SourceCode: https://github.com/opticastplayer-dev/opticast
 IssueTracker: https://github.com/opticastplayer-dev/opticast/issues
+
 AutoName: OptiCast
+
 RepoType: git
 Repo: https://github.com/opticastplayer-dev/opticast.git
+
 Builds:
   - versionName: 2.6.120
     versionCode: 169
@@ -15,9 +18,13 @@ Builds:
     subdir: project
     gradle:
       - yes
-    prebuild: echo "tmdb.proxy.secret=dummy-for-fdroid" > local.properties && echo "F-Droid Media3-only build"
+    prebuild:
+      - echo "tmdb.proxy.secret=dummy-for-fdroid" > local.properties
+      - sed -i 's/it.contains("OfficialRelease") || it.contains("Release")/it.contains("OfficialRelease")/g' app/build.gradle.kts
+      - echo "F-Droid Media3-only build patched"
     scandelete:
       - project/native/prebuilt
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v%v
 CurrentVersion: 2.6.120
