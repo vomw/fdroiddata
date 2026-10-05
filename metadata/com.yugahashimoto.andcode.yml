@@ -24,19 +24,34 @@ Binaries:
   https://github.com/yuga-hashimoto/and-code/releases/download/v%v/and-code-v%v-fdroid-release.apk
 
 Builds:
-  - versionName: 1.2.26
-    versionCode: 65
-    commit: 0c1620ee10f54d8c7a5ac896ebade77e3f7256d0
+  - versionName: 1.2.27
+    versionCode: 66
+    commit: db8ed2e86e7f32b4b9151c0bd1d7ba974a1dcb5a
     subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y autoconf autogen automake autopoint bison build-essential
+        curl file flex g++ g++-multilib gawk gettext gnupg gperf git intltool jq libfl-dev
+        libglib2.0-dev libltdl-dev libtool-bin lrzip lzip lz4 lzop m4 patch patchelf
+        pkg-config python-is-python3 python3-pip python3-setuptools python3-venv python-wheel-common
+        rsync scons tar unzip wget xz-utils zip zstd
+      - mkdir -p /data/data /tmp/andcode-termux-build
+      - chown -R vagrant /data /tmp/andcode-termux-build
+    srclibs:
+      - TermuxPackages@2a342d4bd78454dd20760e1fded33939f1712b2d
     gradle:
       - fdroid
-    prebuild: sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+    prebuild:
+      - sed -i -e '/firebase/d' -e '/gms/d' {..,.}/build.gradle.kts
+      - export REPO_ROOT=$(git rev-parse --show-toplevel); TERMUX_PACKAGES_DIR=$$TermuxPackages$$ NDK=$$NDK$$ ANDROID_HOME=$$SDK$$ bash "$REPO_ROOT/scripts/build_android_runtime_native_debs.sh"
     gradleprops:
       - andcode.fdroidBuild=true
+      - andcode.sourceNativeLibs=true
+    ndk: r29
 
 AllowedAPKSigningKeys: f036e07002d8c2e6a5a64000f1211398d4831ff37cf280456a9a26d2f12617df
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.2.26
-CurrentVersionCode: 65
+CurrentVersion: 1.2.27
+CurrentVersionCode: 66
