@@ -5,22 +5,20 @@ AuthorName: Double77x
 WebSite: https://radioscout.pages.dev
 SourceCode: https://github.com/Double77x/radioscout
 IssueTracker: https://github.com/Double77x/radioscout/issues
-Changelog: 
-  https://github.com/Double77x/radioscout/blob/main/src/pages/Changelog.tsx
+Changelog: https://github.com/Double77x/radioscout/blob/main/src/pages/Changelog.tsx
 
 RepoType: git
 Repo: https://github.com/Double77x/radioscout.git
 Binaries: 
-  https://github.com/Double77x/radioscout/releases/download/fdroid-reference-0.3.12-312/radioscout-fdroid-0.3.12-312.apk
+  https://github.com/Double77x/radioscout/releases/download/fdroid-reference-%v-%c/radioscout-fdroid-%v-%c.apk
 
 Builds:
-  - versionName: 0.3.12
-    versionCode: 312
-    commit: 2ea9563f02657b0fc16c20d20f6247c106450a39
+  - versionName: 0.4.1
+    versionCode: 401
+    commit: 3ebb1f7d5b9e10944f95def88b2bd3ba2005c473
     subdir: android/app
     sudo:
-      - echo "deb https://deb.debian.org/debian forky main" > 
-        /etc/apt/sources.list.d/forky.list
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
       - npm install --global pnpm@12.8.1
@@ -32,6 +30,7 @@ Builds:
       - export TZ=UTC
       - pnpm install --frozen-lockfile
       - VITE_DISTRIBUTION=fdroid pnpm exec vp run build
+      - node scripts/strip-sw.mjs
       - node scripts/normalize-ssr-timestamps.mjs dist/client
       - mv capacitor.config.ts capacitor.config.ts.fdroid
       - node -e "const 
@@ -42,12 +41,10 @@ Builds:
       - cd android
       - sed -i '/capgo-capacitor-updater/d' capacitor.settings.gradle
       - sed -i '/capgo-capacitor-updater/d' app/capacitor.build.gradle
-      - node -e "const fs=require('fs');const 
-        p='app/src/main/assets/capacitor.plugins.json';const 
+      - node -e "const fs=require('fs');const p='app/src/main/assets/capacitor.plugins.json';const
         a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
 
-AllowedAPKSigningKeys: 
-  31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
+AllowedAPKSigningKeys: 31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
 
 MaintainerNotes: |-
   The web bundle must be built with VITE_DISTRIBUTION=fdroid. That build flag
@@ -55,10 +52,10 @@ MaintainerNotes: |-
   remains the only update channel for this build.
 
   The signed F-Droid reference APK is published from the source repository's
-  fdroid-reference-0.3.12-312 release and is used for reproducible-build
+  fdroid-reference-0.4.1-401 release and is used for reproducible-build
   verification.
 
 AutoUpdateMode: None
 UpdateCheckMode: Static
-CurrentVersion: 0.3.12
-CurrentVersionCode: 312
+CurrentVersion: 0.4.1
+CurrentVersionCode: 401
