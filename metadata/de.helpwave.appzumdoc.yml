@@ -13,47 +13,48 @@ AutoName: App zum Doc
 
 RepoType: git
 Repo: https://github.com/helpwave/app-zum-doc.git
-Binaries: https://github.com/helpwave/app-zum-doc/releases/download/android@%v/app-arm64-v8a-release.apk
+Binaries: 
+  https://github.com/helpwave/app-zum-doc/releases/download/android@%v/app-zum-doc-%v.apk
 
 Builds:
-  - versionName: 0.0.10
-    versionCode: 10
-    commit: cf6db3eea7b30d483263cc1a2b4b3da107b36dc7
-    subdir: apps/mobile/android/app
+  - versionName: 0.0.13
+    versionCode: 13
+    commit: d5be92e23be021e4ca1f21684a987b7fe875e754
     sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
-      - apt-get install -y nodejs npm
-      - corepack enable
+      - apt-get install -y -t forky nodejs npm
+      - npm install -g pnpm@11.13.0
     init:
-      - cd ../../../..
-      - corepack prepare pnpm@11.13.0 --activate
       - pnpm install --frozen-lockfile
       - pnpm --filter @app-zum-doc/utils run init
-      - npx expo prebuild --platform android --clean
-    gradle:
-      - yes
+    output: 
+      apps/mobile/android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
     prebuild:
-      - cd ../..
-      - export CI=1 EXPO_NO_GIT_STATUS=1
       - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
-        package.json ../../package.json
+        package.json apps/mobile/package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - cd apps/mobile
+      - EXPO_NO_GIT_STATUS=1 npx expo prebuild -p android --clean
       - sed -i -e '/signingConfig /d' -e 's/, "armeabi-v7a"//' android/app/build.gradle
       - sed -i -e '/expoAutolinking.useExpoModules()/i expoAutolinking.projectRoot
         = rootDir.parentFile' android/settings.gradle
-      - echo 'org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g' >> android/gradle.properties
-      - sdkmanager 'cmake;3.22.1'
+      - sed -i 's/^reactNativeArchitectures=.*/reactNativeArchitectures=arm64-v8a/'
+        android/gradle.properties
     scanignore:
       - node_modules/react-native/sdks/hermesc
-      - node_modules/react-native/React/I18n
-      - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
-      - node_modules/react-native-svg/android/build.gradle
-      - node_modules/react-native-screens/android/build.gradle
-      - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
     scandelete:
       - node_modules
+    build:
+      - cd apps/mobile/android
+      - gradle assembleRelease
     ndk: 27.1.12297006
 
 AllowedAPKSigningKeys: b0974e053c12fc9b20aa6f9f5c278c288b585494958b6b872787c5dee6f5973e
@@ -61,5 +62,5 @@ AllowedAPKSigningKeys: b0974e053c12fc9b20aa6f9f5c278c288b585494958b6b872787c5dee
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^android@
 UpdateCheckData: apps/mobile/app.json|"versionCode":\s(\d+)|.|"version":\s"([\d.]+)"
-CurrentVersion: 0.0.10
-CurrentVersionCode: 10
+CurrentVersion: 0.0.13
+CurrentVersionCode: 13
