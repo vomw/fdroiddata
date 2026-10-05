@@ -3624,10 +3624,9 @@ Builds:
       - apt-get update
       - apt-get install -y libc-dev cmake golang-go gcc-multilib g++-multilib make
         python3-setuptools
-      - curl -Lo node.tar.gz https://nodejs.org/dist/v24.11.1/node-v24.11.1-linux-x64.tar.gz
-      - echo "58a5ff5cc8f2200e458bea22e329d5c1994aa1b111d499ca46ec2411d58239ca node.tar.gz"
-        | sha256sum -c -
-      - tar xzf node.tar.gz --strip-components=1 -C /usr/local/
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
     gradle:
       - yes
     srclibs:
