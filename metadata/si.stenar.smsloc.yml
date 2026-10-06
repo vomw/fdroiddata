@@ -1,0 +1,78 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: "Optional online map styles from maptiles.stenar.si.\nOptional offline
+      map pack download from GitHub (github.com/primozs/small-planet).\nCore SMS location
+      sharing works without either."
+    sl-SI: "Izbirni spletni zemljevidi iz maptiles.stenar.si.\nIzbirni prenos offline
+      paketa zemljevida z GitHuba (github.com/primozs/small-planet).\nOsnovno deljenje
+      lokacije prek SMS deluje brez obojega."
+Categories:
+  - Location Tracker & Sharer
+License: GPL-3.0-or-later
+AuthorName: Primoz Susa
+AuthorEmail: primoz@susa.cloud
+AuthorWebSite: https://stenar.si
+WebSite: https://github.com/primozs/sms-loc-fdroid
+SourceCode: https://github.com/primozs/sms-loc-fdroid
+IssueTracker: https://github.com/primozs/sms-loc-fdroid/issues
+Bitcoin: bc1q9fjcpcgm5cj4295f88uvld9g8vssgq3wy33rn3
+
+AutoName: SMSLocFD
+
+RepoType: git
+Repo: https://github.com/primozs/sms-loc-fdroid.git
+
+Builds:
+  - versionName: 0.0.25
+    versionCode: 25
+    commit: 17d8e9b1dce30b538cfef3e258c6bebac68f8d05
+    timeout: 14400
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl ca-certificates xz-utils python3 python-is-python3
+        gnupg unzip libncurses6 libncursesw6 libcurl4 libxml2 libsqlite3-0 zlib1g
+        zlib1g-dev libedit2 libgcc-s1 libstdc++6 binutils build-essential gcc g++
+        libc6-dev ninja-build git perl patch cmake patchelf
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky swiftlang nodejs npm
+      - corepack enable
+      - corepack prepare yarn@1.22.22 --activate
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - ./scripts/fdroid-prebuild.sh
+    scanignore:
+      - android/app/src/main/jniLibs
+    ndk: r27d
+
+MaintainerNotes: |-
+  Capacitor/Ionic Vue app. Offline maps use a Swift (Vapor) static server
+  cross-compiled in prebuild via scripts/fdroid-prebuild.sh (before the
+  scanner, so yarn/Swift downloads are visible — not hidden under build:).
+  scanignore covers only from-source jniLibs produced in that prebuild
+  (OfflineMapServer + Swift Android runtime + native/libandroid-spawn).
+  Host tools from Debian forky pin: nodejs/npm (Capacitor 8 needs ≥22; trixie
+  is 20.x) and swiftlang 6.2.3 (trixie is 6.0.3; Package.swift needs ≥6.2).
+  yarn --ignore-engines kept as belt-and-suspenders. Target Android stdlib /
+  Dispatch / Foundation are rebuilt from swift-6.2.3-RELEASE sources
+  (scripts/build-swift-android-sdk.sh). LibXml2 for Foundation is built from
+  gnome/libxml2 (--static-libxml2); FoundationNetworking is off (no curl).
+  libandroid-spawn is compiled from vendored source under
+  native/libandroid-spawn/ (not packages.termux.dev). Only remaining Termux
+  deb is libandroid-execinfo (Testing backtrace). NDK r27d via recipe ndk:
+  (also supplies clang/lld for the Android stdlib link — Debian clang cannot
+  resolve -lgcc for that target). CMake ≥3.26 and patchelf from Debian
+  packages (sudo); scripts do not curl them or the NDK zip. No NodeSource;
+  no Swift.org host tarball in the F-Droid recipe. Expect large APK
+  (~arm64 + ~100MB Swift runtime) and a long build. SQLite: app opens the DB
+  unencrypted; @capacitor-community/sqlite still pulls FLOSS sqlcipher-android
+  from Maven as a hard plugin dependency — see docs/fdroid.md reply draft.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: android/app/build.gradle|versionCode\s+(\d+)|.|versionName\s+"([^"]+)"
+CurrentVersion: 0.0.25
+CurrentVersionCode: 25
