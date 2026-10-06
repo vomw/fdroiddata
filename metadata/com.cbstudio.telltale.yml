@@ -1,0 +1,46 @@
+Categories:
+  - Connectivity
+License: GPL-3.0-only
+AuthorName: ImL1s
+AuthorEmail: aa22306546@hotmail.com
+SourceCode: https://codeberg.org/ImL1s/telltale
+IssueTracker: https://github.com/ImL1s/telltale/issues
+Changelog: https://codeberg.org/ImL1s/telltale/releases
+
+AutoName: Telltale
+
+RepoType: git
+Repo: https://codeberg.org/ImL1s/telltale.git
+
+Builds:
+  - versionName: 1.0.14
+    versionCode: 15
+    commit: a1d5e1668ecee3218c5d706f279f64b455b24b14
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    output: build/app/outputs/flutter-apk/app-field-release.apk
+    srclibs:
+      - flutter@3.47.0
+    rm:
+      - ios
+      - linux
+      - macos
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor field -PallowUnsignedRelease=true
+    ndk: 28.2.13676358
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.14
+CurrentVersionCode: 15
