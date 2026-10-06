@@ -16,11 +16,13 @@ AutoName: GPROXY
 
 RepoType: git
 Repo: https://github.com/LeenHawk/gproxy.git
+Binaries: 
+  https://github.com/LeenHawk/gproxy/releases/download/v%v/gproxy-fdroid-aarch64.apk
 
 Builds:
-  - versionName: 4.1.0
-    versionCode: 4001000
-    commit: 09677c0cec649f80eabfb86662873713c8991be0
+  - versionName: 4.1.1
+    versionCode: 4001001
+    commit: ddae909a625980885d5ffb5b59bb30defdc0c384
     sudo:
       - apt-get update
       - apt-get install -y clang cmake g++ libclang-dev make pkg-config ninja-build
@@ -32,9 +34,11 @@ Builds:
       - bash scripts/mobile/fdroid-build.sh
     ndk: 30.0.15729638
 
+AllowedAPKSigningKeys: 80b7795d2d557bad6fba2a956771c91f77f1ceef5e2b536e45eee314a74eed1c
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: 
   distribution/mobile/tauri.store.conf.json|"versionCode":\s*(\d+)|crates/gproxy-host-tauri/tauri.conf.json|"version":\s*"([^"]+)"
-CurrentVersion: 4.1.0
-CurrentVersionCode: 4001000
+CurrentVersion: 4.1.1
+CurrentVersionCode: 4001001
