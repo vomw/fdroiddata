@@ -1,0 +1,51 @@
+Categories:
+  - Calendar & Agenda
+License: AGPL-3.0-only
+AuthorName: hypercal
+AuthorEmail: ticket.grapple368@passmail.net
+WebSite: https://hyper-calendar-7b58b2.gitlab.io
+SourceCode: https://gitlab.com/kreuz-com-group/hyper-calendar
+IssueTracker: https://gitlab.com/kreuz-com-group/hyper-calendar/-/issues
+
+AutoName: hypercal
+
+RepoType: git
+Repo: https://gitlab.com/kreuz-com-group/hyper-calendar.git
+Binaries: 
+  https://gitlab.com/api/v4/projects/84857751/packages/generic/hyper-calendar-android/%v/hyper-calendar-%v.apk
+
+Builds:
+  - versionName: 2.1.5
+    versionCode: 11
+    commit: ff16d3ae5a9d0770e2c07375932bdc428b8e4337
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - 'printf "Package: *\nPin: release n=forky\nPin-Priority: 100\n" > /etc/apt/preferences.d/forky'
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm libc6-dev
+      - apt-get install -y curl unzip build-essential emscripten binaryen wabt golang-go
+    gradle:
+      - yes
+    srclibs:
+      - esbuild@v0.28.2
+    prebuild:
+      - cd ../..
+      - npm ci
+    scanignore:
+      - node_modules/@capacitor/cli/assets/capacitor-cordova-android-plugins.tar.gz
+    scandelete:
+      - node_modules
+    build:
+      - cd ../..
+      - make -C $$esbuild$$ esbuild
+      - cp $$esbuild$$/esbuild node_modules/@esbuild/linux-x64/bin/esbuild
+      - HYPERCAL_SQLITE_WORKDIR="$HOME/sqlite-wasm-build" npm run build:sqlite-wasm
+      - HYPERCAL_SQLITE_FROM_SOURCE=1 npm run build:android
+
+AllowedAPKSigningKeys: 6dbe5c8ec768ff0cf409247f08717a6d42ab87aa4c9690ea626be3f28024589d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.1.5
+CurrentVersionCode: 11
