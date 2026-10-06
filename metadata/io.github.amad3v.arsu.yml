@@ -1,0 +1,56 @@
+Categories:
+  - Password & 2FA
+License: MIT
+AuthorName: Mohamed Jouini
+AuthorEmail: amad3v@gmail.com
+WebSite: https://github.com/amad3v/arsu
+SourceCode: https://github.com/amad3v/arsu
+IssueTracker: https://github.com/amad3v/arsu/issues
+Changelog: https://github.com/amad3v/arsu/blob/HEAD/CHANGELOG.md
+
+AutoName: Arsu
+
+RepoType: git
+Repo: https://github.com/amad3v/arsu.git
+Binaries: https://github.com/amad3v/arsu/releases/download/v%v/arsu-%v.apk
+
+Builds:
+  - versionName: 1.1.1
+    versionCode: 1001001
+    commit: 0e8508ba80b43b72fafe7c0ba4e2dc856fd065bc
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential
+    output: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    srclibs:
+      - rustup@1.29.1
+    prebuild:
+      - sed -i -e '/signingConfig =/d' src-tauri/gen/android/app/build.gradle.kts
+      - rm src-tauri/gen/android/gradlew src-tauri/gen/android/gradlew.bat
+      - cd $HOME
+      - curl -Lo node.tar.xz https://nodejs.org/dist/v26.10.0/node-v26.10.0-linux-x64.tar.xz
+      - echo "ca70e9e349de048b9522abb3adc05b3bd6f43c5ffd3ec57916c7da292f59f022  node.tar.xz"
+        | sha256sum -c
+      - mkdir node
+      - tar -xJf node.tar.xz -C node --strip-components=1
+      - rm node.tar.xz
+      - $$rustup$$/rustup-init.sh -y --default-toolchain none --profile minimal
+    scandelete:
+      - crates/storage/tests/fixtures
+    build:
+      - export PATH="$HOME/node/bin:$HOME/.cargo/bin:$PATH" NDK_HOME="$$NDK$$"
+      - rustup toolchain install
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
+      - npm install -g "$(node -p 'require("./package.json").packageManager')"
+      - pnpm install --frozen-lockfile
+      - pnpm tauri android build --apk -- --locked
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 010ee6988e6e9229840167d4198f4bb2e9bc5f9329aa11fc61c06bcb32e7329b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: src-tauri/tauri.android.conf.json|"versionCode":\s*(\d+)|package.json|"version":\s*"([0-9.]+)"
+CurrentVersion: 1.1.1
+CurrentVersionCode: 1001001
