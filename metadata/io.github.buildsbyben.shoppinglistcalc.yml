@@ -1,0 +1,77 @@
+Categories:
+  - Shopping List
+License: MIT
+AuthorName: Builds By Ben
+SourceCode: https://github.com/buildsbyben/shopping-list-calc
+IssueTracker: https://github.com/buildsbyben/shopping-list-calc/issues
+Changelog: https://github.com/buildsbyben/shopping-list-calc/releases
+
+AutoName: Shopping List Calculator
+
+RepoType: git
+Repo: https://github.com/buildsbyben/shopping-list-calc.git
+Binaries: 
+  https://github.com/buildsbyben/shopping-list-calc/releases/download/v%v/shopping-list-calculator-v%v.apk
+
+Builds:
+  - versionName: '1.11'
+    versionCode: 12
+    commit: 762b640b342ceb37d5505fe8b06cac0cd03d3893
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: '1.13'
+    versionCode: 14
+    commit: f77a32099943200b99ba97000d3eee07805b9e70
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+
+  - versionName: '2.0'
+    versionCode: 15
+    commit: e1d3f74e67e6755b1350ba5a74b6543cf11f1ba8
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+  - versionName: '2.1'
+    versionCode: 16
+    commit: 31a5ab4bea5eeaf55de69140151fdf1a05ef30e1
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    gradle:
+      - yes
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 01d815e4f55f81f61ace0b29164d957fefc5293cf862c1637f2f215c751cedd3
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '2.1'
+CurrentVersionCode: 16
