@@ -18,9 +18,9 @@ Binaries:
   https://github.com/skycoin/skywire/releases/download/mobile-v%v/skywire-%v-fdroid.apk
 
 Builds:
-  - versionName: 0.0.5
-    versionCode: 5
-    commit: e8a4d78b1e32a81d8ed599e9b0e9d5af2bdaaf11
+  - versionName: 0.0.6
+    versionCode: 6
+    commit: 3ee91b066c55be63aa4b87883be8fbb9f9151b7d
     subdir: android/app
     sudo:
       - apt-get update
@@ -30,7 +30,7 @@ Builds:
     gradle:
       - yes
     srclibs:
-      - go@go1.26.4
+      - go@go1.27.1
       - tinygo@bdc4a21af007d8f059b5cefe5644b7ee7bda5b2d
     rm:
       - pkg/router/policy/wasm/presets/bundle.wasm
@@ -42,6 +42,9 @@ Builds:
       - docs/examples/routing-policies/wasm/*/*.wasm
       - vendor/github.com/blang/semver/package.json
       - vendor/github.com/go-redis/redis/v8/package.json
+      - vendor/golang.org/x/net/publicsuffix/data/nodes
+      - vendor/golang.org/x/net/publicsuffix/data/children
+      - vendor/github.com/skycoin/skycoin/src/skycoin-lite/wasm-tinygo/skycoin-lite.wasm.gz
     build:
       - cd ../..
       - git -C $$go$$ checkout -q -f "go$(sed -n 's/^go //p' go.mod)"
@@ -72,5 +75,5 @@ AutoUpdateMode: Version
 UpdateCheckMode: Tags ^fdroid-v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: 
   android/version.properties|(?m)^versionCode=(\d+)$|android/version.properties|(?m)^versionName=(\S+)$
-CurrentVersion: 0.0.5
-CurrentVersionCode: 5
+CurrentVersion: 0.0.6
+CurrentVersionCode: 6
