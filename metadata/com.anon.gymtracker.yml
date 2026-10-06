@@ -1,0 +1,41 @@
+Categories:
+  - Sports & Health
+License: MIT
+AuthorName: anon
+SourceCode: https://github.com/bellamamine-a11y/gym-tracker
+IssueTracker: https://github.com/bellamamine-a11y/gym-tracker/issues
+
+AutoName: Gym Tracker
+RepoType: git
+Repo: https://github.com/bellamamine-a11y/gym-tracker
+Binaries: https://github.com/bellamamine-a11y/gym-tracker/releases
+
+Builds:
+  - versionName: 1.1.0
+    versionCode: 2
+    commit: 06fa772c79160d692f809b257f7f7be3dc5899cc
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - cd ../..
+      - npm ci --legacy-peer-deps
+    gradle:
+      - yes
+    prebuild:
+      - cd ../..
+      - npx expo prebuild --platform android --no-install
+      - sed -i "/signingConfig /d" android/app/build.gradle
+    scanignore:
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+    scandelete:
+      - node_modules
+
+AllowedAPKSigningKeys: 0a46006d760b303796d6c06a5306bfe765413108c33691ff4a736a50782f8c3c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.1.0
+CurrentVersionCode: 2
