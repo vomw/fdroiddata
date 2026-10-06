@@ -29,11 +29,11 @@ Builds:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter config --no-analytics
       - flutter --version
-      - flutter pub get
+      - flutter pub get --enforce-lockfile
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter build apk --release --split-per-abi --target-platform=android-arm
-        --build-name=$$VERSION$$ --build-number=151
+        --build-name=$$VERSION$$ --build-number=$(($$VERCODE$$ % 1000))
 
   - versionName: 0.4.5
     versionCode: 2152
@@ -50,11 +50,11 @@ Builds:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter config --no-analytics
       - flutter --version
-      - flutter pub get
+      - flutter pub get --enforce-lockfile
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter build apk --release --split-per-abi --target-platform=android-arm64
-        --build-name=$$VERSION$$ --build-number=152
+        --build-name=$$VERSION$$ --build-number=$(($$VERCODE$$ % 1000))
 
   - versionName: 0.4.5
     versionCode: 4153
@@ -71,12 +71,18 @@ Builds:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter config --no-analytics
       - flutter --version
-      - flutter pub get
+      - flutter pub get --enforce-lockfile
     build:
       - export PATH="$$flutter$$/bin:$PATH"
       - flutter build apk --release --split-per-abi --target-platform=android-x64
-        --build-name=$$VERSION$$ --build-number=153
-AutoUpdateMode: None
-UpdateCheckMode: None
+        --build-name=$$VERSION$$ --build-number=$(($$VERCODE$$ % 1000))
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 1000 + %c * 10 + 1
+  - 2000 + %c * 10 + 2
+  - 4000 + %c * 10 + 3
+UpdateCheckData: apps/link/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 0.4.5
 CurrentVersionCode: 4153
