@@ -1,0 +1,43 @@
+Categories:
+  - Games
+License: GPL-3.0-or-later
+AuthorName: Newtopia Studio
+SourceCode: https://github.com/Newtopia-Studio/royal-egoist
+IssueTracker: https://github.com/Newtopia-Studio/royal-egoist/issues
+Changelog: https://github.com/Newtopia-Studio/royal-egoist/releases
+
+AutoName: Royal Egoist
+Summary: Novela visual con tus egoistas favoritos en la edad media
+Description: |-
+  Royal Egoist es una novela visual de romance ambientada en la Edad Media, con varios reinos en los que podrás ayudar y enamorar a tus egoístas favoritos.
+
+  Cuenta con reinos inspirados en las civilizaciones medievales de Japón, Inglaterra, Francia y Alemania.
+
+RepoType: git
+Repo: https://github.com/Newtopia-Studio/royal-egoist.git
+
+Builds:
+  - versionName: '0.3.0'
+    versionCode: 300
+    commit: v0.3.0
+
+    srclibs:
+      - RenPy@8.5.3:https://github.com/renpy/renpy.git
+
+    sudo:
+      - apt-get update
+      - apt-get install -y bzip2 unzip openjdk-21-jdk
+
+    prebuild:
+      - rm -rf $$RenPy$$/tmp
+
+    build:
+      - export ANDROID_SDK_ROOT=$ANDROID_HOME
+      - $$RenPy$$/renpy.sh $$RenPy$$/launcher android_build . --destination output
+
+    output: output/*.apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '0.3.0'
+CurrentVersionCode: 300
