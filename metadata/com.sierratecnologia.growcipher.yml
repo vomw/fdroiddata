@@ -1,0 +1,99 @@
+Categories:
+  - Habit Tracker
+  - Science & Education
+License: MIT
+AuthorName: Ricardo Sierra
+SourceCode: https://github.com/ricasolucoes/growcipher
+IssueTracker: https://github.com/ricasolucoes/growcipher/issues
+Changelog: https://github.com/ricasolucoes/growcipher/blob/HEAD/CHANGELOG.md
+
+AutoName: GrowCipher
+
+RepoType: git
+Repo: https://github.com/ricasolucoes/growcipher.git
+Binaries: https://github.com/ricasolucoes/growcipher/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 0.3.0
+    versionCode: 30001
+    commit: ee26d5002c5c4e920dda2cb908b3b975d6898f49
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+
+  - versionName: 0.3.0
+    versionCode: 30002
+    commit: ee26d5002c5c4e920dda2cb908b3b975d6898f49
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+
+  - versionName: 0.3.0
+    versionCode: 30003
+    commit: ee26d5002c5c4e920dda2cb908b3b975d6898f49
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export flutterVersion=$(cat .flutter-version)
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+
+AllowedAPKSigningKeys: ae2e898882decbc32b6a7464e913fc1c5552980e2e5db531c0f0e432509b2063
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.3.0
+CurrentVersionCode: 30003
