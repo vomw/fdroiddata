@@ -1,0 +1,34 @@
+Categories:
+  - Wallet
+License: GPL-3.0-or-later
+AuthorName: Gideon Brick
+WebSite: https://goldbrix.app
+SourceCode: https://github.com/GOLDBRIX-GBX/goldbrix-tools
+IssueTracker: https://github.com/GOLDBRIX-GBX/goldbrix-tools/issues
+
+RepoType: git
+Repo: https://github.com/GOLDBRIX-GBX/goldbrix-tools.git
+Binaries: https://github.com/GOLDBRIX-GBX/goldbrix-tools/releases/download/app-v%v/goldbrix-%v-%c.apk
+
+AllowedAPKSigningKeys: 34bf319c2f52709e32669588536a3911a9e90c991697ff4209a2bc63855b7085
+
+Builds:
+  - versionName: 1.0.125
+    versionCode: 125
+    commit: 55e4edd57de4da28ac90d2360dd7ccc3ea4fe9b9
+    subdir: app-android/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm nodejs
+    init:
+      - cd ../..
+      - npm ci
+      - ./build-www.sh
+      - npx cap sync android
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^app-v
+CurrentVersion: 1.0.125
+CurrentVersionCode: 125
