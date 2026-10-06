@@ -110,6 +110,7 @@ variables:
       changes:
         - metadata/**/*
         - srclibs/**/*
+        - tools/check-*
     - if: $CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
 checkupdates:
@@ -259,14 +260,15 @@ tools check scripts:
   script:
     - apt-get -qy update
     - apt-get -qy dist-upgrade
-    - apt-get -qy install --no-install-recommends exiftool git jq python3 python3-yaml
+    - apt-get -qy install --no-install-recommends ca-certificates default-jre-headless exiftool git jq python3 python3-yaml
     - export EXITVALUE=0
     - function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }
 
     - chown -R $(whoami) .
     - ./tools/check-exif-in-images.sh || set_error
     - ./tools/check-localized-metadata.py || set_error
-    - ./tools/check-keyalias-collision.py || set_error
+    - *get_changed_apps
+    - ./tools/check-keyalias-collision.py $CHANGED || set_error
     - ./tools/check-metadata-summary-whitespace.py || set_error
     - ./tools/check-for-unattached-signatures.py || set_error
     - ./tools/make-summary-translatable.py || set_error
