@@ -1,0 +1,60 @@
+Categories:
+  - Multimedia
+License: MIT
+AuthorName: kingfish600
+SourceCode: https://github.com/kingfish600/Audiobook-NightForge
+IssueTracker: https://github.com/kingfish600/Audiobook-NightForge/issues
+Changelog: https://github.com/kingfish600/Audiobook-NightForge/releases
+
+AutoName: Audiobook NightForge
+
+RepoType: git
+Repo: https://github.com/kingfish600/Audiobook-NightForge.git
+
+Builds:
+  - versionName: 0.8.6
+    versionCode: 78
+    commit: v0.8.6
+    sudo:
+      - apt-get update
+      - apt-get install -y wget unzip cmake make
+    gradle:
+      - yes
+    srclibs:
+      - sherpa-onnx@v1.13.6
+    build:
+      - (cd $$sherpa-onnx$$ && ./build-android-arm64-v8a.sh)
+      - L=$$sherpa-onnx$$/build-android-arm64-v8a/install/lib
+      - mkdir -p app/src/main/jniLibs/arm64-v8a
+      - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
+    scanignore:
+      - app/src/main/jniLibs/arm64-v8a/libsherpa-onnx-jni.so
+      - app/src/main/jniLibs/arm64-v8a/libonnxruntime.so
+    ndk: r28c
+
+  - versionName: 0.9.9
+    versionCode: 88
+    commit: v0.9.9
+    sudo:
+      - apt-get update
+      - apt-get install -y wget unzip cmake make
+    gradle:
+      - yes
+    srclibs:
+      - sherpa-onnx@v1.13.6
+    build:
+      - (cd $$sherpa-onnx$$ && ./build-android-arm64-v8a.sh)
+      - L=$$sherpa-onnx$$/build-android-arm64-v8a/install/lib
+      - mkdir -p app/src/main/jniLibs/arm64-v8a
+      - cp -f $L/libsherpa-onnx-jni.so $L/libonnxruntime.so app/src/main/jniLibs/arm64-v8a/
+    scanignore:
+      - app/src/main/jniLibs/arm64-v8a/libsherpa-onnx-jni.so
+      - app/src/main/jniLibs/arm64-v8a/libonnxruntime.so
+    ndk: r28c
+
+AllowedAPKSigningKeys: dc8707e24b644deea9d0ca4266fa26e59652d72d14be5bf491a22a02b8efcb1a
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 0.9.9
+CurrentVersionCode: 88
