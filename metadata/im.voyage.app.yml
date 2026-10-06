@@ -18,7 +18,7 @@ Repo: https://github.com/VoyageClient/Voyage.git
 
 Builds:
   - versionName: '20261003'
-    versionCode: 402610030
+    versionCode: 402610031
     commit: 2e44dbf54716aa846f914dad77ee6afc3fc70952
     timeout: 10800
     subdir: vector-app
@@ -29,8 +29,70 @@ Builds:
       - apt-get install -y -t bookworm openjdk-17-jdk-headless
     gradle:
       - yes
-    output: build/outputs/apk/release/voyage-universal-release-unsigned.apk
-    prebuild: sed -i 'd' ../gradle/jvm-publish.gradle
+    output: build/outputs/apk/release/voyage-armeabi-v7a-release-unsigned.apk
+    prebuild:
+      - sed -i 'd' ../gradle/jvm-publish.gradle
+      - sed -i '/include "armeabi-v7a"/s/ ".*/ "armeabi-v7a"/' build.gradle
+    ndk: 23.2.8568313
+    gradleprops:
+      - org.gradle.caching=false
+
+  - versionName: '20261003'
+    versionCode: 402610032
+    commit: 2e44dbf54716aa846f914dad77ee6afc3fc70952
+    timeout: 10800
+    subdir: vector-app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+    gradle:
+      - yes
+    output: build/outputs/apk/release/voyage-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - sed -i 'd' ../gradle/jvm-publish.gradle
+      - sed -i '/include "armeabi-v7a"/s/ ".*/ "arm64-v8a"/' build.gradle
+    ndk: 23.2.8568313
+    gradleprops:
+      - org.gradle.caching=false
+
+  - versionName: '20261003'
+    versionCode: 402610033
+    commit: 2e44dbf54716aa846f914dad77ee6afc3fc70952
+    timeout: 10800
+    subdir: vector-app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+    gradle:
+      - yes
+    output: build/outputs/apk/release/voyage-x86-release-unsigned.apk
+    prebuild:
+      - sed -i 'd' ../gradle/jvm-publish.gradle
+      - sed -i '/include "armeabi-v7a"/s/ ".*/ "x86"/' build.gradle
+    ndk: 23.2.8568313
+    gradleprops:
+      - org.gradle.caching=false
+
+  - versionName: '20261003'
+    versionCode: 402610034
+    commit: 2e44dbf54716aa846f914dad77ee6afc3fc70952
+    timeout: 10800
+    subdir: vector-app
+    submodules: true
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+    gradle:
+      - yes
+    output: build/outputs/apk/release/voyage-x86_64-release-unsigned.apk
+    prebuild:
+      - sed -i 'd' ../gradle/jvm-publish.gradle
+      - sed -i '/include "armeabi-v7a"/s/ ".*/ "x86_64"/' build.gradle
     ndk: 23.2.8568313
     gradleprops:
       - org.gradle.caching=false
@@ -38,7 +100,10 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^[0-9]{8}$
 VercodeOperation:
-  - '%c*10+200000000'
+  - '%c*10+200000001'
+  - '%c*10+200000002'
+  - '%c*10+200000003'
+  - '%c*10+200000004'
 UpdateCheckData: '|([0-9]+)||([0-9]{8})'
 CurrentVersion: '20261003'
-CurrentVersionCode: 402610030
+CurrentVersionCode: 402610034
