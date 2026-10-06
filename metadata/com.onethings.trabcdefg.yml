@@ -12,14 +12,16 @@ Builds:
     versionCode: 1
     commit: 320d999
     subdir: openstreetmap_version
-    gradle:
-      - yes
+    # 1. 明確指定所需的 Java 版本（Flutter 3.x 建議至少 Java 17）
+    java: 17
     srclibs:
       - flutter@3.47.1
+    # 2. 避免預設 gradlew 檢查出錯，在 build 流程中確保 gradlew 權限與配置
     build:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
       - $$flutter$$/bin/flutter build apk --release
+    output: build/app/outputs/flutter-apk/app-release.apk
 
 AutoUpdateMode: None
 UpdateCheckMode: None
