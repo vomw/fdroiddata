@@ -377,7 +377,7 @@ Builds:
 
   - versionName: 0.8.2
     versionCode: 19
-    commit: 24caaf5d9338eef27211ce60aea3fe57d6f59719
+    commit: 68815748b02a6960730754db1acfafbac2d5831f
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -386,9 +386,10 @@ Builds:
       - apt-get install -y make g++ libc-dev
     init:
       - cd ../..
-      - npm install
+      - npm ci --build-from-source
       - npm run build-only
-      - npx cap sync
+      - rm dist/nitro.json
+      - npx cap sync android
     gradle:
       - yes
     rm:
@@ -398,6 +399,7 @@ Builds:
     scandelete:
       - node_modules
     build: cat -n build.gradle
+    binary: https://gitlab.com/api/v4/projects/33463524/packages/generic/bahnvorhersage/%v/bahnvorhersage-%v.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
