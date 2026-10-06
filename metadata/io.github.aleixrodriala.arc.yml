@@ -1,0 +1,52 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on YouTube, a proprietary network service.
+Categories:
+  - Online Media Player
+License: MIT
+AuthorName: aleixrodriala
+WebSite: https://newtube.org/
+SourceCode: https://github.com/aleixrodriala/newtube
+IssueTracker: https://github.com/aleixrodriala/newtube/issues
+Changelog: https://github.com/aleixrodriala/newtube/blob/HEAD/CHANGELOG.md
+
+AutoName: NewTube
+
+RepoType: git
+Repo: https://github.com/aleixrodriala/newtube.git
+Binaries: 
+  https://github.com/aleixrodriala/newtube/releases/download/v%v/NewTube_%v_fdroid_universal.apk
+
+Builds:
+  - versionName: 1.15.0
+    versionCode: 11500
+    commit: 756e7e56acba61ccdf5b4d5a802963f0eb62616c
+    subdir: smarttubetv
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - stmobile
+    output: 
+      build/outputs/apk/stmobile/release/smarttubetv-stmobile-universal-release-unsigned.apk
+    rm:
+      - SharedModules/j2v8/src/main/jniLibs
+      - MediaServiceCore/SharedModules/j2v8/src/main/jniLibs
+    prebuild:
+      - sdkmanager 'cmdline-tools;23.0'
+      - echo "profgenPath=$$SDK$$/cmdline-tools/23.0/bin/profgen" >> ../gradle.properties
+    scanignore:
+      - smarttubetv/build.gradle
+    ndk: 21.0.6113669
+    gradleprops:
+      - fdroid
+
+AllowedAPKSigningKeys: 2ef99d76edfad988ad17cdee8ba18c634e230fe1e3cb1fdc6cdb0249370a36c9
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+UpdateCheckData: smarttubetv/build.gradle|versionCode\s(1\d+)|.|versionName\s"(\d+\.\d+\.\d+)"
+CurrentVersion: 1.15.0
+CurrentVersionCode: 11500
