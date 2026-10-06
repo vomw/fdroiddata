@@ -1,0 +1,93 @@
+Categories:
+  - Board Game
+  - Card Game
+License: MIT
+AuthorName: Ricardo Sierra
+SourceCode: https://github.com/ricasolucoes/PlayTable
+IssueTracker: https://github.com/ricasolucoes/PlayTable/issues
+Changelog: https://github.com/ricasolucoes/PlayTable/blob/HEAD/CHANGELOG.md
+
+AutoName: PlayTable
+
+RepoType: git
+Repo: https://github.com/ricasolucoes/PlayTable.git
+
+Builds:
+  - versionName: 0.9.2
+    versionCode: 181
+    commit: 682fece5182f8ed98441e67d0c592d2967292bc7
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons clang
+    output: bin/PlayTable.apk
+    srclibs:
+      - Godot@4.7.2-stable
+    prebuild: mkdir -p bin
+    build:
+      - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no use_llvm=yes
+        scu_build=yes accesskit=no"
+      - $SCONS target=editor platform=linuxbsd
+      - $SCONS target=template_release platform=android arch=arm32 production=yes
+        swappy=no generate_android_binaries=yes generate_apk=yes
+      - popd
+      - mv $$Godot$$/bin/android_release.apk ./android_release.apk
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
+      - sed -i -e '/custom_template\/release/s|=.*|="./android_release.apk"|' export_presets.cfg
+      - sed -i -e '/architectures\/arm64-v8a/s|=.*|=false|' export_presets.cfg
+      - sed -i -e '/architectures\/armeabi-v7a/s|=.*|=true|' export_presets.cfg
+      - sed -i -e '/version\/code=/s|=.*|=181|' export_presets.cfg
+      - sed -i -e '/gradle_build\/use_gradle_build/s|=.*|=false|' export_presets.cfg
+      - sed -i -e '/gradle_build\/export_format/s|=.*|=0|' export_presets.cfg
+      - sed -i -e '/gradle_build\/min_sdk/s|=.*|=""|' export_presets.cfg
+      - sed -i -e '/gradle_build\/target_sdk/s|=.*|=""|' export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64.llvm --headless --export-release
+        "Android" bin/PlayTable.apk
+    ndk: r28b
+
+  - versionName: 0.9.2
+    versionCode: 182
+    commit: 682fece5182f8ed98441e67d0c592d2967292bc7
+    sudo:
+      - apt-get update
+      - apt-get install -y pkgconf scons clang
+    output: bin/PlayTable.apk
+    srclibs:
+      - Godot@4.7.2-stable
+    prebuild: mkdir -p bin
+    build:
+      - pushd $$Godot$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export ANDROID_HOME=$$SDK$$
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+      - export SCONS="scons -j `nproc` verbose=no warnings=no progress=no use_llvm=yes
+        scu_build=yes accesskit=no"
+      - $SCONS target=editor platform=linuxbsd
+      - $SCONS target=template_release platform=android arch=arm64 production=yes
+        swappy=no generate_android_binaries=yes generate_apk=yes
+      - popd
+      - mv $$Godot$$/bin/android_release.apk ./android_release.apk
+      - sed -i -e 's:\(^.*package/signed\)\s*=.*$:\1 = false:' export_presets.cfg
+      - sed -i -e '/custom_template\/release/s|=.*|="./android_release.apk"|' export_presets.cfg
+      - sed -i -e '/architectures\/armeabi-v7a/s|=.*|=false|' export_presets.cfg
+      - sed -i -e '/architectures\/arm64-v8a/s|=.*|=true|' export_presets.cfg
+      - sed -i -e '/version\/code=/s|=.*|=182|' export_presets.cfg
+      - sed -i -e '/gradle_build\/use_gradle_build/s|=.*|=false|' export_presets.cfg
+      - sed -i -e '/gradle_build\/export_format/s|=.*|=0|' export_presets.cfg
+      - sed -i -e '/gradle_build\/min_sdk/s|=.*|=""|' export_presets.cfg
+      - sed -i -e '/gradle_build\/target_sdk/s|=.*|=""|' export_presets.cfg
+      - $$Godot$$/bin/godot.linuxbsd.editor.x86_64.llvm --headless --export-release
+        "Android" bin/PlayTable.apk
+    ndk: r28b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+UpdateCheckData: export_presets.cfg|version/code=(\d+)|.|version/name="([\d.]+)"
+CurrentVersion: 0.9.2
+CurrentVersionCode: 182
