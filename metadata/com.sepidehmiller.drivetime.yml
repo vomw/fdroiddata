@@ -1,0 +1,35 @@
+Categories:
+  - Habit Tracker
+License: MIT
+AuthorName: Sepideh Miller
+AuthorEmail: sepideh.miller@gmail.com
+AuthorWebSite: https://www.sepidehmiller.com
+SourceCode: https://github.com/baghaii/DriveTime
+IssueTracker: https://github.com/baghaii/DriveTime/issues
+
+AutoName: DriveTime
+
+RepoType: git
+Repo: https://github.com/baghaii/DriveTime
+Binaries: https://github.com/baghaii/DriveTime/releases/download/v%v/app-release.apk
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: 3f09fcb64abfc4d3812ffcc684d2a50e587d47ec
+    subdir: app
+    gradle:
+      - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.0
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 7b5836870028e20326f6c229eceec5bb04c308396ad789d679df2d7198ea1fc6
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
