@@ -15,17 +15,16 @@ Builds:
   - versionName: 2.6.120
     versionCode: 169
     commit: cafbd10f4c4a0f55260c525ecd844ae52fcc5191
-    subdir: project
+    subdir: project/app
     gradle:
       - yes
     prebuild:
-      - echo "tmdb.proxy.secret=dummy-for-fdroid" > local.properties
+      - echo "tmdb.proxy.secret=dummy-for-fdroid" > ../local.properties
       - sed -i 's/it.contains("OfficialRelease") || it.contains("Release")/it.contains("OfficialRelease")/g'
-        app/build.gradle.kts
+        build.gradle.kts
       - echo "F-Droid Media3-only"
     scandelete:
       - project/native/prebuilt
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v%v
