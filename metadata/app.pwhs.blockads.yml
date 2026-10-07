@@ -255,11 +255,14 @@ Builds:
     gradle:
       - yes
     output: build/outputs/apk/release/app-universal-release-unsigned.apk
-    rm:
-      - app/src/main/assets/preset/geoip_ipv4.bin
     srclibs:
       - go@go1.23.5
+    rm:
+      - app/src/main/assets/preset/geoip_ipv4.bin
     build:
+      - pushd ..
+      - python3 ./scripts/generate_geoip.py
+      - popd
       - pushd $$go$$/src
       - ./make.bash
       - popd
