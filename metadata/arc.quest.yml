@@ -1,0 +1,77 @@
+Categories:
+  - Puzzle Game
+License: AGPL-3.0-only
+AuthorName: Eve-146T
+SourceCode: https://github.com/Eve-146T/arc-quest
+IssueTracker: https://github.com/Eve-146T/arc-quest/issues
+Changelog: https://github.com/Eve-146T/arc-quest/releases
+
+AutoName: ARC Quest
+
+RepoType: git
+Repo: https://github.com/Eve-146T/arc-quest.git
+Binaries: https://github.com/Eve-146T/arc-quest/releases/download/v%v/arc-quest-v%v.apk
+
+Builds:
+  - versionName: 1.0.2
+    versionCode: 6
+    commit: 04d1fd18b8e13bf8a184e86c70e090563062f025
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm zip build-essential autoconf automake libtool libltdl-dev
+        pkg-config cmake ccache wget texinfo rustup libssl-dev zlib1g-dev libbz2-dev
+        libffi-dev libsqlite3-dev libreadline-dev xz-utils
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    output: android/build/arc-quest-unsigned.apk
+    srclibs:
+      - cpython@v3.13.2
+    rm:
+      - public/runtime
+      - public/engine.zip
+      - vendor/pyodide/src/tests
+      - vendor/pyodide/packages/micropip/test
+      - vendor/pyodide/packages/test-rust-abi
+      - vendor/pyodide/packages/test-rust-panic
+      - vendor/pyodide/pyodide-build/integration_tests
+      - vendor/pyodide/pyodide-build/pyodide_build/tests
+      - vendor/pyodide-recipes/packages/micropip/test
+      - vendor/pyodide-recipes/pyodide-build
+    build:
+      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      - export PATH="$JAVA_HOME/bin:$PATH"
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - mkdir -p .scratch
+      - mkdir -p .scratch/cpython-build
+      - cd .scratch/cpython-build && $$cpython$$/configure --prefix="$PWD/../cpython-3.13.2"
+        --with-ensurepip=install && make -j4 && make install && cd ../..
+      - .scratch/cpython-3.13.2/bin/python3.13 -m venv .scratch/runtime-venv
+      - .scratch/runtime-venv/bin/pip install -r scripts/runtime-build-requirements.txt
+      - .scratch/runtime-venv/bin/pip install --no-deps --no-build-isolation -e vendor/pyodide/pyodide-build
+      - sed -i '/^uv venv /d; /^uv pip /d' scripts/build-runtime.sh
+      - bash scripts/build-runtime.sh
+      - ARC_DEBUG=0 ARC_REVIEW=0 ARC_RELEASE=0 bash scripts/build-android.sh
+
+AllowedAPKSigningKeys: 2fe09f50180d92e3b3204992ffc9a8c598087b9a7bac0b12d3f23a1e3687fd7f
+
+MaintainerNotes: |-
+  Java WebView shell with a manual AAPT2/D8 build from the repository root.
+  No Gradle subproject. The app runs all games offline; it is not a website wrapper.
+  The manifest requests no network permissions; WebView resources come from APK assets.
+  The bundled runtime is removed before scanning and rebuilt from pinned Pyodide
+  and pyodide-recipes submodules. These compile CPython 3.13.2, NumPy 2.2.5 and
+  pydantic-core 2.41.5 to WebAssembly. Game/engine archives and Python bytecode are
+  generated from source by scripts/package-runtime.py. There are no scanignore
+  exceptions. Upstream test fixtures and the recipes repository's unused copy
+  of pyodide-build are removed from the submodules.
+  Build tooling includes Emscripten 4.0.9 and Pyodide's pinned Rust nightly/sysroot.
+  See docs/RUNTIME-BUILD.md for sources and reproducibility.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.2
+CurrentVersionCode: 6
