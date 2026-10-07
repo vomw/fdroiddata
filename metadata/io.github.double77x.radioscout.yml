@@ -15,7 +15,7 @@ Binaries:
 Builds:
   - versionName: 0.4.3
     versionCode: 403
-    commit: 99693a59e8f25424d3621f6a915056b9a129f6cf
+    commit: abc42e8ac39c025678ed0d75486644853a9e7332
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -37,10 +37,9 @@ Builds:
       - VITE_DISTRIBUTION=fdroid npx cap sync android
       - rm capacitor.config.json
       - mv capacitor.config.ts.fdroid capacitor.config.ts
+      - node scripts/strip-capgo-plugin.mjs
       - cd android
       - sed -i '/capgo-capacitor-updater/d' capacitor.settings.gradle app/capacitor.build.gradle
-      - node -e "const fs=require('fs');const p='app/src/main/assets/capacitor.plugins.json';const
-        a=JSON.parse(fs.readFileSync(p,'utf8'));fs.writeFileSync(p,JSON.stringify(a.filter((x)=>x.pkg!=='@capgo/capacitor-updater'),null,2));"
 
 AllowedAPKSigningKeys: 31a9b5f8ea747d0dd9ad9e8428e27d8a6e4219ecdf5a88d2f28f3f4a56417761
 
