@@ -1,0 +1,32 @@
+Categories:
+  - OCR
+License: BSD-3-Clause
+SourceCode: https://github.com/ethereal-developers/OpenScan
+IssueTracker: https://github.com/ethereal-developers/OpenScan/issues
+Changelog: https://github.com/ethereal-developers/OpenScan/releases
+
+AutoName: OpenScan
+
+RepoType: git
+Repo: https://github.com/ethereal-developers/OpenScan
+
+Builds:
+  - versionName: 3.0.0
+    versionCode: 9
+    commit: 2d51a1a82e4d84b49a623b366d5abc6627c6f51b
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.47.2
+    rm:
+      - ios
+    prebuild: echo "flutter.sdk=$$flutter$$" >> ../local.properties
+    build:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter packages pub get
+      - $$flutter$$/bin/flutter build apk
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 3.0.0
+CurrentVersionCode: 9
