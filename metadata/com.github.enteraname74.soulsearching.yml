@@ -92,11 +92,14 @@ Builds:
   - versionName: 0.16.0
     versionCode: 39
     commit: 048e69fccb116ca204d11ed0590d45c1d2a62c77
-    subdir: app
+    subdir: androidApp
     gradle:
       - yes
     prebuild:
       - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) { minorApiLevel
+        = 0 } }/' ../build-logic/convention/src/main/kotlin/soulsearching.android.application.gradle.kts
+        ../build-logic/convention/src/main/kotlin/soulsearching.kmp.base.gradle.kts
       - sed -i -e '/jvmToolchain/d' -e 's/androidTarget()/androidTarget() { compilerOptions
         { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) } }/' -e
         's/jvm("desktop")/jvm("desktop") { compilations.all { compilerOptions.configure
@@ -106,6 +109,7 @@ Builds:
       - build.gradle.kts
       - build-logic/settings.gradle.kts
       - settings.gradle.kts
+    scandelete:
       - local/worker/package.json
 
 AllowedAPKSigningKeys: ce1e274879e9609ad9eb36f27a0a01bb8442cc02affb6f3338ef3828d4998ca1
