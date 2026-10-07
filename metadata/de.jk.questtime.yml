@@ -1,0 +1,35 @@
+Categories:
+  - Finance Manager
+  - Habit Tracker
+  - Task
+  - Time Tracker
+License: GPL-3.0-or-later
+AuthorName: Benni Jansen
+SourceCode: https://codeberg.org/BenniJanson/QuestTime
+IssueTracker: https://codeberg.org/BenniJanson/QuestTime/issues
+Changelog: https://codeberg.org/BenniJanson/QuestTime/releases
+
+AutoName: QuestTime
+
+RepoType: git
+Repo: https://codeberg.org/BenniJanson/QuestTime.git
+
+Builds:
+  - versionName: 1.0.3
+    versionCode: 5
+    commit: df66de76b79e44a235fc57e0d93b080fd30ce8f3
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@3.29.0
+    rm:
+      - linux
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build: $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.3
+CurrentVersionCode: 5
