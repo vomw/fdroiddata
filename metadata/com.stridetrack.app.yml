@@ -1,0 +1,36 @@
+Categories:
+  - Workout
+License: MIT
+AuthorName: KS71
+SourceCode: https://github.com/KS71/StrideTrack
+IssueTracker: https://github.com/KS71/StrideTrack/issues
+
+AutoName: StrideTrack
+
+RepoType: git
+Repo: https://github.com/KS71/StrideTrack.git
+
+Builds:
+  - versionName: 2.3.9
+    versionCode: 22
+    commit: 69ef528a41181fe3e342c7718cf9ccc0ee99f077
+    subdir: android/app
+    sudo:
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+    init:
+      - cd ../..
+      - npm install
+      - npm run build
+      - npx cap sync android
+    gradle:
+      - yes
+    scandelete:
+      - stitch-skills.zip
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.3.9
+CurrentVersionCode: 22
