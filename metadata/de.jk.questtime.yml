@@ -28,8 +28,17 @@ Builds:
     rm:
       - linux
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/upstream/path/example/example
+      - cd ..
+      - mv example.app $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get --enforce-lockfile
+      - mv $repo questtime.app
     scanignore:
       - .flutter/bin/cache
     scandelete:
