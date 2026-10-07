@@ -1,0 +1,44 @@
+Categories:
+  - Connectivity
+  - File Transfer
+  - Multimedia
+  - Phone & SMS
+License: MIT
+AuthorName: Connected Team
+AuthorWebSite: https://github.com/paterkleomenis/connected
+WebSite: https://github.com/paterkleomenis/connected
+SourceCode: https://github.com/paterkleomenis/connected
+IssueTracker: https://github.com/paterkleomenis/connected/issues
+Changelog: https://github.com/paterkleomenis/connected/releases
+
+AutoName: Connected
+
+RepoType: git
+Repo: https://github.com/paterkleomenis/connected
+
+Builds:
+  - versionName: 3.2.9
+    versionCode: 30209
+    commit: d769a6c52f4df591035cd503a4cf40fd9ed062ca
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl libclang-dev clang gcc libc-dev pkg-config libssl-dev
+        perl make python3 build-essential rustup
+    gradle:
+      - sideload
+    prebuild:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - rustup default 1.97.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        i686-linux-android
+      - cargo install cargo-ndk --locked
+    ndk: r27c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckName: ([0-9.]+)
+UpdateCheckData: android/app/build.gradle.kts|versionCode = ([0-9]+)|android/app/build.gradle.kts|versionName
+  = "([0-9.]+)"
+CurrentVersion: 3.2.9
+CurrentVersionCode: 30209
