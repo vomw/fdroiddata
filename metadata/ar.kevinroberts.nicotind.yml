@@ -1,0 +1,54 @@
+Categories:
+  - Multimedia
+License: AGPL-3.0-only
+AuthorName: Kevin Roberts
+SourceCode: https://github.com/kevinch3/NicotinD
+IssueTracker: https://github.com/kevinch3/NicotinD/issues
+Changelog: https://github.com/kevinch3/NicotinD/blob/HEAD/CHANGELOG.md
+
+AutoName: NicotinD
+
+RepoType: git
+Repo: https://github.com/kevinch3/NicotinD.git
+Binaries: https://github.com/kevinch3/NicotinD/releases/download/v%v/NicotinD-%v.apk
+
+Builds:
+  - versionName: 0.8.12
+    versionCode: 8012
+    commit: fad14f4446c1d1816b6e518f50d01ae6bb232429
+    subdir: packages/mobile/android/app
+    sudo:
+      - install -d /opt/node
+      - curl -fsSL -o /tmp/node.tar.gz https://nodejs.org/dist/v22.22.3/node-v22.22.3-linux-x64.tar.gz
+      - echo "c7a10d6816da8eaaa7534dd73c71c6e2b2c391dbbf845e364902d156615dd1b8  /tmp/node.tar.gz"
+        | sha256sum -c -
+      - tar -xzf /tmp/node.tar.gz -C /opt/node --strip-components=1
+      - ln -sf /opt/node/bin/node /usr/local/bin/node
+      - ln -sf /opt/node/bin/npm /usr/local/bin/npm
+      - rm -f /tmp/node.tar.gz
+      - install -d /opt/bun
+      - curl -fsSL -o /tmp/bun.zip https://github.com/oven-sh/bun/releases/download/bun-v1.3.11/bun-linux-x64.zip
+      - echo "8611ba935af886f05a6f38740a15160326c15e5d5d07adef966130b4493607ed  /tmp/bun.zip"
+        | sha256sum -c -
+      - unzip -j -d /opt/bun /tmp/bun.zip
+      - chmod 755 /opt/bun/bun
+      - ln -sf /opt/bun/bun /usr/local/bin/bun
+      - ln -sf /opt/bun/bun /usr/local/bin/bunx
+      - rm -f /tmp/bun.zip
+    gradle:
+      - phone
+    prebuild:
+      - cd ../../../..
+      - bun install --frozen-lockfile
+      - bun run --filter @nicotind/web build
+      - cd packages/mobile
+      - bunx cap sync android
+    scandelete:
+      - node_modules
+
+AllowedAPKSigningKeys: 5bf701a0ff9a2cd75f279404d2c8b4bf16ed2bb8591709ae2c8560bc557d6bea
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.8.12
+CurrentVersionCode: 8012
