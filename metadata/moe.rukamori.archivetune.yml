@@ -1,0 +1,45 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Uses YouTube Music and other proprietary online services for music playback,
+      social features, and related functionality.
+Categories:
+  - Local Media Player
+  - Multimedia
+  - Online Media Player
+License: GPL-3.0-only
+AuthorName: rukamori
+AuthorEmail: me@koiiverse.cloud
+AuthorWebSite: https://koiiverse.cloud
+WebSite: https://archivetune.koiiverse.cloud
+SourceCode: https://github.com/rukamori/ArchiveTune
+IssueTracker: https://github.com/rukamori/ArchiveTune/issues
+Translation: https://translate.codeberg.org/projects/archivetune
+Changelog: https://github.com/rukamori/ArchiveTune/releases
+Donate: https://koiiverse.cloud/donate
+
+AutoName: ArchiveTune
+
+RepoType: git
+Repo: https://github.com/rukamori/ArchiveTune.git
+Binaries: 
+  https://github.com/rukamori/ArchiveTune/releases/download/v%v/app-foss-mobile-universal-release.apk
+
+Builds:
+  - versionName: 15.1.0
+    versionCode: 142
+    commit: 2f48b8159ecca45ae39394e2eb0d0b946e6b06f9
+    subdir: app
+    submodules: true
+    gradle:
+      - fossMobileUniversal
+    srclibs:
+      - reproducible-apk-tools@v0.3.1
+    postbuild: $$reproducible-apk-tools$$/zipalign.py -P 16 --pad-like-apksigner --replace
+      $$OUT$$ $$OUT$$-fixed.apk && mv $$OUT$$-fixed.apk $$OUT$$
+
+AllowedAPKSigningKeys: bb2e5b7e476c0de63b06686209c0f60e904f9988e9bb452da280596e8ae98e33
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 15.1.0
+CurrentVersionCode: 142
