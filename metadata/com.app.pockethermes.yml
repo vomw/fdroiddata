@@ -1,0 +1,62 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optional Telegram gateway and third-party AI provider endpoints are non-free
+      network services.
+Categories:
+  - Internet
+  - System
+License: GPL-3.0-only
+AuthorName: Ubaid ur Rehman
+SourceCode: https://gitlab.com/theredhacker0345/pocket-relay
+IssueTracker: https://gitlab.com/theredhacker0345/pocket-relay/issues
+
+AutoName: Pocket Relay
+
+RepoType: git
+Repo: https://gitlab.com/theredhacker0345/pocket-relay.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 2a328d493b76b847c692c2841f4344bb38f425c0
+    subdir: android
+    sudo:
+      - echo "deb https://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list
+      - apt-get update
+      - apt-get install -y build-essential nodejs npm rustup
+      - apt-get install -y -t bullseye openjdk-17-jdk-headless
+    init:
+      - cd ..
+      - npm exec --yes --package=pnpm@9.12.0 -- pnpm install --frozen-lockfile
+      - node scripts/prepare-fdroid-expo-autolinking.mjs
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - rustup default 1.88.0
+      - rustup target add aarch64-linux-android
+      - echo "hermesEnabled=false" >> gradle.properties
+      - echo "Building Pocket Relay offline embedded Python wheels for ARM64"
+      - bash ../scripts/build-android-python-wheels.sh
+    scandelete:
+      - node_modules
+      - third_party/pydantic-core/vendor/regex-automata-0.4.13/tests/fuzz/testdata
+    ndk: 27.1.12297006
+
+AllowedAPKSigningKeys: 1b214cbaf218184164679112e2bb156d30acd7e48ebdaa2aecf352935e4a7006
+
+MaintainerNotes: |-
+  Requires Android 7.0+ (API 24+) and targets ARM64. The Gradle release artifact
+  is intentionally unsigned unless a maintainer explicitly supplies release-key
+  material; F-Droid signs its own reproducible builds. Hermes Agent 0.20.1 and
+  Pydantic Core 2.46.4 source, licenses, provenance records, and their required
+  local build inputs are vendored under third_party/. The prebuild script is
+  fail-closed and must run without network access. A clean F-Droid build-server
+  run remains the final independent verification before publication. F-Droid
+  builds use JavaScriptCore because the scanner removes React Native's prebuilt
+  host Hermes compiler; normal Pocket Relay builds retain Hermes.
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
