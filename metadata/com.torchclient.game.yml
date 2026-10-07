@@ -24,12 +24,10 @@ Builds:
     timeout: 10800
     sudo:
       - apt-get update
-      - apt-get install -y curl openjdk-17-jdk-headless zip
+      - apt-get install -y openjdk-21-jdk-headless rustup zip
     output: dist/torch-client-unsigned.apk
     build:
-      - curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain none
-      - source $HOME/.cargo/env
-      - rustup target add aarch64-linux-android
+      - rustup toolchain install $(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml) --profile minimal --target aarch64-linux-android
       - UNSIGNED=1 tools/build_android.sh
     ndk: 27.1.12297006
 
