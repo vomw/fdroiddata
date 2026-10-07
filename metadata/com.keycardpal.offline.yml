@@ -19,13 +19,10 @@ AutoName: Keycard Pal
 
 RepoType: git
 Repo: https://github.com/mmlado/keycard-pal
-Binaries: 
-  https://github.com/mmlado/keycard-pal/releases/download/v%v/keycard-pal-offline-release-universal.apk
-
 Builds:
-  - versionName: 1.13.0
-    versionCode: 11300
-    commit: 4c8591f1b7bc90c141f8108acfcff640e47966a5
+  - versionName: 1.14.0
+    versionCode: 114001
+    commit: 9736572addde30b1b359c29a0cffd8510edb73cf
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -40,7 +37,8 @@ Builds:
       - npm ci --allow-git=all
     gradle:
       - offline
-    output: build/outputs/apk/offline/release/keycard-pal-offline-release-universal.apk
+    output: build/outputs/apk/offline/release/keycard-pal-offline-release-armeabi-v7a.apk
+    binary: https://github.com/mmlado/keycard-pal/releases/download/v%v/keycard-pal-offline-release-armeabi-v7a.apk
     rm:
       - ios
     scanignore:
@@ -56,11 +54,50 @@ Builds:
       - node_modules
     ndk: r27b
     gradleprops:
-      - reactNativeArchitectures=arm64-v8a,armeabi-v7a
+      - reactNativeArchitectures=armeabi-v7a
+
+  - versionName: 1.14.0
+    versionCode: 114002
+    commit: 9736572addde30b1b359c29a0cffd8510edb73cf
+    subdir: android/app
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+      - sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+    init:
+      - cd ../..
+      - npm ci --allow-git=all
+    gradle:
+      - offline
+    output: build/outputs/apk/offline/release/keycard-pal-offline-release-arm64-v8a.apk
+    binary: https://github.com/mmlado/keycard-pal/releases/download/v%v/keycard-pal-offline-release-arm64-v8a.apk
+    rm:
+      - ios
+    scanignore:
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-encrypted-storage/android/build.gradle
+      - node_modules/@react-native-community/blur/android/build.gradle
+      - node_modules/@react-native-community/netinfo/android/build.gradle
+    scandelete:
+      - node_modules
+    ndk: r27b
+    gradleprops:
+      - reactNativeArchitectures=arm64-v8a
 
 AllowedAPKSigningKeys: a83c114b1f4201dafbd03e221f1c2928ecb52b78bda5e93f296fedf2298e546b
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.13.0
-CurrentVersionCode: 11300
+VercodeOperation:
+  - '%c + 1'
+  - '%c + 2'
+CurrentVersion: 1.14.0
+CurrentVersionCode: 114002
