@@ -1,0 +1,79 @@
+# fdroiddata metadata — Send GPS Data (Android)
+# File name MUST equal the applicationId: com.mongoutils.sendgpsdata
+# Docs: https://f-droid.org/docs/Build_Metadata_Reference/
+
+Categories:
+  - Navigation
+  - System
+
+License: MIT
+
+AuthorName: ymongo
+
+WebSite: https://github.com/ymongo/send-gps-data-mobile-app
+SourceCode: https://github.com/ymongo/send-gps-data-mobile-app
+IssueTracker: https://github.com/ymongo/send-gps-data-mobile-app/issues
+Changelog: https://github.com/ymongo/send-gps-data-mobile-app/blob/master/RELEASE_NOTES.md
+
+Donate: https://getalby.com/lightning/p/greenpond2749@getalby.com
+
+AutoName: Send GPS Data
+Summary: Privacy-first self-hosted GPS location streaming
+Description: |
+  Send GPS Data streams your live GPS location over WebSocket to a server YOU own — private, self-hosted, no account, no cloud, no third party.
+
+  A do-it-yourself alternative to third-party location trackers, where you keep the keys.
+
+  FEATURES
+  • Streams GPS (latitude, longitude, accuracy, speed, altitude, heading) over WebSocket to any server exposing ws:// or wss://
+  • QR scan of a server URL with the camera (ZXing, open source)
+  • Save and switch between favorite servers
+  • Real-time console log viewer
+  • Built-in Bitcoin (Lightning) tip widget (SvelteKit, Alby direct)
+
+  PRIVACY-FIRST
+  • No tracking SDKs, no analytics, no account
+  • GPS uses the standard Android Location API (no proprietary dependencies)
+  • Your location goes to your own machine, over your own network
+
+  CONNECT TO ANY SERVER YOU OWN
+  Tailscale is one optional convenience, not bundled and not required. You can use any server exposing a WebSocket endpoint: a reverse proxy (Caddy/nginx), a VPS, a LAN-only server, or the companion desktop app.
+
+  F-DROID FRIENDLY
+  Open source (MIT), built with SvelteKit + Capacitor. QR scanning via ZXing (Apache-2.0). Uses the standard Android Location API — no Google Play Services, fully compatible with F-Droid devices.
+
+RepoType: git
+Repo: https://github.com/ymongo/send-gps-data-mobile-app
+
+# build verified locally: npm ci at root + gradle in apps/mobile/android -> APK OK
+Builds:
+  - versionName: 0.1.2
+    versionCode: 3
+    commit: v0.1.2
+    # `subdir` = module Gradle (contient build.gradle, AndroidManifest.xml et le dossier
+    # `build/` de sortie). F-Droid y exécute le script `build:` ET y lance `assembleRelease`.
+    subdir: apps/mobile/android
+    # `gradle: yes` => F-Droid exécute lui-même `assembleRelease` depuis `subdir`
+    #   (aucun `./gradlew` à relancer dans `build:` — un seul mécanisme pilote Gradle).
+    # Ce n'est PAS un chemin de projet : les autres valeurs sont des « flavours ».
+    gradle: yes
+    build: |
+      # Remonter à la RACINE du monorepo npm workspace pour résoudre gps-shared.
+      cd ../../..
+      npm ci --ignore-scripts
+      cd apps/mobile
+      NODE_OPTIONS="--max-old-space-size=4096" npm run prod
+      npx cap sync android
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.2
+CurrentVersionCode: 3
+
+# Vérifié localement (clone propre du tag v0.1.2, sans keystore ni local.properties) :
+#   npm ci (RACINE) -> npm run prod (apps/mobile) -> npx cap sync android -> assembleRelease
+#   => APK unsigned produit (~1,21 Mo), BUILD SUCCESSFUL.
+# NON VÉRIFIÉ ici (aucun shell / commande lancée) :
+# - `fdroid readmeta` / `fdroid lint` n'ont PAS été exécutés (fdroidserver non invoqué).
+# - Le tag `v0.1.2` dans le dépôt n'a pas été vérifié (pas de commande git).
+# - Le build sur le buildserver F-Droid et la signature ne sont pas testés ici.
