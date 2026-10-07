@@ -1,0 +1,115 @@
+Categories:
+  - Calendar & Agenda
+License: GPL-3.0-or-later
+AuthorName: Soluce Technologies
+AuthorEmail: contact@soluce-technologies.com
+SourceCode: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile
+IssueTracker: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/issues
+Changelog: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile/releases
+
+RepoType: git
+Repo: https://github.com/SoluceTechnologies/nextcloud-calendar-mobile.git
+
+Builds:
+  - versionName: 1.8.0
+    versionCode: 108001
+    commit: fbcf38e5b4af9f2c9583ab7d080373b54efcfefa
+    timeout: 14400
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - sysctl fs.inotify.max_user_watches=524288
+      - apt-get install -y -t forky nodejs npm
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - npm -g install yarn
+    init: yarn install
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - FIREBASE_STUB_DIR=$$firebase-stub$$ ./scripts/fdroid-prepare.sh
+      - yarn expo prebuild --platform android --no-install
+      - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
+      - sed -i -E 's/versionCode [0-9]+/versionCode $$VERCODE$$/' android/app/build.gradle
+      - echo "" >> android/gradle.properties
+      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
+        >> android/gradle.properties
+      - echo "org.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8" >> android/gradle.properties
+      - echo "org.gradle.workers.max=2" >> android/gradle.properties
+      - echo "org.gradle.parallel=false" >> android/gradle.properties
+      - echo "reactNativeArchitectures=armeabi-v7a" >> android/gradle.properties
+    scanignore:
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/@react-native-masked-view/masked-view/android/build.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+      - .yarn/install-state.gz
+    build:
+      - cd android
+      - gradle assembleRelease --stacktrace --console=plain 2>&1
+    ndk: r27b
+
+  - versionName: 1.8.0
+    versionCode: 108002
+    commit: fbcf38e5b4af9f2c9583ab7d080373b54efcfefa
+    timeout: 14400
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - sysctl fs.inotify.max_user_watches=524288
+      - apt-get install -y -t forky nodejs npm
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - npm -g install yarn
+    init: yarn install
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - firebase-stub@ce90a956aacda17a85c60577ee443aeb83d876ef
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - FIREBASE_STUB_DIR=$$firebase-stub$$ ./scripts/fdroid-prepare.sh
+      - yarn expo prebuild --platform android --no-install
+      - sed -i -e '/signingConfig signingConfigs.debug/d' android/app/build.gradle
+      - sed -i -E 's/versionCode [0-9]+/versionCode $$VERCODE$$/' android/app/build.gradle
+      - echo "" >> android/gradle.properties
+      - echo "org.gradle.java.installations.paths=/usr/lib/jvm/java-17-openjdk-amd64"
+        >> android/gradle.properties
+      - echo "org.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8" >> android/gradle.properties
+      - echo "org.gradle.workers.max=2" >> android/gradle.properties
+      - echo "org.gradle.parallel=false" >> android/gradle.properties
+      - echo "reactNativeArchitectures=arm64-v8a" >> android/gradle.properties
+    scanignore:
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/@react-native-masked-view/masked-view/android/build.gradle
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+      - .yarn/install-state.gz
+    build:
+      - cd android
+      - gradle assembleRelease --stacktrace --console=plain 2>&1
+    ndk: r27b
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+UpdateCheckData: app.config.ts|versionCode = (\d+)|package.json|"version":\s*"([^"]+)"
+CurrentVersion: 1.8.0
+CurrentVersionCode: 108002
