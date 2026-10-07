@@ -4,7 +4,7 @@ Categories:
   - Task
   - Time Tracker
 License: GPL-3.0-or-later
-AuthorName: Jan Kraft
+AuthorName: Benni Jansen
 SourceCode: https://codeberg.org/BenniJanson/QuestTime
 IssueTracker: https://codeberg.org/BenniJanson/QuestTime/issues
 Changelog: https://codeberg.org/BenniJanson/QuestTime/releases
@@ -15,51 +15,81 @@ RepoType: git
 Repo: https://codeberg.org/BenniJanson/QuestTime.git
 
 Builds:
-  - versionName: 1.0.2
-    versionCode: 1004
-    commit: 53aaac68d94943290f951b3edfc01cae287c4c0e
+  - versionName: 1.0.3
+    versionCode: 51
+    commit: 4526aa9f88729be3e0d957503124c5daa44166bc
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: https://codeberg.org/BenniJanson/QuestTime/releases/download/v1.0.3/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@3.29.0
     rm:
       - linux
     prebuild:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd && mv /tmp/build de.jk.questtime
+    build:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd && mv /tmp/build de.jk.questtime
 
-  - versionName: 1.0.2
-    versionCode: 2004
-    commit: 53aaac68d94943290f951b3edfc01cae287c4c0e
+  - versionName: 1.0.3
+    versionCode: 52
+    commit: 4526aa9f88729be3e0d957503124c5daa44166bc
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: https://codeberg.org/BenniJanson/QuestTime/releases/download/v1.0.3/app-arm64-v8a-release.apk
     srclibs:
       - flutter@3.29.0
     rm:
       - linux
     prebuild:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd && mv /tmp/build de.jk.questtime
+    build:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd && mv /tmp/build de.jk.questtime
 
-  - versionName: 1.0.2
-    versionCode: 3004
-    commit: 53aaac68d94943290f951b3edfc01cae287c4c0e
+  - versionName: 1.0.3
+    versionCode: 53
+    commit: 4526aa9f88729be3e0d957503124c5daa44166bc
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: https://codeberg.org/BenniJanson/QuestTime/releases/download/v1.0.3/app-x86_64-release.apk
     srclibs:
       - flutter@3.29.0
     rm:
       - linux
     prebuild:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
-    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd && mv /tmp/build de.jk.questtime
+    build:
+      - cd .. && mv de.jk.questtime /tmp/build
+      - pushd /tmp/build
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd && mv /tmp/build de.jk.questtime
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
-  - '%c + 1000'
-  - '%c + 2000'
-  - '%c + 3000'
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.2
-CurrentVersionCode: 3004
+CurrentVersion: 1.0.3
+CurrentVersionCode: 53
