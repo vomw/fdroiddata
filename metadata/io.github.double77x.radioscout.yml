@@ -1,5 +1,5 @@
 Categories:
-  - Multimedia
+  - Radio
 License: MIT
 AuthorName: Double77x
 WebSite: https://radioscout.pages.dev
@@ -15,7 +15,7 @@ Binaries:
 Builds:
   - versionName: 0.4.3
     versionCode: 403
-    commit: 9a9ecfa4bc1fc4161d444507bd86f8aa9e1a559e
+    commit: 99693a59e8f25424d3621f6a915056b9a129f6cf
     subdir: android/app
     sudo:
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
@@ -33,8 +33,7 @@ Builds:
       - node scripts/strip-sw.mjs
       - node scripts/normalize-ssr-timestamps.mjs dist/client
       - mv capacitor.config.ts capacitor.config.ts.fdroid
-      - node -e "const 
-        fs=require('fs');fs.writeFileSync('capacitor.config.json',JSON.stringify({appId:'io.github.double77x.radioscout',appName:'RadioScout',webDir:'dist/client',backgroundColor:'#eef1eb',android:{allowMixedContent:false},server:{androidScheme:'https',cleartext:false},plugins:{SplashScreen:{launchShowDuration:0},Keyboard:{resize:'body',resizeOnFullScreen:true},CapacitorUpdater:{autoUpdate:false,statsUrl:''}}},null,2))"
+      - cp capacitor.config.fdroid.json capacitor.config.json
       - VITE_DISTRIBUTION=fdroid npx cap sync android
       - rm capacitor.config.json
       - mv capacitor.config.ts.fdroid capacitor.config.ts
@@ -51,11 +50,28 @@ MaintainerNotes: |-
   disables both the Capgo OTA path and the GitHub APK update prompt so F-Droid
   remains the only update channel for this build.
 
-  The signed F-Droid reference APK is published from the source repository's
-  fdroid-reference-0.4.3-403 release and is used for reproducible-build
-  verification.
+  The recipe copies the tracked capacitor.config.fdroid.json over
+  capacitor.config.json while cap sync runs, because Capacitor reads
+  capacitor.config.ts ahead of the JSON and the buildserver's Node cannot load
+  the TypeScript config. The checked-in JSON is the F-Droid flavour of that
+  config, and pnpm fdroid:check in the source repository fails if the two drift.
 
-AutoUpdateMode: None
-UpdateCheckMode: Static
+  Updates follow the v* tags. Upstream encodes versionCode as
+  major * 10000 + minor * 100 + patch and commits the result in
+  android/app/build.gradle, so every tag carries a matching version code and
+  fdroid checkupdates can pick the newest one. Note that the v0.3.6 tag predates
+  that scheme and still declares versionCode 202; it is older than the current
+  version code and is ignored.
+
+  Reproducible-build verification uses the signed reference APK published from
+  the source repository's fdroid-reference-<version>-<versionCode> release,
+  which the F-Droid reference workflow publishes on every v* tag. A new tag
+  therefore has such a release within a few minutes of being pushed; until it
+  appears, binary verification of that version will not find a reference to
+  compare against.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: 'android/app/build.gradle|versionCode\s(\d+)||v([\d.]+)'
 CurrentVersion: 0.4.3
 CurrentVersionCode: 403
