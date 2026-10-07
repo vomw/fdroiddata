@@ -183,10 +183,55 @@ Builds:
       - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
         --replace unaligned.apk $$OUT$$
 
+  - versionName: 1.9.100
+    versionCode: 10
+    commit: b22a6584e20267edd4cea1b3727af03d39720bd9
+    sudo:
+      - mkdir -p /home/ansah/Documents/Programming/Projects/shots-studio
+      - chown -R vagrant /home/ansah
+    output: shots_studio/build/app/outputs/flutter-apk/app-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+      - reproducible-apk-tools@v0.3.0
+    rm:
+      - shots_studio/ios
+      - shots_studio/linux
+      - shots_studio/macos
+      - shots_studio/web
+      - shots_studio/windows
+    prebuild:
+      - git -C $$flutter$$ reset --hard $(cat shots_studio/flutter.version)
+      - export repo=/home/ansah/Documents/Programming/Projects/shots-studio/shots_studio
+      - mv shots_studio $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter config --no-analytics
+      - flutter pub get
+      - sed -i -e '/posthog-android/s/3\.+/3.28.0/' .pub-cache/hosted/pub.dev/posthog_flutter-*/android/build.gradle
+      - popd
+      - mv $repo .
+    scandelete:
+      - shots_studio/.pub-cache
+    build:
+      - export repo=/home/ansah/Documents/Programming/Projects/shots-studio/shots_studio
+      - mv shots_studio $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export PATH="$$flutter$$/bin:$PATH"
+      - flutter build apk --release --flavor fdroid --dart-define=BUILD_SOURCE=fdroid
+      - popd
+      - mv $repo .
+    ndk: r28c
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 16 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
 AllowedAPKSigningKeys: 4e93aa8564d719b7081e9e5ae59a86bcb3c2ae576a0d5d4e9172f3de7ac8b0a6
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: shots_studio/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.9.52
-CurrentVersionCode: 6
+CurrentVersion: 1.9.100
+CurrentVersionCode: 10
