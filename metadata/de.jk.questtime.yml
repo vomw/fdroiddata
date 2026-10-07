@@ -19,10 +19,10 @@ Builds:
     versionCode: 4
     commit: 53aaac68d94943290f951b3edfc01cae287c4c0e
     sudo:
-      - mkdir -p /upstream/path/example
+      - mkdir -p /upstream/path/questtime
       - chown -R vagrant /upstream/path
 
-    #output: build/app/outputs/flutter-apk/app-release.apk
+    output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@3.29.0
     rm:
@@ -36,18 +36,36 @@ Builds:
       - .flutter
       - .pub-cache
     build: 
-      - export repo=/upstream/path/example
+      - export repo=/upstream/path/questtime
       - cd ..
-      - mv example.app $repo
+      - mv questtime.app $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - mv $repo questtime.app
+    build: 
+      - export repo=/upstream/path/questtime
+      - cd ..
+      - mv questtime.app $repo
       - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
-      - mv $repo example.app
+      - mv $repo questtime.app
+    build: 
+      - export repo=/upstream/path/questtime
+      - cd ..
+      - mv questtime.app $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - mv $repo questtime.app
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 VercodeOperation:
+  - '%c + 1000'
   - '%c + 2000'
+  - '%c + 3000'
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.2
 CurrentVersionCode: 4
