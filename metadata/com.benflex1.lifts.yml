@@ -1,0 +1,116 @@
+Categories:
+  - Sports & Health
+  - Workout
+License: MIT
+AuthorName: Benflex1
+SourceCode: https://github.com/Benflex1/lifts
+IssueTracker: https://github.com/Benflex1/lifts/issues
+Changelog: https://github.com/Benflex1/lifts/blob/HEAD/CHANGELOG.md
+
+AutoName: Lifts
+
+RepoType: git
+Repo: https://github.com/Benflex1/lifts.git
+
+Builds:
+  - versionName: 1.0.5
+    versionCode: 10000051
+    commit: 377e12a5c91204451e3c66b2831617e3e9826242
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    init: npm ci
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    binary: https://github.com/Benflex1/lifts/releases/download/v%v/lifts-%v-armeabi-v7a.apk
+    prebuild:
+      - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - npx expo prebuild --platform android --clean --no-install
+      - printf '\norg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8\n'
+        >> android/gradle.properties
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - cd android/app
+      - gradle assembleRelease -PliftsAbi=armeabi-v7a -PreactNativeArchitectures=armeabi-v7a
+    ndk: r27b
+
+  - versionName: 1.0.5
+    versionCode: 10000052
+    commit: 377e12a5c91204451e3c66b2831617e3e9826242
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    init: npm ci
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    binary: https://github.com/Benflex1/lifts/releases/download/v%v/lifts-%v-arm64-v8a.apk
+    prebuild:
+      - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - npx expo prebuild --platform android --clean --no-install
+      - printf '\norg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8\n'
+        >> android/gradle.properties
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - cd android/app
+      - gradle assembleRelease -PliftsAbi=arm64-v8a -PreactNativeArchitectures=arm64-v8a
+    ndk: r27b
+
+  - versionName: 1.0.5
+    versionCode: 10000054
+    commit: 377e12a5c91204451e3c66b2831617e3e9826242
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky npm
+    init: npm ci
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
+    binary: https://github.com/Benflex1/lifts/releases/download/v%v/lifts-%v-x86_64.apk
+    prebuild:
+      - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - npx expo prebuild --platform android --clean --no-install
+      - printf '\norg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8\n'
+        >> android/gradle.properties
+      - sed -i -e '/signingConfig /d' android/app/build.gradle
+    scanignore:
+      - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - cd android/app
+      - gradle assembleRelease -PliftsAbi=x86_64 -PreactNativeArchitectures=x86_64
+    ndk: r27b
+
+AllowedAPKSigningKeys: 627ae4049be4512f3d32e85335027a7e45407e47a96c1f7f717ca326877f1ba2
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 4'
+UpdateCheckData: app.json|"versionCode":\s*(\d+)|app.json|"version":\s*"([\d.]+)"
+CurrentVersion: 1.0.5
+CurrentVersionCode: 10000054
