@@ -1,0 +1,39 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads the game's assets from Mojang on first launch, and optional sign
+      in with Microsoft account for online-mode servers.
+  Tracking:
+    en-US: Player skins and capes are downloaded from Mojang's servers during play.
+Categories:
+  - Action Game
+License: AGPL-3.0-or-later
+AuthorName: xpncvr
+WebSite: https://torchclient.com
+SourceCode: https://github.com/torch-client/torch-client
+IssueTracker: https://github.com/torch-client/torch-client/issues
+
+AutoName: Torch Client
+
+RepoType: git
+Repo: https://github.com/torch-client/torch-client.git
+
+Builds:
+  - versionName: 0.1.1
+    versionCode: 1
+    commit: 956a5a030b5c79359fc1c70c3e1bc5974b8b0408
+    timeout: 10800
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential rustup zip
+    output: dist/torch-client-unsigned.apk
+    prebuild: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+    build:
+      - rustup toolchain install $(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
+        --profile minimal --target aarch64-linux-android
+      - UNSIGNED=1 tools/build_android.sh
+    ndk: 27.1.12297006
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.1
+CurrentVersionCode: 1
