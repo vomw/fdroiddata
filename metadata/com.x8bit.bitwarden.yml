@@ -1,0 +1,79 @@
+Categories:
+  - File Transfer
+  - Password & 2FA
+  - Security
+License: GPL-3.0-only
+AuthorName: Bitwarden, Inc.
+WebSite: https://bitwarden.com
+SourceCode: https://github.com/bitwarden/android
+IssueTracker: https://github.com/bitwarden/android/issues
+Changelog: https://github.com/bitwarden/android/releases
+
+AutoName: Bitwarden
+
+RepoType: git
+Repo: https://github.com/bitwarden/android.git
+Binaries: https://github.com/bitwarden/android/releases/download/v%v-bwpm/com.x8bit.bitwarden-fdroid.apk
+
+Builds:
+  - versionName: 2025.10.1
+    versionCode: 20867
+    commit: v2025.10.1-bwpm
+    subdir: app
+    gradle:
+      - fdroid
+    srclibs:
+      - bitwarden-sdk@812865fe73b742f82360060430cb1003a9e0e3e5
+      - rustup@1.28.2
+    rm:
+      - app/libs
+      - authenticator
+    prebuild:
+      - sed -i -e 's/versionCode = 1/versionCode = $$VERCODE$$/' -e 's/versionName
+        = ".*"/versionName = "$$VERSION$$"/' -e 's|files("libs/authenticatorbridge.*.aar")|project(":authenticatorbridge")|'
+        -e 's/sdk-android/sdk-android-temp/' -e '/google.services/d' -e '/firebase/d'
+        -e '/crashlytics/d' -e '/fdroidTasksToDisable/,+5d' build.gradle.kts
+      - cd ..
+      - sed -i -e '/maven {/,/^        }/d' -e '/":authenticator"/d' {build,settings}.gradle.kts
+      - echo 'localSdk=true' > user.properties
+      - gha_url=$(curl https://github.com/bitwarden/android/releases/tag/v$$VERSION$$-bwpm
+        | sed -n -E 's|.*(https://github.com/bitwarden/android/actions/runs/[0-9]+).*|\1|p')
+      - gha_id=${gha_url##*/}
+      - gha_commit=$(curl $gha_url | sed -n -E 's|.*commit/([^"]+)".*|\1|p')
+      - gha_ref=$(curl $gha_url | sed -n -E 's|.*refs/heads/(release/[^"]+)".*|\1|p')
+      - gha_attempt=$(curl $gha_url | sed -n -E "s|.*attempt=([0-9]+).*|\1|p" | head
+        -n 1)
+      - bash ./scripts/update_app_ci_build_info.sh bitwarden/android $gha_ref $gha_commit
+        $gha_id $gha_attempt
+      - RUST_VERSION=$(sed -n -E 's/^channel = "(.*)".*/\1/p' $$bitwarden-sdk$$/rust-toolchain.toml)
+      - $$rustup$$/rustup-init.sh -y --default-toolchain $RUST_VERSION -t aarch64-linux-android
+    scanignore:
+      - build.gradle.kts
+      - app/build.gradle.kts
+    scandelete:
+      - build-cache
+    build:
+      - pushd $$bitwarden-sdk$$
+      - source $HOME/.cargo/env
+      - export RUSTFLAGS="-C link-args=-Wl,--hash-style=gnu --remap-path-prefix=/home/vagrant/.cargo=/home/runner/.cargo
+        --remap-path-prefix=$$bitwarden-sdk$$=/home/runner/work/sdk-internal/sdk-internal"
+      - cargo install cargo-ndk@3.5.4 --locked
+      - cargo ndk -t arm64-v8a --platform 28 -o crates/bitwarden-uniffi/kotlin/sdk/src/main/jniLibs
+        --no-strip --bindgen build -p bitwarden-uniffi --release
+      - cd crates/bitwarden-uniffi/kotlin
+      - ./build-schemas.sh
+      - gradle :sdk:publishToMavenLocal -Pversion=LOCAL
+      - popd
+    ndk: r25b
+
+AllowedAPKSigningKeys: de6ec91431557995297bf3e65bc80349bc603a04708160618c86bc9994171c90
+
+MaintainerNotes: The NDK version and API version used by cross-rs can be found in
+  https://github.com/cross-rs/cross/blob/main/docker/Dockerfile.aarch64-linux-android
+
+AutoUpdateMode: Version v%v-bwpm
+UpdateCheckMode: HTTP
+UpdateCheckData: https://github.com/bitwarden/android/releases/latest|Password Manager
+  [\d.]+ \((\d+)\)|.|Password Manager ([\d.]+) \(\d+\)
+CurrentVersion: 2025.10.1
+CurrentVersionCode: 20867
