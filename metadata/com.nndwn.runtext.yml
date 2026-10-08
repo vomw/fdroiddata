@@ -1,0 +1,39 @@
+Categories:
+  - Graphics
+  - Multimedia
+License: MIT
+AuthorName: nndwn
+AuthorEmail: dailyhopeless.dev@gmail.com
+AuthorWebSite: https://nndwn.github.io
+SourceCode: https://github.com/nndwn/temo
+IssueTracker: https://github.com/nndwn/temo/issues
+Changelog: https://github.com/nndwn/temo/blob/HEAD/CHANGELOG.md
+
+AutoName: Temo
+
+RepoType: git
+Repo: https://github.com/nndwn/temo.git
+Binaries: 
+  https://github.com/nndwn/temo/releases/download/v%v/Temo_v%v.%c._foss_release.apk
+
+Builds:
+  - versionName: 1.4.8
+    versionCode: 17
+    commit: 03993bb10d2b22bc1853e49fa75afcde69701010
+    subdir: app
+    gradle:
+      - foss
+    rm:
+      - app/src/playstore
+    prebuild:
+      - sed -i -e '/foojay/d' ../settings.gradle.kts
+      - sed -i -e 's/getByName("release")/getByName("debug")/' build.gradle.kts
+    ndk: 28.2.13676358
+    novcheck: true
+
+AllowedAPKSigningKeys: 4ca21cfacc1e257e124095216c7745ec676697464c2881aea404cd31c854c9cf
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.4.8
+CurrentVersionCode: 17
