@@ -2,11 +2,10 @@ Categories:
   - Multimedia
   - Remote Controller
 License: GPL-3.0-only
-WebSite: https://github.com/clementine-player/Android-Remote/wiki
+WebSite: https://github.com/clementine-player/Android-Remote
 SourceCode: https://github.com/clementine-player/Android-Remote
 IssueTracker: https://github.com/clementine-player/Android-Remote/issues
-Changelog: 
-  https://raw.githubusercontent.com/clementine-player/Android-Remote/HEAD/CHANGELOG
+Changelog: https://github.com/clementine-player/Android-Remote/releases
 
 AutoName: Clementine Remote
 Description: |-
@@ -96,14 +95,28 @@ Builds:
       - yes
     prebuild: sed -i '/if (signingConfigs\.release\.keyAlias != null) {/,/}/d' build.gradle
 
-MaintainerNotes: |-
-  Upstream tags it's releases, but ver and vercode are generated within gradle,
-  which our updatechecks do not support.
+  - versionName: '13.3'
+    versionCode: 1823
+    commit: b4284eb755c10d9a3c6ea8c9339c32561e695b61
+    subdir: app
+    gradle:
+      - fdroid
 
-  We also need to strip output manipulations and we do it in a unsafe way. We
-  should provide a better solution!
+  - versionName: '13.4'
+    versionCode: 1825
+    commit: 19ce8282ff5f66cc73b89dea496f07aa45e2e412
+    subdir: app
+    gradle:
+      - fdroid
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: v12
-CurrentVersionCode: 759
+  - versionName: '13.7'
+    versionCode: 1885
+    commit: 4b865ddc0ca714dc605337d4bcc1b1e390f83f1f
+    subdir: app
+    gradle:
+      - fdroid
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: '13.7'
+CurrentVersionCode: 1885

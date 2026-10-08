@@ -3,11 +3,11 @@ AntiFeatures:
     en-US: The street basemap fetches tiles from tile.openstreetmap.org and the tile
       host cannot be changed in the app; the Off-grid basemap makes no tile requests.
       Location sharing defaults to the developer's relay at starlingmap.app. The relay
-      is free software (MIT, in the same repository) and a custom relay address can
-      be set in the app.
+      is free software (GPL-3.0-or-later, in the same repository) and a custom relay
+      address can be set in the app.
 Categories:
   - Location Tracker & Sharer
-License: MIT
+License: GPL-3.0-or-later
 AuthorName: Munzzyy
 SourceCode: https://github.com/munzzyy/starling
 IssueTracker: https://github.com/munzzyy/starling/issues
@@ -34,9 +34,100 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 0.13.0
+    versionCode: 1300
+    commit: 90191c84b5c860f448bc04338080baf35911ad66
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+
+  - versionName: 0.13.2
+    versionCode: 1302
+    commit: 68f6dc3d94395951a6c2a7ff7ff495d20bae4ad6
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+
+  - versionName: 0.13.4
+    versionCode: 1304
+    commit: ef7df4e5ad0a0c6c847b7b1050b4ccd9df08a0b0
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+
+  - versionName: 0.15.1
+    versionCode: 1501
+    commit: ba6a3b143819a105b3a5c1526d4c36857f231e7a
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+
+  - versionName: 0.15.2
+    versionCode: 1502
+    commit: a3539b37802e042c3884ffcdcee01ca42ef41014
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+
+  - versionName: 0.20.2
+    versionCode: 2002
+    commit: 1a590046deba0b7e217d307e930cb87ae6ba7adf
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm clang lld
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+    srclibs:
+      - Argon2@62358ba2123abd17fccf2a108a301d4b52c01a7c
+    scandelete:
+      - app/js/argon2.wasm
+    build:
+      - cd ../..
+      - ARGON2_SRC=$$Argon2$$ bash tools/build-argon2.sh
+
 AllowedAPKSigningKeys: dbb0c491530f7475409c4c2953e9f68a52519c2f681dd9e5f69938f3bf9b8c9e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.11.0
-CurrentVersionCode: 1100
+CurrentVersion: 0.20.2
+CurrentVersionCode: 2002
