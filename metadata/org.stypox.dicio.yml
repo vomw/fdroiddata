@@ -126,7 +126,22 @@ Builds:
       - sentences-compiler-plugin/build/
     build: gradle assembleRelease || true
 
+  - versionName: '4.1'
+    versionCode: 18
+    commit: b91b6e5b3ff2c6cb7cdf780d0dbb9a7c4762d3ce
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's|"gradle/|"../gradle/|' ../settings.gradle.kts
+      - sed -i -e 's/8.13.0/8.11.1/' ../gradle/libs.versions.toml
+    scandelete:
+      - checkouts
+      - unicode-cldr-plugin
+      - sentences-compiler-plugin/build/
+    build: gradle assembleRelease || true
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags .*[0-9]$
-CurrentVersion: '4.0'
-CurrentVersionCode: 17
+CurrentVersion: '4.1'
+CurrentVersionCode: 18
