@@ -1,0 +1,179 @@
+Categories:
+  - Graphics
+  - Multimedia
+License: Apache-2.0
+AuthorName: Trebuchet Dynamics
+AuthorWebSite: https://trebuchetdynamics.com
+WebSite: https://fractal.trebuchetdynamics.com
+SourceCode: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge
+IssueTracker: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge/-/issues
+Changelog: 
+  https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge/-/blob/main/CHANGELOG.md
+
+AutoName: Fractal Forge
+
+RepoType: git
+Repo: https://gitlab.com/TrebuchetDynamics/flutter-fractal-forge.git
+
+Builds:
+  - versionName: 1.1.104
+    versionCode: 1041
+    commit: 987eb6764b51520df74566068132fb29971ccb99
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-armeabi-v7a-v%v.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
+
+  - versionName: 1.1.104
+    versionCode: 1042
+    commit: 987eb6764b51520df74566068132fb29971ccb99
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-arm64-v8a-v%v.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
+
+  - versionName: 1.1.104
+    versionCode: 1043
+    commit: 987eb6764b51520df74566068132fb29971ccb99
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/TrebuchetDynamics/flutter-fractal-forge/releases/download/v%v/fractal-forge-android-x86_64-v%v.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - docs/qa/fractal-audits
+      - integration_test
+      - ios
+      - linux
+      - macos
+      - test
+      - web
+      - windows
+      - research
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/fdroid-source-build.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/tmp/fractal-forge-reproducible
+      - rm -rf $repo
+      - cd ..
+      - mv com.trebuchetdynamics.fractal.forge $repo
+      - pushd $repo
+      - export PUB_CACHE="$(pwd)/.pub-cache"
+      - export FDROID_BUILD=1
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+        --build-name=$$VERSION$$ --build-number=$(( $$VERCODE$$ / 10 ))
+      - popd
+      - mv $repo com.trebuchetdynamics.fractal.forge
+    ndk: r28c
+
+AllowedAPKSigningKeys: 8d5f69b91dd44476ceaad141f1fa9f6abeccdfa20cd3f7bcdfe709df623878fd
+
+MaintainerNotes: |-
+  FDROID_BUILD disables upstream signing so F-Droid can verify the three
+  ABI-specific APKs against the developer-signed reference binaries. Release
+  minification removes Flutter's unused Play Store deferred-component
+  implementation; the app declares no deferred components or Play Core dependency.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: fdroid/version.properties|versionCode=(\d+)|.|versionName=(.+)
+CurrentVersion: 1.1.104
+CurrentVersionCode: 1043
