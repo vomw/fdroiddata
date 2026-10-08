@@ -1,0 +1,102 @@
+Categories:
+  - Market & Price
+License: AGPL-3.0-or-later
+AuthorName: Florian DITTGEN
+AuthorEmail: fdittgen@gmail.com
+SourceCode: https://github.com/fdittgen-png/tankstellen
+IssueTracker: https://github.com/fdittgen-png/tankstellen/issues
+
+Name: Sparkilo
+AutoName: Sparkilo
+
+RepoType: git
+Repo: https://github.com/fdittgen-png/tankstellen.git
+
+Builds:
+  - versionName: 6.1.0
+    versionCode: 51391
+    commit: 8df4bce4ffaa35aa521a5e2a45989d7b0b8a0ebc
+    output: build/app/outputs/flutter-apk/app-*-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' .github/workflows/fdroid.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cp pubspec_overrides.fdroid.yaml pubspec_overrides.yaml
+      - cp pubspec.fdroid.lock pubspec.lock
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
+      - third_party/google_mlkit_commons
+      - third_party/google_mlkit_text_recognition
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform android-arm --build-number=$(( $$VERCODE$$ / 10 )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true --dart-define=FDROID_LIBRE=true
+
+  - versionName: 6.1.0
+    versionCode: 51392
+    commit: 8df4bce4ffaa35aa521a5e2a45989d7b0b8a0ebc
+    output: build/app/outputs/flutter-apk/app-*-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' .github/workflows/fdroid.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cp pubspec_overrides.fdroid.yaml pubspec_overrides.yaml
+      - cp pubspec.fdroid.lock pubspec.lock
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
+      - third_party/google_mlkit_commons
+      - third_party/google_mlkit_text_recognition
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform android-arm64 --build-number=$(( $$VERCODE$$ / 10 )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true --dart-define=FDROID_LIBRE=true
+
+  - versionName: 6.1.0
+    versionCode: 51393
+    commit: 8df4bce4ffaa35aa521a5e2a45989d7b0b8a0ebc
+    output: build/app/outputs/flutter-apk/app-*-fdroid-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' .github/workflows/fdroid.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - cp pubspec_overrides.fdroid.yaml pubspec_overrides.yaml
+      - cp pubspec.fdroid.lock pubspec.lock
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
+    scandelete:
+      - .pub-cache
+      - third_party/google_mlkit_commons
+      - third_party/google_mlkit_text_recognition
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --flavor fdroid --split-per-abi
+        --target-platform android-x64 --build-number=$(( $$VERCODE$$ / 10 )) --dart-define=FORCE_LOCATION_MANAGER=true
+        --dart-define=FGS_FORM_APPROVED=true --dart-define=FDROID_LIBRE=true
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 6.1.0
+CurrentVersionCode: 51393
