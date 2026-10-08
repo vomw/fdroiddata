@@ -104,9 +104,25 @@ Builds:
     gradle:
       - yes
 
+  - versionName: 0.17.1
+    versionCode: 1701
+    commit: 2602be1da3f44c160fd5d80bcb1acdfc5281f233
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci
+      - bash tools/sync-vendor.sh
+    gradle:
+      - yes
+    scandelete:
+      - app/js/argon2.wasm
+
 AllowedAPKSigningKeys: dbb0c491530f7475409c4c2953e9f68a52519c2f681dd9e5f69938f3bf9b8c9e
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.15.2
-CurrentVersionCode: 1502
+CurrentVersion: 0.17.1
+CurrentVersionCode: 1701
