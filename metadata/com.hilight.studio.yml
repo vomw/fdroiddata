@@ -1,0 +1,34 @@
+Categories:
+  - System
+License: MIT
+AuthorName: Dhananjay Bhosale
+AuthorWebSite: https://github.com/DhananjayBhosale
+SourceCode: https://github.com/DhananjayBhosale/hilight-studio
+IssueTracker: https://github.com/DhananjayBhosale/hilight-studio/issues
+Changelog: https://github.com/DhananjayBhosale/hilight-studio/blob/HEAD/CHANGELOG.md
+
+AutoName: HiLight Studio
+
+RepoType: git
+Repo: https://github.com/DhananjayBhosale/hilight-studio.git
+Binaries: 
+  https://github.com/DhananjayBhosale/hilight-studio/releases/download/v%v-experimental/HiLight-Studio-v%v-experimental-signed.apk
+
+Builds:
+  - versionName: 1.0.7
+    versionCode: 8
+    commit: 00cc5a19a0394e4814600f82a8befbe10c84b6ef
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -i -e 's/compileSdk = 37/compileSdk { version = release(37) { minorApiLevel
+        = 0 } }/' build.gradle.kts
+      - sed -i -e '/signingConfig = signingConfigs.getByName/d' build.gradle.kts
+
+AllowedAPKSigningKeys: 15c1a4b5af54c3833e8d94582bddd985631cd007ca3f86d314d4be0bd5d9d9de
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+-experimental$
+CurrentVersion: 1.0.7
+CurrentVersionCode: 8
