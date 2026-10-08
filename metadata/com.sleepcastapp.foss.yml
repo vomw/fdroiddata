@@ -1,0 +1,151 @@
+Categories:
+  - Online Media Player
+  - Podcast
+License: MIT
+AuthorName: sleepcast contributors
+SourceCode: https://github.com/Evoke4350/sleepcast-app
+IssueTracker: https://github.com/Evoke4350/sleepcast-app/issues
+
+AutoName: SleepcastApp
+
+RepoType: git
+Repo: https://github.com/Evoke4350/sleepcast-app.git
+Binaries: 
+  https://github.com/Evoke4350/sleepcast-app/releases/download/v1.0.3-foss/com.sleepcastapp.foss_%c.apk
+
+Builds:
+  - versionName: 1.0-foss
+    versionCode: 11
+    commit: c8268b3fd61bfef85919765c270a587d1818ddc4
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+    gradle:
+      - foss
+    output: build/outputs/apk/foss/release/app-foss-armeabi-v7a-release-unsigned.apk
+    rm:
+      - node_modules/onnxruntime-react-native
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+    scanignore:
+      - node_modules/react-native/ReactAndroid
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+    gradleprops:
+      - enableApkSplits=true
+      - targetAbi=armeabi-v7a
+      - includeUniversalApk=false
+
+  - versionName: 1.0-foss
+    versionCode: 12
+    commit: c8268b3fd61bfef85919765c270a587d1818ddc4
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+    gradle:
+      - foss
+    output: build/outputs/apk/foss/release/app-foss-arm64-v8a-release-unsigned.apk
+    rm:
+      - node_modules/onnxruntime-react-native
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+    scanignore:
+      - node_modules/react-native/ReactAndroid
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+    gradleprops:
+      - enableApkSplits=true
+      - targetAbi=arm64-v8a
+      - includeUniversalApk=false
+
+  - versionName: 1.0-foss
+    versionCode: 13
+    commit: c8268b3fd61bfef85919765c270a587d1818ddc4
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+    gradle:
+      - foss
+    output: build/outputs/apk/foss/release/app-foss-x86-release-unsigned.apk
+    rm:
+      - node_modules/onnxruntime-react-native
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+    scanignore:
+      - node_modules/react-native/ReactAndroid
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+    gradleprops:
+      - enableApkSplits=true
+      - targetAbi=x86
+      - includeUniversalApk=false
+
+  - versionName: 1.0-foss
+    versionCode: 14
+    commit: c8268b3fd61bfef85919765c270a587d1818ddc4
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y npm
+    init:
+      - cd ../..
+      - npm ci --ignore-scripts
+    gradle:
+      - foss
+    output: build/outputs/apk/foss/release/app-foss-x86_64-release-unsigned.apk
+    rm:
+      - node_modules/onnxruntime-react-native
+    prebuild:
+      - cd ../..
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+    scanignore:
+      - node_modules/react-native/ReactAndroid
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-webview/android/build.gradle
+    scandelete:
+      - node_modules
+    gradleprops:
+      - enableApkSplits=true
+      - targetAbi=x86_64
+      - includeUniversalApk=false
+
+AllowedAPKSigningKeys: 67b13f786e2d6df90162ac20ccf83f44e1004edc6add293fd9d5bc0afa9c0f06
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: 1.0-foss
+CurrentVersionCode: 14
