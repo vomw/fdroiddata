@@ -380,10 +380,11 @@ Builds:
     commit: 9a735c35c6c5b38ea143e4c630dbbae62a691a68
     subdir: android/app
     sudo:
+      - apt-get update
+      - apt-get install -y make g++ libc-dev
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
-      - apt-get install -y make g++ libc-dev
     init:
       - cd ../..
       - npm ci
@@ -402,7 +403,6 @@ Builds:
       build.gradle
     scandelete:
       - node_modules
-    build: cat -n build.gradle
     postbuild:
       - mv $$OUT$$ unaligned.apk
       - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
