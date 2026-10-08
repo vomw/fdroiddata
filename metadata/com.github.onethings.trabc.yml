@@ -9,16 +9,46 @@ RepoType: git
 Repo: https://github.com/onethings/trabc_fdroid
 
 Builds:
-  - versionName: 1.0.33
-    versionCode: 29
-    commit: 4544b3bd2cbbeb8b6c16ed747da1f4f367c6dc84
-    output: build/app/outputs/flutter-apk/app-release.apk
+  - versionName: 1.0.34
+    versionCode: 301
+    commit: bfac972a6bbaa70e647c9f34b4b4acbd95230a22
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     srclibs:
       - flutter@stable
     prebuild: sed -i -e '/signingConfig/d' android/app/build.gradle.kts
-    build: $$flutter$$/bin/flutter build apk --release
+    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+  - versionName: 1.0.34
+    versionCode: 302
+    commit: bfac972a6bbaa70e647c9f34b4b4acbd95230a22
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild: sed -i -e '/signingConfig/d' android/app/build.gradle.kts
+    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+  - versionName: 1.0.34
+    versionCode: 303
+    commit: bfac972a6bbaa70e647c9f34b4b4acbd95230a22
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild: sed -i -e '/signingConfig/d' android/app/build.gradle.kts
+    build: $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
 
-AutoUpdateMode: None
-UpdateCheckMode: None
-CurrentVersion: 1.0.33
-CurrentVersionCode: 29
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0.34'
+CurrentVersionCode: 30
+
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: '1.0.34'
+CurrentVersionCode: 30
