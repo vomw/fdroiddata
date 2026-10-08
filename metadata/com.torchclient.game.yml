@@ -24,10 +24,9 @@ Builds:
     timeout: 10800
     sudo:
       - apt-get update
-      - apt-get install -y rustup zip
+      - apt-get install -y build-essential rustup zip
     output: dist/torch-client-unsigned.apk
-    prebuild:
-      - sdkmanager 'platforms;android-36'
+    prebuild: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
     build:
       - rustup toolchain install $(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
         --profile minimal --target aarch64-linux-android
