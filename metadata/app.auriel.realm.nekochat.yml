@@ -1,0 +1,58 @@
+Categories:
+  - AI Chat
+License: GPL-3.0-or-later
+AuthorName: Auriel
+AuthorEmail: debadityamalakar@gmail.com
+WebSite: https://auriel-android-suite.vercel.app/apps/nekochat
+SourceCode: https://github.com/AurielSolaris/NekoChat
+IssueTracker: https://github.com/AurielSolaris/NekoChat/issues
+Donate: https://ko-fi.com/aurielsolaris
+
+AutoName: NekoChat
+
+RepoType: git
+Repo: https://github.com/AurielSolaris/NekoChat.git
+
+Builds:
+  - versionName: 0.2.0
+    versionCode: 4
+    commit: 24563d1b65ed416de644af6d072c2fc754c72c7e
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y curl make perl pkg-config tar unzip xz-utils
+    gradle:
+      - yes
+    rm:
+      - app/src/main/jniLibs
+    build:
+      - export WORK="$(cd .. && pwd)/.aria2-work"
+      - mkdir -p "$WORK"
+      - ln -s "$$NDK$$" "$WORK/android-ndk-r28c"
+      - NEKO_ARIA2_WORK="$WORK" NEKO_NDK_VERSION=r28c bash ../tools/build-aria2.sh
+    ndk: r28c
+
+MaintainerNotes: |-
+  The upstream repo commits the aria2c binary it builds, as
+  app/src/main/jniLibs/arm64-v8a/libaria2c.so, so that a plain gradle build
+  works without an NDK. It is removed by `rm:` and rebuilt from source in
+  `build:` with upstream's own tools/build-aria2.sh.
+
+  The script normally downloads the NDK into its work directory; symlinking
+  $$NDK$$ into place makes that check a no-op. NEKO_NDK_VERSION must match the
+  `ndk:` field, since the symlink is named after it. It does fetch the release
+  tarballs of aria2 1.37.0, OpenSSL 3.5.4, zlib 1.3.1, expat 2.7.3, c-ares
+  1.34.5 and libssh2 1.11.1, each pinned by SHA-256 in the script.
+
+  Only arm64-v8a is built (abiFilters), and the C++ inference engine under
+  app/architecture is built by the gradle CMake integration.
+
+  Models (GPT-2, Qwen3, Granite 4.0-H), the Kokoro-82M voice and the Granite
+  Speech models are not in the APK. They are downloaded from Hugging Face only
+  when the user asks, or loaded from a folder the user picks. No account, no
+  telemetry.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.2.0
+CurrentVersionCode: 4
