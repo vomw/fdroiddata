@@ -1,0 +1,148 @@
+Categories:
+  - Internet
+License: MIT
+AuthorName: SusieeTheLinuxUser
+SourceCode: https://github.com/SusieeTheLinuxUser/Lil-Ptero
+IssueTracker: https://github.com/SusieeTheLinuxUser/Lil-Ptero/issues
+Changelog: https://github.com/SusieeTheLinuxUser/Lil-Ptero/releases
+
+AutoName: Pterodactyl Mobile
+
+RepoType: git
+Repo: https://github.com/SusieeTheLinuxUser/Lil-Ptero.git
+
+Builds:
+  - versionName: 0.1.2
+    versionCode: 31
+    commit: 9ce3dd68ca951a26017248fb97c4ba52160baf98
+    sudo:
+      - mkdir -p /home/runner/work/Lil-Ptero
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/SusieeTheLinuxUser/Lil-Ptero/releases/download/v%v/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - f=.github/workflows/release.yml
+      - flutterVersion=$(awk -F\" '/flutter-version/ {print $2}' $f)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '/project(jni_library/a add_compile_options("-ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk")'
+        .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.susiee.lilptero
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - mv .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - mv /home/runner/.pub-cache .pub-cache
+      - popd
+      - mv $repo dev.susiee.lilptero
+
+  - versionName: 0.1.2
+    versionCode: 32
+    commit: 9ce3dd68ca951a26017248fb97c4ba52160baf98
+    sudo:
+      - mkdir -p /home/runner/work/Lil-Ptero
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/SusieeTheLinuxUser/Lil-Ptero/releases/download/v%v/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - f=.github/workflows/release.yml
+      - flutterVersion=$(awk -F\" '/flutter-version/ {print $2}' $f)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '/project(jni_library/a add_compile_options("-ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk")'
+        .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.susiee.lilptero
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - mv .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - mv /home/runner/.pub-cache .pub-cache
+      - popd
+      - mv $repo dev.susiee.lilptero
+
+  - versionName: 0.1.2
+    versionCode: 33
+    commit: 9ce3dd68ca951a26017248fb97c4ba52160baf98
+    sudo:
+      - mkdir -p /home/runner/work/Lil-Ptero
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/SusieeTheLinuxUser/Lil-Ptero/releases/download/v%v/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    prebuild:
+      - f=.github/workflows/release.yml
+      - flutterVersion=$(awk -F\" '/flutter-version/ {print $2}' $f)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - sed -i -e '/project(jni_library/a add_compile_options("-ffile-prefix-map=$$SDK$$=/usr/local/lib/android/sdk")'
+        .pub-cache/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo dev.susiee.lilptero
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Lil-Ptero/Lil-Ptero
+      - cd ..
+      - mv dev.susiee.lilptero $repo
+      - pushd $repo
+      - mv .pub-cache /home/runner/.pub-cache
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - mv /home/runner/.pub-cache .pub-cache
+      - popd
+      - mv $repo dev.susiee.lilptero
+
+AllowedAPKSigningKeys: 940bcf557d80048ecd1bc7f2dd02de8f0d4591592b9922ee8f1af299754d56a6
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.2
+CurrentVersionCode: 33
