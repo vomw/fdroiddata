@@ -1,0 +1,31 @@
+Categories:
+  - System
+License: GPL-3.0-or-later
+AuthorName: vxyzview
+SourceCode: https://github.com/vxyzview/xyzterm
+IssueTracker: https://github.com/vxyzview/xyzterm/issues
+Changelog: https://github.com/vxyzview/xyzterm/releases
+
+AutoName: xyzterm
+
+RepoType: git
+Repo: https://github.com/vxyzview/xyzterm
+Binaries: https://github.com/vxyzview/xyzterm/releases/download/v%v/xyzterm-%v.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: 6046215fa280d359431b6eaf601354749369ad45
+    subdir: app
+    gradle:
+      - yes
+    prebuild:
+      - sed -ri '/foojay-resolver-convention/d' -i ../settings.gradle.kts
+      - sed -r '/signingConfigs.getByName/d' -i build.gradle.kts
+
+AllowedAPKSigningKeys: f665fa36963b20cec9954399d2213331be522aca035ebf56cfa5a6abdf3e3de2
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
