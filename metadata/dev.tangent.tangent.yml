@@ -1,0 +1,107 @@
+Categories:
+  - Multimedia
+  - Writing
+License: AGPL-3.0-or-later
+AuthorName: GyratingSeaCow
+SourceCode: https://github.com/GyratingSeaCow/tangent
+IssueTracker: https://github.com/GyratingSeaCow/tangent/issues
+Changelog: https://github.com/GyratingSeaCow/tangent/blob/HEAD/CHANGELOG.md
+Donate: https://www.paypal.com/ncp/payment/3L6QWSULPF4WS
+
+AutoName: Tangent
+
+RepoType: git
+Repo: https://github.com/GyratingSeaCow/tangent
+Binaries: 
+  https://github.com/GyratingSeaCow/tangent/releases/download/v%v/tangent-v%v-%c.apk
+
+Builds:
+  - versionName: 1.52.0
+    versionCode: 741
+    commit: 9bf2c583be3480c8b5915357acd0ec719eaa288b
+    subdir: client
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - client/linux
+      - client/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - client/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-arm
+    ndk: 28.2.13676358
+
+  - versionName: 1.52.0
+    versionCode: 742
+    commit: 9bf2c583be3480c8b5915357acd0ec719eaa288b
+    subdir: client
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - client/linux
+      - client/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - client/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-arm64
+    ndk: 28.2.13676358
+
+  - versionName: 1.52.0
+    versionCode: 743
+    commit: 9bf2c583be3480c8b5915357acd0ec719eaa288b
+    subdir: client
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - client/linux
+      - client/windows
+    prebuild:
+      - flutterVersion=$(sed -n -E 's/.*flutter-version:\ "(.*)"/\1/p' ../.github/workflows/ci.yml
+        | head -1)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - client/.pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-x64
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 15ccb860112c2b6c4fd4a1e01afeeae325ad921f4073922fb14d2ca30b3d6e5e
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+UpdateCheckData: client/pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.52.0
+CurrentVersionCode: 743
