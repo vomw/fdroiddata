@@ -1,0 +1,45 @@
+Categories:
+  - Diet
+  - Shopping List
+License: GPL-3.0-only
+AuthorName: Felipe Borja
+AuthorEmail: manyar.app@proton.me
+SourceCode: https://gitlab.com/manyar-app/manyar
+IssueTracker: https://gitlab.com/manyar-app/manyar/-/issues
+
+AutoName: manyar
+
+RepoType: git
+Repo: https://gitlab.com/manyar-app/manyar.git
+Binaries: 
+  https://gitlab.com/manyar-app/manyar/-/releases/v%v/downloads/app-arm64-v8a-release.apk
+
+Builds: 
+  - versionName: 0.1.0
+    versionCode: 12
+    commit: 0225138aa8fd0d0705a53604ce330697393ac3b2
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@3.24.3
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+      - export PUB_CACHE=../.pub-cache
+      - $$flutter$$/bin/flutter pub get
+    build: 
+      - export PUB_CACHE=../.pub-cache
+      - $$flutter$$/bin/flutter build apk --split-per-abi --release
+
+AllowedAPKSigningKeys: b39a74401dcd0091a6ef949b7e4f80a85b9770b47742b10feb662fa53ae9478a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v.*$
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 0.1.0
+CurrentVersionCode: 12
