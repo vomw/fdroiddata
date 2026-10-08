@@ -1,0 +1,101 @@
+Categories:
+  - Development
+  - System
+License: Apache-2.0
+AuthorName: Lord1Egypt
+SourceCode: https://github.com/Lord1Egypt/AndroidThothTerm
+IssueTracker: https://github.com/Lord1Egypt/AndroidThothTerm/issues
+Changelog: https://github.com/Lord1Egypt/AndroidThothTerm/releases
+
+AutoName: ThothTerm Resolute
+
+RepoType: git
+Repo: https://github.com/Lord1Egypt/AndroidThothTerm.git
+Binaries: 
+  https://github.com/Lord1Egypt/AndroidThothTerm/releases/download/ubuntu-v%v/ThothTerm-Resolute-v%v.apk
+
+Builds:
+  - versionName: 0.3.2
+    versionCode: 302
+    commit: 760d54eea299f6db00f8cea4510f38764fe583f7
+    subdir: term-ubuntu
+    submodules: true
+    gradle:
+      - fdroid
+    ndk: 23.2.8568313
+
+AllowedAPKSigningKeys: 56319db757f0936db0b956d154adc78b7d9598416524f080adc61575a2df014a
+
+MaintainerNotes: |-
+  ThothTerm Resolute (formerly ThothTerm Ubuntu; package id unchanged) runs an
+  Ubuntu 26.04 LTS userland under PRoot. Canonical's IP policy bars "Ubuntu" in
+  a software title, so the app is named after the release's code name and is
+  not affiliated with Canonical (docs/branding/ubuntu/TRADEMARK.md).
+
+  arm64-v8a only. minSdk 26, targetSdk 36.
+
+  The fdroid flavour packages no distribution binaries: no Ubuntu rootfs
+  archive and no .deb payload. tools/prepare-assets.sh, which stages those for
+  the separate full flavour, runs only for preFull*Build, so this build makes
+  no network requests of its own. The Ubuntu userland is downloaded on first
+  run only after an explicit user opt-in, from a URL and SHA-256 pinned in the
+  app's source, and is verified before extraction. Two downloads, both named
+  before anything is fetched: the base image from cdimage.ubuntu.com, then, in
+  the background, the package lists and sudo from archive.ubuntu.com and
+  security.ubuntu.com through apt, which verifies them against Ubuntu's keys.
+
+  The PRoot runtime is compiled during the build by
+  term-ubuntu/tools/build-proot.sh from sources in the repository:
+  third_party/proot (termux/proot, tag v5.1.107.92) and
+  third_party/libandroid-shmem (termux/libandroid-shmem, tag v0.7) as
+  submodules, plus talloc 2.4.3's talloc.c and talloc.h vendored verbatim
+  because talloc has no git upstream. The script verifies both submodule
+  commits, downloads nothing, and asserts the link contract and 16 KB page
+  alignment of everything it produces. submodules: true is therefore required.
+
+  PRoot is GPL-2.0 and talloc is LGPL-3.0; the corresponding source is the
+  pinned submodules, the eight patches in term-ubuntu/patches and the build
+  script, all carried by the tagged commit.
+
+  0.2.0 adds LAN Mode: an HTTP/WebSocket server, off by default, that a user
+  turns on to use the terminal from a browser on the same Wi-Fi or Ethernet
+  network, after pairing with a one-time PIN. It binds only a private (RFC
+  1918) LAN address, uses no external service, relay or tracking, and serves
+  only assets packaged in the APK. The browser terminal's JavaScript
+  (term-ubuntu/src/main/assets/lan/xterm.js) is xterm.js 6.0.0, its fit
+  addon and bidi-js 1.0.3, bundled unminified from their sources by
+  term-ubuntu/lan-web/build.mjs from npm packages pinned by sha512 in
+  term-ubuntu/lan-web/package-lock.json. `npm ci --ignore-scripts && node
+  build.mjs --check` in that directory reproduces the committed files byte
+  for byte; the Gradle build does not run Node. The web font is Cascadia
+  Mono (SIL OFL 1.1).
+
+  0.3.0 adds uploads into the terminal's current directory: on the phone
+  through the Storage Access Framework (no storage permission), and in LAN
+  Mode through four authenticated endpoints on the same local server
+  (/api/upload/begin, file, finish, cancel), behind the same PIN pairing,
+  token, Host and Origin checks; no JavaScript dependency was added. PRoot
+  patch 0005 lets the app read the guest's working directory from /proc.
+
+  0.3.1 and 0.3.2 change only the app and its PRoot runtime (patches 0006 to
+  0008; setup steps run in the background and a timed-out one is killed). No
+  new permission, dependency or network request; 0.3.2 removes every legacy
+  externally reachable component, so only the launcher is exported.
+
+  Release builds are minified (proguard-android-optimize.txt plus
+  term-ubuntu/proguard-rules.pro, two keep rules only): the native library
+  registers methods by the literal class names com/thothterm/TermIO$Native
+  and com/thothterm/Process$Native. No -dontobfuscate, -dontshrink, wildcard
+  keep or blanket -dontwarn; R8 emits no warnings; resource shrinking is off.
+
+  Reproducible Builds: the unsigned APK is byte-identical across clean local
+  builds, the F-Droid buildserver and the release asset. It is signed with the
+  dedicated ThothTerm Resolute key (certificate in AllowedAPKSigningKeys; the
+  private key is never shared) and Binaries points at that signed release APK
+  for F-Droid to verify against its own rebuild.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^ubuntu-v[0-9.]+$
+UpdateCheckData: term-ubuntu/build.gradle|versionCode\s+(\d+)|.|versionName\s+'([^']+)'
+CurrentVersion: 0.3.2
+CurrentVersionCode: 302
