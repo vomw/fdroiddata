@@ -1,0 +1,72 @@
+Categories:
+  - Local Media Player
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Auriel
+AuthorEmail: debadityamalakar@gmail.com
+WebSite: https://auriel-android-suite.vercel.app/apps/choir
+SourceCode: https://github.com/AurielSolaris/Choir
+IssueTracker: https://github.com/AurielSolaris/Choir/issues
+Donate: https://ko-fi.com/aurielsolaris
+
+AutoName: Choir
+
+RepoType: git
+Repo: https://github.com/AurielSolaris/Choir.git
+
+Builds:
+  - versionName: 0.5.0
+    versionCode: 5
+    commit: f2e96fd322eba8d62d462c8d5af062e78e431c8d
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make gcc nasm cmake ninja-build
+    gradle:
+      - yes
+    srclibs:
+      - AndroidXMedia3@76088cd6af7f263aba238b7a48d64bd4f060cb8b
+      - FFmpeg@ea3d24bbe3c58b171e55fe2151fc7ffaca3ab3d2
+    rm:
+      - app/src/main/jniLibs
+    build:
+      - export WORK="$(cd .. && pwd)/.ffmpeg-work"
+      - mkdir -p "$WORK"
+      - ln -s "$$NDK$$" "$WORK/android-ndk-r27c"
+      - cp -a "$$AndroidXMedia3$$" "$WORK/media"
+      - cp -a "$$FFmpeg$$" "$WORK/media/libraries/decoder_ffmpeg/src/main/jni/ffmpeg"
+      - cd ..
+      - CHOIR_FFMPEG_WORK="$WORK" CHOIR_NDK_VERSION=r27c bash tools/build-ffmpeg.sh
+    ndk: r27c
+
+MaintainerNotes: |-
+  The upstream repo commits the four libffmpegJNI.so it builds, so that a plain
+  `./gradlew assembleRelease` works without an NDK. They are removed by `rm:`
+  before anything is scanned or built, and rebuilt from source in `build:`.
+
+  tools/build-ffmpeg.sh is upstream's own script. It normally downloads the NDK
+  and clones androidx/media and FFmpeg itself; pre-populating its work directory
+  from the srclibs and symlinking $$NDK$$ into place makes every one of those
+  checks a no-op, so the build fetches nothing of its own. CHOIR_NDK_VERSION
+  must match the `ndk:` field, since the symlink is named after it.
+
+  The pinned srclib commits are androidx/media 1.5.1 and FFmpeg n6.0 -- the
+  defaults the script declares (CHOIR_MEDIA3_TAG, CHOIR_FFMPEG_TAG).
+
+  The script also appends tools/ffmpeg-jni-context.inc to media3's ffmpeg_jni.cc
+  to add a second JNI entry point; the decoder's Java half is vendored in the
+  app repo under app/src/main/java/androidx/media3/decoder/ffmpeg (Apache-2.0,
+  two files carry local changes and the script deliberately does not overwrite
+  them).
+
+  Choir holds INTERNET for one optional feature: fetching lyrics. It is off by
+  default (LyricsSettings.onlineEnabled = false) and nothing opens a socket
+  while it is off. Enabled, the default and only preconfigured provider is
+  LRCLIB (free, no account, no key); NetEase and Musixmatch are opt-in and
+  Musixmatch additionally needs a user-supplied key. No account, no identifier,
+  no library contents, no telemetry, and no automatic update check.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.5.0
+CurrentVersionCode: 5
