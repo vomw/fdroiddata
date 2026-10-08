@@ -11,13 +11,13 @@ AutoName: Read Me Offline
 
 RepoType: git
 Repo: https://github.com/JoshShearer/Read-Me.git
-Binaries: https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v.apk
 
 Builds:
-  - versionName: 1.0.2
-    versionCode: 3
-    commit: 40515c62e7caabab6e1ec7a83839e9d798ffe5e8
+  - versionName: 1.0.3
+    versionCode: 41
+    commit: e6100ef744aeb3ee74ff55e9cd93e08ddef87a14
     subdir: android/app
+    submodules: true
     sudo:
       - apt-get update
       - apt-get install -y cmake ninja-build libicu-dev xz-utils g++
@@ -35,11 +35,12 @@ Builds:
     init: cd ../.. && npm ci --ignore-scripts
     gradle:
       - yes
-    srclibs:
-      - hermes@hermes-v250829098.0.17
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-armeabi-v7a.apk
     prebuild:
-      - cd ../.. && HERMES_SRC=$$hermes$$ bash scripts/build-hermesc.sh $$hermes$$/out
-      - printf '\nreadmeHermesc=%s\n' "$$hermes$$/out/build/bin/hermesc" >> android/gradle.properties
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=armeabi-v7a\n' "$HERMESC"
+        >> android/gradle.properties
     scanignore:
       - node_modules/react-native/ReactAndroid/publish.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
@@ -47,11 +48,130 @@ Builds:
       - node_modules/hermes-compiler/hermesc
       - node_modules/fb-dotslash/bin
       - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.3
+    versionCode: 42
+    commit: e6100ef744aeb3ee74ff55e9cd93e08ddef87a14
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev xz-utils g++
+      - curl -fsSLo /tmp/node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - mkdir -p /opt/node && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1
+      - ln -sf /opt/node/bin/node /opt/node/bin/npm /opt/node/bin/npx /usr/local/bin/
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-arm64-v8a.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=arm64-v8a\n' "$HERMESC"
+        >> android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.3
+    versionCode: 43
+    commit: e6100ef744aeb3ee74ff55e9cd93e08ddef87a14
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev xz-utils g++
+      - curl -fsSLo /tmp/node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - mkdir -p /opt/node && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1
+      - ln -sf /opt/node/bin/node /opt/node/bin/npm /opt/node/bin/npx /usr/local/bin/
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-x86.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=x86\n' "$HERMESC" >>
+        android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.3
+    versionCode: 44
+    commit: e6100ef744aeb3ee74ff55e9cd93e08ddef87a14
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev xz-utils g++
+      - curl -fsSLo /tmp/node.tar.xz https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz
+      - echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - mkdir -p /opt/node && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1
+      - ln -sf /opt/node/bin/node /opt/node/bin/npm /opt/node/bin/npx /usr/local/bin/
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-x86_64.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=x86_64\n' "$HERMESC"
+        >> android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
     ndk: r27b
 
 AllowedAPKSigningKeys: f730c468c33f4de8ec5b6917920399169ccdef2664def86ffc4f0dbe01535bf5
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.2
-CurrentVersionCode: 3
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: 1.0.3
+CurrentVersionCode: 44
