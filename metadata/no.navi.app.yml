@@ -1,0 +1,60 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: Optional map downloads use Geofabrik OpenStreetMap extracts, OpenFreeMap
+      for online basemap tiles, and Mapterhorn for elevation data. Routing and navigation
+      run offline after those files are on the device.
+Categories:
+  - Navigation
+License: GPL-3.0-or-later
+AuthorName: Navi contributors
+SourceCode: https://github.com/Supermagnum/Navi
+IssueTracker: https://github.com/Supermagnum/Navi/issues
+Changelog: https://github.com/Supermagnum/Navi/releases
+Donate: https://github.com/Supermagnum/Navi#support-navi
+
+AutoName: Navi
+
+RepoType: git
+Repo: https://github.com/Supermagnum/Navi.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: b54d7e06bfd8d500c6db9576da9df1507d530913
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev
+        rustup
+    gradle:
+      - yes
+    prebuild:
+      - rustup default 1.88.0
+      - rustup target add aarch64-linux-android x86_64-linux-android
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - CLANG_PRE="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
+      - mkdir -p ../.cargo
+      - echo '[target.x86_64-linux-android]' > ../.cargo/config.toml
+      - echo "linker = \"$CLANG_PRE/x86_64-linux-android34-clang\"" >> ../.cargo/config.toml
+      - echo 'rustflags = ["-C", "link-arg=-lc++_shared"]' >> ../.cargo/config.toml
+      - echo '[target.aarch64-linux-android]' >> ../.cargo/config.toml
+      - echo "linker = \"$CLANG_PRE/aarch64-linux-android34-clang\"" >> ../.cargo/config.toml
+      - echo 'rustflags = ["-C", "link-arg=-lc++_shared"]' >> ../.cargo/config.toml
+      - printf 'sdk.dir=%s\nndk.dir=%s\n' "$$SDK$$" "$$NDK$$" > ../local.properties
+    scandelete:
+      - app/src/main/jniLibs/
+    build:
+      - export PATH="$HOME/.cargo/bin:$PATH"
+      - export SOURCE_DATE_EPOCH="$(git -C .. log -1 --pretty=%ct)"
+      - ../scripts/build-android-native.sh aarch64-linux-android release
+      - ../scripts/build-android-native.sh x86_64-linux-android release
+    ndk: r27c
+
+MaintainerNotes: |
+  restores SOURCE_DATE_EPOCH from git when empty (annotated tags); otherwise
+  ring/cc-rs fails.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
