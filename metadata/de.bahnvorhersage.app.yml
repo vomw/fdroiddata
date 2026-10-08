@@ -377,27 +377,38 @@ Builds:
 
   - versionName: 0.8.2
     versionCode: 19
-    commit: 24caaf5d9338eef27211ce60aea3fe57d6f59719
+    commit: 9a735c35c6c5b38ea143e4c630dbbae62a691a68
     subdir: android/app
     sudo:
+      - apt-get update
+      - apt-get install -y make g++ libc-dev
       - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
       - apt-get update
       - apt-get install -y -t forky npm
-      - apt-get install -y make g++ libc-dev
     init:
       - cd ../..
-      - npm install
+      - npm ci
       - npm run build-only
-      - npx cap sync
+      - rm dist/nitro.json
+      - npx cap sync android
     gradle:
       - yes
+    binary: 
+      https://gitlab.com/api/v4/projects/33463524/packages/generic/bahnvorhersage/v%v/bahnvorhersage-v%v.apk
+    srclibs:
+      - reproducible-apk-tools@v0.3.2
     rm:
       - ios
     prebuild: sed -i -e '/keystoreProperties/d' -e '/keystoreAvailable/,+1d' -e '/signingAvailable/,+1d'
       build.gradle
     scandelete:
       - node_modules
-    build: cat -n build.gradle
+    postbuild:
+      - mv $$OUT$$ unaligned.apk
+      - $$reproducible-apk-tools$$/zipalign.py --page-size 4 --pad-like-apksigner
+        --replace unaligned.apk $$OUT$$
+
+AllowedAPKSigningKeys: 110d331e6d13eb1a8a9ab83f721bfa35fc8d31b867d38a061f363e5dfc5ef8c2
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
