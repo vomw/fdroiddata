@@ -10,6 +10,7 @@ IssueTracker: https://codeberg.org/BenniJanson/QuestTime/issues
 Changelog: https://codeberg.org/BenniJanson/QuestTime/releases
 
 AutoName: QuestTime
+AllowedAPKSigningKeys: 27946febdf89e3d4fb43981b9a5b47c4728556483849936ed93ff9acd977c405
 
 RepoType: git
 Repo: https://codeberg.org/BenniJanson/QuestTime.git
@@ -27,14 +28,26 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo de.jk.questtime
     scandelete:
       - .pub-cache
     build:
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+      - popd
+      - mv $repo de.jk.questtime
 
   - versionName: 1.0.3
     versionCode: 52
@@ -48,14 +61,26 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo de.jk.questtime
     scandelete:
       - .pub-cache
     build:
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+      - popd
+      - mv $repo de.jk.questtime
 
   - versionName: 1.0.3
     versionCode: 54
@@ -69,14 +94,26 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo de.jk.questtime
     scandelete:
       - .pub-cache
     build:
+      - export repo=/tmp/build/de.jk.questtime
+      - cd ..
+      - mv de.jk.questtime $repo
+      - pushd $repo
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+      - popd
+      - mv $repo de.jk.questtime
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
