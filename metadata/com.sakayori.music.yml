@@ -11,6 +11,8 @@ SourceCode: https://github.com/Sakayorii/sakayori-music
 IssueTracker: https://github.com/Sakayorii/sakayori-music/issues
 Changelog: https://github.com/Sakayorii/sakayori-music/blob/HEAD/changelog.md
 
+AutoName: Sakayori Music
+
 RepoType: git
 Repo: https://github.com/Sakayorii/sakayori-music
 
@@ -21,14 +23,23 @@ Builds:
     submodules: true
     gradle:
       - izzy
-    prebuild: sed -i '/maven.aliyun.com/d' settings.gradle.kts build.gradle.kts
+    prebuild:
+      - sed -i '/maven.aliyun.com/d' settings.gradle.kts build.gradle.kts
+      - "cat >> app/build.gradle.kts << 'KOTLIN_EOF'\n// F-Droid: tinypinyin POMs\
+        \ reference com.github.promeg (lowercase), which only\n// resolves via the\
+        \ removed aliyun mirror. Use the correctly-cased JitPack\n// coordinates instead.\n\
+        configurations.all {\n    resolutionStrategy.dependencySubstitution {\n  \
+        \      substitute(module(\"com.github.promeg:tinypinyin\"))\n            .using(module(\"\
+        com.github.promeG:tinypinyin:2.0.3\"))\n    }\n}\nKOTLIN_EOF"
 
 MaintainerNotes: |-
   The `izzy` product flavor (no GMS/Cast, no self-updater) is the F-Droid
   compliant build, as marked upstream. GMS/Cast dependencies are
   `gmsImplementation`-scoped and excluded from this flavor. The aliyun Maven
-  mirror is removed in prebuild because F-Droid only allows known repositories;
-  it is just a mirror of Maven Central so the build is unaffected.
+  mirror is removed in prebuild because F-Droid only allows known repositories.
+  tinypinyin's POMs reference com.github.promeg (lowercase), an artifact that
+  only exists on that mirror, so it is substituted with the correctly-cased
+  JitPack coordinates.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[0-9.]+$
