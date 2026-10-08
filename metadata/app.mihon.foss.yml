@@ -1,0 +1,36 @@
+Categories:
+  - Ebook Reader
+License: Apache-2.0
+AuthorName: Mihon Open Source Project
+WebSite: https://mihon.app
+SourceCode: https://github.com/mihonapp/mihon
+IssueTracker: https://github.com/mihonapp/mihon/issues
+Translation: https://hosted.weblate.org/engage/mihon/
+Changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
+
+AutoName: Mihon
+
+RepoType: git
+Repo: https://github.com/mihonapp/mihon.git
+Binaries: https://github.com/mihonapp/mihon/releases/download/v%v/mihon-v%v-foss.apk
+
+Builds:
+  - versionName: 0.20.2
+    versionCode: 27
+    commit: 0648e2eaafdc037d447cfad4924be1b362c1b7b3
+    subdir: app
+    output: build/outputs/apk/foss/*-universal-*.apk
+    prebuild:
+      - sed -i -e '/\.firebase/d' -e '/google.services/d' {..,.,../telemetry}/build.gradle.kts
+      - sed -i -e 's/--short/--short=7/' -e 's/git rev-list --count HEAD/echo 1/'
+        ../gradle/build-logic/src/main/kotlin/mihon/gradle/Commands.kt
+    build: gradle assembleFoss -Penable-updater
+    ndk: r29
+
+AllowedAPKSigningKeys: 9add655a78e96c4ec7a53ef89dccb557cb5d767489fac5e785d671a5a75d4da2
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckName: app.mihon
+CurrentVersion: 0.20.2
+CurrentVersionCode: 27
