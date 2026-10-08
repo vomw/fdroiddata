@@ -1,0 +1,54 @@
+Categories:
+  - Messaging
+  - Security
+License: MPL-2.0
+AuthorName: ekaii
+AuthorEmail: security@ekaii.fr
+WebSite: https://reed.ekaii.fr
+SourceCode: https://forgejo.ekaii.fr/exo/reed
+IssueTracker: https://forgejo.ekaii.fr/exo/reed/issues
+Changelog: https://forgejo.ekaii.fr/exo/reed/releases
+
+AutoName: Reed
+
+RepoType: git
+Repo: https://forgejo.ekaii.fr/exo/reed.git
+Binaries: https://forgejo.ekaii.fr/exo/reed/releases/download/v%v/reed-v%v-universal.apk
+
+Builds:
+  - versionName: 0.4.1
+    versionCode: 8
+    commit: 904844623b2d320a2cb70e433299c687e34acdb5
+    timeout: 14400
+    subdir: apps/android
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup
+    gradle:
+      - foss
+    output: app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+    prebuild:
+      - export CARGO_HOME=$HOME/.cargo RUSTUP_HOME=$HOME/.rustup
+      - rustup default 1.97.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+    scandelete:
+      - tests/demo/playwright
+      - apps/desktop/tests/tauri-driver
+      - services/reed-gmessages-bridge/harness
+      - build-status
+      - core/reed-simplex/tests/fixtures
+      - fuzz/regressions
+    build:
+      - export CARGO_HOME=$HOME/.cargo RUSTUP_HOME=$HOME/.rustup
+      - export ANDROID_HOME=$$SDK$$ ANDROID_NDK_HOME=$$NDK$$
+      - cd ../.. && cargo install --locked cargo-ndk --version 4.1.2
+      - cd ../.. && cargo xtask android --release-repro --abis arm64-v8a,armeabi-v7a
+        --no-kotlin
+    ndk: r27c
+
+AllowedAPKSigningKeys: 52c1d0ef5f1ca2ab8baa3c21fbf14240b9088d2a3e734b05b79e86b5f5ed5d2c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 0.4.1
+CurrentVersionCode: 8
