@@ -13,9 +13,9 @@ RepoType: git
 Repo: https://github.com/Duecki1/CalibRaw.git
 
 Builds:
-  - versionName: 1.2.0
-    versionCode: 1000708
-    commit: d2dfa899fbcb59726a87da7f450f113dedd3cae9
+  - versionName: 1.2.1
+    versionCode: 1000709
+    commit: v1.2.1
     subdir: android
     sudo:
       - apt-get update
@@ -48,7 +48,7 @@ Builds:
       - export BINDGEN_EXTRA_CLANG_ARGS="--target=aarch64-linux-android26 --sysroot=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
       - export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD) CARGO_INCREMENTAL=0
       - cargo ndk -t arm64-v8a --platform 26 -o android/app/src/main/jniLibs build
-        --release --locked --package calibraw-ui --lib
+        --release --locked --package calibraw-ui --lib --features fdroid
       - cp android/native/onnxruntime/libonnxruntime.so android/app/src/main/jniLibs/arm64-v8a/
       - cp 
         $$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so
@@ -73,5 +73,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
 UpdateCheckData: Cargo.toml|(?m)^fdroid_version_code = (\d+)|.|(?m)^version = "([\d.]+)"
-CurrentVersion: 1.2.0
-CurrentVersionCode: 1000708
+CurrentVersion: 1.2.1
+CurrentVersionCode: 1000709
