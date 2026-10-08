@@ -1,0 +1,40 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads from YouTube, Instagram, TikTok, X and other non-free services. Fetches yt-dlp updates from GitHub, but only when you tap update yt-dlp.
+Categories:
+  - Download
+License: GPL-3.0-only
+AuthorName: rcrandon
+SourceCode: https://github.com/rcrandon/gimmiedat
+IssueTracker: https://github.com/rcrandon/gimmiedat/issues
+Changelog: https://github.com/rcrandon/gimmiedat/releases
+
+AutoName: Gimmie 'Dat
+
+RepoType: git
+Repo: https://github.com/rcrandon/gimmiedat.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 2
+    commit: b8d5b2112e1a542e29b5893f9cfc04742a44bde1
+    subdir: app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y zip
+    gradle:
+      - yes
+    rm:
+      - app/src/main/res/raw/ytdlp
+    prebuild:
+      - make -C ../external/yt-dlp lazy-extractors yt-dlp
+      - cp ../external/yt-dlp/yt-dlp src/main/res/raw/ytdlp
+    gradleprops:
+      - gimmiedat.autoUpdateYtDlp=false
+      - gimmiedat.abis=arm64-v8a
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 1.0.1
+CurrentVersionCode: 2
