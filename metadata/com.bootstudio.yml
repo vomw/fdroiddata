@@ -1,0 +1,43 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Depends on github.com
+Categories:
+  - Multimedia
+  - System
+License: GPL-3.0-only
+AuthorName: gauthier1024
+SourceCode: https://github.com/gauthier1024/BootStudio
+IssueTracker: https://github.com/gauthier1024/BootStudio/issues
+
+AutoName: BootStudio
+
+RequiresRoot: true
+
+RepoType: git
+Repo: https://github.com/gauthier1024/BootStudio.git
+Binaries: 
+  https://github.com/gauthier1024/BootStudio/releases/download/BootStudio-v%v/BootStudio.apk
+
+Builds:
+  - versionName: 2.0.0
+    versionCode: 6
+    commit: 20654ca83602d1035f0456db667b1c5562672554
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make build-essential patchelf
+    gradle:
+      - foss
+    srclibs:
+      - FFmpeg@n6.1
+    build:
+      - cd ..
+      - bash FfmpegBuild.sh $$FFmpeg$$
+    ndk: r27
+
+AllowedAPKSigningKeys: 9f67ed1abc18916c691af6ec9efd93c303f2188e8e0df327d5956ceb3b6c6857
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.0.0
+CurrentVersionCode: 6
