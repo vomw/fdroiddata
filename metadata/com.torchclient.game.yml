@@ -26,8 +26,11 @@ Builds:
       - apt-get update
       - apt-get install -y rustup zip
     output: dist/torch-client-unsigned.apk
+    prebuild:
+      - sdkmanager 'platforms;android-36'
     build:
-      - rustup toolchain install $(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml) --profile minimal --target aarch64-linux-android
+      - rustup toolchain install $(sed -n -E 's/channel = "(.*)"/\1/p' rust-toolchain.toml)
+        --profile minimal --target aarch64-linux-android
       - UNSIGNED=1 tools/build_android.sh
     ndk: 27.1.12297006
 
