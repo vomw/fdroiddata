@@ -1,0 +1,110 @@
+Categories:
+  - VPN & Proxy
+License: AGPL-3.0-or-later
+AuthorName: Bernd Fix   >Y<
+AuthorEmail: brf@hoi-polloi.org
+SourceCode: https://github.com/bfix/kpclientd-android
+IssueTracker: https://github.com/bfix/kpclientd-android/issues
+
+AutoName: KP Daemon
+
+RequiresRoot: true
+
+RepoType: git
+Repo: https://github.com/bfix/kpclientd-android.git
+Binaries: https://hoi-polloi.org/files/kpclientd_%c.apk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 21000000
+    commit: 145c3e7cf5cb3481865522cbe144b2ee2f199faa
+    subdir: apk/app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-1.25-go gcc libc-dev
+    gradle:
+      - Arm64
+    output: build/outputs/apk/arm64/release/*.apk
+    srclibs:
+      - go@go1.26.2
+      - katzenpost@v0.0.98
+    prebuild:
+      - export GO_VER=$(grep "go=" ../../dependencies.txt | cut -d'=' -f2)
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.25
+      - pushd $$go$$
+      - git checkout $GO_VER
+      - cd src/
+      - ./make.bash
+      - popd
+      - export KP_VER=$(grep "katzenpost=" ../../dependencies.txt | cut -d'=' -f2)
+      - git -C $$katzenpost$$ checkout $KP_VER
+    build:
+      - export GOROOT=$$go$$
+      - export PATH="$GOROOT/bin:$PATH"
+      - export GOOS=android
+      - export GOARCH=arm64
+      - export GOTOOLCHAIN=local
+      - export 
+        CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang
+      - export 
+        CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang
+      - export CGO_ENABLED=1
+      - export TGT=$(pwd)/src/main/assets/kpclientd
+      - pushd $$katzenpost$$
+      - go mod verify
+      - go build -buildmode=pie -trimpath -buildvcs=false -ldflags="-s -w -buildid=
+        -extldflags=-Wl,--build-id=none" -o $TGT ./cmd/kpclientd
+      - popd
+    ndk: 28.0.13004108
+
+  - versionName: 1.0.0
+    versionCode: 61000000
+    commit: 145c3e7cf5cb3481865522cbe144b2ee2f199faa
+    subdir: apk/app
+    sudo:
+      - apt-get update
+      - apt-get install -y golang-1.25-go gcc libc-dev
+    gradle:
+      - Amd64
+    output: build/outputs/apk/amd64/release/*.apk
+    srclibs:
+      - go@go1.26.2
+      - katzenpost@v0.0.98
+    prebuild:
+      - export GO_VER=$(grep "go=" ../../dependencies.txt | cut -d'=' -f2)
+      - export GOROOT_BOOTSTRAP=/usr/lib/go-1.25
+      - pushd $$go$$
+      - git checkout $GO_VER
+      - cd src/
+      - ./make.bash
+      - popd
+      - export KP_VER=$(grep "katzenpost=" ../../dependencies.txt | cut -d'=' -f2)
+      - git -C $$katzenpost$$ checkout $KP_VER
+    build:
+      - export GOROOT=$$go$$
+      - export PATH="$GOROOT/bin:$PATH"
+      - export GOOS=android
+      - export GOARCH=amd64
+      - export GOTOOLCHAIN=local
+      - export 
+        CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android34-clang
+      - export 
+        CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android34-clang
+      - export CGO_ENABLED=1
+      - export TGT=$(pwd)/src/main/assets/kpclientd
+      - pushd $$katzenpost$$
+      - go mod verify
+      - go build -buildmode=pie -trimpath -buildvcs=false -ldflags="-s -w -buildid=
+        -extldflags=-Wl,--build-id=none" -o $TGT ./cmd/kpclientd
+      - popd
+    ndk: 28.0.13004108
+
+AllowedAPKSigningKeys: 75bc51fd4a73c608ef01c20aee91128e5ed57a02ee2c6438b98e0df9114aa571
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[\d\.]+-fdroid$
+VercodeOperation:
+  - '%c + 20000000'
+  - '%c + 60000000'
+CurrentVersion: 1.0.0
+CurrentVersionCode: 61000000
