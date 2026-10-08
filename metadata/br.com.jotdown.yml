@@ -47,6 +47,10 @@ Builds:
     subdir: app
     gradle:
       - foss
+    srclibs:
+      - reproducible-apk-tools@v0.3.2
+    postbuild: $$reproducible-apk-tools$$/inplace-fix.py --zipalign fix-newlines $$OUT$$
+      'META-INF/services/*'
 
 AllowedAPKSigningKeys: c371df0d8015db8d1fd5c81077df4acf0cde8f3772c06c381ea83a69f5cc7e9d
 
