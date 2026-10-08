@@ -1,0 +1,32 @@
+Categories:
+  - Local Media Player
+License: GPL-3.0-only
+AuthorName: OptiCast Project
+WebSite: https://opticastplayer-dev.github.io/opticast/
+SourceCode: https://github.com/opticastplayer-dev/opticast
+IssueTracker: https://github.com/opticastplayer-dev/opticast/issues
+
+AutoName: OptiCast
+
+RepoType: git
+Repo: https://github.com/opticastplayer-dev/opticast.git
+
+Builds:
+  - versionName: 2.6.120
+    versionCode: 169
+    commit: cafbd10f4c4a0f55260c525ecd844ae52fcc5191
+    subdir: project/app
+    gradle:
+      - yes
+    prebuild:
+      - echo "tmdb.proxy.secret=dummy-for-fdroid" > ../local.properties
+      - sed -i 's/it.contains("OfficialRelease") || it.contains("Release")/it.contains("OfficialRelease")/g'
+        build.gradle.kts
+      - echo "F-Droid Media3-only"
+    scandelete:
+      - project/native/prebuilt
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.6.120
+CurrentVersionCode: 169
