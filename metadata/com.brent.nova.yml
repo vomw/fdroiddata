@@ -1,0 +1,64 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: The built-in transports connect to Cloudflare WARP/MASQUE and Opera's proxy
+      servers, whose server side is not free software. Profiles imported by the user
+      go to servers of their own choosing.
+Categories:
+  - VPN & Proxy
+License: GPL-3.0-only
+AuthorName: confeden
+SourceCode: https://github.com/confeden/Nova-Android
+IssueTracker: https://github.com/confeden/Nova-Android/issues
+
+AutoName: Nova
+
+RepoType: git
+Repo: https://github.com/confeden/Nova-Android.git
+Binaries: https://github.com/confeden/Nova-Android/releases/download/v%v/Nova_%v-fdroid.apk
+
+Builds:
+  - versionName: 1.32.6
+    versionCode: 161
+    commit: b7848d1719d6596939506762f9d1e89c5b066c2c
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc make libc-dev pkg-config
+      - apt-get install -y -t trixie-backports golang-go
+      - apt-get install -y rustup
+    gradle:
+      - fdroid
+    rm:
+      - app/src/main/jniLibs
+      - app/libs/nova-core-api24-stripped.aar
+    prebuild:
+      - sdkmanager "cmake;3.22.1" "platforms;android-35" "build-tools;35.0.1"
+      - cd ..
+      - bash tools/deps/fetch_go_deps.sh
+      - GOBIN=$HOME/go/bin go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260120165949-40bd9ace6ce4
+      - GOBIN=$HOME/go/bin go install golang.org/x/mobile/cmd/gobind@v0.0.0-20260120165949-40bd9ace6ce4
+      - rustup toolchain install 1.97.1 --profile minimal
+      - rustup default 1.97.1
+      - rustup target add aarch64-linux-android armv7-linux-androideabi
+      - cargo install cargo-ndk --version 4.1.2 --locked
+      - printf '\norg.gradle.java.installations.auto-detect=false\n' >> gradle.properties
+    scandelete:
+      - build/deps/gvisor/pkg/sentry
+    build:
+      - cd ..
+      - PATH=$HOME/go/bin:$PATH bash tools/build_nova_core_aar.sh
+      - cd nova-xray
+      - bash build.sh
+      - cd ..
+      - bash tools/build_opera_proxy.sh
+      - PATH=$HOME/.cargo/bin:$PATH bash tools/build_tun2proxy.sh
+    ndk: 27.2.12479018
+    gradleprops:
+      - novaAllowUnsignedRelease=true
+
+AllowedAPKSigningKeys: 8440f6c63f26d461fefa6f7556303dac762768f9daeb31de01598ff55dc9336f
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.32.6
+CurrentVersionCode: 161
