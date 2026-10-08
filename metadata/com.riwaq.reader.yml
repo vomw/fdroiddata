@@ -1,0 +1,52 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: The optional Store browses third-party novel websites. Reading your own
+      EPUB, PDF and DOCX files works fully offline.
+Categories:
+  - Ebook Reader
+  - Reading
+License: MIT
+AuthorName: Mostafa Osama
+SourceCode: https://github.com/TheMostafaOsamaDev/Riwaq-Reader
+IssueTracker: https://github.com/TheMostafaOsamaDev/Riwaq-Reader/issues
+Changelog: https://github.com/TheMostafaOsamaDev/Riwaq-Reader/releases
+
+AutoName: Riwaq
+
+RepoType: git
+Repo: https://github.com/TheMostafaOsamaDev/Riwaq-Reader.git
+Binaries: 
+  https://github.com/TheMostafaOsamaDev/Riwaq-Reader/releases/download/v%v/app-universal-release.apk
+
+Builds:
+  - versionName: 0.7.1
+    versionCode: 7001
+    commit: a132314972487c747fa00f39ed628cad0bf44303
+    sudo:
+      - apt-get update
+      - apt-get install -y build-essential nodejs npm rustup
+      - npm install -g pnpm@9
+    output: 
+      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk
+    prebuild:
+      - sed -i '/^org\.gradle\.java\.home=/d' src-tauri/gen/android/gradle.properties
+      - sed -i 's/signingConfigs.getByName("debug")/null/' src-tauri/gen/android/app/build.gradle.kts
+    build:
+      - rustup toolchain install 1.97.1 --profile minimal --target aarch64-linux-android,armv7-linux-androideabi
+      - rustup default 1.97.1
+      - export NDK_HOME=$$NDK$$
+      - pnpm install --frozen-lockfile
+      - wrapper=$PWD/src-tauri/gen/android/gradle/wrapper
+      - (cd "$(mktemp -d)" && touch settings.gradle && gradle wrapper --gradle-version
+        "$(sed -n 's/.*gradle-\(.*\)-bin\.zip/\1/p' "$wrapper/gradle-wrapper.properties")"
+        && cp gradle/wrapper/gradle-wrapper.jar "$wrapper/")
+      - RUSTFLAGS="$(bash scripts/android-rustflags.sh)" pnpm tauri android build
+        --apk --target aarch64 armv7
+    ndk: 29.0.14206865
+
+AllowedAPKSigningKeys: 83cb81f108b4f2448b20a5f5f714ea22d4a0f6712035a6df9c4bf7f2d10291e2
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: 0.7.1
+CurrentVersionCode: 7001
