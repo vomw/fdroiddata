@@ -1,3 +1,9 @@
+## Abstract
+
+### Please introduce the functions and usage of your app in summary, and also attach some screenshots.
+
+### Please elaborate why you wrote this app. Please highlight the unique functions it provides over other similar apps in F-Droid.
+
 ## Checklist
 
 ### Policy
