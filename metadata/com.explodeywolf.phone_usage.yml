@@ -1,0 +1,102 @@
+Categories:
+  - Habit Tracker
+License: GPL-3.0-or-later
+AuthorName: Isaiah
+SourceCode: https://gitlab.com/peanutplays61/phone-usage
+IssueTracker: https://gitlab.com/peanutplays61/phone-usage/-/issues
+
+AutoName: Phone Usage
+
+RepoType: git
+Repo: https://peanutplays61@gitlab.com/peanutplays61/phone-usage.git
+
+Builds:
+  - versionName: 1.3.3
+    versionCode: 14001
+    commit: d5d7ed58dd42783864995dfd9bcdc2db9d691099
+    submodules: true
+    sudo:
+      - export repo=/builds/peanutplays61/
+      - mkdir -p $repo
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://gitlab.com/peanutplays61/phone-usage/-/releases/v%v/downloads/app-x86_64-release.apk
+    scandelete:
+      - .flutter/dev
+      - .flutter/engine
+      - .flutter/packages
+    build:
+      - export repo=/builds/peanutplays61/phone-usage
+      - mkdir .pub-cache
+      - cd ..
+      - mv com.explodeywolf.phone_usage $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./build.sh android-x64
+      - popd
+      - mv $repo com.explodeywolf.phone_usage
+
+  - versionName: 1.3.3
+    versionCode: 14002
+    commit: d5d7ed58dd42783864995dfd9bcdc2db9d691099
+    submodules: true
+    sudo:
+      - export repo=/builds/peanutplays61/
+      - mkdir -p $repo
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://gitlab.com/peanutplays61/phone-usage/-/releases/v%v/downloads/app-armeabi-v7a-release.apk
+    scandelete:
+      - .flutter/dev
+      - .flutter/engine
+      - .flutter/packages
+    build:
+      - export repo=/builds/peanutplays61/phone-usage
+      - mkdir .pub-cache
+      - cd ..
+      - mv com.explodeywolf.phone_usage $repo
+      - pushd $repo
+      - echo "$ANDROID_HOME"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./build.sh android-arm
+      - popd
+      - mv $repo com.explodeywolf.phone_usage
+
+  - versionName: 1.3.3
+    versionCode: 14003
+    commit: d5d7ed58dd42783864995dfd9bcdc2db9d691099
+    submodules: true
+    sudo:
+      - export repo=/builds/peanutplays61/
+      - mkdir -p $repo
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://gitlab.com/peanutplays61/phone-usage/-/releases/v%v/downloads/app-arm64-v8a-release.apk
+    scandelete:
+      - .flutter/dev
+      - .flutter/engine
+      - .flutter/packages
+    build:
+      - export repo=/builds/peanutplays61/phone-usage
+      - mkdir .pub-cache
+      - cd ..
+      - mv com.explodeywolf.phone_usage $repo
+      - pushd $repo
+      - echo "$ANDROID_HOME"
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - ./build.sh android-arm64
+      - popd
+      - mv $repo com.explodeywolf.phone_usage
+
+AllowedAPKSigningKeys: 
+  7240f75f5adbe3545a50c3836a9d77192803861f664ca62028767c5e27e62ebd
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 1000 + 1'
+  - '%c * 1000 + 2'
+  - '%c * 1000 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.3.3
+CurrentVersionCode: 14003
