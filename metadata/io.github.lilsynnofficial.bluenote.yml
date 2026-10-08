@@ -1,0 +1,47 @@
+Categories:
+  - Habit Tracker
+  - Note
+  - OCR
+  - Task
+License: Apache-2.0
+AuthorName: LILSYNN OFFICIAL
+AuthorEmail: lilsynn89@gmail.com
+AuthorWebSite: https://lilsynn.com
+WebSite: https://lilsynnofficial.github.io/BLUENOTE/
+SourceCode: https://github.com/LILSYNNOFFICIAL/BLUENOTE
+IssueTracker: https://github.com/LILSYNNOFFICIAL/BLUENOTE/issues
+Changelog: https://github.com/LILSYNNOFFICIAL/BLUENOTE/releases
+
+Name: BlueNote
+AutoName: BlueNote
+
+RepoType: git
+Repo: https://github.com/LILSYNNOFFICIAL/BLUENOTE.git
+
+Builds:
+  - versionName: 1.0.8
+    versionCode: 7
+    commit: 5afbea63817ef3848eaf37d58f8ac9aea6628a2e
+    subdir: android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y nodejs npm
+    init:
+      - cd ../..
+      - npm ci --legacy-peer-deps --no-fund --no-audit
+      - F_DROID_BUILD=true npm run build
+      - mkdir -p android/app/src/main/assets/public
+      - cp -r dist/* android/app/src/main/assets/public/
+    gradle:
+      - fdroid
+    scanignore:
+      - android/app/src/main/assets/public/tesseract
+      - dist/tesseract
+      - public/tesseract
+    scandelete:
+      - node_modules
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v?[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 1.0.8
+CurrentVersionCode: 7
