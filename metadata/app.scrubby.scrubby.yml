@@ -1,0 +1,158 @@
+Categories:
+  - Remote Controller
+License: MIT
+AuthorName: Brandon Dick
+AuthorEmail: brandon@presley.nz
+WebSite: https://github.com/brandonp2412/Scrubby
+SourceCode: https://github.com/brandonp2412/Scrubby
+IssueTracker: https://github.com/brandonp2412/Scrubby/issues
+
+AutoName: Scrubby
+
+RepoType: git
+Repo: https://github.com/brandonp2412/Scrubby.git
+
+Builds:
+  - versionName: 1.0.28
+    versionCode: 1029
+    commit: 005c5b28f0f16ed46793151a4db0ad1be7063f29
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-armeabi-v7a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - git -C flutter tag -f 3.47.4
+      - git -C flutter checkout -B stable
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i 's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo app.scrubby.scrubby
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm"
+      - popd
+      - mv $repo app.scrubby.scrubby
+    ndk: r28c
+
+  - versionName: 1.0.28
+    versionCode: 2029
+    commit: 005c5b28f0f16ed46793151a4db0ad1be7063f29
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-arm64-v8a-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - git -C flutter tag -f 3.47.4
+      - git -C flutter checkout -B stable
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i 's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo app.scrubby.scrubby
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo app.scrubby.scrubby
+    ndk: r28c
+
+  - versionName: 1.0.28
+    versionCode: 4029
+    commit: 005c5b28f0f16ed46793151a4db0ad1be7063f29
+    submodules: true
+    sudo:
+      - mkdir -p /home/runner/work/Scrubby
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    binary: 
+      https://github.com/brandonp2412/Scrubby/releases/download/%v/app-x86_64-release.apk
+    rm:
+      - ios
+      - linux
+      - web
+      - windows
+    prebuild:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - git -C flutter tag -f 3.47.4
+      - git -C flutter checkout -B stable
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter config --no-analytics
+      - flutter/bin/flutter pub get --enforce-lockfile
+      - sed -i 's/"-Wl,-z,max-page-size=16384"/"-Wl,--build-id=none,-z,max-page-size=16384"/'
+        "$PUB_CACHE"/hosted/pub.dev/jni-*/src/CMakeLists.txt
+      - popd
+      - mv $repo app.scrubby.scrubby
+    scanignore:
+      - flutter/bin/cache
+    scandelete:
+      - flutter
+    build:
+      - cd ..
+      - export repo=/home/runner/work/Scrubby/Scrubby
+      - mv app.scrubby.scrubby $repo
+      - pushd $repo
+      - export PUB_CACHE=/home/runner/.pub-cache
+      - flutter/bin/flutter build apk --release --split-per-abi --target-platform="android-x64"
+      - popd
+      - mv $repo app.scrubby.scrubby
+    ndk: r28c
+
+AllowedAPKSigningKeys: 011ee1a6e4e5ecd675f67fbf3d78ad82614a7a7a3f24ed71cc9c417154a0f0fd
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c + 1000'
+  - '%c + 2000'
+  - '%c + 4000'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.0.28
+CurrentVersionCode: 4029
