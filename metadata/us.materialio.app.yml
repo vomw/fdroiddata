@@ -3615,7 +3615,44 @@ Builds:
       - cp -a $$NodejsMobile$$/out_android/* ../../node_modules/capacitor-nodejs/android/libnode/bin/
     ndk: r27
 
+  - versionName: 1.18.8
+    versionCode: 275
+    commit: e73df750f37d0884ba968b77516c17e525d18bfb
+    timeout: 20000
+    subdir: materialious/android/app
+    sudo:
+      - apt-get update
+      - apt-get install -y libc-dev cmake golang-go gcc-multilib g++-multilib make
+        python3-setuptools
+      - echo "deb http://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+    gradle:
+      - yes
+    srclibs:
+      - NodejsMobile@v18.20.4
+    prebuild:
+      - sed -i -e '/enable true/d' build.gradle
+      - sed -i -e '/gms/d' ../build.gradle
+      - sed -i -e 's/-Xmx1G/-Xmx4G/' ../gradle.properties
+      - cd ../..
+      - npm install --allow-remote all
+      - pushd static/nodejsAndroid
+      - npm install
+      - popd
+      - npm run build
+      - npx cap sync
+      - sed -i -e 's/acceptable_pythons = .*/acceptable_pythons = ((3, 13),)/' $$NodejsMobile$$/{android-configure,configure}
+    scandelete:
+      - materialious/node_modules
+    build:
+      - pushd $$NodejsMobile$$
+      - ./tools/android_build.sh $$NDK$$ 24
+      - popd
+      - cp -a $$NodejsMobile$$/out_android/* ../../node_modules/capacitor-nodejs/android/libnode/bin/
+    ndk: r27
+
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.18.7
-CurrentVersionCode: 274
+CurrentVersion: 1.18.8
+CurrentVersionCode: 275
