@@ -25,12 +25,9 @@ Builds:
       - izzy
     prebuild:
       - sed -i '/maven.aliyun.com/d' settings.gradle.kts build.gradle.kts
-      - "cat >> app/build.gradle.kts << 'KOTLIN_EOF'\n// F-Droid: tinypinyin POMs\
-        \ reference com.github.promeg (lowercase), which only\n// resolves via the\
-        \ removed aliyun mirror. Use the correctly-cased JitPack\n// coordinates instead.\n\
-        configurations.all {\n    resolutionStrategy.dependencySubstitution {\n  \
-        \      substitute(module(\"com.github.promeg:tinypinyin\"))\n            .using(module(\"\
-        com.github.promeG:tinypinyin:2.0.3\"))\n    }\n}\nKOTLIN_EOF"
+      - echo 'configurations.configureEach{' >> app/build.gradle.kts
+      - echo 'exclude(group="com.github.promeg")' >> app/build.gradle.kts
+      - echo '}' >> app/build.gradle.kts
 
 MaintainerNotes: |-
   The `izzy` product flavor (no GMS/Cast, no self-updater) is the F-Droid
@@ -38,8 +35,8 @@ MaintainerNotes: |-
   `gmsImplementation`-scoped and excluded from this flavor. The aliyun Maven
   mirror is removed in prebuild because F-Droid only allows known repositories.
   tinypinyin's POMs reference com.github.promeg (lowercase), an artifact that
-  only exists on that mirror, so it is substituted with the correctly-cased
-  JitPack coordinates.
+  only exists on that mirror, so it is excluded globally; the correctly-cased
+  com.github.promeG:tinypinyin direct dependency provides the same classes.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[0-9.]+$
