@@ -1,0 +1,39 @@
+Categories:
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Sakayori Studio
+AuthorEmail: contact@sakayori.studio
+AuthorWebSite: https://sakayori.studio
+WebSite: https://music.sakayori.dev
+SourceCode: https://github.com/Sakayorii/sakayori-music
+IssueTracker: https://github.com/Sakayorii/sakayori-music/issues
+Changelog: https://github.com/Sakayorii/sakayori-music/blob/main/changelog.md
+
+AntiFeatures:
+  - NonFreeNet
+
+MaintainerNotes: |-
+  The `izzy` product flavor (no GMS/Cast, no self-updater) is the F-Droid
+  compliant build, as marked upstream. GMS/Cast dependencies are
+  `gmsImplementation`-scoped and excluded from this flavor. The release
+  signing config is swapped to the debug key in prebuild because F-Droid
+  signs the APK with its own key.
+
+RepoType: git
+Repo: https://github.com/Sakayorii/sakayori-music
+
+Builds:
+  - versionName: 2.1.7
+    versionCode: 153
+    commit: v2.1.7
+    submodules: yes
+    prebuild:
+      - sed -i 's/signingConfigs.getByName("release")/signingConfigs.getByName("debug")/' app/build.gradle.kts
+    gradle:
+      - izzy
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags v[0-9.]+$
+UpdateCheckData: app/build.gradle.kts|versionCode\s*=\s*(\d+)||v([\d.]+)
+CurrentVersion: 2.1.7
+CurrentVersionCode: 153
