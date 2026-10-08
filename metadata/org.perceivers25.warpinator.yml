@@ -1,0 +1,39 @@
+Categories:
+  - Connectivity
+  - File Transfer
+  - Internet
+License: GPL-3.0-only
+AuthorName: 2-5-perceivers
+WebSite: https://2-5-perceivers.github.io/#/warpinator
+SourceCode: https://github.com/2-5-perceivers/warpinator
+IssueTracker: https://github.com/2-5-perceivers/warpinator/issues
+Changelog: https://github.com/2-5-perceivers/warpinator/releases
+
+AutoName: Warpinator
+
+RepoType: git
+Repo: https://github.com/2-5-perceivers/warpinator.git
+
+Builds:
+  - versionName: 1.0.1
+    versionCode: 101
+    commit: d1a149d8deff7fa241c458897e015e400f0b5e3b
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y gcc libc-dev rustup
+    gradle:
+      - yes
+    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    prebuild:
+      - rustup default stable
+      - rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+        x86_64-linux-android
+      - cargo install cargo-ndk
+      - export ANDROID_NDK_HOME=$$NDK$$
+    ndk: r27c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+-android$
+CurrentVersion: 1.0.1
+CurrentVersionCode: 101
