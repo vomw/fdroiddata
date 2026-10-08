@@ -29,7 +29,9 @@ Builds:
       - echo 'configurations.all{'>>build.gradle.kts
       - echo 'resolutionStrategy.dependencySubstitution{'>>build.gradle.kts
       - echo 'substitute(module("com.github.promeg:tinypinyin"))'>>build.gradle.kts
-      - echo '.using(module("com.github.promeG:tinypinyin:2.0.3"))'>>build.gradle.kts
+      - echo '.using('>>build.gradle.kts
+      - echo 'module("io.github.biezhi:TinyPinyin:2.0.3.RELEASE")'>>build.gradle.kts
+      - echo ')'>>build.gradle.kts
       - echo '}}}'>>build.gradle.kts
 
 MaintainerNotes: |-
@@ -38,8 +40,9 @@ MaintainerNotes: |-
   `gmsImplementation`-scoped and excluded from this flavor. The aliyun Maven
   mirror is removed in prebuild because F-Droid only allows known repositories.
   tinypinyin's POMs reference com.github.promeg (lowercase), an artifact that
-  only exists on that mirror, so it is substituted with the correctly-cased
-  com.github.promeG:tinypinyin:2.0.3 from JitPack (same classes).
+  only exists on that mirror, so it is substituted with
+  io.github.biezhi:TinyPinyin:2.0.3.RELEASE from Maven Central (same classes,
+  verified).
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v[0-9.]+$
