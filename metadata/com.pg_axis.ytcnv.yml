@@ -1,0 +1,52 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Downloads from YouTube, a non-free service.
+    cs-CZ: Stahování z YouTube, nesvobodné služby.
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: Jan Sixta
+AuthorWebSite: https://pgaxis.dev/
+SourceCode: https://github.com/PGAxis/YTCnv
+IssueTracker: https://github.com/PGAxis/YTCnv/issues
+
+AutoName: YouTube Conv.axs
+
+RepoType: git
+Repo: https://github.com/PGAxis/YTCnv
+Binaries: 
+  https://github.com/PGAxis/YTCnv/releases/download/v%v/youtubeConverter-%v-fdroid.apk
+
+Builds:
+  - versionName: 3.16.2
+    versionCode: 72
+    commit: be8c1efb239734ee8afc9ba59360af003cb07438
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y make automake autoconf libtool gperf groff cmake gettext
+        pkg-config
+    gradle:
+      - fdroid
+    srclibs:
+      - ffmpeg-kit-16KB-for-YTCnv@v7.1
+    scandelete:
+      - app/libs/ffmpeg-kit.aar
+    build:
+      - pushd $$ffmpeg-kit-16KB-for-YTCnv$$
+      - export ANDROID_SDK_ROOT=$$SDK$$
+      - export ANDROID_NDK_ROOT=$$NDK$$
+      - export FFMPEG_KIT_OPTIMIZED_FOR_SPEED=1
+      - bash android.sh
+      - popd
+      - cp 
+        $$ffmpeg-kit-16KB-for-YTCnv$$/prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar
+        libs
+    ndk: 27.2.12479018
+
+AllowedAPKSigningKeys: c9599ab3880f3bd6605aec122e8a9b068330ea6361e5071fd1180d26e2060bf1
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 3.16.2
+CurrentVersionCode: 72
