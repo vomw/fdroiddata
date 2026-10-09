@@ -1,0 +1,105 @@
+Categories:
+  - Reading
+  - Religion
+License: ISC
+AuthorName: Netzwerk Apostolische Geschichte, e.V.
+WebSite: https://www.neuapostolisches-gesangbuch.de/
+SourceCode: https://gitlab.com/netzwerk-apostolische-geschichte/AppGB1925
+IssueTracker: https://gitlab.com/netzwerk-apostolische-geschichte/AppGB1925/-/work_items
+
+AutoName: Neuapostolisches Gesangbuch
+
+RepoType: git
+Repo: https://gitlab.com/netzwerk-apostolische-geschichte/AppGB1925.git
+
+Builds:
+  - versionName: 1.1.2
+    versionCode: 121
+    commit: 85ca42a51a79c382f856d16ef0dc50fc222bc56d
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - ln -s android/fastlane
+      - flutterVersion=3.44.6
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-arm
+
+  - versionName: 1.1.2
+    versionCode: 122
+    commit: 85ca42a51a79c382f856d16ef0dc50fc222bc56d
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - ln -s android/fastlane
+      - flutterVersion=3.44.6
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-arm64
+
+  - versionName: 1.1.2
+    versionCode: 123
+    commit: 85ca42a51a79c382f856d16ef0dc50fc222bc56d
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - linux
+      - macos
+      - web
+      - windows
+    prebuild:
+      - ln -s android/fastlane
+      - flutterVersion=3.44.6
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform
+        android-x64
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - '%c * 10 + 1'
+  - '%c * 10 + 2'
+  - '%c * 10 + 3'
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.2
+CurrentVersionCode: 123
