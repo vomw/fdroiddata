@@ -1,0 +1,66 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Can send text to commercial cloud AI services when you turn on Cloud or
+      Hybrid mode.
+Categories:
+  - Writing
+License: Apache-2.0
+AuthorName: Gr33nOps
+SourceCode: https://github.com/Gr33nOps/Rescripto
+IssueTracker: https://github.com/Gr33nOps/Rescripto/issues
+Changelog: https://github.com/Gr33nOps/Rescripto/blob/main/CHANGELOG.md
+
+AutoName: Rescripto
+
+RepoType: git
+Repo: https://github.com/Gr33nOps/Rescripto.git
+Binaries: 
+  https://github.com/Gr33nOps/Rescripto/releases/download/v%v/app-arm64-v8a-release.apk
+
+Builds:
+  - versionName: 1.3.1
+    versionCode: 202
+    commit: bb65c1c1bf379ca639fcfa65c1f85fe71f3e1d1c
+    sudo:
+      - mkdir -p /home/runner/work/Rescripto
+      - chown -R vagrant /home/runner
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export repo=/home/runner/work/Rescripto/Rescripto
+      - cd ..
+      - mv com.rescripto.rescripto $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - popd
+      - mv $repo com.rescripto.rescripto
+    scandelete:
+      - .pub-cache
+    build:
+      - export repo=/home/runner/work/Rescripto/Rescripto
+      - cd ..
+      - mv com.rescripto.rescripto $repo
+      - pushd $repo
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --split-per-abi --target-platform="android-arm64"
+      - popd
+      - mv $repo com.rescripto.rescripto
+    ndk: 28.2.13676358
+
+AllowedAPKSigningKeys: 831777242bc27b13dcc0176d972ceb8757c30ba8d01d19d880131a80c294f922
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+VercodeOperation:
+  - 10 * %c + 2
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.3.1
+CurrentVersionCode: 202
