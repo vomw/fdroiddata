@@ -1,0 +1,82 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Map bundles are downloaded from GitHub release assets.
+  TetheredNet:
+    en-US: The map catalog is tied to one GitHub repository and is not configurable.
+Categories:
+  - Navigation
+License: AGPL-3.0-only
+AuthorName: Raphael Volz
+AuthorWebSite: https://youspeed.de/
+WebSite: https://youspeed.de/
+SourceCode: https://github.com/volzinnovation/youspeed.de
+IssueTracker: https://github.com/volzinnovation/youspeed.de/issues
+
+AutoName: YouSpeed
+
+RepoType: git
+Repo: https://github.com/volzinnovation/youspeed.de.git
+Binaries: 
+  https://github.com/volzinnovation/youspeed.de/releases/download/android-v%v/YouSpeed-%v-%c.apk
+
+Builds:
+  - versionName: 1.0.4
+    versionCode: 100041
+    commit: 708cfdf198250a75516130e92bf7bbd5eacbb956
+    subdir: android/app
+    gradle:
+      - yes
+    gradleprops:
+      - youspeedAbi=armeabi-v7a
+
+  - versionName: 1.0.4
+    versionCode: 100042
+    commit: 708cfdf198250a75516130e92bf7bbd5eacbb956
+    subdir: android/app
+    gradle:
+      - yes
+    gradleprops:
+      - youspeedAbi=arm64-v8a
+
+  - versionName: 1.0.4
+    versionCode: 100043
+    commit: 708cfdf198250a75516130e92bf7bbd5eacbb956
+    subdir: android/app
+    gradle:
+      - yes
+    gradleprops:
+      - youspeedAbi=x86
+
+  - versionName: 1.0.4
+    versionCode: 100044
+    commit: 708cfdf198250a75516130e92bf7bbd5eacbb956
+    subdir: android/app
+    gradle:
+      - yes
+    gradleprops:
+      - youspeedAbi=x86_64
+
+AllowedAPKSigningKeys: 533887211549f6f1f9a605743a7ff3df64dc95e666a0eb368b3e3bcc8bd0984a
+
+MaintainerNotes: |-
+  The source repository also contains iOS, website, and map-data tooling.
+  Android is built from the android/app subdirectory and consumes shared assets
+  through the app source-set configuration.
+
+  The app contains the Apache-2.0 Vosk German speech model and the OFL-1.1
+  u_DIN font. Runtime map bundles contain ODbL-1.0 OpenStreetMap-derived data.
+  No map database is embedded in the APK; users download a selected bundle.
+  Downloads use hard-coded GitHub release URLs, hence NonFreeNet and
+  TetheredNet.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^android-v[0-9].*$
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+UpdateCheckData: 
+  android/app/build.gradle.kts|releaseBaseVersionCode\s*=\s*([0-9]+)|.|releaseVersionName\s*=\s*"([^"]+)"
+CurrentVersion: 1.0.4
+CurrentVersionCode: 100044
