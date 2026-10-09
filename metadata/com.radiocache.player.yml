@@ -1,0 +1,39 @@
+# F-Droid submission recipe for RadioCache.
+#
+# This file is NOT read by the app build. It is the exact content to submit
+# as `metadata/com.radiocache.player.yml` in a merge request against
+# https://gitlab.com/fdroid/fdroiddata (or via an RFP issue referencing it).
+#
+# Verified against the live build 2026-10-05:
+#   - applicationId com.radiocache.player, versionCode 33, 0.9.1-commons
+#   - Gradle 8.14, AGP 8.5.2, JDK 17, compileSdk 36
+#   - 57/57 unit tests green, release APK builds from a clean clone with no
+#     keystore present (falls back to debug key, never fails the build)
+
+Categories:
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: RadioCache contributors
+SourceCode: https://github.com/wharton0/RadioCache
+IssueTracker: https://github.com/wharton0/RadioCache/issues
+Changelog: https://github.com/wharton0/RadioCache/releases
+# NOTE: Summary/Description intentionally live in the upstream repo's
+# Triple-T metadata (metadata/en-US/*), not here — per template, the
+# fdroiddata yml must not duplicate them.
+AutoName: RadioCache
+RepoType: git
+Repo: https://github.com/wharton0/RadioCache.git
+
+Builds:
+  - versionName: 0.9.1-commons
+    versionCode: 33
+    commit: 833d38c01ffd5dc9517212684cf4cd6326c4af74
+    subdir: app
+    gradle:
+      - yes
+
+# Manual updates for now: versionName carries a variant suffix
+# ("0.9.1-commons") so tag-based auto-update cannot map versions.
+# Next release switches to plain versions + AutoUpdateMode: Version.
+AutoUpdateMode: None
+UpdateCheckMode: None
