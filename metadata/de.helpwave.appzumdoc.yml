@@ -1,0 +1,66 @@
+Categories:
+  - Sports & Health
+License: AGPL-3.0-only
+AuthorName: helpwave GmbH
+AuthorEmail: contact@helpwave.de
+AuthorWebSite: https://helpwave.de
+WebSite: https://app-zum-doc.de/
+SourceCode: https://github.com/helpwave/app-zum-doc
+IssueTracker: https://github.com/helpwave/app-zum-doc/issues
+Changelog: https://github.com/helpwave/app-zum-doc/releases
+
+AutoName: App zum Doc
+
+RepoType: git
+Repo: https://github.com/helpwave/app-zum-doc.git
+Binaries: 
+  https://github.com/helpwave/app-zum-doc/releases/download/android@%v/app-zum-doc-%v.apk
+
+Builds:
+  - versionName: 0.0.14
+    versionCode: 14
+    commit: 14d48b0e8732c5f7b2a1388d0e11146e077f76e6
+    sudo:
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - npm install -g pnpm@11.13.0
+    init:
+      - pnpm install --frozen-lockfile
+      - pnpm --filter @app-zum-doc/utils run init
+    output: 
+      apps/mobile/android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
+    prebuild:
+      - sed -i -e '1a "expo":{"autolinking":{"android":{"buildFromSource":[".*"]}}},'
+        package.json apps/mobile/package.json
+      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
+        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
+      - cd apps/mobile
+      - EXPO_NO_GIT_STATUS=1 npx expo prebuild -p android --clean
+      - sed -i -e '/signingConfig /d' -e 's/, "armeabi-v7a"//' android/app/build.gradle
+      - sed -i -e '/expoAutolinking.useExpoModules()/i expoAutolinking.projectRoot
+        = rootDir.parentFile' android/settings.gradle
+      - sed -i 's/^reactNativeArchitectures=.*/reactNativeArchitectures=arm64-v8a/'
+        android/gradle.properties
+    scanignore:
+      - node_modules/react-native/sdks/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+      - node_modules/@react-native-async-storage/async-storage/android/build.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+      - node_modules/react-native-screens/android/build.gradle
+      - node_modules/react-native-svg/android/build.gradle
+    scandelete:
+      - node_modules
+    build:
+      - cd apps/mobile/android
+      - gradle assembleRelease
+    ndk: 27.1.12297006
+
+AllowedAPKSigningKeys: b0974e053c12fc9b20aa6f9f5c278c288b585494958b6b872787c5dee6f5973e
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^android@
+UpdateCheckData: apps/mobile/app.json|"versionCode":\s(\d+)|.|"version":\s"([\d.]+)"
+CurrentVersion: 0.0.14
+CurrentVersionCode: 14
