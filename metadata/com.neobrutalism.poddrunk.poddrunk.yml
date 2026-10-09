@@ -1,0 +1,45 @@
+Categories:
+  - Local Media Player
+License: MIT
+AuthorName: Poddrunk Contributors
+SourceCode: https://github.com/paperlinkos/poddrunk
+IssueTracker: https://github.com/paperlinkos/poddrunk/issues
+Changelog: https://github.com/paperlinkos/poddrunk/releases
+
+AutoName: Poddrunk
+
+RepoType: git
+Repo: https://github.com/paperlinkos/poddrunk.git
+
+Builds:
+  - versionName: 1.1.2
+    versionCode: 4
+    commit: 3c07fd5b24b4fbcbd87489af164a7a6effdd023c
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - ios
+      - macos
+      - web
+      - windows
+    prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
+      - find .pub-cache -name "AndroidManifest.xml" -exec sed -i -E 's/package="[^"]*"//g'
+        {} +
+    scandelete:
+      - .pub-cache
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
+CurrentVersion: 1.1.2
+CurrentVersionCode: 4
