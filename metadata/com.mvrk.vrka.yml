@@ -1,0 +1,91 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: This app accesses third-party websites and online services for media extraction
+      and stream downloads.
+Categories:
+  - Multimedia
+License: GPL-3.0-only
+AuthorName: MaverickRox
+AuthorWebSite: https://github.com/MaverickRox
+SourceCode: https://github.com/MaverickRox/VRKA-Android
+IssueTracker: https://github.com/MaverickRox/VRKA-Android/issues
+Changelog: https://github.com/MaverickRox/VRKA-Android/blob/HEAD/CHANGELOG.md
+
+AutoName: VRKA
+
+RepoType: git
+Repo: https://github.com/MaverickRox/VRKA-Android.git
+
+Builds:
+  - versionName: 4.5.3
+    versionCode: 40503
+    commit: 869c8e14940a06ecc7473ad7a687067e4be8e8ee
+    timeout: 36000
+    subdir: app
+    sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
+      - apt-get update
+      - apt-get install -y -t bookworm openjdk-17-jdk-headless
+      - update-java-alternatives -s java-1.17.0-openjdk-amd64
+      - apt-get install -y cmake make m4 pkg-config python-is-python3 python3-venv
+        ninja-build bzip2 libffi-dev libsqlite3-dev binutils-dev clang lld llvm nodejs
+        libssl-dev zlib1g-dev rustup nasm terser
+      - rm -f /usr/bin/cbindgen /bin/cbindgen
+    gradle:
+      - yes
+    output: build/outputs/apk/release/app-release-unsigned.apk
+    srclibs:
+      - MozFennec@FIREFOX-ANDROID_153_0_4_RELEASE
+      - gmscore@v0.3.16.252432
+    prebuild:
+      - sed -i 's/hasCredentials.set(hasReleaseSigning)/hasCredentials.set(true)/'
+        build.gradle.kts
+      - sed -i 's/geckoview-arm64-v8a/geckoview-omni-arm64-v8a/' build.gradle.kts
+      - rm -rf $$SDK$$/cmdline-tools/20.0
+      - mkdir -p $$SDK$$/cmdline-tools/20.0/bin
+      - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/sdkmanager
+      - ln -sf $(which sdkmanager) $$SDK$$/cmdline-tools/20.0/bin/avdmanager
+      - mkdir -p $$SDK$$/emulator
+      - ln -sf $(which true) $$SDK$$/emulator/emulator
+      - mkdir -p "$HOME/.mozbuild/jdk"
+      - touch "$HOME/.mozbuild/bundletool.jar"
+      - ln -sf /usr/lib/jvm/java-17-openjdk-amd64 "$HOME/.mozbuild/jdk/jdk-17.0.18+8"
+      - sdkmanager "build-tools;37.0.0" "platforms;android-37.0"
+      - pushd $$gmscore$$
+      - gradle -x javaDocReleaseGeneration :play-services-base:publishToMavenLocal
+        :play-services-basement:publishToMavenLocal :play-services-fido:publishToMavenLocal
+        :play-services-tasks:publishToMavenLocal
+      - popd
+      - export ANDROID_NDK="$$NDK$$"
+      - export ANDROID_SDK_ROOT="$$SDK$$"
+      - cp ../mozconfig $$MozFennec$$/.mozconfig
+      - pushd $$MozFennec$$
+      - sed -i 's|terser_path = terser_dir / ".*"|terser_path = Path("/usr/bin/terser")|'
+        python/mozbuild/mozpack/files.py
+      - sed -i 's|libs.play.services.fido|"org.microg.gms:play-services-fido:0.3.16.252432"|'
+        mobile/android/geckoview/build.gradle
+      - sed -i '/configureMavenRepositories = { handler ->/a \    handler.mavenLocal()'
+        mobile/android/gradle/mozconfig.gradle
+      - rustup default 1.90.0
+      - rustup target add aarch64-linux-android
+      - cargo install --version 0.29.4 cbindgen
+      - export PATH="$HOME/.cargo/bin:$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH"
+      - export CBINDGEN="$HOME/.cargo/bin/cbindgen"
+      - export ANDROID_BUNDLETOOL_PATH="$HOME/.mozbuild/bundletool.jar"
+      - LIBGCC=$$NDK$$/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libgcc.a;
+        echo "INPUT(-lunwind)" > "$LIBGCC"
+      - ./mach build
+      - gradle -x javadocDebug geckoview:publishDebugPublicationToMavenLocal
+      - popd
+    scanignore:
+      - app/src/main/res/raw/ytdlp
+      - app/src/main/assets/extensions/ublock.xpi
+      - app/src/main/assets/extensions/puemos.xpi
+    ndk: 29.0.14206865
+    gradleprops:
+      - configuration-cache=false
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 4.5.3
+CurrentVersionCode: 40503
