@@ -64,7 +64,8 @@ Builds:
         python/mozbuild/mozpack/files.py
       - sed -i 's|libs.play.services.fido|"org.microg.gms:play-services-fido:0.3.16.252432"|'
         mobile/android/geckoview/build.gradle
-      - echo "repositories { mavenLocal() }" >> mobile/android/geckoview/build.gradle
+      - sed -i '/configureMavenRepositories = { handler ->/a \    handler.mavenLocal()'
+        mobile/android/gradle/mozconfig.gradle
       - rustup default 1.90.0
       - rustup target add aarch64-linux-android
       - cargo install --version 0.29.4 cbindgen
