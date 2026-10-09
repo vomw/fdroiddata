@@ -1,0 +1,43 @@
+Categories:
+  - Development
+  - System
+License: GPL-3.0-only
+AuthorName: Sophie Winter
+SourceCode: https://github.com/wmww/tawc
+IssueTracker: https://github.com/wmww/tawc/issues
+
+AutoName: TAWC
+
+RepoType: git
+Repo: https://github.com/wmww/tawc.git
+Binaries: https://github.com/wmww/tawc/releases/download/v%v/tawc-v%v.apk
+
+Builds:
+  - versionName: '4'
+    versionCode: 4
+    commit: d9efb4ae60da85154210c2edfb10f46e8ac58755
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y rustup build-essential make pkg-config curl libarchive-tools
+        file meson ninja-build bison autoconf automake libtool libtool-bin libltdl-dev
+        perl python3 python3-libxml2 xsltproc libexpat1-dev libwayland-dev libwayland-bin
+        libwayland-egl-backend-dev wayland-protocols libvulkan-dev patchelf libx11-dev
+        libx11-xcb-dev libxcb1-dev gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
+        libc6-arm64-cross linux-libc-dev-arm64-cross
+    gradle:
+      - yes
+    prebuild:
+      - cd "$(git rev-parse --show-toplevel)"
+      - printf 'tawcMethods=tawcroot\ntawcGraphics=libhybris,cpu\n' >> gradle.properties
+      - cargo install cargo-ndk --version 4.1.2 --locked
+      - scripts/ensure-deps.sh termux-app
+    ndk: 27.2.12479018
+
+AllowedAPKSigningKeys: 0b2262d221a951b57d847b288324004ce3b2fefe1ef52a1140f2fbc1fbb990be
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+$
+UpdateCheckData: app/build.gradle.kts|versionName\s*=\s*"(\d+)"|.|versionName\s*=\s*"(\d+)"
+CurrentVersion: '4'
+CurrentVersionCode: 4
