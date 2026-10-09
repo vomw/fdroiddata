@@ -1,0 +1,169 @@
+Categories:
+  - Reading
+  - Text to Speech
+License: MIT
+AuthorName: Josh Shearer
+SourceCode: https://github.com/JoshShearer/Read-Me
+IssueTracker: https://github.com/JoshShearer/Read-Me/issues
+Changelog: https://github.com/JoshShearer/Read-Me/releases
+
+AutoName: Read Me Offline
+
+RepoType: git
+Repo: https://github.com/JoshShearer/Read-Me.git
+
+Builds:
+  - versionName: 1.0.4
+    versionCode: 51
+    commit: c0fabcea287c5cbfe5285ff35ed60ef35b261e40
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev g++
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-armeabi-v7a.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=armeabi-v7a\n' "$HERMESC"
+        >> android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.4
+    versionCode: 52
+    commit: c0fabcea287c5cbfe5285ff35ed60ef35b261e40
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev g++
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-arm64-v8a.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=arm64-v8a\n' "$HERMESC"
+        >> android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.4
+    versionCode: 53
+    commit: c0fabcea287c5cbfe5285ff35ed60ef35b261e40
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev g++
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-x86.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=x86\n' "$HERMESC" >>
+        android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+  - versionName: 1.0.4
+    versionCode: 54
+    commit: c0fabcea287c5cbfe5285ff35ed60ef35b261e40
+    subdir: android/app
+    submodules: true
+    sudo:
+      - apt-get update
+      - apt-get install -y cmake ninja-build libicu-dev g++
+      - echo "deb https://deb.debian.org/debian forky main" > /etc/apt/sources.list.d/forky.list
+      - apt-get update
+      - apt-get install -y -t forky nodejs npm
+      - curl -fsSLo /tmp/jdk17.tar.gz 
+        https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz
+      - echo "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e  /tmp/jdk17.tar.gz"
+        | sha256sum -c -
+      - mkdir -p /usr/lib/jvm/temurin-17 && tar -xzf /tmp/jdk17.tar.gz -C /usr/lib/jvm/temurin-17
+        --strip-components=1
+    init: cd ../.. && npm ci --ignore-scripts
+    gradle:
+      - yes
+    binary: 
+      https://github.com/JoshShearer/Read-Me/releases/download/v%v/read-me-%v-x86_64.apk
+    prebuild:
+      - cd ../.. && HERMESC=$(bash scripts/build-hermesc.sh)
+      - printf '\nreadmeHermesc=%s\nreactNativeArchitectures=x86_64\n' "$HERMESC"
+        >> android/gradle.properties
+    scanignore:
+      - node_modules/react-native/ReactAndroid/publish.gradle
+      - node_modules/react-native-safe-area-context/android/build.gradle
+    scandelete:
+      - node_modules/hermes-compiler/hermesc
+      - node_modules/fb-dotslash/bin
+      - node_modules/react-native/React/I18n/strings
+      - external/hermes/android
+    ndk: r27b
+
+AllowedAPKSigningKeys: f730c468c33f4de8ec5b6917920399169ccdef2664def86ffc4f0dbe01535bf5
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+VercodeOperation:
+  - 10 * %c + 1
+  - 10 * %c + 2
+  - 10 * %c + 3
+  - 10 * %c + 4
+CurrentVersion: 1.0.4
+CurrentVersionCode: 54
